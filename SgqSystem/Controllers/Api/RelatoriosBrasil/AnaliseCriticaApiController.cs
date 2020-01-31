@@ -137,17 +137,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
                     foreach (var departamento_Id in departamentos_Ids)
                     {
-  
+
                         var grafico = new List<GraficoNC>();
                         var tabela = new List<AcaoResultSet>();
 
                         tabela = GetAcaoCorretivaMonitoramento(form, parLevel1_Id, departamento_Id);
-                        grafico = monitoramentosDepartamentos.Where(x => x.ParDepartment_Id == departamento_Id).ToList();                
+                        grafico = monitoramentosDepartamentos.Where(x => x.ParDepartment_Id == departamento_Id).ToList();
 
-                        analiseCriticaResultSet.MonitoramentosDepartamentos.Add(new GraficoTabela { 
-                            ListaGrafico = grafico, 
-                            ListaTabelaAcaoCorretiva = tabela, 
-                            ParDepartment = grafico[0].ParDepartment_Name, 
+                        analiseCriticaResultSet.MonitoramentosDepartamentos.Add(new GraficoTabela
+                        {
+                            ListaGrafico = grafico,
+                            ListaTabelaAcaoCorretiva = tabela,
+                            ParDepartment = grafico[0].ParDepartment_Name,
                             ParDepartment_Id = departamento_Id
                         });
 
@@ -264,7 +265,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Função
             if (form.ParGroupParLevel1_Ids != null && form.ParGroupParLevel1_Ids.Length > 0)
-                wParGroupParLevel1 = $" AND PL1.ParGroupLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
+                wParGroupParLevel1 = $" AND PGPL1.ParGroupParLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
@@ -285,7 +286,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
 
             //Plano de Ação Concluido
-            if (form.AcaoStatus != null && form.AcaoStatus.Length > 0) { 
+            if (form.AcaoStatus != null && form.AcaoStatus.Length > 0)
+            {
                 if (form.AcaoStatus[0] == 1) //Concluido
                     wAcaoStatus = " AND (SELECT IIF(COUNT(*) > 0, 1, 0) as HaveAcoesConcluidas FROM Pa_Acao Acao WHERE 1 = 1 AND Acao.Level1Id = 1 AND Acao.Status IN (3, 4, 7, 8) AND Acao.Status NOT IN (1, 5, 6, 9, 10)) = 1 --Plano de Ação Concluido";
 
@@ -294,7 +296,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             }
 
             //Periodo
-            if (form.Periodo != null && form.Periodo.Length > 0) {
+            if (form.Periodo != null && form.Periodo.Length > 0)
+            {
                 if (form.Periodo[0] == 1)//Diario
                 {
                     wPeriodo = "convert(NVARCHAR, Data, 103)";
@@ -304,7 +307,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 }
 
                 if (form.Periodo[0] == 2)//Semanal
-                { 
+                {
                     wPeriodo = "CONCAT(CONCAT(DATEPART(YEAR, S1.Data), '-'), DatePart(WEEK, S1.Data))";
                     orderBy = "CONVERT(INT,replace(S3.Data, '-', ''))";
                 }
@@ -318,7 +321,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             //Exibe NC Com peso
             if (form.NcComPeso != null && form.NcComPeso.Length > 0)
             {
-                if(form.NcComPeso[0] == 1) //Com Peso
+                if (form.NcComPeso[0] == 1) //Com Peso
                     wNCComPeso = "'NcComPeso'";
                 if (form.NcComPeso[0] == 2) //Sem Peso
                     wNCComPeso = "'NcSemPeso'";
@@ -476,6 +479,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			LEFT JOIN ConsolidationLevel1 CL1 ON DD.data_ = CAST(CL1.ConsolidationDate AS DATE)
             			INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
             			INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON CL1.ParLevel1_Id = PL1.Id
+            			INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
             			INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
             			INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
             			INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
@@ -614,7 +618,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Função
             if (form.ParGroupParLevel1_Ids != null && form.ParGroupParLevel1_Ids.Length > 0)
-                wParGroupParLevel1 = $" AND PL1.ParGroupLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
+                wParGroupParLevel1 = $" AND PGPL1.ParGroupParLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
@@ -669,6 +673,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         FROM CorrectiveAction CA
                         INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.Id = CA.CollectionLevel02Id
                         INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON C2.ParLevel1_Id = PL1.Id
+            			INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
                         INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
                         INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
                         --INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
@@ -771,7 +776,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Função
             if (form.ParGroupParLevel1_Ids != null && form.ParGroupParLevel1_Ids.Length > 0)
-                wParGroupParLevel1 = $" AND PL1.ParGroupLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
+                wParGroupParLevel1 = $" AND PGPL1.ParGroupParLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
@@ -959,6 +964,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			FROM ConsolidationLevel1 CL1 
             			INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
             			INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON CL1.ParLevel1_Id = PL1.Id
+            			INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
             			INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
             			INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
             			INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
@@ -1081,13 +1087,13 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Função
             if (form.ParGroupParLevel1_Ids != null && form.ParGroupParLevel1_Ids.Length > 0)
-                wParGroupParLevel1 = $" AND PL1.ParGroupLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
+                wParGroupParLevel1 = $" AND PGPL1.ParGroupParLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
                 wParDepartment = $" AND PL2.ParDepartment_Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
 
-            if(ParDepartment_Id != null)
+            if (ParDepartment_Id != null)
                 wParDepartment += $" AND PL2.ParDepartment_Id IN ({ParDepartment_Id.ToString()}) --Departamento";
 
             //Indicador
@@ -1138,6 +1144,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         FROM CorrectiveAction CA
                         INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.Id = CA.CollectionLevel02Id
                         INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON C2.ParLevel1_Id = PL1.Id
+            			INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
                         INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
                         INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
                         --INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
@@ -1240,7 +1247,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Função
             if (form.ParGroupParLevel1_Ids != null && form.ParGroupParLevel1_Ids.Length > 0)
-                wParGroupParLevel1 = $" AND PL1.ParGroupLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
+                wParGroupParLevel1 = $" AND PGPL1.ParGroupParLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
@@ -1433,6 +1440,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			FROM ConsolidationLevel1 CL1 
             			INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
             			INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON CL1.ParLevel1_Id = PL1.Id
+            			INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
             			INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
             			INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
             			INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
@@ -1560,7 +1568,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             //Função
             if (form.ParGroupParLevel1_Ids != null && form.ParGroupParLevel1_Ids.Length > 0)
-                wParGroupParLevel1 = $" AND PL1.ParGroupLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
+                wParGroupParLevel1 = $" AND PGPL1.ParGroupParLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
@@ -1747,6 +1755,7 @@ FROM (SELECT
 				FROM ConsolidationLevel1 CL1
 				INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
 				INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON CL1.ParLevel1_Id = PL1.Id
+            			INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
 				INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
 				INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
 				INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
@@ -1876,7 +1885,7 @@ ORDER BY NCPercent DESC";
 
             //Função
             if (form.ParGroupParLevel1_Ids != null && form.ParGroupParLevel1_Ids.Length > 0)
-                wParGroupParLevel1 = $" AND PL1.ParGroupLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
+                wParGroupParLevel1 = $" AND PGPL1.ParGroupParLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
@@ -2066,6 +2075,7 @@ FROM (SELECT
             FROM ConsolidationLevel1 CL1
             INNER JOIN ConsolidationLevel2 CL2 WITH(NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
             INNER JOIN ParLevel1 PL1 WITH(NOLOCK) ON CL1.ParLevel1_Id = PL1.Id
+            INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
             INNER JOIN CollectionLevel2 C2 WITH(NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
             INNER JOIN ParLevel2 PL2 WITH(NOLOCK) ON C2.ParLevel2_Id = PL2.Id
             INNER JOIN ParCompany PC WITH(NOLOCK) ON C2.UnitId = PC.Id
@@ -2194,7 +2204,7 @@ ORDER BY S3.PorcentagemNc DESC";
 
             //Função
             if (form.ParGroupParLevel1_Ids != null && form.ParGroupParLevel1_Ids.Length > 0)
-                wParGroupParLevel1 = $" AND PL1.ParGroupLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
+                wParGroupParLevel1 = $" AND PGPL1.ParGroupParLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
 
             //Departamento
             if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
@@ -2254,6 +2264,7 @@ LEFT JOIN Pa_CausaGenerica CG ON Acao.CausaGenerica_Id = CG.Id
 LEFT JOIN Pa_ContramedidaGenerica CMG ON Acao.ContramedidaGenerica_Id = CMG.Id
 LEFT JOIN Pa_Status [Status] WITH (NOLOCK) ON [Status].Id = Acao.Status 
 LEFT JOIN ParLevel1 PL1 WITH (NOLOCK) ON Acao.Level1Id = PL1.Id
+INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
 LEFT JOIN ParLevel2 PL2 WITH (NOLOCK) ON Acao.Level2Id = PL2.Id
 LEFT JOIN ParLevel3 PL3 WITH (NOLOCK) ON Acao.Level3Id = PL3.Id
 LEFT JOIN ParCompany PC WITH (NOLOCK) ON Acao.Unidade_Id = PC.Id
@@ -2288,13 +2299,66 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
 
         private static string getQuery(DataCarrierFormularioNew form, int? nivel)
         {
-
+            var wModulo = "";
+            var wParClusterGroup = "";
+            var wParCluster = "";
+            var Wregional = "";
             var Wunidade = "";
+            var wTurno = "";
+            var wParCriticalLevel = "";
+            var wParGroupParLevel1 = "";
+            var wParDepartment = "";
+            var Windicador = "";
             var query = "";
+
+            if (form.ParModule_Ids != null && form.ParModule_Ids.Length > 0)
+            {
+                wModulo = $" AND P1M.ParModule_Id IN ({string.Join(",", form.ParModule_Ids)}) --Modulo";
+            }
+
+            if (form.ParClusterGroup_Ids != null && form.ParClusterGroup_Ids.Length > 0)
+            {
+                wParClusterGroup = $" AND CL.ParClusterGroup_Id IN ({string.Join(",", form.ParClusterGroup_Ids)}) --Grupo de Processo";
+            }
+
+            if (form.ParCluster_Ids != null && form.ParCluster_Ids.Length > 0)
+            {
+                wParCluster = $" AND CL.Id IN ({string.Join(",", form.ParCluster_Ids)}) --Processo";
+            }
+
+            if (form.ParStructureRegional_Ids.Length > 0 && form.ParStructureRegional_Ids[0] != 0)
+            {
+                Wregional = " AND S.ParStructureGroup_Id IN (" + string.Join(",", form.ParStructureRegional_Ids) + ")";
+            }
 
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] != 0)
             {
                 Wunidade = " AND C1.UnitId IN (" + string.Join(",", form.ParCompany_Ids) + ")";
+            }
+
+            if (form.Shift_Ids != null && form.Shift_Ids.Length > 0)
+            {
+                wTurno = $" AND C1.Shift in ({string.Join(",", form.Shift_Ids)}) --Turno";
+            }
+
+            if (form.ParCriticalLevel_Ids != null && form.ParCriticalLevel_Ids.Length > 0)
+            {
+                wParCriticalLevel = $" AND L1C.ParCriticalLevel_Id IN ({string.Join(",", form.ParCriticalLevel_Ids)}) --Nível Criticidade";
+            }
+
+            if (form.ParGroupParLevel1_Ids != null && form.ParGroupParLevel1_Ids.Length > 0)
+            {
+                wParGroupParLevel1 = $" AND pgpl1.ParGroupParLevel1_Id IN ({string.Join(",", form.ParGroupParLevel1_Ids)}) --Função";
+            }
+
+            if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
+            {
+                wParDepartment = $" AND PD.Id IN ({string.Join(",", form.ParDepartment_Ids)}) --Departamento";
+            }
+
+            if (form.ParLevel1_Ids.Length > 0 && form.ParLevel1_Ids[0] != 0)
+            {
+                Windicador = " AND C1.ParLevel1_Id IN (" + string.Join(",", form.ParLevel1_Ids) + ")";
             }
 
             query = $@"  
@@ -2351,17 +2415,18 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 			WHEN SUM(C2.WeiDefects) = 0 THEN 0
                 			ELSE 1
                 		END DEF_AM
-                	FROM CollectionLevel2 C2 (NOLOCK)
-                	INNER JOIN ParLevel1 L1 (NOLOCK)
+                	FROM CollectionLevel2 C2 WITH (NOLOCK)
+                	INNER JOIN ParLevel1 L1 WITH (NOLOCK)
                 		ON L1.Id = C2.ParLevel1_Id
-                	INNER JOIN ParCompany C (NOLOCK)
+            		INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = L1.Id
+                	INNER JOIN ParCompany C WITH (NOLOCK)
                 		ON C.Id = C2.UnitId
-                	WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
+                	WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATEINI AND @DATEFIM
                 	AND C2.NotEvaluatedIs = 0
                 	AND C2.Duplicated = 0
                 	AND L1.ParConsolidationType_Id = 4
                 	GROUP BY C.Id
-                			,ParLevel1_Id
+                			,C2.ParLevel1_Id
                 			,C2.[Shift]
                 			,C2.[Period]
                 			,EvaluationNumber
@@ -2418,6 +2483,7 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 
                 
                 -- CUBO
+
                 SELECT
                 	CL.Id AS ParCluster_ID
                    ,CL.Name AS ParCluster_Name
@@ -2443,7 +2509,7 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 			-
                 			ISNULL ((SELECT
                 					SUM(NA) AS NA
-                				FROM #NA NA
+                				FROM #NA NA WITH (NOLOCK)
                 				WHERE NA.UnitId = C1.UnitId
                 				AND NA.CollectionDate = C1.ConsolidationDate)
                 			, 0)
@@ -2452,7 +2518,7 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 		WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.EvaluatedResult)
                 		WHEN L1.ParConsolidationType_Id = 4 THEN ISNULL ((SELECT
                 					SUM(AM) AM
-                				FROM #AMOSTRA4 A4
+                				FROM #AMOSTRA4 A4 WITH (NOLOCK)
                 				WHERE 1 = 1
                 				AND C1.UnitId = A4.Unidade
                 				AND C1.ParLevel1_Id = A4.Indicador
@@ -2470,7 +2536,7 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 		WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.DefectsResult)
                 		WHEN L1.ParConsolidationType_Id = 4 THEN ISNULL ((SELECT
                 					SUM(DEF_AM) DEF_AM
-                				FROM #AMOSTRA4 A4
+                				FROM #AMOSTRA4 A4 WITH (NOLOCK)
                 				WHERE 1 = 1
                 				AND C1.UnitId = A4.Unidade
                 				AND C1.ParLevel1_Id = A4.Indicador
@@ -2493,7 +2559,7 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 			-
                 			ISNULL ((SELECT
                 					SUM(NA) AS NA
-                				FROM #NA NA
+                				FROM #NA NA WITH (NOLOCK)
                 				WHERE NA.UnitId = C1.UnitId
                 				AND NA.CollectionDate = C1.ConsolidationDate)
                 			, 0)
@@ -2502,7 +2568,7 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 		WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.EvaluatedResult)
                 		WHEN L1.ParConsolidationType_Id = 4 THEN ISNULL ((SELECT
                 					SUM(AM) AM
-                				FROM #AMOSTRA4 A4
+                				FROM #AMOSTRA4 A4 WITH (NOLOCK)
                 				WHERE 1 = 1
                 				AND C1.UnitId = A4.Unidade
                 				AND C1.ParLevel1_Id = A4.Indicador
@@ -2520,7 +2586,7 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 		WHEN L1.ParConsolidationType_Id = 3 THEN SUM(C1.DefectsResult)
                 		WHEN L1.ParConsolidationType_Id = 4 THEN ISNULL ((SELECT
                 					SUM(DEF_AM) DEF_AM
-                				FROM #AMOSTRA4 A4
+                				FROM #AMOSTRA4 A4 WITH (NOLOCK)
                 				WHERE 1 = 1
                 				AND C1.UnitId = A4.Unidade
                 				AND C1.ParLevel1_Id = A4.Indicador
@@ -2534,7 +2600,7 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 	END AS [NC]
                    ,ISNULL ((SELECT TOP 1
                 			PercentValue
-                		FROM ParGoal pg
+                		FROM ParGoal pg WITH (NOLOCK)
                 		WHERE 1 = 1
                 		AND pg.IsActive = 1
                 		AND pg.ParLevel1_Id = C1.ParLevel1_Id
@@ -2544,7 +2610,7 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 		ORDER BY EffectiveDate DESC, ParCompany_Id DESC)
                 	, (SELECT TOP 1
                 			PercentValue
-                		FROM ParGoal pg
+                		FROM ParGoal pg WITH (NOLOCK)
                 		WHERE 1 = 1
                 		AND pg.IsActive = 1
                 		AND pg.ParLevel1_Id = C1.ParLevel1_Id
@@ -2552,15 +2618,30 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 		AND (pg.ParCompany_Id = C1.UnitId
                 		OR pg.ParCompany_Id IS NULL)
                 		ORDER BY EffectiveDate DESC, ParCompany_Id DESC)
-                	) AS Meta INTO #CUBO
-                FROM #ConsolidationLevel C1
+                	) AS Meta 
+					
+					 INTO #CUBO
+                FROM #ConsolidationLevel C1 WITH (NOLOCK)
+
                 INNER JOIN ParLevel1 L1 WITH (NOLOCK)
                 	ON C1.ParLevel1_Id = L1.Id
                 		AND ISNULL (L1.ShowScorecard, 1) = 1
                 		AND L1.IsActive = 1
-                
+
+                LEFT join ParGroupParLevel1XParLevel1 pgpl1 WITH (NOLOCK)
+					on l1.id = pgpl1.ParLevel1_Id
+				
                 LEFT JOIN ParCompany PC WITH (NOLOCK)
                 	ON PC.Id = C1.UnitId
+
+                left join CollectionLevel2 cll2 WITH (NOLOCK)
+					on cll2.ParLevel1_Id = cll2.ParLevel1_Id
+
+				left join ParLevel2 pl2 WITH (NOLOCK)
+					on pl2.id = cll2.ParLevel2_Id
+
+				left join ParDepartment PD WITH (NOLOCK)
+					on pl2.ParDepartment_Id = pd.Id
                 
                 INNER JOIN ParCompanyCluster CCL WITH (NOLOCK)
                 	ON CCL.ParCompany_Id = PC.Id
@@ -2571,10 +2652,10 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 		AND C1.ParLevel1_Id = L1C.ParLevel1_Id
                 		AND L1C.Id = (SELECT TOP 1
                 				aaa.Id
-                			FROM ParLevel1XCluster aaa (NOLOCK)
+                			FROM ParLevel1XCluster aaa WITH (NOLOCK)
                 			WHERE aaa.ParLevel1_Id = L1.Id
                 			AND aaa.ParCluster_ID = CCL.ParCluster_ID
-                			AND aaa.EffectiveDate < @DATAFINAL
+                			AND aaa.EffectiveDate < @DATEFIM
                 			AND IsActive = 1
                 			ORDER BY ParLevel1_Id, ParCluster_ID, EffectiveDate, AddDate, AlterDate)
                 		AND L1C.IsActive = 1
@@ -2606,16 +2687,25 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
                 	ON P1M.ParLevel1_Id = L1C.ParLevel1_Id
                 		AND P1M.IsActive = 1
-                		AND P1M.EffectiveDateStart <= @DATAINICIAL
+                		AND P1M.EffectiveDateStart <= @DATEINI
                 		AND (P1M.ParCluster_ID IS NULL
                 			OR P1M.ParCluster_ID IN (SELECT
                 					ParCluster_ID
-                				FROM ParCompanyCluster
+                				FROM ParCompanyCluster WITH (NOLOCK)
                 				WHERE Active = 1)
                 		)
                 
                 WHERE 1 = 1
+                { wModulo }
+                { wParClusterGroup }
+                { wParCluster }
+                { Wregional }
                 { Wunidade }
+                { wTurno }
+                { wParCriticalLevel }
+                { wParGroupParLevel1 }
+                { wParDepartment }
+                { Windicador }
                 GROUP BY CL.Id
                 		,CL.Name
                 		,CS.ParStructure_id
