@@ -8,6 +8,14 @@ using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.Api.Relatorios.RH
 {
+
+    public enum Role
+    {
+        Adm = 1,
+        BackDate = 2,
+        ApenasColeta = 3
+    }
+
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/NaoConformidadeRH")]
     public class NaoConformidadeRHApiController : BaseApiController
@@ -45,6 +53,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
                 whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+            else
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
             }
 
             if (form.ParClusterGroup_Ids.Length > 0)
@@ -134,6 +146,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             {
                 whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
+            else
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
 
             if (form.ParClusterGroup_Ids.Length > 0)
             {
@@ -220,9 +236,13 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereCargo = $@" AND L2.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
             }
 
-            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
                 whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+            else
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
             }
 
             if (form.ParClusterGroup_Ids.Length > 0)
@@ -327,6 +347,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
                 whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+            else
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
             }
             //else
             //{
@@ -447,6 +471,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
                 whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+            else
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
             }
             //else
             //{
@@ -1102,6 +1130,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             {
                 whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
+            else
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
             //else
             //{
             //    whereUnit = $@"AND UNI.Id IN (SELECT
@@ -1540,6 +1572,10 @@ DROP TABLE #AMOSTRATIPO4 ";
             {
                 whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
+            else
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
             //else
             //{
             //    whereUnit = $@"AND UNI.Id IN (SELECT
@@ -1676,7 +1712,11 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
-                whereUnit = $@"AND L3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+            else
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
             }
             //else
             //{
@@ -1795,7 +1835,11 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
-                whereUnit = $@"AND L3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+            else
+            {
+                whereUnit = $@"AND L2.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
             }
 
             if (form.ParClusterGroup_Ids.Length > 0)

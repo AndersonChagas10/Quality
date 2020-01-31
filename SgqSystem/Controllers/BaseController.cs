@@ -230,7 +230,15 @@ namespace SgqSystem.Controllers
 
                         var rolesIDs = db.RoleUserSgq.Where(r => rolesNames.Contains(r.Name) && r.IsActive == true).Select(r => r.Id).ToList();
 
-                        var ItensDeMenuUsuarioIds = db.RoleUserSgqXItemMenu.Where(r => rolesIDs.Contains(r.RoleUserSgq_Id) && r.IsActive == true).Select(r => r.ItemMenu_Id).Distinct().ToList();
+                        var roleUSerSGQ = new List<RoleUserSgq>();
+                        foreach (var item in rolesIDs)
+                        {
+                            roleUSerSGQ.Add(db.RoleUserSgq.Where(x => x.Id == item).FirstOrDefault());
+                        }
+
+                        ViewBag.RoleUSerSgq = roleUSerSGQ;
+
+                       var ItensDeMenuUsuarioIds = db.RoleUserSgqXItemMenu.Where(r => rolesIDs.Contains(r.RoleUserSgq_Id) && r.IsActive == true).Select(r => r.ItemMenu_Id).Distinct().ToList();
 
                         ViewBag.TodosItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && ItensDeMenuUsuarioIds.Contains(r.Id)));
                         ViewBag.ItensMenu = Mapper.Map<IEnumerable<ItemMenuDTO>>(db.ItemMenu.Where(r => r.IsActive == true && r.ItemMenu_Id != null && ItensDeMenuUsuarioIds.Contains(r.Id)));

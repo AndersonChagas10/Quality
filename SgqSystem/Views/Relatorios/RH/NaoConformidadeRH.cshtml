@@ -40,6 +40,9 @@
     ViewBag.ShowParClusterGroup = true;
     ViewBag.ShowParStructureGroup = true;
     ViewBag.ShowParModule = true;
+    ViewBag.ShowUserCompanies = true; //Exibe somente as unidades do usuário no filtro
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var val = jss.Serialize(ViewBag.RoleUSerSgq);
 }
 
 @section Content {
@@ -101,6 +104,8 @@
                     <button class="btn btn-sm btn-default" id="btnDepartamento">@Resources.Resource.department</button>
                 </div>
             </div>
+
+            <input id="teste" class="hidden" value="@ViewBag.RoleUSerSgq" />
 
             <div id="formBodyContent">
                 @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
@@ -210,6 +215,44 @@
 
         });
 
+        function validaRoleUsuario() {
+
+            if (objRoleUser[0].IsCorporativo == true) {
+                $.ajax({
+                    url: urlGraficoHolding,
+                    type: 'post',
+                    data: JSON.stringify(objFiltro),
+                    dataType: "JSON",
+                    contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                    beforeSend: function () {
+                    }
+                })
+                    .done(function (data) {
+                        //console.log(data);
+                        GraficoHolding(data);
+                        $btn.button('reset');
+                        closeLoader();
+                    })
+                    .fail(function (jqXHR, textStatus, msg) {
+                        //console.log(msg);
+                        $btn.button('reset');
+                        //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                        closeLoader();
+                    });
+                return;
+            }
+
+            if (objRoleUser[0].IsNegocio == true) {
+                GetGraficoNegocio()
+                return;
+            }
+
+            if (objRoleUser[0].IsRegional == true) {
+                urlGraficoRoleUser = urlGraficoRegional;
+                return;
+            }
+        }
+
         function enviarFiltro() {
 
             openLoader('Aguarde...');
@@ -235,6 +278,11 @@
             }
             objFiltro.Param = {};
             objFiltro.Param.auditorId = GetUsuarioId();
+            
+            var roleUser = '@Html.Raw(val)';
+            var objRoleUser = $.parseJSON(roleUser);
+            objFiltro.Param.RoleUSer = objRoleUser;
+            //validaRoleUsuario(objRoleUser, urlGraficoRoleUser);
 
             $.ajax({
                 url: urlGraficoHolding,
@@ -398,7 +446,7 @@
         }
 
         function GetPopover(param, grafico, shift, param_Id) {
-            
+
             popoverMain.addClass('hide');
 
             hidePopoverItems();
@@ -753,12 +801,12 @@
         }
 
         function GraficoNegocio(data, data2) {
-            
+
             if (!(data.length > 0)) {
                 GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
                 return;
             }
-           
+
             var dataX = MapeiaValorParaHC(data, "GrupoDeEmpresaName");
             var dataXId = MapeiaValorParaHC(data, "GrupoDeEmpresa_Id");
             var Nc = MapeiaValorParaHC(data, "Nc");
