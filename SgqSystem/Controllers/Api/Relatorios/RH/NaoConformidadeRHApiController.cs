@@ -254,7 +254,6 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereParLevel1}
                     {whereParLevel2}
                     {whereParLevel3}
-					AND Holding.Id = {form.Param["holding_Id"]}
                 GROUP BY 
 	                GrupoDeEmpresa.NAME, GrupoDeEmpresa.Id 
                 ";
@@ -382,8 +381,6 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereParLevel1}
                     {whereParLevel2}
                     {whereParLevel3}
-				    AND Holding.Id = {form.Param["holding_Id"]}
-					AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
                 GROUP BY 
 	                Regional.NAME, Regional.Id 
                 ";
@@ -536,9 +533,6 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereParLevel1}
                     {whereParLevel2}
                     {whereParLevel3}
-                    AND Holding.Id = {form.Param["holding_Id"]}
-					AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
-					AND Regional.Id = {form.Param["regional_Id"]} 
                 GROUP BY 
 	                C.NAME, C.Id ";
 
@@ -689,9 +683,6 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereParLevel1}
                 {whereParLevel2}
                 {whereParLevel3}
-                AND Holding.Id = {form.Param["holding_Id"]}
-				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
-				AND Regional.Id = {form.Param["regional_Id"]} 
             GROUP BY 
 	            D1.NAME, D1.Id
             ORDER BY 4 DESC 
@@ -1360,9 +1351,6 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereParLevel1}
                 {whereParLevel2}
                 {whereParLevel3}
-                AND Holding.Id = {form.Param["holding_Id"]}
-				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
-				AND Regional.Id = {form.Param["regional_Id"]} 
             GROUP BY 
 	            L.NAME, L.Id
             ORDER BY 4 DESC
@@ -1797,9 +1785,6 @@ DROP TABLE #AMOSTRATIPO4 ";
                 {whereParLevel1}
                 {whereParLevel2}
                 {whereParLevel3}
-                AND Holding.Id = {form.Param["holding_Id"]}
-				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
-				AND Regional.Id = {form.Param["regional_Id"]} 
 
             GROUP BY 
 	            M.NAME, M.Id
@@ -1932,9 +1917,6 @@ DROP TABLE #AMOSTRATIPO4 ";
                 {whereParLevel1}
                 {whereParLevel2}
                 {whereParLevel3}
-                AND Holding.Id = {form.Param["holding_Id"]}
-				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
-				AND Regional.Id = {form.Param["regional_Id"]} 
         GROUP BY 
 	        T.NAME, T.ID
         ORDER BY 4 DESC
@@ -2084,9 +2066,6 @@ DROP TABLE #AMOSTRATIPO4 ";
                 {whereParLevel1}
                 {whereParLevel2}
                 {whereParLevel3}
-                AND Holding.Id = {form.Param["holding_Id"]}
-				AND GrupoDeEmpresa.Id = {form.Param["grupoEmpresa_Id"]} 
-				AND Regional.Id = {form.Param["regional_Id"]} 
         GROUP BY 
 	        T.NAME, T.ID
         ORDER BY 4 DESC

@@ -548,13 +548,34 @@
                                         <button type="button" data-filtroselect3-btn
                                                 data-filtroselect3-select="select[name=userSgqMonitor_Ids]"
                                                 data-filtroselect3-url="@Url.Action("GetFilteredUserSgqMonitor", "api/Formulario")"
-                                                data-filtroselect3-default-select="@ViewBag.ShowUserSgqSurpervisorDefault">
+                                                data-filtroselect3-default-select="@ViewBag.ShowUserSgqMonitorDefault">
                                             Abrir
                                         </button>
                                         <select class="form-control" name="userSgqMonitor_Ids" multiple>
                                             @if (ViewBag.ShowUserSgqMonitorDefault != null)
                                             {
                                                 <option value="">@ViewBag.ShowUserSgqMonitorDefault</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowUserSgqAuditor == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.username</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=userSgqAuditor_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredUserSgqAuditor", "api/Formulario")"
+                                                data-filtroselect3-default-select="@ViewBag.ShowUserSgqAuditorDefault">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="userSgqAuditor_Ids" multiple>
+                                            @if (ViewBag.ShowUserSgqAuditorDefault != null)
+                                            {
+                                                <option value="">@ViewBag.ShowUserSgqAuditorDefault</option>
                                             }
                                         </select>
                                     </div>
@@ -738,6 +759,7 @@
             $('select[name="userSgqMonitor_Ids"]').select2();
             $('select[name="ParReason_Ids"]').select2();
             $('select[name="tipoEdicao"]').select2();
+            $('select[name="userSgqAuditor_Ids"]').select2();
         }
 
         inicializaSelect2();

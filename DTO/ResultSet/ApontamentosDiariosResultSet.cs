@@ -389,7 +389,13 @@ public class ApontamentosDiariosResultSet
         var sqlCargo = "";
         var formatDate = "";
 
-        if (form.Shift_Ids.Length > 0)
+		var sqlClusterGroup = "";
+		var sqlParStructure2 = "";
+		var sqlParStructure3 = "";
+		var sqlAuditor = "";
+
+
+		if (form.Shift_Ids.Length > 0)
         {
             sqlTurno = $"\n AND [Shift] in ({string.Join(",", form.Shift_Ids)})";
         }
@@ -453,8 +459,21 @@ public class ApontamentosDiariosResultSet
             formatDate = "CONVERT(varchar, CONVERT(DATE, CL2HF2.value, 111), 103)";
         }
 
-        var query = $@" 
 
+		if (form.ParClusterGroup_Ids.Length > 0)
+			sqlClusterGroup = $" AND PC.ParClusterGroup_Id IN({string.Join(",", form.ParClusterGroup_Ids)}) --Grupo de Cluster";
+
+		if (form.ParStructure2_Ids.Length > 0)
+			sqlParStructure2 = $" AND pg.ParStructureParent_Id IN({string.Join(",", form.ParStructure2_Ids)}) --Grupo de empresa";
+
+		if (form.ParStructure3_Ids.Length > 0)
+			sqlParStructure3 = $" AND pg.Id IN({string.Join(",", form.ParStructure3_Ids)}) --Regional";
+
+		if(form.userSgqAuditor_Ids.Length > 0)
+			sqlAuditor = $"AND C2.AuditorId IN({string.Join(",", form.userSgqAuditor_Ids)}) --Auditor";
+
+								  
+		var query = $@" 
 
                     -- DROP TABLE #CollectionLevel2
 
@@ -709,87 +728,63 @@ public class ApontamentosDiariosResultSet
 					   ,psg.Name as GrupoEmpresa
 					   ,pg.Name as regional
 					FROM #CollectionLevel2 C2 (NOLOCK)
-
 					INNER JOIN ParCompany UN with (NOLOCK)
 						ON UN.Id = C2.UnitId
-
 					left join ParCompanyXStructure PCXS with (NOLOCK)
 						on pcxs.ParCompany_Id = un.Id
-
 					left join ParStructure pg with (NOLOCK)
-					on pg.Id = pcxs.ParStructure_Id
-
-					left join ParStructureGroup psg with (NOLOCK)
-					on psg.Id = pg.ParStructureGroup_Id
-
+						on pg.Id = pcxs.ParStructure_Id
+					left join ParStructure psg with (NOLOCK)
+						on psg.Id = pg.ParStructureParent_Id
 					INNER JOIN #Result_Level3 R3 with (NOLOCK)
 						ON R3.CollectionLevel2_Id = C2.Id
-
 					INNER JOIN ParLevel3 L3 with (NOLOCK)
 						ON L3.Id = R3.ParLevel3_Id
-
 					INNER JOIN ParLevel2 L2 with (NOLOCK)
 						ON L2.Id = C2.ParLevel2_Id
-
 					INNER JOIN ParLevel1 L1 with (NOLOCK)
 						ON L1.Id = C2.ParLevel1_Id
-
 					INNER JOIN UserSgq US with (NOLOCK)
 						ON C2.AuditorId = US.Id
-
 					LEFT JOIN #CollectionLevel2XParHeaderFieldGeral2 HF with (NOLOCK)
 						ON C2.Id = HF.CollectionLevel2_Id
-
 					LEFT JOIN #CollectionLevel2XCollectionJson CLCJ with (NOLOCK)
 						ON CLCJ.CollectionLevel2_Id = C2.Id
-
 					LEFT JOIN #CollectionJson CJ with (NOLOCK)
 						ON CJ.Id = CLCJ.CollectionJson_Id
-
 					LEFT JOIN #CollectionLevel2XCluster C2XC with (NOLOCK)
 						ON C2XC.CollectionLevel2_Id = C2.Id
-
 					LEFT JOIN  ParCluster PC with (NOLOCK)
 						ON PC.Id = C2XC.ParCluster_Id
-
 					LEFT join ParClusterGroup PGC with (NOLOCK)
 						on pgc.id = pc.ParClusterGroup_Id
-
-
 					LEFT JOIN CollectionLevel2XParReason CL2MA with (NOLOCK)
 						ON CL2MA.CollectionLevel2_Id = C2.Id
-
 					LEFT JOIN ParReason MA with (NOLOCK)
 						ON MA.Id = CL2MA.ParReason_Id
-
 					LEFT JOIN ParReasonType PRT with (NOLOCK)
 						ON PRT.Id = MA.ParReasonType_Id
-
 					LEFT JOIN CollectionLevel2XParDepartment CL2PD with (NOLOCK)
 						ON CL2PD.CollectionLevel2_Id = C2.Id
-
 					INNER JOIN ParDepartment Secao with (NOLOCK)
 						ON Secao.Id = CL2PD.ParDepartment_Id
-
 					INNER JOIN ParDepartment Centro with (NOLOCK)
 						ON Secao.Parent_Id = Centro.Id
 							AND Centro.Parent_Id IS NULL
-
 					left JOIN CollectionLevel2XParCargo CL2PC with (NOLOCK)
 						ON CL2PC.CollectionLevel2_Id = C2.Id
-
 					LEFT JOIN ParCargo PCargo with (NOLOCK)
 						ON PCargo.Id = CL2PC.ParCargo_Id
-
 					LEFT JOIN ParFrequency PF with (NOLOCK)
 						ON C2.ParFrequency_Id = PF.Id
-
-						
 					WHERE 1=1 
-                  { sqlDepartment }
-                  { sqlCargo }
-                  { sqlLevel3 }
-
+					{ sqlDepartment }
+					{ sqlCargo }
+					{ sqlLevel3 }
+					{ sqlClusterGroup}    
+					{ sqlParStructure2}	  
+					{ sqlParStructure3}	  
+					{ sqlAuditor}	
 
 					DROP TABLE #CollectionLevel2
 					DROP TABLE #CollectionJson

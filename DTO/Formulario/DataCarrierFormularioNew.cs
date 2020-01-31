@@ -72,6 +72,8 @@ namespace DTO
 
         public int[] userSgqMonitor_Ids { get; set; } = new int[] { };
 
+        public int[] userSgqAuditor_Ids { get; set; } = new int[] { };
+
         public int[] tipoEdicao { get; set; } = new int[] { };
 
         public int[] ParReason_Ids { get; set; } = new int[] { };

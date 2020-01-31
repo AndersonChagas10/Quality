@@ -850,6 +850,20 @@ namespace SgqSystem.Controllers.Api.Formulario
         }
 
         [HttpPost]
+        [Route("GetFilteredUserSgqAuditor")]
+        public List<UserSgq> GetFilteredUserSgqAuditor(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT DISTINCT TOP 500 Id, Name from UserSgq Where 1 = 1 AND Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<UserSgq>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
         [Route("GetParReason")]
         public List<UserSgq> GetParReason(string search, [FromBody] DataCarrierFormularioNew form)
         {
