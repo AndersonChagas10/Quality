@@ -177,10 +177,10 @@ namespace SgqSystem.Controllers.Api.Formulario
                 whereCluster = $" AND PCL.Id IN ({string.Join(",", form.ParCluster_Ids)})";
 
             if (form.ParStructure2_Ids.Length > 0)
-                whereStructure = $" AND PS.Id IN ({string.Join(",", form.ParStructure2_Ids)})";
+                whereStructure = $" AND PS1.Id IN ({string.Join(",", form.ParStructure2_Ids)})";
 
             if (form.ParStructure3_Ids.Length > 0)
-                whereStructParent = $" AND PS1.Id IN ({string.Join(",", form.ParStructure3_Ids)})";
+                whereStructParent = $" AND PS.Id IN ({string.Join(",", form.ParStructure3_Ids)})";
 
             if (form.ParCompany_Ids.Length > 0)
                 whereParCompany = $"  AND PC.Id IN ({string.Join(",", form.ParCompany_Ids)})";
@@ -294,10 +294,10 @@ namespace SgqSystem.Controllers.Api.Formulario
                 whereCluster = $" AND PCL.Id IN ({string.Join(",", form.ParCluster_Ids)})";
 
             if (form.ParStructure2_Ids.Length > 0)
-                whereStructure = $" AND PS.Id IN ({string.Join(",", form.ParStructure2_Ids)})";
+                whereStructure = $" AND PS1.Id IN ({string.Join(",", form.ParStructure2_Ids)})";
 
             if (form.ParStructure3_Ids.Length > 0)
-                whereStructParent = $" AND PS1.Id IN ({string.Join(",", form.ParStructure3_Ids)})";
+                whereStructParent = $" AND PS.Id IN ({string.Join(",", form.ParStructure3_Ids)})";
 
             if (form.ParCompany_Ids.Length > 0)
                 whereParCompany = $"  AND PC.Id IN ({string.Join(",", form.ParCompany_Ids)})";
@@ -416,10 +416,10 @@ namespace SgqSystem.Controllers.Api.Formulario
                 whereCluster = $" AND PCL.Id IN ({string.Join(",", form.ParCluster_Ids)})";
 
             if (form.ParStructure2_Ids.Length > 0)
-                whereStructure = $" AND PS.Id IN ({string.Join(",", form.ParStructure2_Ids)})";
+                whereStructure = $" AND PS1.Id IN ({string.Join(",", form.ParStructure2_Ids)})";
 
             if (form.ParStructure3_Ids.Length > 0)
-                whereStructParent = $" AND PS1.Id IN ({string.Join(",", form.ParStructure3_Ids)})";
+                whereStructParent = $" AND PS.Id IN ({string.Join(",", form.ParStructure3_Ids)})";
 
             if (form.ParCompany_Ids.Length > 0)
                 whereParCompany = $"  AND PC.Id IN ({string.Join(",", form.ParCompany_Ids)})";
@@ -1568,8 +1568,8 @@ namespace SgqSystem.Controllers.Api.Formulario
 
                 var query = $@"
                             SELECT DISTINCT TOP 500
-                            	PS.Id
-                               ,PS.Name
+                            	PS1.Id
+                               ,PS1.Name
                             FROM (SELECT DISTINCT
                             		PVP.ParLevel1_Id
                             	   ,PVP.ParLevel2_Id
@@ -1610,9 +1610,10 @@ namespace SgqSystem.Controllers.Api.Formulario
                             INNER JOIN ParLevel3 PL3 WITH (NOLOCK) ON PL3.Id = PVP.ParLevel3_Id --Fixo
                             INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = PC.Id
                             INNER JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
+                            INNER JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.Id
                             INNER JOIN ParStructureGroup PSG WITH (NOLOCK) ON PSG.Id = PS.ParStructureGroup_Id
                             WHERE 1 = 1
-                            AND PS.ParStructureGroup_Id = 2
+                            AND PS1.ParStructureGroup_Id = 2
                             {whereUnidadesUsuario}
                             {whereClusterGroup}
                             {whereCluster}
@@ -1647,10 +1648,10 @@ namespace SgqSystem.Controllers.Api.Formulario
                 whereClusterGroup = $" AND PCL.ParClusterGroup_Id IN ({string.Join(",", form.ParClusterGroup_Ids)})";
 
             if (form.ParCluster_Ids.Length > 0)
-                whereCluster = $" AND PCL.Id IN ({string.Join(",", form.ParClusterGroup_Ids)})";
+                whereCluster = $" AND PCL.Id IN ({string.Join(",", form.ParCluster_Ids)})";
 
             if (form.ParStructure2_Ids.Length > 0)
-                whereStructParent = $" AND PS.ParStructureParent_Id IN ({string.Join(",", form.ParClusterGroup_Ids)})";
+                whereStructParent = $" AND PS.ParStructureParent_Id IN ({string.Join(",", form.ParStructure2_Ids)})";
 
 
             using (var factory = new Factory("DefaultConnection"))
@@ -1701,14 +1702,11 @@ namespace SgqSystem.Controllers.Api.Formulario
                             --INNER JOIN ParCargo Cargo WITH (NOLOCK) ON (Cargo.Id = PVP.ParCargo_Id OR PVP.ParCargo_Id IS NULL) 
                             INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
                             	ON PL1.Id = PVP.ParLevel1_Id --Fixo
-                            INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
-                            	ON PL2.Id = PVP.ParLevel2_Id --Fixo
-                            INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
-                            	ON PL3.Id = PVP.ParLevel3_Id --Fixo
-                            INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK)
-                            	ON PCXS.ParCompany_Id = PC.Id
-                            INNER JOIN ParStructure PS WITH (NOLOCK)
-                            	ON PS.Id = PCXS.ParStructure_Id
+                            INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON PL2.Id = PVP.ParLevel2_Id --Fixo
+                            INNER JOIN ParLevel3 PL3 WITH (NOLOCK) ON PL3.Id = PVP.ParLevel3_Id --Fixo
+                            INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = PC.Id
+                            INNER JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
+                            INNER JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.Id
                             INNER JOIN ParStructureGroup PSG WITH (NOLOCK)
                             	ON PSG.Id = PS.ParStructureGroup_Id
                             WHERE 1 = 1
@@ -1752,12 +1750,10 @@ namespace SgqSystem.Controllers.Api.Formulario
                 whereCluster = $" AND PCL.Id IN ({string.Join(",", form.ParCluster_Ids)})";
 
             if (form.ParStructure2_Ids.Length > 0)
-                whereStructure = $" AND PS.Id IN ({string.Join(",", form.ParStructure2_Ids)})";
+                whereStructure = $" AND PS.ParStructureParent_Id IN ({string.Join(",", form.ParStructure2_Ids)})";
 
             if (form.ParStructure3_Ids.Length > 0)
-                whereStructParent = $" AND PS1.Id IN ({string.Join(",", form.ParStructure3_Ids)})";
-
-            //Module
+                whereStructParent = $" AND PS.Id IN ({string.Join(",", form.ParStructure3_Ids)})";
 
 
             using (var factory = new Factory("DefaultConnection"))
@@ -1798,28 +1794,17 @@ namespace SgqSystem.Controllers.Api.Formulario
                             	END) AS PVP
                             --INNER JOIN ParDepartment Secao WITH (NOLOCK) ON (Secao.Id = PVP.ParDepartment_Id OR PVP.ParDepartment_Id IS NULL) AND Secao.Parent_Id IS NOT NULL
                             --INNER JOIN ParDepartment CentroCusto ON (CentroCusto.Id = Secao.Parent_Id AND CentroCusto.Parent_Id IS NULL) 
-                            INNER JOIN ParCluster PCL WITH (NOLOCK)
-                            	ON PCL.Id = PVP.ParCluster_Id
-                            INNER JOIN ParClusterGroup PCG WITH (NOLOCK)
-                            	ON PCG.Id = PCL.ParClusterGroup_Id
-                            INNER JOIN ParCompany PC WITH (NOLOCK)
-                            	ON (PC.Id = PVP.ParCompany_Id
-                            			OR PVP.ParCompany_Id IS NULL) --Fixo
+                            INNER JOIN ParCluster PCL WITH (NOLOCK) ON PCL.Id = PVP.ParCluster_Id
+                            INNER JOIN ParClusterGroup PCG WITH (NOLOCK) ON PCG.Id = PCL.ParClusterGroup_Id
+                            INNER JOIN ParCompany PC WITH (NOLOCK) ON (PC.Id = PVP.ParCompany_Id OR PVP.ParCompany_Id IS NULL) --Fixo
                             --INNER JOIN ParCargo Cargo WITH (NOLOCK) ON (Cargo.Id = PVP.ParCargo_Id OR PVP.ParCargo_Id IS NULL) 
-                            INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
-                            	ON PL1.Id = PVP.ParLevel1_Id --Fixo
-                            INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
-                            	ON PL2.Id = PVP.ParLevel2_Id --Fixo
-                            INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
-                            	ON PL3.Id = PVP.ParLevel3_Id --Fixo
-                            INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK)
-                            	ON PCXS.ParCompany_Id = PC.Id
-                            INNER JOIN ParStructure PS WITH (NOLOCK)
-                            	ON PS.Id = PCXS.ParStructure_Id
-                            LEFT JOIN ParStructure PS1 WITH (NOLOCK)
-                            	ON PS.ParStructureParent_Id = PS1.Id
-                            INNER JOIN ParStructureGroup PSG WITH (NOLOCK)
-                            	ON PSG.Id = PS.ParStructureGroup_Id
+                            INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON PL1.Id = PVP.ParLevel1_Id --Fixo
+                            INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON PL2.Id = PVP.ParLevel2_Id --Fixo
+                            INNER JOIN ParLevel3 PL3 WITH (NOLOCK) ON PL3.Id = PVP.ParLevel3_Id --Fixo
+                            INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = PC.Id
+                            INNER JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
+                            LEFT JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.Id
+                            INNER JOIN ParStructureGroup PSG WITH (NOLOCK) ON PSG.Id = PS.ParStructureGroup_Id
                             WHERE 1 = 1
                             {whereStructure}
                             {whereStructParent}
