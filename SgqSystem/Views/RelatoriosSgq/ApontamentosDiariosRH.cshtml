@@ -3,6 +3,7 @@
     Layout = "_FilterReports.cshtml";
     ViewBag.Title = Resources.Resource.daily_apointments; //"Apontamentos Diarios";
 
+    ViewBag.pivotTable = true;
     ViewBag.ShowCurrentDate = false;
     ViewBag.ShowRangeDate = true;
     ViewBag.ShowParStructure = false;
@@ -24,9 +25,12 @@
     <div id="divApontamentosDiarios"></div>
     <div id="divTable">
         <table id="resultsApontamentos" class="table table-striped"></table>
+        <div id="PivotTable" class="display" style="display:none"></div>
     </div>
 
+    @Html.Partial("~/Views/RelatoriosSgq/_PivotTable.cshtml")
 }
+
 
 @section Scripts {
 
@@ -51,7 +55,6 @@
                 }
             })
                 .done(function (data) {
-                    debugger
                 GerarTabela(data);
                 closeLoader();
             })
@@ -197,6 +200,29 @@
             }
 
         }
+
+        function makeArrayData(arr) {
+            var arrayData = [];
+            $(arr).each(function () {
+                arrayData.push(this);
+            });
+            return arrayData;
+        }
+
+        $("#tabela").on('click', function () {
+                $("#PivotTable").css("display", "none");
+                $("#resultsApontamentos_wrapper").css("display","block");
+         });
+
+        $("#pivot-table").on('click', function () {
+            $('#divFilterReports').addClass('hide');
+            $('#divReportContent').attr('class', 'col-sm-12');
+            $('#btnToggleDivFilterReports').text('> Mostrar Filtros');
+            var arrayData = makeArrayData($('#resultsApontamentos').DataTable().rows({ search: 'applied', page: 'all' }).data());
+            $("#resultsApontamentos_wrapper").css("display", "none");
+            CarregaPivotTable(arrayData, "PivotTable");
+            $("#PivotTable").css("display", "block");
+        });
     </script>
 
 }
