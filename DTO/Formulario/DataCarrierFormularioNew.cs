@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 namespace DTO
 {
     public class DataCarrierFormularioNew
-    {
+    { 
+
         public DateTime startDate { get; set; }
 
         public DateTime endDate { get; set; }
+
+        public int[] IsCascadeLevel2Level3 { get; set; } = new int[] { };
 
         public int[] ParStructure_Ids { get; set; } = new int[] { };
 
@@ -22,6 +25,8 @@ namespace DTO
         public int[] ParStructure3_Ids { get; set; } = new int[] { };
 
         public int[] ParStructureGroup_Ids { get; set; } = new int[] { };
+
+        public bool ShowUserCompanies { get; set; } = false;
 
         public int[] ParCompany_Ids { get; set; } = new int[] { };
 
@@ -41,7 +46,7 @@ namespace DTO
 
         public int[] ParLevel3_Ids { get; set; } = new int[] { };
 
-        public int[] ParLevel3Status_Ids { get; set; } = new int[] { };
+        public int[] ParLevel1Status_Ids { get; set; } = new int[] { };
 
         public int[] ParCriticalLevel_Ids { get; set; } = new int[] { };
 
@@ -51,7 +56,7 @@ namespace DTO
 
         public int[] ParLevel1Group_Ids { get; set; } = new int[] { };
 
-        public int[] ParLevel1Status { get; set; } = new int[] { };
+        //public int[] ParLevel1Status { get; set; } = new int[] { };
 
         public int[] AcaoStatus { get; set; } = new int[] { };
 
@@ -65,7 +70,15 @@ namespace DTO
 
         public int[] UserSgqSurpervisor_Ids { get; set; } = new int[] { };
 
+        public int[] userSgqMonitor_Ids { get; set; } = new int[] { };
+
+        public int[] tipoEdicao { get; set; } = new int[] { };
+
+        public int[] ParReason_Ids { get; set; } = new int[] { };
+
         public int[] NcComPeso { get; set; } = new int[] { };
+
+        public int DimensaoData { get; set; }
 
         public JObject Param { get; set; }
 

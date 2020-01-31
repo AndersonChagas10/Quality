@@ -14,7 +14,7 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        public int? Peso { get; set; }
+        public decimal? Peso { get; set; }
 
         [DisplayName("Está Ativo")]
         public bool IsActive { get; set; }

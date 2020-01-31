@@ -51,7 +51,12 @@ function listarParFrequency() {
 
 		var frequency = {};
 
-		var htmlParFrequency = "";
+        var htmlParFrequency = "";
+
+        if (listaParFrequency.length == 1) {
+            getPlanejamentoPorFrequencia(listaParFrequency[0].Id);
+            return;
+        }
 
 		$(data).each(function (i, o) {
 
@@ -61,7 +66,7 @@ function listarParFrequency() {
 				'</button>';
 		});
 
-        var voltar = '<a onclick="validaRota(openMenu,null);" class="btn btn-warning">Voltar</a>';
+        var voltar = '<a onclick="validaRota(openParCluster,null);" class="btn btn-warning">Voltar</a>';
 
 		html = getHeader() +
 			'<div class="container-fluid">                               ' +
@@ -112,7 +117,8 @@ function getPlanejamentoPorFrequencia(frequencyId) {
 				ParCompany_Id: currentParCompany_Id
                 , ParFrequency_Id: currentParFrequency_Id
                 , ParCluster_Id: currentParCluster_Id
-				, AppDate: currentCollectDate
+                , AppDate: currentCollectDate
+                , ParClusterGroup_Id: currentParClusterGroup_Id
 			}),
 			type: 'POST',
 			url: urlPreffix + '/api/AppColeta/GetAppParametrization',

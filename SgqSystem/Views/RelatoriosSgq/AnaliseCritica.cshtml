@@ -14,9 +14,9 @@
     ViewBag.ShowParDepartment = true;
     ViewBag.ShowParCriticalLevel = true;
     ViewBag.ShowParGroupParLevel1 = true;
-    ViewBag.ShowParLevel1 = true;
-    ViewBag.ShowParLevel2 = true;
-    ViewBag.ShowParLevel3 = true;
+    ViewBag.ShowParLevel1GQ = true;
+    ViewBag.ShowParLevel2GQ = true;
+    ViewBag.ShowParLevel3GQ = true;
     ViewBag.ShowParCluster = true;
     ViewBag.ShowParClusterGroup = true;
     ViewBag.ShowParLevel1Status = true;
@@ -28,6 +28,16 @@
     ViewBag.ShowDesdobramentoTipo = true;
     ViewBag.ShowUserSgqSurpervisor = true;
 
+
+    ViewBag.ShowShiftDefault = "Todos";
+    ViewBag.ShowParCriticalLevelDefault = "Selecione...";
+    ViewBag.ShowParLevel1StatusDefault = "Todos";
+    ViewBag.ShowAcaoStatusDefault = "Todos";
+    ViewBag.ShowParModuleDefault = "Selecione...";
+    ViewBag.ShowPesoDefault = "Todos";
+    ViewBag.ShowDesdobramentoTipoDefault = "Selecione...";
+    ViewBag.ShowParDepartmentDefault = "Todos";
+    ViewBag.ShowUserSgqSurpervisorDefault = "Todos";
 }
 
 @section Content {
@@ -41,8 +51,8 @@
             <div id="formBodyContent">
 
                 @*<div id="divClock" style="text-align:right; width:500px; margin-top:-50px; float:right; display: inline; height:30px; line-height:45px; font-size:small; font-weight:bold;">
-                    <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
-                </div>*@
+                        <button type="button" class="btn btn-primary" id="btnSend" onclick="Send();">@Resources.Resource.refresh</button>
+                    </div>*@
 
                 @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
@@ -65,7 +75,6 @@
 
 
                     </div>
-                    *O Peso atribuído as Tarefas influenciam no resultado gráfico.
                 </div>
 
                 <div id="load"></div>
@@ -101,328 +110,329 @@
     <script type="text/javascript">
 
         //Mocks
-        var objMock = {
-            ParLevel1_Id: 1,
-            ParLevel1_Name: "(%) NC nas Operações de Esfola",
+        //var objMock = {
+        //    ParLevel1_Id: 1,
+        //    ParLevel1_Name: "(%) NC nas Operações de Esfola",
 
-            //Tendencia Indicador
-            TendenciaIndicador: {
-                start: 0,
-                //dataInicio: new Date(parseInt(dtInicio)),
-                metaEstatica: 20,
-                NC: [[1570233600000, 0]
-                    , [1570838400000, 0]
-                    , [1570924800000, 0]
-                    , [1571011200000, 0]
-                    , [1571529600000, 0]
-                    , [1571702400000, 0]
-                    , [1571875200000, 0]
-                    , [1572134400000, 0]
-                    , [1572220800000, 0]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572912000000, 0]
-                    , [1573257600000, 0]
-                    , [1571356800000, 1]
-                    , [1573430400000, 4]],
-                totalNC: [
-                    [1570233600000, 0]
-                    , [1570838400000, 0]
-                    , [1570924800000, 0]
-                    , [1571011200000, 0]
-                    , [1571529600000, 0]
-                    , [1571702400000, 0]
-                    , [1571875200000, 0]
-                    , [1572134400000, 0]
-                    , [1572220800000, 0]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572912000000, 0]
-                    , [1573257600000, 0]
-                    , [1571356800000, 100]
-                    , [1573430400000, 100]],
-                ProcNC: [
-                    [1570233600000, 0]
-                    , [1570838400000, 0]
-                    , [1570924800000, 0]
-                    , [1571011200000, 0]
-                    , [1571529600000, 0]
-                    , [1571702400000, 0]
-                    , [1571875200000, 0]
-                    , [1572134400000, 0]
-                    , [1572220800000, 0]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572912000000, 0]
-                    , [1573257600000, 0]
-                    , [1571356800000, 1]
-                    , [1573430400000, 4]],
-                totalAvaliado: [
-                    [1570233600000, 0]
-                    , [1570838400000, 0]
-                    , [1570924800000, 0]
-                    , [1571011200000, 0]
-                    , [1571529600000, 0]
-                    , [1571702400000, 0]
-                    , [1571875200000, 0]
-                    , [1572134400000, 0]
-                    , [1572220800000, 0]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572912000000, 0]
-                    , [1573257600000, 0]
-                    , [1571356800000, 1]
-                    , [1573430400000, 4]],
-                linhaTendencia: [
-                    [1570233600000, null]
-                    , [1570320000000, null]
-                    , [1570406400000, null]
-                    , [1570492800000, null]
-                    , [1570579200000, null]
-                    , [1570665600000, null]
-                    , [1570752000000, null]
-                    , [1570838400000, null]
-                    , [1570924800000, null]
-                    , [1571011200000, null]
-                    , [1571097600000, null]
-                    , [1571184000000, null]
-                    , [1571270400000, null]
-                    , [1571356800000, null]
-                    , [1571443200000, null]
-                    , [1571529600000, null]
-                    , [1571616000000, null]
-                    , [1571702400000, null]
-                    , [1571788800000, null]
-                    , [1571875200000, null]
-                    , [1571961600000, null]
-                    , [1572048000000, null]
-                    , [1572134400000, null]
-                    , [1572220800000, null]
-                    , [1572307200000, null]
-                    , [1572393600000, null]
-                    , [1572480000000, null]
-                    , [1572566400000, null]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572825600000, 0]
-                    , [1572912000000, 0]
-                    , [1572998400000, 0]
-                    , [1573084800000, 0]
-                    , [1573171200000, 0]
-                    , [1573257600000, 0]
-                    , [1573344000000, 0]
-                    , [1573430400000, 100]],
-                ContaTA: [
-                    [1570233600000, 0]
-                    , [1570838400000, 0]
-                    , [1570924800000, 0]
-                    , [1571011200000, 0]
-                    , [1571529600000, 0]
-                    , [1571702400000, 0]
-                    , [1571875200000, 0]
-                    , [1572134400000, 0]
-                    , [1572220800000, 0]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572912000000, 0]
-                    , [1573257600000, 0]
-                    , [1571356800000, 1]
-                    , [1573430400000, 5]],
-                ContaNC: [
-                    [1569888000000, null]
-                    , [1570233600000, 0]
-                    , [1570838400000, 0]
-                    , [1570924800000, 0]
-                    , [1571011200000, 0]
-                    , [1571529600000, 0]
-                    , [1571702400000, 0]
-                    , [1571875200000, 0]
-                    , [1572134400000, 0]
-                    , [1572220800000, 0]
-                    , [1572652800000, 0]
-                    , [1572739200000, 0]
-                    , [1572912000000, 0]
-                    , [1573257600000, 0]
-                    , [1571356800000, 1]
-                    , [1573430400000, 5]],
+        //    //Tendencia Indicador
+        //    TendenciaIndicador: {
+        //        start: 0,
+        //        //dataInicio: new Date(parseInt(dtInicio)),
+        //        metaEstatica: 20,
+        //        NC: [[1570233600000, 0]
+        //            , [1570838400000, 0]
+        //            , [1570924800000, 0]
+        //            , [1571011200000, 0]
+        //            , [1571529600000, 0]
+        //            , [1571702400000, 0]
+        //            , [1571875200000, 0]
+        //            , [1572134400000, 0]
+        //            , [1572220800000, 0]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572912000000, 0]
+        //            , [1573257600000, 0]
+        //            , [1571356800000, 1]
+        //            , [1573430400000, 4]],
+        //        totalNC: [
+        //            [1570233600000, 0]
+        //            , [1570838400000, 0]
+        //            , [1570924800000, 0]
+        //            , [1571011200000, 0]
+        //            , [1571529600000, 0]
+        //            , [1571702400000, 0]
+        //            , [1571875200000, 0]
+        //            , [1572134400000, 0]
+        //            , [1572220800000, 0]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572912000000, 0]
+        //            , [1573257600000, 0]
+        //            , [1571356800000, 100]
+        //            , [1573430400000, 100]],
+        //        ProcNC: [
+        //            [1570233600000, 0]
+        //            , [1570838400000, 0]
+        //            , [1570924800000, 0]
+        //            , [1571011200000, 0]
+        //            , [1571529600000, 0]
+        //            , [1571702400000, 0]
+        //            , [1571875200000, 0]
+        //            , [1572134400000, 0]
+        //            , [1572220800000, 0]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572912000000, 0]
+        //            , [1573257600000, 0]
+        //            , [1571356800000, 1]
+        //            , [1573430400000, 4]],
+        //        totalAvaliado: [
+        //            [1570233600000, 0]
+        //            , [1570838400000, 0]
+        //            , [1570924800000, 0]
+        //            , [1571011200000, 0]
+        //            , [1571529600000, 0]
+        //            , [1571702400000, 0]
+        //            , [1571875200000, 0]
+        //            , [1572134400000, 0]
+        //            , [1572220800000, 0]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572912000000, 0]
+        //            , [1573257600000, 0]
+        //            , [1571356800000, 1]
+        //            , [1573430400000, 4]],
+        //        linhaTendencia: [
+        //            [1570233600000, null]
+        //            , [1570320000000, null]
+        //            , [1570406400000, null]
+        //            , [1570492800000, null]
+        //            , [1570579200000, null]
+        //            , [1570665600000, null]
+        //            , [1570752000000, null]
+        //            , [1570838400000, null]
+        //            , [1570924800000, null]
+        //            , [1571011200000, null]
+        //            , [1571097600000, null]
+        //            , [1571184000000, null]
+        //            , [1571270400000, null]
+        //            , [1571356800000, null]
+        //            , [1571443200000, null]
+        //            , [1571529600000, null]
+        //            , [1571616000000, null]
+        //            , [1571702400000, null]
+        //            , [1571788800000, null]
+        //            , [1571875200000, null]
+        //            , [1571961600000, null]
+        //            , [1572048000000, null]
+        //            , [1572134400000, null]
+        //            , [1572220800000, null]
+        //            , [1572307200000, null]
+        //            , [1572393600000, null]
+        //            , [1572480000000, null]
+        //            , [1572566400000, null]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572825600000, 0]
+        //            , [1572912000000, 0]
+        //            , [1572998400000, 0]
+        //            , [1573084800000, 0]
+        //            , [1573171200000, 0]
+        //            , [1573257600000, 0]
+        //            , [1573344000000, 0]
+        //            , [1573430400000, 100]],
+        //        ContaTA: [
+        //            [1570233600000, 0]
+        //            , [1570838400000, 0]
+        //            , [1570924800000, 0]
+        //            , [1571011200000, 0]
+        //            , [1571529600000, 0]
+        //            , [1571702400000, 0]
+        //            , [1571875200000, 0]
+        //            , [1572134400000, 0]
+        //            , [1572220800000, 0]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572912000000, 0]
+        //            , [1573257600000, 0]
+        //            , [1571356800000, 1]
+        //            , [1573430400000, 5]],
+        //        ContaNC: [
+        //            [1569888000000, null]
+        //            , [1570233600000, 0]
+        //            , [1570838400000, 0]
+        //            , [1570924800000, 0]
+        //            , [1571011200000, 0]
+        //            , [1571529600000, 0]
+        //            , [1571702400000, 0]
+        //            , [1571875200000, 0]
+        //            , [1572134400000, 0]
+        //            , [1572220800000, 0]
+        //            , [1572652800000, 0]
+        //            , [1572739200000, 0]
+        //            , [1572912000000, 0]
+        //            , [1573257600000, 0]
+        //            , [1571356800000, 1]
+        //            , [1573430400000, 5]],
 
-            },
-            //Monitoramento
-            Monitoramento: {
-                Grafico: {
-                    xAxis: ["Sangria", "Esfola da Pata TRS Esquerda", "Esfola da Pata TRS Direita"],
-                    NC: [10, 5,  1],
-                    AV: [10, 10, 10]
-                },
-                Acoes: {
-                    data: [{
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Sangria',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    },
-                    {
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Esfola da Pata TRS Esquerda',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    }],
-                    columns: [
-                        { title: "Indicador", mData: "Indicador" },
-                        { title: "Monitoramento", mData: "Monitoramento" },
-                        { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
-                        { title: "Descrição da Falha", mData: "Descricao_da_falha" },
-                        { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
-                        { title: "Medida Preventiva", mData: "Medida_preventiva" }
-                    ]
-                }
-            },
-            //Monitoramento Departamento
-            MonitoramentoDepartamento: [{
-                Grafico: {
-                    Departamento_Id: 1,
-                    Departamento_Name: "Departamento 1",
-                    xAxis: ["Sangria", "Esfola da Pata TRS Esquerda", "Esfola da Pata TRS Direita"],
-                    NC: [5, 5, 1],
-                    AV: [5, 5, 5]
+        //    },
+        //    //Monitoramento
+        //    Monitoramento: {
+        //        Grafico: {
+        //            xAxis: ["Sangria", "Esfola da Pata TRS Esquerda", "Esfola da Pata TRS Direita"],
+        //            NC: [10, 5,  1],
+        //            AV: [10, 10, 10]
+        //        },
+        //        Acoes: {
+        //            data: [{
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Sangria',
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Descricao_da_falha: 'Foi encontrada ingesta...',
+        //                Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+        //                Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+        //            },
+        //            {
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Esfola da Pata TRS Esquerda',
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Descricao_da_falha: 'Foi encontrada ingesta...',
+        //                Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+        //                Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+        //            }],
+        //            columns: [
+        //                { title: "Indicador", mData: "Indicador" },
+        //                { title: "Monitoramento", mData: "Monitoramento" },
+        //                { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
+        //                { title: "Descrição da Falha", mData: "Descricao_da_falha" },
+        //                { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
+        //                { title: "Medida Preventiva", mData: "Medida_preventiva" }
+        //            ]
+        //        }
+        //    },
+        //    //Monitoramento Departamento
+        //    MonitoramentoDepartamento: [{
+        //        Grafico: {
+        //            Departamento_Id: 1,
+        //            Departamento_Name: "Departamento 1",
+        //            xAxis: ["Sangria", "Esfola da Pata TRS Esquerda", "Esfola da Pata TRS Direita"],
+        //            NC: [5, 5, 1],
+        //            AV: [5, 5, 5]
 
-                },
-                Acoes: {
-                    data: [{
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Sangria',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    },
-                    {
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Esfola da Pata TRS Esquerda',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    }],
-                    columns: [
-                        { title: "Indicador", mData: "Indicador" },
-                        { title: "Monitoramento", mData: "Monitoramento" },
-                        { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
-                        { title: "Descrição da Falha", mData: "Descricao_da_falha" },
-                        { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
-                        { title: "Medida Preventiva", mData: "Medida_preventiva" }
-                    ]
-                }
-            },
-            {
-                Grafico: {
-                    Departamento_Id: 2,
-                    Departamento_Name: "Departamento 2",
-                    xAxis: ["Sangria"],
-                    NC: [5],
-                    AV: [5]
-                },
-                Acoes: {
-                    data: [{
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Sangria',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    },
-                    {
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Esfola da Pata TRS Esquerda',
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Descricao_da_falha: 'Foi encontrada ingesta...',
-                        Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
-                        Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
-                    }],
-                    columns: [
-                        { title: "Indicador", mData: "Indicador" },
-                        { title: "Monitoramento", mData: "Monitoramento" },
-                        { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
-                        { title: "Descrição da Falha", mData: "Descricao_da_falha" },
-                        { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
-                        { title: "Medida Preventiva", mData: "Medida_preventiva" }
-                    ]
-                }
-            }],
-            //Tarefas Acumuladas
-            TarefaAcumulada: {
-                Grafico: {
-                    xAxis: ["Lavagem de mãos", "Esfola de faca branca"],
-                    Serie: [10, 6]
-                }
-            },
-            //Tarefas
-            Tarefa: [{
-                Grafico: {
-                    ParLevel2_Id: 1,
-                    ParLevel2_Name: "Sangria",
-                    xAxis: ["Lavagem de Mãos"],
-                    Serie: [10]
-                },
-                Acoes: {
-                    data: [{
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Sangria',
-                        Tarefa: "Lavagem de Mãos",
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Causa_Generica: "",
-                        Acao_Generica: "",
-                        Status: "Concluido"
-                    }],
-                    columns: [
-                        { title: "Indicador", mData: "Indicador" },
-                        { title: "Monitoramento", mData: "Monitoramento" },
-                        { title: "Tarefa", mData: "Tarefa" },
-                        { title: "Causa Generica", mData: "Causa_Generica" },
-                        { title: "Acao Generica", mData: "Acao_Generica" },
-                        { title: "Status", mData: "Status" },
-                        { title: "", mData: "", mRender: function (data, type, full) {
-                            return '<button class="btn btn-link custom-button" style="cursor: pointer;">Ver Mais</button>';
-                        }}
-                    ]
-                }
-            },{
-                Grafico: {
-                    ParLevel2_Id: 2,
-                    ParLevel2_Name: "Esfola da Pata TRS Esquerda",
-                    xAxis: ["Esfola de faca branca"],
-                    Serie: [6]
-                },
-                Acoes: {
-                    data: [{
-                        Indicador: '(%) NC nas Operações de Esfola',
-                        Monitoramento: 'Esfola da Pata TRS Esquerda',
-                        Tarefa: "Esfola de faca branca",
-                        Data_inicio_auditoria: new Date().toLocaleString(),
-                        Causa_Generica: "",
-                        Acao_Generica: "",
-                        Status: "Concluido"
-                    }],
-                    columns: [
-                        { title: "Indicador", mData: "Indicador" },
-                        { title: "Monitoramento", mData: "Monitoramento" },
-                        { title: "Tarefa", mData: "Tarefa" },
-                        { title: "Causa Generica", mData: "Causa_Generica" },
-                        { title: "Acao Generica", mData: "Acao_Generica" },
-                        { title: "Status", mData: "Status" },
-                        { title: "", mData: "", mRender: function (data, type, full) {
-                            return '<button class="btn btn-link custom-button" style="cursor: pointer;">Ver Mais</button>';
-                        }}
-                    ]
-                }
-            }]
-        }
+        //        },
+        //        Acoes: {
+        //            data: [{
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Sangria',
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Descricao_da_falha: 'Foi encontrada ingesta...',
+        //                Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+        //                Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+        //            },
+        //            {
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Esfola da Pata TRS Esquerda',
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Descricao_da_falha: 'Foi encontrada ingesta...',
+        //                Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+        //                Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+        //            }],
+        //            columns: [
+        //                { title: "Indicador", mData: "Indicador" },
+        //                { title: "Monitoramento", mData: "Monitoramento" },
+        //                { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
+        //                { title: "Descrição da Falha", mData: "Descricao_da_falha" },
+        //                { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
+        //                { title: "Medida Preventiva", mData: "Medida_preventiva" }
+        //            ]
+        //        }
+        //    },
+        //    {
+        //        Grafico: {
+        //            Departamento_Id: 2,
+        //            Departamento_Name: "Departamento 2",
+        //            xAxis: ["Sangria"],
+        //            NC: [5],
+        //            AV: [5]
+        //        },
+        //        Acoes: {
+        //            data: [{
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Sangria',
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Descricao_da_falha: 'Foi encontrada ingesta...',
+        //                Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+        //                Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+        //            },
+        //            {
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Esfola da Pata TRS Esquerda',
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Descricao_da_falha: 'Foi encontrada ingesta...',
+        //                Acao_corretiva_imediata: 'O surpevisor foi informado sobre a não conformidade',
+        //                Medida_preventiva: 'Produto devolvido para a retirada de sebo e seguimento de PQ'
+        //            }],
+        //            columns: [
+        //                { title: "Indicador", mData: "Indicador" },
+        //                { title: "Monitoramento", mData: "Monitoramento" },
+        //                { title: "Data inicio auditoria", mData: "Data_inicio_auditoria" },
+        //                { title: "Descrição da Falha", mData: "Descricao_da_falha" },
+        //                { title: "Ação corretiva imediata", mData: "Acao_corretiva_imediata" },
+        //                { title: "Medida Preventiva", mData: "Medida_preventiva" }
+        //            ]
+        //        }
+        //    }],
+        //    //Tarefas Acumuladas
+        //    TarefaAcumulada: {
+        //        Grafico: {
+        //            xAxis: ["Lavagem de mãos", "Esfola de faca branca"],
+        //            Serie: [10, 6]
+        //        }
+        //    },
+        //    //Tarefas
+        //    Tarefa: [{
+        //        Grafico: {
+        //            ParLevel2_Id: 1,
+        //            ParLevel2_Name: "Sangria",
+        //            xAxis: ["Lavagem de Mãos"],
+        //            Serie: [10]
+        //        },
+        //        Acoes: {
+        //            data: [{
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Sangria',
+        //                Tarefa: "Lavagem de Mãos",
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Causa_Generica: "",
+        //                Acao_Generica: "",
+        //                Status: "Concluido"
+        //            }],
+        //            columns: [
+        //                { title: "Indicador", mData: "Indicador" },
+        //                { title: "Monitoramento", mData: "Monitoramento" },
+        //                { title: "Tarefa", mData: "Tarefa" },
+        //                { title: "Causa Generica", mData: "Causa_Generica" },
+        //                { title: "Acao Generica", mData: "Acao_Generica" },
+        //                { title: "Status", mData: "Status" },
+        //                { title: "", mData: "", mRender: function (data, type, full) {
+        //                    return '<button class="btn btn-link custom-button" style="cursor: pointer;">Ver Mais</button>';
+        //                }}
+        //            ]
+        //        }
+        //    },{
+        //        Grafico: {
+        //            ParLevel2_Id: 2,
+        //            ParLevel2_Name: "Esfola da Pata TRS Esquerda",
+        //            xAxis: ["Esfola de faca branca"],
+        //            Serie: [6]
+        //        },
+        //        Acoes: {
+        //            data: [{
+        //                Indicador: '(%) NC nas Operações de Esfola',
+        //                Monitoramento: 'Esfola da Pata TRS Esquerda',
+        //                Tarefa: "Esfola de faca branca",
+        //                Data_inicio_auditoria: new Date().toLocaleString(),
+        //                Causa_Generica: "",
+        //                Acao_Generica: "",
+        //                Status: "Concluido"
+        //            }],
+        //            columns: [
+        //                { title: "Indicador", mData: "Indicador" },
+        //                { title: "Monitoramento", mData: "Monitoramento" },
+        //                { title: "Tarefa", mData: "Tarefa" },
+        //                { title: "Causa Generica", mData: "Causa_Generica" },
+        //                { title: "Acao Generica", mData: "Acao_Generica" },
+        //                { title: "Status", mData: "Status" },
+        //                { title: "", mData: "", mRender: function (data, type, full) {
+        //                    return '<button class="btn btn-link custom-button" style="cursor: pointer;">Ver Mais</button>';
+        //                }}
+        //            ]
+        //        }
+        //    }]
+        //}
 
         var urlGetGraficoHistoricoUnidade = '@Html.Raw(Url.Action("GetGraficoHistoricoUnidade", "api/AnaliseCritica"))';
+        var urlGetAnaliseCritica = '@Html.Raw(Url.Action("GetAnaliseCritica", "api/AnaliseCritica"))';
         var chartHistoricoGeral;
         var $btn = $('#btnSend');
 
@@ -430,29 +440,75 @@
 
             closeLeftSidebar();
 
-            $("#btnSend").click(function () {
-
-                Send(true);
-
-            });
-
             //Grafico Historico
             $("#Udia").on('click', function () {
-                enviar["dimensaoData"] = 1;
+                objFiltro["DimensaoData"] = 1;
                 EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
             });
 
             $("#Usemana").on('click', function () {
-                enviar["dimensaoData"] = 2;
-                EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
+                objFiltro["DimensaoData"] = 2;
+                EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
             });
 
             $("#Umes").on('click', function () {
-                enviar["dimensaoData"] = 4;
-                EasyAjax(urlGetGraficoHistoricoUnidade, enviar, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
+                objFiltro["DimensaoData"] = 4;
+                EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade");
             });
 
+            $('#filterReports select').on('change', function () {
+                ChangeFilters();
+            });
+
+            ChangeFilters();
+
         });
+
+        function ChangeFilters() {
+
+            let $nivelCriticidade = $('select[name="parCriticalLevel_Ids"]');
+            let $statusIndicador = $('select[name="parLevel1Status_Ids"]');
+            let $peso = $('select[name="peso"]');
+
+            //Nivel Criticidade
+            if (objFiltro.parCluster_Ids && objFiltro.parCluster_Ids.length > 0) {
+                AtivaSelect($nivelCriticidade);
+            } else {
+                LimpaSelect($nivelCriticidade);
+                InativaSelect($nivelCriticidade);
+            }
+
+            //Peso
+            if (objFiltro.ncComPeso && parseInt(objFiltro.ncComPeso[0]) == 1) {
+                AtivaSelect($peso);
+            } else {
+                LimpaSelect($nivelCriticidade);
+                InativaSelect($peso);
+            }
+
+            //status indicador
+            if (objFiltro.parLevel1_Ids && objFiltro.parLevel1_Ids.length > 0) {
+                AtivaSelect($statusIndicador);
+            } else {
+                InativaSelect($statusIndicador);
+            }
+
+        }
+
+        function LimpaSelect(select) {
+            select.empty();
+        }
+
+        function AtivaSelect(select) {
+            select.prop("disabled", false);
+            select.parent().find('button').attr("disabled", false);
+        }
+
+        function InativaSelect(select) {
+            select.find('option:first()').attr("selected",true)
+            select.prop("disabled", true);
+            select.parent().find('button').attr("disabled", true);
+        }
 
         function Send(toggle) {
 
@@ -464,16 +520,57 @@
             }
 
             $('#reports').empty();
-            enviar["dimensaoData"] = 1;
+            objFiltro["DimensaoData"] = 1;
             enviar["auditorId"] = GetUsuarioId();
 
-            EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade", toggle);
+            $('#reports').empty();
 
-            GerarRelatorios();
+            EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade", toggle);
+            EasyAjax(urlGetAnaliseCritica, objFiltro, GerarRelatorios, "", false);
 
         }
 
         function ValidaDadosParaEnvio() {
+
+            GuardJs.esconderMensagem();
+
+            //Modulo
+            if (!objFiltro.parModule_Ids || objFiltro.parModule_Ids.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Módulo é obrigatório")
+                return false;
+            }
+
+
+            //Unidade
+            if (!objFiltro.parCompany_Ids || objFiltro.parCompany_Ids.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Unidade é obrigatório")
+                return false;
+            }
+
+            //grupo de processo
+            //if (!objFiltro.parClusterGroup_Ids || objFiltro.parClusterGroup_Ids <= 0) {
+            //    GuardJs.exibirMensagemAlerta("O filtro Grupo de Processo é obrigatório");
+            //    return false;
+            //}
+
+            //Indicador
+            if (!objFiltro.parLevel1_Ids || objFiltro.parLevel1_Ids.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Indicador é obrigatório");
+                return false;
+            }
+
+
+            //Desdobramento
+            if (!objFiltro.ncComPeso || objFiltro.ncComPeso.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Exbibe Nc com peso é obrigatório");
+                return false;
+            }
+
+            //Desdobramento
+            if (!objFiltro.desdobramento || objFiltro.desdobramento.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Desdobramento é obrigatório");
+                return false;
+            }
 
             return true;
 
@@ -489,13 +586,14 @@
                 let isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
                 let dia;
 
-                if (enviar.dimensaoData == 1)
-                    dia = (isBrazil == true ? MapeiaValorParaHC(data, "_Date") : MapeiaValorParaHC(data, "_DateEUA"));
+                if (objFiltro.DimensaoData == 1)
+                    //dia = (isBrazil == true ? MapeiaValorParaHC(data, "_Date") : MapeiaValorParaHC(data, "_DateEUA"));
+                    dia = MapeiaValorParaHC(data, "_Date");
 
-                if (enviar.dimensaoData == 2)
+                if (objFiltro.DimensaoData == 2)
                     dia = MapeiaValorParaHC(data, "Semana");
 
-                if (enviar.dimensaoData == 4)
+                if (objFiltro.DimensaoData == 4)
                     dia = MapeiaValorParaHC(data, "Mes");
 
                 let nc = MapeiaValorParaHC(data, "Nc");
@@ -509,10 +607,12 @@
                 let sumncComPeso = ncComPeso.reduce(function (a, b) { return a + b; });
                 let TituloGrafico1 = Resources("consolidated_history");
 
+                let subtitle = GetSubtitleUnidade();
+
                 if (sumav != 0 && sumnc != 0) {
 
-                    var porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100 > 100 ? 100 : sumncComPeso / sumavComPeso * 100;
-                    var SubtitleConsolidado = "Unidade: Alta Floresta";
+                    let porcPeriodoComPeso = sumncComPeso / sumavComPeso * 100 > 100 ? 100 : sumncComPeso / sumavComPeso * 100;
+                    let SubtitleConsolidado =  "NCs por Unidades selecionadas <br/>" + subtitle;
 
                     $('#GraficoHistoricoUnidade').removeClass('loader');
                     $('#GraficoHistoricoUnidade').empty();
@@ -674,71 +774,120 @@
 
                     }, function () {
 
-                            $('#showNCUnidade > h1').text(parseFloat(porcPeriodoComPeso.toFixed(2)) + " %");
-                            $('#NCUnidade').show();
+                        $('#showNCUnidade > h1').text(parseFloat(porcPeriodoComPeso.toFixed(2)) + " %");
+                        $('#NCUnidade').show();
                     });
 
-                    if(chartHistoricoGeral.reflow)
+                    if (chartHistoricoGeral.reflow)
                         chartHistoricoGeral.reflow();
 
                 }
+            } else {
+                $('#NCUnidade').hide();
+                GuardJs.exibirMensagemAlerta(Resources("no_data_to_show"))
             }
         }
 
-        function GerarRelatorios() {
+        function GerarRelatorios(dados) {
 
-            $('#reports').empty();
+            if (dados.length <= 0) {
+                return false;
+            }
 
-            var panel = $('#PanelBase').clone();
-            var idPanel = 'panel' + objMock.ParLevel1_Id;
+            dados.forEach((obj) => {
 
-            panel.find(".panel-heading").html("Indicador: " + objMock.ParLevel1_Name);
-            panel.attr("id", idPanel);
-            panel.css("display", "block");
+                var panel = $('#PanelBase').clone();
+                var idPanel = 'panel' + obj.ParLevel1_Id;
 
-            $('#reports').append(panel);
+                panel.find(".panel-heading").html("Indicador: " + obj.ParLevel1_Name);
+                panel.attr("id", idPanel);
+                panel.css("display", "block");
 
-            GerarGraficoTendenciaIndicador(objMock, idPanel);
-            GerarGraficoMonitoramento(objMock, idPanel);
+                $('#reports').append(panel);
 
-            //fazer um forach para cada departamento
-            objMock.MonitoramentoDepartamento.forEach(function (o, i) {
-                GerarGraficoMonitoramentoPorDepartamento(objMock, idPanel, i);
-            });
+                GerarGraficoTendenciaIndicador(obj, idPanel);
 
-            GerarGraficoTarefasAcumuladas(objMock, idPanel);
+                GerarGraficoMonitoramento(obj, idPanel);
 
-            //fazer um foreach para cada monitoramento
-            objMock.Tarefa.forEach(function (o, i) {
-                GerarGraficoTarefa(objMock, idPanel, i);
+                //fazer um forach para cada departamento
+                obj.MonitoramentosDepartamentos.forEach(function (objDepartamento) {
+                    GerarGraficoMonitoramentoPorDepartamento(objDepartamento, idPanel, obj);
+                });
+
+                GerarGraficoTarefasAcumuladas(obj, idPanel);
+
+                //fazer um foreach para cada monitoramento
+
+                if (obj.TarefaMonitoramentos != null)
+                    obj.TarefaMonitoramentos.forEach(function (o, i) {
+                        GerarGraficoTarefa(o, idPanel, obj);
+                    });
+
             });
 
         }
 
-        function GerarGraficoTendenciaIndicador(objMock, idPanel) {
+        function GerarGraficoTendenciaIndicador(objRetorno, idPanel) {
 
-            let titulo = "Tendência do Indicador: " + objMock.ParLevel1_Name;
-            let subtitulo = "Unidade: Alta Floresta";
+            let objTendencia = {
+                ProcNC: [],
+                MetaEstatica: 0,
+                Tendencia: [],
+                NC: [],
+                AV: [],
+                Data: [],
+            };
+
+            let somaPercentNC = 0;
+            let ncAcumulada = 0;
+            let avCumulada = 0;
+
+            objRetorno.ListaTendenciaResultSet.forEach((o, i) => {
+
+                somaPercentNC = (somaPercentNC + o.PorcentagemNc);
+
+                //let qtdeAmotra = (i + 1);
+                //let tendencia = (somaPercentNC / qtdeAmotra);
+
+                ncAcumulada += o.NC;
+                avCumulada += o.Av;
+
+                let tendencia = o.Av == 0 ? 0 : ncAcumulada / avCumulada * 100;
+
+                objTendencia.Tendencia.push(tendencia);
+                objTendencia.MetaEstatica = o.Meta;
+                objTendencia.ProcNC.push(o.PorcentagemNc); //Porcentagem não muda com o peso?
+                objTendencia.NC.push(o.NC); //Ou NC_Peso
+                objTendencia.AV.push(o.Av); //Ou Av_Peso
+                objTendencia.Data.push(o._Data);
+            });
+
+            //Somar as %CN e dividir pelo valor da Média das %NC passadas
+
+            let titulo = "Tendência do Indicador: " + objRetorno.ParLevel1_Name;
+            let subtitulo = GetSubtitleUnidade();
             let dtInicio = "";
 
-            let idChart = 'tendencia' + objMock.ParLevel1_Id;
-            let idCollapse = "collapse" + objMock.ParLevel1_Id;
+            let idChart = 'tendencia' + objRetorno.ParLevel1_Id;
+            let idCollapse = "collapse" + objRetorno.ParLevel1_Id;
 
             let $panel = $("#" + idPanel);
+            let panelSeletor = idPanel + " .panel-indicador";
+            let acoesCorretivas = objRetorno.ListaAcaoIndicador;
 
             $panel.find(".panel-body .panel-indicador").append('<div id="' + idChart + '"></div>');
             $panel.find(".panel-body").attr("id", idCollapse);
             $panel.find('.panel-heading').attr('data-target', '#' + idCollapse).attr('href', '#' + idCollapse).trigger("click");
 
-            Highcharts.setOptions({
-                lang: {
-                    shortMonths: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                    months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-                    weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-                }
-            });
+            //Highcharts.setOptions({
+            //    lang: {
+            //        shortMonths: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+            //        months: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+            //        weekdays: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+            //    }
+            //});
 
-            Highcharts.chart(idChart , {
+            Highcharts.chart(idChart, {
 
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
@@ -752,24 +901,25 @@
                 },
                 plotOptions: {
                     series: {
-                        pointRange: 24 * 3600 * 1000,
-                        pointStart: objMock.TendenciaIndicador.start,
+                        //pointRange: 24 * 3600 * 1000,
+                        //pointStart: objMock.TendenciaIndicador.start,
                     }
                 },
                 xAxis: {
-                    type: "datetime",
-                    tickInterval: 24 * 3600 * 1000,
-                    labels: {
-                        rotation: -45,
-                        align: 'right'
-                    },
-                    dateTimeLabelFormats: {
-                        day: '%e. %b',
-                    }
+                    //type: "datetime",
+                    //tickInterval: 24 * 3600 * 1000,
+                    //labels: {
+                    //    rotation: -45,
+                    //    align: 'right'
+                    //},
+                    //dateTimeLabelFormats: {
+                    //    day: '%e. %b',
+                    //}
+                    categories: objTendencia.Data
                 },
                 yAxis: [{
-                    min: 10,
-                    max: 100,
+                    //min: 10,
+                    //max: 120,
                     labels: {
                         format: '{value} %',
                         style: {
@@ -783,19 +933,19 @@
                         }
                     },
                     plotLines: [{ //Linha da meta (pontilhada)
-                        value: objMock.TendenciaIndicador.metaEstatica,
+                        value: objTendencia.MetaEstatica,
                         width: 2,
                         color: 'black',
                         dashStyle: 'dash',
                         zIndex: 4,
                         label: {
-                            text: 'Meta %' + objMock.TendenciaIndicador.metaEstatica,
+                            text: 'Meta %' + objTendencia.MetaEstatica,
                             align: 'right',
                             y: -10,
                             x: 0
                         }
                     }],
-                },{
+                }, {
                     gridLineWidth: 0,
                     title: {
                         text: Resources('number_samplers'),
@@ -816,37 +966,37 @@
                     yAxis: 0,
                     name: '% ' + Resources('defects'),
                     color: Chart.CorTotalProcNc(),
-                    data: objMock.TendenciaIndicador.ProcNC,
+                    data: objTendencia.ProcNC,
                     tooltip: {
                         valueDecimals: 2,
                         valueSuffix: ' % (NC * Peso)'
                     },
                     dataLabels: Chart.DataLabelPadrao('%'),
-                },{
+                }, {
                     type: 'spline',
                     name: Resources('accumulated_tendency'),
                     color: Chart.CorTotalPareto(),
-                    data: objMock.TendenciaIndicador.linhaTendencia,
+                    data: objTendencia.Tendencia,
                     yAxis: 0,
                     marker: {
                         enabled: false
                     },
                     zones: [{
-                        value: objMock.TendenciaIndicador.metaEstatica,
+                        value: objTendencia.MetaEstatica,
                         color: 'Black'
-                    },{
+                    }, {
                         color: 'Red'
                     }],
                     tooltip: {
                         valueDecimals: 2,
                         valueSuffix: ' %'
-                        }
+                    }
 
                 }, {
                     yAxis: 1,
                     name: Resources('derivations'),
                     color: Chart.CorTotalNc(),
-                    data: objMock.TendenciaIndicador.NC,
+                    data: objTendencia.NC,
                     visible: false,
                     dataLabels: {
                         enabled: true,
@@ -870,7 +1020,7 @@
                 }, {
                     yAxis: 1,
                     name: Resources('total_evaluated'),
-                    data: objMock.TendenciaIndicador.totalAvaliado,
+                    data: objTendencia.AV,
                     color: Chart.CorTotalAv(),
                     visible: false,
                     dataLabels: {
@@ -893,6 +1043,8 @@
                         },
                     }
                 }]
+            }, () => {
+                GerarTabelaAcaoCorretivaIndicador(acoesCorretivas, panelSeletor, idChart)
             });
         }
 
@@ -900,18 +1052,57 @@
 
         }
 
+        function GerarTabelaAcaoCorretivaIndicador(data, seletorPanel, idChart) {
+
+            let columns = [
+                { title: "Indicador", mData: "ParLevel1_Name" },
+                { title: "Monitoramento", mData: "ParLevel2_Name" },
+                {
+                    title: "Data Início Auditoria", mData: null, render: function (data) {
+                        let html = "";
+                        if (data.AuditStartTime != null && data.AuditStartTime != "0001-01-01T00:00:00")
+                            html = "<span style='display:none'>" + data.AuditStartTime + "</span>" + new Date(data.AuditStartTime).toLocaleDateString();
+
+                        return html;
+                    }
+                },
+                { title: "Descrição da Falha", mData: "DescriptionFailure" },
+                { title: "Correção", mData: "ImmediateCorrectiveAction" },
+                { title: "Ação Corretiva", mData: "PreventativeMeasure" }
+            ];
+
+            let table = {
+                data: data,
+                columns: columns,
+                destroy: true,
+                scrollX: true,
+                paginate: false,
+                paging: false,
+                bSort: false,
+                loadingRecords: false,
+                destroy: true,
+                info: false,
+                responsive: true,
+                language: {
+                    emptyTable: "Sem dados."
+                }
+            }
+
+            let idTable = "table" + idChart;
+
+            let panelTitle = 'Ações Corretivas vinculadas';
+
+            MontarTabela(seletorPanel, idTable, table, panelTitle);
+        }
+
         function GerarGraficoMonitoramento(data, idPanel) {
 
-            //var valoresX = MapeiaValorParaHC(data, "Level2Name");
-            //var NC = MapeiaValorParaHC(data, "NC");
-            //var TotalAvaliado = MapeiaValorParaHC(data, "Av");
-            //var titulo = Resources('level1') + ": " + MapeiaValorParaHC(data, "Level1Name")[0];
-
             let titulo = "NC por Monitoramento";
+            let subtitulo = "Indicador: " + data.ParLevel1_Name;
             let idChart = 'monitoramento' + data.ParLevel1_Id;
-            let valoresX = data.Monitoramento.Grafico.xAxis;
-            let NC = data.Monitoramento.Grafico.NC;
-            let TotalAvaliado = data.Monitoramento.Grafico.AV;
+            let valoresX = MapeiaValorParaHC(data.ListaMonitoramento, "Name");
+            let NC = MapeiaValorParaHC(data.ListaMonitoramento, "NC");
+            let TotalAvaliado = MapeiaValorParaHC(data.ListaMonitoramento, "AV");
             let pareto = Chart.CalculaPareto(NC);
             let $panel = $("#" + idPanel);
             let panelSeletor = idPanel + " .panel-monitoramento";
@@ -922,6 +1113,7 @@
             Highcharts.chart(idChart, {
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
+                subtitle: Chart.Subtitulo(subtitulo),
                 xAxis: Chart.Xaxis(valoresX),
                 //tooltip: {
                 //    formatter: function() {
@@ -967,9 +1159,26 @@
 
         function GerarTabelaAcaoCorretivaMonitoramento(data, seletorPanel, idChart) {
 
+            let columns = [
+                { title: "Indicador", mData: "ParLevel1_Name" },
+                { title: "Monitoramento", mData: "ParLevel2_Name" },
+                {
+                    title: "Data Início Auditoria", mData: null, render: function (data) {
+                        let html = "";
+                        if (data.AuditStartTime != null && data.AuditStartTime != "0001-01-01T00:00:00")
+                            html = "<span style='display:none'>" + data.AuditStartTime + "</span>" + new Date(data.AuditStartTime).toLocaleDateString();
+
+                        return html;
+                    }
+                },
+                { title: "Descrição da Falha", mData: "DescriptionFailure" },
+                { title: "Correção", mData: "ImmediateCorrectiveAction" },
+                { title: "Ação Corretiva", mData: "PreventativeMeasure" }
+            ];
+
             let table = {
-                data: data.Monitoramento.Acoes.data,
-                columns: data.Monitoramento.Acoes.columns,
+                data: data.ListaAcaoMonitoramento,
+                columns: columns,
                 destroy: true,
                 scrollX: true,
                 paginate: false,
@@ -979,32 +1188,31 @@
                 destroy: true,
                 info: false,
                 responsive: true,
+                language: {
+                    emptyTable: "Sem dados."
+                }
             }
 
             let idTable = "table" + idChart;
 
-            MontarTabela(seletorPanel, idTable, table);
+            let panelTitle = 'Ações Corretivas vinculadas';
+
+            MontarTabela(seletorPanel, idTable, table, panelTitle);
 
         }
 
-        function GerarGraficoMonitoramentoPorDepartamento(objMock, idPanel, indexDepartamento) {
+        function GerarGraficoMonitoramentoPorDepartamento(obj, idPanel, objInteiro) {
 
-            //var valoresX = MapeiaValorParaHC(data, "Level2Name");
-            //var NC = MapeiaValorParaHC(data, "NC");
-            //var TotalAvaliado = MapeiaValorParaHC(data, "Av");
-            //var titulo = Resources('level1') + ": " + MapeiaValorParaHC(data, "Level1Name")[0];
-
-            let data = objMock.MonitoramentoDepartamento[indexDepartamento];
-
-            let titulo = "NC por Monitoramento do Departamento: " + data.Grafico.Departamento_Name;
-            let valoresX = data.Grafico.xAxis;
-            let NC = data.Grafico.NC;
-            let TotalAvaliado = data.Grafico.AV;
+            let titulo = "NC por Monitoramento";
+            let subtitulo = "Departamento: " + obj.ParDepartment;
+            let valoresX = MapeiaValorParaHC(obj.ListaGrafico, "Name");
+            let NC = MapeiaValorParaHC(obj.ListaGrafico, "NC");
+            let TotalAvaliado = MapeiaValorParaHC(obj.ListaGrafico, "AV");
             let pareto = Chart.CalculaPareto(NC);
-            let departamentoName = data.Grafico.Departamento_Name;
-            let idCollapse = "indicador" + objMock.ParLevel1_Id + "departamento" + data.Grafico.Departamento_Id;
-            let nomePanel = departamentoName + " | " + objMock.ParLevel1_Name;
-            let idChart = 'monitoramentos' + objMock.ParLevel1_Id + "departamento" + data.Grafico.Departamento_Id;
+            let departamentoName = obj.ParDepartment;
+            let idCollapse = "indicador" + objInteiro.ParLevel1_Id + "departamento" + obj.ParDepartment_Id;
+            let nomePanel = "Departamento: " + departamentoName + " | " + objInteiro.ParLevel1_Name;
+            let idChart = 'monitoramentos' + objInteiro.ParLevel1_Id + "departamento" + obj.ParDepartment_Id;
             let seletorPanel = idPanel + " .panel-monitoramento-departamento";
 
             let panel = `
@@ -1024,6 +1232,7 @@
             Highcharts.chart(idChart, {
                 credits: Chart.Credits(),
                 title: Chart.Titulo(titulo),
+                subtitle: Chart.Subtitulo(subtitulo),
                 xAxis: Chart.Xaxis(valoresX),
                 //tooltip: {
                 //    formatter: function() {
@@ -1064,16 +1273,33 @@
 
             }, function () {
 
-                GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento(data, seletorPanel, idChart);
+                GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento(obj, seletorPanel, idChart);
 
             });
         }
 
         function GerarTabelaAcaoCorretivaMonitoramentoPorDepartamento(data, seletorPanel, idChart) {
 
+            let columns = [
+                { title: "Indicador", mData: "ParLevel1_Name" },
+                { title: "Monitoramento", mData: "ParLevel2_Name" },
+                {
+                    title: "Data Início Auditoria", mData: null, render: function (data) {
+                        let html = "";
+                        if (data.AuditStartTime != null && data.AuditStartTime != "0001-01-01T00:00:00")
+                            html = "<span style='display:none'>" + data.AuditStartTime + "</span>" + new Date(data.AuditStartTime).toLocaleDateString();
+
+                        return html;
+                    }
+                },
+                { title: "Descrição da Falha", mData: "DescriptionFailure" },
+                { title: "Correção", mData: "ImmediateCorrectiveAction" },
+                { title: "Ação Corretiva", mData: "PreventativeMeasure" }
+            ];
+
             let table = {
-                data: data.Acoes.data,
-                columns: data.Acoes.columns,
+                data: data.ListaTabelaAcaoCorretiva,
+                columns: columns,
                 destroy: true,
                 scrollX: true,
                 paginate: false,
@@ -1083,23 +1309,33 @@
                 destroy: true,
                 info: false,
                 responsive: true,
+                language: {
+                    emptyTable: "Sem dados."
+                }
             }
 
             let idTable = "table" + idChart;
 
-            MontarTabela(seletorPanel, idTable, table);
+            let panelTitle = 'Ações Corretivas vinculadas';
+
+            MontarTabela(seletorPanel, idTable, table, panelTitle);
 
         }
 
-        function GerarGraficoTarefasAcumuladas(data, idPanel) {
+        function GerarGraficoTarefasAcumuladas(obj, idPanel) {
+
+            if (obj.ListaTarefasAcumuladas == null) {
+                return;
+            }
 
             let titulo = "Tarefas Acumuladas";
             let subtitle = "";
-            let xaxis = data.TarefaAcumulada.Grafico.xAxis;
-            let nc = data.TarefaAcumulada.Grafico.Serie;
+            let xaxis = MapeiaValorParaHC(obj.ListaTarefasAcumuladas, "Name");
+            let nc = MapeiaValorParaHC(obj.ListaTarefasAcumuladas, "NC");
+            let av = MapeiaValorParaHC(obj.ListaTarefasAcumuladas, "AV");
             let pareto = Chart.CalculaPareto(nc);
 
-            let idChart = 'tarefaAcumulada' + data.ParLevel1_Id;
+            let idChart = 'tarefaAcumulada' + obj.ParLevel1_Id;
 
             let $panel = $("#" + idPanel);
 
@@ -1132,25 +1368,26 @@
                     shadow: true
                 },
                 series: [
-                  Chart.SimpleSerie(nc, Resources("derivations"), Chart.CorTotalNc(), true, 0, undefined, undefined, true, data),
-                  Chart.CurvaPareto(pareto)
+                    Chart.SimpleSerie(nc, Resources("derivations"), Chart.CorTotalNc(), true, 0, undefined, undefined, true, obj),
+                    Chart.SimpleSerie(av, Resources("total_evaluated"), Chart.CorTotalAv(), true),
+                    Chart.CurvaPareto(pareto)
                 ],
             }, function (chart) {
 
             });
         }
 
-        function GerarGraficoTarefa(objMock, idPanel, indexTarefa) {
+        function GerarGraficoTarefa(obj, idPanel, objInteiro) {
 
-            let data = objMock.Tarefa[indexTarefa];
 
-            var titulo = "NC por tarefas do monitoramento: " + data.Grafico.ParLevel2_Name;
-            var subtitle = "";
-            var xaxis = data.Grafico.xAxis;
-            var nc = data.Grafico.Serie;
+            var titulo = "NC por tarefas";
+            var subtitle = "Monitoramento: " + obj.ParLevel2_Name;
+            var xaxis = MapeiaValorParaHC(obj.ListaGrafico, "Name");
+            var nc = MapeiaValorParaHC(obj.ListaGrafico, "NC");
+            var av = MapeiaValorParaHC(obj.ListaGrafico, "AV");
             var pareto = Chart.CalculaPareto(nc);
 
-            var idChart = 'indicador' + objMock.ParLevel1_Id + "monitoramento" + data.Grafico.ParLevel2_Id;
+            var idChart = 'indicador' + objInteiro.ParLevel1_Id + "monitoramento" + obj.ParLevel2_Id;
 
             let seletorPanel = idPanel + " .panel-tarefa";
 
@@ -1183,20 +1420,35 @@
                     shadow: true
                 },
                 series: [
-                  Chart.SimpleSerie(nc, Resources("derivations"), Chart.CorTotalNc(), true, 0, undefined, undefined, true, data),
-                  Chart.CurvaPareto(pareto)
+                    Chart.SimpleSerie(nc, Resources("derivations"), Chart.CorTotalNc(), true, 0, undefined, undefined, true, obj),
+                    Chart.SimpleSerie(av, Resources("total_evaluated"), Chart.CorTotalAv(), true),
+                    Chart.CurvaPareto(pareto)
                 ],
             }, function (chart) {
-                GerarTabelaAcaoCorretivaTarefa(data, seletorPanel, idChart);
+                GerarTabelaPlanoAcao(obj, seletorPanel, idChart);
             });
 
         }
 
-        function GerarTabelaAcaoCorretivaTarefa(data, seletorPanel, idChart) {
+        function GerarTabelaPlanoAcao(data, seletorPanel, idChart) {
+
+            let columns = [
+                { title: "Indicador", mData: "ParLevel1" },
+                { title: "Monitoramento", mData: "ParLevel2" },
+                { title: "Tarefa", mData: "ParLevel3" },
+                { title: "Causa Genérica", mData: "CausaGenerica" },
+                { title: "Ação Genérica", mData: "AcaoGenerica" },
+                { title: "Status", mData: "Status" },
+                {
+                    title: "", mData: "", render: function (data) {
+                        return "<a>Ver mais</a>";
+                    }
+                }
+            ];
 
             let table = {
-                data: data.Acoes.data,
-                columns: data.Acoes.columns,
+                data: data.ListaTabelaPlanoAcao,
+                columns: columns,
                 destroy: true,
                 scrollX: true,
                 paginate: false,
@@ -1206,11 +1458,16 @@
                 destroy: true,
                 info: false,
                 responsive: true,
+                language: {
+                    emptyTable: "Sem dados."
+                }
             }
 
             let idTable = "table" + idChart;
 
-            MontarTabela(seletorPanel, idTable, table);
+            let panelTitle = 'Plano de Ação';
+
+            MontarTabela(seletorPanel, idTable, table, panelTitle);
 
         }
 
@@ -1497,7 +1754,7 @@
 
             let panel = `
             <div class="panel panel-info">
-                <div class="panel-heading" data-toggle="collapse" data-target="#panel${idTable}" href="#panel${idTable}">Ações vinculadas</div>
+                <div class="panel-heading" data-toggle="collapse" data-target="#panel${idTable}" href="#panel${idTable}">${panelTitle}</div>
                 <div class="panel-body" id="panel${ idTable }">
                     <table id="${idTable}"></table>
                 </div>
@@ -1508,7 +1765,28 @@
             $('#' + idTable).DataTable(table);
 
             //Criar a tabela com datatables dentro da div
+            $panel.find('[data-target="#panel' + idTable + '"]').trigger('click');
 
+        }
+
+        function GetSubtitleUnidade() {
+
+            let subtitle = [];
+
+            objFiltro.parCompany_Ids.forEach(function (i) {
+
+                let valor = $('[name="parCompany_Ids"] option[value="' + i + '"]').text()
+
+                subtitle.push(valor.slice(valor.indexOf("-") + 2, valor.length));
+
+            });
+
+            return (subtitle.length > 1 ? "Unidades: " : "Unidade: ") + subtitle.join(", ");
+        }
+
+        function enviarFiltro() {
+            $("#NCUnidade").hide();
+            Send(true);
         }
 
     </script>

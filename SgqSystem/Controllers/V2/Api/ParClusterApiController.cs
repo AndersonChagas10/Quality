@@ -16,10 +16,10 @@ namespace SgqSystem.Controllers.V2.Api
 
         // GET: api/ParCluster
         [Route("parCluster")]
-        public IHttpActionResult GetParCluster()
+        public IHttpActionResult GetParCluster(int parClusterGroupId)
         {
             db.Configuration.LazyLoadingEnabled = false;
-            return Ok(db.ParCluster.Where(x => x.IsActive).ToList());
+            return Ok(db.ParCluster.Where(x => x.IsActive && x.ParClusterGroup_Id == parClusterGroupId).ToList());
         }
 
         protected override void Dispose(bool disposing)

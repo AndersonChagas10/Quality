@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "Relatorio de Edição";
+    Layout = "~\\Views\\RelatoriosSgq\\_FilterReports.cshtml";
+
+    var UnidadeUsuario = ViewBag.UnidadeUsuario;
+
+    ViewBag.ShowRangeDate = true;
+    ViewBag.ShowParModule = true; //Unico //Selecione... //NO
+    ViewBag.UnitIdArr = true; //Unico //Selecione.. //NO
+    ViewBag.ShowShift = true; //Multiplo //Todos //NO
+    ViewBag.ShowParLevel1GQ = true; //Multiplo // //NO
+    ViewBag.ShowParLevel2GQ = true; //Multiplo // //NO
+    ViewBag.ShowParLevel3GQ = true; //Multiplo // //NO
+    ViewBag.ShowUserSgqMonitor = true; //Monitor é surpervisor? Trazer ativos, inativo? Card mal descrito
+    ViewBag.ShowTipoEdicao = true; //Tipo de Edição - Fazer - Conteúdo: “Edição de Resultados”ou “Edição de Cabeçalho” Campo obrigatório;Default: “Edição de Resultados” - Unico Obrigatorio
+    ViewBag.ShowParReason = true; //Motivo - ParReason - Multiplo - NO - Todos e Lista de Cadastro[Ativos e Inativos] - Default Todos
+    ViewBag.ShowParCompany = true;
+    ViewBag.IsCascadeLevel2Level3 = 0;
+
+    ViewBag.ShowShiftDefault = "Todos";
+    ViewBag.ShowParModuleDefault = "Selecione...";
+    ViewBag.ShowUserSgqMonitorDefault = "Todos";
+    ViewBag.ShowParReasonDefault = "Todos";
+
+}
+
+@section Content {
+
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            <div id="formBodyContent">
+
+                @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+                <table id="table" class="table"></table>
+
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+
+        var $btn = $('#btnSend');
+
+        $("#btnSend").click(function () {
+
+            Send(true);
+
+        });
+
+        function Send(toggle) {
+
+            $btn.button('loading');
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            $btn.button('reset');
+        }
+
+        function ValidaDadosParaEnvio() {
+
+            GuardJs.esconderMensagem();
+
+            //Modulo
+            if (!objFiltro.tipoEdicao || objFiltro.tipoEdicao.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Tipo de Edição é obrigatório")
+                return false;
+            }
+
+            return true;
+
+        }
+
+        function enviarFiltro() {
+
+        }
+
+    </script>
+}
+

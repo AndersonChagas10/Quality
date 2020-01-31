@@ -10,7 +10,7 @@ namespace Dominio.AppViewModel
     {
         public int Id { get; set; }
 
-        public int? Peso { get; set; }
+        public decimal? Peso { get; set; }
 
         public bool IsActive { get; set; }
 
