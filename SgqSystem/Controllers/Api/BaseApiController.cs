@@ -362,5 +362,23 @@ namespace SgqSystem.Controllers.Api
 
         }
 
+        protected UserSgq GetUsuarioLogado()
+        {
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+
+                var user = new CredenciaisSgq()
+                {
+                    Username = token.Split('|')[0],
+                    Senha = token.Split('|')[1]
+                };
+
+                var usuarioLogado = db.UserSgq.Where(x => x.Name == user.Username).FirstOrDefault();
+
+                return usuarioLogado;
+            }
+        }
+
     }
 }

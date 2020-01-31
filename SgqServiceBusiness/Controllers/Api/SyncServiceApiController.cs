@@ -5156,7 +5156,7 @@ namespace SgqServiceBusiness.Api
             }
             if (GlobalConfig.SESMT)
             {
-                local = "msp";
+                local = "SESMT";
             }
 
 
