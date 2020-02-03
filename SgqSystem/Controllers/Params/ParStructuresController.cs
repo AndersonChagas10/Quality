@@ -123,7 +123,7 @@ namespace SgqSystem.Controllers.Params
             var listStrunct = db.ParStructure.Where(x => x.Active && x.Id != parStructure.Id).OrderBy(x => x.Name).ToList();
             listStrunct.Insert(0, new ParStructure() { Id = 0, Name = Resources.Resource.select });
             ViewBag.ParStructureParentList = listStrunct;
-            return View("Index");
+            return View(parStructure);
         }
 
         // GET: ParStructures/Delete/5
@@ -163,9 +163,7 @@ namespace SgqSystem.Controllers.Params
 
         private void ValidarModel(ParStructure parStructure)
         {
-
-            if (db.ParStructure.Any(x => x.Name == parStructure.Name))
-
+            if (db.ParStructure.Any(x => x.Name == parStructure.Name && x.Id != parStructure.Id))
                 ModelState.AddModelError("Name", "Já existe uma estrutura com este nome");
         }
     }
