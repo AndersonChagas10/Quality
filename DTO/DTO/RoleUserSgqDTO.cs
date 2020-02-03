@@ -13,11 +13,11 @@ namespace DTO.DTO
 
         public bool FazColeta { get; set; }
 
-        public bool? IsCorporativo { get; set; }
+        public bool IsCorporativo { get; set; }
 
-        public bool? IsNegocio { get; set; }
+        public bool IsNegocio { get; set; }
 
-        public bool? IsRegional { get; set; }
+        public bool IsRegional { get; set; }
 
         public List<RoleUserSgqXItemMenuDTO> RoleUserSgqXItemMenuDTO { get;set; }
 
