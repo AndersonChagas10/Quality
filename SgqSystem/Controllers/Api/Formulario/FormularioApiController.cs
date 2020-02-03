@@ -158,16 +158,17 @@ namespace SgqSystem.Controllers.Api.Formulario
             var whereCluster = "";
             var whereParCompany = "";
 
+            var usuarioLogado = GetUsuarioLogado();
 
-            if (form.ShowUserCompanies && !GetUsuarioLogado().ShowAllUnits.Value)
+            if (form.ShowUserCompanies && !usuarioLogado.ShowAllUnits.Value)
                 whereUnidadesUsuario = $@"AND PC.Id IN (SELECT
                             		PCXU.ParCompany_Id
                             	FROM ParCompanyXUserSgq PCXU WITH (NOLOCK)
-                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = 1
+                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = {usuarioLogado.Id}
                             	UNION 
                             	SELECT US.ParCompany_Id 
                             	FROM UserSgq US WITH (NOLOCK)
-                            	WHERE US.Id = 1)";
+                            	WHERE US.Id = {usuarioLogado.Id})";
 
 
             if (form.ParClusterGroup_Ids.Length > 0)
@@ -276,15 +277,17 @@ namespace SgqSystem.Controllers.Api.Formulario
             var whereParLevel1 = "";
 
 
-            if (form.ShowUserCompanies && !GetUsuarioLogado().ShowAllUnits.Value)
+            var usuarioLogado = GetUsuarioLogado();
+
+            if (form.ShowUserCompanies && !usuarioLogado.ShowAllUnits.Value)
                 whereUnidadesUsuario = $@"AND PC.Id IN (SELECT
                             		PCXU.ParCompany_Id
                             	FROM ParCompanyXUserSgq PCXU WITH (NOLOCK)
-                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = 1
+                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = {usuarioLogado.Id}
                             	UNION 
                             	SELECT US.ParCompany_Id 
                             	FROM UserSgq US WITH (NOLOCK)
-                            	WHERE US.Id = 1)";
+                            	WHERE US.Id = {usuarioLogado.Id})";
 
 
             if (form.ParClusterGroup_Ids.Length > 0)
@@ -398,15 +401,17 @@ namespace SgqSystem.Controllers.Api.Formulario
             var whereParLevel2 = "";
 
 
-            if (form.ShowUserCompanies && !GetUsuarioLogado().ShowAllUnits.Value)
+            var usuarioLogado = GetUsuarioLogado();
+
+            if (form.ShowUserCompanies && !usuarioLogado.ShowAllUnits.Value)
                 whereUnidadesUsuario = $@"AND PC.Id IN (SELECT
                             		PCXU.ParCompany_Id
                             	FROM ParCompanyXUserSgq PCXU WITH (NOLOCK)
-                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = 1
+                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = {usuarioLogado.Id}
                             	UNION 
                             	SELECT US.ParCompany_Id 
                             	FROM UserSgq US WITH (NOLOCK)
-                            	WHERE US.Id = 1)";
+                            	WHERE US.Id = {usuarioLogado.Id})";
 
 
             if (form.ParClusterGroup_Ids.Length > 0)
@@ -1406,16 +1411,17 @@ namespace SgqSystem.Controllers.Api.Formulario
         private List<Select3ViewModel> GetClusterGroupRH(string search, DataCarrierFormularioNew form)
         {
             var whereUnidadesUsuario = "";
+            var usuarioLogado = GetUsuarioLogado();
 
-            if (form.ShowUserCompanies && !GetUsuarioLogado().ShowAllUnits.Value)
+            if (form.ShowUserCompanies && !usuarioLogado.ShowAllUnits.Value)
                 whereUnidadesUsuario = $@"AND PC.Id IN (SELECT
                             		PCXU.ParCompany_Id
                             	FROM ParCompanyXUserSgq PCXU WITH (NOLOCK)
-                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = 1
+                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = {usuarioLogado.Id}
                             	UNION 
                             	SELECT US.ParCompany_Id 
                             	FROM UserSgq US WITH (NOLOCK)
-                            	WHERE US.Id = 1)";
+                            	WHERE US.Id = {usuarioLogado.Id})";
 
             using (var factory = new Factory("DefaultConnection"))
             {
@@ -1478,16 +1484,17 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             var whereUnidadesUsuario = "";
             var whereClusterGroup = "";
+            var usuarioLogado = GetUsuarioLogado();
 
-            if (form.ShowUserCompanies && !GetUsuarioLogado().ShowAllUnits.Value)
+            if (form.ShowUserCompanies && !usuarioLogado.ShowAllUnits.Value)
                 whereUnidadesUsuario = $@"AND PC.Id IN (SELECT
                             		PCXU.ParCompany_Id
                             	FROM ParCompanyXUserSgq PCXU WITH (NOLOCK)
-                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = 1
+                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = {usuarioLogado.Id}
                             	UNION 
                             	SELECT US.ParCompany_Id 
                             	FROM UserSgq US WITH (NOLOCK)
-                            	WHERE US.Id = 1)";
+                            	WHERE US.Id = {usuarioLogado.Id})";
 
 
             if (form.ParClusterGroup_Ids.Length > 0)
@@ -1558,16 +1565,17 @@ namespace SgqSystem.Controllers.Api.Formulario
             var whereClusterGroup = "";
             var whereCluster = "";
 
+            var usuarioLogado = GetUsuarioLogado();
 
-            if (form.ShowUserCompanies && !GetUsuarioLogado().ShowAllUnits.Value)
+            if (form.ShowUserCompanies && !usuarioLogado.ShowAllUnits.Value)
                 whereUnidadesUsuario = $@"AND PC.Id IN (SELECT
                             		PCXU.ParCompany_Id
                             	FROM ParCompanyXUserSgq PCXU WITH (NOLOCK)
-                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = 1
+                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = {usuarioLogado.Id}
                             	UNION 
                             	SELECT US.ParCompany_Id 
                             	FROM UserSgq US WITH (NOLOCK)
-                            	WHERE US.Id = 1)";
+                            	WHERE US.Id = {usuarioLogado.Id})";
 
 
             if (form.ParClusterGroup_Ids.Length > 0)
@@ -1646,16 +1654,17 @@ namespace SgqSystem.Controllers.Api.Formulario
             var whereClusterGroup = "";
             var whereCluster = "";
 
+            var usuarioLogado = GetUsuarioLogado();
 
-            if (form.ShowUserCompanies && !GetUsuarioLogado().ShowAllUnits.Value)
+            if (form.ShowUserCompanies && !usuarioLogado.ShowAllUnits.Value)
                 whereUnidadesUsuario = $@"AND PC.Id IN (SELECT
                             		PCXU.ParCompany_Id
                             	FROM ParCompanyXUserSgq PCXU WITH (NOLOCK)
-                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = 1
+                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = {usuarioLogado.Id}
                             	UNION 
                             	SELECT US.ParCompany_Id 
                             	FROM UserSgq US WITH (NOLOCK)
-                            	WHERE US.Id = 1)";
+                            	WHERE US.Id = {usuarioLogado.Id})";
 
 
             if (form.ParClusterGroup_Ids.Length > 0)
@@ -1745,16 +1754,17 @@ namespace SgqSystem.Controllers.Api.Formulario
             var whereClusterGroup = "";
             var whereCluster = "";
 
+            var usuarioLogado = GetUsuarioLogado();
 
-            if (form.ShowUserCompanies && !GetUsuarioLogado().ShowAllUnits.Value)
+            if (form.ShowUserCompanies && !usuarioLogado.ShowAllUnits.Value)
                 whereUnidadesUsuario = $@"AND PC.Id IN (SELECT
                             		PCXU.ParCompany_Id
                             	FROM ParCompanyXUserSgq PCXU WITH (NOLOCK)
-                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = 1
+                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = {usuarioLogado.Id}
                             	UNION 
                             	SELECT US.ParCompany_Id 
                             	FROM UserSgq US WITH (NOLOCK)
-                            	WHERE US.Id = 1)";
+                            	WHERE US.Id = {usuarioLogado.Id})";
 
 
             if (form.ParClusterGroup_Ids.Length > 0)
@@ -1838,15 +1848,17 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             var whereUnidadesUsuario = "";
 
-            if (form.ShowUserCompanies && !GetUsuarioLogado().ShowAllUnits.Value)
+            var usuarioLogado = GetUsuarioLogado();
+
+            if (form.ShowUserCompanies && !usuarioLogado.ShowAllUnits.Value)
                 whereUnidadesUsuario = $@"AND PC.Id IN (SELECT
                             		PCXU.ParCompany_Id
                             	FROM ParCompanyXUserSgq PCXU WITH (NOLOCK)
-                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = 1
+                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = {usuarioLogado.Id}
                             	UNION 
                             	SELECT US.ParCompany_Id 
                             	FROM UserSgq US WITH (NOLOCK)
-                            	WHERE US.Id = 1)";
+                            	WHERE US.Id = {usuarioLogado.Id})";
 
             using (var factory = new Factory("DefaultConnection"))
             {
@@ -1878,15 +1890,17 @@ namespace SgqSystem.Controllers.Api.Formulario
             var whereUnidadesUsuario = "";
             var whereParDepartment = "";
 
-            if (form.ShowUserCompanies && !GetUsuarioLogado().ShowAllUnits.Value)
+            var usuarioLogado = GetUsuarioLogado();
+
+            if (form.ShowUserCompanies && !usuarioLogado.ShowAllUnits.Value)
                 whereUnidadesUsuario = $@"AND PC.Id IN (SELECT
                             		PCXU.ParCompany_Id
                             	FROM ParCompanyXUserSgq PCXU WITH (NOLOCK)
-                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = 1
+                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = {usuarioLogado.Id}
                             	UNION 
                             	SELECT US.ParCompany_Id 
                             	FROM UserSgq US WITH (NOLOCK)
-                            	WHERE US.Id = 1)";
+                            	WHERE US.Id = {usuarioLogado.Id})";
 
             if (form.ParDepartment_Ids.Length > 0)
                 whereParDepartment = $" AND CentroCusto.Id IN ({string.Join(",", form.ParDepartment_Ids)})";
@@ -1895,20 +1909,22 @@ namespace SgqSystem.Controllers.Api.Formulario
             {
 
                 var query = $@"
-                            SELECT DISTINCT TOP 500
+	                           SELECT DISTINCT TOP 500
                             	Secao.Id
                                ,Secao.Name
                             FROM ParDepartment CentroCusto
                             INNER JOIN ParDepartment Secao ON Secao.Parent_Id = CentroCusto.Id AND Secao.Active = 1
+	                            AND Secao.Name LIKE '%GR ADMINISTRATIVO%'
+	                            AND Secao.Parent_Id IS NOT NULL
+	                            AND Secao.Hash IS NOT NULL
                             INNER JOIN ParCompany PC on CentroCusto.ParCompany_Id = PC.Id
+	                            AND CentroCusto.Active = 1
+                                AND CentroCusto.Parent_Id IS NULL
+                                AND CentroCusto.Hash IS NULL
+                                {whereParDepartment}
                             WHERE 1 = 1
-                            AND CentroCusto.Active = 1
-                            AND CentroCusto.Parent_Id IS NULL
-                            AND CentroCusto.Hash IS NULL
-                            AND CentroCusto.Name LIKE '%{search}%'
                             {whereUnidadesUsuario}
-                            {whereParDepartment}
-                            ORDER BY Secao.Name";
+                            ORDER BY Secao.Name ";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
