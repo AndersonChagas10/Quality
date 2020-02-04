@@ -16,10 +16,23 @@ namespace SgqSystem.Controllers.V2.Api
 
         // GET: api/ParCluster
         [Route("parCluster")]
-        public IHttpActionResult GetParCluster(int parClusterGroupId)
+        public IHttpActionResult GetParCluster(int parClusterGroupId, int parCompany_Id)
         {
+            var listaCluster = new List<ParCluster>();
             db.Configuration.LazyLoadingEnabled = false;
-            return Ok(db.ParCluster.Where(x => x.IsActive && x.ParClusterGroup_Id == parClusterGroupId).ToList());
+
+            var listaParVinculoPesoClusterIds = db.ParVinculoPeso.Where(x => x.ParCompany_Id == parCompany_Id && x.IsActive == true).Select(y => y.ParCluster_Id).Distinct().ToList();
+
+            foreach (var item in listaParVinculoPesoClusterIds)
+            {
+                var clusterFiltrado = new ParCluster();
+                if (item != null)
+                    clusterFiltrado = db.ParCluster.Where(x => x.Id == item.Value && x.ParClusterGroup_Id == parClusterGroupId).FirstOrDefault();
+                    if(clusterFiltrado != null)
+                        listaCluster.Add(clusterFiltrado);
+            }
+
+            return Ok(listaCluster);
         }
 
         protected override void Dispose(bool disposing)
