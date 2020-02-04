@@ -48,6 +48,8 @@ namespace Dominio
 
         public int? ParCluster_Id { get; set; }
 
+        public bool IsAtiveNA { get; set; }
+
         [ForeignKey("ParCluster_Id")]
         public virtual ParCluster ParCluster { get; set; }
 
