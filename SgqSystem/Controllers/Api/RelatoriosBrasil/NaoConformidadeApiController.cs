@@ -135,12 +135,26 @@ INSERT INTO #AMOSTRATIPO4
 			ON L1.Id = C2.ParLevel1_Id
 		INNER JOIN ParCompany C (NOLOCK)
 			ON C.Id = C2.UnitId
+
+    LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
+		    ON P1M.ParLevel1_Id = L1.Id
+		    AND P1M.IsActive = 1
+		    AND P1M.EffectiveDateStart <= @DATAINICIAL
+		    AND (P1M.ParCluster_Id IS NULL
+		    OR P1M.ParCluster_Id IN (SELECT
+				    ParCluster_Id
+			    FROM ParCompanyCluster WITH (NOLOCK)
+			    WHERE ParCompany_Id = C.Id
+			    AND Active = 1)
+		    )  
+
 		WHERE CAST(C2.CollectionDate AS DATE) BETWEEN @DATAINICIAL AND @DATAFINAL
 		AND C2.NotEvaluatedIs = 0
 		AND C2.Duplicated = 0
 		AND L1.ParConsolidationType_Id = 4
+        {whereModule}
 		GROUP BY C.Id
-				,ParLevel1_Id
+				,C2.ParLevel1_Id
                 ,C2.[SHIFT]
                 ,C2.[PERIOD]
 				,EvaluationNumber
@@ -300,8 +314,6 @@ INSERT INTO #AMOSTRATIPO4
 
                 		WHERE 1=1
                         AND CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                        
-                        
                         { whereDepartment }
                         { whereShift }
                 		-- AND (TotalLevel3WithDefects > 0 AND TotalLevel3WithDefects IS NOT NULL) 
