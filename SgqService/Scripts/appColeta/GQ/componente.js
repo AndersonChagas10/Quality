@@ -6,8 +6,10 @@ $(document).on('change', '.painelLevel03:visible select.selectComponente', funct
 
 function processComponente(thiss) {
 
+    showAllLevel3();
 
     if (!headerIsValid($(thiss).attr('Componente_id'))) {
+        zeraLimitesComponentes();      
         return false;
     }
 
@@ -35,6 +37,9 @@ function processComponente(thiss) {
             changeLimitLevel3(tarefa_Id, limiteSuperior, limiteInferior)
         });
     }
+
+    hideLevel3ToHide(limites);
+
 }
 
 function changeLimitLevel3(tarefa_Id, limiteSuperior, limiteInferior) {
@@ -114,6 +119,7 @@ function getComponenteGenericoValor(arrColumName) {
     var saveIdDosObjetosFiltrados = $.map(valor, function (obj) {
         return obj.SaveId
     });
+
     saveIdDosObjetosFiltrados = $.unique(saveIdDosObjetosFiltrados.sort());
 
     var idSelecionado = $.grep(saveIdDosObjetosFiltrados, function (idFiltrado) {
@@ -173,4 +179,122 @@ function getColumNames(componente_Id) {
 
     return arrReturn;
 
+}
+
+
+// Como é apresentado na lista, as opções com os valores de componente generico, temos todos os limites cadastrados na tela. Sendo todos os limites
+// , temos todas as tarefas. Deve ser montado uma listagem com todas as tarefas possiveis que foram cadastradas no limite.
+// Ao ir fazendo a combinação, esta listagem será percorrida e ao não encontrar alguma tarefa a mesma será considerada como NA. 
+// O limite quando NA deverá ser min:0 e max:0
+
+//TODO: função que troque os limites das tarefas para 0 e 0
+function zeraLimitesComponentes() {
+    
+    //pegar todos os campos de cabeçalho
+    var componentes_Ids = [];
+
+    $(".selectComponente").each(function () {
+
+        componentes_Ids.push(parseInt($(this).attr('componente_id')));
+
+    });
+
+    componentes_Ids = $.unique(componentes_Ids.sort());
+
+    if(componentes_Ids.length == 0)
+        return false;
+
+    var objLimites = $(listComponenteGenericoValores).filter(function(i, o){
+    
+        return (componentes_Ids.includes(parseInt(o.ComponenteGenerico_Id)) && o.ComponenteGenericoTipoColuna_Id == 8);
+    
+    });
+
+    $(objLimites).each(function(i, limites){
+
+        var limtesArr = limites.Valor.split('|');
+
+        if (limtesArr && limtesArr.length > 0) {
+    
+            limtesArr.forEach(function (limite) {
+    
+                //trocar os limites
+                var tarefa_Id = limite.split(':')[0];
+                var limiteInferior = 0;
+                var limiteSuperior = 0;
+    
+                changeLimitLevel3(tarefa_Id, limiteSuperior, limiteInferior);
+            });
+        }
+    });
+
+}
+
+
+//TODO: função que faça todos os tipos de combinações
+function hideLevel3ToHide(limites) {
+    
+    var limtesArr = limites.Valor.split('|');
+
+    var level3Arr = $.map(limtesArr, function(limite) {
+
+        return parseInt(limite.split(':')[0]);
+    });
+
+    var arrTodosLimites = $(listComponenteGenericoValores).filter(function(i, o){
+    
+        return (parseInt(limites.ComponenteGenerico_Id) === parseInt(o.ComponenteGenerico_Id) && 
+        parseInt(o.ComponenteGenericoTipoColuna_Id) === 8 && 
+        parseInt(o.SaveId) !== parseInt(limites.SaveId));
+    
+    });
+
+    if(arrTodosLimites.length == 0)
+        return false;
+
+    var arrTodosLevel3 = $.map(arrTodosLimites, function(limite) {
+        return parseInt(limite.Valor.split(':')[0]);
+    });
+
+    var arrExclusivo = $.grep(arrTodosLevel3, function (item) {
+        return !level3Arr.includes(item);
+    });
+
+    arrExclusivo.forEach(function(o){
+        hideLevel3ById(parseInt(o));
+    });
+
+}
+
+//TODO: função que esconda as tarefas
+function hideLevel3ById(level3Id) {
+    setLevel3NA(level3Id);
+    $('.level3Group').find('[id="' + level3Id + '"]:visible').hide();
+}
+
+//TODO: função que exiba todas as tarefas
+function showAllLevel3() {
+    $('.level3Group').find('li').show();
+    removeLevel3NA();
+}
+
+function setLevel3NA(level3Id) {
+
+    var $tarefa = $('.level3Group').find('[id="' + level3Id + '"]:visible');
+
+    if (!$tarefa.hasClass('bgNoAvaliable'))
+        $tarefa.find('.btnNotAvaliable').trigger('click');
+
+}
+
+function removeLevel3NA() {
+
+    $('.level3Group li').each(function () {
+
+        var $tarefa = $(this);
+
+        if ($tarefa.hasClass('bgNoAvaliable'))
+            $tarefa.find('.btnNotAvaliable').trigger('click');
+
+    });
 }

@@ -502,6 +502,11 @@ function openLevel3(level2) {
     if ($('#btnAllNA').text() == 'Todos A')
         $('#btnAllNA').trigger('click');
 
+        
+    showAllLevel3(); //Não sei se isso pode estar aqui (pode dar conflito com outra regra)
+
+    zeraLimitesComponentes();  
+
 }
 
 function configVinculoAvAm() {
