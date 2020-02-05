@@ -53,6 +53,19 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             {
                 whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) --Unidade";
             }
+            else
+            {
+                whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
+
+            if (form.ShowUserCompanies)
+            {
+                whereUnit += $@"
+                    AND CuboL3.UnitId in (select DISTINCT PC.Id from UserSgq as usuario
+                    inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                    inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                    where usuario.Id = {form.Param["auditorId"]}) ";
+            }
 
             if (form.ParClusterGroup_Ids.Length > 0)
             {
@@ -105,19 +118,32 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                  DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
                  DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
 
-                SELECT
-                	Holding.Name AS HoldingName
+                 SELECT
+                    Holding.Name AS HoldingName
                    ,Holding.Id AS Holding_Id
                    ,SUM(WeiEvaluation) AS AV
                    ,SUM(WeiDefects) AS NC
                    ,SUM(WeiDefects) / SUM(WeiEvaluation) * 100 AS [PROC]
                 FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
                 INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.UnitId = C.Id
+				LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
+                        AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
+                        AND CuboL3.Cargo_Id = PVP.ParCargo_Id
+                        AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
                 LEFT JOIN ParCluster PC WITH (NOLOCK) ON CuboL3.ParCluster_Id = PC.Id
                 LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id
                 LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) WHERE ParStructureGroup_Id = 1) Holding ON CuboL3.Holding = Holding.Id
                 WHERE 1 = 1
                 AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+				
+				AND Holding.Id in (select DISTINCT PS2.Id from UserSgq as usuario
+                    inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                    inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                    inner join ParCompanyXStructure PCXStructure on Pc.Id = PCXStructure.ParCompany_Id
+                    inner join ParStructure PS on PCXStructure.ParStructure_Id = PS.Id
+                    inner join ParStructure PS1 on Ps.ParStructureParent_Id = PS1.Id 
+                    inner join ParStructure PS2 on Ps1.ParStructureParent_Id = PS2.Id 
+                    where usuario.Id = {form.Param["auditorId"]})
                 {whereStructure2}
                 {whereStructure3}
                 {whereUnit}
@@ -177,6 +203,19 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
                 whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+            else
+            {
+                whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
+
+            if (form.ShowUserCompanies)
+            {
+                whereUnit += $@"
+                    AND CuboL3.UnitId in (select DISTINCT PC.Id from UserSgq as usuario
+                    inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                    inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                    where usuario.Id = {form.Param["auditorId"]}) ";
             }
 
             if (form.ParClusterGroup_Ids.Length > 0)
@@ -243,6 +282,15 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 					LEft Join (select * from ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    AND GrupoDeEmpresa.Id in (select DISTINCT PS1.Id from UserSgq as usuario
+                        inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                        inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                        inner join ParCompanyXStructure PCXStructure on Pc.Id = PCXStructure.ParCompany_Id
+                        inner join ParStructure PS on PCXStructure.ParStructure_Id = PS.Id 
+                        inner join ParStructure PS1 on Ps.ParStructureParent_Id = PS1.Id 
+                        where usuario.Id = {form.Param["auditorId"]})
+
                     {whereStructure2}
                     {whereStructure3}
                     {whereUnit}
@@ -300,10 +348,24 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereCargo = $@" AND CuboL3.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
             }
 
-            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
                 whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
+            else
+            {
+                whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
+
+            if (form.ShowUserCompanies)
+            {
+                whereUnit += $@"
+                    AND CuboL3.UnitId in (select DISTINCT PC.Id from UserSgq as usuario
+                    inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                    inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                    where usuario.Id = {form.Param["auditorId"]}) ";
+            }
+
 
             if (form.ParClusterGroup_Ids.Length > 0)
             {
@@ -370,6 +432,15 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    AND Regional.Id in (select DISTINCT PS.Id from UserSgq as usuario
+                    inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                    inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                    inner join ParCompanyXStructure PCXStructure on Pc.Id = PCXStructure.ParCompany_Id
+                    inner join ParStructure PS on PCXStructure.ParStructure_Id = PS.Id 
+                    where usuario.Id = {form.Param["auditorId"]})
+
+                   
                     {whereStructure2}
                     {whereStructure3}
                     {whereUnit}
@@ -443,13 +514,19 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             {
                 whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
-            //else
-            //{
-            //    whereUnit = $@"AND UNI.Id IN (SELECT
-            //    				ParCompany_Id
-            //    			FROM ParCompanyXUserSgq
-            //    			WHERE UserSgq_Id = { form.Param["auditorId"] })";
-            //}
+            else
+            {
+                whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
+
+            if (form.ShowUserCompanies)
+            {
+                whereUnit += $@"
+                    AND CuboL3.UnitId in (select DISTINCT PC.Id from UserSgq as usuario
+                    inner join ParCompanyXUserSgq PCXUser on usuario.Id = PCXUser.UserSgq_Id
+                    inner join ParCompany PC on PCXUser.ParCompany_Id = Pc.Id
+                    where usuario.Id = {form.Param["auditorId"]}) ";
+            }
 
             if (form.ParClusterGroup_Ids.Length > 0)
             {
@@ -591,6 +668,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             {
                 whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
+            else
+            {
+                whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
             //else
             //{
             //    whereUnit = $@"AND UNI.Id IN (SELECT
@@ -708,7 +789,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
             if (form.ParDepartment_Ids.Length > 0)
             {
-                whereDepartment = "\n AND L2.ParDepartment_Id in (" + string.Join(",", form.ParDepartment_Ids) + ")";
+                whereDepartment = "\n AND CuboL3.ParDepartment_Id in (" + string.Join(",", form.ParDepartment_Ids) + ")";
             }
 
             if (form.Param["departmentName"] != null && form.Param["departmentName"].ToString() != "")
@@ -1262,6 +1343,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             {
                 whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
+            else
+            {
+                whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
             //else
             //{
             //    whereUnit = $@"AND UNI.Id IN (SELECT
@@ -1718,6 +1803,10 @@ DROP TABLE #AMOSTRATIPO4 ";
             {
                 whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
+            else
+            {
+                whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
             //else
             //{
             //    whereUnit = $@"AND UNI.Id IN (SELECT
@@ -1852,6 +1941,10 @@ DROP TABLE #AMOSTRATIPO4 ";
             {
                 whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
+            else
+            {
+                whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
             //else
             //{
             //    whereUnit = $@"AND UNI.Id IN (SELECT
@@ -1958,6 +2051,10 @@ DROP TABLE #AMOSTRATIPO4 ";
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
                 whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+            else
+            {
+                whereUnit = $@"AND CuboL3 .UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
             }
 
             if (form.ParClusterGroup_Ids.Length > 0)
