@@ -2438,4 +2438,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-303</CardNumber>
+    <Version>1.3.0</Version>
+    <Description>[Relatório Não Conformidade][RH] Adicionado desdobramento para Holding/Negócio e Regional</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
