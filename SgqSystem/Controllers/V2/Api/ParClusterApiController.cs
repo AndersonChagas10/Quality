@@ -27,9 +27,11 @@ namespace SgqSystem.Controllers.V2.Api
             {
                 var clusterFiltrado = new ParCluster();
                 if (item != null)
+                {
                     clusterFiltrado = db.ParCluster.Where(x => x.Id == item.Value && x.ParClusterGroup_Id == parClusterGroupId).FirstOrDefault();
-                    if(clusterFiltrado != null)
+                    if (clusterFiltrado != null)
                         listaCluster.Add(clusterFiltrado);
+                }
             }
 
             return Ok(listaCluster);
