@@ -2446,4 +2446,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-233</CardNumber>
+    <Version>1.3.0</Version>
+    <Description>[Relatório Edições Realizadas] Criado novo relatório</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>

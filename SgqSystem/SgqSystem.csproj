@@ -363,6 +363,7 @@
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
     <Compile Include="Controllers\Api\Relatorios\MSP\RelatorioMSPApiController.cs" />
+    <Compile Include="Controllers\Api\Relatorios\RelatorioEdicaoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RH\NaoConformidadeRHApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RH\RelatorioDeResultadosRHApiController.cs" />
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />

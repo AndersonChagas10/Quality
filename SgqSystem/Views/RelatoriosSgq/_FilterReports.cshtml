@@ -588,7 +588,7 @@
                                     <div class="form-group">
                                         <label><strong>Tipo de Edição</strong></label>
                                         <select class="form-control" name="tipoEdicao">
-                                            <option value="0">Todos</option>
+                                            @*<option value="0">Todos</option>*@
                                             <option value="1">Edição de Resultados</option>
                                             <option value="2">Edição de Cabeçalho</option>
                                         </select>
@@ -691,8 +691,7 @@
             Param: {}
         };
 
-        function atualizaObjFiltro() {
-            
+        function atualizaObjFiltro() { 
             var objFiltroParam = objFiltro.Param;
             objFiltro = $('#filterReports').serializeObject();
             $(Object.keys(objFiltro)).each(function (i, o) {
