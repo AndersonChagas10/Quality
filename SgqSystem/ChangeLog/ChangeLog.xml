@@ -1976,4 +1976,26 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-342</CardNumber>
+    <Version>1.3.0</Version>
+    <Description>Relatório Não Conformidades (Regras de Acesso)</Description>
+    <Script>
+      IF COL_LENGTH('RoleUserSgq','IsCorporativo') IS NOT NULL
+      BEGIN
+      ALTER TABLE RoleUserSgq ADD IsCorporativo bit null
+      END
+
+      IF COL_LENGTH('RoleUserSgq','IsNegocio') IS NOT NULL
+      BEGIN
+      ALTER TABLE RoleUserSgq ADD IsNegocio bit null
+      END
+
+      IF COL_LENGTH('RoleUserSgq','IsRegional') IS NOT NULL
+      BEGIN
+      ALTER TABLE RoleUserSgq ADD IsRegional bit null
+      END
+    </Script>
+  </Card>
+
 </Cards>
