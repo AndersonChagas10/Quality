@@ -394,7 +394,9 @@ function setValoresLevel3Alertas(level3, level2Resultado) {
 
 
 
-function setValoresLevel2Alertas(level1, level2, level2Result) {
+function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
+
+    var mensagemHtml = "";
 
     var totalAvaliacoesPonderadas = level2.attr('totalavaliacoesponderadas') != undefined ? parseFloat(level2.attr('totalavaliacoesponderadas')) : 0;
     var totalAvaliacoes = level2.attr('totalavaliacoes') != undefined ? parseFloat(level2.attr('totalavaliacoes')) : 0;
@@ -572,8 +574,6 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                         break;
                 }
 
-                var mensagemHtml = "";
-
                 alertaatual = alertaatual + 1;
                 level1.attr('avaliacaoultimoalerta', $('.painel:visible .evaluateCurrent').text());
                 level1.attr('monitoramentoultimoalerta', _level2.id);
@@ -650,8 +650,6 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                     default: mensagem += "<br><br>" + getResource("supervisor_manager_notification");
                         break;
                 }
-
-                var mensagemHtml = "";
 
                 alertaatual = alertaatual + 1;
                 level1.attr('avaliacaoultimoalerta', $('.painel:visible .evaluateCurrent').text());
@@ -762,8 +760,6 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                     default: mensagem += "<br><br>" + getResource("supervisor_manager_notification");
                         break;
                 }
-
-                var mensagemHtml = "";
 
                 alertaatual = alertaatual + 1;
                 level1.attr('avaliacaoultimoalerta', $('.painel:visible .evaluateCurrent').text());
@@ -1012,6 +1008,7 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
         //$('.level3Group:visible .level3:first').before(debug);
     }
 
+    mensagemAlerta.mensagem = mensagemHtml;
 
     var resultados = [];
     resultados.push(resultadoAvaliado, resultadoDefeitos, resultadoDefeitosL2);
@@ -1037,8 +1034,9 @@ function setValoresLevel1Alertas(level1, level2, level2Result) {
 
     var resultadoLevel2 = [];
 
+    var mensagemAlerta = { mensagem: ""};
     if (level2) {
-        resultadoLevel2 = setValoresLevel2Alertas(level1, level2, level2Result);
+        resultadoLevel2 = setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta);
     }
 
     //totalAvaliado = resultadoLevel2[0];
@@ -1056,7 +1054,7 @@ function setValoresLevel1Alertas(level1, level2, level2Result) {
 
     //setAlertaLevel2(level2, resultadoLevel2);
 
-    setAlertaLevel1(level1, resultadoLevel2, level2Result);
+    setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta);
 
     if (mostraDebug == true) {
         //var debug = '<b>totalavaliadoporindicador: </b>' + level1.attr('totalavaliado') +
@@ -1079,7 +1077,7 @@ function setValoresLevel1Alertas(level1, level2, level2Result) {
     return resultadoLevel2;
 }
 
-function setAlertaLevel1(level1, resultadoLevel2, level2Result) {
+function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) {
 
     var totalAvaliadoPorMonitoramento = resultadoLevel2[0];
     var totalDefeitosPorMonitoramento = resultadoLevel2[2];
@@ -1559,7 +1557,7 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result) {
         }
     }
 
-    var mensagemHtml = "";
+    var mensagemHtml = mensagemAlerta.mensagem;
 
     if (disparaalertas == true) {
 
@@ -1795,7 +1793,7 @@ function setGravaAlerta() {
         result += ";" + deviation.attr('alertnumber');// 5
         result += ";" + deviation.attr('defects');// 6
         result += ";" + deviation.attr('deviationdate');// 7
-        result += ";" + encodeURI(deviation.children('.message').text().replace(/ +(?= )/g, ''));// 8
+        result += ";" + encodeURI(deviation.children('.message').text().replace(/ +(?= )/g, '')).replace(/'/g, '');// 8
         result += ";" + deviation.attr('period');// 9
         result += ";" + deviation.attr('shift');// 10
         result += ";" + deviation.attr('collectiondate');// 11
