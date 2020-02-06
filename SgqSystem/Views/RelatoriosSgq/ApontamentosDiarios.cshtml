@@ -795,7 +795,7 @@
             $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
                 $('.alertParReasonEditMinimo10').addClass('hide');
 
-            if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 10) {
+            if (selectParReasonEdit.length <= 0 ) {
                 $('.alertParReasonEditMinimo10').removeClass('hide');
                 //$('select[name="selectParReasonEdit"]:visible').attr('style','border:1px solid red;');
                 $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');
