@@ -21,13 +21,6 @@ namespace SgqSystem.Controllers
             return View(db.ResourcePT.OrderBy(x => x.Key).ToList());
         }
 
-        [Route("AtualizarResource")]
-        public ActionResult AtualizarResource()
-        {
-            Dominio.Seed.Seed.SetSeedValues(isEN:DTO.GlobalConfig.LanguageEUA);
-            return RedirectToAction("Index", "ResourcePTs");
-        }
-
         // GET: ResourcePTs/Details/5
         public ActionResult Details(int? id)
         {
