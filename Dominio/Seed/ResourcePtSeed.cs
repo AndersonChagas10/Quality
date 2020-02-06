@@ -988,6 +988,10 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "defects_per_costCenter_section", Value = "Centro de Custo/Seção" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "click_to_unfold", Value = "Clique no gráfico para desdobrar para o próximo nível" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "click_to_fta", Value = "Clique no gráfico para criar o Formulário de Tratamento de Anomalia" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "pdca_menu_item", Value = "Exibir no PDCA" }); 
+                ResourcesInserir.Add(new ResourcePT() { Key = "is_corporate", Value = "É Corporativo" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "is_business", Value = "É Negócio" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "is_regional", Value = "É Regional" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "pdca_menu_item", Value = "Exibir no PDCA" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "company_group", Value = "Grupo de Empresa" });
 

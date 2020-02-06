@@ -25,5 +25,11 @@ namespace Dominio
         public bool IsActive { get; set; }
 
         public bool? FazColeta { get; set; }
+
+        public bool? IsCorporativo { get; set; }
+
+        public bool? IsNegocio { get; set; }
+
+        public bool? IsRegional { get; set; }
     }
 }

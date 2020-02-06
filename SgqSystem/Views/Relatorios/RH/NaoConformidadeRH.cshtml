@@ -21,6 +21,8 @@
     var UrlGraficoIndicadorPorShift = Url.Action("GraficoIndicadorPorShift", "api/NaoConformidadeRH");
     var urlGetHashDepartment = Url.Action("GetHashDepartment", "api/NaoConformidadeRH");
     var UnidadeUsuario = ViewBag.UnidadeUsuario;
+    var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
+    var val = jss.Serialize(ViewBag.RoleUSerSgq);
 
     ViewBag.UnitIdArr = true;
 
@@ -43,6 +45,9 @@
     ViewBag.ShowParLevel1 = true;
     ViewBag.ShowParLevel2 = true;
     ViewBag.ShowParLevel3 = true;
+    ViewBag.ShowParStructureGroup = false;
+    ViewBag.ShowParModule = true;
+    ViewBag.ShowUserCompanies = true; //Exibe somente as unidades do usuário no filtro
 }
 
 @section Content {
@@ -99,11 +104,13 @@
                 <div>
                     <button class="btn btn-sm btn-default" id="btnIndicador">@Resources.Resource.level1</button>
                     <button class="btn btn-sm btn-default" id="btnMonitoramento">Level 2</button>
-                    <button class="btn btn-sm btn-default" id="btnTarefasAcumuladas">Level 2 do Level 1</button>
-                    <button class="btn btn-sm btn-default" id="btnShift">Shift</button>
+                    @*<button class="btn btn-sm btn-default" id="btnTarefasAcumuladas">Level 2 do Level 1</button>*@
+                    @*<button class="btn btn-sm btn-default" id="btnShift">Shift</button>*@
                     <button class="btn btn-sm btn-default" id="btnDepartamento">@Resources.Resource.department</button>
                 </div>
             </div>
+
+            <input id="teste" class="hidden" value="@ViewBag.RoleUSerSgq" />
 
             <div id="formBodyContent">
                 @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
@@ -216,6 +223,46 @@
 
         });
 
+        function validaRoleUsuario(objRoleUser) {
+
+            objFiltro.Param.IsCorporativo = objRoleUser.IsCorporativo;
+            objFiltro.Param.IsNegocio = objRoleUser.IsNegocio;
+            objFiltro.Param.IsRegional = objRoleUser.IsRegional;
+
+            if (objRoleUser.IsCorporativo == true) {
+                $.ajax({
+                    url: urlGraficoHolding,
+                    type: 'post',
+                    data: JSON.stringify(objFiltro),
+                    dataType: "JSON",
+                    contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                    beforeSend: function () {
+                    }
+                })
+                    .done(function (data) {
+                        //console.log(data);
+                        GraficoHolding(data);
+                        $btn.button('reset');
+                        closeLoader();
+                    })
+                    .fail(function (jqXHR, textStatus, msg) {
+                        //console.log(msg);
+                        $btn.button('reset');
+                        //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                        closeLoader();
+                    });
+            }
+            else if (objRoleUser.IsNegocio == true) {
+                GetGraficoNegocio();
+            }
+            else if (objRoleUser.IsRegional == true) {
+                GetGraficoRegional();
+            } else {
+                GetGraficoUnidade();
+            }
+            
+        }
+
         function enviarFiltro() {
             
             $('#results').empty();
@@ -244,28 +291,12 @@
 
             objFiltro.Param = {};
             objFiltro.Param.auditorId = GetUsuarioId();
+            
+            var roleUser = '@Html.Raw(val)';
+            var objRoleUser = $.parseJSON(roleUser);
 
-            $.ajax({
-                url: urlGraficoHolding,
-                type: 'post',
-                data: JSON.stringify(objFiltro),
-                dataType: "JSON",
-                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
-                beforeSend: function () {
-                }
-            })
-                .done(function (data) {
-                    //console.log(data);
-                    GraficoHolding(data);
-                    $btn.button('reset');
-                    closeLoader();
-                })
-                .fail(function (jqXHR, textStatus, msg) {
-                    //console.log(msg);
-                    $btn.button('reset');
-                    //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
-                    closeLoader();
-                });
+            validaRoleUsuario(objRoleUser);
+        
 
             $('#RGTarefasPivotTable').hide();
         };
