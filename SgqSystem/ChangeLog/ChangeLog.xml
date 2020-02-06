@@ -2392,7 +2392,6 @@
     </Script>
   </Card>
 
-</Cards>
   <Card>
     <CardNumber>SGQ-342</CardNumber>
     <Version>1.3.0</Version>
@@ -2412,6 +2411,22 @@
       BEGIN
       ALTER TABLE RoleUserSgq ADD IsRegional bit null
       END
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-340</CardNumber>
+    <Version>1.3.0</Version>
+    <Description>[Relatório Analise Critica] Trazer no gráfico Histórico consolidado de acordo com os filtros</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-364</CardNumber>
+    <Version>1.3.0</Version>
+    <Description>[FIX] Tela quebrando ao tentar editar uma Estrutura Organizacional</Description>
+    <Script>
     </Script>
   </Card>
 
