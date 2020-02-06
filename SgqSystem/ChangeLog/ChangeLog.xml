@@ -2430,4 +2430,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-341</CardNumber>
+    <Version>1.3.0</Version>
+    <Description>[Relatório Apontamentos Diários] Adicionado novos filtros e PivotTable</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
