@@ -1977,6 +1977,423 @@
   </Card>
 
   <Card>
+    <CardNumber>SGQ-139</CardNumber>
+    <Version>1.0.11</Version>
+    <Description>Incluir frequência na linha do monitoramento</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>DEV-834</CardNumber>
+    <Version>1.0.11</Version>
+    <Description>Frequência trimestral/semestral/anual</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>DEV-870</CardNumber>
+    <Version>1.0.11</Version>
+    <Description>Corrigir a rota do botão voltar ( sempre direcionar para a tela anterior, atualmente esta direcionando para um link espeífico</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>DEV-870</CardNumber>
+    <Version>1.0.11</Version>
+    <Description>Definir quais itens vão ser abertos para impressão</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>DEV-808</CardNumber>
+    <Version>1.0.12</Version>
+    <Description>Desdobramento grupo de tarefas relatório</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>DEV-809</CardNumber>
+    <Version>1.0.12</Version>
+    <Description>Incluir impressão nos relatórios</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>DEV-807</CardNumber>
+    <Version>1.0.12</Version>
+    <Description>Incluir filtro módulo nos relatórios</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>DEV-847</CardNumber>
+    <Version>1.0.12</Version>
+    <Description>Tela ação corretiva - ajuste de campos e nomenclaturas</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>DEV-848</CardNumber>
+    <Version>1.0.12</Version>
+    <Description>Ajuste de edições, incluir justificativa e alteração (de-para)</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>DEV-848</CardNumber>
+    <Version>1.0.12</Version>
+    <Description>Ajuste de edições, incluir justificativa e alteração (de-para)</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>??</CardNumber>
+    <Version>1.0.12</Version>
+    <Description>Módulo no relatório evolutivo</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>DEV-840</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Cadastro Duplicado de Cargo</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SQG-193</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Cadastro Duplicado de Cargo</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SQG-192</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Bloquear árvore de Centro de Custo após completar Coleta</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SQG-141</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Relatório de Não Conformidade</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SQG-241</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Mensagem: Obrigatório responder todas as tarefas</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SQG-243</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Sinalizar as Tarefas respondidas</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SQG-188</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Relatório de NC - Inserir Módulo no filtro</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SQG-240</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Identificar as tarefas não respondidas</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SQG-239</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>ColletionLevel2 e derivados não estão sendo consolidados corretamente</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SQG-277</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Alerta KO - Apontamentos Diarios - Cluster</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>??</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Sinalização no Colapse</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-187</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Link Coleta de Dados</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-189</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Coleta confirmação de Saída</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SQG-143</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>FTA - Plano de Ação</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SQG-142</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Link Relatório de não conformidades</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SQG-142</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Link Relatório de não conformidades</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>DEV-855</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Simular clique no item da listagem do Appcoleta quando tiver apenas um item na lista</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>DEV-853</CardNumber>
+    <Version>1.0.13</Version>
+    <Description>Inserir Cluster na Parametrização</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-297</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Relatório de análise critica - Incluir o gráfico monitoramento por departamento</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-206</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Relatório de edicação - Inclusão dos filtros</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-299</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Relatório de Análise Crítica - Link com ação corretiva por departamentos.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-296</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Relatório de Análise Crítica - Incluir o Grafico de Monitoramento</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-186</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Relatório de Análise Crítica - Inserir filtros dos relatorios [Layout] </Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-298</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Relatório de Análise Crítica - Link com ação corretiva por monitoramento </Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-301</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Relatório de Análise Crítica - Incluir Tarefas</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-288</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Relatório de Análise Crítica - Incluir o gráfico tarefas acumuladas</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-194</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Relatório de Análise Crítica - Inserir o gráfico histórico consolidado no relatório</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-195</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Relatório de Análise Crítica - Inserir o gráfico de tendência no relatório</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-234</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Relatório de Análise Crítica - Link com ação corretiva [DADOS] </Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-157</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Layout de gráficos</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-158</CardNumber>
+    <Version>1.1.0</Version>
+    <Description>Layout de Tabelas</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-328</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>Remover decimal da coluna Evaluation na tabela Collection</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-327</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>Permitir numero decimal no peso (Parametrização??)</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-325</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>Remover ID de função mocado na parametrização do ParVinculoPeso</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-324</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>MELHORIA - Alterar fonte de busca usuário (Apontamentos Diários)</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-323</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>MELHORIA - Relatório: Apontamentos Diários (Regras de Acesso)</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-322</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>MELHORIA - Permitir selecionar N indicadores no planejamento</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-321</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>MELHORIA - Planejamento da Coleta (Árvore de Centro de Custo)</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-320</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>MELHORIA - Planejamento da Coleta (Frequência)</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-319</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>MELHORIA - Planejamento da Coleta (Grupo de Cluster)</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-318</CardNumber>
+    <Version>1.2.0</Version>
+    <Description>BUG - Quebrando tela - Perfil de usuário</Description>
+    <Script>
+    </Script>
+  </Card>
+
+</Cards>
+  <Card>
     <CardNumber>SGQ-342</CardNumber>
     <Version>1.3.0</Version>
     <Description>Relatório Não Conformidades (Regras de Acesso)</Description>
