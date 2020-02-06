@@ -248,8 +248,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 wParCluster = $" AND C2XC.ParCluster_Id IN ({string.Join(",", form.ParCluster_Ids)}) --Processo";
 
             //Regional
-            if (form.ParStructure_Ids != null && form.ParStructure_Ids.Length > 0)
-                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure_Ids)}) --Regional)";
+            if (form.ParStructure2_Ids != null && form.ParStructure2_Ids.Length > 0)
+                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure2_Ids)}) --Regional)";
 
             //Unidade
             if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
@@ -601,8 +601,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 wParCluster = $" AND C2XC.ParCluster_Id IN ({string.Join(",", form.ParCluster_Ids)}) --Processo";
 
             //Regional
-            if (form.ParStructure_Ids != null && form.ParStructure_Ids.Length > 0)
-                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure_Ids)}) --Regional)";
+            if (form.ParStructure2_Ids != null && form.ParStructure2_Ids.Length > 0)
+                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure2_Ids)}) --Regional)";
 
             //Unidade
             if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
@@ -759,8 +759,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 wParCluster = $" AND C2XC.ParCluster_Id IN ({string.Join(",", form.ParCluster_Ids)}) --Processo";
 
             //Regional
-            if (form.ParStructure_Ids != null && form.ParStructure_Ids.Length > 0)
-                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure_Ids)}) --Regional)";
+            if (form.ParStructure2_Ids != null && form.ParStructure2_Ids.Length > 0)
+                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure2_Ids)}) --Regional)";
 
             //Unidade
             if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
@@ -1070,8 +1070,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 wParCluster = $" AND C2XC.ParCluster_Id IN ({string.Join(",", form.ParCluster_Ids)}) --Processo";
 
             //Regional
-            if (form.ParStructure_Ids != null && form.ParStructure_Ids.Length > 0)
-                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure_Ids)}) --Regional)";
+            if (form.ParStructure2_Ids != null && form.ParStructure2_Ids.Length > 0)
+                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure2_Ids)}) --Regional)";
 
             //Unidade
             if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
@@ -1230,8 +1230,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 wParCluster = $" AND C2XC.ParCluster_Id IN ({string.Join(",", form.ParCluster_Ids)}) --Processo";
 
             //Regional
-            if (form.ParStructure_Ids != null && form.ParStructure_Ids.Length > 0)
-                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure_Ids)}) --Regional)";
+            if (form.ParStructure2_Ids != null && form.ParStructure2_Ids.Length > 0)
+                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure2_Ids)}) --Regional)";
 
             //Unidade
             if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
@@ -1551,8 +1551,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 wParCluster = $" AND C2XC.ParCluster_Id IN ({string.Join(",", form.ParCluster_Ids)}) --Processo";
 
             //Regional
-            if (form.ParStructure_Ids != null && form.ParStructure_Ids.Length > 0)
-                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure_Ids)}) --Regional)";
+            if (form.ParStructure2_Ids != null && form.ParStructure2_Ids.Length > 0)
+                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure2_Ids)}) --Regional)";
 
             //Unidade
             if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
@@ -1868,8 +1868,8 @@ ORDER BY NCPercent DESC";
                 wParCluster = $" AND C2XC.ParCluster_Id IN ({string.Join(",", form.ParCluster_Ids)}) --Processo";
 
             //Regional
-            if (form.ParStructure_Ids != null && form.ParStructure_Ids.Length > 0)
-                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure_Ids)}) --Regional)";
+            if (form.ParStructure2_Ids != null && form.ParStructure2_Ids.Length > 0)
+                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure2_Ids)}) --Regional)";
 
             //Unidade
             if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
@@ -2187,8 +2187,8 @@ ORDER BY S3.PorcentagemNc DESC";
                 wParCluster = $"";
 
             //Regional
-            if (form.ParStructure_Ids != null && form.ParStructure_Ids.Length > 0)
-                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure_Ids)}) --Regional)";
+            if (form.ParStructure2_Ids != null && form.ParStructure2_Ids.Length > 0)
+                wParStructure = $" AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure2_Ids)}) --Regional)";
 
             //Unidade
             if (form.ParCompany_Ids != null && form.ParCompany_Ids.Length > 0)
@@ -2326,9 +2326,9 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
                 wParCluster = $" AND CL.Id IN ({string.Join(",", form.ParCluster_Ids)}) --Processo";
             }
 
-            if (form.ParStructureRegional_Ids.Length > 0 && form.ParStructureRegional_Ids[0] != 0)
+            if (form.ParStructure2_Ids.Length > 0 && form.ParStructure2_Ids[0] != 0)
             {
-                Wregional = " AND S.ParStructureGroup_Id IN (" + string.Join(",", form.ParStructureRegional_Ids) + ")";
+                Wregional = " AND S.ParStructureGroup_Id IN (" + string.Join(",", form.ParStructure2_Ids) + ")";
             }
 
             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] != 0)

@@ -907,6 +907,10 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourceEN() { Key = "function", Value = "Function" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "company_group", Value = "Company Group" });
 
+                ResourcesInserir.Add(new ResourceEN() { Key = "parStructure1", Value = "Holding" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "parStructure2", Value = "Business Group" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "parStructure3", Value = "Regional" });
+
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourceKeys.Contains(x.Key));
 
                 if (resourcesParaInserir != null)
