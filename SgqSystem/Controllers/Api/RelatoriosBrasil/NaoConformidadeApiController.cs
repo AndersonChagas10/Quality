@@ -576,7 +576,7 @@ INSERT INTO #AMOSTRATIPO4
             			LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
             				ON A4.UNIDADE = UNI.Id
             				AND A4.INDICADOR = IND.ID
-                        INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
+                        LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
 		                        ON P1M.ParLevel1_Id = IND.Id
 		                        AND P1M.IsActive = 1
 		                        AND P1M.EffectiveDateStart <= @DATAINICIAL
@@ -875,7 +875,7 @@ INSERT INTO #AMOSTRATIPO4
             			LEFT JOIN #AMOSTRATIPO4 A4 (NOLOCK)
             				ON A4.UNIDADE = UNI.Id
             				AND A4.INDICADOR = IND.ID
-                        INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
+                        LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			                        ON P1M.ParLevel1_Id = IND.Id
 			                        --Variavel
 			                        AND P1M.IsActive = 1
@@ -1125,7 +1125,7 @@ INSERT INTO #AMOSTRATIPO4
                 "\n         INNER JOIN ParDepartment D with (nolock) " +
                 "\n         ON L2.ParDepartment_Id = D.Id " +
                 $@"
-                        INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
+                        LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			                        ON P1M.ParLevel1_Id = IND.Id
 			                        --Variavel
 			                        AND P1M.IsActive = 1
@@ -1480,7 +1480,7 @@ FROM (SELECT
 		--  	ON CL2.ParLevel2_id = L2.Id
 		--  INNER JOIN ParDepartment D WITH (NOLOCK)
 		--  	ON L2.ParDepartment_Id = D.Id
-            INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
+            LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			        ON P1M.ParLevel1_Id = IND.Id
 			        --Variavel
 			        AND P1M.IsActive = 1
@@ -1677,7 +1677,7 @@ FROM (SELECT
                             AND A4.DATA = CL1.ConsolidationDate
                             AND A4.[SHIFT] = CL1.[SHIFT]
                             AND A4.[PERIOD] = CL1.[PERIOD]
-                        INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
+                        LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			                        ON P1M.ParLevel1_Id = IND.Id
 			                        --Variavel
 			                        AND P1M.IsActive = 1
@@ -1965,7 +1965,7 @@ FROM (SELECT
 			ON CL2.ConsolidationLevel1_id = CL1.Id
 		INNER JOIN ParLevel2 L2 WITH (NOLOCK)
 			ON CL2.ParLevel2_id = L2.Id
-        INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
+        LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			        ON P1M.ParLevel1_Id = IND.Id
 			        --Variavel
 			        AND P1M.IsActive = 1
@@ -2160,7 +2160,7 @@ DROP TABLE #AMOSTRATIPO4 ";
                "\n 	ON MON.Id = CL2.ParLevel2_Id " +
                "\n 	INNER JOIN ParCompany UNI (nolock) " +
                "\n 	ON UNI.Id = CL1.UnitId " +
-               $@"  INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
+               $@"  LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			            ON P1M.ParLevel1_Id = IND.Id
 			            --Variavel
 			            AND P1M.IsActive = 1
@@ -2256,7 +2256,7 @@ DROP TABLE #AMOSTRATIPO4 ";
             	ON IND.Id = CL1.ParLevel1_Id
             INNER JOIN ParLevel2 MON (NOLOCK)
             	ON MON.Id = CL2.ParLevel2_Id
-            INNER JOIN ParLevel1XModule P1M WITH (NOLOCK)
+            LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
 			            ON P1M.ParLevel1_Id = IND.Id
 			            --Variavel
 			            AND P1M.IsActive = 1

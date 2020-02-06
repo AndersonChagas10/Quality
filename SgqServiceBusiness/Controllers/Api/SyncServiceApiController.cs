@@ -5495,8 +5495,8 @@ namespace SgqServiceBusiness.Api
                         tipoTela = variableList[0].Name;
                     }
 
-                    var ParLevel2DB = new SGQDBContext.ParLevel2(db, quebraProcesso);
-                    var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(parlevel1, dateCollect, ParCompany_Id);
+                    //var ParLevel2DB = new SGQDBContext.ParLevel2(db, quebraProcesso);
+                    //var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(parlevel1, dateCollect, ParCompany_Id);
 
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);
