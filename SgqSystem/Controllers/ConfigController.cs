@@ -17,6 +17,7 @@ namespace SgqSystem.Controllers
         public String UpdateDicionarioEstatico()
         {
             Dominio.Seed.Seed.SetSeedValues(isEN: GlobalConfig.LanguageEUA, runSetSeed: true);
+            Dominio.Seed.Seed.SetDicionario();
             return "Atualizado dicionario estático";
         }
     }
