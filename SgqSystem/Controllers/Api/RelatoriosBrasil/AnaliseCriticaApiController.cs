@@ -2695,7 +2695,7 @@ AND PL1.Id = {ParLevel1_Id} --Indicador
 						ParLevel1_Id
 					   ,ParGroupParLevel1_Id
 					FROM ParGroupParLevel1XParLevel1 WITH (NOLOCK)
-					WHERE ParLevel1_Id = C1.ParLevel1_Id) PGL1
+					WHERE ParLevel1_Id = C1.ParLevel1_Id) PGPL1
 
 
 				WHERE 1 = 1
