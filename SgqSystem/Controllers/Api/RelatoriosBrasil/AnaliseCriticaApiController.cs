@@ -2247,7 +2247,8 @@ ORDER BY S3.PorcentagemNc DESC";
             var sql = $@"
 
 SELECT
-   PL1.Id AS ParLevel1_Id
+    Acao.Id
+   ,PL1.Id AS ParLevel1_Id
    ,PL1.Name AS ParLevel1
    ,PL2.Id as ParLevel2_Id
    ,PL2.Name AS ParLevel2

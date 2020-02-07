@@ -1429,9 +1429,11 @@
             });
 
         }
-
+        
+        
         function GerarTabelaPlanoAcao(data, seletorPanel, idChart) {
-
+            debugger
+            var urlPA = getDicionario("URL_PA").split(";")[0];
             let columns = [
                 { title: "Indicador", mData: "ParLevel1" },
                 { title: "Monitoramento", mData: "ParLevel2" },
@@ -1440,8 +1442,8 @@
                 { title: "Ação Genérica", mData: "AcaoGenerica" },
                 { title: "Status", mData: "Status" },
                 {
-                    title: "", mData: "", render: function (data) {
-                        return "<a>Ver mais</a>";
+                    title: "", mData: null, render: function (data) {
+                        return "<a href='"+urlPA+"/home2/Index2?Acao=" + data.Id + "' target='_blank'>Ver Plano de Ação</a>";
                     }
                 }
             ];

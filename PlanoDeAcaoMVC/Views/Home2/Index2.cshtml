@@ -1292,6 +1292,15 @@
         $(document).ready(function () {
 
             var zero = 0;
+           
+            var url = new URL(window.location.href);
+            var parametroUrlId = url.searchParams.get("Acao");
+
+            if (parametroUrlId != null) {
+                setTimeout(function () { 
+                    getAcompanhamento(parametroUrlId)
+                },100)
+            }
 
             $("input[name='daterange']").css('width', '140px');
             $("input[name='daterange']").css('height', '25px');
@@ -2790,7 +2799,7 @@
                     $('#Status_Id').select2({
                         matcher: matchCustom
                     });
-                }, 1000);
+                }, 4500);
             })
         }
 
