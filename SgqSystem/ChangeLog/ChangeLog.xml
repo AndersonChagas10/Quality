@@ -2455,6 +2455,14 @@
   </Card>
 
   <Card>
+    <CardNumber>SGQ-336</CardNumber>
+    <Version>1.4.0</Version>
+    <Description>[MSP][APPColeta] Itens que não fizerem parte da receita selecionada não serão exibidos e serão salvos como NA</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
     <CardNumber>SGQ-366</CardNumber>
     <Version>1.4.0</Version>
     <Description>[GQ][Analise critica] Na tarefa incluir link com plano de ação</Description>
