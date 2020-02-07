@@ -142,7 +142,7 @@
 
         </div>
 
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label></label>
                 <button type="button" hidden="hidden" class="form-control btn btn-info hidden" id="btnAvancado" name="avancado"> Avançado</button>
@@ -166,6 +166,18 @@
                 <br />
                 <label class="switch">
                     <input type="checkbox" id="checkboxL3IsRequired" name="IsRequired">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+        </div>
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label>N/A:</label>
+                <br />
+                <label class="switch">
+                    <input type="checkbox" name="IsAtiveNA" id="IsAtiveNA" >
                     <span class="slider round"></span>
                 </label>
             </div>
@@ -411,6 +423,7 @@
             $('table#table' + id + ' tbody').html('');
 
             $('#ShowLevel3Limits').prop('checked', true);
+            $('#IsAtiveNA').prop('checked', true); 
             
             $(list).each(function (i, o) {
 
@@ -718,6 +731,7 @@
             obj['ParCargo_Id'] = formdata.ParCargo_Id;
             obj['ParCluster_Id'] = formdata.ParCluster_Id;
             obj['ShowLevel3Limits'] = formdata.ShowLevel3Limits;
+            obj['IsAtiveNA'] = formdata.IsAtiveNA;
             return obj;
         },
 
@@ -736,6 +750,7 @@
             let ParLevel3InputType_Id = "";
             let ParLevel2_Id = "";
             let ParLevel3_Id = "";
+            let IsActveNA = "";
 
             IntervalMax = obj.IntervalMax;
             IntervalMin = obj.IntervalMin;
@@ -745,6 +760,7 @@
             ParLevel3InputType_Id = obj.ParLevel3InputType_Id;
             ParLevel2_Id = obj.ParLevel2_Id;
             ParLevel3_Id = obj.ParLevel3_Id;
+            IsActveNA = obj.IsAtiveNA;
 
             let ParInputTypeValues = obj['ParInputTypeValues'];
             let blockParFieldType = false;

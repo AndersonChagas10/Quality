@@ -359,6 +359,7 @@ namespace SgqSystem.Controllers.V2.Api
                         parVinculoPesoOld.IsRequired = parLevel3Value.IsRequired;
                         parVinculoPesoOld.IsDefaultAnswer = parLevel3Value.IsDefaultAnswer;
                         parVinculoPesoOld.ParCluster_Id = parLevel3Value.ParCluster_Id;
+                        parVinculoPesoOld.IsAtiveNA = parLevel3Value.IsAtiveNA;
 
                         foreach (var item in parLevel3Value.ParInputTypeValues)
                         {
