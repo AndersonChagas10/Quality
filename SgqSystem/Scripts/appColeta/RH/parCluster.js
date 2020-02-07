@@ -8,7 +8,7 @@
             openMensagem('Carregando lista de clusters', 'blue', 'white');
 
             $.ajax({
-                data: { parClusterGroupId: currentParClusterGroup_Id},
+                data: { parClusterGroupId: currentParClusterGroup_Id, parCompany_Id : currentParCompany_Id},
                 url: urlPreffix + '/api/parCluster',
                 type: 'GET',
                 success: function (data) {
