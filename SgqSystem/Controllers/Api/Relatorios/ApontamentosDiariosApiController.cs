@@ -26,7 +26,7 @@ namespace SgqSystem.Controllers.Api
 
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/ApontamentosDiarios")]
-    public class ApontamentosDiariosApiController : ApiController
+    public class ApontamentosDiariosApiController : BaseApiController
     {
         private string conexao;
         public ApontamentosDiariosApiController()
@@ -62,7 +62,7 @@ namespace SgqSystem.Controllers.Api
         public List<ApontamentosDiariosResultSet> GetApontamentosDiariosRH([FromBody] DataCarrierFormularioNew form)
         {
 
-            var query = new ApontamentosDiariosResultSet().SelectRH(form);
+            var query = new ApontamentosDiariosResultSet().SelectRH(form, GetUserUnitsIds(form.ShowUserCompanies));
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -140,25 +140,32 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("Save")]
-        public Result_Level3DTO SaveResultLevel3([FromBody] Result_Level3DTO resultLevel3)
+        [Route("Save/{userSgq_Id}/{parReason_Id}/{motivo}")]
+        public Result_Level3DTO SaveResultLevel3([FromUri] int userSgq_Id, int parReason_Id, string motivo, [FromBody] Result_Level3DTO resultLevel3)
         {
             var parLevel3Value = new ParLevel3Value();
             using (var databaseSgq = new SgqDbDevEntities())
             {
+                databaseSgq.Configuration.LazyLoadingEnabled = false;
                 var resultlevel3 = databaseSgq.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
+                var auditorId = databaseSgq.CollectionLevel2.Where(x => x.Id == resultlevel3.CollectionLevel2_Id).Select(x=>x.AuditorId).First();
+
+                LogSystem.LogTrackBusiness.RegisterIfNotExist(resultlevel3, resultlevel3.Id, "Result_Level3", auditorId);
                 var parLevel3 = databaseSgq.ParLevel3.Where(x => x.Id == resultlevel3.ParLevel3_Id).FirstOrDefault();
                 parLevel3Value = databaseSgq.ParLevel3Value.Where(x => x.ParLevel3_Id == parLevel3.Id).FirstOrDefault();
                 var parInputTypeValues = databaseSgq.ParInputTypeValues.Where(x => x.ParLevel3Value_Id == parLevel3Value.Id && resultLevel3.Value == x.Intervalo.ToString()).FirstOrDefault();
                 if (parLevel3Value.ParLevel3InputType_Id == 8)
                     resultLevel3.ValueText = parInputTypeValues.Valor.ToString();
-
             }
+
+            //[TODO] Inserir registro de log de edição (salvar resultlevel3_Id == resultLevel3.Id)
             var query = resultLevel3.CreateUpdate();
             try
             {
                 db.Database.ExecuteSqlCommand(query);
                 var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);
+
+                LogSystem.LogTrackBusiness.Register(level3Result, level3Result.Id, "Result_Level3", userSgq_Id, parReason_Id, motivo);
 
                 ConsolidacaoEdicao(resultLevel3.Id);
                 return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
@@ -219,41 +226,72 @@ namespace SgqSystem.Controllers.Api
         {
             try
             {
-                foreach (var item in Lsc2xhf.HeaderField)
+                CollectionLevel2 collectionLevel2 = null;
+                List<Select> headerFieldsValues = null;
+                if (Lsc2xhf.HeaderField.Count() > 0)
                 {
-                    if (item.Id > 0)//Update
-                    {
-                        var original = db.CollectionLevel2XParHeaderField.FirstOrDefault(c => c.Id == item.Id);
-
-                        if (string.IsNullOrEmpty(item.Value))//Remover
-                        {
-                            db.CollectionLevel2XParHeaderField.Remove(original);
-                        }
-                        else //Update
-                        {
-                            original.Value = item.Value;
-                            original.ParHeaderField_Id = item.ParHeaderField_Id;
-                            original.ParHeaderField_Name = item.ParHeaderField_Name;
-                        }
-                    }
-                    else if (!string.IsNullOrEmpty(item.Value)) //Add
-                    {
-                        db.CollectionLevel2XParHeaderField.Add(item);
-                    }
+                    int collectionLevel2_Id = Lsc2xhf.HeaderField[0].CollectionLevel2_Id;
+                    collectionLevel2 = db.CollectionLevel2.Where(x => x.Id == collectionLevel2_Id).FirstOrDefault();
+                    headerFieldsValues = GetSelectsByHeaderField(Lsc2xhf.HeaderField, collectionLevel2);
                 }
 
-                db.SaveChanges();
-
-                //Reconsolida
-                if (Lsc2xhf.HeaderField.Count > 0)
+                using (SgqDbDevEntities dbEntities = new SgqDbDevEntities())
                 {
-                    var syncServices = new SgqServiceBusiness.Api.SyncServiceApiController(conexao,conexao);
+                    dbEntities.Configuration.LazyLoadingEnabled = false;
+                    foreach (var item in Lsc2xhf.HeaderField)
+                    {
+                        if (item.Id > 0)//Update
+                        {
+                            var original = dbEntities.CollectionLevel2XParHeaderField.FirstOrDefault(c => c.Id == item.Id);
+                            original.CollectionLevel2 = null;
+                            original.ParHeaderField = null;
 
-                    syncServices.ReconsolidationToLevel3(Lsc2xhf.HeaderField[0].CollectionLevel2_Id.ToString());
+                            if (original.Value == item.Value)
+                                continue;
+
+                            var valueSelected = headerFieldsValues.Where(x => x.HeaderField.Id == item.ParHeaderField_Id).FirstOrDefault();
+                            if (valueSelected != null)
+                                original.ParHeaderField_ValueName = valueSelected.Values.Where(x => x.Id == Convert.ToInt32(original.Value)).FirstOrDefault()?.Name;
+
+                            //[TODO] Inserir registro de log de edição
+                            var auditorId = dbEntities.CollectionLevel2.Where(x => x.Id == original.CollectionLevel2_Id).Select(x => x.AuditorId).First();
+                            LogSystem.LogTrackBusiness.RegisterIfNotExist(original, original.Id, "CollectionLevel2XParHeaderField", auditorId);
+
+                            if (string.IsNullOrEmpty(item.Value))//Remover
+                            {
+                                dbEntities.CollectionLevel2XParHeaderField.Remove(original);
+                            }
+                            else //Update
+                            {
+                                valueSelected = headerFieldsValues.Where(x => x.HeaderField.Id == item.ParHeaderField_Id).FirstOrDefault();
+                                if (valueSelected != null)
+                                    original.ParHeaderField_ValueName = valueSelected.Values.Where(x => x.Id == Convert.ToInt32(item.Value)).FirstOrDefault()?.Name;
+
+                                original.Value = item.Value;
+                                original.ParHeaderField_Id = item.ParHeaderField_Id;
+                                original.ParHeaderField_Name = item.ParHeaderField_Name;
+                                LogSystem.LogTrackBusiness.Register(original, original.Id, "CollectionLevel2XParHeaderField", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(item.Value)) //Add
+                        {
+                            dbEntities.CollectionLevel2XParHeaderField.Add(item);
+                        }
+                    }
+
+                    dbEntities.SaveChanges();
+
+                    //Reconsolida
+                    if (Lsc2xhf.HeaderField.Count > 0)
+                    {
+                        var syncServices = new SgqServiceBusiness.Api.SyncServiceApiController(conexao, conexao);
+
+                        syncServices.ReconsolidationToLevel3(Lsc2xhf.HeaderField[0].CollectionLevel2_Id.ToString());
+                    }
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
                 throw;
@@ -283,7 +321,6 @@ namespace SgqSystem.Controllers.Api
         public List<Select> getSelects(int ResultLevel3_Id)
         {
             //pegar os cabeçalhos
-            var resultHeaderField = new List<Select>();
             var collectionLevel2 = getCollectionLevel2ByResultLevel3(ResultLevel3_Id);
 
             var query = $@"SELECT *
@@ -297,6 +334,14 @@ namespace SgqSystem.Controllers.Api
             		WHERE id = { ResultLevel3_Id }))";
 
             var coletas = db.Database.SqlQuery<CollectionLevel2XParHeaderField>(query).ToList();
+
+            return GetSelectsByHeaderField(coletas, collectionLevel2);
+        }
+
+        public List<Select> GetSelectsByHeaderField(List<CollectionLevel2XParHeaderField> coletas, CollectionLevel2 collectionLevel2)
+        {
+
+            var resultHeaderField = new List<Select>();
 
             //Ids dos cabeçalhos de monitoramentos
             var level1HeaderFields_Id = db.ParLevel1XHeaderField.Include("ParHeaderField").Where(r => r.ParLevel1_Id == collectionLevel2.ParLevel1_Id && r.IsActive && r.ParHeaderField.ParLevelDefinition_Id == 1).Select(r => r.ParHeaderField_Id).ToList();
@@ -356,8 +401,7 @@ namespace SgqSystem.Controllers.Api
                             CollectionLevel2XParHeaderField_Id = select.CollectionLevel2XParHeaderField_Id,
                             HeaderField = select.HeaderField,
                             Values = select.Values,
-                            ValueSelected =
-                            select.ValueSelected
+                            ValueSelected = select.ValueSelected
                         });
                     }
                 }
@@ -387,6 +431,9 @@ namespace SgqSystem.Controllers.Api
 
         public class ListCollectionLevel2XParHeaderField
         {
+            public int ParReason_Id { get; set; }
+            public string Motivo { get; set; }
+            public int UserSgq_Id { get; set; } //Quem editou
             public List<CollectionLevel2XParHeaderField> HeaderField { get; set; }
         }
     }

@@ -324,11 +324,16 @@ function updateCounterLinhaLevel2(level1, level2) {
             $('.list-group-item[id=' + level2.attr('id') + '] .sampleCurrentTotal').text(0);
    }
 
-   if ($('.counter[indicador=' + level2.attr('id') + '][headerlevel=level2_line][counter=defects][level=2]').length == 0
-       && $('.counter[indicador=' + level1.attr('id') + '][headerlevel=level2_line][counter=defects][level=1]').length == 0 && level1.attr('hasgrouplevel2') != 'true') {
-       $('.list-group-item[id=' + level2.attr('id') + '] .defectstotal').addClass('hide');
-   }
-   //}
+    if ($('.counter[indicador=' + level2.attr('id') + '][headerlevel=level2_line][counter=defects][level=2]').length == 0
+        && $('.counter[indicador=' + level1.attr('id') + '][headerlevel=level2_line][counter=defects][level=1]').length == 0 && level1.attr('hasgrouplevel2') != 'true') {
+        $('.list-group-item[id=' + level2.attr('id') + '] .defectstotal').addClass('hide');
+    }
+
+    if ($('.counter[indicador=' + level2.attr('id') + '][headerlevel=level2_line][counter=frequency][level=2]').length == 0
+        && $('.counter[indicador=' + level1.attr('id') + '][headerlevel=level2_line][counter=frequency][level=1]').length == 0 && level1.attr('hasgrouplevel2') != 'true') {
+        $('.list-group-item[id=' + level2.attr('id') + '] .frequencyTotal').addClass('hide');
+    }
+    //}
 }
 
 function setAvaliationClick(level2) {
@@ -416,6 +421,6 @@ function setAvaliationAndSampleLvl2Line(level2) {
     if (parseInt(evaluatecurrent) == 0)
         $(level2).next().find('.evaluateCurrent').html($(level2).attr('evaluatecurrent'));
     var samplecurrent = parseInt($(level2).attr('samplecurrent'));
-    $(level2).next().find('.sampleCurrentTotal').html(samplecurrent == 0 ? $(level2).attr('sample') : samplecurrent);
+    $(level2).next().find('.sampleCurrentTotal').html(samplecurrent);
 
 }

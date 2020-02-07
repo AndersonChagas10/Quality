@@ -48,5 +48,9 @@ namespace PlanoAcaoEF
         public string Regional { get; set; }
         public string UnidadeName { get; set; }
         public Nullable<int> UnidadeDeMedida_Id { get; set; }
+        public string ParDepartments_Hash { get; set; }
+        public string ParDepartmentsName { get; set; }
+        public Nullable<int> ParCargo_Id { get; set; }
+        public string ParCargoName { get; set; }
     }
 }

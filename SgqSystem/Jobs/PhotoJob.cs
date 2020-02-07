@@ -63,7 +63,7 @@ namespace SgqSystem.Jobs
                 }
                 catch (Exception ex)
                 {
-                    new CreateLog(new Exception("Erro no metodo [PhotoJobFunction]", ex));
+                    LogSystem.LogErrorBusiness.Register(new Exception("Erro no metodo [PhotoJobFunction]", ex));
                 }
             }
         }

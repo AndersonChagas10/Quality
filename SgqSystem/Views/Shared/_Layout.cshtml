@@ -85,6 +85,8 @@
     @Scripts.Render("~/bundles/mask")
     @Scripts.Render("~/bundles/hc")
 
+    <script src="~/Scripts/helper/mask.js"></script>
+
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
@@ -347,7 +349,22 @@
                     "previous": '@Resources.Resource.previous',
                     "next": '@Resources.Resource.next'
                 }
-            }
+            },
+            'columnDefs': [
+                {
+                    'targets': 3,
+                    "mRender": function (data, type, row) {
+                        if (data.length >= 100) {
+                            var trimmedString = data.substring(0, 100);
+                            return trimmedString + '...';
+                        } else {
+                            return data;
+                        }
+                        
+                    }
+                }
+            ]
+            
         };
 
         /*DataTable Padrão BR*/

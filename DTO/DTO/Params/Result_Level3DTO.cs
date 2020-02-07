@@ -40,6 +40,7 @@ namespace DTO.DTO.Params
                     var resultOld = databaseSgq.Result_Level3.FirstOrDefault(r => r.Id == Id);
                     var parL3vel3 = databaseSgq.ParLevel3.AsNoTracking().FirstOrDefault(r => r.Id == resultOld.ParLevel3_Id);
                     var parLevel3Value = databaseSgq.ParLevel3Value.AsNoTracking().Where(r => r.ParLevel3_Id == resultOld.ParLevel3_Id && r.IsActive == true).ToList();
+
                     CollectionLevel2 = databaseSgq.CollectionLevel2.AsNoTracking().FirstOrDefault(r => r.Id == resultOld.CollectionLevel2_Id);
 
                     Weight = resultOld.Weight;
@@ -178,9 +179,10 @@ namespace DTO.DTO.Params
                 if (isQueryEdit)
                 {
                     var filtroParLevel3Value = ParLevel3.ParLevel3Value
-                        .Where(r => r.ParCompany_Id == CollectionLevel2.UnitId
-                        || r.ParCompany_Id == null)
-                        .OrderByDescending(r => r.ParCompany_Id)
+                        .Where(r => (r.ParCompany_Id == CollectionLevel2.UnitId || r.ParCompany_Id == null) &&
+                        (CollectionLevel2.ParLevel1_Id == r.ParLevel1_Id || r.ParLevel1_Id == null) &&
+                        (CollectionLevel2.ParLevel2_Id == r.ParLevel2_Id || r.ParLevel2_Id == null))
+                        .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
                     try
@@ -249,9 +251,10 @@ namespace DTO.DTO.Params
                 if (isQueryEdit)
                 {
                     var filtroParLevel3Value = ParLevel3.ParLevel3Value
-                        .Where(r => r.ParCompany_Id == CollectionLevel2.UnitId
-                        || r.ParCompany_Id == null)
-                        .OrderByDescending(r => r.ParCompany_Id)
+                        .Where(r => (r.ParCompany_Id == CollectionLevel2.UnitId || r.ParCompany_Id == null) &&
+                        (CollectionLevel2.ParLevel1_Id == r.ParLevel1_Id || r.ParLevel1_Id == null) &&
+                        (CollectionLevel2.ParLevel2_Id == r.ParLevel2_Id || r.ParLevel2_Id == null))
+                        .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
                     if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//BINARIO
@@ -265,7 +268,7 @@ namespace DTO.DTO.Params
                         var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
                         var valorDefinido = Guard.ConverteValorCalculado(_Value);
                         var dentroDoRange = (valorDefinido <= vmax && valorDefinido >= vmin);
-                        return dentroDoRange ? "0" : "1";
+                        return dentroDoRange ? "1" : "0";
                     }
                     else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 4) != null)//CALCULADO
                     {
@@ -315,9 +318,10 @@ namespace DTO.DTO.Params
                 if (isQueryEdit)
                 {
                     var filtroParLevel3Value = ParLevel3.ParLevel3Value
-                        .Where(r => r.ParCompany_Id == CollectionLevel2.UnitId
-                        || r.ParCompany_Id == null)
-                        .OrderByDescending(r => r.ParCompany_Id)
+                        .Where(r => (r.ParCompany_Id == CollectionLevel2.UnitId || r.ParCompany_Id == null) &&
+                        (CollectionLevel2.ParLevel1_Id == r.ParLevel1_Id || r.ParLevel1_Id == null) &&
+                        (CollectionLevel2.ParLevel2_Id == r.ParLevel2_Id || r.ParLevel2_Id == null))
+                        .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
                     if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
@@ -374,9 +378,10 @@ namespace DTO.DTO.Params
                 if (isQueryEdit)
                 {
                     var filtroParLevel3Value = ParLevel3.ParLevel3Value
-                        .Where(r => r.ParCompany_Id == CollectionLevel2.UnitId
-                        || r.ParCompany_Id == null)
-                        .OrderByDescending(r => r.ParCompany_Id)
+                        .Where(r => (r.ParCompany_Id == CollectionLevel2.UnitId || r.ParCompany_Id == null) &&
+                        (CollectionLevel2.ParLevel1_Id == r.ParLevel1_Id || r.ParLevel1_Id == null) &&
+                        (CollectionLevel2.ParLevel2_Id == r.ParLevel2_Id || r.ParLevel2_Id == null))
+                        .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
                     if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
@@ -521,9 +526,10 @@ namespace DTO.DTO.Params
                     if (ParLevel3.ParLevel3Value.IsNotNull())
                     {
                         var filtroParLevel3Value = ParLevel3.ParLevel3Value
-                            .Where(r => r.ParCompany_Id == CollectionLevel2.UnitId
-                            || r.ParCompany_Id == null)
-                            .OrderByDescending(r => r.ParCompany_Id)
+                            .Where(r => (r.ParCompany_Id == CollectionLevel2.UnitId || r.ParCompany_Id == null) && 
+                            (CollectionLevel2.ParLevel1_Id == r.ParLevel1_Id || r.ParLevel1_Id == null) && 
+                            (CollectionLevel2.ParLevel2_Id == r.ParLevel2_Id || r.ParLevel2_Id == null))
+                            .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                             .ToList();
 
                         if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull())

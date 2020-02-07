@@ -662,22 +662,18 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                          "\n inner join pardepartment d  on d.id = pl2.ParDepartment_Id " +
                          "\n LEFT JOIN ParNotConformityRuleXLevel AL                                                                                   " +
                          "\n ON AL.ParLevel2_Id = PL2.Id     AND AL.IsActive = 1                                                                                             " +
-                        "\n WHERE P321.ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "'              " +
+                         "\n WHERE P321.ParLevel1_Id = '" + parLevel1.ParLevel1_Id + "'              " +
                          "\n AND PL2.IsActive = 1  AND P32.IsActive = 1 AND P321.Active = 1                                        " +
                          "\n AND " +
-                         "\n  (select sum(a) from " +
+                         "\n  EXISTS " +
                          "\n ( " +
-                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
-                         "\n union all " +
-                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
-                         "\n ) temAv) > 0 " +
+                         "\n select number as a  from ParEvaluation (nolock)  where IsActive = 1 and ParLevel2_id = PL2.Id and (ParCompany_Id = " + ParCompany_Id + " or ParCompany_Id is Null) and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
+                         "\n ) " +
                          "\n AND " +
-                         "\n  (select sum(a) from " +
+                         "\n  EXISTS " +
                          "\n ( " +
-                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id = " + ParCompany_Id + " and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
-                         "\n union all " +
-                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and ParCompany_Id is Null and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
-                         "\n ) temAm) > 0 " +
+                         "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and (ParCompany_Id = " + ParCompany_Id + " or ParCompany_Id is Null) and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
+                         "\n ) " +
                          "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto , PL2.ParFrequency_id, D.name                 " +
                          "\n ";
 

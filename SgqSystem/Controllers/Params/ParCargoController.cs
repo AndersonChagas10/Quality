@@ -46,7 +46,14 @@ namespace SgqSystem.Controllers.Params
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,IsActive,AddDate,AlterDate,ParDepartment_Ids")] ParCargo parCargo)
         {
-            if (ModelState.IsValid)
+            var exist = db.ParCargo.Any(x => x.Name == parCargo.Name);
+
+            if (exist)
+            {
+                ModelState.AddModelError("Name", "Já existe um cargo idêntico cadastrado.");
+            }
+
+            if (ModelState.IsValid && exist == false)
             {
                 parCargo.AddDate = DateTime.Now;
                 db.ParCargo.Add(parCargo);
@@ -113,18 +120,17 @@ namespace SgqSystem.Controllers.Params
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Name,IsActive,AddDate,AlterDate,ParDepartment_Ids")] ParCargo parCargo)
         {
-            if (ModelState.IsValid)
+            var exist = db.ParCargo.Any(x => x.Name == parCargo.Name && x.Id != parCargo.Id);
+
+            if (exist)
+            {
+                ModelState.AddModelError("Name", "Já existe um cargo idêntico cadastrado.");
+            } 
+
+            if (ModelState.IsValid && exist == false)
             {
                 parCargo.AlterDate = DateTime.Now;
                 db.Entry(parCargo).State = EntityState.Modified;
-
-                var parCargoXDepartments = db.ParCargoXDepartment.Where(x => x.ParCargo_Id == parCargo.Id && x.IsActive).ToList();
-
-                foreach (var item in parCargoXDepartments)//inativa todos os inseridos
-                {
-                    item.AlterDate = DateTime.Now;
-                    item.IsActive = false;
-                }
 
                 if (parCargo.ParDepartment_Ids != null)
                 {

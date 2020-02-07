@@ -10,7 +10,7 @@ namespace Dominio.AppViewModel
     {
         public int Id { get; set; }
 
-        public int? Peso { get; set; }
+        public decimal? Peso { get; set; }
 
         public bool IsActive { get; set; }
 
@@ -35,5 +35,7 @@ namespace Dominio.AppViewModel
         public int? Evaluation { get; set; }
 
         public int? Sample { get; set; }
+
+        public int? ParCluster_Id { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace Dominio.Seed
 
             using (var db = new SgqDbDevEntities())
             {
-                var resourceKeys = db.ResourcePT.Select(r => r.Key).ToList();
+                var resourceKeys = db.ResourceEN.Select(r => r.Key).ToList();
 
                 var ResourcesInserir = new List<ResourceEN>();
 
@@ -895,6 +895,22 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourceEN() { Key = "group_of_level3", Value = "Group of Level3" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "defects_per_level3_group", Value = "NC per Level3 group" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "no_group", Value = "No group" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "free_time", Value = "Free Time" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "hour", Value = "Hour" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "deviation_date", Value = "Deviation Date" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "deviation_hour", Value = "Deviation Hour" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "correction", Value = "Correction" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "defects_per_costCenter_section", Value = "Cost Center/Section" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "click_to_unfold", Value = "Click on chart to unfold next level" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "click_to_FTA", Value = "Click on chart to open Anomaly Treatment Form" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "pdca_menu_item", Value = "Show in PDCA" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "function", Value = "Function" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "company_group", Value = "Company Group" });
+
+                ResourcesInserir.Add(new ResourceEN() { Key = "parStructure1", Value = "Holding" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "parStructure2", Value = "Business Group" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "parStructure3", Value = "Regional" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "user", Value = "User" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "text", Value = "Text" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourceKeys.Contains(x.Key));

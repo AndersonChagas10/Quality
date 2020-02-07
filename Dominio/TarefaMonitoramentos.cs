@@ -16,7 +16,7 @@ namespace Dominio
 
         public int Sequencia { get; set; }
 
-        public int Peso { get; set; }
+        public decimal Peso { get; set; }
 
         public int UsuarioInsercao { get; set; }
 

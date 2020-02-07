@@ -13,11 +13,11 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     [RoutePrefix("api/Relatorios")]
     public class ApiRelatoriosController : BaseApiController
     {
-        private PlanoAcaoEF.PlanoDeAcaoEntities db;
+        private Dominio.SgqDbDevEntities db;
 
         public ApiRelatoriosController()
         {
-            db = new PlanoAcaoEF.PlanoDeAcaoEntities();
+            db = new Dominio.SgqDbDevEntities();
             db.Configuration.LazyLoadingEnabled = false;
             db.Configuration.AutoDetectChangesEnabled = false;
           

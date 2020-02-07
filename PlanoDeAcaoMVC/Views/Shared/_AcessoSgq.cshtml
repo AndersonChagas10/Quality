@@ -2,21 +2,16 @@
 <div class="form-content" style="display:none;">
     <form class="form" role="form">
         <div class="form-group">
-            <label>@Resources.Resource.user</label>
-            <input type="text" class="form-control" id="Name" name="Name" placeholder="@Resources.Resource.type_user" value="">
+            <label>@ResourcesPA.Resource.user</label>
+            <input type="text" class="form-control" id="Name" name="Name" placeholder="@ResourcesPA.Resource.type_user" value="">
         </div>
         <div class="form-group">
-            <label>@Resources.Resource.password</label>
-            <input type="password" class="form-control" id="Password" name="Password" placeholder="@Resources.Resource.type_password">
+            <label>@ResourcesPA.Resource.password</label>
+            <input type="password" class="form-control" id="Password" name="Password" placeholder="@ResourcesPA.Resource.type_password">
         </div>
         <label class="alert-warning" id="resultado"></label>
         <br />
         <label class="alert-warning" id="resultado1"></label>
-        @*<div class="checkbox">
-                <label>
-                    <input type="checkbox"> Check me out
-                </label>
-            </div>*@
     </form>
 </div>
 @{
@@ -35,27 +30,12 @@
     /*Config Modal*/
     var modalLogin = bootbox.dialog({
         message: $(".form-content").html(),
-        title: "<div class='' style='display:inline-block; padding:2px;'><img src='@path' style='height:45px;' /> @Resources.Resource.plan_action_authentication </div> ",
+        title: "<div class='' style='display:inline-block; padding:2px;'><img src='@path' style='height:45px;' /> @ResourcesPA.Resource.plan_action_authentication </div> ",
         size: 'small',
         buttons: [
           {
-              label: "@Resources.Resource.send",
+              label: "@ResourcesPA.Resource.send",
               className: "btn btn-primary pull-left",
-              //callback: function () {
-
-              //    var user = $('#formLogin form').serializeObject();
-              //    if (!user.Name.length) {
-              //        $('#formLogin #resultado').text('O campo nome é obrigatório.').fadeIn().fadeOut(2000, "swing");
-              //    }
-              //    if (!user.Password.length) {
-              //        $('#formLogin #resultado1').text('O senha nome é obrigatório.').fadeIn().fadeOut(2000, "swing");
-              //    }
-              //    if (user.Name.length && user.Password.length) {
-              //        loginPaSgq(user);
-              //    }
-              //    return false;
-
-              //}
           },
         ],
         show: false,
@@ -64,6 +44,7 @@
         },
         closeButton: false,
     });
+
     modalLogin.attr("id", "formLogin");
     modalLogin.find('.modal-content').css("margin-top", "15%")
     modalLogin.find('.bootbox-body').css("height", "190px");
@@ -71,15 +52,15 @@
 
     /*Trigger*/
     function checkSession() {
+
         if (!getCookie('webControlCookie')) {
+
             modalLogin.modal("show");
             blurNele($('#RederBodyContainer'));
             $('#formLogin .modal-footer button').show();
             atribuiClickBtnModal();
         }
-        //else
-        //    console.log('LoginPA puro')
-        //console.log("checkSession: " + Date().toString())
+
     }
     /*Trigger END*/
 
@@ -89,97 +70,64 @@
     var isSgqIntegrado = '@Html.Raw(Conn.isSgqIntegrado)';
 
     function loginPaSgq(user) {
+
         $.LoadingOverlay('show');
+
         user['IsWeb'] = true;
+
         if (isSgqIntegrado) {
-            //$.ajax({
-            //    url: urlMaster,
-            //    type: 'POST',
-            //    data: user,
-            //    success: function (r) {
-            //        $.LoadingOverlay('hide')
-            //        if (r.length == 0) {
-            //            //console.log(r);
-            //            removeBlur();
-            //            clearInterval(checkSessionControl);//DESLIGA VERIFICAÇÃO ATÉ QUE RECEBA O COOKIE DEVOLTA
-            //            modalLogin.modal("hide");
-            //            createUpdateCookie(r.Retorno);
-            //            identy = user;
-            //        }
-            //        else {
-            //            $('#formLogin #resultado').text('Usuário ou Senha inválidos.').fadeIn().fadeOut(intervalLabels, "swing");
-            //            console.log(r);
-            //        }
-            //        removeBlur();
-            //        clearInterval(checkSessionControl);//DESLIGA VERIFICAÇÃO ATÉ QUE RECEBA O COOKIE DEVOLTA
-            //        modalLogin.modal("hide");
-            //        createUpdateCookie(r.Retorno);
-            //        identy = user;
-            //    },
-            //    error: function (jqXHR, exception) {
-            //        var msg = '';
-            //        if (jqXHR.status === 0) {
-            //            msg = 'Not connect.\n Verify Network.';
-            //        } else if (jqXHR.status == 404) {
-            //            msg = 'Requested page not found. [404]';
-            //        } else if (jqXHR.status == 500) {
-            //            msg = 'Internal Server Error [500].';
-            //        } else if (exception === 'parsererror') {
-            //            msg = 'Requested JSON parse failed.';
-            //        } else if (exception === 'timeout') {
-            //            msg = 'Time out error.';
-            //        } else if (exception === 'abort') {
-            //            msg = 'Ajax request aborted.';
-            //        } else {
-            //            msg = 'Uncaught Error.\n' + jqXHR.responseText;
-            //        }
-            //        toastr.info(msg)
-            //    },
-            //});
 
             $.post(urlMaster, user, function (r) {
-                $.LoadingOverlay('hide')
+
+                $.LoadingOverlay('hide');
+
                 if (r.MensagemExcecao) {
-                    $('#formLogin #resultado').text('@Html.Raw(Resources.Resource.username_password_invalid)').fadeIn().fadeOut(intervalLabels, "swing");
+
+                    $('#formLogin #resultado').text('@Html.Raw(ResourcesPA.Resource.username_password_invalid)').fadeIn().fadeOut(intervalLabels, "swing");
+
                 }
                 else if (r.errors) {
-                    //console.log(r);
-                    $('#formLogin #resultado').text('@Html.Raw(Resources.Resource.username_password_invalid)').fadeIn().fadeOut(intervalLabels, "swing");
-                    console.log(r);
+
+                    $('#formLogin #resultado').text('@Html.Raw(ResourcesPA.Resource.username_password_invalid)').fadeIn().fadeOut(intervalLabels, "swing");
+
                 } else {
+
                     removeBlur();
                     clearInterval(checkSessionControl);//DESLIGA VERIFICAÇÃO ATÉ QUE RECEBA O COOKIE DE VOLTA
                     modalLogin.modal("hide");
                     createUpdateCookie(r.Retorno);
-                    //window.location.href = '/';
                     identy = r.user;
+
                     if ($('#sasenhora:visible').length > 0)
                         setTimeout(function () {
+
                             GetDataTable();
                             console.log('geraTable');
-                        }, 500)
+
+                        }, 500);
                 }
             });
-            //} else {
-            //    //LOGIN PA PURO
-            //}
         }
     }
 
     function createUpdateCookie(dto) {
+
         $.post(urlCookie, dto, function (r, a, xhr) {
+
             xhr.getResponseHeader('Set-Cookie');
             atribuiInterval();
-		if(!(window.location.href.indexOf('FTA') > 0))
-	            window.location = '@Url.Action("","")'
-            //GetDataTable(); //Gambiarra do renan
+
+            if (!(window.location.href.indexOf('FTA') > 0))
+                window.location = '@Url.Action("","")';
         });
     }
 
     function atribuiInterval() {
+
         checkSession();
         clearInterval(checkSessionControl);
         checkSessionControl = setInterval(checkSession, interval);
+
     }
 
     function atribuiClickBtnModal() {
@@ -189,34 +137,44 @@
         $('#formLogin  > div > div > div.modal-footer > button').off('click').on('click', function () {
 
             var user = $('#formLogin form').serializeObject();
+
             if (!user.Name.length) {
-                $('#formLogin #resultado').text('@Resources.Resource.name_field_required').fadeIn().fadeOut(intervalLabels, "swing");
+                $('#formLogin #resultado').text('@ResourcesPA.Resource.name_field_required').fadeIn().fadeOut(intervalLabels, "swing");
             }
+
             if (!user.Password.length) {
-                $('#formLogin #resultado1').text('@Resources.Resource.password_field_required').fadeIn().fadeOut(intervalLabels, "swing");
+                $('#formLogin #resultado1').text('@ResourcesPA.Resource.password_field_required').fadeIn().fadeOut(intervalLabels, "swing");
             }
+
             if (user.Name.length && user.Password.length) {
                 loginPaSgq(user);
             }
+
             return false;
         });
     }
 
-    function blurNele(element){
+    function blurNele(element) {
+
         element.blurjs({
             customClass: 'blurjs',
             radius: 5,
             persist: false
         });
+
     }
 
     function removeBlur() {
-        $.blurjs('reset')
+
+        $.blurjs('reset');
+
     }
 
     $(function () {
+
         atribuiClickBtnModal();
         atribuiInterval();
-    })
+
+    });
 
 </script>

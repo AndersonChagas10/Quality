@@ -23,14 +23,14 @@ namespace PlanoDeAcaoMVC.Controllers
     public class Pa_AcaoController : Controller
     {
 
-        PlanoAcaoEF.PlanoDeAcaoEntities db;
+        Dominio.SgqDbDevEntities db;
 
         /// <summary>
         /// Construtor Com drop down lists para views e partial de Ações
         /// </summary>
         public Pa_AcaoController()
         {
-            db = new PlanoAcaoEF.PlanoDeAcaoEntities();
+            db = new Dominio.SgqDbDevEntities();
             if (ViewBag.Unidade == null)
                 ViewBag.Unidade = Pa_Unidade.Listar();
 
@@ -273,9 +273,12 @@ namespace PlanoDeAcaoMVC.Controllers
                 fta.PercentualNCFTA = level2.Name + " > " + level3.Name + ": " + PercentualNCFTA2f + " %";
                 fta.ReincidenciaDesvioFTA = level2.Name + " > " + level3.Name + ": " + fta.ReincidenciaDesvioFTA;
                 fta._Supervisor = usersgq.Name;
-                dynamic meta = dbFActory.QueryNinjaADO(metaQuery).FirstOrDefault();
-                string meta2 = meta.META;
-                fta.MetaFTA = decimal.Round(decimal.Parse(meta2), 2, MidpointRounding.AwayFromZero).ToString();
+                if (fta.MetaFTA == null || fta.MetaFTA == "")
+                {
+                    dynamic meta = dbFActory.QueryNinjaADO(metaQuery).FirstOrDefault();
+                    string meta2 = meta.META;
+                    fta.MetaFTA = decimal.Round(decimal.Parse(meta2), 2, MidpointRounding.AwayFromZero).ToString();
+                }
             }
         }
 
@@ -314,6 +317,13 @@ namespace PlanoDeAcaoMVC.Controllers
 
         private static void NovoFtaModelParaSgq2(FTA fta)
         {
+            if (fta._DataInicioFTA == null)
+                fta._DataInicioFTA = fta.DataInicioFTA.ToString("dd/MM/yyyy");
+
+            if (fta._DataFimFTA == null)
+                fta._DataFimFTA = fta.DataFimFTA.ToString("dd/MM/yyyy");
+
+
             //Guard.CheckStringFullSimple(fta._Level1, "_Level1");
             //Guard.CheckStringFullSimple(fta._Level2, "_Level2");
             //Guard.CheckStringFullSimple(fta._Level3, "_Level3");
@@ -340,7 +350,8 @@ namespace PlanoDeAcaoMVC.Controllers
                 if (fta.Level2Id > 0)
                 {
                     level2 = dbFActory.SearchQuery<ParLevel2DTO>("Select * from parlevel2 WHERE Id = '" + fta.Level2Id + "'").FirstOrDefault(r => r.IsActive);
-                    parDepartment = dbFActory.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE ID = " + level2.ParDepartment_Id).FirstOrDefault();
+                    if (level2.ParDepartment_Id != null)
+                        parDepartment = dbFActory.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE ID = " + level2.ParDepartment_Id).FirstOrDefault();
                     fta.Level2Id = level2.Id;
                 }
                 if (fta.Level3Id > 0)
@@ -440,14 +451,42 @@ namespace PlanoDeAcaoMVC.Controllers
                     fta.MetaFTA = decimal.Round(decimal.Parse(meta2), 2, MidpointRounding.AwayFromZero).ToString();
                 }
 
-                if (fta.MetaFTA != null)
+                if (fta.MetaFTA != "0,00")
                 {
                     fta.MetaFTA += " %";
                 }
                 else
                 {
-                    fta.MetaFTA = "0";
+                    fta.MetaFTA = "Meta não definida";
                 }
+
+
+                #region RH
+
+                if (!string.IsNullOrEmpty(fta.ParDepartments_Hash))
+                {
+                    //verificar se vamos serparar por - os departamentos validar se pode ter esse caractere na url
+                    var parDepartment_ids = fta.ParDepartments_Hash.Split('-').ToList();
+
+                    var departamentos = dbFActory.SearchQuery<ParDepartmentDTO>("Select * from ParDepartment WHERE Id in (" + string.Join(",", parDepartment_ids) + ")").ToList();
+
+                    //ultimo departamento é a seção
+                    var secao = departamentos.Last();
+
+                    //departamentos.RemoveAt(departamentos.Count - 1);
+
+                    fta.ParDepartmentsName += string.Join(" | ", departamentos.Select(x => x.Name).ToList());
+                    fta.SecaoName = secao.Name;
+
+                }
+
+                if (fta.ParCargo_Id != null && fta.ParCargo_Id > 0)
+                {
+                    fta.ParCargoName = dbFActory.SearchQuery<ParCargoDTO>("Select * from ParCargo WHERE Id = " + fta.ParCargo_Id).FirstOrDefault().Name;
+                }
+
+                #endregion
+
             }
         }
 
@@ -494,7 +533,7 @@ namespace PlanoDeAcaoMVC.Controllers
             try
             {
 
-                System.Resources.ResourceManager resourceManager = Resources.Resource.ResourceManager;
+                System.Resources.ResourceManager resourceManager = ResourcesPA.Resource.ResourceManager;
 
                 ViewBag.Resources = resourceManager.GetResourceSet(
                     Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
@@ -505,6 +544,16 @@ namespace PlanoDeAcaoMVC.Controllers
             }
 
             base.Initialize(requestContext);
+        }
+
+        [HttpGet]
+        public ActionResult NewFTARH(FTA fta)
+        {
+            ViewBag.PlanejamentosComFTA = fta.Panejamento_Id;
+            fta.ValidaFTA();
+            NovoFtaModelParaSgq2(fta);
+            fta.IsFTA = true;
+            return View("NewFTASESMT", fta);
         }
 
         #endregion

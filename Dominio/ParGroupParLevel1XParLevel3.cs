@@ -14,7 +14,7 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        public int? Peso { get; set; }
+        public decimal? Peso { get; set; }
 
         [DisplayName("Está Ativo")]
         public bool IsActive { get; set; }
@@ -45,6 +45,10 @@ namespace Dominio
         [DisplayName("Monitoramento")]
         [Index(IsUnique = true)]
         public int? ParLevel2_Id { get; set; }
+
+        [DisplayName("Cluster")]
+        [Index(IsUnique = true)]
+        public int? ParCluster_Id { get; set; }
 
         [DisplayName("Grupo")]
         //[Index(IsUnique = true)]
@@ -83,5 +87,8 @@ namespace Dominio
 
         [ForeignKey("ParCargo_Id")]
         public virtual ParCargo ParCargo { get; set; }
+
+        [ForeignKey("ParCluster_Id")]
+        public virtual ParCluster ParCluster { get; set; }
     }
 }

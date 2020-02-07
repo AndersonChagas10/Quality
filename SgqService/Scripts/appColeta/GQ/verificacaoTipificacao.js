@@ -228,7 +228,7 @@ function createVFConsolidation(unidade, operacao, sequencial, banda, data, taref
     consolidation.attr('sequencial', sequencial)
                  .attr('banda', banda)
                  .attr('idunidade', unidade)
-                 .attr('data', encodeURI(getCollectionDateFormat().toUTCString()))
+                 .attr('data', encodeURI(getCollectionDateFormat().toLocaleString('en-US')))
                  .attr('verificacaoTipificacaoChave', chave)
                  .attr('empresaId', 1)
                  .attr('monitoramentoId', monitoramentoId)

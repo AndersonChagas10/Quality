@@ -1,5 +1,4 @@
-﻿using NLog;
-using System;
+﻿using System;
 using System.Diagnostics;
 
 namespace DTO.Helpers

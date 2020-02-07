@@ -67,6 +67,16 @@
         <div class="col-sm-4">
 
             <div class="form-group">
+                <label for="ParCluster_Id">Cluster:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Expectativa do cliente" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <select id="selectL3PesoParClusters" class="input input-lg col-sm-12 required" name="ParCluster_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
                 <label for="ParLevel3BoolTrue_Id">Valor positivo:</label>
                 <select id="selectL3TipoDadoParLevel3BoolTrue" class="input input-lg col-sm-12 required" name="ParLevel3BoolTrue_Id"></select>
             </div>
@@ -78,6 +88,18 @@
             <div class="form-group">
                 <label for="ParLevel3BoolFalse_Id">Valor negativo:</label>
                 <select id="selectL3TipoDadoParLevel3BoolFalse" class="input input-lg col-sm-12 required" name="ParLevel3BoolFalse_Id"></select>
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label>Valor Padrão</label>
+                <select id="selectL3IsDefaultAnswer" class="input input-sm col-sm-12" name="IsDefaultAnswer">
+                    <option value="true">Valor Positivo</option>
+                    <option value="false">Valor Negativo</option>
+                </select>
             </div>
 
         </div>
@@ -137,6 +159,19 @@
 
         </div>
 
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label>É Obrigatorio:</label>
+                <br />
+                <label class="switch">
+                    <input type="checkbox" id="checkboxL3IsRequired" name="IsRequired">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+        </div>
+
         <div id="allObjLikert" class="col-sm-12">
 
             <div id="divEscalaLikert" style="display:none;" class="margin-top">
@@ -170,16 +205,16 @@
             </div>
 
             @*<div class="row">
-                    <div class="td-erp">
-                        <div id="divBtnSalvar" class="col-sm-6">
-                            <button class="form-control btn btn-primary" data-add>Salvar</button>
-                        </div>
-
-                        <div id="divBtnCancelar" class="col-sm-6" style="display:none">
-                            <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
-                        </div>
+                <div class="td-erp">
+                    <div id="divBtnSalvar" class="col-sm-6">
+                        <button class="form-control btn btn-primary" data-add>Salvar</button>
                     </div>
-                </div>*@
+
+                    <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                        <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                    </div>
+                </div>
+            </div>*@
         </div>
 
 
@@ -194,7 +229,7 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12" style="overflow-x: auto;">
             <table id="tableParL3TipoDado" class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -209,6 +244,9 @@
                         </th>
                         <th class="col-sm-2">
                             Cargo
+                        </th>
+                        <th class="col-sm-1">
+                            Cluster
                         </th>
                         <th class="col-sm-2">
                             Indicador
@@ -231,7 +269,7 @@
                         <th class="col-sm-1 hide">
                             Equação
                         </th>
-                        <th class="col-sm-2">
+                        <th class="col-sm-1">
 
                         </th>
                     </tr>
@@ -373,7 +411,7 @@
             $('table#table' + id + ' tbody').html('');
 
             $('#ShowLevel3Limits').prop('checked', true);
-
+            
             $(list).each(function (i, o) {
 
                 var html = '<tr>';
@@ -381,6 +419,7 @@
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParDepartment_Id"]', o.ParDepartment_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParCluster_Id"]', o.ParCluster_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel1_Id"]', o.ParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel2_Id"]', o.ParLevel2_Id, 'Todos') + '</td>';
                 var boleanoTrue = (o.ParLevel3BoolTrue_Id == null ? "0" : o.ParLevel3BoolTrue_Id);
@@ -390,6 +429,9 @@
                 html += '<td>' + (o.IntervalMin == null ? "" : o.IntervalMin) + '</td>';
                 html += '<td>' + (o.IntervalMax == null ? "" : o.IntervalMax) + '</td>';
                 html += '<td>' + (o.DynamicValue == null ? "" : o.DynamicValue) + '</td>';
+
+                html += '<td class="hidden">' + valorDoSelect('#ParL3TipoDado select[name="IsDefaultAnswer"]', o.IsDefaultAnswer, "true") + '</td>';
+
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
 
@@ -426,6 +468,7 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
+                
                 scrollToForm();
                 var obj = $(this).parents('tr').data('sgq');
 
@@ -472,7 +515,7 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
-
+                        
                 ParL3TipoDado.prepareToInsert();
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
@@ -514,6 +557,9 @@
 
                         showInput('selectL3TipoDadoParLevel3BoolTrue');
                         showInput('selectL3TipoDadoParLevel3BoolFalse');
+                        showInput('checkboxL3IsRequired');
+                        showInput('selectL3IsDefaultAnswer');
+                        $("#selectL3IsDefaultAnswer").val('true');
 
                         break;
 
@@ -652,13 +698,15 @@
         },
 
         prepareTipoDado: function (obj) {
-
+            
             var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
             if (typeof (obj) == 'undefined')
                 obj = {};
             obj['IntervalMax'] = formdata.IntervalMax;
             obj['IntervalMin'] = formdata.IntervalMin;
             obj['IsActive'] = true;
+            obj['IsRequired'] = formdata.IsRequired;
+            obj['IsDefaultAnswer'] = formdata.IsDefaultAnswer;
             obj['ParCompany_Id'] = formdata.ParCompany_Id;
             obj['ParLevel1_Id'] = formdata.ParLevel1_Id;
             obj['ParLevel3InputType_Id'] = formdata.ParLevel3InputType_Id;
@@ -668,6 +716,7 @@
             obj['ParLevel3BoolFalse_Id'] = formdata.ParLevel3BoolFalse_Id;
             obj['ParDepartment_Id'] = formdata.ParDepartment_Id;
             obj['ParCargo_Id'] = formdata.ParCargo_Id;
+            obj['ParCluster_Id'] = formdata.ParCluster_Id;
             obj['ShowLevel3Limits'] = formdata.ShowLevel3Limits;
             return obj;
         },
@@ -678,8 +727,7 @@
             obj = ParL3TipoDado.prepareTipoDado(obj);
 
             $('#camposLikertIncluidos tbody').empty();
-
-
+  
             let IntervalMax = "";
             let IntervalMin = "";
             let IsActive = "";
@@ -760,6 +808,8 @@
 
         hideInput('selectL3TipoDadoParLevel3BoolTrue');
         hideInput('selectL3TipoDadoParLevel3BoolFalse');
+        hideInput('checkboxL3IsRequired');
+        hideInput('selectL3IsDefaultAnswer');
         hideInput('selectL3TipoDadoParMeasurementUnit');
         hideInput('IntervalMin');
         hideInput('IntervalMax');

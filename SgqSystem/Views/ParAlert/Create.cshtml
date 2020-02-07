@@ -57,22 +57,36 @@
                                             </div>
                                         </div>
 
+                                        @*<div class="form-group">
+                                                @Html.LabelFor(model => model.ParCompany_Ids, Resources.Resource.unit as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                <div class="col-md-6">
+                                                    <button id="btnBuscarUnidade" type="button"
+                                                            data-filtroselect3-btn
+                                                            data-filtroselect3-select="select[name=ParCompany_Ids]"
+                                                            data-filtroselect3-url="@Url.Action("GetFilteredParCompany", "api/Formulario")">
+                                                        Abrir
+                                                    </button>
+                                                    <select class="form-control" id="idSelectedParCompany" name="ParCompany_Ids"></select>
+                                                </div>
+                                                @Html.HiddenFor(model => model.ParCompany_Ids)
+                                            </div>*@
+
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParCompany_Id, Resources.Resource.unit as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParCompany_Ids, "Unidade", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-6">
                                                 <button id="btnBuscarUnidade" type="button"
                                                         data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parCompany_Ids]"
+                                                        data-filtroselect3-select="select[name=ParCompany_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParCompany", "api/Formulario")">
                                                     Abrir
                                                 </button>
-                                                <select class="form-control" id="idSelectedParCompany" name="parCompany_Ids"></select>
+                                                <select class="form-control" id="ParCompany_Ids" name="ParCompany_Ids"></select>
+                                                @Html.ValidationMessageFor(model => model.ParCompany_Ids, "", new { @class = "text-danger" })
                                             </div>
-                                            @Html.HiddenFor(model => model.ParCompany_Id)
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParDepartment_Id, Resources.Resource.costcenter as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParSecao_Ids, Resources.Resource.costcenter as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-6">
                                                 <button id="btnBuscarDepartamentos" type="button"
                                                         data-filtroselect3-btn
@@ -82,11 +96,11 @@
                                                 </button>
                                                 <select class="form-control" name="ParSecao_Ids"></select>
                                             </div>
-                                            @Html.HiddenFor(model => model.ParDepartment_Id)
+                                            @Html.HiddenFor(model => model.ParSecao_Ids)
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParCargo_Id, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParCargo_Ids, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-6">
                                                 <button type="button"
                                                         data-filtroselect3-btn
@@ -96,7 +110,7 @@
                                                 </button>
                                                 <select class="form-control" name="parCargo_Ids"></select>
                                             </div>
-                                            @Html.HiddenFor(model => model.ParCargo_Id)
+                                            @Html.HiddenFor(model => model.ParCargo_Ids)
                                         </div>
 
                                         <div class="form-group">
@@ -187,21 +201,43 @@
 
             $('.form-horizontal select').select2();
 
+            //$('#filterReports select').on('change', function () {
+
+            //    var objFiltroParam = objFiltro.Param;
+            //    objFiltro = $('#filterReports').serializeObject();
+            //    $(Object.keys(objFiltro)).each(function (i, o) {
+            //        objFiltro[o] = [objFiltro[o]];
+            //    });
+
+            //    objFiltro.Param = objFiltroParam;
+            //    debugger
+            //    $("#ParCompany_Ids").val(objFiltro.ParCompany_Ids[0]);
+            //    if (objFiltro.ParSecao_Ids != null || objFiltro.ParSecao_Ids != undefined)
+            //        $("#ParDepartment_Id").val(objFiltro.ParSecao_Ids[0]);
+            //    if (objFiltro.parCargo_Ids != null || objFiltro.parCargo_Ids != undefined)
+            //        $("#ParCargo_Id").val(objFiltro.parCargo_Ids[0]);
+
+            //}).change();
+
+            //Select3.initialize(function () { return objFiltro });
+
             $('#filterReports select').on('change', function () {
+                atualizaObjFiltro();
+            });
+
+            var dataFiltro = [];
+            var objFiltro = { Param: {} };
+
+            function atualizaObjFiltro() {
                 var objFiltroParam = objFiltro.Param;
                 objFiltro = $('#filterReports').serializeObject();
                 $(Object.keys(objFiltro)).each(function (i, o) {
-                    objFiltro[o] = [objFiltro[o]];
+                    if (o.indexOf("Date") < 0) {
+                        objFiltro[o] = Array.isArray(objFiltro[o]) ? objFiltro[o] : [objFiltro[o]];
+                    }
                 });
                 objFiltro.Param = objFiltroParam;
-
-                $("#ParCompany_Id").val(objFiltro.parCompany_Ids[0]);
-                if (objFiltro.ParSecao_Ids != null || objFiltro.ParSecao_Ids != undefined)
-                    $("#ParDepartment_Id").val(objFiltro.ParSecao_Ids[0]);
-                if (objFiltro.parCargo_Ids != null || objFiltro.parCargo_Ids != undefined)
-                    $("#ParCargo_Id").val(objFiltro.parCargo_Ids[0]);
-
-            }).change();
+            }
 
             Select3.initialize(function () { return objFiltro });
         });

@@ -31,37 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanoDeAcaoMVC", "PlanoDeAc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADOFactory", "ADOFactory\ADOFactory.csproj", "{31925FCA-E0F6-428D-9A7D-59CA8879D6F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanoAcaoEF", "PlanoAcaoEF\PlanoAcaoEF.csproj", "{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SgqSystem.Tests", "SgqSystem.Tests\SgqSystem.Tests.csproj", "{7214EE4F-5B17-42A6-9387-0B0BE979E08D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", "{62235ADA-D5E9-4526-9AD5-CAFAF4DC363E}"
-	ProjectSection(SolutionItems) = preProject
-		00000000_0000_EstruturaMigration.txt = 00000000_0000_EstruturaMigration.txt
-		20180318_0000_CriacaoModuloEModuloXCluster.txt = 20180318_0000_CriacaoModuloEModuloXCluster.txt
-		20180321_0000_AdicionadoPrimaryKeyParLevel2HeaderField.txt = 20180321_0000_AdicionadoPrimaryKeyParLevel2HeaderField.txt
-		20180322_0000_ParLevel1EClusterAvAmLevel2.txt = 20180322_0000_ParLevel1EClusterAvAmLevel2.txt
-		20180327_0000_CriacaoParModuleXModules.txt = 20180327_0000_CriacaoParModuleXModules.txt
-		20180328_0000_AdicionadoTabelasParaConsolidacaoCluster.txt = 20180328_0000_AdicionadoTabelasParaConsolidacaoCluster.txt
-		20180331_0000_AdicionadoColunaDeUsuarioFinalizadoEValidadoRecravacao.txt = 20180331_0000_AdicionadoColunaDeUsuarioFinalizadoEValidadoRecravacao.txt
-		20180430_0000_AdicionadoCampoComValorDinamicoParLevel3InputType.txt = 20180430_0000_AdicionadoCampoComValorDinamicoParLevel3InputType.txt
-		20180612_0000_ItensDeMenuERegraDeUsuariosColeta.txt = 20180612_0000_ItensDeMenuERegraDeUsuariosColeta.txt
-		20180615_0000_AdicionadoNovosStatus.txt = 20180615_0000_AdicionadoNovosStatus.txt
-		20180716_1400_AdicionarIsActiveUserSGQ.txt = 20180716_1400_AdicionarIsActiveUserSGQ.txt
-		20180718_1100_CriacaoFormatoImportacao.txt = 20180718_1100_CriacaoFormatoImportacao.txt
-		20180723_1600_AdicionarShowAllUnits.txt = 20180723_1600_AdicionarShowAllUnits.txt
-		20180913_0000_VolumePorTurno.txt = 20180913_0000_VolumePorTurno.txt
-		20180927_1600_AdicionarParCluster_Id_na_PARLEVEL1XMODULE.txt = 20180927_1600_AdicionarParCluster_Id_na_PARLEVEL1XMODULE.txt
-		_oldscripts-em desenvolvimento.txt = _oldscripts-em desenvolvimento.txt
-		PA_1.txt = PA_1.txt
-		SGQ_1.0.09.2.txt = SGQ_1.0.09.2.txt
-		SGQ_1.0.10.txt = SGQ_1.0.10.txt
-		SGQ_1.0.6.txt = SGQ_1.0.6.txt
-		SGQ_1.0.7.txt = SGQ_1.0.7.txt
-		SGQ_1.0.8.txt = SGQ_1.0.8.txt
-		SGQ_1.0.9.txt = SGQ_1.0.9.txt
-		SGQ_RH_Descontinuado.txt = SGQ_RH_Descontinuado.txt
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationModule", "IntegrationModule\IntegrationModule.csproj", "{B6DDBEB5-490D-4D8A-B55E-4E66C283DCD4}"
 EndProject
@@ -82,6 +52,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBContext", "DBContext\DBContext.csproj", "{8DC329A7-0151-438C-A2D5-9E5D82946F9B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SgqServiceBusiness", "SgqServiceBusiness\SgqServiceBusiness.csproj", "{2A112B7A-4627-43F6-B362-321E0B2E6B0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogSystem", "LogSystem\LogSystem.csproj", "{2F2074D0-E013-46BB-99B9-E53603BFC44D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,10 +97,6 @@ Global
 		{31925FCA-E0F6-428D-9A7D-59CA8879D6F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31925FCA-E0F6-428D-9A7D-59CA8879D6F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31925FCA-E0F6-428D-9A7D-59CA8879D6F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7214EE4F-5B17-42A6-9387-0B0BE979E08D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7214EE4F-5B17-42A6-9387-0B0BE979E08D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7214EE4F-5B17-42A6-9387-0B0BE979E08D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -165,6 +133,10 @@ Global
 		{2A112B7A-4627-43F6-B362-321E0B2E6B0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A112B7A-4627-43F6-B362-321E0B2E6B0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A112B7A-4627-43F6-B362-321E0B2E6B0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F2074D0-E013-46BB-99B9-E53603BFC44D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F2074D0-E013-46BB-99B9-E53603BFC44D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F2074D0-E013-46BB-99B9-E53603BFC44D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F2074D0-E013-46BB-99B9-E53603BFC44D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -179,7 +151,6 @@ Global
 		{9F15CCA3-EC01-46B6-91EC-3F408E7417BC} = {716C9494-D29A-4CB7-AC2A-D6303127A795}
 		{7A5187D4-41B3-4077-A7DB-D1B3668E071C} = {716C9494-D29A-4CB7-AC2A-D6303127A795}
 		{31925FCA-E0F6-428D-9A7D-59CA8879D6F8} = {A9B14F0F-0651-4B4E-8A2F-E26D95018D98}
-		{2901B555-2F1A-4B5A-BE9D-1D50844E0F2A} = {716C9494-D29A-4CB7-AC2A-D6303127A795}
 		{7214EE4F-5B17-42A6-9387-0B0BE979E08D} = {EA53B2C1-DA5F-46EC-B4AC-4B4D63AE84E5}
 		{B6DDBEB5-490D-4D8A-B55E-4E66C283DCD4} = {A9B14F0F-0651-4B4E-8A2F-E26D95018D98}
 		{4AA55E30-5913-43F3-BD66-9DF8561DE47A} = {CF963560-082D-46E7-89D3-B594CE0E36A7}
@@ -189,6 +160,7 @@ Global
 		{3ECF1D86-91F3-4140-A11A-1546B8F662A1} = {CF963560-082D-46E7-89D3-B594CE0E36A7}
 		{8DC329A7-0151-438C-A2D5-9E5D82946F9B} = {A9B14F0F-0651-4B4E-8A2F-E26D95018D98}
 		{2A112B7A-4627-43F6-B362-321E0B2E6B0B} = {CF963560-082D-46E7-89D3-B594CE0E36A7}
+		{2F2074D0-E013-46BB-99B9-E53603BFC44D} = {A9B14F0F-0651-4B4E-8A2F-E26D95018D98}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7D0A1A9-F2A2-4A1F-A45E-16387BDF6813}

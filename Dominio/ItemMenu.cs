@@ -26,6 +26,8 @@ namespace Dominio
         [StringLength(255)]
         public string Resource { get; set; } = "";
 
+        public int? PDCAMenuItem { get; set; }
+
         public bool? IsActive { get; set; }
     }
 }

@@ -58,13 +58,13 @@
                                 <table class="table" id="tabelaResourcesPt">
                                     <thead>
                                         <tr>
-                                            <th>
-                                               @Resources.Resource.key
-                                            </th>
-                                            <th>
-                                              @Resources.Resource.value
-                                            </th>
                                             <th></th>
+                                            <th>
+                                                @Resources.Resource.key
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.value
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -72,13 +72,20 @@
                                         {
                                             <tr>
                                                 <td>
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                </td>
+                                                <td>
                                                     @Html.DisplayFor(modelItem => item.Key)
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Value)
-                                                </td>
-                                                <td>
-                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @if (item.Value != null && item.Value.Length > 50)
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.Value).ToString().Substring(0, 50)
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.DisplayFor(modelItem => item.Value)
+                                                    }
                                                 </td>
                                             </tr>
                                         }
@@ -95,7 +102,7 @@
 </div>
 
 <script>
-   
+
     $(".sidebar-toggler").removeClass("hide");
     $(".page-sidebar-wrapper").removeClass("hide");
     navbarSelect("navbar4");
@@ -111,11 +118,13 @@
             null,
             { "bSearchable": false }
         ];
+   
+
         $('#tabelaResourcesPt').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 
     $("#btnAtualizar").on('click', function () {
-        
+
         $.ajax({
             type: "GET",
             url: urlAttResource,
@@ -126,7 +135,7 @@
                 });
             },
             error: function (retorno) {
-               
+
             }
         });
     });

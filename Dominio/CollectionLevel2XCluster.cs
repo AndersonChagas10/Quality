@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Dominio
 {
-    public class CollectionLevel2XCluster : BaseModel
+    public class CollectionLevel2XCluster
     {
         [Key]
         public long Id { get; set; }

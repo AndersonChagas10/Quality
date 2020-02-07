@@ -73,6 +73,7 @@
     <Compile Include="CrudGenerico\ComponenteGenericoTipoColuna.cs" />
     <Compile Include="CrudGenerico\ComponenteGenericoValor.cs" />
     <Compile Include="DicionarioEstatico.cs" />
+    <Compile Include="Enum\Enums.cs" />
     <Compile Include="ErrorLog.cs" />
     <Compile Include="DatabaseLog.cs" />
     <Compile Include="Defect.cs" />
@@ -96,13 +97,16 @@
     <Compile Include="ItemMenu.cs" />
     <Compile Include="LeftControlRole.cs" />
     <Compile Include="LogAlteracoes.cs" />
+    <Compile Include="LogError.cs" />
     <Compile Include="LogJson.cs" />
+    <Compile Include="LogTrack.cs" />
     <Compile Include="LogSgq.cs" />
     <Compile Include="LogSgqGlobal.cs" />
     <Compile Include="Metas.cs" />
     <Compile Include="MigrationHistory.cs" />
     <Compile Include="Monitoramentos.cs" />
     <Compile Include="ParAlertType.cs" />
+    <Compile Include="ParAlertXUser.cs" />
     <Compile Include="ParCargo.cs" />
     <Compile Include="ParCargoXDepartment.cs" />
     <Compile Include="ParColaborador.cs" />
@@ -185,6 +189,10 @@
     <Compile Include="ParStructure.cs" />
     <Compile Include="ParStructureGroup.cs" />
     <Compile Include="Pa_Acao.cs" />
+    <Compile Include="Pa_Acompanhamento.cs" />
+    <Compile Include="Pa_AcompanhamentoXQuem.cs" />
+    <Compile Include="Pa_FTA.cs" />
+    <Compile Include="Pa_Planejamento.cs" />
     <Compile Include="PenalidadeReincidencia.cs" />
     <Compile Include="Perfil.cs" />
     <Compile Include="Period.cs" />
@@ -261,10 +269,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.3.6\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>

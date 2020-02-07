@@ -40,9 +40,11 @@ namespace PlanoDeAcaoMVC
             }
 
             var pa_unidades = PlanoAcaoCore.Pa_Unidade.Listar();
+
             if (parcompany.Count() > 0)
             {
                 var iterator = parcompany.Where(r => !pa_unidades.Any(c => c.Name.Equals(r.Initials)) && r.Initials != null).ToList();
+
                 foreach (var i in iterator)
                 {
                     var unidadeInsert = new PlanoAcaoCore.Pa_Unidade() { Name = i.Initials, Description = i.Name, Sgq_Id = i.Id };
@@ -51,6 +53,7 @@ namespace PlanoDeAcaoMVC
             }
 
             var pa_quem = PlanoAcaoCore.Pa_Quem.Listar();
+
             if (usersgq.Count() > 0)
             {
                 var iterator = usersgq.Where(r => !pa_quem.Any(c => c.Name.Equals(r.Name) && c.Name != null)).ToList();
