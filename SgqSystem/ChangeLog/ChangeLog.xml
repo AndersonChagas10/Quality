@@ -2470,4 +2470,17 @@
     </Script>
   </Card>
   
-</Cards>
+  <Card>
+    <CardNumber>SGQ-365</CardNumber>
+    <Version>1.4.0</Version>
+    <Description>[5S][Parametrização] Ter opção de não inserir o N/A no questionário de Coleta</Description>
+    <Script>
+      IF NOT EXISTS(SELECT *
+      FROM INFORMATION_SCHEMA.COLUMNS
+      WHERE table_name = 'ParLevel3Value'
+      AND column_name = 'IsAtiveNA')
+      ALTER TABLE ParLevel3Value
+      ADD IsAtiveNA BIT NOT NULL
+      DEFAULT (1) 
+    </Script>
+  </Card>
