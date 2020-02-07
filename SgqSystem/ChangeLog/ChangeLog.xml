@@ -2469,7 +2469,7 @@
     <Script>
     </Script>
   </Card>
-  
+
   <Card>
     <CardNumber>SGQ-365</CardNumber>
     <Version>1.4.0</Version>
@@ -2481,6 +2481,8 @@
       AND column_name = 'IsAtiveNA')
       ALTER TABLE ParLevel3Value
       ADD IsAtiveNA BIT NOT NULL
-      DEFAULT (1) 
+      DEFAULT (1)
     </Script>
   </Card>
+
+</Cards>
