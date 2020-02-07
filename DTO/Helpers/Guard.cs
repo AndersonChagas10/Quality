@@ -1,4 +1,5 @@
 ﻿using DTO.BaseEntity;
+using LogSystem;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -563,7 +564,7 @@ namespace DTO.Helpers
             }
             catch (Exception e)
             {
-                new CreateLog(new Exception("Erro no metodo Guard.Criptografar3DES", e));
+                LogSystem.LogErrorBusiness.Register(new Exception("Erro no metodo Guard.Criptografar3DES", e));
                 return Message;
             }
         }
@@ -595,7 +596,7 @@ namespace DTO.Helpers
             }
             catch (Exception e)
             {
-                new CreateLog(new Exception("Erro no metodo Guard.Descriptografar3DES", e));
+                LogSystem.LogErrorBusiness.Register(new Exception("Erro no metodo Guard.Descriptografar3DES", e));
                 return Message;
             }
         }

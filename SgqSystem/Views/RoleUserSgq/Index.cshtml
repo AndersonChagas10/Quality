@@ -50,6 +50,15 @@
                                             <th>
                                                 @Resources.Resource.is_active
                                             </th>
+                                            <th>
+                                                @Resources.Resource.is_corporate
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.is_business
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.is_regional
+                                            </th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -62,12 +71,21 @@
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Description)
-                                                </td>                                                
+                                                </td>
                                                 <td>
                                                     @Html.Raw((item.FazColeta == true) ? Resources.Resource.yes : Resources.Resource.no)
                                                 </td>
                                                 <td>
                                                     @Html.Raw((item.IsActive == true) ? Resources.Resource.yes : Resources.Resource.no)
+                                                </td>
+                                                <td>
+                                                    @Html.Raw((item.IsCorporativo == true) ? Resources.Resource.yes : Resources.Resource.no)
+                                                </td>
+                                                <td>
+                                                    @Html.Raw((item.IsNegocio == true) ? Resources.Resource.yes : Resources.Resource.no)
+                                                </td>
+                                                <td>
+                                                    @Html.Raw((item.IsRegional == true) ? Resources.Resource.yes : Resources.Resource.no)
                                                 </td>
                                                 <td>
                                                     @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })

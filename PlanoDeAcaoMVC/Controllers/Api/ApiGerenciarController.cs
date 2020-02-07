@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Dominio;
+using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
-using PlanoAcaoEF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +14,10 @@ namespace PlanoDeAcaoMVC.Controllers.Api
     public class ApiGerenciarController : BaseApiController
     {
            
-        private PlanoDeAcaoEntities db;
+        private SgqDbDevEntities db;
         public ApiGerenciarController()
         {
-            db = new PlanoDeAcaoEntities();
+            db = new SgqDbDevEntities();
         }
         [HttpGet]
         [Route("List")]

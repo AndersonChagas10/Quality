@@ -556,7 +556,7 @@
     <value>Responsável pelo Projeto / Iniciativa</value>
   </data>
   <data name="seen" xml:space="preserve">
-    <value>Vistos</value>
+    <value>Visto</value>
   </data>
   <data name="select2" xml:space="preserve">
     <value>Selecione...</value>
@@ -893,5 +893,8 @@
   </data>
   <data name="not_started" xml:space="preserve">
     <value>Não iniciado</value>
+  </data>
+  <data name="signature" xml:space="preserve">
+    <value>Assinatura</value>
   </data>
 </root>

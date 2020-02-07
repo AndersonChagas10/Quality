@@ -155,6 +155,11 @@ namespace SgqSystem.Controllers
 
             //Fim da Role
 
+            using (var dbEntity = new Dominio.SgqDbDevEntities())
+            {
+                ViewBag.ParReasonEdit = dbEntity.ParReason.Where(x => x.IsActive && x.ParReasonType_Id == 3).ToList();
+            }
+
             return View(form);
         }
 
@@ -7749,8 +7754,16 @@ namespace SgqSystem.Controllers
             return View("~/Views/Relatorios/MSP/RelatorioMSP.cshtml", form);
         }
 
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult AnaliseCritica()
+        {
+            return View(form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult RelatorioEdicao()
+        {
+            return View(form);
+        }
     }
-
-
-
 }

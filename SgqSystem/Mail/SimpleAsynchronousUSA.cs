@@ -34,9 +34,6 @@ namespace SgqSystem.Mail
         }
     }
 
-    /// <summary>
-    /// Classe de serviços asyncronos, utilizada principalmnente pela instancia do HANGFIRE do SGQ
-    /// </summary>
     public class SimpleAsynchronousUSA
     {
 
@@ -277,7 +274,7 @@ namespace SgqSystem.Mail
             }
             catch (Exception e)
             {
-                new CreateLog(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviation]", e));
+                LogSystem.LogErrorBusiness.Register(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviation]", e));
             }
 
         }
@@ -406,12 +403,12 @@ namespace SgqSystem.Mail
                         Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage);
                     }
                 }
-                new CreateLog(new Exception(aMerdaQueDeu, ex1));
+                LogSystem.LogErrorBusiness.Register(new Exception(aMerdaQueDeu, ex1));
                 throw;
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("Erro ao enviar e mail", ex));
+                LogSystem.LogErrorBusiness.Register(new Exception("Erro ao enviar e mail", ex));
             }
         }
 
@@ -432,7 +429,7 @@ namespace SgqSystem.Mail
             }
             catch (Exception e)
             {
-                new CreateLog(e);
+                LogSystem.LogErrorBusiness.Register(e);
                 return deviationMessage;
             }
         }

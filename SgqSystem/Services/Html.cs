@@ -345,13 +345,6 @@ namespace SgqSystem.Services
             return binario;
         }
 
-        public string campoBinarioObrigatorio(string id, string booltrueName, string boolfalseName, string classe = null, string boolnullName = "")
-        {
-            string binario = $@"<span class=""pull-right marginRight30 response"" value="""" booltrueName=""{ booltrueName }"" boolfalseName=""{ boolfalseName }"" boolnullName=""{ boolnullName }"">{ boolnullName }""</span>";
-
-            return binario;
-        }
-
         public string campoIntervalo(string id, decimal intervalMin, decimal intervalMax, decimal defaultValue = 0, string unitName = null, string classe = null)
 
         {

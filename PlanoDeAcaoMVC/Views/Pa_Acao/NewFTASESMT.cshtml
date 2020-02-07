@@ -1,0 +1,652 @@
+﻿@model PlanoAcaoCore.Acao.FTA
+
+<style>
+
+    td span.centerThis {
+        display: block;
+        text-align: center;
+        font-family: Tahoma;
+        font-size: 16px;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        margin: 0px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        border: 1px solid #CCC;
+    }
+
+    input, select, textarea {
+        max-width: none;
+    }
+
+    .noBorderT {
+        border-top: 0;
+    }
+
+    .noBorderTB {
+        border-bottom: 0;
+    }
+
+    .tdLabel {
+        font-family: Tahoma;
+        font-size: 20px;
+    }
+
+    .tdLabels {
+        font-family: Tahoma;
+        font-size: 16px;
+    }
+
+    #Assinatura1 {
+        margin: auto !important;
+        width: 50% !important;
+    }
+</style>
+
+<script src="~/Scripts/Print/printGRT.js"></script>
+<script src="~/Scripts/PluginGRT/datatableGRT.js"></script>
+
+@using (Html.BeginForm())
+{
+    <div ng-app="App">
+        <div class="table-responsive" ng-controller="FTA" id="tabelaFTA">
+            <table class="table table-condensed" id="tabela" border="1" cellspacing="0">
+                <thead>
+                    <tr rowspan="2">
+                        <td colspan="6">
+                            <span class="tdLabel; centerThis" style="font-size: 20px;">@ResourcesPA.Resource.deviation_analysis_report</span>
+                        </td>
+                        <td colspan="4">
+                            <span class="tdLabels; centerThis">
+                                @ResourcesPA.Resource.initial_date_selected_period - @Model._DataInicioFTA
+                            </span>
+                            <hr />
+                            <span class="tdLabels; centerThis">@ResourcesPA.Resource.end_date_selected_period - @Model._DataFimFTA</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><span class="tdLabels">@ResourcesPA.Resource.indicators_devices</span></td>
+                        <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.supervisor</span></td>
+                        <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.unit</span></td>
+                        <td colspan="2"><span class="tdLabels">Cargo</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            @Model._Level1
+                            @Html.HiddenFor(r => r.Level1Id)
+                            @Html.HiddenFor(r => r.Level2Id)
+                            @Html.HiddenFor(r => r.Level3Id)
+                            @Html.HiddenFor(r => r.IsFTA)
+                        </td>
+                        <td colspan="2">
+                            @Model._Supervisor
+                            @Html.HiddenFor(r => r.Supervisor_Id)
+                        </td>
+                        <td colspan="2">
+                            @Model._Unidade
+                            @Html.HiddenFor(r => r.Unidade_Id)
+                        </td>
+                        <td colspan="2">
+                            @Html.HiddenFor(r => r.ParCargo_Id)
+                            @Html.DisplayFor(r => r.ParCargoName)
+                            @Html.HiddenFor(r => r.ParCargoName)
+                        </td>
+                        @Html.HiddenFor(r => r._Departamento)
+                        @Html.HiddenFor(r => r.Departamento_Id)
+                    </tr>
+                    <tr>
+                        <td colspan="5"><span class="tdLabels">Centro de Custo</span></td>
+                        <td colspan="5"><span class="tdLabels">Seção</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+
+                            @if (Model.ParDepartmentsName != null)
+                            {
+                                //o primeiro [0] é o Centro de custo
+                                @Html.DisplayFor(r => r.ParDepartmentsName.Split('|')[0]);
+                            }
+                            @Html.HiddenFor(r => r.ParDepartmentsName)
+                            @Html.HiddenFor(r => r.ParDepartmentsName)
+                            @Html.HiddenFor(r => r.ParDepartments_Hash)
+                        </td>
+                        <td colspan="5">
+                            @Html.DisplayFor(r => r.SecaoName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5"><span class="tdLabels">@ResourcesPA.Resource.goal_indicator</span></td>
+                        <td colspan="5"><span class="tdLabels">@ResourcesPA.Resource.percentage_nc_tasks</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <k>@Model.MetaFTA</k>
+                            @Html.HiddenFor(r => r.MetaFTA)
+                        </td>
+                        <td colspan="5">
+                            <k>@Model.PercentualNCFTA</k>
+                            @Html.HiddenFor(r => r.PercentualNCFTA)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="10"><span class="tdLabels">@ResourcesPA.Resource.recurrence_deviations_period</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="10">
+                            <k>@Model.ReincidenciaDesvioFTA</k>
+                            @Html.HiddenFor(r => r.ReincidenciaDesvioFTA)
+                        </td>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="item in items" my-repeat-directive id="FTA{{item}}">
+                    <tr>
+                        <td colspan="10" style="background-color: rgba(169, 169, 169, 0.35); border-bottom: 2px solid black;">
+                            <button ng-show="items.length > 1" ng-click="RemoverFTA(item)" type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left;">
+                                <span title="Remover" style="cursor:pointer" class="glyphicon glyphicon-trash"></span>
+                                &nbsp @ResourcesPA.Resource.remove
+                            </button>
+                            &nbsp;
+                            <button ng-click="addAcao()" type="button" class="btnNovoOperacional btn btn-default btn-sm" style="text-align: left;">
+                                <span title="Adicionar" style="cursor:pointer" class="glyphicon glyphicon-tags"></span>
+                                &nbsp @ResourcesPA.Resource.add
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><span class="tdLabels">@ResourcesPA.Resource.generic_cause2</span></td>
+                        <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.group_cause2</span></td>
+                        <td colspan="4"><span class="tdLabels">@ResourcesPA.Resource.generic_action2</span> </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            @Html.DropDownListFor(r => r.CausaGenerica_Id, new SelectList(ViewBag.CausaGenerica, "Id", "CausaGenerica"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                        </td>
+                        <td colspan="2">
+                            @Html.DropDownListFor(r => r.GrupoCausa_Id, new SelectList(ViewBag.GrupoCausa, "Id", "GrupoCausa"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                        </td>
+                        <td colspan="4">
+                            @Html.DropDownListFor(r => r.ContramedidaGenerica_Id, new SelectList(ViewBag.ContramedidaGenerica, "Id", "ContramedidaGenerica"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <span class="tdLabels">@ResourcesPA.Resource.specific_cause</span>
+                        </td>
+                        <td colspan="2" style="border-bottom:0;"></td>
+                        <td colspan="4">
+                            <span class="tdLabels">@ResourcesPA.Resource.specific_action2</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            @Html.EditorFor(r => r.CausaEspecifica)
+                        </td>
+                        <td colspan="2" style="border-top:0;"></td>
+                        <td colspan="4">
+                            @Html.EditorFor(r => r.ContramedidaEspecifica)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><span class="tdLabels">@ResourcesPA.Resource.who</span></td>
+                        <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.delivery</span></td>
+                        <td colspan="4"><span class="tdLabels">@ResourcesPA.Resource.how</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                        </td>
+                        <td colspan="2">
+                            @Html.EditorFor(r => r._QuandoFim, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                        </td>
+                        <td colspan="4">
+                            @Html.EditorFor(r => r.ComoPontosimportantes)
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="10" style="border-bottom:0;"><span class="tdLabels">@ResourcesPA.Resource.seen</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" style="border-top:0;border-right:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature1<span style="color:red">*</span></strong></span></td>
+                        <td colspan="5" style="border-top:0;border-left:0;"><span class="tdLabels; centerThis"><strong>@ResourcesPA.Resource.signature2<span style="color:red">*</span></strong></span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="col-md-6">
+                            @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                        </td>
+                        <td colspan="5" class="col-md-6">
+                            @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                        </td>
+                    </tr>
+                    <tr style="display:none">
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                        <td width="10%"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="10">
+                            <input id="Panejamento_Id" name="Panejamento_Id" type="hidden">
+                            <table id="tabelaModalTaticoSelecionado" class="table table-bordered"></table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button type="button" class="btn btn-primary" id="Salvar" onclick="save();" style="">@ResourcesPA.Resource.save</button>
+    </div>
+}
+
+<div class="modal fade in" id="modalPass" tabindex="-1" role="dialog" aria-labelledby="">
+    <div class="modal-dialog" id="" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" class="times">×</span></button>
+                <button type="button" class="close modalMinimize" aria-label="Minimizar"><span aria-hidden="true" class="minus">−</span></button>
+                <h4 class="modal-title" id="novoHeader">@ResourcesPA.Resource.type_password</h4>
+            </div>
+            <div class="modal-body" id="novoBody">
+                <form id="passCheck" onsubmit="return false">
+                    <div class="form-group">
+                        <div>
+                            <input type="password" class="form-control" id="" name="pass">
+                            <input type="hidden" class="form-control" id="name" name="name">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@ResourcesPA.Resource.cancel</button>
+                <button type="button" class="btn btn-primary" id="btnOk">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ModalNovoApartirDeAlgo" class="modal fade" role="dialog" style="z-index:15000">
+    <div class="modal-dialog" style="width:1150px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped"></table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@ResourcesPA.Resource.close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+        var user0 = { Status: false };
+        var user1 = { Status: false };
+        $(document).ready(function () {
+            $('#Assinatura1').off('change').on('change', function () {
+                user0.Status = false;
+                $('#passCheck').find('#name').val($('#Assinatura1 :selected').text());
+                $('#btnOk').off('click').on('click', function () { ValidaSenha(0); });
+                $('#modalPass').modal();
+                $('#passCheck').find('[name=pass]').val('')
+                HabilitaBotaoSalvar();
+
+            });
+
+            $('#Assinatura2').off('change').on('change', function () {
+                user1.Status = false;
+                $('#passCheck').find('#name').val($('#Assinatura2 :selected').text());
+                $('#btnOk').off('click').on('click', function () { ValidaSenha(1); });
+                $('#modalPass').modal();
+                $('#passCheck').find('[name=pass]').val('')
+                HabilitaBotaoSalvar();
+
+            });
+
+        })
+
+        var app = angular.module("App", []);
+
+        app.controller('FTA', ['$scope', function ($scope) {
+            $scope.count = 0;
+            $scope.items = [0];
+
+            $scope.addAcao = function () {
+                $scope.count++;
+                $scope.items.push($scope.count);
+
+                setTimeout(function () {
+                    $('select').select2({
+                        matcher: matchCustom,
+                        width: '100%'
+                    });
+                }, 500);
+
+            };
+
+            $scope.RemoverFTA = function (item) {
+                var index = $scope.items.indexOf(item);
+                $scope.items.splice(index, 1);
+            };
+
+        }]);
+
+        app.directive('myRepeatDirective', function () {
+
+            return function (scope, element, attrs) {
+
+                element.find('#CausaGenerica_Id').off('change').on('change', function () {
+
+                    var valor = $(this).val();
+
+                    if (valor) {
+
+                        $.get(GETGrupoCausa, { id: valor }, function (r) {
+                            element.find('#GrupoCausa_Id').empty().html(r);
+                        });
+
+                        $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
+                            element.find('#ContramedidaGenerica_Id').empty().html(rr);
+                        });
+                    }
+                    else {
+
+                        element.find('#GrupoCausa_Id').empty().attr('disabled', true);
+                        element.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
+
+                    }
+                });
+
+                InitDatePiker();
+            };
+        });
+
+
+
+        function ValidaSenha(user, ddl) {
+
+            var check = $('#passCheck').serializeObject();
+
+            $.post('@Url.Action("CheckPass", "api/Pa_User")', check, function (r) {
+
+                if (user == 0) { user0.Status = !r.isInvalid; }
+                if (user == 1) { user1.Status = !r.isInvalid; }
+
+                openMessageModal(r.response, '');
+
+                HabilitaBotaoSalvar();
+
+                if (!user0.Status)
+                    $('#Assinatura1').val('').change();
+
+                if (!user1.Status)
+                    $('#Assinatura2').val('').change();
+
+                $('#modalPass').modal("hide");
+
+            }).fail(function (e, h, x) {
+
+                openMessageModal(e.responseJSON.Message, '');
+
+            });
+        }
+
+
+        var GETGrupoCausa = '@Url.Action("GETGrupoCausa", "Pa_Acao")';
+        var GETContramedidaGenerica = '@Url.Action("GETContramedidaGenerica", "Pa_Acao")';
+
+        $(document).ajaxStart(function () {
+            $.LoadingOverlay("show");
+        });
+
+        $(document).ajaxStop(function () {
+            $.LoadingOverlay("hide");
+        });
+
+        $(document).ajaxError(function (e, h, x) {
+            console.log(e);
+            console.log(h);
+            console.log(x);
+        });
+
+        function formatErrorMessage(jqXHR, exception) {
+
+            $.LoadingOverlay("hide");
+
+            if (jqXHR.status === 0) {
+                return ('Not connected.\nPlease verify your network connection.');
+            } else if (jqXHR.status == 404) {
+                return ('The requested page not found. [404]');
+            } else if (jqXHR.status == 500) {
+                return ('Internal Server Error [500].');
+            } else if (exception === 'parsererror') {
+                return ('Requested JSON parse failed.');
+            } else if (exception === 'timeout') {
+                return ('Time out error.');
+            } else if (exception === 'abort') {
+                return ('Ajax request aborted.');
+            } else {
+                return ('Uncaught Error.\n' + jqXHR.responseText);
+            }
+        }
+
+        function save() {
+
+            var form = $('form').serializeObject();
+
+            form["TipoIndicador"] = 2; //Para Indicador SGQ
+
+            var arr = [];
+
+            if (Array.isArray(form["_QuandoFim"])) {
+
+                form["_QuandoFim"].forEach(function (o, e) {
+                    o = new Date(o.substring(5, 3) + "/" + o.substring(2, 0) + "/" + o.substring(10, 6));
+
+                    if (o < new Date()) {
+                        openMessageModal("Selecione uma data de entrega maior que a data de hoje!");
+                        return;
+                    }
+
+                    o = moment(o).format("DD/MM/YYYY");
+                });
+
+            } else if (form["_QuandoFim"].length > 0) {
+
+                form["_QuandoFim"] = new Date(form["_QuandoFim"].substring(5, 3) + "/" + form["_QuandoFim"].substring(2, 0) + "/" + form["_QuandoFim"].substring(10, 6));
+
+                if (form["_QuandoFim"] < new Date()) {
+
+                    openMessageModal("@ResourcesPA.Resource.select_delivery_date_greater_today_date");
+                    return;
+
+                }
+
+                form["_QuandoFim"] = moment(form["_QuandoFim"]).format("DD/MM/YYYY");
+            }
+
+            if (typeof (form.CausaGenerica_Id) == "string") {
+
+                $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', form, function (r) {
+
+                    openMessageModal('@ResourcesPA.Resource.registry_successfully_saved', '');
+
+                    if (confirm("Deseja Imprimir?")) {
+                        printFTA();
+                    }
+
+                    window.location.href = '@Url.Action("Index2", "Home2")';
+
+                }).fail(function (xhr, err) {
+
+                    var responseTitle = $(xhr.responseText).filter('title').get(0);
+                    openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err));
+
+                });
+
+            } else {
+
+                form.CausaGenerica_Id.forEach(function (o, c) {
+
+                    var singleForm = $('form').serializeObject();
+
+                    singleForm["Panejamento_Id"] = $('input#Panejamento_Id').val();
+                    singleForm["TipoIndicador"] = 2; //Para Indicador SGQ
+                    singleForm.CausaEspecifica = form.CausaEspecifica[c];
+                    singleForm.CausaGenerica_Id = form.CausaGenerica_Id[c];
+                    singleForm.ComoPontosimportantes = form.ComoPontosimportantes[c];
+                    singleForm.ContramedidaEspecifica = form.ContramedidaEspecifica[c];
+                    singleForm.ContramedidaGenerica_Id = form.ContramedidaGenerica_Id[c];
+                    singleForm.GrupoCausa_Id = form.GrupoCausa_Id[c];
+                    singleForm.Quem_Id = form.Quem_Id[c];
+                    singleForm._QuandoFim = form._QuandoFim[c];
+                    singleForm._QuandoFim
+                    arr.push(singleForm);
+
+                    $.post('@Url.Action("SaveFTA", "api/Pa_Acao")', singleForm, function (r) {
+
+                        openMessageModal('@ResourcesPA.Resource.registry_successfully_saved', '');
+
+                        if (confirm("Deseja Imprimir?")) {
+
+                            printFTA();
+                        }
+
+                        window.location.href = '@Url.Action("Index2", "Home2")';
+
+                    }).fail(function (xhr, err) {
+
+                        var responseTitle = $(xhr.responseText).filter('title').get(0);
+                        openMessageModal($(responseTitle).text(), formatErrorMessage(xhr, err));
+
+                    });
+
+                });
+
+            }
+        }
+
+        $().ready(function () {
+
+            InitDatePiker();
+            HabilitaBotaoSalvar();
+
+            $('select').select2({
+                matcher: matchCustom,
+                width: '100%'
+            });
+
+        });
+
+        var urlGetListPlanejamento = '@Url.Action("GetListPlanejamento", "api/Pa_Planejamento")';
+        // CRIAR TATICO E ACAO A PARTIR DE SELECOES PAIS
+
+        function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado) {
+
+            $('#ModalNovoApartirDeAlgo').find('h4').text("Vincular " + NomeDoQueSeraCriado);
+
+            $.post(urlGetListPlanejamento + '/' + tipoQueSeraCriado, function (r) {
+
+                var col = r.columns;
+
+                col.unshift({
+                    "render": function (data, type, row) {
+                        return '<button data-id="' + row.Id + '" data-tipo="' + tipoQueSeraCriado + '" onclick="AbreModalDePlanejamento(' + row.Id + ')" class="btn btn-large btn-success">Vincular ' + NomeDoQueSeraCriado + '</button>';
+                    }
+                });
+
+                var tableModalNovoApartirDe = datatableGRT.Inicializar({
+                    idTabela: "ModalNovoApartirDeAlgo table",
+                    listaDeDados: r.datas,
+                    colunaDosDados: r.columns,
+                    buttons: { buttons: [] },
+                    initComplete: function () {
+
+                        $('#ModalNovoApartirDeAlgo table').off().on('click', 'button[data-id]', function () {
+
+                            $('#tabelaModalTaticoSelecionado').html('<tbody><tr>' + $(this).parents('tr').html() + '</tr></tbody>');
+                            $('#tabelaModalTaticoSelecionado').prepend('<thead>' + $(this).parents('.dataTables_scroll').find('.dataTables_scrollHead').find('thead').html() + '</thead>')
+                            $('#tabelaModalTaticoSelecionado thead th:first-child').remove();
+                            $('#tabelaModalTaticoSelecionado button').parent().remove();
+                            $('input#Panejamento_Id').val($(this).attr('data-id'));
+                            $('#ModalNovoApartirDeAlgo').modal('hide');
+                            HabilitaBotaoSalvar();
+
+                        });
+
+                        $('#ModalNovoApartirDeAlgo').modal('show');
+
+                        setTimeout(function (e) {
+
+                            tableModalNovoApartirDe.draw();
+
+                        }, 500);
+                    }
+                });
+            });
+        }
+
+        function HabilitaBotaoSalvar() {
+
+            if (user0.Status && user1.Status) {
+            //if (user0.Status) {
+
+                $('#Salvar').attr('disabled', false);
+
+            } else {
+
+                $('#Salvar').attr('disabled', true);
+
+            }
+        }
+
+        function printFTA() {
+
+            $.each($('tbody input'), function (i, o) {
+                $(o).parents('td').html($(o).val());
+            });
+
+            $.each($('tbody select'), function (i, o) {
+                $(o).parents('td').html($(o).find('option:selected').text());
+            });
+
+            $.each($('tbody textarea'), function (i, o) {
+                $(o).parents('td').html($(o).val());
+            });
+
+            $.each($('tbody button'), function (i, o) {
+                $(o).remove();
+            });
+
+            printGRT.Inicializar({
+
+                bodyHtml: document.getElementById("tabelaFTA").innerHTML,
+                numberMarginRight: 25,
+                numberMarginBottom: 25,
+                renderTableMargin: 0,
+                pageMarginHeader: "25px 25px 10px 25px",
+                pageMarginFooter: "10px 25px 25px 25px",
+                pageMarginBody: "0 25px 0 25px"
+
+            });
+
+            printGRT.Imprimir();
+        }
+
+    </script>
+}
+
+

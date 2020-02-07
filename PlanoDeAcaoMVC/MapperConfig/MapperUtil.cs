@@ -9,23 +9,23 @@ namespace SgqSystem.MapperConfig
     {
         public MapperUtil()
         {
-            CreateMap<Pa_Acao, PlanoAcaoEF.Pa_Acao>();
-            CreateMap<PlanoAcaoEF.Pa_Acao, Pa_Acao>();
+            CreateMap<Pa_Acao, Dominio.Pa_Acao>();
+            CreateMap<Dominio.Pa_Acao, Pa_Acao>();
 
-            CreateMap<Pa_Acompanhamento, PlanoAcaoEF.Pa_Acompanhamento>();
-            CreateMap<PlanoAcaoEF.Pa_Acompanhamento, Pa_Acompanhamento>();
+            CreateMap<Pa_Acompanhamento, Dominio.Pa_Acompanhamento>();
+            CreateMap<Dominio.Pa_Acompanhamento, Pa_Acompanhamento>();
 
-            CreateMap<Pa_Planejamento, PlanoAcaoEF.Pa_Planejamento>();
-            CreateMap<PlanoAcaoEF.Pa_Planejamento, Pa_Planejamento>();
+            CreateMap<Pa_Planejamento, Dominio.Pa_Planejamento>();
+            CreateMap<Dominio.Pa_Planejamento, Pa_Planejamento>();
 
-            CreateMap<FTA, PlanoAcaoEF.Pa_FTA>();
-            CreateMap<PlanoAcaoEF.Pa_FTA, FTA>();
+            CreateMap<FTA, Dominio.Pa_FTA>();
+            CreateMap<Dominio.Pa_FTA, FTA>();
 
-            CreateMap<Pa_AcompanhamentoXQuemVM, PlanoAcaoEF.Pa_AcompanhamentoXQuem>();
-            CreateMap<PlanoAcaoEF.Pa_AcompanhamentoXQuem, Pa_AcompanhamentoXQuemVM>();
+            CreateMap<Pa_AcompanhamentoXQuemVM, Dominio.Pa_AcompanhamentoXQuem>();
+            CreateMap<Dominio.Pa_AcompanhamentoXQuem, Pa_AcompanhamentoXQuemVM>();
 
-            CreateMap<PlanoAcaoEF.EmailContent, EmailContentDTO>();
-            CreateMap<EmailContentDTO, PlanoAcaoEF.EmailContent>();
+            CreateMap<Dominio.EmailContent, EmailContentDTO>();
+            CreateMap<EmailContentDTO, Dominio.EmailContent>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -21,6 +22,10 @@ namespace Dominio
 
         public int? ParFrequencyId { get; set; }
 
+        [DisplayName("Cluster")]
+        [Index(IsUnique = true)]
+        public int? ParCluster_Id { get; set; }
+
         [NotMapped]
         public bool IsAgendamento { get; set; }
 
@@ -34,6 +39,9 @@ namespace Dominio
 
         [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
+
+        [ForeignKey("ParCluster_Id")]
+        public virtual ParCluster ParCluster { get; set; }
 
         [NotMapped]
         public virtual List<ParEvaluationSchedule> ParEvaluationSchedule { get; set; }

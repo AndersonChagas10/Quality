@@ -358,7 +358,7 @@ namespace SgqSystem.Jobs
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("Erro no metodo Preencher Monitoramento", ex));
+                LogSystem.LogErrorBusiness.Register(new Exception("Erro no metodo Preencher Monitoramento", ex));
             }
         }
 
@@ -663,7 +663,7 @@ namespace SgqSystem.Jobs
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("Erro no metodo PreencherIndicador", ex));
+                LogSystem.LogErrorBusiness.Register(new Exception("Erro no metodo PreencherIndicador", ex));
             }
         }
 
@@ -967,7 +967,7 @@ namespace SgqSystem.Jobs
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("Erro no metodo preencher Unidade", ex));
+                LogSystem.LogErrorBusiness.Register(new Exception("Erro no metodo preencher Unidade", ex));
             }
         }
     }

@@ -84,6 +84,13 @@ namespace SgqSystem.Controllers.Api
             return business.InsertJson(insertJsonClass);
         }
 
+        public string InsertJsonExcel(InsertJsonClass insertJsonClass)
+        {
+            if (string.IsNullOrEmpty(insertJsonClass.ObjResultJSon))
+                return null;
+            return business.InsertJson(insertJsonClass);
+        }
+
         private T[] RemoveFrom<T>(T[] source, int index)
         {
             T[] dest = new T[source.Length - 1];

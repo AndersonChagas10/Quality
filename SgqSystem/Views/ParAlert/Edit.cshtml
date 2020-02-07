@@ -50,31 +50,31 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Name, Resources.Resource.name as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 @Html.TextBoxFor(model => model.Name, null, new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParCompany_Id, Resources.Resource.unit as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParCompany_Ids, Resources.Resource.unit as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-6">
                                                 <button id="btnBuscarUnidade" type="button"
                                                         data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parCompany_Ids]"
+                                                        data-filtroselect3-select="select[name=ParCompany_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParCompany", "api/Formulario")">
                                                     Abrir
                                                 </button>
-                                                <select class="form-control" name="parCompany_Ids" value="@ViewBag.Company[0].Value">
+                                                <select class="form-control" name="ParCompany_Ids" value="@ViewBag.Company[0].Value">
                                                     <option value="@ViewBag.Company[0].Key" selected="selected">@ViewBag.Company[0].Value</option>
 
                                                 </select>
                                             </div>
-                                            @Html.HiddenFor(model => model.ParCompany_Id)
+                                            @Html.HiddenFor(model => model.ParCompany_Ids)
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParDepartment_Id, Resources.Resource.costcenter as string, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParSecao_Ids, Resources.Resource.costcenter as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-6">
                                                 <button id="btnBuscarDepartamentos" type="button"
                                                         data-filtroselect3-btn
@@ -88,11 +88,11 @@
 
                                                 </select>
                                             </div>
-                                            @Html.HiddenFor(model => model.ParDepartment_Id)
+                                            @Html.HiddenFor(model => model.ParSecao_Ids)
                                         </div>
 
                                         <div class="form-group">
-                                            @Html.LabelFor(model => model.ParCargo_Id, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
+                                            @Html.LabelFor(model => model.ParCargo_Ids, "Cargo", htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-6">
                                                 <button type="button"
                                                         data-filtroselect3-btn
@@ -106,12 +106,12 @@
 
                                                 </select>
                                             </div>
-                                            @Html.HiddenFor(model => model.ParCargo_Id)
+                                            @Html.HiddenFor(model => model.ParCargo_Ids)
                                         </div>
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParLevel1, Resources.Resource.level1 as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 @Html.DropDownList("ParLevel1_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel1_Id, "", new { @class = "text-danger" })
                                             </div>
@@ -119,7 +119,7 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParLevel2, Resources.Resource.level2 as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 @Html.DropDownList("ParLevel2_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel2_Id, "", new { @class = "text-danger" })
                                             </div>
@@ -127,7 +127,7 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParLevel3, Resources.Resource.level3 as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 @Html.DropDownList("ParLevel3_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParLevel3_Id, "", new { @class = "text-danger" })
                                             </div>
@@ -135,7 +135,7 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.ParAlertType, Resources.Resource.alert as string + " " + Resources.Resource.type as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 @Html.DropDownList("ParAlertType_Id", null, htmlAttributes: new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.ParAlertType_Id, "", new { @class = "text-danger" })
                                             </div>
@@ -143,7 +143,7 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.IsActive, Resources.Resource.is_active as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.IsActive)
                                                     @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
@@ -153,7 +153,7 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.IsCollectAlert, Resources.Resource.isCollectAlert as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.IsCollectAlert)
                                                     @Html.ValidationMessageFor(model => model.IsCollectAlert, "", new { @class = "text-danger" })
@@ -163,7 +163,7 @@
 
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.HasCorrectiveAction, Resources.Resource.hasCorrectiveAction as string, htmlAttributes: new { @class = "control-label col-md-2" })
-                                            <div class="col-md-10">
+                                            <div class="col-md-6">
                                                 <div class="checkbox">
                                                     @Html.EditorFor(model => model.HasCorrectiveAction)
                                                     @Html.ValidationMessageFor(model => model.HasCorrectiveAction, "", new { @class = "text-danger" })
@@ -244,11 +244,11 @@
                 });
                 objFiltro.Param = objFiltroParam;
 
-                $("#ParCompany_Id").val(objFiltro.parCompany_Ids[0]);
+                $("#ParCompany_Ids").val(objFiltro.ParCompany_Id[0]);
                 if (objFiltro.parSecao_Ids != null || objFiltro.parSecao_Ids != undefined)
-                    $("#ParDepartment_Id").val(objFiltro.parSecao_Ids[0]);
+                    $("#ParSecao_Ids").val(objFiltro.parSecao_Ids[0]);
                 if (objFiltro.parCargo_Ids != null || objFiltro.parCargo_Ids != undefined)
-                    $("#ParCargo_Id").val(objFiltro.parCargo_Ids[0]);
+                    $("#ParCargo_Ids").val(objFiltro.parCargo_Ids[0]);
 
             }).change();
 

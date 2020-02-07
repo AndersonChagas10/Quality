@@ -536,7 +536,7 @@
                     $(`select#${id}`).append('<optgroup label="' + groupName + '">');
 
                     listVinculados.filter(x => x.GroupName == groupName).forEach((o) => {
-                        if (o.Hash != undefined && o.ParDepartmentPai != undefined) 
+                        if (o.Hash != undefined && o.ParDepartmentPai != undefined)
                             $(`select#${id}`).append(`<option title="${o.ParDepartmentPai.Name}" value="${o[value]}">${o.Hash} / ${o[value]} - ${o[name]}</option>`);
                         else
                             $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
@@ -549,7 +549,7 @@
             }
 
             $(listNaoVinculados).each(function (i, o) {
-                if (o.Hash != undefined && o.ParDepartmentPai != undefined) 
+                if (o.Hash != undefined && o.ParDepartmentPai != undefined)
                     $(`select#${id}`).append(`<option title="Centro de Custo: ${o.ParDepartmentPai.Name}" value="${o[value]}">${o.Hash} / ${o[value]} - ${o[name]}</option>`);
                 else
                     $(`select#${id}`).append(`<option value="${o[value]}">${o[value]} - ${o[name]}</option>`);
@@ -566,7 +566,7 @@
 
     let listaTipoDadoDeEntradaVinculadosaEmpresaSelecionada = function (listaTipoDado) {
         if (listaTipoDado != null) {
-            
+
             let parCompanySelectecId = parseInt($("#selectParCompanyGeral :selected").val());
 
             if (parCompanySelectecId != 0) {
@@ -584,7 +584,7 @@
     }
 
     let listaVinculoPesoVinculadosaEmpresaSelecionada = function (lista) {
-        
+
         if (lista != null) {
 
             let parCompanySelectecId = parseInt($("#selectParCompanyGeral :selected").val());
@@ -600,13 +600,15 @@
             } else {
                 ParL3Peso.load(lista);
             }
+        } else {
+            ParL3Peso.load(lista);
         }
     }
 
     let listaAvaliacaoAmostraVinculadosaEmpresaSelecionada = function (lista) {
-        
+
         if (lista != null) {
-            
+
             let parCompanySelectecId = parseInt($("#selectParCompanyGeral :selected").val());
 
             if (parCompanySelectecId != 0) {
@@ -625,7 +627,7 @@
 
 
     let MontaSelectDepartamentoVinculadoAUnidadeSelecionada = function (selectId, empresaSelecionada, mensagem) {
-        
+
         var unidadeSelecionada;
         if (empresaSelecionada == null) {
             unidadeSelecionada = parseInt($("#selectParCompanyGeral :selected").val());
@@ -650,7 +652,8 @@
         } else {
 
             var departamentosVinculados = jQuery.grep(ParDepartmentsGlobal, function (n, i) {
-                return (n.ParCompany_Id === unidadeSelecionada || n.ParCompany_Id == null);
+
+                return ((n.ParCompany_Id === unidadeSelecionada || n.ParCompany_Id == null) && n.Active == true);
             });
 
             preencheSelect(selectId, 'Name', 'Id', departamentosVinculados, mensagem);
@@ -660,7 +663,7 @@
     }
 
     let GetParDepartmentsByUnit = function (unit) {
-        
+
         if (!unit) {
             MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectDCDepartment', 0, null);
             MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL2GeralParDepartment', null, null);
@@ -709,7 +712,7 @@
     }
 
     let MontaSelectUnidades = function () {
-        
+
         var unidadeSelecionadaTeste = parseInt($("#selectParCompanyGeral :selected").val());
 
         if (unidadeSelecionadaTeste == 0) {
@@ -803,7 +806,7 @@
             if (value == null)
                 value = 0;
 
-            element.val(value);
+            element.val(value.toString());
             element.trigger('change');
 
         } else if (element.is('div')) {
@@ -1014,7 +1017,7 @@
                 data: {},
                 contentType: "application/json",
                 success: function (data) {
-                    
+
                     preencheCampos('dc', '', data.ParDepartment, true);
                     preencheSelect('selectDCAvamParCargo', 'Name', 'Id', data.ParCargo, 'Todos');
 
@@ -1055,7 +1058,7 @@
                 preencheSelect('selectParScoreType', 'Name', 'Id', data.ParScoreTypes, 'Selecione o tipo de Score');
                 //preencheSelect('selectL1ParLevelDefiniton', 'Name', 'Id', data.ParLevelDefinitons, 'Selecione onde deve aparecer o cabeçalho');
                 preencheSelect('selectL1ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
-                
+
 
                 preencheSelect('selectL3GeralParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
 
@@ -1074,12 +1077,14 @@
                 preencheSelect('selectL3PesoPesoCluster', 'Name', 'Id', data.ParClusters, 'Todos');
                 preencheSelect('selectL3PesoParCompany', 'Name', 'Id', data.ParCompanys, 'Todos');
                 preencheSelect('selectL3PesoCluster', 'Name', 'Id', data.ParClusters, 'Todos');
-                preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione a Função');
+
+                //preencheSelect('selectL3PesoParGroupParLevel1', 'Name', 'Id', data.ParGroupParLevel1s, 'Selecione a Função');
+                preencheSelect('selectL3PesoParClusters', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
 
                 preencheSelect('selectL3TipoDadoParLevel3InputType', 'Name', 'Id', data.ParLevel3InputTypes, 'Selecione o Tipo de dados para a coleta');
                 preencheSelect('selectL3TipoDadoParLevel3BoolFalse', 'Name', 'Id', data.ParLevel3BoolFalses, 'Valor negativo');
-
                 preencheSelect('selectL3TipoDadoParLevel3BoolTrue', 'Name', 'Id', data.ParLevel3BoolTrues, 'Valor positivo');
+
                 preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', data.ParCompanys, 'Todos');
                 preencheSelect('selectL3TipoDadoParMeasurementUnit', 'Name', 'Id', data.ParMeasurementUnits, 'Selecione a unidade de medida');
 
@@ -1286,7 +1291,7 @@
 
         if (hasLevel3Selected)
             return;
-        
+
         let idUnidadeGeral = parseInt($('#selectParCompanyGeral :selected').val())
 
         if (!idUnidadeGeral) {

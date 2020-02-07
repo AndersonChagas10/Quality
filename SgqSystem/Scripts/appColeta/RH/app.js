@@ -4,6 +4,8 @@ var parametrization = null;
 var currentParDepartment_Id;
 var currentParDepartmentParent_Id;
 var currentParCargo_Id;
+var currentParCluster_Id;
+var currentParClusterGroup_Id;
 var globalColetasRealizadas = [];
 var globalAcoesCorretivasRealizadas = [];
 var currentLogin = {};
@@ -13,6 +15,7 @@ var appIsOnline = false;
 var currentAlerts = [];
 var currentAlertsAgrupados = [];
 var listaParFrequency = [];
+var listaParClusterGroup = [];
 var currentsParDepartments_Ids = [];
 var currentPlanejamento = [];
 
@@ -54,6 +57,8 @@ function getAppParametrization(frequencyId) {
                 ParCompany_Id: currentParCompany_Id
                 , ParFrequency_Id: currentParFrequency_Id
                 , AppDate: currentCollectDate
+                , ParCluster_Id: currentParCluster_Id
+                , ParClusterGroup_Id: currentParClusterGroup_Id
             }),
             type: 'POST',
             url: urlPreffix + '/api/AppColeta/GetAppParametrization',
@@ -93,6 +98,7 @@ function sincronizarResultado(frequencyId) {
         data: JSON.stringify({
             ParCompany_Id: currentParCompany_Id,
             ParFrequency_Id: currentParFrequency_Id,
+            ParCluster_Id: currentParCluster_Id,
             CollectionDate: convertDateToJson(currentCollectDate)
         }),
         url: urlPreffix + '/api/AppColeta/GetResults/',
@@ -209,6 +215,7 @@ function setBreadcrumbs() {
     var breadcrumbLi = "";
     var isCurrent = true;
 
+
     if (currentParCargo_Id) {
         breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParCargo, function (item) {
             return item.Id == currentParCargo_Id;
@@ -241,7 +248,15 @@ function setBreadcrumbs() {
         breadcrumbLi = deparment + breadcrumbLi;
         isCurrent = false;
     }
+    //var cluster = "";
+    //if (currentParCluster_Id) {
+    //    cluster = getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
+    //        return item.Id == currentParCluster_Id;
+    //    })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
 
+    //    breadcrumbLi = cluster + breadcrumbLi;
+    //    isCurrent = false;
+    //}
 
     if (currentParFrequency_Id) {
         breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
@@ -250,6 +265,24 @@ function setBreadcrumbs() {
 
         isCurrent = false;
     }
+
+    if (currentParCluster_Id) {
+        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
+            return item.Id == currentParCluster_Id;
+        })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent) + breadcrumbLi;
+
+        isCurrent = false;
+    }
+
+    if (currentParClusterGroup_Id) {
+        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParClusterGroup, function (item) {
+            return item.Id == currentParClusterGroup_Id;
+        })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent) + breadcrumbLi;
+
+        isCurrent = false;
+    }
+
+
 
     breadcrumb += breadcrumbLi + '</ol>';
 

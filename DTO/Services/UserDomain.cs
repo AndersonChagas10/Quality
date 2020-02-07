@@ -150,7 +150,7 @@ namespace DTO.Services
 
                 //Verificar o local de login
                 /*Se for Brasil executa RN do Sistema Brasil*/
-                if (!GlobalConfig.Eua)
+                if (GlobalConfig.Brasil || GlobalConfig.SESMT)
                 {
                     userSgq = LoginBrasil(userDto, userByName);
 
@@ -224,14 +224,13 @@ namespace DTO.Services
 
                 if (defaultCompany == null)
                 {
-                    defaultCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(
-                    r => r.UserSgq_Id == userSgq.Id);
+                    defaultCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(r => r.UserSgq_Id == userSgq.Id);
                     //var atualizarCompanyUser = _userRepo.GetByName(isUser.Name);
                     //atualizarCompanyUser.ParCompany_Id = defaultCompany.ParCompany_Id;
                     using (var db = new SgqDbDevEntities())
                     {
                         var atualizarUsuario = db.UserSgq.FirstOrDefault(r => r.Id == userSgq.Id);
-                        atualizarUsuario.ParCompany_Id = defaultCompany.ParCompany_Id;
+                        atualizarUsuario.ParCompany_Id = defaultCompany==null ? atualizarUsuario.ParCompany_Id : defaultCompany.ParCompany_Id;
                         db.UserSgq.Attach(atualizarUsuario);
                         db.Entry(atualizarUsuario).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
@@ -264,7 +263,7 @@ namespace DTO.Services
             }
             catch (Exception e)
             {
-                new CreateLog(e);
+                LogSystem.LogErrorBusiness.Register(e);
                 return new GenericReturn<UserDTO>(e, "");
             }
 
@@ -749,7 +748,7 @@ namespace DTO.Services
                 }
                 catch (Exception e)
                 {
-                    new CreateLog(new Exception("Realizando Rollback em CriaUSerSgqPeloUserSgqBR", e));
+                    LogSystem.LogErrorBusiness.Register(new Exception("Realizando Rollback em CriaUSerSgqPeloUserSgqBR", e));
                     throw e;
                 }
             }

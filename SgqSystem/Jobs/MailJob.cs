@@ -56,7 +56,7 @@ namespace Jobs
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("Erro no metodo [SendMailJobFunction]", ex));
+                LogSystem.LogErrorBusiness.Register(new Exception("Erro no metodo [SendMailJobFunction]", ex));
             }
         }
     }

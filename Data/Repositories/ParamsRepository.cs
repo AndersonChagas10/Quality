@@ -87,7 +87,8 @@ namespace Data.Repositories
                         SalvaParLevel1HeaderField(idParLevel1HeaderField, parLevel1HeaderField);/*Salva ParLevel1XHeaderField*/
 
                         //Salvar o ComponenteGenericoXHeaderField
-                        SalvarParHeaderFieldXComponenteGenerico(parHeadField.ParHeaderFieldXComponenteGenerico, parHeadField.Id);
+                        if(parHeadField.ParHeaderFieldXComponenteGenerico != null)
+                            SalvarParHeaderFieldXComponenteGenerico(parHeadField.ParHeaderFieldXComponenteGenerico, parHeadField.Id);
 
                     }
                 }

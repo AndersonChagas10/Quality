@@ -1,4 +1,4 @@
-function listarParCargo() {
+function listarParCargo(isVoltar) {
 
     cleanGlobalVarParCargo();
 
@@ -13,7 +13,7 @@ function listarParCargo() {
     var htmlParCargo = "";
 
     $(listaParCargo).each(function (i, o) {
-        currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, o.Id);
+        currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, o.Id, currentParCluster_Id);
 
         //FIX para trabalhar de forma correta os valores 
         //que são recebidos do backend com os resultados
@@ -23,7 +23,7 @@ function listarParCargo() {
         }
 
         var style = '';
-        if (!podeRealizarColeta(currentEvaluationSample.Evaluation, o.Evaluation.Evaluation)) {
+        if (bloqueiaCargoParaColeta(o)) {
             style = 'style="background-color:#ddd;cursor:not-allowed"';
 
             htmlParCargo += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
@@ -38,7 +38,7 @@ function listarParCargo() {
                 '	<div class="col-xs-4">Am: ' + o.Evaluation.Sample + '/' + o.Evaluation.Sample + ' </div>  ' +
                 '</button>';
         } else {
-            htmlParCargo += '<button type="button" class="list-group-item col-xs-12"                                       ' +
+            htmlParCargo += '<button type="button" ' + style + ' class="list-group-item col-xs-12"                                       ' +
                 'data-par-cargo-id="' + o.Id + '"                                                                                ' +
                 'data-total-evaluation="' + o.Evaluation.Evaluation + '"                                                         ' +
                 'data-total-sample="' + o.Evaluation.Sample + '"                                                                 ' +
@@ -53,8 +53,7 @@ function listarParCargo() {
         }
 
     });
-
-    var voltar = '<a onclick="listarParDepartment(' + currentParDepartmentParent_Id + ');" class="btn btn-warning">Voltar</a>';
+    var voltar = '<a onclick="listarParDepartment(' + currentParDepartmentParent_Id + "," + isVoltar +'  );" class="btn btn-warning">Voltar</a>';
 
     html = getHeader() +
         '<div class="container-fluid">                                       ' +
@@ -77,6 +76,10 @@ function listarParCargo() {
     $('div#app').html(html);
 
     setBreadcrumbs();
+
+    if ($(".list-group button").length == 1 && (isVoltar == false || isVoltar == undefined)) {
+        $("[data-par-cargo-id]").trigger('click');
+    }
 
 }
 
@@ -347,13 +350,12 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
             }
         }
         setTimeout(function () {
-            console.log('atualizou');
             atualizaCorAgendamento(cargo, currentEvaluationSample);
         }, 500);
     }, 200);
     
 
-}function listarParCargo() {
+}function listarParCargo(isVoltar) {
 
     cleanGlobalVarParCargo();
 
@@ -408,8 +410,7 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
         }
 
     });
-
-    var voltar = '<a onclick="listarParDepartment(' + currentParDepartmentParent_Id + ');" class="btn btn-warning">Voltar</a>';
+    var voltar = '<a onclick="listarParDepartment(' + currentParDepartmentParent_Id + "," + isVoltar + ');" class="btn btn-warning">Voltar</a>';
 
     html = getHeader() +
         '<div class="container-fluid">                                       ' +
@@ -433,6 +434,9 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
 
     setBreadcrumbs();
 
+    if ($(".list-group button").length == 1 && (isVoltar == false || isVoltar == undefined)) {
+        $("[data-par-cargo-id]").trigger('click');
+    }
 }
 
 function retornaCargos(parDepartmentId) {
@@ -702,7 +706,6 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
             }
         }
         setTimeout(function () {
-            console.log('atualizou');
             atualizaCorAgendamento(cargo, currentEvaluationSample);
         }, 500);
     }, 200);

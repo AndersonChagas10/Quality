@@ -26,14 +26,17 @@ $('body').on('click', '[data-filtroselect3-btn]', function () {
     var select = $($(btn).attr('data-filtroselect3-select'));
     var name = $(select).attr('name');
     var url = $(btn).attr('data-filtroselect3-url');
+    var defaultSelect = $(btn).attr('data-filtroselect3-default-select');
+    Select3.defaultSelect = "";
+    Select3.defaultSelect = defaultSelect;
     Select3.render(select, name, url);
 });
 
 var Select3 = {
-    param: function () { return {} },
+    param: function () { return {}; },
     objFiltroSelect3: {},
     callback: function () { },
-
+    defaultSelect: "",
     initialize: function (param, callback) {
         if (param)
             this.param = param;
@@ -105,32 +108,34 @@ var Select3 = {
                 beforeSend: function () {
                 }
             })
-			.done(function (data) {
-			    var lista = data;
+                .done(function (data) {
+                    var lista = data;
 
-			    var htmlLista = $.map(lista,
-                    function (o) {
+                    var htmlLista = $.map(lista, function (o) {
+
                         var hash = "";
-                        if (o.Hash === null)
-                             hash = "";
+                        if (o.Hash === undefined || o.Hash === null)
+                            hash = "";
                         else
-                             hash = o.Hash + " / ";
+                            hash = o.Hash + " / ";
 
-					    var selected = $.grep(Select3.objFiltroSelect3['_' + name], function (s) { return s.Value == o.Id });
-					    return `<tr>
-						<td><input type="checkbox" id="${o.Id} - ${o.Name}" value="${o.Id}" data-text="${o.Id} - ${o.Name}"
-						${selected.length > 0 ? ' checked' : ''}
-						/></td>
-						<td><label for="${o.Id} - ${o.Name}"> ${hash} ${o.Id} - ${o.Name}</label></td>
-						</tr>`;
-					}
-				);
+                        var selected = $.grep(Select3.objFiltroSelect3['_' + name], function (s) {
+                            return s.Value == o.Id;
+                        });
 
-			    $('#filtroSelect3 table tbody').html(htmlLista);
-			})
-			.fail(function (jqXHR, textStatus, msg) {
-			    console.log(msg);
-			});
+                        return `<tr>
+				<td><input type="checkbox" id="${o.Id} - ${o.Name}" value="${o.Id}" data-text="${o.Id} - ${o.Name}"
+				${selected.length > 0 ? ' checked' : ''}
+				/></td>
+				<td><label for="${o.Id} - ${o.Name}"> ${hash} ${o.Id} - ${o.Name}</label></td>
+				</tr>`;
+                    });
+
+                    $('#filtroSelect3 table tbody').html(htmlLista);
+                })
+                .fail(function (jqXHR, textStatus, msg) {
+                    console.log(msg);
+                });
 
         });
 
@@ -146,18 +151,29 @@ var Select3 = {
         });
 
         $('body').off('change', '#filtroSelect3 [type=checkbox]').on('change', '#filtroSelect3 [type=checkbox]', function (e) {
+
             var checkbox = $(this);
+
             if (this.checked) {
+
                 Select3.objFiltroSelect3['_' + name].push({ Value: checkbox.val(), Text: checkbox.data('text') });
+
             } else {
+
                 Select3.objFiltroSelect3['_' + name] = $.grep(Select3.objFiltroSelect3['_' + name], function (o) { return o.Value != checkbox.val(); });
+
             }
 
-            element.html($.map(Select3.objFiltroSelect3['_' + name],
-				function (o) {
-				    return `<option value="${o.Value}" selected>${o.Text}</option>`;
-				}
-			));
+            let defaultSelected = "";
+            if (Select3.defaultSelect)
+                defaultSelected = '<option value="">' + Select3.defaultSelect + '</option>';
+
+            element.html(defaultSelected + $.map(Select3.objFiltroSelect3['_' + name],
+                function (o) {
+                    return `<option value="${o.Value}" selected>${o.Text}</option>`;
+                }
+            ));
+
             element.trigger('change');
 
             if (Select3.callback)
@@ -166,4 +182,4 @@ var Select3 = {
             console.table(Select3.objFiltroSelect3['_' + name]);
         });
     }
-}
+};

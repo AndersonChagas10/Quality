@@ -114,8 +114,7 @@ namespace DTO
         public static bool Ytoara { get; set; }
         public static bool Guarani { get; set; }
         public static bool Santander { get; set; }
-        public static bool SESMT { get; set; }
-
+        public static bool SESMT { get; set; } //SESMT possui diferenças no PA / Cargo - Departamento e Seção
 
         /*Resources manager*/
         public static bool LanguageBrasil { get; set; } = true;
@@ -284,14 +283,8 @@ namespace DTO
             emailSmtp = dto.MailSmtp;
             emailPort = dto.MailPort;
             mockEmail = dto.MockEmail;
-
-            //pathFTA = "http://mtzsvmqsc/PlanoDeAcao/Pa_Acao/NewFTA?";
-            //pathFTA = "http://localhost:59907/Pa_Acao/NewFTA?";
             pathFTA = "http://192.168.25.200/PlanoAcao/Pa_Acao/NewFTA?";
-            //pathFTA = "http://192.168.25.200/PlanoAcaoUSA/Pa_Acao/NewFTA?";
-            //pathFTA = "http://10.190.2.34/ActionPlanHML/Pa_Acao/NewFTA?";
-            //pathFTA = "http://sgqtest.jbssa.com/actionPlanHML/Pa_Acao/NewFTA?";
-            //pathFTA = "http://sgq.jbssa.com/ActionPlan/Pa_Acao/NewFTA?";
+
 
             Verifica += "recoveryPassAvaliable:  " + recoveryPassAvaliable.ToString() + "\n";
             Verifica += "urlPreffixAppColleta:  " + urlPreffixAppColleta + "\n";
@@ -331,7 +324,7 @@ namespace DTO
             recoveryPassAvaliable = false;
             urlPreffixAppColleta = string.Empty;
             urlAppColleta = string.Empty;
-            //JBS = false;
+            SESMT = false;
 
         }
 

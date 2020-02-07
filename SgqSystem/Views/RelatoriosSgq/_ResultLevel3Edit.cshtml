@@ -79,8 +79,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+
+                    @Html.Partial("~/Views/RelatoriosSgq/_SelectTextAreaEditReason.cshtml")
+
                     <button type="button" id="botaoFecharModal" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.close</button>
-                    <button type="button" id="botaoSalvar" onclick="SalvarResultLevel3()" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.save</button>
+                    <button type="button" id="botaoSalvar" onclick="SalvarResultLevel3()" class="btn btn-default non-printable">@Resources.Resource.save</button>
                 </div>
             </div>
         </div>
