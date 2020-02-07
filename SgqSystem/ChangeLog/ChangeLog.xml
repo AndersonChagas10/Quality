@@ -2454,4 +2454,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-326</CardNumber>
+    <Version>1.3.0</Version>
+    <Description>[RH] MELHORIA - Filtros do relatório: Não Conformidades flag showAllCompanies nula</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
