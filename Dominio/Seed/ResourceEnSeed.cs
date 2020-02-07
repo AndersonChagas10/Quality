@@ -904,6 +904,12 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourceEN() { Key = "click_to_unfold", Value = "Click on chart to unfold next level" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "click_to_FTA", Value = "Click on chart to open Anomaly Treatment Form" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "pdca_menu_item", Value = "Show in PDCA" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "function", Value = "Function" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "company_group", Value = "Company Group" });
+
+                ResourcesInserir.Add(new ResourceEN() { Key = "parStructure1", Value = "Holding" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "parStructure2", Value = "Business Group" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "parStructure3", Value = "Regional" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourceKeys.Contains(x.Key));
 

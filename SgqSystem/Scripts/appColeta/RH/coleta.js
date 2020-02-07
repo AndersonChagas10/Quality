@@ -752,7 +752,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     if (cabecalhos) {
         cabecalhos.forEach(function (cabecalho) {
             //campos de cabeçalhos
-            coletaJson.push(cabecalho);
+            coletaJson.unshift(cabecalho);
         });
     }
 

@@ -113,7 +113,9 @@ namespace SgqSystem.Controllers
                         {
                             ViewBag.itemMenu = itensMenu.FirstOrDefault(i => i.Url != null && i.Url.ToUpperInvariant().Contains((controller + "/" + action).ToUpperInvariant()));
                             if (ViewBag.itemMenu == null)
-                                throw new Exception("Acesso Negado!");
+                            {
+                                filterContext.Result = new RedirectResult(Url.Action("AcessoNegado", "Error"));
+                            }
                         }
                     }
             }
@@ -228,7 +230,20 @@ namespace SgqSystem.Controllers
                     {
                         var rolesNames = db.UserSgq.Find(int.Parse(UserId)).Role.Split(',');
 
-                        var rolesIDs = db.RoleUserSgq.Where(r => rolesNames.Contains(r.Name) && r.IsActive == true).Select(r => r.Id).ToList();
+                        var roleUserSgqList = db.RoleUserSgq.Where(r => rolesNames.Contains(r.Name) && r.IsActive == true).ToList();
+
+                        var rolesIDs = roleUserSgqList.Select(r => r.Id).ToList();
+
+                        var roleUser = new RoleUserSgq();
+                        foreach (var item in roleUserSgqList)
+                        {
+                            roleUser.FazColeta = roleUser.FazColeta == true ? roleUser.FazColeta : item.FazColeta;
+                            roleUser.IsCorporativo = roleUser.IsCorporativo == true ? roleUser.IsCorporativo : item.IsCorporativo;
+                            roleUser.IsNegocio = roleUser.IsNegocio == true ? roleUser.IsNegocio : item.IsNegocio;
+                            roleUser.IsRegional = roleUser.IsRegional == true ? roleUser.IsRegional : item.IsRegional;
+                        }
+
+                        ViewBag.RoleUSerSgq = roleUser;
 
                         var ItensDeMenuUsuarioIds = db.RoleUserSgqXItemMenu.Where(r => rolesIDs.Contains(r.RoleUserSgq_Id) && r.IsActive == true).Select(r => r.ItemMenu_Id).Distinct().ToList();
 

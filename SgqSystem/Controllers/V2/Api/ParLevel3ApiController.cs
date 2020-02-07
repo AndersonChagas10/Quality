@@ -262,8 +262,6 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParVinculoPeso")]
         public IHttpActionResult PostParVinculoPeso(ParVinculoPeso parVinculoPeso)
         {
-            if(parVinculoPeso.ParGroupParLevel1_Id == null)
-                parVinculoPeso.ParGroupParLevel1_Id = 5;
 
             if (!SaveOrUpdateParVinculoPeso(parVinculoPeso))
             {

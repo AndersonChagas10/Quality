@@ -253,44 +253,48 @@
             var avaliacaoAtual = 0;
             var amostraAtual = 0;
 
-            if (avaliacaoTotal > 0) {
-                if (avaliacao > avaliacaoTotal) {
-                    avaliacaoAtual = avaliacaoTotal;
+            if (avaliacao > avaliacaoTotal) {
+                avaliacaoAtual = avaliacaoTotal;
 
-                    if (amostraTotal > 0) {
-                        amostraAtual = avaliacaoAtual * amostraTotal;
-                    }
+                if (amostraTotal > 0) {
+                    amostraAtual = avaliacaoAtual * amostraTotal;
+                }
+            } else {
+                if (amostra == undefined || avaliacao == undefined) {
+                    avaliacaoAtual = parseInt($('.Resultlevel2[level2id=' + linha.attr('id') + '][level1id=' + _level1.id + ']:last').attr('evaluation'));
+                    amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(parseInt($('.Resultlevel2[level2id=' + linha.attr('id') + '][level1id=' + _level1.id + ']:last').attr('sample'))));
                 } else {
-                    if (amostra == undefined || avaliacao == undefined) {
-                        avaliacaoAtual = parseInt($('.Resultlevel2[level2id=' + linha.attr('id') + '][level1id=' + _level1.id + ']:last').attr('evaluation'));
-                        amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(parseInt($('.Resultlevel2[level2id=' + linha.attr('id') + '][level1id=' + _level1.id + ']:last').attr('sample'))));
-                    } else {
-                        avaliacaoAtual = RetornaValor0SeUndefined(avaliacao) > 0 ? RetornaValor0SeUndefined(avaliacao) : 1;
-                        amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(amostra));
-                    }
+                    avaliacaoAtual = RetornaValor0SeUndefined(avaliacao) > 0 ? RetornaValor0SeUndefined(avaliacao) : 1;
+                    amostraAtual = ((avaliacaoAtual - 1) * amostraTotal) + parseInt(RetornaValor0SeUndefined(amostra));
                 }
+            }
 
-                if ($(level1).hasClass("VF")) {
-                    amostraAtual = $('.ResultsKeysVF div[date="' + getCollectionDate() + '"][unidadeid=' + $('.App').attr('unidadeid') + ']').length + 1;
-                    if (amostraAtual != amostraTotal)
-                        amostraAtual -= 1;
-                }
+            if ($(level1).hasClass("VF")) {
+                amostraAtual = $('.ResultsKeysVF div[date="' + getCollectionDate() + '"][unidadeid=' + $('.App').attr('unidadeid') + ']').length + 1;
+                if (amostraAtual != amostraTotal)
+                    amostraAtual -= 1;
+            }
 
-                avaliacaoAtual = isNaN(avaliacaoAtual) ? 0 : avaliacaoAtual;
-                amostraAtual = isNaN(amostraAtual) ? 0 : amostraAtual;
+            avaliacaoAtual = isNaN(avaliacaoAtual) ? 0 : avaliacaoAtual;
+            amostraAtual = isNaN(amostraAtual) ? 0 : amostraAtual;
 
-                var proximaAvaliacao = ((amostraAtual / parseInt(amostraTotal)) % 1 == 0) ? 1 : 0;
-                var avaliacaoColetaAtual = Math.ceil(amostraAtual / parseInt(amostraTotal)) + proximaAvaliacao;
+            var proximaAvaliacao = ((amostraAtual / parseInt(amostraTotal)) % 1 == 0) ? 1 : 0;
+            var avaliacaoColetaAtual = Math.ceil(amostraAtual / parseInt(amostraTotal)) + proximaAvaliacao;
 
-                if (!(level1.attr('islimitedevaluetionnumber') == "false")) {
-                    level2.attr('evaluatecurrent', avaliacaoColetaAtual);
-                    level2.parent().find('.evaluateCurrent').html(Math.ceil(amostraAtual / parseInt(amostraTotal)));
-                }
+            if (!(level1.attr('islimitedevaluetionnumber') == "false")) {
+                level2.attr('evaluatecurrent', avaliacaoColetaAtual);
+                level2.parent().find('.evaluateCurrent').html(Math.ceil(amostraAtual / parseInt(amostraTotal)));
+            }
 
-                level2.parent().find('.sampleCurrentTotal').html(amostraAtual);
+            level2.parent().find('.sampleCurrentTotal').html(amostraAtual);
+
+            if (avaliacaoTotal > 0) {
                 level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal);
+            } else {
+                level2.parent().find('.sampleXEvaluateTotal').html(amostraTotal);
 
             }
+
         }
 
         criarFiltroDeFrequencia();
@@ -304,7 +308,7 @@ $(document).on('click', '.level2Group .level2', function (e) {
     if (validHeader()) {
 
         //É avaliação infinita
-        var isInfinityAvaliation = !!(parseInt($(this).attr('evaluate')) == 0 && parseInt($(this).attr('sample')) == 0);
+        var isInfinityAvaliation = !!(parseInt($(this).attr('evaluate')) == 0);
 
         //Se a av for 0, força inserir um número de Avaliação
         if (isInfinityAvaliation && !parseInt($(this).attr('evaluatecurrent'))) {

@@ -138,6 +138,7 @@ namespace SgqSystem.Controllers.V2.Api
             List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
             List<ParEvaluation> listaParEvaluation;
             List<ParCluster> listaParCluster;
+            List<ParClusterGroup> listaParClusterGroup;
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -457,6 +458,9 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => x.IsActive)
                     .ToList()
                      .Where(x => listaParEvaluationXDepartmentXCargoAppViewModel.Any(y => y.ParCluster_Id == x.Id)).ToList();
+
+                listaParClusterGroup = db.ParClusterGroup
+                    .Where(x => x.IsActive && x.Id == appParametrization.ParClusterGroup_Id).ToList();
             }
 
             return Ok(new
@@ -484,8 +488,9 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParDepartmentXRotinaIntegracao,
                 listaRotinaIntegracao,
                 listaRotinaIntegracaoOffline,
-                listaParEvaluation,
-                listaParCluster
+                listaParCluster,
+                listaParClusterGroup,
+                listaParEvaluation
             });
         }
 

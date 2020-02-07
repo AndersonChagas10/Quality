@@ -979,6 +979,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "group_of_level3", Value = "Grupo de Tarefa" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "defects_per_level3_group", Value = "NC por Grupo de Tarefa" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "no_group", Value = "Sem grupo" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "function", Value = "Função" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "free_time", Value = "Hora Liberação" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "hour", Value = "Hora" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "deviation_date", Value = "Data Desvio" });
@@ -987,7 +988,16 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "defects_per_costCenter_section", Value = "Centro de Custo/Seção" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "click_to_unfold", Value = "Clique no gráfico para desdobrar para o próximo nível" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "click_to_fta", Value = "Clique no gráfico para criar o Formulário de Tratamento de Anomalia" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "pdca_menu_item", Value = "Exibir no PDCA" }); 
+                ResourcesInserir.Add(new ResourcePT() { Key = "is_corporate", Value = "É Corporativo" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "is_business", Value = "É Negócio" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "is_regional", Value = "É Regional" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "pdca_menu_item", Value = "Exibir no PDCA" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "company_group", Value = "Grupo de Empresa" });
+
+                ResourcesInserir.Add(new ResourcePT() { Key = "parStructure1", Value = "Holding" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "parStructure2", Value = "Grupo de Empresa"});
+                ResourcesInserir.Add(new ResourcePT() { Key = "parStructure3", Value = "Regional"});
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 

@@ -33,20 +33,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ADOFactory", "ADOFactory\AD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SgqSystem.Tests", "SgqSystem.Tests\SgqSystem.Tests.csproj", "{7214EE4F-5B17-42A6-9387-0B0BE979E08D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", "{62235ADA-D5E9-4526-9AD5-CAFAF4DC363E}"
-	ProjectSection(SolutionItems) = preProject
-		SGQ_1.0.09.2.txt = SGQ_1.0.09.2.txt
-		SGQ_1.0.10.txt = SGQ_1.0.10.txt
-		SGQ_1.0.11.txt = SGQ_1.0.11.txt
-		SGQ_1.0.12.txt = SGQ_1.0.12.txt
-		SGQ_1.0.6.txt = SGQ_1.0.6.txt
-		SGQ_1.0.7.txt = SGQ_1.0.7.txt
-		SGQ_1.0.8.txt = SGQ_1.0.8.txt
-		SGQ_1.0.9.txt = SGQ_1.0.9.txt
-		SGQ_1.1.1.txt = SGQ_1.1.1.txt
-		SGQ_RH_Descontinuado.txt = SGQ_RH_Descontinuado.txt
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationModule", "IntegrationModule\IntegrationModule.csproj", "{B6DDBEB5-490D-4D8A-B55E-4E66C283DCD4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - AppService", "5 - AppService", "{E9BFFFBD-0C06-4082-9939-B9AB3B0674BB}"

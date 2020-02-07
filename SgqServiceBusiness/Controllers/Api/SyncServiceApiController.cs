@@ -5156,7 +5156,7 @@ namespace SgqServiceBusiness.Api
             }
             if (GlobalConfig.SESMT)
             {
-                local = "msp";
+                local = "SESMT";
             }
 
 
@@ -5296,7 +5296,7 @@ namespace SgqServiceBusiness.Api
                                         <label>{CommonData.getResource("corrective_action").Value.ToString()}:</label>
                                         <div>
 		                                    <input type='checkbox' id='correctiveAction'>
-		                                    <label id='mensagemPadrao'> Mensagem padrão que será definida</label>
+		                                    <label id='mensagemPadrao'>{DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.DefaultMessageCorrectiveAction}</label>
                                         </div>
 	                                    <textarea id='PreventativeMeasure' class='form-control custom-control' rows='3' style='resize:none'></textarea>
                                     </div>
@@ -5495,8 +5495,8 @@ namespace SgqServiceBusiness.Api
                         tipoTela = variableList[0].Name;
                     }
 
-                    var ParLevel2DB = new SGQDBContext.ParLevel2(db, quebraProcesso);
-                    var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(parlevel1, dateCollect, ParCompany_Id);
+                    //var ParLevel2DB = new SGQDBContext.ParLevel2(db, quebraProcesso);
+                    //var parlevel02List = ParLevel2DB.getLevel2ByIdLevel1(parlevel1, dateCollect, ParCompany_Id);
 
                     //Se o ParLevel1 contem um ParCritialLevel_Id
                     var ParLevel1AlertasDB = new SGQDBContext.ParLevel1Alertas(db);

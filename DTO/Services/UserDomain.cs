@@ -224,8 +224,7 @@ namespace DTO.Services
 
                 if (defaultCompany == null)
                 {
-                    defaultCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(
-                    r => r.UserSgq_Id == userSgq.Id);
+                    defaultCompany = _baseParCompanyXUserSgq.GetAll().FirstOrDefault(r => r.UserSgq_Id == userSgq.Id);
                     //var atualizarCompanyUser = _userRepo.GetByName(isUser.Name);
                     //atualizarCompanyUser.ParCompany_Id = defaultCompany.ParCompany_Id;
                     using (var db = new SgqDbDevEntities())

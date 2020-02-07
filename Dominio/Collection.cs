@@ -35,7 +35,7 @@ namespace Dominio
         public double? Defects { get; set; }
         public double? PunishimentValue { get; set; }
         public double? WeiEvaluation { get; set; }
-        public double? Evaluation { get; set; }
+        public int? Evaluation { get; set; }
         public double? WeiDefects { get; set; }
         public bool? HasPhoto { get; set; }
 

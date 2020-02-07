@@ -7759,5 +7759,11 @@ namespace SgqSystem.Controllers
         {
             return View(form);
         }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult RelatorioEdicao()
+        {
+            return View(form);
+        }
     }
 }

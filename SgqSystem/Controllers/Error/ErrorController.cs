@@ -11,5 +11,10 @@ namespace SgqSystem.Controllers.Error
             ViewBag.Title = "Error.";
             return View();
         }
+
+        public ActionResult AcessoNegado()
+        {
+            return View();
+        }
     }
 }

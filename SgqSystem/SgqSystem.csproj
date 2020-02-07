@@ -363,6 +363,7 @@
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
     <Compile Include="Controllers\Api\Relatorios\MSP\RelatorioMSPApiController.cs" />
+    <Compile Include="Controllers\Api\Relatorios\RelatorioEdicaoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RH\NaoConformidadeRHApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RH\RelatorioDeResultadosRHApiController.cs" />
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
@@ -391,6 +392,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParDepartmentGroupsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
+    <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\CrudGenerico\ComponenteGenericoController.cs" />
     <Compile Include="Controllers\DicionarioEstaticoController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
@@ -400,6 +402,7 @@
     <Compile Include="Controllers\IntegracaoSistemicasController.cs" />
     <Compile Include="Controllers\Api\Log\LogTrackController.cs" />
     <Compile Include="Controllers\ParAlertTypesController.cs" />
+    <Compile Include="Controllers\ParAlertXUsersController.cs" />
     <Compile Include="Controllers\Params\ParCargoController.cs" />
     <Compile Include="Controllers\Params\ParColaboradorController.cs" />
     <Compile Include="Controllers\Params\ParDepartmentsController.cs" />
@@ -452,12 +455,14 @@
     <Compile Include="Controllers\ResourceENsController.cs" />
     <Compile Include="Controllers\ResourcePTsController.cs" />
     <Compile Include="Controllers\RotinaIntegracaoController.cs" />
+    <Compile Include="Controllers\ScriptsVersionController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
     <Compile Include="Controllers\V2\Api\AppColetaController.cs" />
     <Compile Include="Controllers\V2\Api\DepartmentXRotinaApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParClusterApiController.cs" />
+    <Compile Include="Controllers\V2\Api\ParClusterGroupApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParDepartmentXHeaderFieldApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParFrequencyController.cs" />
     <Compile Include="Controllers\V2\Api\ParDepartmentController.cs" />
@@ -746,6 +751,7 @@
     <Content Include="Angular\Level321Chain.js" />
     <Content Include="Angular\SelectVinculado.js" />
     <Content Include="App_Readme\readme.txt" />
+    <Content Include="ChangeLog\ChangeLog.xml" />
     <Content Include="Content\bootstrap-datepicker.css" />
     <Content Include="Content\bootstrap-datepicker.min.css" />
     <Content Include="Content\bootstrap-datepicker.standalone.css" />
@@ -1022,6 +1028,7 @@
     <Content Include="Scripts\appColeta\RH\menu.js" />
     <Content Include="Scripts\appColeta\RH\parCargo.js" />
     <Content Include="Scripts\appColeta\RH\parCluster.js" />
+    <Content Include="Scripts\appColeta\RH\parClusterGroup.js" />
     <Content Include="Scripts\appColeta\RH\parDepartment.js" />
     <Content Include="Scripts\appColeta\RH\planejamentoColeta.js" />
     <Content Include="Scripts\appColeta\RH\parFrequency.js" />
@@ -1032,6 +1039,7 @@
     <Content Include="Scripts\appColeta\RH\routeConfig.js" />
     <Content Include="Scripts\appColeta\RH\utils.js" />
     <Content Include="Scripts\appColeta\RH\zoom.js" />
+    <Content Include="Scripts\helper\mask.js" />
     <Content Include="Scripts\jquery-1.12.1.min.js" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
     <Content Include="Content\select2-bootstrap.min.css" />
@@ -2155,6 +2163,13 @@
     <Content Include="Views\ComponenteGenerico\Edit.cshtml" />
     <Content Include="Views\ComponenteGenerico\List.cshtml" />
     <Content Include="Views\ComponenteGenerico\EditValor.cshtml" />
+    <Content Include="Views\ParAlert\Details.cshtml" />
+    <Content Include="Views\ParAlertXUser\Index.cshtml" />
+    <Content Include="Views\ParAlertXUser\Create.cshtml" />
+    <Content Include="Views\ParAlertXUser\Delete.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioEdicao.cshtml" />
+    <Content Include="Views\ScriptsVersion\Index.cshtml" />
+    <Content Include="Views\Error\AcessoNegado.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2246,11 +2261,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>false</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:8081</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

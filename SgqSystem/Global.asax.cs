@@ -62,8 +62,11 @@ namespace SgqSystem
             Dominio.Seed.Seed.SetDicionario();
 
             SetGlobalConfigAmbient();
-
-            Dominio.Seed.Seed.SetSeedValues(isEN:GlobalConfig.LanguageEUA, runSetSeed: bool.Parse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.RunScriptsSystem ?? "false"));
+            bool runSetSeed = false;
+            #if !DEBUG
+                runSetSeed = bool.Parse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.RunScriptsSystem ?? "false");
+            #endif 
+            Dominio.Seed.Seed.SetSeedValues(isEN:GlobalConfig.LanguageEUA, runSetSeed: runSetSeed);
 
             ThreadPool.QueueUserWorkItem(IntegrationJobFactory.ExecuteIntegrationJobFunction);
             ThreadPool.QueueUserWorkItem(CollectionDataJobFactory.ExecuteCollectionDataJobFunction);
