@@ -62,10 +62,12 @@ namespace SgqSystem
             Dominio.Seed.Seed.SetDicionario();
 
             SetGlobalConfigAmbient();
+
             bool runSetSeed = false;
             #if !DEBUG
                 runSetSeed = bool.Parse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.RunScriptsSystem ?? "false");
-            #endif 
+            #endif
+
             Dominio.Seed.Seed.SetSeedValues(isEN:GlobalConfig.LanguageEUA, runSetSeed: runSetSeed);
 
             ThreadPool.QueueUserWorkItem(IntegrationJobFactory.ExecuteIntegrationJobFunction);
@@ -85,8 +87,8 @@ namespace SgqSystem
             //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaYTOARA" + GlobalConfig.Ambient];
 
             #if DEBUG
-            //TelemetryConfiguration.Active.DisableTelemetry = true;
-
+                //TelemetryConfiguration.Active.DisableTelemetry = true;
+            
             #endif
 
             if (GlobalConfig.LanguageBrasil)
