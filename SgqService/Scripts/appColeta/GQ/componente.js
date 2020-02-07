@@ -19,6 +19,7 @@ function processComponente(thiss) {
     var limites = getComponenteGenericoValor(arrColumName);
 
     if (!limites) {
+        zeraLimitesComponentes();
         return false;
     }
 
