@@ -501,7 +501,7 @@
                         //$('select[name="selectParReasonEdit"]').attr('style','');
                         $('textarea[name="textareaParReasonEdit"]').attr('style','');
                         $('textarea[name="textareaParReasonEdit"]').val('');
-                        $('.alertParReasonEditMinimo10').addClass('hide');
+                        $('.alertParReasonEditIsRequired').addClass('hide');
                     })
                     //$("#botaoFecharModal").on('click', function () {
                     //    $("#myModal #mensagemErro").remove();
@@ -793,10 +793,10 @@
             var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
             //$('select[name="selectParReasonEdit"]:visible').attr('style','border:0px;');
             $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
-                $('.alertParReasonEditMinimo10').addClass('hide');
+                $('.alertParReasonEditIsRequired').addClass('hide');
 
             if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 1) {
-                $('.alertParReasonEditMinimo10').removeClass('hide');
+                $('.alertParReasonEditIsRequired').removeClass('hide');
                 //$('select[name="selectParReasonEdit"]:visible').attr('style','border:1px solid red;');
                 $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');
                 return;
@@ -904,10 +904,10 @@
                 var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
                 //$('select[name="selectParReasonEdit"]:visible').attr('style','border:0px;');
                 $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
-                $('.alertParReasonEditMinimo10').addClass('hide');
+                $('.alertParReasonEditIsRequired').addClass('hide');
 
                 if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 10) {
-                    $('.alertParReasonEditMinimo10').removeClass('hide');
+                    $('.alertParReasonEditIsRequired').removeClass('hide');
                     //$('select[name="selectParReasonEdit"]:visible').attr('style','border:1px solid red;');
                     $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');
                     return;
