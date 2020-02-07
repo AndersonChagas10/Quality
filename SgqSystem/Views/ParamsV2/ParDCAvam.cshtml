@@ -566,12 +566,13 @@
                     return (item.Id != obj.Id &&
                         item.ParCompany_Id == obj.ParCompany_Id &&
                         item.ParCargo_Id == obj.ParCargo_Id &&
-                        item.ParFrequencyId == obj.ParFrequency_Id);
+                        item.ParFrequencyId == obj.ParFrequency_Id &&
+                        item.ParCluster_Id == obj.ParCluster_Id);
 
                 }).length > 0;
 
                 if (isDuplicate) {
-                    openMessageModal("Alerta", "Já existe um Tipo de entrada para esta Empresa, Cargo e Frequência!")
+                    openMessageModal("Alerta", "Já existe um Tipo de entrada para esta Empresa, Cargo, Frequência e Cluster!")
                 }
 
                 return isDuplicate;
@@ -725,7 +726,7 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
-
+                debugger
                 if (formIsDuplicate()) {
                     return false;
                 }
