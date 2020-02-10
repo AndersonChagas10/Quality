@@ -701,6 +701,7 @@
             });
             objFiltro.Param = objFiltroParam;
             objFiltro.ShowUserCompanies = @Html.Raw(Json.Encode(ViewBag.ShowUserCompanies));
+            objFiltro.ShowLinkedFilters = @Html.Raw(Json.Encode(ViewBag.ShowLinkedFilters));
         }
 
         function preencheFiltrosAjax() {
