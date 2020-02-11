@@ -360,6 +360,8 @@ namespace SgqSystem.Controllers.V2.Api
                         parVinculoPesoOld.IsDefaultAnswer = parLevel3Value.IsDefaultAnswer;
                         parVinculoPesoOld.ParCluster_Id = parLevel3Value.ParCluster_Id;
                         parVinculoPesoOld.IsAtiveNA = parLevel3Value.IsAtiveNA;
+                        parVinculoPesoOld.DefaultMessageText = parLevel3Value.DefaultMessageText;
+                        parVinculoPesoOld.StringSizeAllowed = parLevel3Value.StringSizeAllowed;
 
                         foreach (var item in parLevel3Value.ParInputTypeValues)
                         {

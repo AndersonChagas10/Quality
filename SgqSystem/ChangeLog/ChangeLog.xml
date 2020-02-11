@@ -2484,3 +2484,24 @@
       DEFAULT (1) 
     </Script>
   </Card>
+
+  <Card>
+    <CardNumber>SGQ-383</CardNumber>
+    <Version>1.4.0</Version>
+    <Description> PARAMETRIZAÇÃO - Texto padrão de input no placeholder</Description>
+    <Script>
+      IF COL_LENGTH('ParLevel3Value','DefaultMessageText') IS NULL
+      BEGIN
+      ALTER TABLE ParLevel3Value ADD DefaultMessageText varchar(30) null
+      END
+
+      GO
+
+      IF COL_LENGTH('ParLevel3Value','StringSizeAllowed') IS NULL
+      BEGIN
+      ALTER TABLE ParLevel3Value ADD StringSizeAllowed int null
+      END
+    </Script>
+  </Card>
+  
+  </Cards>

@@ -74,6 +74,26 @@
 
         </div>
 
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label for="DefaultMessageText">Mensagem padrão:</label>
+                <input type="text" class="form-control" id="DefaultMessageText" name="DefaultMessageText">
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label for="StringSizeAllowed">Tamanho campo texto permitido:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="O tamanho máxmo permitido para o campo texto é de 100 caracteres!" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <input type="number" class="form-control" id="StringSizeAllowed" name="StringSizeAllowed">
+            </div>
+
+        </div>
+
         <div class="col-sm-4">
 
             <div class="form-group">
@@ -177,7 +197,7 @@
                 <label>N/A:</label>
                 <br />
                 <label class="switch">
-                    <input type="checkbox" name="IsAtiveNA" id="IsAtiveNA" >
+                    <input type="checkbox" name="IsAtiveNA" id="IsAtiveNA">
                     <span class="slider round"></span>
                 </label>
             </div>
@@ -528,7 +548,6 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
-                        
                 ParL3TipoDado.prepareToInsert();
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
@@ -553,6 +572,10 @@
                     return false;
                 }
 
+                if (!ValidateStringSize(obj)) {
+                    return false;
+                }
+
                 Save(obj);
             });
 
@@ -566,6 +589,10 @@
 
                     case 1: //Binário
                     case 6: //Binario Com Texto
+                        
+                        showInput('DefaultMessageText');
+                        showInput('StringSizeAllowed');
+                        break;
                     case 12: //Binário Obrigatório
 
                         showInput('selectL3TipoDadoParLevel3BoolTrue');
@@ -603,6 +630,9 @@
                         break;
 
                     case 5: //Texto
+                        showInput('DefaultMessageText');
+                        showInput('StringSizeAllowed');
+                        break;
                     case 11: //Observação
 
                         //Não exibe nada
@@ -657,6 +687,17 @@
 
             }
 
+            let ValidateStringSize = function (obj) {
+                let isValid = true;
+
+                if (obj.StringSizeAllowed > 100) {
+                    openMessageModal("Alerta", "Valor máximo permitido para o campo Tamanho campo texto permitido é de 100 caracteres!");
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
             let intervalIsValid = function (obj) {
 
                 let isValid = true;
@@ -685,6 +726,13 @@
 
             if (typeof (obj['ParInputTypeValues']) == 'undefined')
                 obj['ParInputTypeValues'] = [];
+
+            if (typeof (obj['DefaultMessageText']) == 'undefined')
+                obj['DefaultMessageText'] = '';
+
+
+            if (typeof (obj['StringSizeAllowed']) == 'undefined')
+                obj['StringSizeAllowed'] = '';
 
             if (obj.ParInputTypeValues.length > 0)
                 if (obj.ParInputTypeValues[0]['ParLevel3Value_Id'] != 'undefined' || obj.ParInputTypeValues[0]['ParLevel3Value_Id'] != null)
@@ -831,6 +879,9 @@
         hideInput('IntervalMax');
         hideInput('DynamicValue');
         hideInput('ShowLevel3Limits');
+        hideInput('DefaultMessageText');
+        hideInput('StringSizeAllowed');
+        
     }
 
     let hideInput = function (id) {
