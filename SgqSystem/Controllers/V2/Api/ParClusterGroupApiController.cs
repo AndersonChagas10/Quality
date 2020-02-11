@@ -36,7 +36,7 @@ namespace SgqSystem.Controllers.V2.Api
                     listaClusterGroup.Add(db.ParClusterGroup.Where(x => x.Id == item.ParClusterGroup_Id).FirstOrDefault());
                 }
             }
-            return Ok(listaClusterGroup);
+            return Ok(listaClusterGroup.Distinct());
         }
 
         protected override void Dispose(bool disposing)
