@@ -272,7 +272,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 var PercentualNCFTA2f = decimal.Round(decimal.Parse(fta.PercentualNCFTA.Replace(".", ",")), 2, MidpointRounding.AwayFromZero).ToString();
                 fta.PercentualNCFTA = level2.Name + " > " + level3.Name + ": " + PercentualNCFTA2f + " %";
                 fta.ReincidenciaDesvioFTA = level2.Name + " > " + level3.Name + ": " + fta.ReincidenciaDesvioFTA;
-                fta._Supervisor = usersgq.Name;
+                fta._Supervisor = usersgq.FullName + " - " + usersgq.Name.Substring(0, 3);
                 if (fta.MetaFTA == null || fta.MetaFTA == "")
                 {
                     dynamic meta = dbFActory.QueryNinjaADO(metaQuery).FirstOrDefault();
@@ -442,7 +442,7 @@ namespace PlanoDeAcaoMVC.Controllers
 
                 //fta.PercentualNCFTA = level2.Name + " > " + level3.Name + ": " + PercentualNCFTA2f + " %";
                 //fta.ReincidenciaDesvioFTA = level2.Name + " > " + level3.Name + ": " + fta.ReincidenciaDesvioFTA;
-                fta._Supervisor = usersgq.Name;
+                fta._Supervisor = usersgq.FullName + " - " + usersgq.Name.Substring(0,3);
 
                 if (metaQuery != "")
                 {
