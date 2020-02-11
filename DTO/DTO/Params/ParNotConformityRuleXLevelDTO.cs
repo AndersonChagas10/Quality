@@ -5,7 +5,7 @@ namespace DTO.DTO.Params
     public class ParNotConformityRuleXLevelDTO : NxN
     {
         public int ParNotConformityRule_Id { get; set; }
-        public int ParCompany_Id { get; set; }
+        public int? ParCompany_Id { get; set; }
         public decimal Value { get; set; }
         public int Level { get; set; }
         public int? ParLevel1_Id { get; set; }

@@ -121,8 +121,8 @@ namespace Data.Repositories
         {
             if (nonCoformitRule.ParNotConformityRule_Id >= 0)
             {
-                //MOCK
-                nonCoformitRule.ParCompany_Id = 1;
+                //MOCK 
+                //nonCoformitRule.ParCompany_Id = 1; (Linha comentada pelo Renan em 11/02/2020, pois acredito não ser mais necessário este mock, já que a coluna aceita null)
 
                 nonCoformitRule.ParLevel1_Id = parLevel1Id;
 
