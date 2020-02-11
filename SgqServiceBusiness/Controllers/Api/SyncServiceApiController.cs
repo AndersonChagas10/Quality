@@ -4245,9 +4245,10 @@ namespace SgqServiceBusiness.Api
 
             string appVersion = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.appVersion;
 
-            if (!version.Contains(appVersion))
+            if (!version.Contains(appVersion) || string.IsNullOrWhiteSpace(version))
                 forcaAtualizacao = @"<script>
                                     setTimeout(function(){
+                                        versionNumber = '"+appVersion+@"';
                                         navigator.notification.alert('Nova atualização disponivel. A aplicação será atualizada!', 
                                         Reload, 
                                         'Atualização', 

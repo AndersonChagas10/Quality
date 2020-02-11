@@ -88,6 +88,7 @@ $.fn.focusEnd = function () {
     return this;
 }
 function onDeviceReady() {
+    getVersionNumber();
 
     if (device.platform == 'browser') {
         navigator.webkitPersistentStorage.requestQuota(
@@ -132,10 +133,7 @@ function onDeviceReady() {
     updateWatch();
 
     abreOApp(urlPreffix);
-
-
 }
-
 
 function abreOApp(valor) {
     urlPreffix = valor;
@@ -146,7 +144,7 @@ function abreOApp(valor) {
 function getAPPOnLine() {
     $.ajax({
         type: 'POST'
-        , url: urlPreffix + '/api/SyncServiceApi/getAPP2?version='+versao
+        , url: urlPreffix + '/api/SyncServiceApi/getAPP2'+
         , contentType: 'application/json; charset=utf-8'
         , dataType: 'json'
         //, dataType: "xml"
@@ -165,7 +163,7 @@ function getAPPOnLine() {
 
             $('.Starter').hide();
 
-            $('#version .number, #versionLogin .number').text(versao);
+            $('#version .number, #versionLogin .number').text(versionNumber);
             $('#ambiente .base, #ambienteLogin .base').text(" " + baseAmbiente);
 
             var language = $(".Resource").attr("language") == undefined ? "default" : $(".Resource").attr("language");
@@ -445,7 +443,7 @@ function getAPPLevelsOnLine() {
 
             $.LoadingOverlay("hide");
 
-            $('#version .number, #versionLogin .number').text(versao);
+            $('#version .number, #versionLogin .number').text(versionNumber);
             $('#ambiente .base, #ambienteLogin .base').text(" " + baseAmbiente);
 
             wMessage($('#btnLoginOnline'), getResource('verifying_users'));
@@ -501,7 +499,7 @@ function getAPPLevels1OnLine() {
 
             $.LoadingOverlay("hide");
 
-            $('#version .number, #versionLogin .number').text(versao);
+            $('#version .number, #versionLogin .number').text(versionNumber);
             $('#ambiente .base, #ambienteLogin .base').text(" " + baseAmbiente);
 
             wMessage($('#btnLoginOnline'), getResource('verifying_users'));
