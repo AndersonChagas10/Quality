@@ -283,7 +283,7 @@ function getBinarioComTexto(level3) {
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-5">' +
-        '<input type="text" class="col-xs-12 input-sm" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao +'" data-texto/>' +
+        '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao +'" data-texto/>' +
         '</div>' +
         '<div class="col-xs-5">' +
         botao +
@@ -460,7 +460,7 @@ function getTexto(level3) {
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-10">' +
-        '<input type="text" class="col-xs-12 input-sm" maxlength="' + tamanhoPermitido + '" placeholder="'+ mensagemPadrao +'" data-tarefa data-valor/>' +
+        '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="'+ mensagemPadrao +'" data-tarefa data-valor/>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
