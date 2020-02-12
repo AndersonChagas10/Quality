@@ -1989,7 +1989,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 	            INNER JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
 	            INNER JOIN ParLevel2 M WITH (NOLOCK) ON CuboL3.Parlevel2_Id = M.ID
 	            INNER JOIN ParLevel3 T WITH (NOLOCK) ON CuboL3.Parlevel3_Id = T.ID
-	            INNER JOIN ParDepartment D WITH (NOLOCK) ON CuboL3.Secao_Id = D.
+	            INNER JOIN ParDepartment D WITH (NOLOCK) ON CuboL3.Secao_Id = D.ID
 				LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
                 LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
