@@ -4,14 +4,17 @@ var versionNumber = "";
 
 function getVersionAPI() {
     $.ajax({
-        type: 'POST'
+        type: 'GET'
         , url: urlPreffix + '/Config/GetAppVersionIsUpdated?versionNumber='+versionNumber
         , contentType: 'application/json; charset=utf-8'
         , dataType: 'json'
         , async: false //blocks window close
         , success: function (data, status) {
-            if(data.updated != true){
+            if (data.updated != true) {
                 OpenAppMustBeUpdated(data);
+            } else {
+                versionNumber = data.versionNumber;
+                saveVersionNumber();
             }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

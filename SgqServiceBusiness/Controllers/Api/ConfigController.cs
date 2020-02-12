@@ -27,13 +27,13 @@ namespace SgqServiceBusiness.Api
         }
 
         // GET: AppScripts
-        public dynamic GetAppVersionIsUpdated(string versionNumber)
+        public string GetAppVersionIsUpdated(string versionNumber)
         {
             string appVersionNumber = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.appVersion;
 
             if (!string.IsNullOrWhiteSpace(versionNumber) && !versionNumber.Contains(appVersionNumber))
-                return new { updated = false, versionNumber = appVersionNumber };
-            return new { updated = true, versionNumber = appVersionNumber };
+                return Newtonsoft.Json.JsonConvert.SerializeObject(new { updated = false, versionNumber = appVersionNumber });
+            return Newtonsoft.Json.JsonConvert.SerializeObject( new { updated = true, versionNumber = appVersionNumber });
         }
     }
 }

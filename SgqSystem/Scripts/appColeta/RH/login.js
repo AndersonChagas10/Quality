@@ -103,8 +103,8 @@ function setLogin(logo) {
         '        <br>                                                                                                                                               ' +
         '        <br>                                                                                                                                               ' +
         '        <br><span id="local" class="hide" name="" style="" empresa="jbs" local="brasil"></span>                                                            ' +
-        '<span id="versionLogin" class="" name="" style="">Versão<span id="" class="number" name="" style=""> 2.0.48 Android</span></span>                          ' +
-        '    <span id="ambienteLogin" class="" name="" style=""><span id="" class="base" name="" style=""> JBS </span></span>                                       ' +
+        '<span id="versionLogin" class="" name="" style="">Versão<span id="" class="number" name="" style=""> ' + versao +'</span></span>                          ' +
+        '    <span id="ambienteLogin" class="" name="" style=""></span>                                       ' +
         '    </div>                                                                                                                                                 ' +
         '</div>';
 

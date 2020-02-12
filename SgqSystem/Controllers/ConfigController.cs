@@ -23,7 +23,7 @@ namespace SgqSystem.Controllers
         }
 
         [HttpGet]
-        public dynamic GetAppVersionIsUpdated(string versionNumber)
+        public string GetAppVersionIsUpdated(string versionNumber)
         {
             return new SgqServiceBusiness.Api.ConfigController().GetAppVersionIsUpdated(versionNumber);
         }

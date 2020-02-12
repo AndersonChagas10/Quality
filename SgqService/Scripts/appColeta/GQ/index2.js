@@ -144,7 +144,7 @@ function abreOApp(valor) {
 function getAPPOnLine() {
     $.ajax({
         type: 'POST'
-        , url: urlPreffix + '/api/SyncServiceApi/getAPP2'+
+        , url: urlPreffix + '/api/SyncServiceApi/getAPP2'
         , contentType: 'application/json; charset=utf-8'
         , dataType: 'json'
         //, dataType: "xml"

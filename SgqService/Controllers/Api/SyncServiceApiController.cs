@@ -130,14 +130,14 @@ namespace SgqService.Controllers.Api
         [Route("getAPP")]
         public string getAPP(/*string version*/)
         {
-            return getAPP2("");
+            return getAPP2();
         }
 
         [HttpPost]
         [Route("getAPP2")]
-        public string getAPP2(string version)
+        public string getAPP2()
         {
-            return business.getAPP2(version);
+            return business.getAPP2();
         }
 
         [HttpPost]

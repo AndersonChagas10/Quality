@@ -4235,32 +4235,16 @@ namespace SgqServiceBusiness.Api
         #region App
         public string getAPP(/*string version*/)
         {
-            return getAPP2("");
+            return getAPP2();
         }
 
-        public string getAPP2(string version)
+        public string getAPP2()
         {
-            //var version = "2.0.47";
-            string forcaAtualizacao = "";
-
-            string appVersion = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.appVersion;
-
-            if (!version.Contains(appVersion) || string.IsNullOrWhiteSpace(version))
-                forcaAtualizacao = @"<script>
-                                    setTimeout(function(){
-                                        versionNumber = '"+appVersion+@"';
-                                        navigator.notification.alert('Nova atualização disponivel. A aplicação será atualizada!', 
-                                        Reload, 
-                                        'Atualização', 
-                                        'OK');
-                                    },500);
-                                    </script>";
-
             string login = GetLoginAPP();
 
             string resource = GetResource();
 
-            return login + resource + forcaAtualizacao;
+            return login + resource;
         }
 
         public string getAPPLevels(int UserSgq_Id, int ParCompany_Id, DateTime Date, int Shift_Id)
