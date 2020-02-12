@@ -366,14 +366,8 @@ namespace SgqSystem.Controllers.Api
 
                 if (headerField.ParFieldType_Id == 2) //Se for campo integração
                 {
-                    /* Se não for produto que digito o código e busco em uma lista*/
-                    if (headerField.Description != "Produto")
-                    {
-                        SGQDBContext.ParFieldType ParFieldTypeDB = new SGQDBContext.ParFieldType();
-
-                        select.Values = ParFieldTypeDB.getIntegrationValues(headerField.Id, headerField.Description, collectionLevel2.UnitId).ToList();
-
-                    }
+                    SGQDBContext.ParFieldType ParFieldTypeDB = new SGQDBContext.ParFieldType();
+                    select.Values = ParFieldTypeDB.getIntegrationValues(headerField.Id, headerField.Description, collectionLevel2.UnitId).ToList();
                 }
                 else
                 {
