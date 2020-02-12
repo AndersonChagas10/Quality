@@ -10,7 +10,7 @@ namespace Helper
             var properties = text.Substring(1, text.Length - 2).Split(',');
             for (int i = 0; i < properties.Length; i++)
             {
-                if (propertie == properties[i].Split(':')[0])
+                if (propertie == properties[i].Split(':')[0].Trim())
                 {
                     return properties[i].Split(':')[1];
                 }
