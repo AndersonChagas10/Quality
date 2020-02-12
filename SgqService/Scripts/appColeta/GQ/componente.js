@@ -231,7 +231,6 @@ function zeraLimitesComponentes() {
 
 }
 
-
 //TODO: função que faça todos os tipos de combinações
 function hideLevel3ToHide(limites) {
     
@@ -242,7 +241,7 @@ function hideLevel3ToHide(limites) {
         return parseInt(limite.split(':')[0]);
     });
 
-    var arrTodosLimites = $(listComponenteGenericoValores).filter(function(i, o){
+    var arrTodosLimites = $.grep(listComponenteGenericoValores, function(o){
     
         return (parseInt(limites.ComponenteGenerico_Id) === parseInt(o.ComponenteGenerico_Id) && 
         parseInt(o.ComponenteGenericoTipoColuna_Id) === 8 && 
@@ -254,7 +253,17 @@ function hideLevel3ToHide(limites) {
         return false;
 
     var arrTodosLevel3 = $.map(arrTodosLimites, function(limite) {
-        return parseInt(limite.Valor.split(':')[0]);
+        
+        var arrLimite = [];
+    
+            if(limite.Valor)
+    
+                limite.Valor.split('|').forEach(function(valor){
+                    
+                    arrLimite.push(parseInt(valor.split(':')[0]))
+                });
+    
+            return arrLimite;
     });
 
     var arrExclusivo = $.grep(arrTodosLevel3, function (item) {
