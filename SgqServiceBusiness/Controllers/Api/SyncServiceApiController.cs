@@ -5294,26 +5294,12 @@ namespace SgqServiceBusiness.Api
                                 "<div class=\"form-group\">" +
                                     "<label>" + CommonData.getResource("product_disposition").Value.ToString() + ":</label>" +
                                     "<textarea id=\"ProductDisposition\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
-                                "</div>" +
+                                "</div>";
                                 //"<div class=\"form-group\">" +
                                 //    "<label>" + CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
                                 //    "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 //"</div>" +
-                                $@"<div class='form-group'>
-                                        <label>{CommonData.getResource("corrective_action").Value.ToString()}:</label>
-                                        <div>
-		                                    <input type='checkbox' id='correctiveAction'>
-		                                    <label id='mensagemPadrao'>{DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.DefaultMessageCorrectiveAction}</label>
-                                        </div>
-	                                    <textarea id='PreventativeMeasure' class='form-control custom-control' rows='3' style='resize:none'></textarea>
-                                    </div>
-                                    <div id='divSelectSupervisor' class='form-group'>
-                                          <label>Supervisor</label>
-                                          <select id='TechinicalSignature' class='form-control custom-control'>
-		                                    {htmlSelect}
-	                                    </select>  
-                                    </div>
-                                </div>";
+                                
 
             if (GlobalConfig.Eua)
             {
@@ -5336,6 +5322,24 @@ namespace SgqServiceBusiness.Api
                                         "</div>" +
                                     "</div>" +
                                 "</div>";
+            }
+            else
+            {
+                correctiveAction +=$@"<div class='form-group'>
+                                        <label>{CommonData.getResource("corrective_action").Value.ToString()}:</label>
+                                        <div>
+		                                    <input type='checkbox' id='correctiveAction'>
+		                                    <label id='mensagemPadrao'>{DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.DefaultMessageCorrectiveAction}</label>
+                                        </div>
+	                                    <textarea id='PreventativeMeasure' class='form-control custom-control' rows='3' style='resize:none'></textarea>
+                                    </div>
+                                    <div id='divSelectSupervisor' class='form-group'>
+                                          <label>Supervisor<span style=""color: red""> *</span></label>
+                                          <select id='TechinicalSignature' class='form-control custom-control'>
+		                                    {htmlSelect}
+	                                    </select>  
+                                    </div>
+                                </div>";
             }
 
 
