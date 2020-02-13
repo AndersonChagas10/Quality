@@ -57,7 +57,38 @@
                                 </div>
                             }
 
+                            @if (ViewBag.ShowDimensaoGrafico == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Dimensão Gráfico</strong></label>
+                                        <select class="form-control" name="ShowDimensaoGrafico_Id" id="dimensaoGrafico">
+                                            <option value="0">Unidades</option>
+                                            <option value="1">Indicadores</option>
+                                            <option value="2">Monitoramentos</option>
+                                            <option value="3">Tarefas</option>
+                                            <option value="4">Família de produtos</option>
+                                            <option value="5">SKU</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
 
+                            @if (ViewBag.ShowModeloGrafico == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Modelo Gráfico</strong></label>                                       
+                                        <select class="form-control" name="ShowModeloGrafico_Id" id="modeloGrafico">
+                                            <option value="1">Comparativo</option>
+                                            <option value="2">Evolutivo Mensal</option>
+                                            <option value="3">Evolutivo Semanal</option>
+                                            <option value="4">Evolutivo Diário</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+                           
                             @if (ViewBag.ShowParModule == true)
                             {
                                 <div class="col-sm-12">
@@ -806,7 +837,7 @@
                 retornaOptionsPeloArray(dataFiltro.Desdobramentos, "Id", "Name", objFiltro["desdobramento"]));
             $('select[name="userSgqSurpervisor_Ids"]').html(
                 retornaOptionsPeloArray(dataFiltro.UserSgqSurpervisores, "Id", "Name", objFiltro["userSgqSurpervisor_Ids"]));
-
+            
             $('select[name="parStructure_Ids"]').trigger('change');
             $('select[name="parCompany_Ids"]').trigger('change');
             $('select[name="shift_Ids"]').trigger('change');
@@ -831,7 +862,7 @@
             $('select[name="peso"]').trigger('change');
             $('select[name="desdobramento"]').trigger('change');
             $('select[name="userSgqSurpervisor_Ids"]').trigger('change');
-
+            
             $('#filterReports select').on('change', function () {
                 preencheFiltrosAjax();
             });

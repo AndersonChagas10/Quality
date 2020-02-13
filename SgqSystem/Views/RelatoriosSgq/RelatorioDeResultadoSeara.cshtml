@@ -1,0 +1,788 @@
+﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
+@{
+    Layout = "_FilterReports.cshtml";
+    ViewBag.Title = "Relatório de Resultado"; //"Apontamentos Diarios";
+
+    ViewBag.ShowCurrentDate = false;
+    ViewBag.ShowRangeDate = true;
+    ViewBag.ShowDimensaoGrafico = true;
+    ViewBag.ShowModeloGrafico = true;
+
+    ViewBag.ShowParStructure2 = true;
+
+    //ViewBag.ShowParStructure = false;
+    ViewBag.ShowParCompany = true;
+    ViewBag.ShowShift = false;
+    ViewBag.ShowParLevel1 = true;
+    ViewBag.ShowParLevel2 = true;
+    ViewBag.ShowParLevel3 = true;
+
+    ViewBag.ShowUserCompanies = true; //Exibe somente as unidades do usuário no filtro
+
+    var urlGet = Url.Action("GetRelatorioDeResultadoSeara", "api/ApontamentosDiarios");
+    var urlGrafico = Url.Action("GraficoUnidades", "api/ApontamentosDiarios");
+}
+
+@section Content {
+
+    <div id="divApontamentosDiarios"></div>
+    <div id="divTable">
+        <div id="grafico1" style="min-width:80%; height: auto; margin: 0 auto"></div>
+        <table id="resultsApontamentos" class="table table-striped"></table>
+    </div>
+
+}
+
+
+@section Scripts {
+
+    <script>
+
+        var urlGet = '@Html.Raw(@urlGet)';
+        var urlGrafico = '@Html.Raw(@urlGrafico)';
+
+        $('button').button({ loadingText: 'Carregando...' });
+
+        var $btn = $('#btnSend');
+
+        var UnidadeUsuario = ([{"Name":"Empresa 1","Description":"Empresa 1","IsActive":true,"Initials":null,"SIF":null,"CompanyNumber":0,"IntegrationId":0,"IPServer":null,"DBServer":null,"RolePerCompany":null,"ListParCompanyCluster":null,"ListParCompanyXStructure":null,"Id":74,"AddDate":"\/Date(1575294791437)\/","AlterDate":null},{"Name":"Seara 1","Description":"Seara 1","IsActive":true,"Initials":"SA1","SIF":null,"CompanyNumber":0,"IntegrationId":0,"IPServer":null,"DBServer":null,"RolePerCompany":null,"ListParCompanyCluster":null,"ListParCompanyXStructure":null,"Id":73,"AddDate":"\/Date(1560271040216)\/","AlterDate":"\/Date(1560271040216)\/"}]);
+       
+        var popoverMain;
+        var Aux;
+        var Aux2;
+        var subtitle = "";
+        var pathDirect = 0; // sum 1 se user optao por departamento, se continuar 0 ele optou por indicador e pulou um método
+        var IsDepartment = false;
+        var IsDepartmentShift = false;
+        var idGrafico = "";
+        var desdobramento = "";
+        var ShiftSelected;
+
+        //var GeralNote = "<div class='geral-note'>" + 'Clique no gráfico para desdobrar para o próximo nível' + "</div>";
+
+        $('#simpleCallendar').hide().attr('disabled', true);
+
+        $(document).ready(function () {
+
+            closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+
+            //$("#btnSend").click(function (e) {
+            //    Send(true);
+            //});
+
+            $('.levels').hide();
+
+
+            $("#clusterGroupId").find("option").eq(0).remove();
+            $("#clusterGroupId").val(8).change();
+
+            if ($("#clusterGroupId").val() == null) {
+                $("#clusterGroupId").val(2).change();
+            }
+
+            popoverMain = $('#CustomPopover').addClass('hide');
+
+            $('.sidebar-nav select').select2();
+
+        });
+
+        function enviarFiltro() {
+
+            openLoader('Aguarde...');
+            $btn.button('loading');
+            $('#results').empty();
+            $("#grafico1").empty()
+            $("#PanelFull0").hide();
+
+           
+            $('#resultsApontamentos').empty();
+            $('#divApontamentosDiarios').empty();
+
+            $('#divTable').hide();
+
+            ShiftSelected = $('#shift :selected').val();
+
+            popoverMain.addClass('hide');
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+            objFiltro.Param = {};
+            objFiltro.Param.auditorId = GetUsuarioId();
+
+            $.ajax({
+                url: urlGrafico,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            })
+            .done(function (data) {
+                //console.log(data);
+                Grafico1(data);
+                $btn.button('reset');
+                closeLoader();
+            })
+            .fail(function (jqXHR, textStatus, msg) {
+                //console.log(msg);
+                $btn.button('reset');
+                //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                closeLoader();
+            });
+
+            $('#divTable').hide();
+
+            $.ajax({
+                url: urlGet,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            })
+                .done(function (data) {
+                    GerarTabela(data);
+                    closeLoader();
+                })
+                .fail(function (jqXHR, textStatus, msg) {
+                    console.log(msg);
+                    preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                    closeLoader();
+                });
+
+            $('#RGTarefasPivotTable').hide();
+        };
+
+
+    function ValidaDadosParaEnvio() {
+            GuardJs.resetForValidation(objFiltro);
+            GuardJs.CheckRangeDateTime(objFiltro.endDate, objFiltro.startDate, "Initial date", "End date");
+
+            if (!GuardJs.isValid)
+                return !GuardJs.isValid;
+            GuardJs.esconderMensagem();
+
+            return true;
+        }
+
+        /*Charts*/
+        function Grafico1(data) {
+
+            if(!(data.length > 0)){
+                GuardJs.exibirMensagemAlerta(Resources('no_data_to_show'));
+                return;
+            }
+
+            var dataX = MapeiaValorParaHC(data, "UnidadeName");
+            var dataXId = MapeiaValorParaHC(data, "Unidade_Id");
+            var C = MapeiaValorParaHC(data, "C");
+            var Nc = MapeiaValorParaHC(data, "Nc");
+            var Av = MapeiaValorParaHC(data, "Av");
+            var PorcNc = MapeiaValorParaHC(data, "PorcNc");
+            var PorcC = MapeiaValorParaHC(data, "PorcC");
+            var modeloGrafico = document.getElementById('modeloGrafico');
+            var dimensaoGrafico = document.getElementById('dimensaoGrafico');
+            var tituloGrafico = modeloGrafico.options[modeloGrafico.selectedIndex].text;
+            var subtituloGrafico = dimensaoGrafico.options[dimensaoGrafico.selectedIndex].text;
+    
+            $('#grafico1').empty();
+
+            Highcharts.chart('grafico1', {
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(tituloGrafico),
+                subtitle: Chart.Subtitulo("Por " + subtituloGrafico),
+                reflow: true,
+                xAxis: Chart.Xaxis(dataX),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    Chart.PorcNc(PorcNc, null, null, "", dataX, null, dataXId),
+                    Chart.PorcC(PorcC, null, null, "", dataX, null, dataXId),
+                    Chart.C(C, null, null, null, null, "", dataX, null, dataXId),
+                    Chart.NC(Nc, null, null, null, null, "", dataX, null, dataXId),
+                    Chart.Av(Av, null, null, null, null, "", dataX, null, dataXId)
+                ],
+            }, function () {
+                //$('#grafico1').append(GeralNote);
+            });
+     
+            $('.body-content').css('height', '3350px');
+
+        }
+
+        function btnOrdenacao(id, func, btn, sentido) {
+            var inputTag = document.createElement("div");
+            if (btn == undefined) {
+                inputTag.innerHTML = '<input type = "button"  id="Nc"  value="NC " >';
+                inputTag.innerHTML += '<input type = "button" id="PorcNc"  value = "% NC " >';
+                $("#" + id).empty();
+                document.getElementById(id).appendChild(inputTag);
+            } else {
+                var result = sentido == 'asc' ? "↓": "↑";
+                btn[0].value = btn[0].value.replace("↓", "").replace("↑", "");
+                btn[0].value = btn[0].value + result;
+                $("#" + id + " input").not(btn).val($("#" + id + " input").not(btn).val().replace("↓", "").replace("↑", ""));
+            }
+
+            if (sentido == 'asc') {
+                $("#" + id + " #Nc").off('click').on("click", function () {
+                    func("desc", 0, null, $("#" + id + " #Nc"));
+                });
+                $("#" + id + " #PorcNc").off('click').on("click", function () {
+                    func("desc", 3, null, $("#" + id + " #PorcNc"));
+                });
+            } else {
+                $("#" + id + " #Nc").off('click').on("click", function () {
+                    func("asc", 0, null, $("#" + id + " #Nc"));
+                })
+                $("#" + id + " #PorcNc").off('click').on("click", function () {
+                    func("asc", 3, null, $("#" + id + " #PorcNc"));
+                })
+            }
+        }
+
+        $('#sort').click(function(chart) {
+            chart.series[0].data.sort(function(a, b) {
+                return b.y + a.y;
+            });
+
+            var newData = {};
+
+            for (var i = 0; i < chart.series[0].data.length; i++) {
+                newData.x = i;
+                newData.y = chart.series[0].data[i].y;
+                newData.color = Highcharts.getOptions().colors[i];
+
+                chart.series[0].data[i].update(newData, false);
+
+                // Workaround:
+                chart.legend.colorizeItem(chart.series[0].data[i], chart.series[0].data[i].visible);
+            }
+            chart.redraw({ duration: 2000 });
+        });
+
+        var Chart = {
+            criaTitulo:  function(prefix, sufix){
+                return prefix + sufix;
+            },
+            curvaPareto: function (dados, dadosNC, axis, inverse) {
+
+                var totalNC = dadosNC.reduce(function (a, b) { return a + b; }, 0);
+                var porcentagemAcumuladaNC  = 0;
+                var data = []
+                dadosNC.forEach(function (a) {
+                    porcentagemAcumuladaNC += a / totalNC * 100;
+                    data.push(Math.round(porcentagemAcumuladaNC, 2));
+                });
+
+                return {
+                    type: 'line',
+                    yAxis: 1,
+                    name: Resources('pareto_chart'),
+                    color: "Red",
+                    data: data,
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    },
+                    zones: [{
+                        value: 80,
+                        color: inverse == undefined ? 'Red' : 'Black'
+                    }, {
+                        color: inverse == undefined ? 'Black' : 'Red'
+                    }],
+                }
+            },
+            serie: function (tipo, nomeDaSerie, corDaSerie, dados, suffix, axis, paddin1, padding2, pointFunc,nome, id) {
+
+                var serieType = tipo == undefined ? 'line' : tipo;
+                var sufix = suffix == undefined ? '' : suffix
+                var padding1 =  0.3;
+                var padding2 = -0.2;
+
+
+                return  {
+                    type: serieType,
+                    yAxis: 1,
+                    name: nomeDaSerie,
+                    color: corDaSerie,
+                    data: dados,
+                    pointPadding: paddin1,
+                    pointPlacement: padding2,
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black',
+                        align: 'center',
+                        style: {
+                            fontSize: '10px',
+                        }
+                    },
+                    point: {
+                        events: {
+                            click: function () {
+                                if(typeof (pointFunc) == 'function'){
+                                    pointFunc(nome[this.x], id[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueSuffix: sufix
+                    }
+                }
+
+
+            },
+            CorTotalNc: function () { return '#F7BCB0' },
+            CorTotalC: function () { return '#F7B000' },
+            CorTotalAv: function () { return '#ccc' },
+            CorTotalPareto: function () { return '#900000' },
+            CorMeta: function () { return '#67D184' },
+            CorTotalPorcNc: function () { return '#FF6347' },
+            CorTotalPorcC: function () { return '#FF6300' },
+            Legend: function () {
+                return {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    borderWidth: 0
+                };
+            },
+            ToolTip: function (isShared, isCrosshairs) {
+                return {
+                    valueDecimals: 2,
+                    shared: isShared,
+                    crosshairs: isCrosshairs
+                }
+            },
+            Titulo: function (data, sufix) {
+
+                if(!!sufix)
+                    data = data + " | " + sufix;
+
+                return {
+
+                    text: data,
+                    x: -20 //center
+                };
+
+            },
+            Subtitulo: function (data, sufix) {
+
+                if (!!sufix)
+                    data = data + ": " + sufix;
+
+                return {
+
+                    text: data,
+                    x: -20 //center
+                };
+
+            },
+            Credits: function () {
+                return {
+                    enabled: false
+                }
+            },
+            Zones: function () {
+                return {
+                    enabled: falseCorTotalPorcNc
+                }
+            },
+            Chart: function (tipo, zoon) {
+                return {
+                    type: tipo,
+                    zoomType: (!!zoon) ? zoon : ''
+                }
+            },
+            yAxisPadraoRelNc: function () {
+
+                return [{
+                    allowDecimals: false,
+                    min: 0,
+                    title: {
+                        text: Resources('number_samplers')
+                    },
+                    labels: {
+                        format: '{value}',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                }, {
+                    allowDecimals: false,
+                    labels: {
+                        format: '{value} %',
+                        style: {
+                            color: Highcharts.getOptions().colors[1]
+                        }
+                    },
+                    title: {
+                        text: '% ' +  Resources('nonconformity'),
+                    },
+                    opposite: true
+                }];
+
+            },
+            Xaxis: function (dados) {
+                return [{
+                    categories: dados
+                }];
+            },
+            NC: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2, arr3) {
+                return {
+                    name: Resources('nonconformity'),
+                    color: Chart.CorTotalNc(),//'rgba(77,143,189,1)',
+                    data: data,
+                    yAxis: 0,
+                    //pointPadding: 0.3,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao(),
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!arr2) {
+                                    func(arr[this.x], grafico, arr2[this.x], arr3[this.x]);
+                                } else {
+                                    func(arr[this.x], grafico, undefined, arr3[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' qtd'
+                    }
+                }
+
+            },
+            PorcNc: function (data, func, funcParaAcumuladas, grafico, arr, arr2, arr3){
+                $.each(data, function(a, b){
+                    data[a] = parseFloat(b) > 100 ? 100 : b;
+                });
+                return {
+                    name: '% ' + Resources('nonconformity'),
+                    color: Chart.CorTotalPorcNc(),//'rgba(240,124,0,1)',
+                    data: data,
+                    yAxis: 1,
+                    tooltip: {
+                        valueSuffix: ' %'
+                    },
+                    //pointPadding: 0.4,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!arr2) {
+                                    func(arr[this.x], grafico, arr2[this.x], arr3[this.x]);
+                                } else {
+                                    func(arr[this.x], grafico, undefined, arr3[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' % ('+ Resources('nonconformity') + ' * ' + Resources('weight')
+                    }
+                };
+
+            },
+            C: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2, arr3) {
+                return {
+                    name: Resources('conform'),
+                    color: Chart.CorTotalC(),//'rgba(77,143,189,1)',
+                    data: data,
+                    yAxis: 0,
+                    //pointPadding: 0.3,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao(),
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!arr2) {
+                                    func(arr[this.x], grafico, arr2[this.x], arr3[this.x]);
+                                } else {
+                                    func(arr[this.x], grafico, undefined, arr3[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' qtd'
+                    }
+                }
+
+            },
+            PorcC: function (data, func, funcParaAcumuladas, grafico, arr, arr2, arr3) {
+                $.each(data, function (a, b) {
+                    data[a] = parseFloat(b) > 100 ? 100 : b;
+                });
+                return {
+                    name: '% ' + Resources('conform'),
+                    color: Chart.CorTotalPorcC(),//'rgba(240,124,0,1)',
+                    data: data,
+                    yAxis: 1,
+                    tooltip: {
+                        valueSuffix: ' %'
+                    },
+                    //pointPadding: 0.4,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!arr2) {
+                                    func(arr[this.x], grafico, arr2[this.x], arr3[this.x]);
+                                } else {
+                                    func(arr[this.x], grafico, undefined, arr3[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' % (' + Resources('conform') + ' * ' + Resources('weight')
+                    }
+                };
+
+            },
+            Meta: function (data, func, nome, id, funcParaAcumuladas){
+
+                return {
+                    visible: false,
+                    name: '% ' + Resources('goal'),
+                    data: data,
+                    color: Chart.CorMeta(),//'rgba(81,207,64,1)',
+                    //pointPadding: 0.4,
+                    //pointPlacement: 0.4,
+                    yAxis: 1,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+                            click: function () {
+                                if(!!func)
+                                    func(this.category);
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' %'
+                    }
+                };
+
+            },
+            Av: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2, arr3){
+
+                return {
+                    visible: false,
+                    name: Resources('evaluation'),
+                    data: data,
+                    color: Chart.CorTotalAv(),//'rgba(81,207,64,1)',
+                    //pointPadding: 0.4,
+                    //pointPlacement: 0.2,
+                    yAxis: 0,
+                    dataLabels: Chart.DataLabelPadrao(),
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!func)
+                                    if (!!arr2) {
+                                        func(arr[this.x], grafico, arr2[this.x], arr3[this.x]);
+                                    } else {
+                                        func(arr[this.x], grafico, undefined, arr3[this.x]);
+                                    }
+
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' qtd'
+                    }
+
+                };
+
+            },
+            DataLabelPadrao: function (affix) {
+
+                return  {
+                    format: !!affix ? '{y:.2f} '+ affix : '{y:.2f}',
+                    enabled: true,
+                    color: 'black',
+                    align: 'center',
+                    rotation: 270,
+                    x: 2,
+                    y: -25,
+                    style: {
+                        fontSize: '12px',
+                        fontWeight: 'Arial'
+                    }
+                };
+            },
+        }
+
+        $(document).mousemove(function(e) {
+            window.x = e.pageX;
+            window.y = e.pageY;
+        });    
+
+        function preencheRetornoGrafico(msg) {
+            $('#divApontamentosDiarios').html("<div class='alert alert-info'>" + msg + "</div>");
+        }
+
+        function GerarTabela(retornoArray) {
+
+            if (retornoArray.length == 0) {
+
+                preencheRetornoGrafico(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
+            }
+
+            else {
+
+                //Fim Regra
+                var Tipo1 = {};
+                var Tipo2 = {};
+
+                if (retornoArray[0].HashKey == 1 || retornoArray[0].HashKey == 5) {
+
+                    Tipo1 = { title: "@Resources.Resource.sequential", mData: "Sequencial" };
+                    Tipo2 = { title: "@Resources.Resource.side_banda", mData: "Banda" };
+                } else {
+                    Tipo1 = { title: "@Resources.Resource.evaluation", mData: "Avaliacao" };
+                    Tipo2 = { title: "@Resources.Resource.sample", mData: "Amostra" };
+                }
+
+                $('#divTable').show();
+
+                var colunas =
+                    [
+                        { title: "@Resources.Resource.unit", mData: "Unidade" },
+                        //{ title: "Cluster", mData: "ClusterName" },
+                        //{ title: "@Resources.Resource.cluster", mData: "Processo" },
+                        //{ title: "@Resources.Resource.shift", mData: "Turno" },
+                        //{ title: "@Resources.Resource.period", mData: "Periodo" },
+                        { title: "@Resources.Resource.frequency", mData: "Frequencia" },
+                        { title: "@Resources.Resource.user", mData: "Auditor" },
+                        { title: "@Resources.Resource.date", mData: "_Data" },
+                        { title: "@Resources.Resource.time", mData: "_Hora" },
+                        @*{ title: "@Resources.Resource.costcenter", mData: "CentroCusto" },*@
+                        { title: "@Resources.Resource.department", mData: "Secao" },
+                        @*{ title: "@Resources.Resource.company_group", mData: "GrupoEmpresa" },*@
+                        { title: "@Resources.Resource.structure", mData: "regional" },
+                        { title: "@Resources.Resource.cluster_group1", mData: "GrupoCluster" },
+                        { title: "Cargo", mData: "Cargo" },
+                        { title: "@Resources.Resource.audit", mData: "Indicador" },
+                        { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
+                        { title: "@Resources.Resource.task", mData: "Tarefa" },
+                        { title: "@Resources.Resource.weight", mData: "Peso" },
+                        {
+                            title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo", mRender: function (data, type, full) {
+
+                                if (isNaN(parseFloat(data))) {
+
+                                    return data;
+
+                                } else {
+
+                                    return data.toString().match(/^-?\d+(\.\d{1,2})?/g)[0];
+                                }
+
+                            }
+                        },
+                        {
+                            title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo", mRender: function (data, type, full) {
+
+                                if (isNaN(parseFloat(data))) {
+
+                                    return data;
+
+                                } else {
+
+                                    return data.toString().match(/^-?\d+(\.\d{1,2})?/g)[0];
+                                }
+
+                            }
+                        },
+                        { title: "@Resources.Resource.value", mData: "Lancado" },
+                        { title: "@Resources.Resource.valueText", mData: "ValueText" },
+                        { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
+                        { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
+                        { title: "@Resources.Resource.na ?", mData: "_NA" },
+                        { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
+                        Tipo1,
+                        Tipo2,
+                        { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%" },
+                        //{ title: "@Resources.Resource.platform", mData: "Platform", "width": "50%" },
+                        { title: "@Resources.Resource.add_date", mData: "_AddDate", "width": "50%" },
+                        {
+                            title: "@Resources.Resource.type ", mData: "Type", mRender: function (data, type, full) {
+
+                                if (data == "2") {
+                                    return '@Resources.Resource.retroactive';
+                                } else if (data == "3") {
+                                    return '@Resources.Resource.anticipated';
+                                } else if (data == "4") {
+                                    return '@Resources.Resource.import';
+                                } else if (data == '1') {
+                                    return '@Resources.Resource.edited';
+                                } else {
+                                    return '@Resources.Resource.normal';
+                                }
+                            }
+                        }
+                    ];
+
+                var initDatatable = function () {
+
+                    $('#loading').hide();
+                    setTimeout(function (e) {
+                        var oTable = $('#resultsApontamentos').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 100);
+
+                }
+
+                var table = datatableGRT.Inicializar({
+                    idTabela: "resultsApontamentos",
+                    listaDeDados: retornoArray,
+                    colunaDosDados: colunas,
+                    numeroLinhasNaTabela: 25,
+                    aplicarResponsividade: true,
+                    tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                    loadingRecords: true,
+                    destroy: true,
+                    info: true,
+                    initComplete: initDatatable,
+                    createdRow: function (row, data, index) {
+                    }
+                });
+            }
+        }
+
+    </script>
+
+}

@@ -2454,4 +2454,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-381</CardNumber>
+    <Version>1.5.0</Version>
+    <Description>[Relatório Resultado][Seara] Criado novo relatório</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>

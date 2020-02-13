@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace DTO
 {
     public class DataCarrierFormularioNew
-    { 
+    {
 
         public DateTime startDate { get; set; }
 
@@ -34,6 +34,10 @@ namespace DTO
 
         public int[] ParDepartment_Ids { get; set; } = new int[] { };
 
+        public int[] ShowModeloGrafico_Id { get; set; } = new int[] { };
+
+        public int[] ShowDimensaoGrafico_Id { get; set; } = new int[] { };
+      
         public int[] ParSecao_Ids { get; set; } = new int[] { };
 
         public int[] ParCargo_Ids { get; set; } = new int[] { };
@@ -83,6 +87,5 @@ namespace DTO
         public int DimensaoData { get; set; }
 
         public JObject Param { get; set; }
-
     }
 }
