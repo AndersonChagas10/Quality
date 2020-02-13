@@ -1289,7 +1289,8 @@ $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', fun
             return coleta.ParLevel1_Id == currentParLevel1_Id 
                 && (coleta.ParLevel2_Id == currentParLevel2_Id || coleta.ParLevel2_Id == null)
                 && coleta.Outros != null 
-                && coleta.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0;
+                && coleta.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0
+                && coleta.Synced != true
         });
 
     SalvarColetasDCA(coletasDoMonitoramentoSendoSalvo);
