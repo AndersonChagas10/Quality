@@ -2525,4 +2525,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-378</CardNumber>
+    <Version>1.4.0</Version>
+    <Description>[GQ][Análise crítica] Incluir filtros independentes do indicador/monitoramento/tarefa</Description>
+    <Script>
+    </Script>
+  </Card>
+  
 </Cards>
