@@ -412,6 +412,12 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereParLevel3 = $"AND CuboL3.ParLevel3_Id in ({ string.Join(",", form.ParLevel3_Ids)}) --Tarefa";
             }
 
+            var whereGrupoEmpresa = "";
+            if (form.Param["grupoEmpresa_Id"] != null)
+            {
+                whereGrupoEmpresa = $"and GrupoDeEmpresa.Id in ({form.Param["grupoEmpresa_Id"]})";
+            }
+
             var query = $@"
 
                  DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
@@ -452,6 +458,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereParLevel1}
                     {whereParLevel2}
                     {whereParLevel3}
+                    {whereGrupoEmpresa}
                 GROUP BY 
 	                Regional.NAME, Regional.Id 
                 ";
@@ -580,6 +587,12 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereParLevel3 = $"AND CuboL3.ParLevel3_Id in ({ string.Join(",", form.ParLevel3_Ids)}) --Tarefa";
             }
 
+            var whereRegional = "";
+            if (form.Param["regional_Id"] != null)
+            {
+                whereRegional = $"and Regional.Id in ({form.Param["regional_Id"]})";
+            }
+
             var query = $@"
                  DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
                  DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
@@ -610,6 +623,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereParLevel1}
                     {whereParLevel2}
                     {whereParLevel3}
+                    {whereRegional}
                 GROUP BY 
 	                C.NAME, C.Id ";
 
