@@ -148,7 +148,7 @@
     <Compile Include="ParGroupParLevel1.cs" />
     <Compile Include="ParGroupParLevel1Type.cs" />
     <Compile Include="ParGroupParLevel1XParLevel1.cs" />
-    <Compile Include="ParGroupParLevel1XParLevel3.cs" />
+    <Compile Include="ParVinculoPeso.cs" />
     <Compile Include="ParHeaderField.cs" />
     <Compile Include="ParInputTypeValues.cs" />
     <Compile Include="ParLataImagens.cs" />

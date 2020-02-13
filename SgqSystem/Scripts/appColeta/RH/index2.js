@@ -30,6 +30,7 @@ function prependDevice(obj, prependTo) {
 }
 
 function onDeviceReady() {
+    getVersionNumber();
 
     onOpenAppColeta();
 

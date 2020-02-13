@@ -1,5 +1,4 @@
 var baseAmbiente = "AppColeta";
-var versao = " 2.0.49.5 " + device.platform; //platform Android
 
 var isEUA = false; //true; 
 

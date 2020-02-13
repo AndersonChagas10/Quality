@@ -9,16 +9,23 @@ namespace SgqSystem.Controllers
 {
     public class ConfigController : Controller
     {
+
+        [HttpGet]
         public String UpdateAppScripts()
         {
-            Dominio.Seed.Seed.SetSeedValues(isEN: GlobalConfig.LanguageEUA, runSetSeed: true);
-            return "Atualizado scripts do banco";
+            return new SgqServiceBusiness.Api.ConfigController().UpdateAppScripts();
         }
+
+        [HttpGet]
         public String UpdateDicionarioEstatico()
         {
-            Dominio.Seed.Seed.SetSeedValues(isEN: GlobalConfig.LanguageEUA, runSetSeed: true);
-            Dominio.Seed.Seed.SetDicionario();
-            return "Atualizado dicionario estático";
+            return new SgqServiceBusiness.Api.ConfigController().UpdateDicionarioEstatico();
+        }
+
+        [HttpGet]
+        public string GetAppVersionIsUpdated(string versionNumber)
+        {
+            return new SgqServiceBusiness.Api.ConfigController().GetAppVersionIsUpdated(versionNumber);
         }
     }
 }
