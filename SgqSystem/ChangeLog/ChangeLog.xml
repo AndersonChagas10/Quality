@@ -2491,5 +2491,12 @@
     <Script>
     </Script>
   </Card>
+  <Card>
+    <CardNumber>SGQ-387</CardNumber>
+    <Version>1.4.0</Version>
+    <Description>[RH SESMT][RICK] MELHORIA - Alterar fonte de busca usuário (FTA)</Description>
+    <Script>
+    </Script>
+  </Card>
 
 </Cards>

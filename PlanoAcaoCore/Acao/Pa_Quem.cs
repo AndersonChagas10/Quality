@@ -5,9 +5,30 @@ namespace PlanoAcaoCore
     public class Pa_Quem : Pa_BaseObject
     {
         public string Name { get; set; }
+        public string FullName { get; set; }
+        public string FullNameConcatenado
+        {
+            get
+            {
+                try
+                {
+                    return FullName + " - " + Name.Substring(0, 3);
+                }
+                catch
+                {
+                    return null;
+                } 
+            } 
+        }
         public static List<Pa_Quem> Listar()
         {
-            var query = "SELECT * FROM Pa_Quem";
+            var query = $@"select paq.Id 
+                         ,paq.Name
+                         ,usgq.FullName
+                         FROM Pa_Quem paq  
+                         inner join UserSgq usgq
+                         on paq.Name = usgq.Name 
+                         where paq.Id = usgq.Id";
             return ListarGenerico<Pa_Quem>(query);
         }
 

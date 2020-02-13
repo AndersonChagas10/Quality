@@ -70,7 +70,7 @@
                     </tr>
                     <tr>
                         <td colspan="4"><span class="tdLabels">@ResourcesPA.Resource.indicators_devices</span></td>
-                        <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.supervisor</span></td>
+                        <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.user</span></td>
                         <td colspan="2"><span class="tdLabels">@ResourcesPA.Resource.unit</span></td>
                         <td colspan="2"><span class="tdLabels">Cargo</span></td>
                     </tr>
@@ -197,7 +197,7 @@
                     </tr>
                     <tr>
                         <td colspan="4">
-                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.Quem_Id, new SelectList(ViewBag.Quem, "Id", "FullNameConcatenado"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
                         </td>
                         <td colspan="2">
                             @Html.EditorFor(r => r._QuandoFim, new { htmlAttributes = new { @class = "form-control datepicker" } })
@@ -216,10 +216,10 @@
                     </tr>
                     <tr>
                         <td colspan="4" class="col-md-6">
-                            @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "FullNameConcatenado"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
                         </td>
                         <td colspan="5" class="col-md-6">
-                            @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "FullNameConcatenado"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
                         </td>
                     </tr>
                     <tr style="display:none">
@@ -261,6 +261,7 @@
                         <div>
                             <input type="password" class="form-control" id="" name="pass">
                             <input type="hidden" class="form-control" id="name" name="name">
+                            <input type="hidden" class="form-control" id="idUser" name="idUser">
                         </div>
                     </div>
                 </form>
@@ -299,6 +300,7 @@
             $('#Assinatura1').off('change').on('change', function () {
                 user0.Status = false;
                 $('#passCheck').find('#name').val($('#Assinatura1 :selected').text());
+                $('#passCheck').find('#idUser').val($('#Assinatura1 :selected').val());
                 $('#btnOk').off('click').on('click', function () { ValidaSenha(0); });
                 $('#modalPass').modal();
                 $('#passCheck').find('[name=pass]').val('')
@@ -309,6 +311,7 @@
             $('#Assinatura2').off('change').on('change', function () {
                 user1.Status = false;
                 $('#passCheck').find('#name').val($('#Assinatura2 :selected').text());
+                $('#passCheck').find('#idUser').val($('#Assinatura1 :selected').val());
                 $('#btnOk').off('click').on('click', function () { ValidaSenha(1); });
                 $('#modalPass').modal();
                 $('#passCheck').find('[name=pass]').val('')

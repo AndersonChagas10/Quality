@@ -1,9 +1,11 @@
 ﻿using ADOFactory;
+using Dominio;
 using DTO;
 using DTO.DTO;
 using DTO.Helpers;
 using Newtonsoft.Json.Linq;
 using PlanoAcaoCore;
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -22,8 +24,18 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             dynamic user = form;
             string pass = user.pass;
             string name = user.name;
+
             using (var db = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
             {
+                try
+                {
+                    int id = user.idUser;
+                    name = db.SearchQuery<UserSgq>("SELECT * FROM USerSgq where Id = '" + id + "'").FirstOrDefault().Name;
+                }
+                catch (Exception)
+                {
+                }
+           
                 var userSgq = db.QueryNinjaADO("SELECT * FROM USerSgq where Name = '" + name + "' AND Password = '" + Guard.EncryptStringAES(pass) + "'").FirstOrDefault();
                 if (userSgq != null)
                 {
