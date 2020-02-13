@@ -2517,4 +2517,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-384</CardNumber>
+    <Version>1.4.0</Version>
+    <Description>[GQ] Adicionado obrigatoriedade no campo supervisor da Ação corretiva no AppColeta</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
