@@ -210,7 +210,11 @@ function getInputLevel3(level3, level2, level1, striped) {
 
 function getBinario(level3) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnNA = "";
+
+    if (level3.ParLevel3Value.IsAtiveNA == true) {
+        btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    }
 
     var html = '';
 
@@ -247,7 +251,11 @@ function getBinario(level3) {
 
 function getBinarioComTexto(level3) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnNA = "";
+
+    if (level3.ParLevel3Value.IsAtiveNA == true) {
+        btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    }
 
     var html = '';
 
@@ -296,7 +304,11 @@ function getBinarioComTexto(level3) {
 
 function getIntervalo(level3) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnNA = "";
+
+    if (level3.ParLevel3Value.IsAtiveNA == true) {
+        btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    }
 
     var html = '';
 
@@ -334,7 +346,11 @@ function getIntervalo(level3) {
 
 function getIntervaloemMinutos(level3) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnNA = "";
+
+    if (level3.ParLevel3Value.IsAtiveNA == true) {
+        btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    }
 
     var html = '';
 
@@ -375,7 +391,11 @@ function getIntervaloemMinutos(level3) {
 
 function getIntervaloComObservacao(level3) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnNA = "";
+
+    if (level3.ParLevel3Value.IsAtiveNA == true) {
+        btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    }
 
     var html = '';
 
@@ -417,7 +437,11 @@ function getIntervaloComObservacao(level3) {
 
 function getObservacao(level3) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnNA = "";
+
+    if (level3.ParLevel3Value.IsAtiveNA == true) {
+        btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    }
 
     var html = '';
 
@@ -442,7 +466,11 @@ function getObservacao(level3) {
 
 function getTexto(level3) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnNA = "";
+
+    if (level3.ParLevel3Value.IsAtiveNA == true) {
+        btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    }
 
     var html = '';
 
@@ -467,7 +495,11 @@ function getTexto(level3) {
 
 function getNumerodeDefeitos(level3) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnNA = "";
+
+    if (level3.ParLevel3Value.IsAtiveNA == true) {
+        btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    }
 
     var html = '';
 
@@ -492,7 +524,11 @@ function getNumerodeDefeitos(level3) {
 
 function getLikert(level3) {
 
-    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    var btnNA = "";
+
+    if (level3.ParLevel3Value.IsAtiveNA == true) {
+        btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    }
 
     var html = '';
 
