@@ -7,6 +7,13 @@
         cursor: pointer;
     }
 
+    .select2-container--open {
+        z-index: 9999999;
+    }
+    #modalExclusao {
+        z-index: 9999999;
+    }
+
     .tab-pane {
         display: none;
     }
@@ -460,7 +467,7 @@
     var parLevel3ValueList;
     var parLevel3PesoList;
     var parDCAVamList;
-
+    var level3Value_Id;
 
     $("#btnVincular").hide();
 
@@ -1058,6 +1065,7 @@
                 preencheSelect('selectParScoreType', 'Name', 'Id', data.ParScoreTypes, 'Selecione o tipo de Score');
                 //preencheSelect('selectL1ParLevelDefiniton', 'Name', 'Id', data.ParLevelDefinitons, 'Selecione onde deve aparecer o cabeçalho');
                 preencheSelect('selectL1ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
+               
 
 
                 preencheSelect('selectL3GeralParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
@@ -1084,7 +1092,7 @@
                 preencheSelect('selectL3TipoDadoParLevel3InputType', 'Name', 'Id', data.ParLevel3InputTypes, 'Selecione o Tipo de dados para a coleta');
                 preencheSelect('selectL3TipoDadoParLevel3BoolFalse', 'Name', 'Id', data.ParLevel3BoolFalses, 'Valor negativo');
                 preencheSelect('selectL3TipoDadoParLevel3BoolTrue', 'Name', 'Id', data.ParLevel3BoolTrues, 'Valor positivo');
-
+                preencheSelect('selectL3ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
                 preencheSelect('selectL3TipoDadoParCompany', 'Name', 'Id', data.ParCompanys, 'Todos');
                 preencheSelect('selectL3TipoDadoParMeasurementUnit', 'Name', 'Id', data.ParMeasurementUnits, 'Selecione a unidade de medida');
 

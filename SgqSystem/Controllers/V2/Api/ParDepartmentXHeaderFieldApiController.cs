@@ -44,13 +44,18 @@ namespace SgqSystem.Controllers.V2.Api
                         parHeaderFieldToUpdate.IsRequired = parHeaderFieldGeral.IsRequired;
                         parHeaderFieldToUpdate.Duplicate = parHeaderFieldGeral.Duplicate;
                         parHeaderFieldToUpdate.AlterDate = DateTime.Now;
+                        parHeaderFieldToUpdate.Generic_Id = parHeaderFieldGeral.Generic_Id;
+                        parHeaderFieldToUpdate.ParLevelHeaderField_Id = parHeaderFieldGeral.ParLevelHeaderField_Id;
                     }
                     else
                     {
                         parHeaderFieldGeral.AddDate = DateTime.Now;
                         parHeaderFieldGeral.Description = parHeaderFieldGeral.Description ?? "";
                         parHeaderFieldGeral.IsActive = true;
-                        parHeaderFieldGeral.ParLevelHeaderField_Id = 3;// ParLevelHeaderField.Id = 3 - ParDeparment
+
+                        if(parHeaderFieldGeral.ParLevelHeaderField_Id != 4)
+                         parHeaderFieldGeral.ParLevelHeaderField_Id = 3;// ParLevelHeaderField.Id = 3 - ParDeparment
+
                         for (int i = 0; i < parHeaderFieldGeral.ParMultipleValuesGeral.Count; i++)
                         {
                             db.Entry(parHeaderFieldGeral.ParMultipleValuesGeral.ElementAt(i)).State = EntityState.Detached;
