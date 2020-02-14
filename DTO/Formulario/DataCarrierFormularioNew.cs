@@ -82,6 +82,8 @@ namespace DTO
 
         public int DimensaoData { get; set; }
 
+        public bool ShowLinkedFilters { get; set; } = true;
+
         public JObject Param { get; set; }
 
     }

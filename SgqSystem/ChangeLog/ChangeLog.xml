@@ -2469,7 +2469,7 @@
     <Script>
     </Script>
   </Card>
-  
+
   <Card>
     <CardNumber>SGQ-365</CardNumber>
     <Version>1.4.0</Version>
@@ -2481,7 +2481,55 @@
       AND column_name = 'IsAtiveNA')
       ALTER TABLE ParLevel3Value
       ADD IsAtiveNA BIT NOT NULL
-      DEFAULT (1) 
+      DEFAULT (1)
+    </Script>
+  </Card>
+  
+  <Card>
+    <CardNumber>SGQ-326</CardNumber>
+    <Version>1.3.0</Version>
+    <Description>[RH] MELHORIA - Filtros do relatório: Não Conformidades flag showAllCompanies nula</Description>
+    <Script>
+    </Script>
+  </Card>
+  
+  <Card>
+    <CardNumber>SGQ-387</CardNumber>
+    <Version>1.4.0</Version>
+    <Description>[RH SESMT][RICK] MELHORIA - Alterar fonte de busca usuário (FTA)</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-386</CardNumber>
+    <Version>1.4.0</Version>
+    <Description>[RH SESMT] Adicionado forçar atualização do tablet via alteração do Dicionario Estatico [AppVersion]</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-385</CardNumber>
+    <Version>1.4.0</Version>
+    <Description>[GQ] Alterado forçar atualização do tablet via alteração do Dicionario Estatico [AppVersion]</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-384</CardNumber>
+    <Version>1.4.0</Version>
+    <Description>[GQ] Adicionado obrigatoriedade no campo supervisor da Ação corretiva no AppColeta</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-378</CardNumber>
+    <Version>1.4.0</Version>
+    <Description>[GQ][Análise crítica] Incluir filtros independentes do indicador/monitoramento/tarefa</Description>
+    <Script>
     </Script>
   </Card>
 

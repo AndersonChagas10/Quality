@@ -36,6 +36,9 @@
             $('.App').attr('unidadeid') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][havereaudit=true]:last');
     }
 
+    if ($('.App').attr('local') == "brasil") {
+        $("#btnSendCorrectiveAction").prop("disabled", true);
+    }
 
     /*
         if (!ConsolidationResult.length) {
@@ -475,6 +478,16 @@ $(document).on('click', '#correctiveAction', function (e) {
         $("#PreventativeMeasure").val("");
     }
 });
+
+$(document).on('change', '#TechinicalSignature', function (e) {
+    if ($('.App').attr('local') == "brasil") {
+        if ($("#TechinicalSignature").val() == 0) {
+            $("#btnSendCorrectiveAction").prop("disabled", true);
+        } else {
+            $("#btnSendCorrectiveAction").prop("disabled", false);
+        }
+    }
+}).change();
 
 $(document).on('click', '#btnSendCorrectiveAction', function (e) {
 
