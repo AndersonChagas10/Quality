@@ -540,42 +540,42 @@ public class RelatorioDeResultadoSearaResultsSet
 
         if (form.ParLevel1_Ids.Length > 0)
         {
-            whereParLevel1 = $@" AND L2.Parlevel1_Id in ({string.Join(",", form.ParLevel1_Ids)}) ";
+            whereParLevel1 = $@" AND CUBOL3.Parlevel1_Id in ({string.Join(",", form.ParLevel1_Ids)}) ";
         }
 
         if (form.ParLevel2_Ids.Length > 0)
         {
-            whereParLevel2 = $@" AND L2.Parlevel2_Id in ({string.Join(",", form.ParLevel1_Ids)}) ";
+            whereParLevel2 = $@" AND CUBOL3.Parlevel2_Id in ({string.Join(",", form.ParLevel1_Ids)}) ";
         }
 
         if (form.ParLevel3_Ids.Length > 0)
         {
-            whereParLevel3 = $@" AND L2.Parlevel3_Id in ({string.Join(",", form.ParLevel3_Ids)}) ";
+            whereParLevel3 = $@" AND CUBOL3.Parlevel3_Id in ({string.Join(",", form.ParLevel3_Ids)}) ";
         }
 
         if (form.ParDepartment_Ids.Length > 0)
         {
-            whereDepartment = $@" AND L2.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
+            whereDepartment = $@" AND CUBOL3.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
         }
 
         if (form.ParSecao_Ids.Length > 0)
         {
-            whereSecao = $@" AND L2.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
+            whereSecao = $@" AND CUBOL3.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
         }
 
         if (form.ParCargo_Ids.Length > 0)
         {
-            whereCargo = $@" AND L2.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
+            whereCargo = $@" AND CUBOL3.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
         }
 
         if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
         {
-            whereUnit = $@"AND L2.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            whereUnit = $@"AND CUBOL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
         }
 
         if (form.ParStructure_Ids.Length > 0)
         {
-            whereStructure = $@"AND L2.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+            whereStructure = $@"AND CUBOL3.Regional in ({string.Join(",", form.ParStructure_Ids)})";
         }
 
         var query = $@"
@@ -614,7 +614,7 @@ public class RelatorioDeResultadoSearaResultsSet
 					OUTER APPLY (SELECT TOP 1 CL2.id FROM collectionlevel2 CL2 
 								WHERE CL2.CollectionDate = CUBOL3.CollectionDate) CL2
 
-					INNER JOIN CollectionLevel2XSearaFamiliaProdutoXProduto CSFP
+					LEFT JOIN CollectionLevel2XSearaFamiliaProdutoXProduto CSFP
 						ON CSFP.CollectionLevel2_Id = CL2.Id
 
 					WHERE 1 = 1
