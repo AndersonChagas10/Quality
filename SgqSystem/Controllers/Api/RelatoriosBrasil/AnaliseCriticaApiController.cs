@@ -541,7 +541,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         LEFT JOIN ParCompanyXStructure PCXS WITH(NOLOCK) ON PCXS.ParCompany_Id = C2.UnitId AND PCXS.Active = 1--ParCriticalLevel
                  --  LEFT JOIN CorrectiveAction CA WITH(NOLOCK) ON CA.CollectionLevel02Id = C2.Id
 
-                        LEFT JOIN ParGroupParLevel1XParLevel1 PGPL1 on PGPL1.ParLevel1_Id = CL1.ParLevel1_Id
+                        LEFT JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH(NOLOCK) on PGPL1.ParLevel1_Id = CL1.ParLevel1_Id
 
                         OUTER APPLY(SELECT TOP 1
 
