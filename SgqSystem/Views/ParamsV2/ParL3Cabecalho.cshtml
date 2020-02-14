@@ -42,8 +42,8 @@
 
         <div id="allObjCamposCabecalho" class="col-sm-12">
 
-            <div id="objMultiplaEscolhaDepartmentxHeader" style="display:none;" class="margin-top">
-                <table id="tblOpcaoMultiplaEscolhaDepartmentxHeader">
+            <div id="objMultiplaEscolhaLevel3ValuexHeader" style="display:none;" class="margin-top">
+                <table id="tblOpcaoMultiplaEscolhaLevel3ValuexHeader">
                     <tbody>
                         <tr class="row">
                             <td class="td-erp " colspan="0" style="">
@@ -81,8 +81,8 @@
                 </table>
             </div>
 
-            <div id="objBinarioDepartmentxHeader" style="display:none;">
-                <table id="tblBinarioDepartmentxHeader">
+            <div id="objBinarioLevel3ValuexHeader" style="display:none;">
+                <table id="tblBinarioLevel3ValuexHeader">
                     <tbody>
                         <tr class="row">
                             <td class="td-erp"></td>
@@ -92,19 +92,19 @@
                         <tr class="row" id="positivo">
                             <td class="td-erp"><label for="Positivo">Positivo</label> </td>
                             <td>
-                                <input type="text" id="objBinarioPunishmentName1DepartmentxHeader" class="form-control input-sm required">
-                                <span id="punishmentNameCabecalho1" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
+                                <input type="text" id="objBinarioPunishmentName1Level3ValuexHeader" class="form-control input-sm required">
+                                <span id="punishmentNameCabecalho1Level3" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
                             </td>
                             @*<td>
                                     <input type="number" id="objBinarioPunishmentValue1DepartmentxHeader" class="form-control input-sm required" value="0">
-                                    <span id="punishmentValueCabecalho1" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
+                                    <span id="punishmentValueCabecalho1" style="Display:none" class="text-danger field-validation-errobjBinarioPunishmentName2DepartmentxHeaderor" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
                                 </td>*@
                         </tr>
                         <tr class="row" id="negativo">
                             <td class="td-erp"><label for="Negativo">Negativo</label> </td>
                             <td>
-                                <input type="text" id="objBinarioPunishmentName2DepartmentxHeader" class="form-control input-sm required">
-                                <span id="punishmentNameCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
+                                <input type="text" id="objBinarioPunishmentName2Level3ValuexHeader" class="form-control input-sm required">
+                                <span id="punishmentNameCabecalho2Level3" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
                             </td>
                             @*<td>
                                     <input type="number" id="objBinarioPunishmentValue2DepartmentxHeader" class="form-control input-sm required" value="0">
@@ -118,15 +118,15 @@
                 </table>
             </div>
 
-            <div id="objWithDescriptionDepartmentxHeader" style="display:none;">
+            <div id="objWithDescriptionLevel3ValuexHeader" style="display:none;">
 
                 <label for="Description">Valor</label>:
                 <input type="text" name="Description" class="required">
 
             </div>
 
-            <div id="divCamposCabecalhoIncluidosDepartmentxHeader" style="display:none">
-                <table id="camposCabecalhoIncluidosDepartmentxHeader" class="table" role="grid">
+            <div id="divCamposCabecalhoIncluidosLevel3ValuexHeader" style="display:none">
+                <table id="camposCabecalhoIncluidosLevel3ValuexHeader" class="table" role="grid">
                     <thead>
                         <tr role="row">
                             <th>Opções</th>
@@ -223,9 +223,9 @@
 
             $('table#table' + id + ' tbody').html('');
             $('#selectL3ParFieldType').prop("disabled", false);
-            $('#tableParDCCabecalho [data-table-edit]').prop('disabled', false);
-            $('#tableParDCCabecalho [data-table-delete]').prop('disabled', false);
-            $('#tableParDCCabecalho select,#tableParDCCabecalho input,#tableParDCCabecalho button').prop('disabled', false);
+            $('#tableParL3Cabecalho [data-table-edit]').prop('disabled', false);
+            $('#tableParL3Cabecalho [data-table-delete]').prop('disabled', false);
+            $('#tableParL3Cabecalho select,#tableParL3Cabecalho input,#tableParL3Cabecalho button').prop('disabled', false);
             $('#' + id + ' #divBtnCancelar').hide();
 
             $(ParHeaderFieldsGeral).each(function (i, o) {
@@ -294,7 +294,7 @@
 
                 case 1: // Multipla Escolha
 
-                    $TblParMultipeValues = $('#tblOpcaoMultiplaEscolhaDepartmentxHeader');
+                    $TblParMultipeValues = $('#tblOpcaoMultiplaEscolhaLevel3ValuexHeader');
 
                     obj['ParMultipleValuesGeral'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
@@ -322,13 +322,13 @@
                         return false;
                     }
 
-                    $TblParMultipeValues = $('#tblBinarioDepartmentxHeader');
+                    $TblParMultipeValues = $('#tblBinarioLevel3ValuexHeader');
 
                     obj['ParMultipleValuesGeral'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParL3Cabecalho #NameHeaderField').val(),
                         Id: 0,
-                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName1DepartmentxHeader').val(),
+                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName1Level3ValuexHeader').val(),
                         Description: '',
                         PunishmentValue: 0, //$TblParMultipeValues.find('#objBinarioPunishmentValue1DepartmentxHeader').val(),
                         Conformity: 1,
@@ -339,7 +339,7 @@
                     obj['ParMultipleValuesGeral'].push({
                         ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
                         ParHeaderField: $('#ParL3Cabecalho #Name').val(),
-                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName2DepartmentxHeader').val(),
+                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName2Level3ValuexHeader').val(),
                         Id: 0,
                         Description: '',
                         PunishmentValue: 0, //$TblParMultipeValues.find('#objBinarioPunishmentValue2DepartmentxHeader').val(),
@@ -364,7 +364,7 @@
             //pega os dados do form e transforma em obj
             obj = ParL3Cabecalho.prepareParHeaderField(obj);
 
-            $('#camposCabecalhoIncluidosDepartmentxHeader tbody').empty();
+            $('#camposCabecalhoIncluidosLevel3ValuexHeader tbody').empty();
 
             let multipleValues = obj['ParMultipleValuesGeral'];
             let blockParFieldType = false;
@@ -378,7 +378,7 @@
                             <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="ParL3Cabecalho.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
                           </tr>`;
 
-                    $('#camposCabecalhoIncluidosDepartmentxHeader tbody').append(table);
+                    $('#camposCabecalhoIncluidosLevel3ValuexHeader tbody').append(table);
 
                     blockParFieldType = true;
                 }
@@ -394,16 +394,16 @@
 
         showTableParMultipleValues: function () {
 
-            if ($('#camposCabecalhoIncluidosDepartmentxHeader tbody tr').length) {
-                $('#divCamposCabecalhoIncluidosDepartmentxHeader').show();
+            if ($('#camposCabecalhoIncluidosLevel3ValuexHeader tbody tr').length) {
+                $('#divCamposCabecalhoIncluidosLevel3ValuexHeader').show();
             } else {
-                $('#divCamposCabecalhoIncluidosDepartmentxHeader').hide();
+                $('#divCamposCabecalhoIncluidosLevel3ValuexHeader').hide();
             }
 
         },
 
         reloadTable: function () {
-            $('#camposCabecalhoIncluidosDepartmentxHeader tbody').empty();
+            $('#camposCabecalhoIncluidosLevel3ValuexHeader tbody').empty();
         },
 
         excludeTable: function (i) {
@@ -422,8 +422,8 @@
                     ParL3Cabecalho.insertTable(obj);
 
                 } else {
-                    $('#camposCabecalhoIncluidosDepartmentxHeader tbody').empty();
-                    $('#divCamposCabecalhoIncluidosDepartmentxHeader').hide();
+                    $('#camposCabecalhoIncluidosLevel3ValuexHeader tbody').empty();
+                    $('#divCamposCabecalhoIncluidosLevel3ValuexHeader').hide();
                 }
                 $("#modalExclusao").hide();
                 item = "";
@@ -453,7 +453,7 @@
 
             }).done(function () {
                 closeLoader();
-                $('#tableParDCCabecalho select,#tableParDCCabecalho input,#tableParDCCabecalho button').prop('disabled', true);
+                $('#tableParL3Cabecalho select,#tableParL3Cabecalho input,#tableParL3Cabecalho button').prop('disabled', true);
                 $('#' + ParL3Cabecalho.id + ' #divBtnCancelar').hide();
             });
 
@@ -491,7 +491,7 @@
         $('#' + ParL3Cabecalho.id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
         $('#' + ParL3Cabecalho.id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
 
-        $('#tableParDCCabecalho select,#tableParDCCabecalho input,#tableParDCCabecalho button').prop('disabled', true);
+        $('#tableParL3Cabecalho select,#tableParL3Cabecalho input,#tableParL3Cabecalho button').prop('disabled', true);
 
     });
 
@@ -524,8 +524,8 @@
     //Salvar o campo editado ou cria um novo
     $('#' + ParL3Cabecalho.id).on('click', '[data-edit],[data-add]', function (e) {
 
-        $('#objMultiplaEscolhaDepartmentxHeader').hide();
-        $('#objBinarioDepartmentxHeader').hide();
+        $('#objMultiplaEscolhaLevel3ValuexHeader').hide();
+        $('#objBinarioLevel3ValuexHeader').hide();
 
         var obj = $('#' + ParL3Cabecalho.id + ' [data-form]').data('sgq');
         var formdata = $('#' + ParL3Cabecalho.id + ' [data-form]').serializeFormToObjetc();
@@ -659,25 +659,25 @@
         switch (parFieldType_Id) {
 
             case 1: // Multipla Escolha
-                $('#objMultiplaEscolhaDepartmentxHeader').show();
+                $('#objMultiplaEscolhaLevel3ValuexHeader').show();
                 break;
 
             case 3:	// Binario
-                $('#objBinarioDepartmentxHeader').show();
+                $('#objBinarioLevel3ValuexHeader').show();
                 break;
 
             case 8:	// Informações
-                $('#objWithDescriptionDepartmentxHeader').show();
+                $('#objWithDescriptionLevel3ValuexHeader').show();
                 //Inserir direto
                 break;
 
             case 9:	// Parâmetro
-                $('#objWithDescriptionDepartmentxHeader').show();
+                $('#objWithDescriptionLevel3ValuexHeader').show();
                 //Inserir direto
                 break;
 
             case 10: //Dinâmico
-                $('#objWithDescriptionDepartmentxHeader').show();
+                $('#objWithDescriptionLevel3ValuexHeader').show();
                 //Inserir direto
                 break;
 
@@ -688,10 +688,10 @@
 
     let hideAllOptionsLevel3 = function () {
 
-        $('#objMultiplaEscolhaDepartmentxHeader').hide();
-        $('#objBinarioDepartmentxHeader').hide();
+        $('#objMultiplaEscolhaLevel3ValuexHeader').hide();
+        $('#objBinarioLevel3ValuexHeader').hide();
         $('#objInformacoes').hide();
-        $('#objWithDescriptionDepartmentxHeader').hide();
+        $('#objWithDescriptionLevel3ValuexHeader').hide();
 
     }
 
