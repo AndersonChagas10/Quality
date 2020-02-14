@@ -266,7 +266,9 @@ namespace SgqSystem.Controllers.V2.Api
                         ParLevel3_Id = x.ParLevel3_Id,
                         ShowLevel3Limits = x.ShowLevel3Limits,
                         IsRequired = x.IsRequired,
-                        IsDefaultAnswer = x.IsDefaultAnswer
+                        IsDefaultAnswer = x.IsDefaultAnswer,
+                        DefaultMessageText = x.DefaultMessageText,
+                        StringSizeAllowed = x.StringSizeAllowed
                     })
                     .ToList()
                     .Where(x => listaParLevel1.Any(y => y.Id == x.ParLevel1_Id))

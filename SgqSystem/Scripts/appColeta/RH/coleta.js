@@ -277,11 +277,13 @@ function getBinarioComTexto(level3) {
     //    '</div>' +
     //    '<div class="clearfix"></div>';
 
+    var mensagemPadrao = level3.ParLevel3Value.DefaultMessageText !== null ? level3.ParLevel3Value.DefaultMessageText : "";
+    var tamanhoPermitido = level3.ParLevel3Value.StringSizeAllowed !== null ? level3.ParLevel3Value.StringSizeAllowed : 100;
 
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-5">' +
-        '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
+        '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao +'" data-texto/>' +
         '</div>' +
         '<div class="col-xs-5">' +
         botao +
@@ -452,10 +454,13 @@ function getTexto(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
+    var mensagemPadrao = level3.ParLevel3Value.DefaultMessageText !== null ? level3.ParLevel3Value.DefaultMessageText : "";
+    var tamanhoPermitido = level3.ParLevel3Value.StringSizeAllowed !== null ? level3.ParLevel3Value.StringSizeAllowed : 100;
+
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-10">' +
-        '	<input type="text" class="col-xs-12 input-sm" data-tarefa data-valor/>' +
+        '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="'+ mensagemPadrao +'" data-tarefa data-valor/>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +

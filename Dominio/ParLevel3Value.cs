@@ -50,6 +50,10 @@ namespace Dominio
 
         public bool IsAtiveNA { get; set; }
 
+        public string DefaultMessageText { get; set; }
+
+        public int? StringSizeAllowed { get; set; }
+
         [ForeignKey("ParCluster_Id")]
         public virtual ParCluster ParCluster { get; set; }
 
