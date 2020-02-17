@@ -193,7 +193,7 @@
 
         load: function (ParHeaderFieldsGeral) {
             let id = this.id;
-
+            
             apagaCampos(id);
             parDCCabecalho.reloadTable();
 
@@ -241,6 +241,7 @@
             obj['Description'] = formdata.Description;
             obj['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
             obj['ParFieldType_Id'] = formdata.ParFieldType_Id;
+            
             obj['Generic_Id'] = $('[name="ParDepartment_Id"][data-id]').val();
 
             return obj;
@@ -335,7 +336,7 @@
         },
 
         insertTable: function (obj) {
-            debugger
+            
             //pega os dados do form e transforma em obj
             obj = parDCCabecalho.prepareParHeaderField(obj);
 
@@ -387,7 +388,7 @@
 
             $("#excluirItem").off().on('click', function () {
                 if (obj) {
-                    if (obj.ParFieldTypeId == 3) //Se for binário, exclui todos os ParMultipleValues
+                    if (obj.ParFieldType_Id == 3) //Se for binário, exclui todos os ParMultipleValues
                         obj.ParMultipleValuesGeral.forEach((o, i, a) => {
                             a[i].IsActive = false;
                         });

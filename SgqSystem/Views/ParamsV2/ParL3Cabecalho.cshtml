@@ -8,10 +8,10 @@
 
         <div class="col-sm-3">
 
-            <input type="hidden" name="ParHeaderField_Id" />
-            <input type="hidden" name="ParDepartment_Id" data-id />
-            <input type="hidden" name="Id" />
-            <input type="hidden" name="IsActive" value="true" data-notnull />
+            <input type="hidden" name="ParHeaderFieldLevel3Value_Id" />
+            <input type="hidden" name="ParDepartmentLevel3Value_Id" data-id />
+            <input type="hidden" name="IdLevel3Value" />
+            <input type="hidden" name="IsActiveLevel3Value" value="true" data-notnull />
 
             @*<div class="form-group">
                     <label for="ParCluster_Id">Nível do campo:</label>
@@ -412,7 +412,7 @@
 
             $("#excluirItem").off().on('click', function () {
                 if (obj) {
-                    if (obj.ParFieldTypeId == 3) //Se for binário, exclui todos os ParMultipleValues
+                    if (obj.ParFieldType_Id == 3) //Se for binário, exclui todos os ParMultipleValues
                         obj.ParMultipleValuesGeral.forEach((o, i, a) => {
                             a[i].IsActive = false;
                         });
