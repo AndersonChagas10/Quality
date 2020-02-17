@@ -18,5 +18,11 @@ namespace Dominio.Seara
         public int? ParCompany_Id { get; set; }
 
         public bool IsActive { get; set; }
+
+        [ForeignKey("ParCompany_Id")]
+        public virtual ParCompany ParCompany { get; set; }
+
+        [ForeignKey("SearaProduto_Id")]
+        public virtual SearaProduto SearaProduto { get; set; }
     }
 }

@@ -21,6 +21,26 @@ namespace SgqSystem.Controllers.Api.Formulario
         }
 
         [HttpPost]
+        [Route("GetFilteredSearaProduto")]
+        public List<Select3ViewModel> GetFilteredSearaProduto(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT 
+                             SP.Id
+                            ,SP.Name
+                            FROM SearaProduto SP WITH (NOLOCK)
+                            WHERE 1=1
+                            AND SP.IsActive = 1
+                            AND SP.Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
         [Route("GetFilteredParCompany")]
         public List<Select3ViewModel> GetFilteredParCompany(string search, [FromBody] DataCarrierFormularioNew form)
         {

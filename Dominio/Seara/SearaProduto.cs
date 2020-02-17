@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Dominio.Seara
 {
     [Table("SearaProduto")]
-    public class SearaProduto : BaseModel
+    public partial class SearaProduto : BaseModel
     {
         public int Id { get; set; }
 
@@ -18,5 +18,8 @@ namespace Dominio.Seara
         public int? ParCompany_Id { get; set; }
 
         public bool IsActive { get; set; }
+
+        [ForeignKey("ParCompany_Id")]
+        public virtual ParCompany ParCompany { get; set; }
     }
 }

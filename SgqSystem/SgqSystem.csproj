@@ -456,6 +456,9 @@
     <Compile Include="Controllers\ResourcePTsController.cs" />
     <Compile Include="Controllers\RotinaIntegracaoController.cs" />
     <Compile Include="Controllers\ScriptsVersionController.cs" />
+    <Compile Include="Controllers\SearaFamiliaProdutoController.cs" />
+    <Compile Include="Controllers\SearaFamiliaProdutoXProdutoController.cs" />
+    <Compile Include="Controllers\SearaProdutoController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
@@ -2170,6 +2173,21 @@
     <Content Include="Views\RelatoriosSgq\RelatorioEdicao.cshtml" />
     <Content Include="Views\ScriptsVersion\Index.cshtml" />
     <Content Include="Views\Error\AcessoNegado.cshtml" />
+    <Content Include="Views\SearaProduto\Create.cshtml" />
+    <Content Include="Views\SearaProduto\Delete.cshtml" />
+    <Content Include="Views\SearaProduto\Details.cshtml" />
+    <Content Include="Views\SearaProduto\Edit.cshtml" />
+    <Content Include="Views\SearaProduto\Index.cshtml" />
+    <Content Include="Views\SearaFamiliaProduto\Create.cshtml" />
+    <Content Include="Views\SearaFamiliaProduto\Delete.cshtml" />
+    <Content Include="Views\SearaFamiliaProduto\Details.cshtml" />
+    <Content Include="Views\SearaFamiliaProduto\Edit.cshtml" />
+    <Content Include="Views\SearaFamiliaProduto\Index.cshtml" />
+    <Content Include="Views\SearaFamiliaProdutoXProduto\Create.cshtml" />
+    <Content Include="Views\SearaFamiliaProdutoXProduto\Delete.cshtml" />
+    <Content Include="Views\SearaFamiliaProdutoXProduto\Details.cshtml" />
+    <Content Include="Views\SearaFamiliaProdutoXProduto\Edit.cshtml" />
+    <Content Include="Views\SearaFamiliaProdutoXProduto\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2261,7 +2279,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>false</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
