@@ -518,15 +518,15 @@ public class RelatorioDeResultadoSearaResultsSet
 
                 case 4: //FAMÍLIA DE PRODUTO
                     selects = $@", SearaFamiliaProduto_Id";
-                    campos = $@" C.NAME AS UnidadeName, C.Id as Unidade_Id , CSFP.SearaFamiliaProduto_Id ";
-                    groupBy = $@" GROUP BY C.Name, C.Id, CSFP.SearaFamiliaProduto_Id ";
+                    campos = $@" SFP.NAME AS UnidadeName, C.Id as Unidade_Id , CSFP.SearaFamiliaProduto_Id ";
+                    groupBy = $@" GROUP BY SFP.Name, C.Id, CSFP.SearaFamiliaProduto_Id ";
                     orderBy = "ORDER BY 4 DESC";
                     break;
 
                 case 5: //SKU
                     selects = $@", SearaProduto_Id";
-                    campos = $@" C.NAME AS UnidadeName, C.Id as Unidade_Id , CSFP.SearaProduto_Id ";
-                    groupBy = $@" GROUP BY C.Name, C.Id, CSFP.SearaProduto_Id ";
+                    campos = $@" SP.NAME AS UnidadeName, C.Id as Unidade_Id , CSFP.SearaProduto_Id ";
+                    groupBy = $@" GROUP BY SP.Name, C.Id, CSFP.SearaProduto_Id ";
                     orderBy = "ORDER BY 4 DESC";
                     break;
 
@@ -545,7 +545,7 @@ public class RelatorioDeResultadoSearaResultsSet
 
         if (form.ParLevel2_Ids.Length > 0)
         {
-            whereParLevel2 = $@" AND CUBOL3.Parlevel2_Id in ({string.Join(",", form.ParLevel1_Ids)}) ";
+            whereParLevel2 = $@" AND CUBOL3.Parlevel2_Id in ({string.Join(",", form.ParLevel2_Ids)}) ";
         }
 
         if (form.ParLevel3_Ids.Length > 0)
@@ -614,8 +614,14 @@ public class RelatorioDeResultadoSearaResultsSet
 					OUTER APPLY (SELECT TOP 1 CL2.id FROM collectionlevel2 CL2 
 								WHERE CL2.CollectionDate = CUBOL3.CollectionDate) CL2
 
-					LEFT JOIN CollectionLevel2XSearaFamiliaProdutoXProduto CSFP
+					INNER JOIN CollectionLevel2XSearaFamiliaProdutoXProduto CSFP
 						ON CSFP.CollectionLevel2_Id = CL2.Id
+
+                    INNER JOIN SearaFamiliaProduto SFP WITH (NOLOCK)
+	                    ON CSFP.SearaFamiliaProduto_Id = SFP.Id
+
+                    INNER JOIN SearaProduto SP WITH (NOLOCK)
+	                    ON CSFP.SearaProduto_Id = SP.Id
 
 					WHERE 1 = 1
 					AND CUBOL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
