@@ -884,6 +884,8 @@ function resetarLinha(linha) {
     linha.removeClass('alert-warning');
     linha.removeAttr('data-conforme-na');
 
+    linha.find('[data-texto]').val('');
+
 }
 
 //$('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
