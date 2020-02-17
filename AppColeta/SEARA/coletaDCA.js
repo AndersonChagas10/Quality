@@ -76,41 +76,22 @@ function openColetaDCA(levels) {
     }
 
     atualizaCorSePassarDoLimiteDeNC();
+    atualizaPorcentagemDeTarefas();
     setBreadcrumbsDCA();
-
 }
-
-//function getContador() {
-//    currentEvaluationDCA = getResultEvaluationSample(currentParLevel1_Id, currentParLevel2_Id);
-//    return '<div class="col-xs-12 alert-info" id="divColeta" style="padding-top:10px;padding-bottom:10px">' +
-//        '	<div class="col-xs-4">       ' +
-//        '		Avaliação                ' +
-//        '	</div>                       ' +
-//        '	<div class="col-xs-4">       ' +
-//        '		Amostra                  ' +
-//        '	</div>                       ' +
-//        '	<div class="col-xs-4">       ' +
-//        '		&nbsp;                   ' +
-//        '	</div>                       ' +
-//        '	<div class="col-xs-4">       ' +
-//        '		<strong>' + currentEvaluationDCA.Evaluation + '/' + currentTotalEvaluationValue + '</strong>    ' +
-//        '	</div>                       ' +
-//        '	<div class="col-xs-4">       ' +
-//        '		<strong>' + currentEvaluationDCA.Sample + '/' + currentTotalSampleValue + '</strong>    ' +
-//        '	</div>                       ' +
-//        '	<div class="col-xs-4">       ' +
-//        '		 &nbsp;                  ' +
-//        '	</div>                       ' +
-//        '	<div class="clearfix"></div> ' +
-//        '</div>                          ';
-//}
 
 function getLevel1DCA(level1) {
     return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;"><small>' + level1.Name + '</small></div>';
 }
 
 function getLevel2DCA(level2, level1) {
-    return '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;"><small>' + level2.Name + '</small></div>';
+    var html = '<div class="col-xs-12" style="padding-left:18px;padding-top:5px;padding-bottom:5px;background-color:#fcf4e3;">';
+    html += '<div class="row">';
+    html += '<div class="col-sm-4"><small>' + level2.Name + '</small></div>';
+    html += '<div class="col-sm-4"><span class="porcentagemTarefa">0</span>% conforme </div>';
+    html += '<div class="col-sm-4"></div>';
+    html += '</div></div>';
+    return html;
 }
 
 function getLevel3DCA(level3, level2, level1) {
@@ -890,6 +871,7 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
     $(linhaTarefa).find('.amostra').html(numeroProximaAmostra);
 
     atualizaCorSePassarDoLimiteDeNC();
+    atualizaPorcentagemDeTarefas();
 });
 
 function resetarLinha(linha) {
@@ -1422,4 +1404,20 @@ function atualizaCorSePassarDoLimiteDeNC(){
             $(o).find('.amostras-nc').addClass('btn-success');
         }
     });
+}
+
+function atualizaPorcentagemDeTarefas(){
+    var quantidadeMaximaAmostraComPeso = 0;
+    var quantidadeColetadaAmostraComPeso = 0;
+    $('[data-linha-coleta]').each(function (i, o) {
+        var amostraAtual = parseInt($(o).attr('data-sample'))-1;
+        var amostraNC = parseInt($(o).attr('data-qtdenc'));
+        var amostraTotal = parseInt($(o).attr('data-samplemax'));
+        var peso = parseInt($(o).attr('data-peso'));
+
+        quantidadeMaximaAmostraComPeso += amostraTotal * peso;
+        quantidadeColetadaAmostraComPeso += (amostraAtual - amostraNC) * peso;
+    });
+
+    $('span.porcentagemTarefa').text((quantidadeColetadaAmostraComPeso / quantidadeMaximaAmostraComPeso) * 100);
 }
