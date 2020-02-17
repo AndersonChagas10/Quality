@@ -49,7 +49,7 @@ namespace SgqSystem.Controllers
                 return HttpNotFound();
             }
 
-            searaFamiliaProduto.SearaFamiliaProdutoXProduto = db.SearaFamiliaProdutoXProduto.Where(x => x.SearaFamiliaProduto_Id == id).ToList();
+            searaFamiliaProduto.SearaFamiliaProdutoXProduto = db.SearaFamiliaProdutoXProduto.Where(x => x.SearaFamiliaProduto_Id == id && x.SearaFamiliaProduto_Id == searaFamiliaProduto.Id).ToList();
 
             return View(searaFamiliaProduto);
         }
