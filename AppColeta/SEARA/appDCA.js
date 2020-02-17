@@ -13,7 +13,7 @@ function setBreadcrumbsDCA() {
     }
 
     if (currentFamiliaProdutoDCA_Id) {
-        breadcrumbLi = getBreadcrumb(getSearaFamiliaProduto().Name, 'validaRota(listarParLevel2DCA)', isCurrent) + breadcrumbLi;
+        breadcrumbLi = getBreadcrumb(getParFamiliaProduto().Name, 'validaRota(listarParLevel2DCA)', isCurrent) + breadcrumbLi;
         isCurrent = false;
     }
 

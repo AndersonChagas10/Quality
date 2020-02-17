@@ -841,7 +841,7 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
         //ParHeaderField_Value: 
         //ParHeaderField_Value: 
         //IsProcessed: 
-        Outros: '{SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', SearaProduto_Id:'+currentProdutoDCA_Id+'}'
+        Outros: '{ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', ParProduto_Id:'+currentProdutoDCA_Id+'}'
 
     };
 
@@ -1171,7 +1171,7 @@ function getQuantidadeNC(parLevel1, parLevel2, parLevel3) {
             o.ParLevel2_Id == parLevel2.Id &&
             o.ParLevel3_Id == parLevel3.Id && 
             o.Evaluation == currentEvaluationDCA.Evaluation &&
-            o.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0;
+            o.Outros.indexOf('ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0;
 
     });
 
@@ -1200,7 +1200,7 @@ function getAmostraAtual(parLevel1, parLevel2, parLevel3) {
             o.ParLevel2_Id == parLevel2.Id &&
             o.ParLevel3_Id == parLevel3.Id && 
             o.Evaluation == currentEvaluationDCA.Evaluation &&
-            o.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0
+            o.Outros.indexOf('ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0
     });
 
     //Melhorar essa bosta
@@ -1226,7 +1226,7 @@ function getSynced(parLevel1, parLevel2, parLevel3) {
             o.ParLevel2_Id == parLevel2.Id &&
             o.ParLevel3_Id == parLevel3.Id && 
             o.Evaluation == currentEvaluationDCA.Evaluation &&
-            o.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0 &&
+            o.Outros.indexOf('ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0 &&
             o.Synced == true
     });
 
@@ -1289,7 +1289,7 @@ $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', fun
             return coleta.ParLevel1_Id == currentParLevel1_Id 
                 && (coleta.ParLevel2_Id == currentParLevel2_Id || coleta.ParLevel2_Id == null)
                 && coleta.Outros != null 
-                && coleta.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0
+                && coleta.Outros.indexOf('ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0
                 && coleta.Synced != true
         });
 
@@ -1335,7 +1335,7 @@ function getCollectionHeaderFieldsDCA() {
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel1').attr('parLevel2Id'),
-                Outros: '{SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', SearaProduto_Id:'+currentProdutoDCA_Id+'}'
+                Outros: '{ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', ParProduto_Id:'+currentProdutoDCA_Id+'}'
             });
 
     });
@@ -1358,7 +1358,7 @@ function getCollectionHeaderFieldsDCA() {
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
-                Outros: '{SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', SearaProduto_Id:'+currentProdutoDCA_Id+'}'
+                Outros: '{ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', ParProduto_Id:'+currentProdutoDCA_Id+'}'
             });
     });
 
@@ -1371,7 +1371,7 @@ function SalvarColetasAgrupadasDCA(){
     $(coletasAgrupadas).each(function (i, o) {
             if (o.ParLevel1_Id == currentParLevel1_Id
             && o.ParLevel2_Id == currentParLevel2_Id
-            && o.SearaFamiliaProduto_Id == currentFamiliaProdutoDCA_Id) {
+            && o.ParFamiliaProduto_Id == currentFamiliaProdutoDCA_Id) {
             coletaAgrupada = o;
         }
     });
@@ -1382,7 +1382,7 @@ function SalvarColetasAgrupadasDCA(){
             ParLevel1_Id: currentParLevel1_Id,
             ParLevel2_Id: currentParLevel2_Id,
             Evaluation: currentEvaluationDCA.Evaluation,
-            SearaFamiliaProduto_Id: currentFamiliaProdutoDCA_Id
+            ParFamiliaProduto_Id: currentFamiliaProdutoDCA_Id
         };
         
         coletasAgrupadas.push(coletaAgrupada);

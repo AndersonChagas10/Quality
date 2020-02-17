@@ -50,7 +50,7 @@ function listarParLevel2DCA(isVoltar) {
         '				<h3 class="panel-title">' + voltar + ' Selecione o Monitoramento/SKU para coletar</h3>            ' +
         '			  </div>                                               ' +
         '			  <div class="panel-body">                             ' +
-        '               <div class="col-sm-12 text-center" style="padding:20px;margin-bottom:5px">Item: '+getSearaFamiliaProduto().Name+'</div>' +
+        '               <div class="col-sm-12 text-center" style="padding:20px;margin-bottom:5px">Item: '+getParFamiliaProduto().Name+'</div>' +
         '               <div class="col-sm-12 btn-warning text-center" style="padding:20px;margin-bottom:5px">Avaliação ' + avaliacaoAtual + '</div>' +
         '               <h2 class="col-xs-6 btn-info text-center" style="height:100px;padding-top: 35px;margin: 0px;">'+ZeroSeForNaN(parseInt(totalDeConformidadeDeColetas/listaParLevel2.length))+'%</h2>' +
         '               <div class="col-xs-6 text-center" style="padding:0px !important">' +
@@ -149,7 +149,7 @@ function getAmostraTotalEColetadaEConformePorMonitoramento(parLevel1, parLevel2,
                 && coletas.ParLevel2_Id == parLevel2.Id 
                 && coletas.ParLevel3_Id == vinculoPeso.ParLevel3_Id
                 && coletas.Evaluation == avaliacaoAtual
-                && coletas.Outros.indexOf('SearaFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0){
+                && coletas.Outros.indexOf('ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0){
                 totalDeAmostrasColetadasConforme += coletas.IsConform ? 1 : 0;
                 return true;
             }
@@ -189,10 +189,10 @@ function getResultEvaluationDCA(parLevel1_Id, parLevel2_Id) {
         
         if (coleta.ParLevel1_Id == parLevel1_Id 
             && coleta.ParLevel2_Id == parLevel2_Id
-            && coleta.SearaFamiliaProduto_Id == currentFamiliaProdutoDCA_Id) {
+            && coleta.ParFamiliaProduto_Id == currentFamiliaProdutoDCA_Id) {
                 obj = {
                     Evaluation: coleta.Evaluation+1,
-                    SearaFamiliaProduto_Id: coleta.SearaFamiliaProduto_Id,
+                    ParFamiliaProduto_Id: coleta.ParFamiliaProduto_Id,
                 };
                 break;
 		}

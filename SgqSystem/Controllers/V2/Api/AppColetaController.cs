@@ -682,9 +682,9 @@ WHERE 1 = 1
             List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
             List<ParEvaluation> listaParEvaluation;
 
-            List<Dominio.Seara.SearaFamiliaProduto> listaSearaFamiliaProduto;
-            List<Dominio.Seara.SearaFamiliaProdutoXProduto> listaSearaFamiliaProdutoXProduto;
-            List<Dominio.Seara.SearaProduto> listaSearaProduto;
+            List<Dominio.Seara.ParFamiliaProduto> listaParFamiliaProduto;
+            List<Dominio.Seara.ParFamiliaProdutoXParProduto> listaParFamiliaProdutoXParProduto;
+            List<Dominio.Seara.ParProduto> listaParProduto;
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -931,17 +931,17 @@ WHERE 1 = 1
                 //Rotina Integração Offline
                 listaRotinaIntegracaoOffline = GetRotinaIntegracaoComResultados();
 
-                listaSearaFamiliaProduto = db.SearaFamiliaProduto
+                listaParFamiliaProduto = db.ParFamiliaProduto
                     .AsNoTracking()
                     .Where(x => x.IsActive)
                     .ToList();
 
-                listaSearaFamiliaProdutoXProduto = db.SearaFamiliaProdutoXProduto
+                listaParFamiliaProdutoXParProduto = db.ParFamiliaProdutoXParProduto
                     .AsNoTracking()
                     .Where(x => x.IsActive)
                     .ToList();
 
-                listaSearaProduto = db.SearaProduto
+                listaParProduto = db.ParProduto
                     .AsNoTracking()
                     .Where(x => x.IsActive)
                     .ToList();
@@ -970,9 +970,9 @@ WHERE 1 = 1
                 listaRotinaIntegracao,
                 listaRotinaIntegracaoOffline,
                 listaParEvaluation,
-                listaSearaFamiliaProduto,
-                listaSearaFamiliaProdutoXProduto,
-                listaSearaProduto
+                listaParFamiliaProduto,
+                listaParFamiliaProdutoXParProduto,
+                listaParProduto
             });
         }
 
@@ -1029,7 +1029,7 @@ SELECT
 	ParLevel2_Id,
 	UnitId,
 	Shift,
-	SearaFamiliaProduto_Id
+	ParFamiliaProduto_Id
 FROM (
 
 SELECT
@@ -1039,11 +1039,11 @@ SELECT
         ,C2.ParLevel2_Id
         ,C2.UnitId
         ,C2.Shift
-		,CL2XSFP.SearaFamiliaProduto_Id
+		,CL2XSFP.ParFamiliaProduto_Id
     FROM CollectionLevel2 C2 WITH (NOLOCK)
     LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
 	INNER JOIN ParEvaluationXDepartmentXCargo PEDC WITH(NOLOCK) ON C2.UnitId = PEDC.ParCompany_Id 
-	LEFT JOIN CollectionLevel2XSearaFamiliaProdutoXProduto CL2XSFP ON CL2XSFP.CollectionLevel2_Id = c2.Id
+	LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CL2XSFP ON CL2XSFP.CollectionLevel2_Id = c2.Id
 WHERE 1 = 1
 		AND C2.CollectionDate BETWEEN @DateTimeInicio AND @DateTimeFinal
 		AND C2.UnitId = @ParCompany_Id
@@ -1051,7 +1051,7 @@ WHERE 1 = 1
             ,C2.ParLevel2_Id
             ,C2.UnitId
             ,C2.Shift
-            ,CL2XSFP.SearaFamiliaProduto_Id
+            ,CL2XSFP.ParFamiliaProduto_Id
 		) A";
 
             using (var factory = new Factory("DefaultConnection"))
@@ -1083,7 +1083,7 @@ WHERE 1 = 1
             public int ParDepartment_Id { get; set; }
             public int ParCargo_Id { get; set; }
             public int ParCluster_Id { get; set; }
-            public int? SearaFamiliaProduto_Id { get; set; }
+            public int? ParFamiliaProduto_Id { get; set; }
         }
 
         public class AppParametrization

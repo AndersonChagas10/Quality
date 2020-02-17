@@ -296,10 +296,10 @@ namespace Dominio
         public virtual DbSet<LogError> LogError { get; set; }
         public virtual DbSet<ParAlertXUser> ParAlertXUser { get; set; }
 
-        public virtual DbSet<Seara.SearaFamiliaProduto> SearaFamiliaProduto { get; set; }
-        public virtual DbSet<Seara.SearaProduto> SearaProduto { get; set; }
-        public virtual DbSet<Seara.SearaFamiliaProdutoXProduto> SearaFamiliaProdutoXProduto { get; set; }
-        public virtual DbSet<Seara.CollectionLevel2XSearaFamiliaProdutoXProduto> CollectionLevel2XSearaFamiliaProdutoXProduto { get; set; }
+        public virtual DbSet<Seara.ParFamiliaProduto> ParFamiliaProduto { get; set; }
+        public virtual DbSet<Seara.ParProduto> ParProduto { get; set; }
+        public virtual DbSet<Seara.ParFamiliaProdutoXParProduto> ParFamiliaProdutoXParProduto { get; set; }
+        public virtual DbSet<Seara.CollectionLevel2XParFamiliaProdutoXParProduto> CollectionLevel2XParFamiliaProdutoXParProduto { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

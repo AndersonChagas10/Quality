@@ -8,7 +8,7 @@ function listarFamiliaProdutoDCA(isVoltar) {
 
 	var htmlLista = "";
 
-	$(parametrization.listaSearaFamiliaProduto).each(function (i, o) {
+	$(parametrization.listaParFamiliaProduto).each(function (i, o) {
 		htmlLista += '<button type="button" class="list-group-item col-xs-12" ' +
 			'" data-familia-produto-id="' + o.Id + '">' + o.Name +
 			'<span class="badge">></span>' +
@@ -56,22 +56,22 @@ $('body').off('click', '[data-familia-produto-id]').on('click', '[data-familia-p
 
 });
 
-function getSearaFamiliaProduto(){
-	return $.grep(parametrization.listaSearaFamiliaProduto, function (obj) {
+function getParFamiliaProduto(){
+	return $.grep(parametrization.listaParFamiliaProduto, function (obj) {
         return obj.Id == currentFamiliaProdutoDCA_Id;
     })[0];
 }
 
-function getSearaProdutoPorFamiliaDeProduto(){
-	var produtosVinculados = $.grep(parametrization.listaSearaFamiliaProdutoXProduto, function (obj) {
-        return obj.SearaFamiliaProduto_Id == currentFamiliaProdutoDCA_Id;
+function getParProdutoPorFamiliaDeProduto(){
+	var produtosVinculados = $.grep(parametrization.listaParFamiliaProdutoXParProduto, function (obj) {
+        return obj.ParFamiliaProduto_Id == currentFamiliaProdutoDCA_Id;
 	});
 	
-	var produtos = $.grep(parametrization.listaSearaProduto, function (produto) {
+	var produtos = $.grep(parametrization.listaParProduto, function (produto) {
 		var produto_Id = produto.Id;
 		
         return $.grep(produtosVinculados, function (vinculo) {
-			return vinculo.SearaProduto_Id == produto_Id;
+			return vinculo.ParProduto_Id == produto_Id;
 		}).length > 0;
 	});
 
@@ -82,7 +82,7 @@ function getSelectProdutosDCA() {
 
 	var htmlLista = '<select name="produtoDCA" size="5" class="form-control" style="height:100px;">'
 
-	$(getSearaProdutoPorFamiliaDeProduto()).each(function (i, o) {
+	$(getParProdutoPorFamiliaDeProduto()).each(function (i, o) {
 		var selected = "";
 		if(currentProdutoDCA_Id == o.Id){
 			selected = " selected";

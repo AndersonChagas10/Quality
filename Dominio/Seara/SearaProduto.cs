@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Dominio.Seara
 {
-    [Table("SearaProduto")]
-    public class SearaProduto : BaseModel
+    [Table("ParProduto")]
+    public class ParProduto : BaseModel
     {
         public int Id { get; set; }
 

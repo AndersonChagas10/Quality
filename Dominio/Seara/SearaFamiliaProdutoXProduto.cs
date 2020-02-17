@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Dominio.Seara
 {
-    [Table("SearaFamiliaProdutoXProduto")]
-    public class SearaFamiliaProdutoXProduto : BaseModel
+    [Table("ParFamiliaProdutoXParProduto")]
+    public class ParFamiliaProdutoXParProduto : BaseModel
     {
         public int Id { get; set; }
 
-        public int? SearaFamiliaProduto_Id { get; set; }
-        public int? SearaProduto_Id { get; set; }
+        public int? ParFamiliaProduto_Id { get; set; }
+        public int? ParProduto_Id { get; set; }
         public int? ParCompany_Id { get; set; }
 
         public bool IsActive { get; set; }
