@@ -1,11 +1,12 @@
 currentEvaluationDCA = {};
-function listarParLevel2DCA(isVoltar) {
+function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
 
     currentParLevel2_Id = null;
 
     var listaParLevel2 = retornaParLevel2DCA(currentParLevel1_Id);
 
     var htmlLista = "";
+    var btnProximaAvaliacao = '<button class="btn btn-block btn-primary input-lg col-xs-12" data-proxima-av style="margin-top:10px">Próxima Avaliação</button>';
 
     var totalDeConformidadeDeColetas = 0;
     var avaliacaoAtual = 0;
@@ -13,9 +14,23 @@ function listarParLevel2DCA(isVoltar) {
 
         currentEvaluationDCA = getResultEvaluationDCA(currentParLevel1_Id, o.Id);
         
-        if(avaliacaoAtual == 0 || currentEvaluationDCA.Evaluation < avaliacaoAtual)
+        if(avaliacaoAtual == 0 || currentEvaluationDCA.Evaluation < avaliacaoAtual){
             avaliacaoAtual = currentEvaluationDCA.Evaluation;
+        }
     });
+
+    var foiRealizadaColetaParaAProximaAvaliacao = $.grep(coletasDCA, function (o) {
+
+        return o.ParLevel1_Id == currentParLevel1_Id &&
+            avaliacaoAtual < o.Evaluation &&
+            o.Outros.indexOf('ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0;
+
+    });
+
+    if(foiRealizadaColetaParaAProximaAvaliacao.length > 0 || pularParaProximaAvaliacao == true){
+        avaliacaoAtual++;
+        currentEvaluationDCA.Evaluation++;
+    }
 
     $(listaParLevel2).each(function (i, o) {
 
@@ -25,6 +40,8 @@ function listarParLevel2DCA(isVoltar) {
 
         if (consolidadoAmostraTotal.ColetasSincronizadas) {
             style = 'style="background-color:#ddd;cursor:not-allowed"';
+        }else{
+            btnProximaAvaliacao = '';
         }
 
         porcentagemDeConformidadePorLevel2 = parseInt(consolidadoAmostraTotal.AmostraTotalColetadasConforme/consolidadoAmostraTotal.AmostraTotalColetada*100);
@@ -58,6 +75,7 @@ function listarParLevel2DCA(isVoltar) {
         '</div>' +
         '				<div class="list-group" style="padding-top:5px;clear:both !important">                           ' +
         htmlLista +
+        btnProximaAvaliacao +
         '				</div>                                             ' +
         '			  </div>                                               ' +
         '			</div>                                                 ' +
@@ -68,13 +86,6 @@ function listarParLevel2DCA(isVoltar) {
     $('div#app').html(html);
 
     setBreadcrumbsDCA();
-
-    if ($(".list-group button").length == 1 && (isVoltar == false || isVoltar == undefined)) {
-
-        $("[data-par-department-id]").trigger('click');
-
-    }
-
 }
 
 $('body').off('click', '[data-dca-par-level2-id]').on('click', '[data-dca-par-level2-id]', function (e) {
@@ -191,7 +202,7 @@ function getResultEvaluationDCA(parLevel1_Id, parLevel2_Id) {
             && coleta.ParLevel2_Id == parLevel2_Id
             && coleta.ParFamiliaProduto_Id == currentFamiliaProdutoDCA_Id) {
                 obj = {
-                    Evaluation: coleta.Evaluation+1,
+                    Evaluation: coleta.Evaluation,
                     ParFamiliaProduto_Id: coleta.ParFamiliaProduto_Id,
                 };
                 break;
@@ -200,3 +211,7 @@ function getResultEvaluationDCA(parLevel1_Id, parLevel2_Id) {
 
 	return obj;
 }
+
+$('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', function (e) {
+    listarParLevel2DCA(false, true)
+ });
