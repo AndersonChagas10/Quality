@@ -298,7 +298,7 @@
                         <th class="col-sm-1">
                             Intervalo Máximo
                         </th>
-                        <th class="col-sm-1 hide">
+                        <th class="col-sm-1">
                             Equação
                         </th>
                         <th class="col-sm-1">
@@ -548,6 +548,7 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+                debugger
                 ParL3TipoDado.prepareToInsert();
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
@@ -733,6 +734,10 @@
 
             if (typeof (obj['StringSizeAllowed']) == 'undefined')
                 obj['StringSizeAllowed'] = '';
+
+            if (typeof (obj['DynamicValue']) == 'undefined')
+                obj['DynamicValue'] = '';
+            
 
             if (obj.ParInputTypeValues.length > 0)
                 if (obj.ParInputTypeValues[0]['ParLevel3Value_Id'] != 'undefined' || obj.ParInputTypeValues[0]['ParLevel3Value_Id'] != null)
