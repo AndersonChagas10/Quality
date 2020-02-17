@@ -216,11 +216,11 @@ function getBinarioDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     //var amostraNC = 0;
     var respostaPadrao = "";
 
-    if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+    //if (level3.ParLevel3XHelp)
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info-limitenc><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div></a>';
 
-    else
-        html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+    //else
+    //    html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
     if (level3.ParLevel3Value.IsRequiredInt) {
 
@@ -273,7 +273,7 @@ function getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var respostaPadrao = "";
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info-limitenc><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
     else
         html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
@@ -333,7 +333,7 @@ function getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info-limitenc><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
         html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
@@ -385,7 +385,7 @@ function getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC)
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info-limitenc><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
         html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
@@ -440,7 +440,7 @@ function getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostr
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info-limitenc><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
         html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
@@ -496,7 +496,7 @@ function getObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info-limitenc><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
         html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
@@ -535,7 +535,7 @@ function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info-limitenc><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
         html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
@@ -574,7 +574,7 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info-limitenc><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
         html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
@@ -613,7 +613,7 @@ function getLikertDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info-limitenc><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
 
     else
         html += '<div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
@@ -763,36 +763,47 @@ $('body').off('click', '[data-na-dca]').on('click', '[data-na-dca]', function (e
 //     }
 // });
 
-// $('body').off('click', '[data-info]').on('click', '[data-info]', function (e) {
+ $('body').off('click', '[data-info-limitenc]').on('click', '[data-info-limitenc]', function (e) {
 
-//     var l3Id = $(this).attr('l3id');
+    debugger
+    var linha = $(this);
+    var title = $(linha).text();    
 
-//     var l3xHelp = $.grep(parametrization.listaParLevel3XHelp, function (obj) {
-//         return obj.ParLevel3_Id == l3Id;
+     var btnClose = '<button class="btn btn-primary pull-right" onclick="closeModal()">Fechar</button>';
+     var corpo =
+         '<div class="container">' +
+         '<div class="row" style="overflow:auto">' +
+         '<div style="text-align:center">' +
+         '<table class="table table-bordered" style="background-color:white">'+
+         '<thead>'+
+         '    <tr>'+
+         '    <th class="text-center" colspan=3>' + title + '</th>'+
+         '    </tr>'+
+         '</thead>'+
+         '<thead>'+
+         '    <tr>'+
+         '    <th class="col-sm-4 text-center">Padrão</th>'+
+         '    <th class="col-sm-4 text-center">Aceitavel</th>'+
+         '    <th class="col-sm-4 text-center">Não Aceitavel</th>'+
+         '    </tr>'+
+         '</thead>'+
+        '<tbody>'+
+        '    <tr>'+
+        '    <td class="btn-success">0</td>'+
+        '    <td class="btn-warning">Entre 0 e '+UmSeForNaN($(linha).parent().attr('data-limiteNC'))+'</td>'+
+        '    <td class="btn-danger">Maior que '+UmSeForNaN($(linha).parent().attr('data-limiteNC'))+'</td>'+
+        '    </tr>'+
+        '</tbody>'+
+        '</table>'+
+         '</div>' +
+         '<hr>' +
+         btnClose +
+         '</div>' +
+         '</div>';
 
-//     })[0];
+     openModal(corpo);
 
-//     var body = l3xHelp.Corpo;
-//     var title = l3xHelp.Titulo;
-
-//     var btnClose = '<button class="btn btn-primary pull-right" onclick="closeModal()">Fechar</button>';
-//     var modal = '<h4>' + title + '</h4>';
-//     var corpo =
-//         '<div class="container">' +
-//         '<div class="row" style="overflow:auto">' +
-//         modal +
-//         '<hr>' +
-//         '<div style="text-align:center">' +
-//         body +
-//         '</div>' +
-//         '<hr>' +
-//         btnClose +
-//         '</div>' +
-//         '</div>';
-
-//     openModal(corpo);
-
-// });
+ });
 
 $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', function () {
 

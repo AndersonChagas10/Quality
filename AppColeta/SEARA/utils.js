@@ -48,3 +48,15 @@ function criaHtmlSelect(titulo,options){
 	'	<select class="form-control">'+options+'</select>'+
 	'</div>';
 }
+
+function ZeroSeForNaN(valor){
+    return isNaN(valor) ? 0 : valor;
+}
+
+function UmSeForNaN(valor){
+    return isNaN(valor) ? 1 : valor;
+}
+
+function TracoSeForNaN(valor){
+    return isNaN(valor) ? '-' : valor;
+}
