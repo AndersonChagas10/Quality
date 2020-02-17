@@ -340,7 +340,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 wSurpervisor = $" AND C2.AuditorId IN ({string.Join(",", form.UserSgqSurpervisor_Ids)}) --Surpervisor";
 
             var query = $@" 
-
+             
              
             DECLARE @INDICADOR INT = {ParLevel1_Id}
             DECLARE @dataInicio_ date = DATEADD(MONTH, 0, '{form.startDate.ToString("yyyy-MM-dd")} 00:00:00')
@@ -433,125 +433,78 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                             END AS Av
 			               ,CASE
                                 WHEN PL1.hashKey = 1 THEN(SELECT TOP 1 SUM(Quartos) - @RESS FROM VolumePcc1b WITH(NOLOCK) WHERE ParCompany_Id = PC.Id AND Data = cast(C2.CollectionDate as date))
-
                                 WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Evaluation)
-
                                 WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiEvaluation)
-
                                 WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT ""KEY"")
 			            		WHEN PL1.ParConsolidationType_Id = 4 THEN COUNT(DISTINCT ""KEY"")
 			            		ELSE 0
-
                             END AS AvSemPeso
 			               ,CASE
                                 WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.WeiDefects)
-
                                 WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiDefects)
-
                                 WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT IIF(R3.WeiDefects> 0,""KEY"",NULL))
 			            		WHEN PL1.ParConsolidationType_Id = 4 THEN COUNT(DISTINCT IIF(R3.WeiDefects> 0,""KEY"",NULL))
 			            		ELSE 0
-
                             END AS NC
 			               ,CASE
                                 WHEN PL1.ParConsolidationType_Id = 1 THEN SUM(R3.Defects)
-
                                 WHEN PL1.ParConsolidationType_Id = 2 THEN SUM(R3.WeiDefects)
-
                                 WHEN PL1.ParConsolidationType_Id = 3 THEN COUNT(DISTINCT IIF(R3.WeiDefects> 0,""KEY"",NULL))
 			            		WHEN PL1.ParConsolidationType_Id = 4 THEN COUNT(DISTINCT IIF(R3.WeiDefects> 0,""KEY"",NULL))
 			            		ELSE 0
-
                             END AS NCSemPeso
             			   ,CASE
-
                                 WHEN(SELECT
-
                                             COUNT(1)
-
                                         FROM ParGoal G WITH(NOLOCK)
-
                                         WHERE G.ParLevel1_Id = C2.ParLevel1_Id
-
                                         AND(G.ParCompany_Id = C2.UnitId
-
                                         OR G.ParCompany_Id IS NULL)
-
                                         AND G.IsActive = 1
-
                                         AND G.EffectiveDate <= @DATAFINAL)
                                     > 0 THEN(SELECT TOP 1
-
                                             ISNULL(G.PercentValue, 0)
-
                                         FROM ParGoal G WITH(NOLOCK)
-
                                         WHERE G.ParLevel1_Id = C2.ParLevel1_Id
-
                                         AND(G.ParCompany_Id = C2.UnitId
-
                                         OR G.ParCompany_Id IS NULL)
-
                                         AND G.IsActive = 1
-
                                         AND G.EffectiveDate <= @DATAFINAL
-
                                         ORDER BY G.ParCompany_Id DESC, EffectiveDate DESC)
-
-
                                 ELSE(SELECT TOP 1
-
                                             ISNULL(G.PercentValue, 0)
-
                                         FROM ParGoal G WITH(NOLOCK)
-
                                         WHERE G.ParLevel1_Id = C2.ParLevel1_Id
-
                                         AND(G.ParCompany_Id = C2.UnitId
-
                                         OR G.ParCompany_Id IS NULL)
-
                                         ORDER BY G.ParCompany_Id DESC, EffectiveDate ASC)
 
                             END
                             AS Meta
             			,dd.data_ as data
 
-                        FROM @ListaDatas_ DD
-                       LEFT  JOIN ConsolidationLevel1 CL1 ON DD.data_ = CAST(CL1.ConsolidationDate AS DATE)
-
+                         FROM @ListaDatas_ DD
+                        LEFT  JOIN ConsolidationLevel1 CL1 ON DD.data_ = CAST(CL1.ConsolidationDate AS DATE)
                         INNER JOIN ConsolidationLevel2 CL2 WITH(NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
-
                         INNER JOIN CollectionLevel2 C2 WITH(NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
-
                         INNER JOIN Result_Level3 R3 WITH(NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
-
                         INNER JOIN ParLevel1 PL1 WITH(NOLOCK) ON CL1.ParLevel1_Id = PL1.Id
-
                         INNER JOIN ParCompany PC WITH(NOLOCK) ON C2.UnitId = PC.Id
-
-                        LEFT JOIN CollectionLevel2XCluster C2XC WITH(NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
+                        LEFT HASH JOIN CollectionLevel2XCluster C2XC WITH(NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
                 --    LEFT JOIN CollectionLevel2XParDepartment CL2XPD WITH(NOLOCK) ON CL2XPD.CollectionLevel2_Id = C2.Id
-
                         INNER JOIN ParLevel2 Pl2 WITH(NOLOCK) ON CL2.ParLevel2_Id = PL2.Id
                         LEFT JOIN ParDepartment PD WITH(NOLOCK) on PD.Id = PL2.ParDepartment_Id
-
                         INNER JOIN ParCluster PCL WITH(NOLOCK) ON PCL.Id = C2XC.ParCluster_Id AND PCL.IsActive = 1
-
                         LEFT JOIN ParCompanyXStructure PCXS WITH(NOLOCK) ON PCXS.ParCompany_Id = C2.UnitId AND PCXS.Active = 1--ParCriticalLevel
-                 --  LEFT JOIN CorrectiveAction CA WITH(NOLOCK) ON CA.CollectionLevel02Id = C2.Id
+                    --  LEFT JOIN CorrectiveAction CA WITH(NOLOCK) ON CA.CollectionLevel02Id = C2.Id
 
                         LEFT JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH(NOLOCK) on PGPL1.ParLevel1_Id = CL1.ParLevel1_Id
 
                         OUTER APPLY(SELECT TOP 1
-
                                 ParModule_Id
                             FROM ParLevel1XModule L1XM WITH(NOLOCK)
-
                             WHERE L1XM.ParLevel1_Id = C2.ParLevel1_Id
-
                             AND L1XM.IsActive = 1
-
                             AND L1XM.EffectiveDateStart <= C2.CollectionDate) AS L1XM
 
 
@@ -567,6 +520,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                             AND L1XC.EffectiveDate <= C2.CollectionDate
 
                             AND L1XC.IsActive = 1) AS L1XC
+
                         WHERE 1 = 1
                         {wModulo}
             			{wParClusterGroup}
@@ -594,7 +548,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             					,C2.UnitId
             					,C2.CollectionDate
 								) S1
-
                     GROUP BY S1.level1_Id
             				,S1.IsRuleConformity
             				,S1.Level1Name
@@ -615,7 +568,6 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                        , Data)
 					    S3
                 Where 1 = 1
-
 
             ORDER BY {orderBy}";
 
