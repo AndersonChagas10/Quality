@@ -827,7 +827,8 @@ WHERE 1 = 1
                         ParLevel3_Id = x.ParLevel3_Id,
                         ShowLevel3Limits = x.ShowLevel3Limits,
                         IsRequired = x.IsRequired,
-                        IsDefaultAnswer = x.IsDefaultAnswer
+                        IsDefaultAnswer = x.IsDefaultAnswer,
+                        LimiteNC = x.LimiteNC
                     })
                     .ToList()
                     .Where(x => listaParLevel1.Any(y => y.Id == x.ParLevel1_Id))

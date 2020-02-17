@@ -75,6 +75,7 @@ function openColetaDCA(levels) {
         habilitaBotaoSalvar();
     }
 
+    atualizaCorSePassarDoLimiteDeNC();
     setBreadcrumbsDCA();
 
 }
@@ -154,6 +155,7 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
         retorno += ' data-level3="' + level3.Id + '"';
         retorno += ' data-peso="' + level3.Peso + '"';
         retorno += ' data-qtdeNc="' + amostraNC + '"';
+        retorno += ' data-limiteNC="' + level3.ParLevel3Value.LimiteNC + '"';
         retorno += ' data-sample="' + amostraAtual + '"';
         retorno += ' data-sampleMax="' + amostraTotal + '"';
         retorno += ' data-amostra-completa="' + amostraCompleta + '"';
@@ -237,7 +239,7 @@ function getBinarioDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
-    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    var htmlAmostraNC = '<div class="col-xs-2 amostras-nc">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
@@ -296,7 +298,7 @@ function getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
-    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    var htmlAmostraNC = '<div class="col-xs-2 amostras-nc">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
@@ -340,7 +342,7 @@ function getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
-    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    var htmlAmostraNC = '<div class="col-xs-2 amostras-nc">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
@@ -392,7 +394,7 @@ function getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC)
 
     var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
-    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostra">' + amostraNC + '</spam></div>';
+    var htmlAmostraNC = '<div class="col-xs-2 amostras-nc">Amostras NC: <spam class="amostra">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
@@ -448,7 +450,7 @@ function getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostr
 
     var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '<spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
-    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    var htmlAmostraNC = '<div class="col-xs-2 amostras-nc">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
@@ -501,7 +503,7 @@ function getObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
-    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    var htmlAmostraNC = '<div class="col-xs-2 amostras-nc">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
@@ -540,7 +542,7 @@ function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
-    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    var htmlAmostraNC = '<div class="col-xs-2 amostras-nc">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
@@ -579,7 +581,7 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
-    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    var htmlAmostraNC = '<div class="col-xs-2 amostras-nc">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
@@ -620,7 +622,7 @@ function getLikertDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + amostraAtual + '</spam>/' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
-    var htmlAmostraNC = '<div class="col-xs-2">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+    var htmlAmostraNC = '<div class="col-xs-2 amostras-nc">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
 
     html +=
@@ -876,6 +878,7 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
     $(linhaTarefa).attr('data-sample', numeroProximaAmostra);
     $(linhaTarefa).find('.amostra').html(numeroProximaAmostra);
 
+    atualizaCorSePassarDoLimiteDeNC();
 });
 
 function resetarLinha(linha) {
@@ -1389,4 +1392,23 @@ function SalvarColetasAgrupadasDCA(){
     }else{
         coletaAgrupada = AtualizaContadorDaAvaliacao(coletaAgrupada);
     }
+}
+
+function atualizaCorSePassarDoLimiteDeNC(){
+    $('[data-linha-coleta]').each(function (i, o) {
+        var qtdeNC = parseInt($(o).attr('data-qtdenc'))
+        var limiteNC = parseInt($(o).attr('data-limitenc'))
+
+        $(o).find('.amostras-nc').removeClass('btn-danger');
+        $(o).find('.amostras-nc').removeClass('btn-success');
+        $(o).find('.amostras-nc').removeClass('btn-warning');
+
+        if(qtdeNC > 0 && limiteNC >= qtdeNC){
+            $(o).find('.amostras-nc').addClass('btn-warning');
+        }else if(qtdeNC > 0){
+            $(o).find('.amostras-nc').addClass('btn-danger');
+        }else{
+            $(o).find('.amostras-nc').addClass('btn-success');
+        }
+    });
 }
