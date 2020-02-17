@@ -681,6 +681,8 @@ WHERE 1 = 1
             List<RotinaIntegracao> listaRotinaIntegracao;
             List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
             List<ParEvaluation> listaParEvaluation;
+            List<ParCluster> listaParCluster;
+            List<ParLevel1XCluster> listaParLevel1XCluster;
 
             List<Dominio.Seara.ParFamiliaProduto> listaParFamiliaProduto;
             List<Dominio.Seara.ParFamiliaProdutoXParProduto> listaParFamiliaProdutoXParProduto;
@@ -704,6 +706,7 @@ WHERE 1 = 1
                         ParCompany_Id = x.ParCompany_Id,
                         ParDepartment_Id = x.ParDepartment_Id,
                         ParGroupParLevel1_Id = x.ParGroupParLevel1_Id,
+                        ParCluster_Id = x.ParCluster_Id,
                         Peso = x.Peso,
                         ParCargo_Id = x.ParCargo_Id,
                         ParFrequency_Id = x.ParFrequencyId,
@@ -723,6 +726,18 @@ WHERE 1 = 1
                     })
                     .ToList()
                     .Where(x => listaParVinculoPeso.Any(y => y.ParLevel1_Id == x.Id))
+                    .ToList();
+
+                listaParLevel1XCluster = db.ParLevel1XCluster
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                listaParCluster = db.ParCluster
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList()
+                    .Where(x=>listaParLevel1XCluster.Any(y=> y.ParCluster_Id == x.Id))
                     .ToList();
 
                 listaParLevel2 = db.ParLevel2
@@ -972,7 +987,9 @@ WHERE 1 = 1
                 listaParEvaluation,
                 listaParFamiliaProduto,
                 listaParFamiliaProdutoXParProduto,
-                listaParProduto
+                listaParProduto,
+                listaParCluster,
+                listaParLevel1XCluster
             });
         }
 
