@@ -107,7 +107,7 @@ $('body').off('click', '[data-par-frequency-id]').on('click', '[data-par-frequen
 
 function getPlanejamentoPorFrequencia(frequencyId) {
 
-	if (frequencyId != currentParFrequency_Id) {
+    if (frequencyId != currentParFrequency_Id || parametrization.currentParCluster_Id != currentParCluster_Id) {
 
 		currentParFrequency_Id = frequencyId;
 		openMensagem('Por favor, aguarde até que seja feito o download do planejamento selecionado', 'blue', 'white');
@@ -125,7 +125,8 @@ function getPlanejamentoPorFrequencia(frequencyId) {
 			contentType: "application/json",
 			success: function (data) {
 				data.currentParFrequency_Id = currentParFrequency_Id;
-				data.listaParFrequency = listaParFrequency;
+                data.listaParFrequency = listaParFrequency;
+                data.currentParCluster_Id = currentParCluster_Id;
 				_writeFile("appParametrization.txt", JSON.stringify(data), function () {
 					parametrization = data;
 					openPlanejamentoColeta();

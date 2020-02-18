@@ -23,7 +23,7 @@ namespace SgqSystem.Controllers.V2.Api
             using (db)
             {
                 db.Configuration.LazyLoadingEnabled = false;
-                var listaParVinculoPesoClusterIds = db.ParVinculoPeso.Where(x => x.ParCompany_Id == parCompany_Id && x.IsActive == true).Select(y => y.ParCluster_Id).Distinct().ToList();
+                var listaParVinculoPesoClusterIds = db.ParVinculoPeso.Where(x => (x.ParCompany_Id == parCompany_Id || x.ParCompany_Id == null) && x.IsActive == true).Select(y => y.ParCluster_Id).Distinct().ToList();
 
                 foreach (var item in listaParVinculoPesoClusterIds)
                 {
