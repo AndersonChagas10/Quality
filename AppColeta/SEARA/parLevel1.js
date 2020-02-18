@@ -3,7 +3,7 @@ function listarParLevel1(isVoltar) {
 	currentParLevel1_Id = null;
 	currentParLevel2_Id = null;
 
-	var listaParLevel1 = parametrization.listaParLevel1;
+	var listaParLevel1 = RetornarParLevel1(currentParCluster_Id);
 
 	var htmlLista = "";
 
@@ -18,7 +18,7 @@ function listarParLevel1(isVoltar) {
 
 	var voltar = "";
 
-	//voltar = '<a onclick="validaRota(openMenu,null);" class="btn btn-warning">Voltar</a>';
+	voltar = '<a onclick="validaRota(listarParCluster,null);" class="btn btn-warning">Voltar</a>';
 
 	html = getHeader() +
 		'<div class="container-fluid">                                           ' +
@@ -56,3 +56,16 @@ $('body').off('click', '[data-par-level1-id]').on('click', '[data-par-level1-id]
 	level1BusinessRoute(currentParLevel1_Id);
 
 });
+
+function RetornarParLevel1(cluster_Id){
+	var listaParLevel1XCluster = $.grep(parametrization.listaParLevel1XCluster, function (item) {
+        return item.Cluster_Id == cluster_Id;
+	}); 
+	
+	$.grep(parametrization.listaParLevel1, function (parLevel1) {
+		var exists = $.grep(listaParLevel1XCluster, function (item) {
+			return item.ParLevel1 == parLevel1.Id;
+		});
+        return exists.length > 0;
+    });
+}

@@ -187,11 +187,3 @@ function getBreadcrumb(text, link, isCurrent) {
         return '<li><a onclick="' + link + '">' + text + '</a></li>';
 
 }
-
-function ZeroSeForNaN(valor){
-    return isNaN(valor) ? 0 : valor;
-}
-
-function TracoSeForNaN(valor){
-    return isNaN(valor) ? '-' : valor;
-}

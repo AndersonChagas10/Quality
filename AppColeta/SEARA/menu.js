@@ -18,7 +18,7 @@ function GetAppParametrization123() {
 			data.listaParFrequency = listaParFrequency;
 			_writeFile("appParametrization.txt", JSON.stringify(data), function () {
 				parametrization = data;
-				listarParLevel1();
+				listarParCluster();
 				closeMensagem();
 			});
 			sincronizarResultado();
