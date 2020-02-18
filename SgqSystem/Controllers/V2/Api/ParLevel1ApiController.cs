@@ -71,6 +71,9 @@ namespace SgqSystem.Controllers.V2.Api
                 //parLevel1Selects.ParCargoXDepartments = db.ParCargoXDepartment.Where(x => x.IsActive).ToList();
                 parLevel1Selects.RotinaIntegracao = db.RotinaIntegracao.Where(x => x.IsActive).ToList();
 
+                //Familia
+                parLevel1Selects.ParFamiliaProdutos = db.ParFamiliaProduto.Where(x => x.IsActive).ToList();
+
             }
 
             return Ok(parLevel1Selects);
@@ -98,6 +101,8 @@ namespace SgqSystem.Controllers.V2.Api
                     .ToList();
 
                 parMultipleValuesGeral = db.ParMultipleValuesGeral.Where(x => x.IsActive).ToList();
+
+                parLevel1.ParLevel1XParFamiliaProduto = db.ParLevel1XParFamiliaProduto.Where(x => x.IsActive).ToList();
 
                 foreach (var item in parLevel1.ParLevel1XCluster)
                 {
@@ -144,6 +149,15 @@ namespace SgqSystem.Controllers.V2.Api
         }
 
         [HttpPost]
+        [Route("PostParLevel1Familia")]
+        public IHttpActionResult PostParLevel1Familia(Dominio.Seara.ParLevel1XParFamiliaProduto parLevel1XParFamiliaProduto)
+        {
+            SaveOrUpdatParLevel1XParFamiliaProduto(parLevel1XParFamiliaProduto);
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        [HttpPost]
         [Route("PostParHeaderFieldGeral")]
         public IHttpActionResult PostParHeaderField(ParHeaderFieldGeral saveParHeaderFieldGeral)
         {
@@ -175,11 +189,11 @@ namespace SgqSystem.Controllers.V2.Api
                 db.Configuration.LazyLoadingEnabled = false;
 
                 var ParDepartmentsPai = db.ParDepartment.Where(x => x.ParCompany_Id == id)
-                    .Select(x=>x.Parent_Id)
+                    .Select(x => x.Parent_Id)
                     .ToList();
 
                 var ParDepartmentsFilhos = db.ParDepartment
-                    .Where(x => x.ParCompany_Id == id && x.Parent_Id != null && !ParDepartmentsPai.Any(y=>y == x.Id))
+                    .Where(x => x.ParCompany_Id == id && x.Parent_Id != null && !ParDepartmentsPai.Any(y => y == x.Id))
                     .Include(x => x.ParDepartmentPai).Where(x => x.ParCompany_Id == id && x.Parent_Id != null)
                     .ToList();
 
@@ -387,6 +401,52 @@ namespace SgqSystem.Controllers.V2.Api
             }
         }
 
+        private bool SaveOrUpdatParLevel1XParFamiliaProduto(Dominio.Seara.ParLevel1XParFamiliaProduto parLevel1XParFamiliaProduto)
+        {
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+
+                var parLevel1xParFamiliaProdutoOld = db.ParLevel1XParFamiliaProduto.Where(x => x.ParLevel1_Id == parLevel1XParFamiliaProduto.ParLevel1_Id).FirstOrDefault();
+
+                if (parLevel1xParFamiliaProdutoOld == null) //Add
+                {
+
+                    if (parLevel1XParFamiliaProduto.ParFamiliaProduto_Id == 0) //salvou sem vinculo
+                        return true;
+
+                    parLevel1XParFamiliaProduto.AddDate = DateTime.Now;
+                    parLevel1XParFamiliaProduto.IsActive = true;
+
+                    db.ParLevel1XParFamiliaProduto.Add(parLevel1XParFamiliaProduto);
+                }
+                else //Update or delete
+                {
+                   
+                    if (parLevel1XParFamiliaProduto.ParFamiliaProduto_Id == 0) //Delete
+                        db.ParLevel1XParFamiliaProduto.Remove(parLevel1xParFamiliaProdutoOld);
+
+                    else //Update
+                    {
+
+                        parLevel1xParFamiliaProdutoOld.AlterDate = DateTime.Now;
+                        parLevel1xParFamiliaProdutoOld.ParFamiliaProduto_Id = parLevel1XParFamiliaProduto.ParFamiliaProduto_Id;
+                    }
+                }
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    return false;
+                }
+
+            }
+
+            return true;
+        }
+
         public class ParLevel1Result
         {
             public ParLevel1 Parlevel1 { get; set; }
@@ -422,6 +482,8 @@ namespace SgqSystem.Controllers.V2.Api
 
             public List<ParCargoXDepartment> ParCargoXDepartments { get; set; }
             public List<RotinaIntegracao> RotinaIntegracao { get; set; }
+
+            public List<Dominio.Seara.ParFamiliaProduto> ParFamiliaProdutos { get; set; }
         }
 
         public class SaveParHeaderField

@@ -167,6 +167,8 @@ namespace Dominio
 
         public virtual ICollection<ParRelapse> ParRelapse { get; set; }
 
+        public virtual ICollection<Seara.ParLevel1XParFamiliaProduto> ParLevel1XParFamiliaProduto { get; set; }
+
         [NotMapped]
         public List<ParHeaderFieldGeral> ParHeaderFieldsGeral { get; set; }
     }

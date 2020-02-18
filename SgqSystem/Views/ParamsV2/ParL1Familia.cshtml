@@ -1,0 +1,95 @@
+﻿<h3 class="titulo2">Familia de produtos</h3>
+
+<form id="ParL1Familia">
+
+    <br />
+    <div class="row" id="ParL1FamiliaoAnchor" data-form>
+
+        <input type="hidden" name="ParLevel1_Id" />
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label>Familia de Produtos:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Define a familia em que o indicador é atrelado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <select class="form-control" id="selectParFamilia" name="ParFamiliaProduto_Id"></select>
+            </div>
+
+        </div>
+
+
+        <div class="col-sm-12">
+
+            <button class="btn btn-primary pull-right btn btn-block" data-add>Salvar</button>
+
+        </div>
+    </div>
+
+</form>
+
+<script>
+
+    var ParL1Familia = {
+
+        id: 'ParL1Familia',
+        urlSave: '@Url.Action("PostParLevel1Familia", "api/ParLevel1Api")',
+
+        set: function (obj) {
+
+            if (obj)
+                obj = obj[0];
+
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+        },
+
+        load: function () {
+
+            let id = this.id;
+            let urlSave = this.urlSave;
+
+            function Save(obj) {
+                
+                var parLevel1Clonado = JSON.parse(JSON.stringify(obj));
+
+                $.ajax({
+                    url: urlSave,
+                    type: 'POST',
+                    dataType: "json",
+                    data: JSON.stringify(parLevel1Clonado),
+                    contentType: "application/json",
+                    success: function (data) {
+                        openMessageModal("Feito", "Dados Salvos");
+                        $('#selectL1').trigger('change');
+                        closeLoader();
+
+                    },
+                    error: function (request, error) {
+                        closeLoader();
+                        openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                        console.log(error)
+                    }
+                });
+            }
+
+            //Salvar o campo editado ou cria um novo
+            $('#' + id).on('click', '[data-add]', function (e) {
+
+                var obj = $('#' + id + ' [data-form]').data('sgq');
+                var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
+
+                if (!(typeof (obj) == 'undefined')) {
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                } else {
+                    obj = null;
+                    obj = atualizaValoresDoObjeto(obj, formdata);
+                }
+
+                Save(obj);
+            });
+
+        }
+    }
+
+    ParL1Familia.load();
+
+</script>
