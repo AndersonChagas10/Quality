@@ -118,6 +118,7 @@
     <Compile Include="ParAlert.cs" />
     <Compile Include="ParHeaderFieldGeral.cs" />
     <Compile Include="ParHeaderFieldXComponenteGenerico.cs" />
+    <Compile Include="Seara\ParLevel1XParFamiliaProduto.cs" />
     <Compile Include="ParLevel3XHelp.cs" />
     <Compile Include="ParLevel3XModule.cs" />
     <Compile Include="ParLevelHeaderField.cs" />

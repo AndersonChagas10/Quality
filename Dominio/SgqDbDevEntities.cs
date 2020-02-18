@@ -300,6 +300,7 @@ namespace Dominio
         public virtual DbSet<Seara.ParProduto> ParProduto { get; set; }
         public virtual DbSet<Seara.ParFamiliaProdutoXParProduto> ParFamiliaProdutoXParProduto { get; set; }
         public virtual DbSet<Seara.CollectionLevel2XParFamiliaProdutoXParProduto> CollectionLevel2XParFamiliaProdutoXParProduto { get; set; }
+        public virtual DbSet<Seara.ParLevel1XParFamiliaProduto> ParLevel1XParFamiliaProduto { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
