@@ -1412,10 +1412,19 @@ function atualizaPorcentagemDeTarefas(){
     var quantidadeMaximaAmostraComPeso = 0;
     var quantidadeColetadaAmostraComPeso = 0;
     $('[data-linha-coleta]').each(function (i, o) {
-        var amostraAtual = parseInt($(o).attr('data-sample'))-1;
+        var amostraAtual = parseInt($(o).attr('data-sample'));
         var amostraNC = parseInt($(o).attr('data-qtdenc'));
         var amostraTotal = parseInt($(o).attr('data-samplemax'));
         var peso = parseInt($(o).attr('data-peso'));
+
+        
+        var amostraCompleta = parseInt($(o).attr('data-amostra-completa'));
+        if(amostraCompleta != 1){
+            amostraAtual--;
+        }
+        if(amostraAtual > amostraTotal){
+            amostraAtual--;
+        }
 
         quantidadeMaximaAmostraComPeso += amostraTotal * peso;
         quantidadeColetadaAmostraComPeso += (amostraAtual - amostraNC) * peso;
