@@ -102,7 +102,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 parMultipleValuesGeral = db.ParMultipleValuesGeral.Where(x => x.IsActive).ToList();
 
-                parLevel1.ParLevel1XParFamiliaProduto = db.ParLevel1XParFamiliaProduto.Where(x => x.IsActive).ToList();
+                parLevel1.ParLevel1XParFamiliaProduto = db.ParLevel1XParFamiliaProduto.Where(x => x.IsActive && x.ParLevel1_Id == parLevel1.Id).ToList();
 
                 foreach (var item in parLevel1.ParLevel1XCluster)
                 {
