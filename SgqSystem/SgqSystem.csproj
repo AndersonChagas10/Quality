@@ -2171,6 +2171,7 @@
     <Content Include="Views\ScriptsVersion\Index.cshtml" />
     <Content Include="Views\Error\AcessoNegado.cshtml" />
     <Content Include="Views\ParamsV2\ParL1Familia.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2VincularPeso.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
