@@ -50,6 +50,8 @@ namespace SgqSystem.Controllers.V2.Api
                 parLevel2Result.Parlevel2 = parLevel2;
                 parLevel2Result.Parlevel2.ParEvaluation = db.ParEvaluation.Where(x => x.IsActive && x.ParLevel2_Id == parLevel2.Id).ToList();
 
+                parLevel2Result.Parlevel2.ParVinculoPesoParLevel2s = db.ParVinculoPesoParLevel2.Where(x => x.IsActive && x.ParLevel2_Id == parLevel2.Id).ToList();
+
                 const int parLevelHeaderField_Id = 2; //ParLevelHeaderField = 2 = ParLevel2 
 
                 parLevel2Result.Parlevel2.ParHeaderFieldsGeral = db.ParHeaderFieldGeral
@@ -327,6 +329,58 @@ namespace SgqSystem.Controllers.V2.Api
                 catch (Exception ex)
                 {
 
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("PostParVinculoPesoParLevel2")]
+        public IHttpActionResult PostParVinculoPesoParLevel2(Dominio.Seara.ParVinculoPesoParLevel2 parVinculoPesoParLevel2)
+        {
+
+            if (!SaveOrUpdateParVinculoPesoParLevel2(parVinculoPesoParLevel2))
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        private bool SaveOrUpdateParVinculoPesoParLevel2(Dominio.Seara.ParVinculoPesoParLevel2 parVinculoPesoParLevel2)
+        {
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (parVinculoPesoParLevel2.Id > 0)
+                    {
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var parVinculoPesoOld = db.ParVinculoPesoParLevel2.Find(parVinculoPesoParLevel2.Id);
+                        parVinculoPesoOld.Peso = parVinculoPesoParLevel2.Peso;
+                        parVinculoPesoOld.ParLevel1_Id = parVinculoPesoParLevel2.ParLevel1_Id;
+                        parVinculoPesoOld.ParLevel2_Id = parVinculoPesoParLevel2.ParLevel2_Id;
+                        parVinculoPesoOld.Equacao = parVinculoPesoParLevel2.Equacao;
+                        parVinculoPesoOld.Peso = parVinculoPesoParLevel2.Peso;
+                        parVinculoPesoOld.IsActive = parVinculoPesoParLevel2.IsActive;
+                        parVinculoPesoOld.AlterDate = DateTime.Now;
+                    }
+                    else
+                    {
+                        parVinculoPesoParLevel2.AddDate = DateTime.Now;
+                        parVinculoPesoParLevel2.IsActive = true;
+                        db.ParVinculoPesoParLevel2.Add(parVinculoPesoParLevel2);
+                    }
+
+                    db.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+                    LogSystem.LogErrorBusiness.Register(ex, parVinculoPesoParLevel2);
                     return false;
                 }
 
