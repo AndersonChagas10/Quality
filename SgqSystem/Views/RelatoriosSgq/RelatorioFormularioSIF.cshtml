@@ -12,7 +12,7 @@
     ViewBag.ShowParLevel2 = true;
     ViewBag.ShowParLevel3 = true;
     ViewBag.ShowUserSgqMonitor = true;
-    ViewBag.showTipoVisao = true;
+    ViewBag.showParFrequency = true;
 
     ViewBag.ShowUserCompanies = true; //Exibe somente as unidades do usuário no filtro
 
@@ -219,12 +219,6 @@
             //Indicador
             if (!objFiltro.parLevel1_Ids || objFiltro.parLevel1_Ids.length <= 0) {
                 GuardJs.exibirMensagemAlerta("O filtro Indicador é obrigatório");
-                return false;
-            }
-
-            //Monitoramento
-            if (!objFiltro.parLevel2_Ids || objFiltro.parLevel2_Ids.length <= 0) {
-                GuardJs.exibirMensagemAlerta("O filtro Monitoramento é obrigatório");
                 return false;
             }
 
