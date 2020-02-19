@@ -10,20 +10,19 @@
             <input type="hidden" name="ParLevel2_Id" data-id />
             <input type="hidden" name="IsActive" value="true" data-notnull />
 
-
             <div class="form-group">
                 <label for="ParLevel1_Id">Indicador:</label>
-                <select id="selectL3PesoParLevel1" class="input input-lg col-sm-12 required" name="ParLevel1_Id"></select>
+                <select id="selectL2PesoParLevel1" class="input input-lg col-sm-12 required" name="ParLevel1_Id"></select>
             </div>
 
-        </div>
+        @*</div>
 
         <div class="col-sm-4">
 
             <div class="form-group">
                 <label for="ParLevel2_Id">Monitoramento:</label>
-                <select id="selectL3PesoParLevel2" class="input input-lg col-sm-12 required" name="ParLevel2_Id"></select>
-            </div>
+                <select id="selectL2PesoParLevel2" class="input input-lg col-sm-12 required" name="ParLevel2_Id"></select>
+            </div>*@
 
         </div>
 
@@ -37,7 +36,7 @@
 
         </div>
 
-        <div class="row col-md-12">
+        @*<div class="row col-md-12">*@
 
             <div class="col-sm-4">
 
@@ -49,7 +48,7 @@
 
             </div>
 
-        </div>
+        @*</div>*@
 
         <div class="col-sm-2">
 
@@ -90,59 +89,12 @@
 </form>
 
 <script>
-    var ParCargosGlobalFiltrado;
 
-    $("#ParL3Peso #selectL3PesoParDepartment").on('change', function () {
-        var departamentoSelecionado = parseInt($("#ParL3Peso #selectL3PesoParDepartment :selected").val());
-        var cargosVinculado = [];
-
-        if (departamentoSelecionado === 0) {
-            preencheSelect('selectL3ParCargo', 'Name', 'Id', ParCargosGlobal, 'Todos');
-            cargosVinculado = [];
-        } else {
-
-            if (ParCargoXDepartmentsGlobal) {
-            ParCargosGlobalFiltrado = jQuery.grep(ParCargoXDepartmentsGlobal, function (n, i) {
-                return (n.ParDepartment_Id === departamentoSelecionado);
-            });
-
-            ParCargosGlobalFiltrado.forEach(function (item) {
-                 cargosVinculado.push(item.ParCargo);
-            });
-
-                preencheSelect('selectL3ParCargo', 'Name', 'Id', cargosVinculado, 'Todos');
-            }
-        }
-    });
-
-    $("#selectParCompanyGeral").on('change', function () {
-        //MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', null, null);
-    });
-
-
-    $("#selectL3PesoParCompany").on('change', function () {
-
-        var empresaSelecionada = parseInt($("#selectL3PesoParCompany :selected").val());
-        //MontaSelectDepartamentoVinculadoAUnidadeSelecionada('selectL3PesoParDepartment', empresaSelecionada, null);
-    });
-
-    $("#ParL3Peso #btnAvancado").on('click', function () {
-
-        if (!$("#divAvaliacao").is(":visible")) {
-            $("#divAvaliacao").show();
-            $("#divAmostra").show();
-        } else {
-            $("#divAvaliacao").hide();
-            $("#divAmostra").hide();
-        }
-
-    });
-
-    var ParL3Peso = {
+    var parL2Peso = {
 
         //paramtros
-        id: 'ParL3Peso',
-        urlSave: '@Url.Action("PostParVinculoPeso", "api/ParLevel3Api")',
+        id: 'ParL2Peso',
+        urlSave: '@Url.Action("PostParVinculoPesoParLevel2", "api/ParLevel2Api")',
 
         load: function (list) {
 
@@ -152,25 +104,14 @@
             apagaCampos(id);
 
             $('table#table' + id + ' tbody').html('');
+
             $(list).each(function (i, o) {
 
                 var html = '<tr>';
-                html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
+
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParLevel1_Id"]', o.ParLevel1_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParLevel2_Id"]', o.ParLevel2_Id, 'Todos') + '</td>';
-
-                html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParDepartment_Id"]', o.ParDepartment_Id, 'Todos') + '</td>';
-                html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParCluster_Id"]', o.ParCluster_Id, 'Todos') + '</td>';
-                html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParCargo_Id"]', o.ParCargo_Id, 'Todos') + '</td>';
-                var Av = o.Evaluation !== null ? o.Evaluation : "";
-                var Am = o.Sample !== null ? o.Sample : "";
-                html += '<td>' + Av + '</td>';
-                html += '<td>' + Am + '</td>';
-                var frequencia = (o.ParFrequencyId == null ? "" : o.ParFrequencyId);
-                if(frequencia != 0)
-                    html += '<td>' + valorDoSelect('#ParL3Peso select[name="ParFrequencyId"]', frequencia, 'Todos') + '</td>';
-                else
-                    html += '<td> </td>';
+                html += '<td>' + o.Equacao + '</td>';
                 html += '<td>' + o.Peso + '</td>';
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
@@ -181,7 +122,9 @@
             });
 
             function Save(obj) {
+
                 openLoader(Resources("please_wait"));
+
                 $.ajax({
                     url: urlSave,
                     type: 'POST',
@@ -190,9 +133,8 @@
                     contentType: "application/json",
                     success: function (data) {
                         openMessageModal("Feito", "Dados Salvos");
-                        $('#selectL3').trigger('change');
+                        $('#selectL2').trigger('change');
                         closeLoader();
-
                     },
                     error: function (request, error) {
                         closeLoader();
@@ -206,6 +148,7 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
+
                 scrollToForm();
                 var obj = $(this).parents('tr').data('sgq');
 
@@ -242,7 +185,7 @@
             });
 
             let formIsDuplicate = function () {
-
+                
                 var obj = $('#' + id + '  [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
@@ -253,28 +196,20 @@
                     obj = atualizaValoresDoObjeto(obj, formdata);
                 }
 
-                let ParLevel3Value = [];
+                let ParVinculoPesoxParLevel2 = [];
 
-                $('#tableParL3Peso tbody tr').each(function () {
-                    ParLevel3Value.push($(this).data('sgq'));
+                $('#tableParL2Peso tbody tr').each(function () {
+                    ParVinculoPesoxParLevel2.push($(this).data('sgq'));
                 });
 
-                let isDuplicate = ParLevel3Value.filter((item) => {
+                let isDuplicate = ParVinculoPesoxParLevel2.filter((item) => {
 
-                    return (item.Id != obj.Id &&
-                        item.ParCompany_Id == obj.ParCompany_Id &&
-                        item.ParLevel1_Id == obj.ParLevel1_Id &&
-                        item.ParLevel2_Id == obj.ParLevel2_Id &&
-                        item.ParCluster_Id == obj.ParCluster_Id &&
-                        item.ParCargo_Id == obj.ParCargo_Id &&
-                        item.ParDepartment_Id == obj.ParDepartment_Id &&
-                        item.ParFrequencyId == obj.ParFrequencyId &&
-                        item.ParGroupParLevel1_Id == obj.ParGroupParLevel1_Id);
+                    return (item.ParLevel1_Id == obj.ParLevel1_Id && item.ParLevel2_Id == obj.ParLevel2_Id);
 
                 }).length > 0;
 
                 if (isDuplicate) {
-                    openMessageModal("Alerta", "Já existe um Tipo de entrada para esta Unidade, Departamento, Cargo, Frequência, Indicador e Monitoramento!")
+                    openMessageModal("Alerta", "Já existe um Peso para esta Indicador e Monitoramento!");
                 }
 
                 return isDuplicate;
@@ -300,10 +235,14 @@
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
                 if (!(typeof (obj) == 'undefined')) {
+
                     obj = atualizaValoresDoObjeto(obj, formdata);
+
                 } else {
+
                     obj = null;
                     obj = atualizaValoresDoObjeto(obj, formdata);
+
                 }
 
                 Save(obj);

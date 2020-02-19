@@ -148,6 +148,12 @@
         border: 1px solid #ccc;
         overflow: auto;
     }
+
+    .nopadding {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
 </style>
 
 
@@ -328,11 +334,11 @@
                                             Campos de cabeçalhos
                                         </a>
                                     </li>
-                                    @*<li>
+                                    <li>
                                         <a href="#l2_peso" data-toggle="tab">
                                             Peso
                                         </a>
-                                    </li>*@
+                                    </li>
                                     @*<li>
                                             <a href="#l2_contador" data-toggle="tab">
                                                 Contadores
@@ -357,9 +363,9 @@
                                     <div class="tab-pane" id="l2_contador">
                                         @Html.Partial("ParL2Contador")
                                     </div>
-                                    @*<div class="tab-pane" id="l2_peso">
+                                    <div class="tab-pane" id="l2_peso">
                                         @Html.Partial("ParL2VincularPeso")
-                                    </div>*@
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -505,6 +511,7 @@
         preencheSelect('selectL3AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Indicador');
         preencheSelect('selectL3PesoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Indicador');
         preencheSelect('selectL3TipoDadoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Indicador');
+        preencheSelect('selectL2PesoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Indicador');
         getSelectsL1();
     }
 
@@ -513,6 +520,7 @@
         preencheSelect('selectL3AvamParLevel2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento');
         preencheSelect('selectL3PesoParLevel2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento');
         preencheSelect('selectL3TipoDadoParLevel2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento');
+        preencheSelect('selectL2PesoParLevel2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento');
         //getSelectsL2();
     }
 
@@ -941,6 +949,7 @@
                     ParL2Avancados.set(data.Parlevel2);
                     parL2Cabecalho.load(data.Parlevel2.ParHeaderFieldsGeral);
                     parL2Avam.load(data.Parlevel2.ParEvaluation);
+                    parL2Peso.load(data.Parlevel2.ParVinculoPesoParLevel2s);
                     verifyTabs('selectL2', 'l2');
                     closeLoader();
                 },
