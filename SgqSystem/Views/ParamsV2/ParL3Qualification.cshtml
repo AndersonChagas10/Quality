@@ -1,0 +1,553 @@
+﻿<h3 class="titulo2">Grupo de Qualificação</h3>
+
+<form id="ParL3Qualification">
+
+    <br />
+    <div class="row" data-form>
+
+        <div class="col-sm-12">
+
+            <input type="hidden" name="ParHeaderField_Id" />
+            <input type="hidden" name="ParDepartment_Id" data-id />
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="IsActive" value="true" data-notnull />
+
+
+        </div>
+
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label for="ParQualificationGroup_Id">Grupo de Qualificação:</label>
+                <select id="select3Qualification" class="input input-lg col-sm-12 required" name="ParQualificationGroup_Id"></select>
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label for="Value">Valor:</label>
+                <input type="text" class="form-control" id="Value" name="Value">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="td-erp">
+                <div id="divBtnSalvar" class="col-sm-6">
+                    <button class="form-control btn btn-primary" data-add>Salvar</button>
+                </div>
+
+                <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                    <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="row">
+        <div class="col-sm-12">
+            <table id="tableParDCCabecalho" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-sm-3">
+                            Grupo de Qualificação
+                        </th>
+                        <th class="col-sm-3">
+                            Valor
+                        </th>
+                        <th class="col-sm-3">
+                            Ação
+                        </th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    var ParL3Qualification = {
+
+        //paramtros
+        id: 'ParL3Qualification',
+        urlSave: '@Url.Action("PostParLevel3", "api/ParDepartmentXHeaderFieldApi")',
+
+        load: function (ParHeaderFieldsGeral) {
+            let id = this.id;
+
+            apagaCampos(id);
+            ParL3Qualification.reloadTable();
+
+            $('table#table' + id + ' tbody').html('');
+            $('#selectL1ParFieldTypeDepartment').prop("disabled", false);
+            $('#tableParDCCabecalho [data-table-edit]').prop('disabled', false);
+            $('#tableParDCCabecalho [data-table-delete]').prop('disabled', false);
+            $('#tableParDCCabecalho select,#tableParDCCabecalho input,#tableParDCCabecalho button').prop('disabled', false);
+            $('#' + id + ' #divBtnCancelar').hide();
+
+            $(ParHeaderFieldsGeral).each(function (i, o) {
+
+                let previewHeaderField = getPreviewDepartmentHeaderField(o);
+                let defaultSelected = "";
+
+                if (o.ParFieldType_Id == 1)
+                    defaultSelected = getDefaultSelectedHeaderField();
+
+                let isChecked = o.IsRequired ? "checked" : "";
+
+                var html = '<tr>';
+                html += '<td>' + o.Name + '</td>';
+                html += '<td>' + o.ParFieldType.Name + '</td>';
+                html += '<td>' + previewHeaderField + '</td>';
+                html += '<td><div class=""><label class="switch"><input type="checkbox" name="IsRequired"' + isChecked + ' ><span class="slider round"></span> </label></div></td>';
+                html += '<td>' + defaultSelected + '</input></td>';
+                html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
+                html += '</tr>';
+
+                $('table#table' + id + ' tbody').append(html);
+                $('table#table' + id + ' tbody tr:last').data('sgq', o);
+
+            });
+
+            this.showTableParMultipleValues();
+        },
+
+        prepareParHeaderField: function (obj) {
+            let formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
+
+            if (typeof (obj) == 'undefined')
+                obj = {};
+
+            obj['Name'] = formdata.Name;
+            obj['Description'] = formdata.Description;
+            obj['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
+            obj['ParFieldType_Id'] = formdata.ParFieldType_Id;
+            obj['Generic_Id'] = $('[name="ParDepartment_Id"][data-id]').val();
+
+            return obj;
+        },
+
+        prepareToInsert: function (parFieldType_Id) {
+
+            if (!formIsValid(this.id)) {
+                return false;
+            }
+
+            let $TblParMultipeValues;
+
+            var obj = $('#' + this.id + ' [data-form]').data('sgq');
+
+            if (typeof (obj) == 'undefined')
+                obj = {};
+
+            if (typeof (obj) == 'undefined')
+                obj = {};
+
+            if (typeof (obj['ParMultipleValuesGeral']) == 'undefined')
+                obj['ParMultipleValuesGeral'] = [];
+
+            switch (parFieldType_Id) {
+
+                case 1: // Multipla Escolha
+
+                    $TblParMultipeValues = $('#tblOpcaoMultiplaEscolhaDepartmentxHeader');
+
+                    obj['ParMultipleValuesGeral'].push({
+                        ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
+                        ParHeaderField: $('#ParL3Qualification #Name').val(),
+                        Id: 0,
+                        Name: $TblParMultipeValues.find('#objMultiplaEscolhaNameDepartmentxHeader').val(),
+                        Description: '',
+                        PunishmentValue: 0, //$TblParMultipeValues.find('#objMultiplaEscolhaPunishmentValueDepartmentxHeader').val(),
+                        Conformity: 0,
+                        IsDefaultOption: 0,
+                        IsActive: true
+                    });
+
+                    $TblParMultipeValues.find('#objMultiplaEscolhaNameDepartmentxHeader').val('');
+
+                    break;
+
+                case 3:	// Binario
+
+                    if ($.grep(obj['ParMultipleValuesGeral'], function (o, i) {
+                        return o.IsActive == true;
+                    }).length > 0) {
+
+                        openMessageModal("Alerta", "Já existem opções inseridas para este campo de cabeçalho")
+                        return false;
+                    }
+
+                    $TblParMultipeValues = $('#tblBinarioDepartmentxHeader');
+
+                    obj['ParMultipleValuesGeral'].push({
+                        ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
+                        ParHeaderField: $('#ParL3Qualification #Name').val(),
+                        Id: 0,
+                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName1DepartmentxHeader').val(),
+                        Description: '',
+                        PunishmentValue: 0, //$TblParMultipeValues.find('#objBinarioPunishmentValue1DepartmentxHeader').val(),
+                        Conformity: 1,
+                        IsDefaultOption: 0,
+                        IsActive: true
+                    });
+
+                    obj['ParMultipleValuesGeral'].push({
+                        ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
+                        ParHeaderField: $('#ParL3Qualification #Name').val(),
+                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName2DepartmentxHeader').val(),
+                        Id: 0,
+                        Description: '',
+                        PunishmentValue: 0, //$TblParMultipeValues.find('#objBinarioPunishmentValue2DepartmentxHeader').val(),
+                        Conformity: 0,
+                        IsDefaultOption: 0,
+                        IsActive: true
+                    });
+
+                    break;
+
+                default:
+            }
+
+            $('#' + this.id + ' [data-form]').data('sgq', obj);
+
+            this.insertTable(obj);
+
+        },
+
+        insertTable: function (obj) {
+            debugger
+            //pega os dados do form e transforma em obj
+            obj = ParL3Qualification.prepareParHeaderField(obj);
+
+            $('#camposCabecalhoIncluidosDepartmentxHeader tbody').empty();
+
+            let multipleValues = obj['ParMultipleValuesGeral'];
+            let blockParFieldType = false;
+
+            multipleValues.forEach((o, i) => {
+
+                if (o.IsActive) {
+                    let table = `<tr>
+                            <td>${o.Name}</td>
+                            <td>${o.IsDefaultOption == true ? Resources("yes") : Resources("no")}</td>
+                            <td><button type="button" class ="btn btn-danger btn-xs" name="" onclick="ParL3Qualification.excludeTable(${i})"><i class ="fa fa-times"></i></button></td>
+                          </tr>`;
+
+                    $('#camposCabecalhoIncluidosDepartmentxHeader tbody').append(table);
+
+                    blockParFieldType = true;
+                }
+            });
+
+            if (blockParFieldType)
+                $('#selectL1ParFieldTypeDepartment').prop("disabled", true);
+            else
+                $('#selectL1ParFieldTypeDepartment').prop("disabled", false);
+
+            this.showTableParMultipleValues();
+        },
+
+        showTableParMultipleValues: function () {
+
+            if ($('#camposCabecalhoIncluidosDepartmentxHeader tbody tr').length) {
+                $('#divCamposCabecalhoIncluidosDepartmentxHeader').show();
+            } else {
+                $('#divCamposCabecalhoIncluidosDepartmentxHeader').hide();
+            }
+
+        },
+
+        reloadTable: function () {
+            $('#camposCabecalhoIncluidosDepartmentxHeader tbody').empty();
+        },
+
+        excludeTable: function (i) {
+            var obj = $('#' + this.id + ' [data-form]').data('sgq');
+            $("#modalExclusao").show();
+
+            $("#excluirItem").off().on('click', function () {
+                if (obj) {
+                    if (obj.ParFieldTypeId == 3) //Se for binário, exclui todos os ParMultipleValues
+                        obj.ParMultipleValuesGeral.forEach((o, i, a) => {
+                            a[i].IsActive = false;
+                        });
+                    else
+                        obj['ParMultipleValuesGeral'][i].IsActive = false;
+
+                    ParL3Qualification.insertTable(obj);
+
+                } else {
+                    $('#camposCabecalhoIncluidosDepartmentxHeader tbody').empty();
+                    $('#divCamposCabecalhoIncluidosDepartmentxHeader').hide();
+                }
+                $("#modalExclusao").hide();
+                item = "";
+            });
+        },
+
+        Save: function (obj) {
+
+            openLoader(Resources("please_wait"));
+            $.ajax({
+                url: ParL3Qualification.urlSave,
+                type: 'POST',
+                dataType: "json",
+                data: JSON.stringify(obj),
+                contentType: "application/json",
+                success: function (data) {
+                    closeLoader();
+                    openMessageModal("Feito", "Dados Salvos");
+                    $('#selectDCDepartment').trigger('change');
+
+                },
+                error: function (request, error) {
+                    openMessageModal("Ocorreu um erro", JSON.stringify(request));
+                    console.log(error)
+                }
+
+            }).done(function () {
+                closeLoader();
+                $('#tableParDCCabecalho select,#tableParDCCabecalho input,#tableParDCCabecalho button').prop('disabled', true);
+                $('#' + ParL3Qualification.id + ' #divBtnCancelar').hide();
+            });
+
+        }
+
+    };
+
+    $('#' + ParL3Qualification.id).off('click');
+
+    //Adicionar os dados no data-form
+    $('#' + ParL3Qualification.id).on('click', '[data-table-edit]', function (e) {
+        scrollToForm();
+        var obj = $(this).parents('tr').data('sgq');
+
+        apagaCampos(ParL3Qualification.id);
+        ParL3Qualification.reloadTable();
+        preencheCampos(ParL3Qualification.id + ' [data-form]', '', obj);
+
+        $('#' + ParL3Qualification.id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParLevelDefinition_Id);
+        $('#' + ParL3Qualification.id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
+
+        $('#' + ParL3Qualification.id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParFieldType_Id);
+        $('#' + ParL3Qualification.id + ' [data-form] select[name="ParFieldType_Id"]').trigger('change')
+
+        $('#' + ParL3Qualification.id + ' [data-form] input[name="Name"]').val(obj.Name);
+        $('#' + ParL3Qualification.id + ' [data-form] input[name="Description"]').val(obj.Description);
+
+        $('#' + ParL3Qualification.id + ' [data-form]').data('sgq', obj);
+        $('#' + ParL3Qualification.id + ' [data-form]').addClass('alert alert-success');
+        $('#' + ParL3Qualification.id + ' [data-form] [data-action] [data-add]').addClass('hide');
+        $('#' + ParL3Qualification.id + ' #divBtnCancelar').show();
+
+        ParL3Qualification.insertTable(obj);
+
+        $('#' + ParL3Qualification.id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
+        $('#' + ParL3Qualification.id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
+
+        $('#tableParDCCabecalho select,#tableParDCCabecalho input,#tableParDCCabecalho button').prop('disabled', true);
+
+    });
+
+    //Adicionar os dados no data-form
+    $('#' + ParL3Qualification.id).on('click', '[data-table-delete]', function (e) {
+        e.preventDefault();
+        var obj = $(this).parents('tr').data('sgq');
+        $("#modalExclusao").show();
+
+        $("#excluirItem").off().on('click', function () {
+            obj.IsActive = false;
+            ParL3Qualification.Save(obj);
+            $("#modalExclusao").hide();
+            obj = "";
+        });
+    });
+
+    $(".fecharModal").on('click', function () {
+        $("#modalExclusao").hide();
+        obj = "";
+    });
+
+
+    $('#' + ParL3Qualification.id).on('click', '[data-cancel]', function (e) {
+        apagaCampos(ParL3Qualification.id);
+        ParL3Qualification.reloadTable();
+    });
+
+    //Salvar o campo editado ou cria um novo
+    $('#' + ParL3Qualification.id).on('click', '[data-edit],[data-add]', function (e) {
+
+        $('#objMultiplaEscolhaDepartmentxHeader').hide();
+        $('#objBinarioDepartmentxHeader').hide();
+
+        var obj = $('#' + ParL3Qualification.id + ' [data-form]').data('sgq');
+        var formdata = $('#' + ParL3Qualification.id + ' [data-form]').serializeFormToObjetc();
+
+        if (!(typeof (obj) == 'undefined')) {
+            obj = atualizaValoresDoObjeto(obj, formdata);
+            obj.ParLevel1_Id = $('#l1 [data-id]').val();
+        } else {
+            obj = null;
+            obj = atualizaValoresDoObjeto(obj, formdata);
+        }
+
+        obj = ParL3Qualification.prepareParHeaderField(obj);
+
+        if (optionIsValid(obj, ParL3Qualification.id)) {
+            obj.ParDepartment_Id = $("#selectDCDepartment :selected").val();
+            openLoader(Resources("please_wait"));
+            ParL3Qualification.Save(obj);
+
+        } else {
+            $('#selectL1ParFieldTypeDepartment').trigger('change');
+        }
+
+    });
+
+    $('#' + ParL3Qualification.id).on('change', '[name="IsRequired"]', function () {
+
+        openLoader("Salvando...");
+
+        //$('#' + parL1Cabecalho.id + ' input').prop('disabled', true);
+
+        var obj = $(this).parents('tr').data('sgq');
+
+        obj.IsRequired = !!$(this).prop('checked');
+
+        ParL3Qualification.Save(obj);
+    });
+
+    $('#' + ParL3Qualification.id).on('click', '.defaultSelected', function () {
+
+        var obj = $(this).parents('tr').data('sgq');
+
+        let parMultipleValues_Id = parseInt($(this).parents('tr').find('select :selected').val());
+
+        parMultipleValues_Id = parMultipleValues_Id ? parMultipleValues_Id : null;
+
+        obj.ParMultipleValuesGeral.forEach((o, i, a) => {
+            a[i].IsDefaultOption = 0;
+
+            if (o.Id == parMultipleValues_Id) {
+                a[i].IsDefaultOption = 1;
+            }
+        });
+
+        ParL3Qualification.Save(obj);
+    });
+
+    $('#' + ParL3Qualification.id).on('click', ' [data-add-cancel] ', function () {
+        $('#selectDCDepartment').trigger('change');
+        $(this).parent().hide();
+    });
+
+    let getPreviewDepartmentHeaderField = function (headerField) {
+
+        let input = "";
+
+        switch (headerField.ParFieldType_Id) {
+
+            case 1: // Multipla Escolha
+            case 3:	// Binario
+
+                let options = '<option>Selecione...</option>';
+
+                headerField.ParMultipleValuesGeral.forEach((o) => {
+                    options += `<option value="${o.Id}" ${(o.IsDefaultOption ? "selected" : "")}>${o.Name}</option>`;
+                });
+
+                input = '<select class="form-control">' + options + '</select>';
+
+                break;
+
+            case 2:	// Integrações
+                input = "";
+                break;
+
+            case 4:	// Texto
+            case 9:	// Parâmetro
+                input = '<input type="text" class="form-control">';
+                break;
+
+            case 5:	// Numerico
+                input = '<input type="number" class="form-control">';
+                break;
+
+            case 6:	// Data
+                input = '<input type="date" class="form-control">';
+                break;
+
+            case 7:	// Hora
+                input = '<input type="time" class="form-control" />';
+                break;
+
+            case 8:	// Informações
+                input = `<input type="text" value='${headerField.Description}' class="form-control" disabled />`;
+                break;
+
+            case 10: //Dinâmico
+                input = '<input type="text" class="form-control" disabled />';
+                break;
+
+            default:
+        }
+
+        return input;
+    }
+
+    let getDefaultSelectedHeaderField = function () {
+
+        return `<button type="button" onclick="" class="btn btn-default btn-sm defaultSelected"><i class="fa fa-check" aria-hidden="true"></i></button>`;
+
+    }
+
+    $('#selectL1ParFieldTypeDepartment').on("change", function () {
+
+        hideAllOptionsDepartment();
+
+        //limpar arr ParMultipleValues?
+
+        let parFieldType_Id = parseInt($(this).val());
+
+        switch (parFieldType_Id) {
+
+            case 1: // Multipla Escolha
+                $('#objMultiplaEscolhaDepartmentxHeader').show();
+                break;
+
+            case 3:	// Binario
+                $('#objBinarioDepartmentxHeader').show();
+                break;
+
+            case 8:	// Informações
+                $('#objWithDescriptionDepartmentxHeader').show();
+                //Inserir direto
+                break;
+
+            case 9:	// Parâmetro
+                $('#objWithDescriptionDepartmentxHeader').show();
+                //Inserir direto
+                break;
+
+            case 10: //Dinâmico
+                $('#objWithDescriptionDepartmentxHeader').show();
+                //Inserir direto
+                break;
+
+            default:
+        }
+
+    });
+
+    let hideAllOptionsDepartment = function () {
+
+        $('#objMultiplaEscolhaDepartmentxHeader').hide();
+        $('#objBinarioDepartmentxHeader').hide();
+        $('#objInformacoes').hide();
+        $('#objWithDescriptionDepartmentxHeader').hide();
+
+    }
+
+</script>

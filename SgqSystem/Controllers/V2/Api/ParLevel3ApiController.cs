@@ -317,6 +317,26 @@ namespace SgqSystem.Controllers.V2.Api
             }
         }
 
+        [HttpGet]
+        [Route("GetParQualification")]
+        public IHttpActionResult GetQualification()
+        {
+            var listaParGroupQualification = new List<PargroupQualification>();
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    listaParGroupQualification = db.PargroupQualification.Where(x => x.IsActive).ToList();
+                }
+                catch (Exception ex)
+                {
+
+                    return StatusCode(HttpStatusCode.BadRequest);
+                }
+            }
+            return Ok(listaParGroupQualification);
+        }
+
         [HttpPost]
         [Route("PostParTipoDado")]
         public IHttpActionResult PostParTipoDado(ParLevel3Value parLevel3Value)

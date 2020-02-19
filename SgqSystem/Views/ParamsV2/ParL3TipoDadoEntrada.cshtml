@@ -324,17 +324,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                    @Html.Partial("ParL3Qualification")
             </div>
         </div>
     </div>
@@ -456,7 +451,17 @@
 
     function openQualificationModal(level3Value_id) {
         debugger
-        $("#modalQualification").show();
+        $.ajax({
+            url: '@Url.Action("GetParQualification", "api/ParLevel3Api")',
+            type: 'Get',
+            dataType: "json",
+            data: {},
+            contentType: "application/json",
+            success: function (data) {
+                $("#modalQualification").show();
+                preencheSelect('select3Qualification', 'Name', 'Id', data, 'Selecione');
+            }
+        });
     }
 
     var ParL3TipoDado = {
@@ -546,11 +551,12 @@
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
 
                 ParL3TipoDado.insertTable(obj);
-                
+                debugger
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
-                $('#' + id + ' [data-form] [data-action]').append('<button id="btnAddQualification" onclick="openQualificationModal('+obj.Id+')"  class="form-control btn btn-primary col-md-4">Adicionar Qualificação</button>');
-                
+                if (obj.ParLevel3InputType_Id == 1 || obj.ParLevel3InputType_Id == 6)
+                    $('#' + id + ' [data-form] [data-action]').append('<button id="btnAddQualification" onclick="openQualificationModal(' + obj.Id + ')"  class="form-control btn btn-primary col-md-4">Adicionar Qualificação</button>');
+
             });
 
             //Adicionar os dados no data-form
