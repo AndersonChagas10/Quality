@@ -302,6 +302,7 @@ namespace Dominio
         public virtual DbSet<Seara.CollectionLevel2XParFamiliaProdutoXParProduto> CollectionLevel2XParFamiliaProdutoXParProduto { get; set; }
         public virtual DbSet<Seara.ParLevel1XParFamiliaProduto> ParLevel1XParFamiliaProduto { get; set; }
 
+        public virtual DbSet<Seara.ParVinculoPesoParLevel2> ParVinculoPesoParLevel2 { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
