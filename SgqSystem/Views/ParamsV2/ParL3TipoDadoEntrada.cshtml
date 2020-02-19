@@ -237,18 +237,25 @@
             </div>
 
             @*<div class="row">
-                <div class="td-erp">
-                    <div id="divBtnSalvar" class="col-sm-6">
-                        <button class="form-control btn btn-primary" data-add>Salvar</button>
-                    </div>
+                    <div class="td-erp">
+                        <div id="divBtnSalvar" class="col-sm-6">
+                            <button class="form-control btn btn-primary" data-add>Salvar</button>
+                        </div>
 
-                    <div id="divBtnCancelar" class="col-sm-6" style="display:none">
-                        <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                        <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                            <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                        </div>
                     </div>
-                </div>
-            </div>*@
+                </div>*@
         </div>
 
+        @*<div class="col-sm-4">
+
+                <div class="form-group">
+                    <button id="btnAddQualification" class="form-control btn btn-primary">Adicionar Qualificação</button>
+                </div>
+
+            </div>*@
 
         <div class="col-sm-2">
 
@@ -311,6 +318,27 @@
         </div>
     </div>
 </form>
+
+<!-- Modal -->
+<div class="modal" id="modalQualification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
 
@@ -426,6 +454,11 @@
 
     //});
 
+    function openQualificationModal(level3Value_id) {
+        debugger
+        $("#modalQualification").show();
+    }
+
     var ParL3TipoDado = {
 
         //paramtros
@@ -443,8 +476,8 @@
             $('table#table' + id + ' tbody').html('');
 
             $('#ShowLevel3Limits').prop('checked', true);
-            $('#IsAtiveNA').prop('checked', true); 
-            
+            $('#IsAtiveNA').prop('checked', true);
+
             $(list).each(function (i, o) {
 
                 var html = '<tr>';
@@ -501,7 +534,7 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
-                
+
                 scrollToForm();
                 var obj = $(this).parents('tr').data('sgq');
 
@@ -513,10 +546,11 @@
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
 
                 ParL3TipoDado.insertTable(obj);
-
+                
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
-
+                $('#' + id + ' [data-form] [data-action]').append('<button id="btnAddQualification" onclick="openQualificationModal('+obj.Id+')"  class="form-control btn btn-primary col-md-4">Adicionar Qualificação</button>');
+                
             });
 
             //Adicionar os dados no data-form
@@ -588,8 +622,22 @@
                 switch (parLevel3InputType_Id) {
 
                     case 1: //Binário
+                        showInput('selectL3TipoDadoParLevel3BoolTrue');
+                        showInput('selectL3TipoDadoParLevel3BoolFalse');
+                        showInput('checkboxL3IsRequired');
+                        showInput('selectL3IsDefaultAnswer');
+                        showInput('btnAddMultipleText');
+                        $("#selectL3IsDefaultAnswer").val('true');
+                        hideInput('DefaultMessageText');
+                        hideInput('StringSizeAllowed');
+                        break;
                     case 6: //Binario Com Texto
-                        
+                        showInput('selectL3TipoDadoParLevel3BoolTrue');
+                        showInput('selectL3TipoDadoParLevel3BoolFalse');
+                        showInput('checkboxL3IsRequired');
+                        showInput('selectL3IsDefaultAnswer');
+                        showInput('btnAddMultipleText');
+                        $("#selectL3IsDefaultAnswer").val('true');
                         showInput('DefaultMessageText');
                         showInput('StringSizeAllowed');
                         break;
@@ -759,7 +807,7 @@
         },
 
         prepareTipoDado: function (obj) {
-            
+
             var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
             if (typeof (obj) == 'undefined')
                 obj = {};
@@ -789,7 +837,7 @@
             obj = ParL3TipoDado.prepareTipoDado(obj);
 
             $('#camposLikertIncluidos tbody').empty();
-  
+
             let IntervalMax = "";
             let IntervalMin = "";
             let IsActive = "";
@@ -881,7 +929,8 @@
         hideInput('ShowLevel3Limits');
         hideInput('DefaultMessageText');
         hideInput('StringSizeAllowed');
-        
+        hideInput('btnAddQualification');
+        $("#modalQualification").hide();
     }
 
     let hideInput = function (id) {
