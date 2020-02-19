@@ -907,7 +907,7 @@ namespace SgqSystem.Controllers.Api.Formulario
         {
             using (var factory = new Factory("DefaultConnection"))
             {
-                var query = $@"SELECT TOP 500 Id, Description as Name from ParFrequency Where Description like '%{search}%'";
+                var query = $@"SELECT TOP 500 Id, Description as Name from ParFrequency where id in (3,4,5,6) and Description like '%{search}%'";
 
                 var retorno = factory.SearchQuery<ParFrequency>(query).ToList();
 
