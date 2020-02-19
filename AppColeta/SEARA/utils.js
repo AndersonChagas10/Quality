@@ -57,6 +57,10 @@ function UmSeForNaN(valor){
     return isNaN(valor) ? 1 : valor;
 }
 
+function UmSeForNaNOuNull(valor){
+    return isNaN(valor) || valor == null ? 1 : valor;
+}
+
 function TracoSeForNaN(valor){
     return isNaN(valor) ? '-' : valor;
 }
