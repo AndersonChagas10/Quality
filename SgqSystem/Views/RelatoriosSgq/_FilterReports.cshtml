@@ -618,6 +618,21 @@
 
                             }
 
+                            @if (ViewBag.showTipoVisao == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Visão</strong></label>
+                                        <select class="form-control" name="tipoVisao">
+                                            @*<option value="0">Todos</option>*@
+                                            <option value="1">Diário</option>
+                                            <option value="2">Semanal</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            }
+
 
                         </div>
                         <div class="col-sm-12">
@@ -760,6 +775,7 @@
             $('select[name="ParReason_Ids"]').select2();
             $('select[name="tipoEdicao"]').select2();
             $('select[name="userSgqAuditor_Ids"]').select2();
+            $('select[name="tipoVisao"]').select2();
         }
 
         inicializaSelect2();
