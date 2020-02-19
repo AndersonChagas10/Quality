@@ -70,16 +70,3 @@ function changeStateButtonColetar() {
 
 	}
 }
-
-function getParametrizationByButon() {
-
-	var frequencyId = currentParFrequency_Id;
-
-	if (frequencyId) {
-
-		currentParFrequency_Id = null;
-
-		getPlanejamentoPorFrequencia(frequencyId);
-
-	}
-}

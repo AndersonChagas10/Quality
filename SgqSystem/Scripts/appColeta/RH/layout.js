@@ -21,8 +21,8 @@ function getHeader() {
         '    <div id="navbar" class="navbar-collapse collapse">                                                                                                            ' +
         '      <ul class="nav navbar-nav">                                                                                                                                 ' +
         '        <li><a href="#" onclick="sincronizarColeta()">Enviar dados coletados</a></li>                                                                                             ' +
-        '        <li><a href="#" onclick="sincronizarResultado()">Sincronizar coletas realizadas</a></li>                                                                                             ' +
-        '        <li><a href="#" onclick="getAppParametrization()">Atualizar dados/parametrização</a></li>                                                                                             ' +
+        '        <li><a href="#" onclick="sincronizarResultado()">Sincronizar coletas realizadas</a></li>  ' +
+        '        <li><a href="#" onclick="chamaGetAppParametrization()">Atualizar dados/parametrização</a></li>  ' +
         '      </ul>                                                                                                                                                       ' +
         '      <ul class="nav navbar-nav nav-pull-right">                                                                                                                                 ' +
         '        <li class="nav-btn">' + currentLogin.FullName + '</li>' +
