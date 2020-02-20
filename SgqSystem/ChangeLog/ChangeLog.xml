@@ -2684,4 +2684,13 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-382</CardNumber>
+    <Version>1.4.0</Version>
+    <Description>[RH - 5S] PARAMETRIZAÇÃO - MELHORIA - Novo tipo de dado de entrada com dois inputs</Description>
+    <Script>
+      insert into ParLevelHeaderField values('Tarefa', 'ParLevel3Value', GetDate(), null, 1)
+    </Script>
+  </Card>
+  
 </Cards>

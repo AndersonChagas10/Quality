@@ -268,7 +268,6 @@
                 </div>*@
         </div>
 
-
         <div class="col-sm-2">
 
             <div class="form-group" data-action>
@@ -276,6 +275,13 @@
                 <button class="form-control btn btn-primary" data-add>+</button>
             </div>
 
+        </div>
+
+        <div class="col-sm-2">
+            <div id="showModalCabecalho" class="form-group" hidden="hidden">
+                <label>Vincular Campo de Cabeçalho</label>
+                <button class="form-control btn btn-info btn-sm fa fa-link"></button>
+            </div>
         </div>
     </div>
 
@@ -334,6 +340,24 @@
     </div>
 </form>
 
+<!-- Modal -->
+<div class="modal" id="modalHeaderField" tabindex="-1" hidden="hidden" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                @*<h5 class="modal-title" id="exampleModalLabel">Campo de Cabeçalho</h5>*@
+                <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <br />
+            </div>
+            <div class="modal-body">
+                @Html.Partial("ParL3Cabecalho")
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 
     //$("#btnAvancado").on('click', function () {
@@ -355,6 +379,15 @@
     //        $('#divEscalaLikert').hide();
     //    }
     //});
+
+    $("#showModalCabecalho").on('click', function () {
+        $("#modalHeaderField").show();
+        ParL3Cabecalho.getParHeaderFieldsGeral(level3Value_Id);
+    });
+
+    function closeModal() {
+        $("#modalHeaderField").hide();
+    }
 
     $("#ParL3TipoDado #btnAvancadoL3TipoEntrada").on('click', function () {
 
@@ -474,8 +507,8 @@
             $('table#table' + id + ' tbody').html('');
 
             $('#ShowLevel3Limits').prop('checked', true);
-            $('#IsAtiveNA').prop('checked', true); 
-            
+            $('#IsAtiveNA').prop('checked', true);
+
             $(list).each(function (i, o) {
 
                 var html = '<tr>';
@@ -533,10 +566,11 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
+                level3Value_Id = null;
 
                 scrollToForm();
                 var obj = $(this).parents('tr').data('sgq');
-
+                level3Value_Id = obj.Id;
                 apagaCampos(id);
                 preencheCampos(id + ' [data-form]', '', obj);
 
@@ -548,6 +582,9 @@
 
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
+
+                //mostra o botão para abrir a modal dos cabeçalhos
+                $("#showModalCabecalho").show()
 
             });
 
