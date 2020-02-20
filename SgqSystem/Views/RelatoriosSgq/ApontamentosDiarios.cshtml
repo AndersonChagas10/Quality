@@ -906,7 +906,7 @@
                 $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
                 $('.alertParReasonEditIsRequired').addClass('hide');
 
-                if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 10) {
+                if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 1) {
                     $('.alertParReasonEditIsRequired').removeClass('hide');
                     //$('select[name="selectParReasonEdit"]:visible').attr('style','border:1px solid red;');
                     $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');

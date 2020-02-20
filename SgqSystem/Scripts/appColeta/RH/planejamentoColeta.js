@@ -63,8 +63,6 @@ function renderPlanejamentoColeta(frequencia, cluster, clusterGroup) {
 
     var btnColetar = '<button type="button" class="btn btn-success pull-right btncoletar" onclick="clickColetar()">Coletar</button>';
 
-    var btnbaixarParams = '<button type="button" style="margin-right:10px;" class="btn btn-success pull-right btnGetParams" onclick="getParametrizationByButon()">Baixar Parametrização</button>';
-
     html = getHeader() +
         '<div class="container-fluid">                               ' +
         '	<div class="">                                  ' +
@@ -173,6 +171,7 @@ function savePlanejar() {
     //caso seja planejado antes de mostrar os indicadores
     if (planejamento.parCargo_Name == null || planejamento.parCargo_Name == undefined) {
         validaPlanejamentoESalva(planejamento);
+        saveInFilePlanejamento();
         return false;
     }
 
@@ -202,6 +201,8 @@ function savePlanejar() {
             validaPlanejamentoESalva(planejamento);
         }
 
+        saveInFilePlanejamento();
+
     } else {
         openMensagem("Selecione um ou mais indicadores para planejar", '#428bca', 'white');
         closeMensagem(2000);
@@ -216,7 +217,6 @@ function validaPlanejamentoESalva(planejamento) {
     if (planejamento.parDepartment_Id > 0) {
         currentPlanejamento.push($.extend({}, planejamento));
         $('[data-save-planned]').html(renderPlanejamentos());
-        saveInFilePlanejamento();
         changeStateButtonColetar();
     }
 }

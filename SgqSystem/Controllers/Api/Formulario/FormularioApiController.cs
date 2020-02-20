@@ -1998,7 +1998,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                                ,Secao.Name
                             FROM ParDepartment CentroCusto
                             INNER JOIN ParDepartment Secao ON Secao.Parent_Id = CentroCusto.Id AND Secao.Active = 1
-	                            AND Secao.Name LIKE '%GR ADMINISTRATIVO%'
+	                            AND Secao.Name LIKE '%{search}%'
 	                            AND Secao.Parent_Id IS NOT NULL
 	                            AND Secao.Hash IS NOT NULL
                             INNER JOIN ParCompany PC on CentroCusto.ParCompany_Id = PC.Id

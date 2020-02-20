@@ -38,56 +38,22 @@ function onOpenAppColeta() {
             if (typeof (param) != 'undefined' && param.length > 0) {
                 parametrization = JSON.parse(param);
                 listaParFrequency = parametrization.listaParFrequency;
+                atualizarVariaveisCurrent(parametrization);
             }
         });
     });
 }
 
-function getAppParametrization(frequencyId) {
+function atualizarVariaveisCurrent(parametrization){
+    currentParCluster_Id = parametrization.currentParCluster_Id;
+    currentParFrequency_Id = parametrization.currentParFrequency_Id;
+    currentParClusterGroup_Id = parametrization.currentParClusterGroup_Id;
+}
 
-    sincronizarResultado(frequencyId);
-
-    if (frequencyId != currentParFrequency_Id) {
-
-        currentParFrequency_Id = frequencyId;
-        openMensagem('Por favor, aguarde até que seja feito o download do planejamento selecionado', 'blue', 'white');
-
-        $.ajax({
-            data: JSON.stringify({
-                ParCompany_Id: currentParCompany_Id
-                , ParFrequency_Id: currentParFrequency_Id
-                , AppDate: currentCollectDate
-                , ParCluster_Id: currentParCluster_Id
-                , ParClusterGroup_Id: currentParClusterGroup_Id
-            }),
-            type: 'POST',
-            url: urlPreffix + '/api/AppColeta/GetAppParametrization',
-            contentType: "application/json",
-            success: function (data) {
-                data.currentParFrequency_Id = currentParFrequency_Id;
-                _writeFile("appParametrization.txt", JSON.stringify(data), function () {
-                    parametrization = data;
-                    listarParDepartment(0);
-                    closeMensagem();
-                });
-            },
-            timeout: 600000,
-            error: function () {
-                $(this).html($(this).attr('data-initial-text'));
-                closeMensagem();
-            }
-        });
-
-    } else {
-        openMensagem('Carregando parametrização', 'blue', 'white');
-        _readFile("appParametrization.txt", function (data) {
-            if (data)
-                parametrization = JSON.parse(data);
-
-            listarParDepartment(0);
-            closeMensagem();
-        });
-    }
+function aposLimparDadosDaParametrizacao(){
+    currentParCluster_Id = null;
+    currentParFrequency_Id = null;
+    currentParClusterGroup_Id = null;
 }
 
 function sincronizarResultado(frequencyId) {
@@ -198,7 +164,7 @@ function changeDate(that) {
     _writeFile("appParametrization.txt", '', function () {
         var oldFrequency_Id = currentParFrequency_Id + 0;
         currentParFrequency_Id = 0;
-        getPlanejamentoPorFrequencia(oldFrequency_Id);
+        getAppParametrization(oldFrequency_Id);
         openParFrequency();
     });
 

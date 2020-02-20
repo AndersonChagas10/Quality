@@ -993,7 +993,8 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "is_regional", Value = "É Regional" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "pdca_menu_item", Value = "Exibir no PDCA" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "company_group", Value = "Grupo de Empresa" });
-
+                ResourcesInserir.Add(new ResourcePT() { Key = "textfield", Value = "Campo texto" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "text", Value = "Texto" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "parStructure1", Value = "Holding" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "parStructure2", Value = "Grupo de Empresa"});
                 ResourcesInserir.Add(new ResourcePT() { Key = "parStructure3", Value = "Regional"});

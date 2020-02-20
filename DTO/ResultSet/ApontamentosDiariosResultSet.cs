@@ -682,7 +682,7 @@ public class ApontamentosDiariosResultSet
 					   ,STR(C2.Period) AS 'Periodo'
 					   ,UN.Name AS 'Unidade'
 					   ,R3.Id AS 'ResultLevel3Id'
-					   ,US.Name AS 'Auditor'
+					   ,US.FullName AS 'Auditor'
 					   ,ISNULL(L1.HashKey, '') AS 'HashKey'
 					   ,ISNULL(HF.HeaderFieldList, '') AS 'HeaderFieldList'
 					   ,C2.AddDate AS AddDate

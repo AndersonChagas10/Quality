@@ -150,18 +150,19 @@ function loginOnline() {
 
             if (data && data.Retorno != null) {
                 //se for usuários diferentes ou unidade diferente, zera a parametrização
-                if (currentLogin)
+                if (currentLogin){
                     if (currentLogin.Id != data.Retorno.Id || currentLogin.ParCompany_Id != data.Retorno.ParCompany_Id) {
 
                         parametrization = null;
                         currentPlanejamento = [];
 
-                        _writeFile("appParametrization.txt", '', function () { });
+                        _writeFile("appParametrization.txt", '', aposLimparDadosDaParametrizacao);
 
                         _writeFile("planejamento.txt", '', function () { });
 
 
                     }
+                }
                 _writeFile("login.txt", JSON.stringify(data.Retorno), function () {
                     globalLoginOnline = true;
                     loginSuccess(data.Retorno);
@@ -192,8 +193,7 @@ function loginSuccess(data) {
 }
 
 function cleanGlobalVarLogin() {
-
-    currentParFrequency_Id = null;
+    
     currentParCompany_Id = null;
     currentParDepartment_Id = null;
     currentParCargo_Id = null;
