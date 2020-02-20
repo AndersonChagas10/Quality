@@ -69,7 +69,8 @@ namespace SgqSystem.Controllers.V2.Api
                         db.ParLevel3XHelp
                         .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
                         .ToList();
-                   
+
+
                 }
                 catch (Exception ex)
                 {
@@ -85,6 +86,22 @@ namespace SgqSystem.Controllers.V2.Api
             }
 
             return Ok(parlevel3Result);
+        }
+
+        [HttpGet]
+        [Route("GetPargroupQualificationXParLevel3Value/{level3Value_id}")]
+        public IHttpActionResult GetPargroupQualificationXParLevel3Value(int level3Value_id)
+        {
+            
+            var lista = new List<PargroupQualificationXParLevel3Value>();
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+                lista = db.PargroupQualificationXParLevel3Value
+                    .Where(x => x.ParLevel3Value_Id == level3Value_id && x.IsActive)
+                    .ToList();
+            }
+            return Ok(lista);
         }
 
         [HttpGet]

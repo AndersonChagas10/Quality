@@ -71,7 +71,7 @@
         id: 'ParL3Qualification',
         urlSave: '@Url.Action("PostPargroupQualificationXParLevel3Value", "api/ParLevel3Api")',
 
-        load: function (ParHeaderFieldsGeral) {
+        load: function (list) {
             let id = this.id;
 
             apagaCampos(id);
@@ -100,81 +100,10 @@
                 return false;
             }
 
-            let $TblParMultipeValues;
-
             var obj = $('#' + this.id + ' [data-form]').data('sgq');
 
             if (typeof (obj) == 'undefined')
                 obj = {};
-
-            if (typeof (obj) == 'undefined')
-                obj = {};
-
-            if (typeof (obj['ParMultipleValuesGeral']) == 'undefined')
-                obj['ParMultipleValuesGeral'] = [];
-
-            switch (parFieldType_Id) {
-
-                case 1: // Multipla Escolha
-
-                    $TblParMultipeValues = $('#tblOpcaoMultiplaEscolhaDepartmentxHeader');
-
-                    obj['ParMultipleValuesGeral'].push({
-                        ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
-                        ParHeaderField: $('#ParL3Qualification #Name').val(),
-                        Id: 0,
-                        Name: $TblParMultipeValues.find('#objMultiplaEscolhaNameDepartmentxHeader').val(),
-                        Description: '',
-                        PunishmentValue: 0, //$TblParMultipeValues.find('#objMultiplaEscolhaPunishmentValueDepartmentxHeader').val(),
-                        Conformity: 0,
-                        IsDefaultOption: 0,
-                        IsActive: true
-                    });
-
-                    $TblParMultipeValues.find('#objMultiplaEscolhaNameDepartmentxHeader').val('');
-
-                    break;
-
-                case 3:	// Binario
-
-                    if ($.grep(obj['ParMultipleValuesGeral'], function (o, i) {
-                        return o.IsActive == true;
-                    }).length > 0) {
-
-                        openMessageModal("Alerta", "Já existem opções inseridas para este campo de cabeçalho")
-                        return false;
-                    }
-
-                    $TblParMultipeValues = $('#tblBinarioDepartmentxHeader');
-
-                    obj['ParMultipleValuesGeral'].push({
-                        ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
-                        ParHeaderField: $('#ParL3Qualification #Name').val(),
-                        Id: 0,
-                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName1DepartmentxHeader').val(),
-                        Description: '',
-                        PunishmentValue: 0, //$TblParMultipeValues.find('#objBinarioPunishmentValue1DepartmentxHeader').val(),
-                        Conformity: 1,
-                        IsDefaultOption: 0,
-                        IsActive: true
-                    });
-
-                    obj['ParMultipleValuesGeral'].push({
-                        ParLevelDefiniton: $('#selectL1ParLevelDefiniton :selected').text(),
-                        ParHeaderField: $('#ParL3Qualification #Name').val(),
-                        Name: $TblParMultipeValues.find('#objBinarioPunishmentName2DepartmentxHeader').val(),
-                        Id: 0,
-                        Description: '',
-                        PunishmentValue: 0, //$TblParMultipeValues.find('#objBinarioPunishmentValue2DepartmentxHeader').val(),
-                        Conformity: 0,
-                        IsDefaultOption: 0,
-                        IsActive: true
-                    });
-
-                    break;
-
-                default:
-            }
 
             $('#' + this.id + ' [data-form]').data('sgq', obj);
 
@@ -183,7 +112,7 @@
         },
 
         insertTable: function (obj) {
-            debugger
+            
             //pega os dados do form e transforma em obj
             obj = ParL3Qualification.prepareParHeaderField(obj);
 
