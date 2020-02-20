@@ -45,14 +45,13 @@ namespace SgqSystem.Controllers.V2.Api
             public string HasError { get; set; }
         }
 
+        #region Coleta Padrão RH
         [Route("SetCollect")]
         public IHttpActionResult SetCollect(List<Collection> listSimpleCollect)
         {
 
             using (var db = new SgqDbDevEntities())
             {
-                //var parLevel3List = db.ParLevel3.ToList();
-
                 //Adiciona os arquivos na Collection
                 foreach (var item in listSimpleCollect)
                 {
@@ -137,6 +136,7 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParDepartmentXRotinaIntegracao> listaParDepartmentXRotinaIntegracao;
             List<RotinaIntegracao> listaRotinaIntegracao;
             List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
+            List<ParEvaluation> listaParEvaluation;
             List<ParCluster> listaParCluster;
             List<ParClusterGroup> listaParClusterGroup;
 
@@ -207,6 +207,14 @@ namespace SgqSystem.Controllers.V2.Api
                     })
                     .ToList()
                     .Where(x => listaParVinculoPeso.Any(y => y.ParLevel3_Id == x.Id))
+                    .ToList();
+
+                listaParEvaluation = db.ParEvaluation
+                    .AsNoTracking()
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.ParFrequency_Id == appParametrization.ParFrequency_Id || x.ParFrequency_Id == null)
+                    .Where(x => x.IsActive)
+                    .OrderByDescending(x => x.ParCompany_Id)
                     .ToList();
 
                 listaParEvaluationXDepartmentXCargoAppViewModel = db.ParEvaluationXDepartmentXCargo
@@ -499,7 +507,8 @@ namespace SgqSystem.Controllers.V2.Api
                 listaRotinaIntegracao,
                 listaRotinaIntegracaoOffline,
                 listaParCluster,
-                listaParClusterGroup
+                listaParClusterGroup,
+                listaParEvaluation
             });
         }
 
@@ -598,6 +607,508 @@ WHERE 1 = 1
 
             return Ok(coletaAgrupada.ToList());
         }
+        #endregion
+
+        #region Padrão GQ
+        [Route("SetCollect123")]
+        public IHttpActionResult SetCollect123(List<Collection> listSimpleCollect)
+        {
+
+            using (var db = new SgqDbDevEntities())
+            {
+                //Adiciona os arquivos na Collection
+                foreach (var item in listSimpleCollect)
+                {
+
+                    try
+                    {
+                        item.AddDate = DateTime.Now;
+                        item.Shift_Id = 1;
+                        item.Period_Id = 1;
+                        item.IsProcessed = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        item.HasError = true;
+                        //Registrar LOG
+                    }
+                }
+
+                db.Collection.AddRange(listSimpleCollect);
+                db.SaveChanges();
+            }
+
+            var lista = listSimpleCollect.Where(x => x.HasError == true).ToList();
+            if (lista.Count == listSimpleCollect.Count)
+                return BadRequest("Ocorreu erro em todas as tentativas de registrar as coletas.");
+
+            var coletasRegistradas = listSimpleCollect.Where(x => x.HasError != true).ToList();
+
+            var coletasRegistradasPorCollectionLevel2 = coletasRegistradas
+                .Where(x => x.ParHeaderField_Id == null
+                && x.ParHeaderField_Value == null
+                && x.Evaluation != null
+                && x.Sample != null)
+                .Select(x => new CollectionLevel2()
+                {
+                    EvaluationNumber = (int)x.Evaluation,
+                    Sample = x.Sample.Value,
+                    ParLevel1_Id = x.ParLevel1_Id.Value,
+                    ParLevel2_Id = x.ParLevel2_Id.Value,
+                    Shift = x.Shift_Id.Value,
+                    Period = x.Period_Id.Value,
+                    UnitId = x.ParCompany_Id.Value,
+                    ParCargo_Id = x.ParCargo_Id,
+                    ParCluster_Id = x.ParCluster_Id,
+                    ParDepartment_Id = x.ParDepartment_Id,
+                    ParFrequency_Id = x.Parfrequency_Id,
+                    AuditorId = x.UserSgq_Id ?? 0,
+                    CollectionDate = x.CollectionDate.Value,
+                    Outros = x.Outros
+                })
+                .Distinct()
+                .ToList();
+
+            CollectionJob.ConsolidarCollectionLevel2(coletasRegistradasPorCollectionLevel2);
+
+            return Ok(coletasRegistradas);
+        }
+
+        [HttpPost]
+        [Route("GetAppParametrization123")]
+        public IHttpActionResult GetAppParametrization123(PlanejamentoColetaViewModel appParametrization)
+        {
+            List<ParVinculoPesoAppViewModel> listaParVinculoPeso;
+            List<ParLevel1AppViewModel> listaParLevel1;
+            List<ParLevel2AppViewModel> listaParLevel2;
+            List<ParLevel3AppViewModel> listaParLevel3;
+            List<ParDepartmentAppViewModel> listaParDepartment;
+            List<ParCargoAppViewModel> listaParCargo;
+            List<ParCargoXDepartmentAppViewModel> listaParCargoXDepartment;
+            List<ParEvaluationXDepartmentXCargoAppViewModel> listaParEvaluationXDepartmentXCargoAppViewModel;
+            List<ParLevel3ValueAppViewModel> listaParLevel3Value;
+            List<ParLevel3InputTypeAppViewModel> listaParLevel3InputType;
+            List<ParMeasurementUnitAppViewModel> listaParMeasurementUnit;
+            List<ParLevel3BoolTrueAppViewModel> listaParLevel3BoolTrue;
+            List<ParLevel3BoolFalseAppViewModel> listaParLevel3BoolFalse;
+            List<ParLevel3XHelp> listaParLevel3XHelp;
+            List<ParAlert> listaParAlert;
+            List<ParHeaderFieldGeral> listaParHeaderFieldGeral;
+            List<ParMultipleValuesGeral> listaParMultipleValuesGeral;
+            List<ParDepartmentXRotinaIntegracao> listaParDepartmentXRotinaIntegracao;
+            List<RotinaIntegracao> listaRotinaIntegracao;
+            List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
+            List<ParEvaluation> listaParEvaluation;
+            List<ParCluster> listaParCluster;
+            List<ParLevel1XCluster> listaParLevel1XCluster;
+            List<Dominio.Seara.ParVinculoPesoParLevel2> listaParVinculoPesoParLevel2;
+
+            List<Dominio.Seara.ParFamiliaProduto> listaParFamiliaProduto;
+            List<Dominio.Seara.ParFamiliaProdutoXParProduto> listaParFamiliaProdutoXParProduto;
+            List<Dominio.Seara.ParProduto> listaParProduto;
+
+            using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+
+                listaParVinculoPeso = db.ParVinculoPeso
+                    .AsNoTracking()
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.IsActive)
+                    .OrderByDescending(x => x.ParCompany_Id)
+                    .Select(x => new ParVinculoPesoAppViewModel()
+                    {
+                        Id = x.Id,
+                        ParLevel1_Id = x.ParLevel1_Id,
+                        ParLevel2_Id = x.ParLevel2_Id,
+                        ParLevel3_Id = x.ParLevel3_Id,
+                        ParCompany_Id = x.ParCompany_Id,
+                        ParDepartment_Id = x.ParDepartment_Id,
+                        ParGroupParLevel1_Id = x.ParGroupParLevel1_Id,
+                        ParCluster_Id = x.ParCluster_Id,
+                        Peso = x.Peso,
+                        ParCargo_Id = x.ParCargo_Id,
+                        ParFrequency_Id = x.ParFrequencyId,
+                        Evaluation = x.Evaluation,
+                        Sample = x.Sample
+
+                    }).ToList();
+
+                listaParLevel1 = db.ParLevel1
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParLevel1AppViewModel()
+                    {
+                        Id = x.Id,
+                        HasTakePhoto = x.HasTakePhoto,
+                        Name = x.Name
+                    })
+                    .ToList()
+                    .Where(x => listaParVinculoPeso.Any(y => y.ParLevel1_Id == x.Id))
+                    .ToList();
+
+                listaParLevel1XCluster = db.ParLevel1XCluster
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                listaParCluster = db.ParCluster
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList()
+                    .Where(x=>listaParLevel1XCluster.Any(y=> y.ParCluster_Id == x.Id))
+                    .ToList();
+
+                listaParLevel2 = db.ParLevel2
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParLevel2AppViewModel()
+                    {
+                        Id = x.Id,
+                        HasTakePhoto = x.HasTakePhoto,
+                        Name = x.Name
+                    })
+                    .ToList()
+                    .Where(x => listaParVinculoPeso.Any(y => y.ParLevel2_Id == x.Id))
+                    .ToList();
+
+                listaParVinculoPesoParLevel2 = db.ParVinculoPesoParLevel2
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList()
+                    .Where(x => 
+                        listaParLevel2.Any(y => y.Id == x.ParLevel2_Id)
+                        && listaParLevel1.Any(y => y.Id == x.ParLevel1_Id))
+                    .ToList();
+
+                listaParLevel3 = db.ParLevel3
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParLevel3AppViewModel()
+                    {
+                        Id = x.Id,
+                        HasTakePhoto = x.HasTakePhoto,
+                        Name = x.Name
+                    })
+                    .ToList()
+                    .Where(x => listaParVinculoPeso.Any(y => y.ParLevel3_Id == x.Id))
+                    .ToList();
+
+                listaParEvaluation = db.ParEvaluation
+                    .AsNoTracking()
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.IsActive)
+                    .OrderByDescending(x => x.ParCompany_Id)
+                    .ToList();
+
+                listaParEvaluationXDepartmentXCargoAppViewModel = db.ParEvaluationXDepartmentXCargo
+                    .AsNoTracking()
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.IsActive)
+                    .OrderByDescending(x => x.ParCompany_Id)
+                    .Select(x => new ParEvaluationXDepartmentXCargoAppViewModel()
+                    {
+                        Id = x.Id,
+                        ParCompany_Id = x.ParCompany_Id,
+                        ParDepartment_Id = x.ParDepartment_Id,
+                        ParCargo_Id = x.ParCargo_Id,
+                        Sample = x.Sample,
+                        Evaluation = x.Evaluation
+                    })
+                    .ToList();
+
+                var listaEvaluations = db.ParEvaluationSchedule
+                        .Where(y => y.IsActive);
+
+                foreach (var item in listaParEvaluationXDepartmentXCargoAppViewModel)
+                {
+                    item.ParEvaluationScheduleAppViewModel = listaEvaluations
+                        .Where(y => y.ParEvaluationXDepartmentXCargo_Id == item.Id)
+                        .Select(y => new ParEvaluationScheduleAppViewModel()
+                        {
+                            Inicio = y.Inicio,
+                            Fim = y.Fim,
+                            Av = y.Av,
+                            Intervalo = y.Intervalo
+                        }).ToList();
+                }
+
+                listaParLevel3Value = db.ParLevel3Value
+                    .AsNoTracking()
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.IsActive == true)
+                    .OrderByDescending(x => x.ParCompany_Id)
+                    .Select(x => new ParLevel3ValueAppViewModel()
+                    {
+                        Id = x.Id,
+                        DynamicValue = x.DynamicValue,
+                        IntervalMax = x.IntervalMax,
+                        IntervalMin = x.IntervalMin,
+                        AcceptableValueBetween = x.AcceptableValueBetween,
+                        ParLevel3BoolFalse_Id = x.ParLevel3BoolFalse_Id,
+                        ParLevel3BoolTrue_Id = x.ParLevel3BoolTrue_Id,
+                        ParLevel3InputType_Id = x.ParLevel3InputType_Id,
+                        ParMeasurementUnit_Id = x.ParMeasurementUnit_Id,
+                        ParCompany_Id = x.ParCompany_Id,
+                        ParLevel1_Id = x.ParLevel1_Id,
+                        ParLevel2_Id = x.ParLevel2_Id,
+                        ParLevel3_Id = x.ParLevel3_Id,
+                        ShowLevel3Limits = x.ShowLevel3Limits,
+                        IsRequired = x.IsRequired,
+                        IsDefaultAnswer = x.IsDefaultAnswer,
+                        LimiteNC = x.LimiteNC
+                    })
+                    .ToList()
+                    .Where(x => listaParLevel1.Any(y => y.Id == x.ParLevel1_Id))
+                    .Where(x => listaParLevel2.Any(y => y.Id == x.ParLevel2_Id))
+                    .Where(x => listaParLevel3.Any(y => y.Id == x.ParLevel3_Id))
+                    .ToList();
+
+                listaParLevel3InputType = db.ParLevel3InputType
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParLevel3InputTypeAppViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description
+                    })
+                    .ToList();
+
+                listaParMeasurementUnit = db.ParMeasurementUnit
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParMeasurementUnitAppViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description
+                    })
+                    .ToList();
+
+                listaParLevel3BoolTrue = db.ParLevel3BoolTrue
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParLevel3BoolTrueAppViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name
+                    })
+                    .ToList();
+
+                listaParLevel3BoolFalse = db.ParLevel3BoolFalse
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParLevel3BoolFalseAppViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name
+                    })
+                    .ToList();
+
+                listaParDepartment = db.ParDepartment
+                    .AsNoTracking()
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.Active)
+                    .Select(x => new ParDepartmentAppViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description,
+                        Parent_Id = x.Parent_Id,
+                        Hash = x.Hash
+                    })
+                    .ToList();
+
+                listaParCargo = db.ParCargo
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParCargoAppViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                    })
+                    .ToList();
+
+                listaParCargoXDepartment = db.ParCargoXDepartment
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParCargoXDepartmentAppViewModel()
+                    {
+                        Id = x.Id,
+                        ParCargo_Id = x.ParCargo_Id,
+                        ParDepartment_Id = x.ParDepartment_Id
+                    })
+                    .ToList();
+
+                listaParLevel3XHelp = db.ParLevel3XHelp
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                listaParAlert = db.ParAlert
+                    .AsNoTracking()
+                    .Where(x => x.IsActive && x.IsCollectAlert)
+                    .ToList();
+
+                listaParHeaderFieldGeral = db.ParHeaderFieldGeral
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                listaParMultipleValuesGeral = db.ParMultipleValuesGeral
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                listaParDepartmentXRotinaIntegracao = db.ParDepartmentXRotinaIntegracao
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                //Aqui precisa tirar a query para não ir pro APP
+                listaRotinaIntegracao = db.RotinaIntegracao
+                    .AsNoTracking()
+                    .Where(x => x.IsActive && x.IsOffline == false)
+                    .ToList();
+
+                //Rotina Integração Offline
+                listaRotinaIntegracaoOffline = GetRotinaIntegracaoComResultados();
+
+                listaParFamiliaProduto = db.ParFamiliaProduto
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                listaParFamiliaProdutoXParProduto = db.ParFamiliaProdutoXParProduto
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                listaParProduto = db.ParProduto
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+            }
+
+            return Ok(new
+            {
+                listaParVinculoPeso,
+                listaParLevel1,
+                listaParLevel2,
+                listaParLevel3,
+                listaParEvaluationXDepartmentXCargoAppViewModel,
+                listaParLevel3Value,
+                listaParLevel3InputType,
+                listaParMeasurementUnit,
+                listaParLevel3BoolTrue,
+                listaParLevel3BoolFalse,
+                listaParDepartment,
+                listaParCargo,
+                listaParCargoXDepartment,
+                listaParLevel3XHelp,
+                listaParAlert,
+                listaParHeaderFieldGeral,
+                listaParMultipleValuesGeral,
+                listaParDepartmentXRotinaIntegracao,
+                listaRotinaIntegracao,
+                listaRotinaIntegracaoOffline,
+                listaParEvaluation,
+                listaParFamiliaProduto,
+                listaParFamiliaProdutoXParProduto,
+                listaParProduto,
+                listaParCluster,
+                listaParLevel1XCluster,
+                listaParVinculoPesoParLevel2
+            });
+        }
+
+        [HttpPost]
+        [Route("GetResults123")]
+        public IHttpActionResult GetResults123(GetResultsData data)
+        {
+            var coletaAgrupada = new List<ColetaAgrupadaViewModel>();
+            data.ParFrequency_Id = 3;//mock diario
+
+            var sql = $@"
+-- INPUTS --
+DECLARE @ParFrequency_Id INT = { data.ParFrequency_Id };
+DECLARE @ParCompany_Id INT = {data.ParCompany_Id};
+DECLARE @DataColeta DATETIME = '{data.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss")}';
+DECLARE @DateTimeInicio DATETIME;
+DECLARE @DateTimeFinal DATETIME;
+
+SET @DateTimeInicio = 
+CASE @ParFrequency_Id
+	WHEN 1 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 00:00:00') AS DATETIME)  -- Período
+	WHEN 2 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 00:00:00') AS DATETIME)  -- Turno
+	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 00:00:00') AS DATETIME)  -- Diario
+	WHEN 4 THEN CAST(DATEADD(DAY,-DATEPART(WEEKDAY,@DataColeta)+1,@DataColeta) AS DATE)  -- Semanal
+	WHEN 5 THEN IIF(DATEPART(DAY,@DataColeta)<=15,CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-01'), CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-16'))  -- Quinzenal
+	WHEN 6 THEN CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-01')  -- Mensal
+	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 00:00:00') AS DATETIME) -- Diario com Intervalo 
+END
+
+SET @DateTimeFinal = 
+CASE @ParFrequency_Id
+	WHEN 1 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Período
+	WHEN 2 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Turno
+	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Diario
+	WHEN 4 THEN CAST(CONCAT(CAST(DATEADD(DAY,7-DATEPART(WEEKDAY,@DataColeta),@DataColeta) AS DATE),' 23:59:59') AS DATETIME) -- Semanal
+	WHEN 5 THEN IIF(DATEPART(DAY,@DataColeta)<=15,CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-15 23:59:59'), CONCAT(EOMONTH(@DataColeta),' 23:59:59'))  -- Quinzenal
+	WHEN 6 THEN EOMONTH(@DataColeta)  -- Mensal
+	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Diario com Intervalo 
+END
+
+--Id	Name
+--1		Período
+--2		Turno
+--3		Diario
+--4		Semanal
+--5		Quinzenal
+--6		Mensal
+--10	Diario com Intervalo
+
+SELECT 
+	Evaluation,
+	CAST(SUBSTRING(Sample,CHARINDEX('-',Sample)+1,LEN(Sample)+1-CHARINDEX('-',Sample))AS INT)+1 AS Sample,
+	ParLevel1_Id,
+	ParLevel2_Id,
+	UnitId,
+	Shift,
+	ParFamiliaProduto_Id
+FROM (
+
+SELECT
+        MAX(C2.EvaluationNumber) Evaluation
+        ,MAX(CONCAT(RIGHT('0'+CAST(C2.EvaluationNumber AS VARCHAR),2),'-',RIGHT('0'+CAST(C2.Sample AS VARCHAR),2)))  Sample
+        ,C2.ParLevel1_Id
+        ,C2.ParLevel2_Id
+        ,C2.UnitId
+        ,C2.Shift
+		,CL2XSFP.ParFamiliaProduto_Id
+    FROM CollectionLevel2 C2 WITH (NOLOCK)
+    LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
+	INNER JOIN ParEvaluationXDepartmentXCargo PEDC WITH(NOLOCK) ON C2.UnitId = PEDC.ParCompany_Id 
+	LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CL2XSFP ON CL2XSFP.CollectionLevel2_Id = c2.Id
+WHERE 1 = 1
+		AND C2.CollectionDate BETWEEN @DateTimeInicio AND @DateTimeFinal
+		AND C2.UnitId = @ParCompany_Id
+    GROUP BY C2.ParLevel1_Id
+            ,C2.ParLevel2_Id
+            ,C2.UnitId
+            ,C2.Shift
+            ,CL2XSFP.ParFamiliaProduto_Id
+		) A";
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                coletaAgrupada = factory.SearchQuery<ColetaAgrupadaViewModel>(sql).ToList();
+            }
+
+            return Ok(coletaAgrupada.ToList());
+        }
+        #endregion
 
         public class GetResultsData
         {
@@ -619,6 +1130,7 @@ WHERE 1 = 1
             public int ParDepartment_Id { get; set; }
             public int ParCargo_Id { get; set; }
             public int ParCluster_Id { get; set; }
+            public int? ParFamiliaProduto_Id { get; set; }
         }
 
         public class AppParametrization

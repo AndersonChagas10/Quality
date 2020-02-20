@@ -204,6 +204,25 @@
 
         </div>
 
+        <div class="col-sm-12 nopadding">
+            <div class="col-sm-4">
+
+                <div class="form-group">
+                    <label></label>
+                    <button id="btnAvancadoL3TipoEntrada" type="button" class="form-control btn btn-info">Avançado</button>
+                </div>
+
+            </div>
+
+            <div class="col-sm-4 divLimiteNC" hidden="hidden">
+                <div class="form-group">
+                    <label>Limite de NC:</label>
+                    <input type="number" class="form-control" id="limiteNC" name="LimiteNC">
+                </div>
+
+            </div>
+        </div>
+
         <div id="allObjLikert" class="col-sm-12">
 
             <div id="divEscalaLikert" style="display:none;" class="margin-top">
@@ -237,16 +256,16 @@
             </div>
 
             @*<div class="row">
-                <div class="td-erp">
-                    <div id="divBtnSalvar" class="col-sm-6">
-                        <button class="form-control btn btn-primary" data-add>Salvar</button>
-                    </div>
+                    <div class="td-erp">
+                        <div id="divBtnSalvar" class="col-sm-6">
+                            <button class="form-control btn btn-primary" data-add>Salvar</button>
+                        </div>
 
-                    <div id="divBtnCancelar" class="col-sm-6" style="display:none">
-                        <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                        <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                            <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                        </div>
                     </div>
-                </div>
-            </div>*@
+                </div>*@
         </div>
 
 
@@ -298,6 +317,9 @@
                         <th class="col-sm-1">
                             Intervalo Máximo
                         </th>
+                        <th class="col-sm-1">
+                            Limite de NC
+                        </th>
                         <th class="col-sm-1 hide">
                             Equação
                         </th>
@@ -334,7 +356,16 @@
     //    }
     //});
 
+    $("#ParL3TipoDado #btnAvancadoL3TipoEntrada").on('click', function () {
 
+        if (!$(".divLimiteNC").is(":visible")) {
+            $(".divLimiteNC").show();
+        } else {
+            $(".divLimiteNC").hide();
+            $("#limiteNC").val('');
+        }
+
+    });
 
     $("#ParL3TipoDado #selectL3TipoDadoParDepartment").on('change', function () {
 
@@ -458,9 +489,10 @@
                 var boleanoTrue = (o.ParLevel3BoolTrue_Id == null ? "0" : o.ParLevel3BoolTrue_Id);
                 var boleanoFalse = (o.ParLevel3BoolFalse_Id == null ? "0" : o.ParLevel3BoolFalse_Id);
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolTrue_Id"]', boleanoTrue, 'Todos') + '</td>';
-                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolFalse_Id"]', boleanoFalse, 'Todos') + '</td>';
+                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolFalse_Id"]', boleanoFalse, 'Todos') + '</td>';                
                 html += '<td>' + (o.IntervalMin == null ? "" : o.IntervalMin) + '</td>';
                 html += '<td>' + (o.IntervalMax == null ? "" : o.IntervalMax) + '</td>';
+                html += '<td>' + (o.LimiteNC == null ? "" : o.LimiteNC)  + '</td>';
                 html += '<td>' + (o.DynamicValue == null ? "" : o.DynamicValue) + '</td>';
 
                 html += '<td class="hidden">' + valorDoSelect('#ParL3TipoDado select[name="IsDefaultAnswer"]', o.IsDefaultAnswer, "true") + '</td>';
@@ -501,7 +533,7 @@
 
             //Adicionar os dados no data-form
             $('#' + id).on('click', '[data-table-edit]', function (e) {
-                
+
                 scrollToForm();
                 var obj = $(this).parents('tr').data('sgq');
 
@@ -548,6 +580,7 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
+
                 ParL3TipoDado.prepareToInsert();
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
@@ -759,12 +792,13 @@
         },
 
         prepareTipoDado: function (obj) {
-            
+
             var formdata = $('#' + this.id + ' [data-form]').serializeFormToObjetc();
             if (typeof (obj) == 'undefined')
                 obj = {};
             obj['IntervalMax'] = formdata.IntervalMax;
             obj['IntervalMin'] = formdata.IntervalMin;
+            obj['LimiteNC'] = formdata.LimiteNC;
             obj['IsActive'] = true;
             obj['IsRequired'] = formdata.IsRequired;
             obj['IsDefaultAnswer'] = formdata.IsDefaultAnswer;
@@ -789,7 +823,7 @@
             obj = ParL3TipoDado.prepareTipoDado(obj);
 
             $('#camposLikertIncluidos tbody').empty();
-  
+
             let IntervalMax = "";
             let IntervalMin = "";
             let IsActive = "";
@@ -798,8 +832,10 @@
             let ParLevel3InputType_Id = "";
             let ParLevel2_Id = "";
             let ParLevel3_Id = "";
+            let LimiteNC = "";
             let IsActveNA = "";
 
+            LimiteNC = obj.LimiteNC;
             IntervalMax = obj.IntervalMax;
             IntervalMin = obj.IntervalMin;
             IsActive = obj.IsActive;

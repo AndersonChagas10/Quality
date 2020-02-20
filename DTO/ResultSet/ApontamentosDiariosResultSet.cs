@@ -375,6 +375,8 @@ public class ApontamentosDiariosResultSet
         return query;
     }
 
+    
+
     public string SelectRH(DataCarrierFormularioNew form, string userUnits)
     {
         var dtInit = form.startDate.ToString("yyyyMMdd");
@@ -798,5 +800,7 @@ public class ApontamentosDiariosResultSet
 
         return query;
     }
+
+
 
 }

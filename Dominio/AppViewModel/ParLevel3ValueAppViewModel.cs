@@ -4,6 +4,8 @@
     {
         public int Id { get; set; }
 
+        public int? LimiteNC { get; set; }
+
         public int ParLevel3_Id { get; set; }
 
         public int ParLevel3InputType_Id { get; set; }

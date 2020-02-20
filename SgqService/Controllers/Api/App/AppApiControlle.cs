@@ -127,6 +127,13 @@ namespace SgqService.Controllers.Api.App
             return Business.GetImages();
         }
 
+        [HttpGet]
+        [Route("GetDicionarioEstatico")]
+        public string GetDicionarioEstatico()
+        {
+            return Business.GetDicionarioEstatico();
+        }
+
 
     }
 }

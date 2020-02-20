@@ -37,6 +37,7 @@ namespace SgqSystem.Controllers.Api
 
         private List<ApontamentosDiariosResultSet> _mock { get; set; }
         private List<ApontamentosDiariosResultSet> _list { get; set; }
+        private List<RelatorioDeResultadoSearaResultsSet> _listaGrafico { get; set; }
         private List<ApontamentosDiariosDomingoResultSet> _listApontomentosDiarioDomingo { get; set; }
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
@@ -69,6 +70,35 @@ namespace SgqSystem.Controllers.Api
                 _list = factory.SearchQuery<ApontamentosDiariosResultSet>(query).ToList();
 
                 return _list;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetRelatorioDeResultadoSeara")]
+        public List<ApontamentosDiariosResultSet> GetRelatorioDeResultadoSeara([FromBody] DataCarrierFormularioNew form)
+        {
+
+            var query = new RelatorioDeResultadoSearaResultsSet().SelectSeara(form, GetUserUnitsIds(form.ShowUserCompanies));
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<ApontamentosDiariosResultSet>(query).ToList();
+
+                return _list;
+            }
+        }
+
+        [HttpPost]
+        [Route("GraficoUnidades")]
+        public List<RelatorioDeResultadoSearaResultsSet> GraficoUnidades([FromBody] DTO.DataCarrierFormularioNew form)
+        {
+            var query = new RelatorioDeResultadoSearaResultsSet().SelectGraficoUnidade(form);
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _listaGrafico = factory.SearchQuery<RelatorioDeResultadoSearaResultsSet>(query).ToList();
+
+                return _listaGrafico;
             }
         }
 

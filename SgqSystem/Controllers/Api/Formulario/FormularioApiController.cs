@@ -21,6 +21,26 @@ namespace SgqSystem.Controllers.Api.Formulario
         }
 
         [HttpPost]
+        [Route("GetFilteredParProduto")]
+        public List<Select3ViewModel> GetFilteredParProduto(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT 
+                             SP.Id
+                            ,SP.Name
+                            FROM ParProduto SP WITH (NOLOCK)
+                            WHERE 1=1
+                            AND SP.IsActive = 1
+                            AND SP.Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
         [Route("GetFilteredParCompany")]
         public List<Select3ViewModel> GetFilteredParCompany(string search, [FromBody] DataCarrierFormularioNew form)
         {
@@ -432,8 +452,8 @@ namespace SgqSystem.Controllers.Api.Formulario
             if (form.ParLevel1_Ids.Length > 0)
                 whereParLevel1 = $" AND PL1.Id IN ({string.Join(",", form.ParLevel1_Ids)})";
 
-            if (form.ParLevel1_Ids.Length > 0)
-                whereParLevel2 = $" AND PL1.Id IN ({string.Join(",", form.ParLevel2_Ids)})";
+            if (form.ParLevel2_Ids.Length > 0)
+                whereParLevel2 = $" AND PL2.Id IN ({string.Join(",", form.ParLevel2_Ids)})";
 
 
             using (var factory = new Factory("DefaultConnection"))

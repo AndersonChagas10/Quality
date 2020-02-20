@@ -130,5 +130,8 @@ namespace Dominio
 
         [NotMapped]
         public int? ParCluster_Id { get; set; }
+
+        [NotMapped]
+        public string Outros { get; set; }
     }
 }

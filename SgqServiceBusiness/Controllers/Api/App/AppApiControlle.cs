@@ -347,5 +347,9 @@ namespace SgqServiceBusiness.Api.App
             return image;
         }
 
+        public string GetDicionarioEstatico()
+        {
+            return JsonConvert.SerializeObject(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers);
+        }
     }
 }

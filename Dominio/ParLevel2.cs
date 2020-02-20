@@ -87,5 +87,8 @@ namespace Dominio
 
         [NotMapped]
         public List<ParHeaderFieldGeral> ParHeaderFieldsGeral { get; set; }
+
+        [NotMapped]
+        public List<Seara.ParVinculoPesoParLevel2> ParVinculoPesoParLevel2s { get; set; }
     }
 }

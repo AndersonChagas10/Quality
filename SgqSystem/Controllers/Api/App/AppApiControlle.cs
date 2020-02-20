@@ -48,6 +48,13 @@ namespace SgqSystem.Controllers.Api.App
             return Business.GetImages();
         }
 
+        [HttpGet]
+        [Route("GetDicionarioEstatico")]
+        public string GetDicionarioEstatico()
+        {
+            return Business.GetDicionarioEstatico();
+        }
+
         /// <summary>
         /// Atualiza, se existir, a tela do tablet para determinada unidade.
         /// </summary>

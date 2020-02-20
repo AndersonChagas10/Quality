@@ -2568,4 +2568,104 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-381</CardNumber>
+    <Version>1.5.0</Version>
+    <Description>[Relatório Resultado][Seara] Criado novo relatório</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-381</CardNumber>
+    <Version>1.5.0</Version>
+    <Description>[Seara] Criação de estruturas obrigatórias no Banco de Dados</Description>
+    <Script>
+      IF COL_LENGTH('Collection','Outros') IS NULL
+      BEGIN
+      ALTER TABLE Collection
+      ADD Outros varchar(max) null;
+      END
+      GO
+      
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParFamiliaProduto' AND xtype='U')
+      create table ParFamiliaProduto (
+      Id int not null primary key identity,
+      Name varchar(512) not null,
+      [ParCompany_Id] [int] NULL FOREIGN KEY REFERENCES ParCompany(Id),
+      [AddDate] [datetime] NOT NULL,
+      [AlterDate] [datetime] NULL,
+      [IsActive] [bit] NOT NULL DEFAULT ((1))
+      )
+      go
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParProduto' AND xtype='U')
+      create table ParProduto (
+      Id int not null primary key identity,
+      Name varchar(512) not null,
+      [ParCompany_Id] [int] NULL FOREIGN KEY REFERENCES ParCompany(Id),
+      [AddDate] [datetime] NOT NULL,
+      [AlterDate] [datetime] NULL,
+      [IsActive] [bit] NOT NULL DEFAULT ((1))
+      )
+      go
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParFamiliaProdutoXParProduto' AND xtype='U')
+      create table ParFamiliaProdutoXParProduto (
+      Id int not null primary key identity,
+      [ParCompany_Id] [int] NULL FOREIGN KEY REFERENCES ParCompany(Id),
+      ParFamiliaProduto_Id [int] NULL FOREIGN KEY REFERENCES ParFamiliaProduto(Id),
+      ParProduto_Id [int] NULL FOREIGN KEY REFERENCES ParProduto(Id),
+      [AddDate] [datetime] NOT NULL,
+      [AlterDate] [datetime] NULL,
+      [IsActive] [bit] NOT NULL DEFAULT ((1))
+      )
+      go
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionLevel2XParFamiliaProdutoXParProduto' AND xtype='U')
+      create table CollectionLevel2XParFamiliaProdutoXParProduto (
+      Id int primary key identity not null,
+      AddDate datetime not null,
+      AlterDate datetime,
+      CollectionLevel2_Id int foreign key references CollectionLevel2(Id),
+      ParFamiliaProduto_Id [int] not NULL FOREIGN KEY REFERENCES ParFamiliaProduto(Id),
+      ParProduto_Id [int] NULL FOREIGN KEY REFERENCES ParProduto(Id),
+      )
+
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParVinculoPesoParLevel2' AND xtype='U')
+      create table ParVinculoPesoParLevel2(
+      Id int not null identity(1,1) primary key,
+      ParLevel1_Id int null FOREIGN key REFERENCES ParLevel1(Id),
+      ParLevel2_Id int not null FOREIGN key REFERENCES ParLevel2(Id),
+      Equacao varchar(900) null,
+      Peso decimal(38,10) not null,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParLevel1XParFamiliaProduto' AND xtype='U')
+      create table ParLevel1XParFamiliaProduto(
+      Id int not null identity(1,1) primary key,
+      ParLevel1_Id int not null FOREIGN key REFERENCES ParLevel1(Id),
+      ParFamiliaProduto_Id int not null FOREIGN key REFERENCES ParFamiliaProduto(Id),
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+
+      GO
+
+      IF COL_LENGTH('ParLevel3Value','LimiteNC') IS NULL
+      BEGIN
+      ALTER table ParLevel3Value add LimiteNC int null
+      END
+
+      GO
+    </Script>
+  </Card>
+
 </Cards>

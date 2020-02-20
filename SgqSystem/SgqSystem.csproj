@@ -408,8 +408,11 @@
     <Compile Include="Controllers\Params\ParDepartmentsController.cs" />
     <Compile Include="Controllers\ParCargoXDepartmentsController.cs" />
     <Compile Include="Controllers\ParConsolidationTypesController.cs" />
+    <Compile Include="Controllers\ParFamiliaProdutoController.cs" />
+    <Compile Include="Controllers\ParFamiliaProdutoXParProdutoController.cs" />
     <Compile Include="Controllers\ParLevel3InputTypeController.cs" />
     <Compile Include="Controllers\ParLevel3XModuleController.cs" />
+    <Compile Include="Controllers\ParProdutoController.cs" />
     <Compile Include="Controllers\ParReasonTypesController.cs" />
     <Compile Include="Controllers\ParScoreTypesController.cs" />
     <Compile Include="Controllers\ParStructureGroupController.cs" />
@@ -631,6 +634,93 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\AppColeta\SEARA\alert.js">
+      <Link>Scripts\appColeta\SEARA\alert.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\app.js">
+      <Link>Scripts\appColeta\SEARA\app.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\appDCA.js">
+      <Link>Scripts\appColeta\SEARA\appDCA.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\businessRoute.js">
+      <Link>Scripts\appColeta\SEARA\businessRoute.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\coleta.js">
+      <Link>Scripts\appColeta\SEARA\coleta.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\coletaDCA.js">
+      <Link>Scripts\appColeta\SEARA\coletaDCA.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\correctiveAction.js">
+      <Link>Scripts\appColeta\SEARA\correctiveAction.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\crypto.js">
+      <Link>Scripts\appColeta\SEARA\crypto.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\familiaProdutoDCA.js">
+      <Link>Scripts\appColeta\SEARA\familiaProdutoDCA.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\guard.js">
+      <Link>Scripts\appColeta\SEARA\guard.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\index.css">
+      <Link>Scripts\appColeta\SEARA\index.css</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\index2.js">
+      <Link>Scripts\appColeta\SEARA\index2.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\layout.js">
+      <Link>Scripts\appColeta\SEARA\layout.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\logado.js">
+      <Link>Scripts\appColeta\SEARA\logado.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\login.js">
+      <Link>Scripts\appColeta\SEARA\login.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\mensagem.js">
+      <Link>Scripts\appColeta\SEARA\mensagem.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\menu.js">
+      <Link>Scripts\appColeta\SEARA\menu.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parCluster.js">
+      <Link>Scripts\appColeta\SEARA\parCluster.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parHeaderField.js">
+      <Link>Scripts\appColeta\SEARA\parHeaderField.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parLevel1.js">
+      <Link>Scripts\appColeta\SEARA\parLevel1.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parLevel2.js">
+      <Link>Scripts\appColeta\SEARA\parLevel2.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parLevel2DCA.js">
+      <Link>Scripts\appColeta\SEARA\parLevel2DCA.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parLevels.js">
+      <Link>Scripts\appColeta\SEARA\parLevels.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parLevelsDCA.js">
+      <Link>Scripts\appColeta\SEARA\parLevelsDCA.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\resultado.js">
+      <Link>Scripts\appColeta\SEARA\resultado.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\rotinaHeaderField.js">
+      <Link>Scripts\appColeta\SEARA\rotinaHeaderField.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\routeConfig.js">
+      <Link>Scripts\appColeta\SEARA\routeConfig.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\utils.js">
+      <Link>Scripts\appColeta\SEARA\utils.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\zoom.js">
+      <Link>Scripts\appColeta\SEARA\zoom.js</Link>
+    </Content>
     <Content Include="admin-lte\css\AdminLTE.css" />
     <Content Include="admin-lte\css\AdminLTE.min.css" />
     <Content Include="admin-lte\css\skins\skin-black-light.css" />
@@ -2087,6 +2177,23 @@
     <Content Include="Views\RelatoriosSgq\RelatorioEdicao.cshtml" />
     <Content Include="Views\ScriptsVersion\Index.cshtml" />
     <Content Include="Views\Error\AcessoNegado.cshtml" />
+    <Content Include="Views\ParamsV2\ParL1Familia.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2VincularPeso.cshtml" />
+    <Content Include="Views\ParProduto\Create.cshtml" />
+    <Content Include="Views\ParProduto\Delete.cshtml" />
+    <Content Include="Views\ParProduto\Details.cshtml" />
+    <Content Include="Views\ParProduto\Edit.cshtml" />
+    <Content Include="Views\ParProduto\Index.cshtml" />
+    <Content Include="Views\ParFamiliaProduto\Create.cshtml" />
+    <Content Include="Views\ParFamiliaProduto\Delete.cshtml" />
+    <Content Include="Views\ParFamiliaProduto\Details.cshtml" />
+    <Content Include="Views\ParFamiliaProduto\Edit.cshtml" />
+    <Content Include="Views\ParFamiliaProduto\Index.cshtml" />
+    <Content Include="Views\ParFamiliaProdutoXParProduto\Create.cshtml" />
+    <Content Include="Views\ParFamiliaProdutoXParProduto\Delete.cshtml" />
+    <Content Include="Views\ParFamiliaProdutoXParProduto\Details.cshtml" />
+    <Content Include="Views\ParFamiliaProdutoXParProduto\Edit.cshtml" />
+    <Content Include="Views\ParFamiliaProdutoXParProduto\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2178,7 +2285,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>false</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

@@ -230,7 +230,10 @@ namespace DTO.Services
                     using (var db = new SgqDbDevEntities())
                     {
                         var atualizarUsuario = db.UserSgq.FirstOrDefault(r => r.Id == userSgq.Id);
-                        atualizarUsuario.ParCompany_Id = defaultCompany==null ? atualizarUsuario.ParCompany_Id : defaultCompany.ParCompany_Id;
+                        if (defaultCompany != null)
+                        {
+                            atualizarUsuario.ParCompany_Id = defaultCompany.ParCompany_Id;
+                        }
                         db.UserSgq.Attach(atualizarUsuario);
                         db.Entry(atualizarUsuario).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();

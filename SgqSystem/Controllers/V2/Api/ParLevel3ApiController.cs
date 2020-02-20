@@ -309,7 +309,7 @@ namespace SgqSystem.Controllers.V2.Api
                 }
                 catch (Exception ex)
                 {
-
+                    LogSystem.LogErrorBusiness.Register(ex, parVinculoPeso);
                     return false;
                 }
 
@@ -362,6 +362,8 @@ namespace SgqSystem.Controllers.V2.Api
                         parVinculoPesoOld.IsAtiveNA = parLevel3Value.IsAtiveNA;
                         parVinculoPesoOld.DefaultMessageText = parLevel3Value.DefaultMessageText;
                         parVinculoPesoOld.StringSizeAllowed = parLevel3Value.StringSizeAllowed;
+                        parVinculoPesoOld.LimiteNC = parLevel3Value.LimiteNC;
+
 
                         foreach (var item in parLevel3Value.ParInputTypeValues)
                         {

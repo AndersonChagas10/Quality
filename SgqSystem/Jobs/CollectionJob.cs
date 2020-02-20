@@ -1,5 +1,6 @@
 ﻿using ADOFactory;
 using Dominio;
+using Helper;
 using Quartz;
 using System;
 using System.Collections.Generic;
@@ -87,6 +88,15 @@ namespace SgqSystem.Jobs
 
                             if (collectionLevel2MontadoDaCollection.ParDepartment_Id != null)
                                 db.CollectionLevel2XParDepartment.Add(new CollectionLevel2XParDepartment() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParDepartment_Id = collectionLevel2MontadoDaCollection.ParDepartment_Id.Value });
+
+                            if (collectionLevel2MontadoDaCollection.Outros?.GetIntFromJsonText("ParFamiliaProduto_Id") != null)
+                                db.CollectionLevel2XParFamiliaProdutoXParProduto.Add(
+                                    new Dominio.Seara.CollectionLevel2XParFamiliaProdutoXParProduto() {
+                                        AddDate = DateTime.Now,
+                                        CollectionLevel2_Id = collectionLevel2Save.Id,
+                                        ParFamiliaProduto_Id = collectionLevel2MontadoDaCollection.Outros.GetIntFromJsonText("ParFamiliaProduto_Id").Value,
+                                        ParProduto_Id = collectionLevel2MontadoDaCollection.Outros.GetIntFromJsonText("ParProduto_Id")
+                                    });
 
                             db.SaveChanges();
                         }
@@ -235,7 +245,7 @@ namespace SgqSystem.Jobs
                         Period_Id = {collection.Period} AND ParCompany_Id = {collection.UnitId} 
                         AND (ParCluster_Id = {collection.ParCluster_Id ?? 0} OR ParCluster_Id IS NULL)
                         AND (ParCargo_Id = {collection.ParCargo_Id ?? 0} OR ParCargo_Id IS NULL)
-                        AND ParFrequency_Id = {collection.ParFrequency_Id} 
+                        AND ParFrequency_Id {((collection.ParFrequency_Id > 0) ? (" = "+ collection.ParFrequency_Id) : " IS NULL")} 
                         AND (ParDepartment_Id = {collection.ParDepartment_Id ?? 0}  OR ParDepartment_Id IS NULL)
                         AND CAST(CONVERT(VARCHAR(19), IIF(DATEPART(MILLISECOND, CollectionDate) > 500, DATEADD(SECOND, 1, CollectionDate), CollectionDate), 120) AS DATE) = '{collection.CollectionDate.ToString("yyyy-MM-dd")}'";
 
@@ -279,7 +289,8 @@ namespace SgqSystem.Jobs
             collection.Key = collection.CollectionDate.ToString("yyyy-MM-dd") + "-" + collection.UnitId + "-" +
                 collection.ParLevel1_Id + "-" + collection.ParLevel2_Id + "-" + collection.Shift + "-" +
                 collection.ParCluster_Id + "-" + collection.ParCargo_Id + "-" + collection.ParDepartment_Id + "-" +
-                collection.EvaluationNumber + "-" + collection.Sample + "-" + collection.ParFrequency_Id;
+                collection.EvaluationNumber + "-" + collection.Sample + "-" + collection.ParFrequency_Id + "-" + 
+                collection.Outros?.GetFromJsonText("ParFamiliaProduto_Id");
 
             return collection;
         }
@@ -330,6 +341,20 @@ namespace SgqSystem.Jobs
 
                 var collectionDate = collectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss");
 
+                var queryParCargo = "";
+                var queryParDepartment = "";
+
+                if (collectionLevel2.ParCargo_Id == null || collectionLevel2.ParCargo_Id == 0)
+                    queryParCargo = "Is NULL";
+                else
+                    queryParCargo = " = " + collectionLevel2.ParCargo_Id;
+         
+
+                if (collectionLevel2.ParDepartment_Id == null || collectionLevel2.ParDepartment_Id == 0)
+                    queryParDepartment = "Is NULL";
+                else
+                    queryParDepartment = " = " + collectionLevel2.ParDepartment_Id;
+
                 var sql = $@"SELECT
                             	CL.ParHeaderField_Id as ParHeaderFieldGeral_Id
                                ,CL.ParHeaderField_Value as Value
@@ -345,13 +370,14 @@ namespace SgqSystem.Jobs
                             AND CL.UserSgq_Id = {collectionLevel2.AuditorId}
                             AND cl.Shift_Id = {collectionLevel2.Shift}
                             AND cl.Period_Id = {collectionLevel2.Period}
-                            AND CL.ParCargo_Id = {collectionLevel2.ParCargo_Id}
+                            AND CL.ParCargo_Id {queryParCargo}
                             AND cl.ParCompany_Id = {collectionLevel2.UnitId}
-                            AND ((cl.ParDepartment_Id = {collectionLevel2.ParDepartment_Id} AND cl.ParLevel1_Id IS NULL AND cl.ParLevel2_Id IS NULL) OR
-                                (cl.ParDepartment_Id = {collectionLevel2.ParDepartment_Id} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id IS NULL) OR
-                                (cl.ParDepartment_Id = {collectionLevel2.ParDepartment_Id} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id = {collectionLevel2.ParLevel2_Id}))
+                            AND ((cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id IS NULL AND cl.ParLevel2_Id IS NULL) OR
+                                (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id IS NULL) OR
+                                (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id = {collectionLevel2.ParLevel2_Id}))
                             AND cl.Evaluation = {collectionLevel2.EvaluationNumber}
-                            AND cl.Sample = {collectionLevel2.Sample}
+                            AND (cl.Sample = {collectionLevel2.Sample} 
+                                OR cl.Outros like '%ParFamiliaProduto_Id%') 
                             AND Cl.CollectionDate BETWEEN DATEADD(minute, -5, '{collectionDate}') and DATEADD(minute, 5, '{collectionDate}')";
 
                 headerFields = factory.SearchQuery<CollectionLevel2XParHeaderFieldGeral>(sql).ToList();
@@ -419,7 +445,7 @@ namespace SgqSystem.Jobs
                     ConsolidationLevel1_Id = consolidationLevel1_Id,
                     ParLevel2_Id = GetParLevel2(),
                     AddDate = DateTime.Now,
-                    UnitId = 1
+                    UnitId = db.ParCompany.FirstOrDefault()?.Id ?? 1
                 };
 
                 try

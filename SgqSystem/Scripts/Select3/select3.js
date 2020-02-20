@@ -27,7 +27,6 @@ $('body').on('click', '[data-filtroselect3-btn]', function () {
     var name = $(select).attr('name');
     var url = $(btn).attr('data-filtroselect3-url');
     var defaultSelect = $(btn).attr('data-filtroselect3-default-select');
-    Select3.defaultSelect = "";
     Select3.defaultSelect = defaultSelect;
     Select3.render(select, name, url);
 });
