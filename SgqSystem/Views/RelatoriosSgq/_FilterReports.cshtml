@@ -649,6 +649,28 @@
 
                             }
 
+                            @if (ViewBag.showParFrequency == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Frequência</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=ParFrequency_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetParFrequency", "api/Formulario")"
+                                                data-filtroselect3-default-select="@ViewBag.showParFrequency">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="ParFrequency_Ids" multiple>
+                                            @if (ViewBag.showParFrequency != null)
+                                            {
+                                                <option value="">@ViewBag.showParFrequency</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                            }
+
 
                         </div>
                         <div class="col-sm-12">
@@ -791,6 +813,7 @@
             $('select[name="ParReason_Ids"]').select2();
             $('select[name="tipoEdicao"]').select2();
             $('select[name="userSgqAuditor_Ids"]').select2();
+            $('select[name="ParFrequency_Ids"').select2();
         }
 
         inicializaSelect2();

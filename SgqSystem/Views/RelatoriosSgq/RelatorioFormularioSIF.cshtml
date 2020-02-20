@@ -1,0 +1,230 @@
+﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
+@{
+    Layout = "_FilterReports.cshtml";
+    ViewBag.Title = "Relatorio Formulario SIF";
+
+    ViewBag.ShowCurrentDate = false;
+    ViewBag.ShowRangeDate = true;
+    ViewBag.ShowParModule = true;
+    ViewBag.ShowParCompany = true;
+    ViewBag.ShowShift = true;
+    ViewBag.ShowParLevel1GQ = true;
+    ViewBag.ShowParLevel2GQ = true;
+    ViewBag.ShowParLevel3GQ = true;
+    ViewBag.ShowUserSgqMonitor = true;
+    ViewBag.showParFrequency = true;
+
+    ViewBag.ShowUserCompanies = true; //Exibe somente as unidades do usuário no filtro
+
+    var urlGet = Url.Action("GetRelatorioFormularioSIF", "api/RelatorioFormularioSIF");
+}
+
+@section Content {
+
+    <div id="divRelatorioFormularioSIF"></div>
+    <div id="divTable">
+        <table id="resultsRelatorioFormularioSIF" class="table table-striped"></table>
+    </div>
+
+}
+
+
+@section Scripts {
+
+    <script>
+
+        var urlGet = '@Html.Raw(@urlGet)';
+
+        function enviarFiltro() {
+            openLoader('Aguarde...');
+            $('#resultsRelatorioFormularioSIF').empty();
+            $('#divRelatorioFormularioSIF').empty();
+
+            $('#divTable').hide();
+
+            $.ajax({
+                url: urlGet,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            })
+                .done(function (data) {
+                GerarTabela(data);
+                closeLoader();
+            })
+            .fail(function (jqXHR, textStatus, msg) {
+                console.log(msg);
+                preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                closeLoader();
+            });
+        }
+
+        function preencheRetornoGrafico(msg) {
+            $('#divRelatorioFormularioSIF').html("<div class='alert alert-info'>" + msg + "</div>");
+        }
+
+        function GerarTabela(retornoArray) {
+
+            if (retornoArray.length == 0) {
+
+                preencheRetornoGrafico(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
+            }
+
+            else {
+
+                //Fim Regra
+                var Tipo1 = {};
+                var Tipo2 = {};
+
+                if (retornoArray[0].HashKey == 1 || retornoArray[0].HashKey == 5) {
+
+                    Tipo1 = { title: "@Resources.Resource.sequential", mData: "Sequencial" };
+                    Tipo2 = { title: "@Resources.Resource.side_banda", mData: "Banda" };
+                } else {
+                    Tipo1 = { title: "@Resources.Resource.evaluation", mData: "Avaliacao" };
+                    Tipo2 = { title: "@Resources.Resource.sample", mData: "Amostra" };
+                }
+
+                $('#divTable').show();
+
+                var colunas =
+                    [
+                        @*{ title: "@Resources.Resource.unit", mData: "Unidade" },
+                        { title: "Cluster", mData: "ClusterName" },
+                        //{ title: "@Resources.Resource.cluster", mData: "Processo" },
+                        //{ title: "@Resources.Resource.shift", mData: "Turno" },
+                        //{ title: "@Resources.Resource.period", mData: "Periodo" },
+                        { title: "@Resources.Resource.frequency", mData: "Frequencia" },
+                        { title: "@Resources.Resource.user", mData: "Auditor" },
+                        { title: "@Resources.Resource.date", mData: "_Data" },
+                        { title: "@Resources.Resource.time", mData: "_Hora" },
+                        { title: "@Resources.Resource.costcenter", mData: "CentroCusto" },
+                        { title: "@Resources.Resource.department", mData: "Secao" },
+                        { title: "@Resources.Resource.company_group", mData: "GrupoEmpresa" },
+                        { title: "@Resources.Resource.structure", mData: "regional" },
+                        { title: "@Resources.Resource.cluster_group1", mData: "GrupoCluster" },
+                        { title: "Cargo", mData: "Cargo" },
+                        { title: "@Resources.Resource.audit", mData: "Indicador" },
+                        { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
+                        { title: "@Resources.Resource.task", mData: "Tarefa" },
+                        { title: "@Resources.Resource.weight", mData: "Peso" },
+                        {
+                            title: "@Resources.Resource.min_interval", mData: "IntervaloMinimo", mRender: function (data, type, full) {
+
+                                if (isNaN(parseFloat(data))) {
+
+                                    return data;
+
+                                } else {
+
+                                    return data.toString().match(/^-?\d+(\.\d{1,2})?/g)[0];
+                                }
+
+                            }
+                        },
+                        {
+                            title: "@Resources.Resource.max_interval ", mData: "IntervaloMaximo", mRender: function (data, type, full) {
+
+                                if (isNaN(parseFloat(data))) {
+
+                                    return data;
+
+                                } else {
+
+                                    return data.toString().match(/^-?\d+(\.\d{1,2})?/g)[0];
+                                }
+
+                            }
+                        },
+                        { title: "@Resources.Resource.value", mData: "Lancado" },
+                        { title: "@Resources.Resource.textfield", mData: "ValueText" },
+                        { title: "@Resources.Resource.deviation ?", mData: "_Conforme" },
+                        { title: "@Resources.Resource.weighted_defects", mData: "NC_Peso" },
+                        { title: "@Resources.Resource.na ?", mData: "_NA" },
+                        { title: "@Resources.Resource.weighted_ev", mData: "AV_Peso" },
+                        Tipo1,
+                        Tipo2,
+                        { title: "@Resources.Resource.header_fields", mData: "HeaderFieldList", "width": "50%" },
+                        //{ title: "@Resources.Resource.platform", mData: "Platform", "width": "50%" },
+                        { title: "@Resources.Resource.add_date", mData: "_AddDate", "width": "50%" },
+                        {
+                            title: "@Resources.Resource.type ", mData: "Type", mRender: function (data, type, full) {
+
+                                if (data == "2") {
+                                    return '@Resources.Resource.retroactive';
+                                } else if (data == "3") {
+                                    return '@Resources.Resource.anticipated';
+                                } else if (data == "4") {
+                                    return '@Resources.Resource.import';
+                                } else if (data == '1') {
+                                    return '@Resources.Resource.edited';
+                                } else {
+                                    return '@Resources.Resource.normal';
+                                }
+                            }
+                        }*@
+                    ];
+
+                var initDatatable = function () {
+
+                    $('#loading').hide();
+                    setTimeout(function (e) {
+                        var oTable = $('#resultsRelatorioFormularioSIF').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 100);
+
+                }
+
+                var table = datatableGRT.Inicializar({
+                    idTabela: "resultsRelatorioFormularioSIF",
+                    listaDeDados: retornoArray,
+                    colunaDosDados: colunas,
+                    numeroLinhasNaTabela: 25,
+                    aplicarResponsividade: true,
+                    tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                    loadingRecords: true,
+                    destroy: true,
+                    info: true,
+                    initComplete: initDatatable,
+                    createdRow: function (row, data, index) {
+                    }
+                });
+            }
+
+        }
+
+        function makeArrayData(arr) {
+            var arrayData = [];
+            $(arr).each(function () {
+                arrayData.push(this);
+            });
+            return arrayData;
+        }
+
+        function ValidaDadosParaEnvio() {
+
+            GuardJs.esconderMensagem();
+
+            //Unidade
+            if (!objFiltro.parCompany_Ids || objFiltro.parCompany_Ids.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Unidade é obrigatório")
+                return false;
+            }
+
+            //Indicador
+            if (!objFiltro.parLevel1_Ids || objFiltro.parLevel1_Ids.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Indicador é obrigatório");
+                return false;
+            }
+
+            return true;
+        }
+
+    </script>
+
+}

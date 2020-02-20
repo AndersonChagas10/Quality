@@ -202,6 +202,7 @@
     <Compile Include="ResultSet\ApontamentosDiariosResultSet.cs" />
     <Compile Include="ResultSet\RelatorioDeResultadoSearaResultsSet.cs" />
     <Compile Include="ResultSet\RelatorioEdicaoResultSet.cs" />
+    <Compile Include="ResultSet\RelatorioFormularioSIFResultSet.cs" />
     <Compile Include="ResultSet\ScorecardResultSet.cs" />
     <Compile Include="ResultSet\TabelaDinamicaResultados.cs" />
     <Compile Include="ResultSet\VisaoGeralDaAreaResultSet.cs" />
