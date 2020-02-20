@@ -267,6 +267,7 @@ namespace SgqSystem.Controllers.V2.Api
                         ShowLevel3Limits = x.ShowLevel3Limits,
                         IsRequired = x.IsRequired,
                         IsDefaultAnswer = x.IsDefaultAnswer,
+                        IsAtiveNA = x.IsAtiveNA,
                         DefaultMessageText = x.DefaultMessageText,
                         StringSizeAllowed = x.StringSizeAllowed
                     })

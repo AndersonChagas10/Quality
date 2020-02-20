@@ -24,6 +24,8 @@
 
         public bool IsActive { get; set; }
 
+        public bool IsAtiveNA { get; set; }
+
         public bool? IsRequired { get; set; }
 
         public string DefaultMessageText { get; set; }
