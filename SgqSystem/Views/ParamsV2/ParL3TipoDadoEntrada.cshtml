@@ -320,7 +320,7 @@
                         <th class="col-sm-1">
                             Limite de NC
                         </th>
-                        <th class="col-sm-1 hide">
+                        <th class="col-sm-1">
                             Equação
                         </th>
                         <th class="col-sm-1">
@@ -766,6 +766,10 @@
 
             if (typeof (obj['StringSizeAllowed']) == 'undefined')
                 obj['StringSizeAllowed'] = '';
+
+            if (typeof (obj['DynamicValue']) == 'undefined')
+                obj['DynamicValue'] = '';
+            
 
             if (obj.ParInputTypeValues.length > 0)
                 if (obj.ParInputTypeValues[0]['ParLevel3Value_Id'] != 'undefined' || obj.ParInputTypeValues[0]['ParLevel3Value_Id'] != null)
