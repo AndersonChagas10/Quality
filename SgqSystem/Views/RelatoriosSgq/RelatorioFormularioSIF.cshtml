@@ -8,9 +8,9 @@
     ViewBag.ShowParModule = true;
     ViewBag.ShowParCompany = true;
     ViewBag.ShowShift = true;
-    ViewBag.ShowParLevel1 = true;
-    ViewBag.ShowParLevel2 = true;
-    ViewBag.ShowParLevel3 = true;
+    ViewBag.ShowParLevel1GQ = true;
+    ViewBag.ShowParLevel2GQ = true;
+    ViewBag.ShowParLevel3GQ = true;
     ViewBag.ShowUserSgqMonitor = true;
     ViewBag.showParFrequency = true;
 
@@ -29,17 +29,16 @@
     <div>
         <table class="col-lg-12" border="1">
             <tr>
-                <td style="text-align:center"><strong>Nome do Relatorio</strong></td>
+                <td style="text-align:center"><strong><span id="nomeFormulario"></span></strong></td>
             </tr>
             <tr>
-                <td><strong>Elaborador:</strong></td>
+                <td><strong>Elaborador:</strong> <span id="elaborador"></span></td>
             </tr>
             <tr>
-                <td><strong>Aprovador:</strong></td>
+                <td><strong>Aprovador:</strong> <span id="aprovador"></span></td>
             </tr>
         </table>
-        <p><strong>Data:</strong></p>
-        <p><strong>Referencia ao Documento:</strong></p>
+        <span><strong>Referencia ao Documento:</strong> <span id="referenciaDocumento"></span></span>
     </div>
 }
 
@@ -49,24 +48,15 @@
     <script>
         var urlGetCabecalho = '@Html.Raw(Url.Action("Get", "api/RelatorioFormularioSIF"))';
         var urlGet = '@Html.Raw(@urlGet)';
+        var itenMenu = 0;
         let elaborador = "";
         let aprovador = "";
         let nomeRelatorio = "";
 
-        function Send(toggle) {
+        let ItemMenu = @Html.Raw(Json.Encode(ViewBag.itemMenu));
 
-            $('#divMensagemAlerta').hide();
-
-            if (formIsValid()) {
-
-                $btn.button('loading');
-
-                $('.portlet').hide();
-
-                //$('#level1Id').trigger("change");
-
-                EasyAjax(urlGet, enviar, GerarCabecalho, "loader", toggle);
-            }
+        if (ItemMenu) {
+            itenMenu = ItemMenu.Id;
         }
 
         function GerarCabecalho(r) {
@@ -74,6 +64,10 @@
             elaborador = r.Elaborador;
             aprovador = r.Aprovador;
             nomeRelatorio = r.NomeRelatorio;
+
+            $("#elaborador").html(elaborador);
+            $("#aprovador").html(aprovador);
+            $("#nomeFormulario").html(nomeRelatorio);
         }
 
         function enviarFiltro() {
@@ -82,9 +76,9 @@
             $('#divRelatorioFormularioSIF').empty();
 
             $('#divTable').hide();
-
+          
             $.ajax({
-                url: urlGet,
+                url: urlGetCabecalho + '?itenMenu=' + itenMenu + '',
                 type: 'post',
                 data: JSON.stringify(objFiltro),
                 dataType: "JSON",
@@ -92,8 +86,9 @@
                 beforeSend: function () {
                 }
             })
-                .done(function (data) {
+            .done(function (data) {
                 GerarTabela(data);
+                GerarCabecalho(data);
                 closeLoader();
             })
             .fail(function (jqXHR, textStatus, msg) {
@@ -120,14 +115,14 @@
                 var Tipo1 = {};
                 var Tipo2 = {};
 
-                if (retornoArray[0].HashKey == 1 || retornoArray[0].HashKey == 5) {
+                @*if (retornoArray[0].HashKey == 1 || retornoArray[0].HashKey == 5) {
 
                     Tipo1 = { title: "@Resources.Resource.sequential", mData: "Sequencial" };
                     Tipo2 = { title: "@Resources.Resource.side_banda", mData: "Banda" };
                 } else {
                     Tipo1 = { title: "@Resources.Resource.evaluation", mData: "Avaliacao" };
                     Tipo2 = { title: "@Resources.Resource.sample", mData: "Amostra" };
-                }
+                }*@
 
                 $('#divTable').show();
 
