@@ -450,6 +450,10 @@
     //});
 
     function openQualificationModal(level3Value_id) {
+        debugger
+        
+        $("#modalQualification").show();
+        $("#ParLevel3Value_Id").val(level3Value_id);
         $.ajax({
             url: '@Url.Action("GetPargroupQualificationXParLevel3Value", "api/ParLevel3Api")/' + level3Value_id +'',
 		    type: 'Get',
@@ -458,8 +462,7 @@
 		    contentType: "application/json",
             success: function (data) {
                 debugger
-                $("#modalQualification").show();
-                $("#ParLevel3Value_Id").val(level3Value_id);
+               
                 ParL3Qualification.load(data);
 		    }
 	    });

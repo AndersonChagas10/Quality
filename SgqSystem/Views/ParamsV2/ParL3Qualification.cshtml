@@ -73,15 +73,27 @@
 
         load: function (list) {
             let id = this.id;
-
+            debugger
             apagaCampos(id);
-            ParL3Qualification.reloadTable();
+            //ParL3Qualification.reloadTable();
 
             $('table#table' + id + ' tbody').html('');
-            $('#selectL1ParFieldTypeDepartment').prop("disabled", false);
-            $('#tableParL3Qualification [data-table-edit]').prop('disabled', false);
-            $('#tableParL3Qualification [data-table-delete]').prop('disabled', false);
-            $('#tableParL3Qualification select,#tableParL3Qualification input,#tableParL3Qualification button').prop('disabled', false);
+
+            $(list).each(function (i, o) {
+                var html = '<tr>';
+                html += '<td>' + valorDoSelect('#ParL3Qualification select[name="PargroupQualification_Id"]', o.PargroupQualification_Id, 'Todos') + '</td>';
+                html += '<td>' + o.Value + '</td>';
+                html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
+                html += '</tr>';
+
+                $('table#table' + id + ' tbody').append(html);
+                $('table#table' + id + ' tbody tr:last').data('sgq', o);
+            });
+
+            //$('#selectL1ParFieldTypeDepartment').prop("disabled", false);
+            //$('#tableParL3Qualification [data-table-edit]').prop('disabled', false);
+            //$('#tableParL3Qualification [data-table-delete]').prop('disabled', false);
+            //$('#tableParL3Qualification select,#tableParL3Qualification input,#tableParL3Qualification button').prop('disabled', false);
             $('#' + id + ' #divBtnCancelar').hide();
         },
 
@@ -200,6 +212,7 @@
 
     //Adicionar os dados no data-form
     $('#' + ParL3Qualification.id).on('click', '[data-table-edit]', function (e) {
+        debugger
         scrollToForm();
         var obj = $(this).parents('tr').data('sgq');
 
@@ -207,14 +220,10 @@
         ParL3Qualification.reloadTable();
         preencheCampos(ParL3Qualification.id + ' [data-form]', '', obj);
 
-        $('#' + ParL3Qualification.id + ' [data-form] select[name="ParLevelDefinition_Id"]').val(obj.ParLevelDefinition_Id);
-        $('#' + ParL3Qualification.id + ' [data-form] select[name="ParLevelDefinition_Id"]').trigger('change')
+        $('#' + ParL3Qualification.id + ' [data-form] select[name="PargroupQualification_Id"]').val(obj.PargroupQualification_Id);
+        $('#' + ParL3Qualification.id + ' [data-form] select[name="PargroupQualification_Id"]').trigger('change')
 
-        $('#' + ParL3Qualification.id + ' [data-form] select[name="ParFieldType_Id"]').val(obj.ParFieldType_Id);
-        $('#' + ParL3Qualification.id + ' [data-form] select[name="ParFieldType_Id"]').trigger('change')
-
-        $('#' + ParL3Qualification.id + ' [data-form] input[name="Name"]').val(obj.Name);
-        $('#' + ParL3Qualification.id + ' [data-form] input[name="Description"]').val(obj.Description);
+        $('#' + ParL3Qualification.id + ' [data-form] input[name="Value"]').val(obj.Value);
 
         $('#' + ParL3Qualification.id + ' [data-form]').data('sgq', obj);
         $('#' + ParL3Qualification.id + ' [data-form]').addClass('alert alert-success');

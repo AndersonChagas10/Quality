@@ -94,12 +94,21 @@ namespace SgqSystem.Controllers.V2.Api
         {
             
             var lista = new List<PargroupQualificationXParLevel3Value>();
+
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
+
                 lista = db.PargroupQualificationXParLevel3Value
                     .Where(x => x.ParLevel3Value_Id == level3Value_id && x.IsActive)
                     .ToList();
+
+                foreach (var item in lista)
+                {
+                    item.ParLevel3Value = db.ParLevel3Value.Where(x => x.Id == item.ParLevel3Value_Id).FirstOrDefault();
+
+                    item.PargroupQualification = db.PargroupQualification.Where(x => x.Id == item.PargroupQualification_Id).FirstOrDefault();
+                }
             }
             return Ok(lista);
         }

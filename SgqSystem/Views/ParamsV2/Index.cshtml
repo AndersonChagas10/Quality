@@ -780,7 +780,7 @@
     }
 
     let apagaCampos = function (div_id) {
-        $(`#${div_id} input:not([data-id],[data-notnull])`).val('');
+        //$(`#${div_id} input:not([data-id],[data-notnull])`).val('');
         $(`#${div_id} select`).val(0);
         $(`#${div_id} select`).trigger('change');
         $(`#${div_id} textarea`).html('');
