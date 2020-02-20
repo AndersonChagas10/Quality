@@ -450,18 +450,8 @@
     //});
 
     function openQualificationModal(level3Value_id) {
-        debugger
-        $.ajax({
-            url: '@Url.Action("GetParQualification", "api/ParLevel3Api")',
-            type: 'Get',
-            dataType: "json",
-            data: {},
-            contentType: "application/json",
-            success: function (data) {
-                $("#modalQualification").show();
-                preencheSelect('select3Qualification', 'Name', 'Id', data, 'Selecione');
-            }
-        });
+        $("#modalQualification").show();
+        $("#ParLevel3Value_Id").val(level3Value_id);
     }
 
     var ParL3TipoDado = {

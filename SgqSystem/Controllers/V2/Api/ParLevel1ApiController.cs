@@ -71,6 +71,8 @@ namespace SgqSystem.Controllers.V2.Api
                 //parLevel1Selects.ParCargoXDepartments = db.ParCargoXDepartment.Where(x => x.IsActive).ToList();
                 parLevel1Selects.RotinaIntegracao = db.RotinaIntegracao.Where(x => x.IsActive).ToList();
 
+                //grupo qualificação
+                parLevel1Selects.PargroupQualification = db.PargroupQualification.Where(x => x.IsActive).ToList(); 
             }
 
             return Ok(parLevel1Selects);
@@ -422,6 +424,8 @@ namespace SgqSystem.Controllers.V2.Api
 
             public List<ParCargoXDepartment> ParCargoXDepartments { get; set; }
             public List<RotinaIntegracao> RotinaIntegracao { get; set; }
+
+            public List<PargroupQualification> PargroupQualification { get; set; }
         }
 
         public class SaveParHeaderField

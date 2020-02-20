@@ -69,6 +69,7 @@ namespace SgqSystem.Controllers.V2.Api
                         db.ParLevel3XHelp
                         .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
                         .ToList();
+                   
                 }
                 catch (Exception ex)
                 {
@@ -317,16 +318,20 @@ namespace SgqSystem.Controllers.V2.Api
             }
         }
 
-        [HttpGet]
-        [Route("GetParQualification")]
-        public IHttpActionResult GetQualification()
+        [HttpPost]
+        [Route("PostPargroupQualificationXParLevel3Value")]
+        public IHttpActionResult PostPargroupQualificationXParLevel3Value(PargroupQualificationXParLevel3Value form)
         {
-            var listaParGroupQualification = new List<PargroupQualification>();
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 try
                 {
-                    listaParGroupQualification = db.PargroupQualification.Where(x => x.IsActive).ToList();
+                    if (!SaveOrUpdatePargroupQualificationXParLevel3Value(form))
+                    {
+                        return StatusCode(HttpStatusCode.BadRequest);
+                    }
+
+                    return StatusCode(HttpStatusCode.NoContent);
                 }
                 catch (Exception ex)
                 {
@@ -334,7 +339,42 @@ namespace SgqSystem.Controllers.V2.Api
                     return StatusCode(HttpStatusCode.BadRequest);
                 }
             }
-            return Ok(listaParGroupQualification);
+        }
+
+        private bool SaveOrUpdatePargroupQualificationXParLevel3Value(PargroupQualificationXParLevel3Value form)
+        {
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (form.Id > 0)
+                    {
+                        db.Configuration.LazyLoadingEnabled = false;
+                        var pargroupQualificationXParLevel3ValueOld = db.PargroupQualificationXParLevel3Value.Find(form.Id);
+                        pargroupQualificationXParLevel3ValueOld.PargroupQualification_Id = form.PargroupQualification_Id;
+                        pargroupQualificationXParLevel3ValueOld.ParLevel3Value_Id = form.ParLevel3Value_Id;
+                        pargroupQualificationXParLevel3ValueOld.Value = form.Value;
+                        pargroupQualificationXParLevel3ValueOld.IsActive = form.IsActive;
+
+                    }
+                    else
+                    {
+                        var pargroupQualificationXParLevel3ValueSalvo = db.PargroupQualificationXParLevel3Value.Add(form);
+                        db.SaveChanges();
+                    }
+
+                    db.SaveChanges();
+
+                }
+                catch (Exception ex)
+                {
+
+                    return false;
+                }
+
+                return true;
+            }
         }
 
         [HttpPost]

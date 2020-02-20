@@ -2614,7 +2614,7 @@
       create table PargroupQualificationXParLevel3Value(
       Id int not null identity(1,1) primary key,
       PargroupQualification_Id int not null FOREIGN key REFERENCES PargroupQualification(Id),
-      ParL3vel3Value_Id int not null FOREIGN key REFERENCES ParLevel3Value(Id),
+      ParLevel3Value_Id int not null FOREIGN key REFERENCES ParLevel3Value(Id),
       [Value] varchar(100) null,
       AddDate datetime not null,
       AlterDate datetime null,

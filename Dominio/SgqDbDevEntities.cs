@@ -298,6 +298,7 @@ namespace Dominio
         public virtual DbSet<ParQualification> ParQualification { get; set; }
         public virtual DbSet<PargroupQualification> PargroupQualification { get; set; }
         public virtual DbSet<PargroupQualificationXParQualification> PargroupQualificationXParQualification { get; set; }
+        public virtual DbSet<PargroupQualificationXParLevel3Value> PargroupQualificationXParLevel3Value { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

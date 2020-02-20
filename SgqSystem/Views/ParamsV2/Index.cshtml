@@ -7,6 +7,14 @@
         cursor: pointer;
     }
 
+    .select2-container--open {
+        z-index: 9999999;
+    }
+
+    /*#modalExclusao {
+        z-index: 9999999;
+    }*/
+
     .tab-pane {
         display: none;
     }
@@ -1089,6 +1097,8 @@
                 preencheSelect('selectL3TipoDadoParMeasurementUnit', 'Name', 'Id', data.ParMeasurementUnits, 'Selecione a unidade de medida');
 
                 preencheSelect('selectDCAvamParCompany', 'Name', 'Id', data.ParCompanys, 'Todas as empresas');
+
+                preencheSelect('select3Qualification', 'Name', 'Id', data.PargroupQualification, 'Selecione');
 
                 $("#selectParCompanyGeral").on('change', function () {
 

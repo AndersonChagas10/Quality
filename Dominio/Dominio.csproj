@@ -117,6 +117,7 @@
     <Compile Include="ParColaboradorXCargo.cs" />
     <Compile Include="ParAlert.cs" />
     <Compile Include="PargroupQualification.cs" />
+    <Compile Include="PargroupQualificationXParLevel3Value.cs" />
     <Compile Include="PargroupQualificationXParQualification.cs" />
     <Compile Include="ParHeaderFieldGeral.cs" />
     <Compile Include="ParHeaderFieldXComponenteGenerico.cs" />
