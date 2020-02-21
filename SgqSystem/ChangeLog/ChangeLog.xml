@@ -2704,7 +2704,7 @@
 
   <Card>
     <CardNumber>SGQ-407</CardNumber>
-    <Version>1.4.0</Version>
+    <Version>1.6.0</Version>
     <Description>[RH - 5S] PARAMETRIZAÇÃO - Criar tipo de dado de entrada binário com múltipla escolha</Description>
     <Script>
       IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParQualification' AND xtype='U')
