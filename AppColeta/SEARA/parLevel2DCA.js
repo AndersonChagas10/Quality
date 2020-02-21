@@ -253,6 +253,7 @@ $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', fun
         return o.ParLevel1_Id == _parLevel1_Id && o.ParLevel2_Id == _parLevel2_Id;
     });
 
+     var totalTarefasComAlgumaNC = 0;
     var totalTarefasAcimaLimiteNC = 0;
     var totalDeAmostras = 0;
     var totalDeAmostrasColetadas = 0;
@@ -299,6 +300,10 @@ $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', fun
             totalTarefasAcimaLimiteNC++;
         }
 
+        if ((amostrasColetadas - amostrasColetadasConforme) > 0) {
+            totalTarefasComAlgumaNC++;
+        }
+
         if(coletasSincronizadas == false && quantidadeDeColetasPorTarefa.length > 0)
             coletasSincronizadas = quantidadeDeColetasPorTarefa[0].Synced == true;
 
@@ -308,14 +313,20 @@ $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', fun
     var parVinculoPesoParLevel2 = getParVinculoPesoParLevel2PorIndicador(_parLevel1_Id,_parLevel2_Id);
 
     /*
-    Quantidade de Não Conformidade total = QtdeNC
-    Quantidade de tarefas que atingiram limite de NC = QtdeTLNC
-    Quantidade de tarefa = QtdeT
+     * QtdeNC      = Quantidade total de Não Conformidades (Por amostra)
+     * QtdeC       = Quantidade total de Conformidade (Por amostra)
+     * QtdeTLNC    = Quantidade de tarefas que passaram do limite de Não Conformidade
+     * QtdeT       = Quantidade de tarefas
+     * QtdeTNC     = Quantidade de tarefas com alguma Não Conformidade
+     * QtdeTC      = Quantidade de tarefas com conformidade
     */
     var variaveisEquacao = [
-        {id:/QtdeNC/g, valor:(parseInt(totalDeAmostrasColetadas)-parseInt(totalDeAmostrasColetadasConforme))},
-        {id:/QtdeTLNC/g, valor:parseInt(totalTarefasAcimaLimiteNC)},
-        {id:/QtdeT/g, valor:parseInt(listaDeTarefas.length)}
+        { id: /QtdeNC/g, valor:(parseInt(totalDeAmostrasColetadas)-parseInt(totalDeAmostrasColetadasConforme)) },
+        { id: /QtdeC/g, valor: (parseInt(totalDeAmostrasColetadasConforme)) },
+        { id: /QtdeTLNC/g, valor: parseInt(totalTarefasAcimaLimiteNC) },
+        { id: /QtdeT/g, valor: parseInt(listaDeTarefas.length) },
+        { id: /QtdeTNC/g, valor: parseInt(totalTarefasComAlgumaNC) },
+        { id: /QtdeTC/g, valor: parseInt(listaDeTarefas.length) - parseInt(totalTarefasComAlgumaNC) }
     ];
     var equacao = parVinculoPesoParLevel2.Equacao;
     variaveisEquacao.forEach(function (variavel) {
