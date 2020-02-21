@@ -185,7 +185,7 @@
             });
 
             let formIsDuplicate = function () {
-                
+                debugger
                 var obj = $('#' + id + '  [data-form]').data('sgq');
                 var formdata = $('#' + id + ' [data-form]').serializeFormToObjetc();
 
@@ -204,7 +204,7 @@
 
                 let isDuplicate = ParVinculoPesoxParLevel2.filter((item) => {
 
-                    return (item.ParLevel1_Id == obj.ParLevel1_Id && item.ParLevel2_Id == obj.ParLevel2_Id);
+                    return (item.Id != obj.Id && item.ParLevel1_Id == obj.ParLevel1_Id && item.ParLevel2_Id == obj.ParLevel2_Id);
 
                 }).length > 0;
 
