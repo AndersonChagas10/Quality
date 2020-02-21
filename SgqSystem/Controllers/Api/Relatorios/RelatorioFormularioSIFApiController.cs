@@ -43,6 +43,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
                 retorno.NomeRelatorio = getNomeRelatorio(form, itenMenu, db);
 
+                retorno.Data = getDataCabecalho(form, itenMenu, db);
+
                 retorno.ReferenciaDocumento = getReferenciaDocumento(form, itenMenu, db);
             }
             
@@ -88,10 +90,23 @@ namespace SgqSystem.Controllers.Api.Relatorios
             return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
         }
 
+        private string getDataCabecalho(DataCarrierFormularioNew form, int itenMenu, SgqDbDevEntities dbSgq)
+        {
+            var SQL = $@"SELECT top 1
+    	                 Cast(AddDate as varchar) as dataCabecalho
+                         FROM ReportXUserSgq RXU
+                         WHERE (RXU.Parcompany_Id in ({string.Join(",", form.ParCompany_Ids)}) OR RXU.Parcompany_Id IS NULL)
+                         AND RXU.ParLevel1_Id in ({string.Join(",", form.ParLevel1_Ids)})
+                         AND RXU.ItemMenu_Id = {itenMenu}
+                         Order by RXU.Parcompany_Id desc";
+
+            return dbSgq.Database.SqlQuery<string>(SQL).FirstOrDefault();
+        }
+
         private string getReferenciaDocumento(DataCarrierFormularioNew form, int itenMenu, SgqDbDevEntities dbSgq)
         {
             var SQL = $@"SELECT top 1
-    	                 ParLevel1_Id as ReferenciaDocumento
+    	                 p1.Name as ReferenciaDocumento
                          FROM ReportXUserSgq RXU
                          inner join ParLevel1 p1 on RXU.ParLevel1_Id = p1.Id
                          WHERE (RXU.Parcompany_Id in ({string.Join(",", form.ParCompany_Ids)}) OR RXU.Parcompany_Id IS NULL)
@@ -108,6 +123,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
             public string Elaborador { get; set; }
             public string NomeRelatorio { get; set; }
             public string ReferenciaDocumento { get; set; }
+            public string Data { get; set; }
         }
 
         [HttpPost]

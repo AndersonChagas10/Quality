@@ -26,19 +26,27 @@
         <table id="resultsRelatorioFormularioSIF" class="table table-striped"></table>
     </div>
 
-    <div>
-        <table class="col-lg-12" border="1">
-            <tr>
-                <td style="text-align:center"><strong><span id="nomeFormulario"></span></strong></td>
-            </tr>
-            <tr>
-                <td><strong>Elaborador:</strong> <span id="elaborador"></span></td>
-            </tr>
-            <tr>
-                <td><strong>Aprovador:</strong> <span id="aprovador"></span></td>
-            </tr>
+    <div id="divCabecalho" style="display:none">
+        <table border="1" style="width:100%;font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif; font-size:12px;">
+            <tbody>
+                <tr>
+                    <td rowspan="4" width="120px" align="center"><img id="printImagemCabecalhoLeft" src="../Imagens/logo-jbs.png" width="80px"></td>
+                    <td></td>
+                    <td rowspan="4" width="120px" align="center"><img id="printImagemCabecalhoRight" src="../Imagens/logo-gq.png" width="80px"></td>
+                </tr>
+                <tr>
+                    <td style="text-align:center"><strong><span id="nomeFormulario"></span></strong></td>
+                </tr>
+                <tr>
+                    <td><b>Elaborador:</b> <span id="elaborador"></span></td>
+                </tr>
+                <tr>
+                    <td><b>Aprovador:</b> <span id="aprovador"></span></td>
+                </tr>
+            </tbody>
         </table>
-        <span><strong>Referencia ao Documento:</strong> <span id="referenciaDocumento"></span></span>
+        <span><strong style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;font-size:12px;">Data:</strong> <span style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;font-size:12px;" id="dataCabecalho"></span></span><br />
+        <span><strong style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;font-size:12px;">Referência ao Documento:</strong> <span style="font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;font-size:12px;" id="referenciaDocumento"></span></span>
     </div>
 }
 
@@ -52,6 +60,8 @@
         let elaborador = "";
         let aprovador = "";
         let nomeRelatorio = "";
+        let dataCabecalho = "";
+        let referenciaDoc = "";
 
         let ItemMenu = @Html.Raw(Json.Encode(ViewBag.itemMenu));
 
@@ -64,10 +74,16 @@
             elaborador = r.Elaborador;
             aprovador = r.Aprovador;
             nomeRelatorio = r.NomeRelatorio;
+            dataCabecalho = r.Data;
+            var dataCabecalhoFormatado = dataCabecalho.replace(/(\d*)-(\d*)-(\d*).*/, '$3/$2/$1');
+            referenciaDoc = r.ReferenciaDocumento;
 
             $("#elaborador").html(elaborador);
             $("#aprovador").html(aprovador);
             $("#nomeFormulario").html(nomeRelatorio);
+            $("#dataCabecalho").html(dataCabecalhoFormatado);
+            $("#referenciaDocumento").html(referenciaDoc);
+            $("#divCabecalho").show();
         }
 
         function enviarFiltro() {
@@ -87,13 +103,12 @@
                 }
             })
             .done(function (data) {
-                GerarTabela(data);
                 GerarCabecalho(data);
                 closeLoader();
             })
             .fail(function (jqXHR, textStatus, msg) {
                 console.log(msg);
-                preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                preencheRetornoGrafico("Ocorreu um erro ao gerar o cabeçalho. Erro: " + msg);
                 closeLoader();
             });
         }
