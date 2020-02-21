@@ -50,6 +50,7 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
         }
 
         var porcentagemTotalConsiderandoPeso = (calculoPorMonitoramento.ParVinculoPesoParLevel2.Peso/quantidadeDeLevel2ComPeso)*100;
+        var porcentagemAtualConsiderandoPeso = (calculoPorMonitoramento.Porcentagem / 100) * porcentagemTotalConsiderandoPeso;
         porcentagemTotal += ZeroSeForNaN(calculoPorMonitoramento.Porcentagem);
 
         htmlLista += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
@@ -57,7 +58,7 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
             'data-current-evaluation="' + avaliacaoAtual + '"                       ' +
             'data-total-porcentagem="' + porcentagemTotalConsiderandoPeso + '">                       ' +
             '	<div class="col-xs-4">' + o.Name + '</div>                                      ' +
-            '	<div class="col-xs-4 text-center">Conforme: '+ZeroSeForNaN(calculoPorMonitoramento.Porcentagem)+'% / '+porcentagemTotalConsiderandoPeso+'%</div>      ' +
+            '	<div class="col-xs-4 text-center">Conforme: ' + ZeroSeForNaN(porcentagemAtualConsiderandoPeso)+'% / '+porcentagemTotalConsiderandoPeso+'%</div>      ' +
             '	<div class="col-xs-4 text-center">Respondido: '+ZeroSeForNaN(parseInt(calculoPorMonitoramento.AmostraTotalColetada/calculoPorMonitoramento.AmostraTotal*100))+'%</div>              ' +
             '</button>';
     });
