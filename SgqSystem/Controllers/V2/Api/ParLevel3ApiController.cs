@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.V2.Api
@@ -92,7 +93,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("GetPargroupQualificationXParLevel3Value/{level3Value_id}")]
         public IHttpActionResult GetPargroupQualificationXParLevel3Value(int level3Value_id)
         {
-            
+
             var lista = new List<PargroupQualificationXParLevel3Value>();
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
@@ -354,7 +355,7 @@ namespace SgqSystem.Controllers.V2.Api
                 {
                     if (!SaveOrUpdatePargroupQualificationXParLevel3Value(form))
                     {
-                        return StatusCode(HttpStatusCode.BadRequest);
+                        return Ok(new { mensagem = "Já existe um vinculo com os dados inseridos." });
                     }
 
                     return StatusCode(HttpStatusCode.NoContent);
@@ -374,23 +375,30 @@ namespace SgqSystem.Controllers.V2.Api
             {
                 try
                 {
-                    if (form.Id > 0)
+                    if (validaDuplicidade(form))
                     {
-                        db.Configuration.LazyLoadingEnabled = false;
-                        var pargroupQualificationXParLevel3ValueOld = db.PargroupQualificationXParLevel3Value.Find(form.Id);
-                        pargroupQualificationXParLevel3ValueOld.PargroupQualification_Id = form.PargroupQualification_Id;
-                        pargroupQualificationXParLevel3ValueOld.ParLevel3Value_Id = form.ParLevel3Value_Id;
-                        pargroupQualificationXParLevel3ValueOld.Value = form.Value;
-                        pargroupQualificationXParLevel3ValueOld.IsActive = form.IsActive;
+                        if (form.Id > 0)
+                        {
+                            db.Configuration.LazyLoadingEnabled = false;
+                            var pargroupQualificationXParLevel3ValueOld = db.PargroupQualificationXParLevel3Value.Find(form.Id);
+                            pargroupQualificationXParLevel3ValueOld.PargroupQualification_Id = form.PargroupQualification_Id;
+                            pargroupQualificationXParLevel3ValueOld.ParLevel3Value_Id = form.ParLevel3Value_Id;
+                            pargroupQualificationXParLevel3ValueOld.Value = form.Value;
+                            pargroupQualificationXParLevel3ValueOld.IsActive = form.IsActive;
 
+                        }
+                        else
+                        {
+                            var pargroupQualificationXParLevel3ValueSalvo = db.PargroupQualificationXParLevel3Value.Add(form);
+                            db.SaveChanges();
+                        }
+
+                        db.SaveChanges();
                     }
                     else
                     {
-                        var pargroupQualificationXParLevel3ValueSalvo = db.PargroupQualificationXParLevel3Value.Add(form);
-                        db.SaveChanges();
+                        return false;
                     }
-
-                    db.SaveChanges();
 
                 }
                 catch (Exception ex)
@@ -400,6 +408,24 @@ namespace SgqSystem.Controllers.V2.Api
                 }
 
                 return true;
+            }
+        }
+
+        private bool validaDuplicidade(PargroupQualificationXParLevel3Value form)
+        {
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                var objSalvo = db.PargroupQualificationXParLevel3Value
+                    .Where(x => x.PargroupQualification_Id == form.PargroupQualification_Id
+                    && x.ParLevel3Value_Id == form.ParLevel3Value_Id
+                    && x.Value == form.Value
+                    && x.IsActive
+                    && x.Id != form.Id).FirstOrDefault();
+
+                if (objSalvo == null)
+                    return true;
+                else
+                    return false;
             }
         }
 

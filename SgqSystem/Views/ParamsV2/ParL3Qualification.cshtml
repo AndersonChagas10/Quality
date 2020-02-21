@@ -7,8 +7,7 @@
 
         <div class="col-sm-12">
 
-            <input type="hidden" name="ParLevel3Value_Id" id="ParLevel3Value_Id" />
-            @*<input type="hidden" name="Id" />*@
+            <input type="hidden" name="ParLevel3Value_Id" id="ParLevel3Value_Id" data-notnull />
             <input type="hidden" name="IsActive" value="true" data-notnull />
 
         </div>
@@ -21,15 +20,21 @@
         </div>
 
         <div class="col-sm-5">
+
             <div class="form-group">
-                <label for="Value">Valor:</label>
-                <input type="text" class="form-control" id="Value" name="Value">
+                <label>Valor Padrão</label>
+                <select id="selectL3QualificationValue" class="input input-sm col-sm-12" name="Value">
+                    <option value="1">Valor Positivo</option>
+                    <option value="0">Valor Negativo</option>
+                </select>
             </div>
+
         </div>
 
-        <div class="row">
-            <div class="td-erp">
-                <div id="divBtnSalvar" class="col-sm-6">
+        <div class="col-sm-12">
+
+            <div class="form-group" data-action>
+                <div id="divBtnSalvar" class="col-sm-5">
                     <button class="form-control btn btn-primary" data-add>Salvar</button>
                 </div>
 
@@ -37,9 +42,10 @@
                     <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
                 </div>
             </div>
+
         </div>
     </div>
-    
+
 
     <div class="row">
         <div class="col-sm-12">
@@ -65,6 +71,11 @@
 
 <script>
 
+    function closeModal() {
+
+        $("#modalQualification").hide();
+    }
+
     var ParL3Qualification = {
 
         //paramtros
@@ -73,16 +84,15 @@
 
         load: function (list) {
             let id = this.id;
-            debugger
+            
             apagaCampos(id);
-            //ParL3Qualification.reloadTable();
 
             $('table#table' + id + ' tbody').html('');
 
             $(list).each(function (i, o) {
                 var html = '<tr>';
                 html += '<td>' + valorDoSelect('#ParL3Qualification select[name="PargroupQualification_Id"]', o.PargroupQualification_Id, 'Todos') + '</td>';
-                html += '<td>' + o.Value + '</td>';
+                html += '<td>' + valorDoSelect('#ParL3Qualification select[name="Value"]', o.Value, 'Todos') + '</td>';
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
 
@@ -90,10 +100,6 @@
                 $('table#table' + id + ' tbody tr:last').data('sgq', o);
             });
 
-            //$('#selectL1ParFieldTypeDepartment').prop("disabled", false);
-            //$('#tableParL3Qualification [data-table-edit]').prop('disabled', false);
-            //$('#tableParL3Qualification [data-table-delete]').prop('disabled', false);
-            //$('#tableParL3Qualification select,#tableParL3Qualification input,#tableParL3Qualification button').prop('disabled', false);
             $('#' + id + ' #divBtnCancelar').hide();
         },
 
@@ -102,7 +108,7 @@
 
             if (typeof (obj) == 'undefined')
                 obj = {};
-            
+
             return obj;
         },
 
@@ -124,7 +130,7 @@
         },
 
         insertTable: function (obj) {
-            
+
             //pega os dados do form e transforma em obj
             obj = ParL3Qualification.prepareParHeaderField(obj);
 
@@ -138,16 +144,6 @@
                 $('#selectL1ParFieldTypeDepartment').prop("disabled", false);
 
             this.showTableParMultipleValues();
-        },
-
-        showTableParMultipleValues: function () {
-
-            if ($('#camposCabecalhoIncluidosDepartmentxHeader tbody tr').length) {
-                $('#divCamposCabecalhoIncluidosDepartmentxHeader').show();
-            } else {
-                $('#divCamposCabecalhoIncluidosDepartmentxHeader').hide();
-            }
-
         },
 
         reloadTable: function () {
@@ -187,20 +183,25 @@
                 dataType: "json",
                 data: JSON.stringify(form),
                 contentType: "application/json",
-                success: function (data) {
-                    closeLoader();
-                    openMessageModal("Feito", "Dados Salvos");
-                    $('#selectL3').trigger('change');
+                success: function (mensagem) {
+                    if (mensagem != undefined && mensagem != null) {
+                        openMessageModal("Alerta", "Já existe um vinculo salvo com os dados inseridos.");
+                        closeLoader();
+                    } else {
+                        closeLoader();
+                        openMessageModal("Feito", "Dados Salvos");
+                        openQualificationModal($("#ParLevel3Value_Id").val());
+                    }
 
                 },
                 error: function (request, error) {
+                    
                     openMessageModal("Ocorreu um erro", JSON.stringify(request));
                     console.log(error)
                 }
 
             }).done(function () {
                 closeLoader();
-                $('#tableParL3Qualification select,#tableParL3Qualification input,#tableParL3Qualification button').prop('disabled', true);
                 $('#' + ParL3Qualification.id + ' #divBtnCancelar').hide();
             });
 
@@ -212,7 +213,7 @@
 
     //Adicionar os dados no data-form
     $('#' + ParL3Qualification.id).on('click', '[data-table-edit]', function (e) {
-        debugger
+
         scrollToForm();
         var obj = $(this).parents('tr').data('sgq');
 
@@ -221,19 +222,16 @@
         preencheCampos(ParL3Qualification.id + ' [data-form]', '', obj);
 
         $('#' + ParL3Qualification.id + ' [data-form] select[name="PargroupQualification_Id"]').val(obj.PargroupQualification_Id);
-        $('#' + ParL3Qualification.id + ' [data-form] select[name="PargroupQualification_Id"]').trigger('change')
+        $('#' + ParL3Qualification.id + ' [data-form] select[name="PargroupQualification_Id"]').trigger('change');
 
-        $('#' + ParL3Qualification.id + ' [data-form] input[name="Value"]').val(obj.Value);
+        $('#' + ParL3Qualification.id + ' [data-form] select[name="selectL3QualificationValue"]').val(obj.Value);
+        $('#' + ParL3Qualification.id + ' [data-form] select[name="selectL3QualificationValue"]').trigger('change');
 
         $('#' + ParL3Qualification.id + ' [data-form]').data('sgq', obj);
         $('#' + ParL3Qualification.id + ' [data-form]').addClass('alert alert-success');
-        $('#' + ParL3Qualification.id + ' [data-form] [data-action] [data-add]').addClass('hide');
         $('#' + ParL3Qualification.id + ' #divBtnCancelar').show();
 
         ParL3Qualification.insertTable(obj);
-
-        $('#' + ParL3Qualification.id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Editar</button>');
-        $('#' + ParL3Qualification.id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>x</button>');
 
         $('#tableParL3Qualification select,#tableParL3Qualification input,#tableParL3Qualification button').prop('disabled', true);
 
@@ -266,7 +264,6 @@
 
     //Salvar o campo editado ou cria um novo
     $('#' + ParL3Qualification.id).on('click', '[data-edit],[data-add]', function (e) {
-        debugger
         var obj = $('#' + ParL3Qualification.id + ' [data-form]').data('sgq');
         var formdata = $('#' + ParL3Qualification.id + ' [data-form]').serializeFormToObjetc();
 
@@ -277,8 +274,6 @@
             obj = null;
             obj = atualizaValoresDoObjeto(obj, formdata);
         }
-
-        obj = ParL3Qualification.prepareParHeaderField(obj);
 
         if (optionIsValid(obj, ParL3Qualification.id)) {
             openLoader(Resources("please_wait"));
@@ -303,127 +298,11 @@
         ParL3Qualification.Save(obj);
     });
 
-    $('#' + ParL3Qualification.id).on('click', '.defaultSelected', function () {
-
-        var obj = $(this).parents('tr').data('sgq');
-
-        let parMultipleValues_Id = parseInt($(this).parents('tr').find('select :selected').val());
-
-        parMultipleValues_Id = parMultipleValues_Id ? parMultipleValues_Id : null;
-
-        obj.ParMultipleValuesGeral.forEach((o, i, a) => {
-            a[i].IsDefaultOption = 0;
-
-            if (o.Id == parMultipleValues_Id) {
-                a[i].IsDefaultOption = 1;
-            }
-        });
-
-        ParL3Qualification.Save(obj);
-    });
-
     $('#' + ParL3Qualification.id).on('click', ' [data-add-cancel] ', function () {
-        $('#selectDCDepartment').trigger('change');
+        openQualificationModal($("#ParLevel3Value_Id").val())
         $(this).parent().hide();
     });
 
-    let getPreviewDepartmentHeaderField = function (headerField) {
-
-        let input = "";
-
-        switch (headerField.ParFieldType_Id) {
-
-            case 1: // Multipla Escolha
-            case 3:	// Binario
-
-                let options = '<option>Selecione...</option>';
-
-                headerField.ParMultipleValuesGeral.forEach((o) => {
-                    options += `<option value="${o.Id}" ${(o.IsDefaultOption ? "selected" : "")}>${o.Name}</option>`;
-                });
-
-                input = '<select class="form-control">' + options + '</select>';
-
-                break;
-
-            case 2:	// Integrações
-                input = "";
-                break;
-
-            case 4:	// Texto
-            case 9:	// Parâmetro
-                input = '<input type="text" class="form-control">';
-                break;
-
-            case 5:	// Numerico
-                input = '<input type="number" class="form-control">';
-                break;
-
-            case 6:	// Data
-                input = '<input type="date" class="form-control">';
-                break;
-
-            case 7:	// Hora
-                input = '<input type="time" class="form-control" />';
-                break;
-
-            case 8:	// Informações
-                input = `<input type="text" value='${headerField.Description}' class="form-control" disabled />`;
-                break;
-
-            case 10: //Dinâmico
-                input = '<input type="text" class="form-control" disabled />';
-                break;
-
-            default:
-        }
-
-        return input;
-    }
-
-    let getDefaultSelectedHeaderField = function () {
-
-        return `<button type="button" onclick="" class="btn btn-default btn-sm defaultSelected"><i class="fa fa-check" aria-hidden="true"></i></button>`;
-
-    }
-
-    $('#selectL1ParFieldTypeDepartment').on("change", function () {
-
-        hideAllOptionsDepartment();
-
-        //limpar arr ParMultipleValues?
-
-        let parFieldType_Id = parseInt($(this).val());
-
-        switch (parFieldType_Id) {
-
-            case 1: // Multipla Escolha
-                $('#objMultiplaEscolhaDepartmentxHeader').show();
-                break;
-
-            case 3:	// Binario
-                $('#objBinarioDepartmentxHeader').show();
-                break;
-
-            case 8:	// Informações
-                $('#objWithDescriptionDepartmentxHeader').show();
-                //Inserir direto
-                break;
-
-            case 9:	// Parâmetro
-                $('#objWithDescriptionDepartmentxHeader').show();
-                //Inserir direto
-                break;
-
-            case 10: //Dinâmico
-                $('#objWithDescriptionDepartmentxHeader').show();
-                //Inserir direto
-                break;
-
-            default:
-        }
-
-    });
 
     let hideAllOptionsDepartment = function () {
 

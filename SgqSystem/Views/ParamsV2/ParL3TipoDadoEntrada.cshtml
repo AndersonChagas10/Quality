@@ -249,15 +249,7 @@
                 </div>*@
         </div>
 
-        @*<div class="col-sm-4">
-
-                <div class="form-group">
-                    <button id="btnAddQualification" class="form-control btn btn-primary">Adicionar Qualificação</button>
-                </div>
-
-            </div>*@
-
-        <div class="col-sm-2">
+        <div class="col-sm-3">
 
             <div class="form-group" data-action>
                 <label></label>
@@ -324,9 +316,10 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" onclick="closeModal()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <br />
             </div>
             <div class="modal-body">
                 @Html.Partial("ParL3Qualification")
@@ -450,9 +443,9 @@
     //});
 
     function openQualificationModal(level3Value_id) {
-        debugger
         
         $("#modalQualification").show();
+
         $("#ParLevel3Value_Id").val(level3Value_id);
         $.ajax({
             url: '@Url.Action("GetPargroupQualificationXParLevel3Value", "api/ParLevel3Api")/' + level3Value_id +'',
@@ -461,8 +454,6 @@
 		    data: {},
 		    contentType: "application/json",
             success: function (data) {
-                debugger
-               
                 ParL3Qualification.load(data);
 		    }
 	    });
@@ -556,11 +547,10 @@
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
 
                 ParL3TipoDado.insertTable(obj);
-                debugger
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
                 if (obj.ParLevel3InputType_Id == 1 || obj.ParLevel3InputType_Id == 6)
-                    $('#' + id + ' [data-form] [data-action]').append('<button id="btnAddQualification" onclick="openQualificationModal(' + obj.Id + ')"  class="form-control btn btn-primary col-md-4">Adicionar Qualificação</button>');
+                    $('#' + id + ' [data-form] [data-action]').append('<button onclick="openQualificationModal(' + obj.Id + ')" data-qualification class="form-control btn btn-primary col-md-4">Adicionar Qualificação</button>');
 
             });
 
@@ -584,11 +574,12 @@
             });
 
             $('#' + id).on('click', '[data-cancel]', function (e) {
+              
                 apagaCampos(id);
                 $("#tabelaLikert tbody").empty();
                 $('#divEscalaLikert').hide();
                 $('#divCamposLikertIncluidos').hide();
-                $("#camposLikertIncluidos tbody").empty();
+                $("#camposLikertIncluidos  ").empty();
             });
 
             //Salvar o campo editado ou cria um novo
@@ -625,7 +616,7 @@
             });
 
             $('#' + id + ' #selectL3TipoDadoParLevel3InputType').on('change', function () {
-
+                
                 setInputsInputTypeHidden();
 
                 let parLevel3InputType_Id = parseInt($(this).val());

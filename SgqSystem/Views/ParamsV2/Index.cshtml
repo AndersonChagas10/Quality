@@ -11,9 +11,9 @@
         z-index: 9999999;
     }
 
-    /*#modalExclusao {
+    #modalExclusao {
         z-index: 9999999;
-    }*/
+    }
 
     .tab-pane {
         display: none;
@@ -780,7 +780,8 @@
     }
 
     let apagaCampos = function (div_id) {
-        //$(`#${div_id} input:not([data-id],[data-notnull])`).val('');
+        debugger
+        $(`#${div_id} input:not([data-id],[data-notnull])`).val('');
         $(`#${div_id} select`).val(0);
         $(`#${div_id} select`).trigger('change');
         $(`#${div_id} textarea`).html('');
@@ -789,6 +790,7 @@
         $(`#${div_id} [data-form]`).removeClass('alert alert-success');
         $(`#${div_id} [data-form]`).find('[data-cancel]').remove();
         $(`#${div_id} [data-form]`).find('[data-edit]').remove();
+        $(`#${div_id} [data-form]`).find('[data-qualification]').remove();
         $(`#${div_id} [data-form]`).find('[data-add]').removeClass('hide');
         $(`#${div_id} [data-form]`).removeData('sgq');
         $(`#${div_id} div[contenteditable="true"]`).html('');
