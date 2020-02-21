@@ -2484,7 +2484,7 @@
       DEFAULT (1)
     </Script>
   </Card>
-  
+
   <Card>
     <CardNumber>SGQ-326</CardNumber>
     <Version>1.3.0</Version>
@@ -2500,7 +2500,7 @@
     <Script>
     </Script>
   </Card>
-  
+
   <Card>
     <CardNumber>SGQ-387</CardNumber>
     <Version>1.4.0</Version>
@@ -2587,7 +2587,7 @@
       ADD Outros varchar(max) null;
       END
       GO
-      
+
       IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParFamiliaProduto' AND xtype='U')
       create table ParFamiliaProduto (
       Id int not null primary key identity,
@@ -2692,7 +2692,7 @@
       insert into ParLevelHeaderField values('Tarefa', 'ParLevel3Value', GetDate(), null, 1)
     </Script>
   </Card>
- 
+
 
   <Card>
     <CardNumber>SGQ-414</CardNumber>
@@ -2701,5 +2701,77 @@
     <Script>
     </Script>
   </Card>
-  
+
+  <Card>
+    <CardNumber>SGQ-407</CardNumber>
+    <Version>1.4.0</Version>
+    <Description>[RH - 5S] PARAMETRIZAÇÃO - Criar tipo de dado de entrada binário com múltipla escolha</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParQualification' AND xtype='U')
+      create table ParQualification(
+      Id int not null identity(1,1) primary key,
+      Name varchar(50) not null,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+      GO
+      IF NOT EXISTS (Select * from ParQualification where id = 1)
+      BEGIN
+      INSERT into ParQualification (Name, AddDate) VALUES ('Estrutural', GETDATE())
+      END
+      GO
+      IF NOT EXISTS (Select * from ParQualification where id = 2)
+      BEGIN
+      INSERT into ParQualification (Name, AddDate) VALUES ('Comportamental', GETDATE())
+      END
+      GO
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='PargroupQualification' AND xtype='U')
+      create table PargroupQualification(
+      Id int not null identity(1,1) primary key,
+      Name varchar(50) not null,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+      GO
+      IF NOT EXISTS (Select * from PargroupQualification where id = 1)
+      BEGIN
+      INSERT into PargroupQualification (Name, AddDate) VALUES ('Grupo de Qualificação', GETDATE())
+      END
+      GO
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='PargroupQualificationXParQualification' AND xtype='U')
+      create table PargroupQualificationXParQualification(
+      Id int not null identity(1,1) primary key,
+      PargroupQualification_Id int not null FOREIGN key REFERENCES PargroupQualification(Id),
+      ParQualification_Id int not null FOREIGN key REFERENCES ParQualification(Id),
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+      GO
+      IF NOT EXISTS (Select * from PargroupQualificationXParQualification where id = 1)
+      BEGIN
+      INSERT into PargroupQualificationXParQualification (PargroupQualification_Id,ParQualification_Id, AddDate) VALUES (1, 1, GETDATE())
+      END
+      GO
+      IF NOT EXISTS (Select * from PargroupQualificationXParQualification where id = 2)
+      BEGIN
+      INSERT into PargroupQualificationXParQualification (PargroupQualification_Id,ParQualification_Id, AddDate) VALUES (1, 2, GETDATE())
+      END
+      GO
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='PargroupQualificationXParLevel3Value' AND xtype='U')
+      create table PargroupQualificationXParLevel3Value(
+      Id int not null identity(1,1) primary key,
+      PargroupQualification_Id int not null FOREIGN key REFERENCES PargroupQualification(Id),
+      ParLevel3Value_Id int not null FOREIGN key REFERENCES ParLevel3Value(Id),
+      [Value] varchar(100) null,
+      AddDate datetime not null,
+      AlterDate datetime null,
+      IsActive bit not null default 1,
+      )
+    </Script>
+  </Card>
+
+
 </Cards>

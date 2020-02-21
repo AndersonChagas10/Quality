@@ -295,6 +295,10 @@ namespace Dominio
         public virtual DbSet<ParHeaderFieldXComponenteGenerico> ParHeaderFieldXComponenteGenerico { get; set; }
         public virtual DbSet<LogError> LogError { get; set; }
         public virtual DbSet<ParAlertXUser> ParAlertXUser { get; set; }
+        public virtual DbSet<ParQualification> ParQualification { get; set; }
+        public virtual DbSet<PargroupQualification> PargroupQualification { get; set; }
+        public virtual DbSet<PargroupQualificationXParQualification> PargroupQualificationXParQualification { get; set; }
+        public virtual DbSet<PargroupQualificationXParLevel3Value> PargroupQualificationXParLevel3Value { get; set; }
 
         public virtual DbSet<Seara.ParFamiliaProduto> ParFamiliaProduto { get; set; }
         public virtual DbSet<Seara.ParProduto> ParProduto { get; set; }

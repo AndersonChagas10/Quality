@@ -2197,6 +2197,7 @@
     <Content Include="Views\ParFamiliaProdutoXParProduto\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioFormularioSIF.cshtml" />
     <Content Include="Views\ParamsV2\ParL3Cabecalho.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3Qualification.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

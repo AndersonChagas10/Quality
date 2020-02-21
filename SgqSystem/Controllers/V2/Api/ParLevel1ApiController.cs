@@ -74,6 +74,8 @@ namespace SgqSystem.Controllers.V2.Api
                 //Familia
                 parLevel1Selects.ParFamiliaProdutos = db.ParFamiliaProduto.Where(x => x.IsActive).ToList();
 
+                //grupo qualificação
+                parLevel1Selects.PargroupQualification = db.PargroupQualification.Where(x => x.IsActive).ToList(); 
             }
 
             return Ok(parLevel1Selects);
@@ -484,6 +486,8 @@ namespace SgqSystem.Controllers.V2.Api
             public List<RotinaIntegracao> RotinaIntegracao { get; set; }
 
             public List<Dominio.Seara.ParFamiliaProduto> ParFamiliaProdutos { get; set; }
+
+            public List<PargroupQualification> PargroupQualification { get; set; }
         }
 
         public class SaveParHeaderField
