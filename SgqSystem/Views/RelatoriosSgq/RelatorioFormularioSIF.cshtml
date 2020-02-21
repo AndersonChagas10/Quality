@@ -70,20 +70,26 @@
         }
 
         function GerarCabecalho(r) {
+            
+            try{
 
-            elaborador = r.Elaborador;
-            aprovador = r.Aprovador;
-            nomeRelatorio = r.NomeRelatorio;
-            dataCabecalho = r.Data;
-            var dataCabecalhoFormatado = dataCabecalho.replace(/(\d*)-(\d*)-(\d*).*/, '$3/$2/$1');
-            referenciaDoc = r.ReferenciaDocumento;
+                elaborador = r.Elaborador;
+                aprovador = r.Aprovador;
+                nomeRelatorio = r.NomeRelatorio;
+                dataCabecalho = r.Data;
+                var dataCabecalhoFormatado = dataCabecalho.replace(/(\d*)-(\d*)-(\d*).*/, '$3/$2/$1');
+                referenciaDoc = r.ReferenciaDocumento;
 
-            $("#elaborador").html(elaborador);
-            $("#aprovador").html(aprovador);
-            $("#nomeFormulario").html(nomeRelatorio);
-            $("#dataCabecalho").html(dataCabecalhoFormatado);
-            $("#referenciaDocumento").html(referenciaDoc);
-            $("#divCabecalho").show();
+                $("#elaborador").html(elaborador);
+                $("#aprovador").html(aprovador);
+                $("#nomeFormulario").html(nomeRelatorio);
+                $("#dataCabecalho").html(dataCabecalhoFormatado);
+                $("#referenciaDocumento").html(referenciaDoc);
+                $("#divCabecalho").show();
+            }
+            catch(err) {
+                preencheRetornoGrafico("Não existe cabeçalho para esta unidade ou indicador!");
+            }
         }
 
         function enviarFiltro() {
