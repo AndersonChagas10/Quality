@@ -322,11 +322,11 @@ $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', fun
     */
     var variaveisEquacao = [
         { id: /QtdeNC/g, valor:(parseInt(totalDeAmostrasColetadas)-parseInt(totalDeAmostrasColetadasConforme)) },
-        { id: /QtdeC/g, valor: (parseInt(totalDeAmostrasColetadasConforme)) },
         { id: /QtdeTLNC/g, valor: parseInt(totalTarefasAcimaLimiteNC) },
-        { id: /QtdeT/g, valor: parseInt(listaDeTarefas.length) },
         { id: /QtdeTNC/g, valor: parseInt(totalTarefasComAlgumaNC) },
-        { id: /QtdeTC/g, valor: parseInt(listaDeTarefas.length) - parseInt(totalTarefasComAlgumaNC) }
+        { id: /QtdeTC/g, valor: parseInt(listaDeTarefas.length) - parseInt(totalTarefasComAlgumaNC) },
+        { id: /QtdeC/g, valor: (parseInt(totalDeAmostrasColetadasConforme)) },
+        { id: /QtdeT/g, valor: parseInt(listaDeTarefas.length) },
     ];
     var equacao = parVinculoPesoParLevel2.Equacao;
     variaveisEquacao.forEach(function (variavel) {
