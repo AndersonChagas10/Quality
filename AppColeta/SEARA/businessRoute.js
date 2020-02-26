@@ -1,5 +1,5 @@
 function level1BusinessRoute(parlevel1_id){
-    var parLevel1XParFamiliaProduto = existParLevel1XParFamiliaProduto(parlevel1_id);
+    var parLevel1XParFamiliaProduto = getParLevel1XParFamiliaProduto(parlevel1_id);
     if (parLevel1XParFamiliaProduto != null) {
         //listarFamiliaProdutoDCA();
         currentFamiliaProdutoDCA_Id = parLevel1XParFamiliaProduto.ParFamiliaProduto_Id;
