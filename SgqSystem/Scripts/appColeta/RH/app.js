@@ -1,4 +1,5 @@
 var currentParCompany_Id;
+var currentUserSgq_Id;
 var currentParFrequency_Id;
 var parametrization = null;
 var currentParDepartment_Id;
@@ -33,6 +34,7 @@ function onOpenAppColeta() {
         if (typeof (data) != 'undefined' && data.length > 0)
             currentLogin = JSON.parse(data);
         currentParCompany_Id = currentLogin.ParCompany_Id;
+        currentUserSgq_Id = currentLogin.Id;
 
         _readFile("appParametrization.txt", function (param) {
             if (typeof (param) != 'undefined' && param.length > 0) {

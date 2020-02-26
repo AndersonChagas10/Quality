@@ -1,20 +1,20 @@
-﻿function openParClusterGroup() {
+﻿function openParCompany() {
 
     var html = '';
 
-    _readFile("parClusterGroup.txt", function (data) {
+    _readFile("parCompany.txt", function (data) {
         if (globalLoginOnline) {
 
-            openMensagem('Carregando lista de grupo de clusters', 'blue', 'white');
+            openMensagem('Carregando lista de unidades', 'blue', 'white');
 
             $.ajax({
-                data: { parCompany_Id: currentParCompany_Id },
-                url: urlPreffix + '/api/parClusterGroup',
+                data: { userSgq_Id: currentUserSgq_Id },
+                url: urlPreffix + '/api/parCompany',
                 type: 'GET',
                 success: function (data) {
-                    _writeFile("parClusterGroup.txt", JSON.stringify(data), function () {
-                        listaParClusterGroup = data;
-                        listarParClusterGroup();
+                    _writeFile("parCompany.txt", JSON.stringify(data), function () {
+                        listaParCompany = data;
+                        listarParCompany();
                     });
 
                     closeMensagem();
@@ -27,35 +27,39 @@
             });
 
         } else {
-            listarParClusterGroup();
+            listarParCompany();
         }
 
     });
 }
 
-function listarParClusterGroup() {
+function listarParCompany() {
     
     cleanGlobalVarParCluster();
 
-    _readFile("parClusterGroup.txt", function (data) {
+    _readFile("parCompany.txt", function (data) {
 
         data = JSON.parse(data);
 
-        listaParClusterGroup = data;
+        listaParCompany = data;
+
+        if(listaParCompany.length == 1){
+            openParClusterGroup(listaParCompany[0].ParCompany.Id);
+        }
 
         var clusterGroup = {};
 
-        var htmlParClusterGroup = "";
+        var htmlParCompany = "";
 
         $(data).each(function (i, o) {
 
-            htmlParClusterGroup += '<button type="button" class="list-group-item col-xs-12" data-par-cluster-group-id="' + o.Id + '" ' +
-                ((currentParClusterGroup_Id == o.Id || !(currentParClusterGroup_Id > 0)) ? '' : 'style="background-color:#eee;cursor:not-allowed"')
-                + '>' + o.Name +
+            htmlParCompany += '<button type="button" class="list-group-item col-xs-12" data-par-company-id="' + o.ParCompany.Id + '" ' //+
+                //((currentParClusterGroup_Id == o.Id || !(currentParClusterGroup_Id > 0)) ? '' : 'style="background-color:#eee;cursor:not-allowed"')
+                + '>' + o.ParCompany.Name +
                 '</button>';
         });
 
-        var voltar = '<a onclick="validaRota(openParCompany,null);" class="btn btn-warning">Voltar</a>';
+        var voltar = '<a onclick="validaRota(openMenu,null);" class="btn btn-warning">Voltar</a>';
 
         html = getHeader() +
             '<div class="container-fluid">                               ' +
@@ -63,11 +67,11 @@ function listarParClusterGroup() {
             '		<div class="col-xs-12">                        ' +
             '			<div class="panel panel-primary">          ' +
             '			  <div class="panel-heading">              ' +
-            '				<h3 class="panel-title">' + voltar + 'Qual grupo de cluster deseja realizar coleta?</h3>' +
+            '				<h3 class="panel-title">' + voltar + 'Qual unidade deseja realizar coleta?</h3>' +
             '			  </div>                                   ' +
             '			  <div class="panel-body">                 ' +
             '				<div class="list-group">               ' +
-            htmlParClusterGroup +
+            htmlParCompany +
             '				</div>                                 ' +
             '			  </div>                                   ' +
             '			</div>                                     ' +
@@ -85,10 +89,12 @@ function cleanGlobalVarParClusterGroup() {
     currentsParDepartments_Ids = [];
 }
 
-$('body').off('click', '[data-par-cluster-group-id]').on('click', '[data-par-cluster-group-id]', function (e) {
+ $('body').off('click', '[data-par-company-id]').on('click', '[data-par-company-id]', function (e) {
 
-    currentParClusterGroup_Id = parseInt($(this).attr('data-par-cluster-group-id'));
+     currentParCompany_Id = parseInt($(this).attr('data-par-company-id'));
 
-    openParCluster(currentParClusterGroup_Id);
+     parCompanys = currentParCompany_Id;
 
-});
+     openParClusterGroup(currentParCompany_Id);
+
+ });
