@@ -63,7 +63,7 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
             '</button>';
     });
 
-    var voltar = '<a onclick="listarFamiliaProdutoDCA(' + isVoltar + ');" class="btn btn-warning">Voltar</a>';
+    var voltar = '<a onclick="listarParLevel1(' + isVoltar + ');" class="btn btn-warning">Voltar</a>';
 
     html = getHeader() +
         '<div class="container-fluid">                                           ' +
@@ -338,7 +338,7 @@ $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', fun
         var porcentagemEquacao = eval(equacao);
 
      } catch (e) {
-
+         console.warn(e);
          porcentagemEquacao = null;
      }
 
