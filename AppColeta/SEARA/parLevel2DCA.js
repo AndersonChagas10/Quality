@@ -93,6 +93,7 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
     $('div#app').html(html);
 
     setBreadcrumbsDCA();
+    $('select[name="produtoDCA"]').trigger('change');
 }
 
 $('body').off('click', '[data-dca-par-level2-id]').on('click', '[data-dca-par-level2-id]', function (e) {
