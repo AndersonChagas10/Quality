@@ -293,7 +293,7 @@ $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', fun
             }
         });
         var limiteNCDaTarefa = 1;
-        if(tarefa.length > 0){
+        if (tarefa.length > 0 && tarefa[0] && tarefa[0].ParLevel3Value){
             limiteNCDaTarefa = UmSeForNaNOuNull(tarefa[0].ParLevel3Value.LimiteNC);
         }
         if((amostrasColetadas-amostrasColetadasConforme) > limiteNCDaTarefa){
@@ -332,8 +332,16 @@ $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', fun
     variaveisEquacao.forEach(function (variavel) {
         equacao = equacao.replace(variavel.id,variavel.valor);
     });  
-    
-    var porcentagemEquacao = eval(equacao);
+
+     try {
+
+        var porcentagemEquacao = eval(equacao);
+
+     } catch (e) {
+
+         porcentagemEquacao = null;
+     }
+
     var porcentagemTotal = parseInt(totalDeAmostrasColetadasConforme)/parseInt(totalDeAmostrasColetadas)*100;
 
     return {
