@@ -51,7 +51,7 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
 
         var porcentagemTotalConsiderandoPeso = (calculoPorMonitoramento.ParVinculoPesoParLevel2.Peso/quantidadeDeLevel2ComPeso)*100;
         var porcentagemAtualConsiderandoPeso = (calculoPorMonitoramento.Porcentagem / 100) * porcentagemTotalConsiderandoPeso;
-        porcentagemTotal += ZeroSeForNaN(calculoPorMonitoramento.Porcentagem);
+        porcentagemTotal += ZeroSeForNaN(porcentagemAtualConsiderandoPeso);
 
         htmlLista += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
             '" data-dca-par-level2-id="' + o.Id + '" ' +
