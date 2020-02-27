@@ -2,7 +2,7 @@ function getHeader() {
     
     var html = '';
 
-     var parCompanys = $.grep(currentLogin.ParCompanyXUserSgq, function (o, i) { return o.ParCompany.Id == parCompanySelect });
+     var parCompanys = $.grep(currentLogin.ParCompanyXUserSgq, function (o, i) { return o.ParCompany.Id == currentParCompany_Id });
      var parCompanyName = parCompanys.length == 0 ? "" : parCompanys[0].ParCompany.Name;
 
     html = '<nav class="navbar navbar navbar-inverse">                                                                                                                      ' +

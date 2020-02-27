@@ -8,7 +8,7 @@
             openMensagem('Carregando lista de unidades', 'blue', 'white');
 
             $.ajax({
-                data: { userSgq_Id: currentUserSgq_Id },
+                data: { userSgq_Id: currentLogin.Id },
                 url: urlPreffix + '/api/parCompany',
                 type: 'GET',
                 success: function (data) {
@@ -92,8 +92,6 @@ function cleanGlobalVarParClusterGroup() {
  $('body').off('click', '[data-par-company-id]').on('click', '[data-par-company-id]', function (e) {
 
      currentParCompany_Id = parseInt($(this).attr('data-par-company-id'));
-
-     parCompanySelect = currentParCompany_Id;
 
      openParClusterGroup(currentParCompany_Id);
 

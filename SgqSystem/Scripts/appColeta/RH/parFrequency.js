@@ -152,6 +152,7 @@ function chamaGetAppParametrization(){
 			data.listaParFrequency = listaParFrequency;
 			data.currentParCluster_Id = currentParCluster_Id;
 			data.currentParClusterGroup_Id = currentParClusterGroup_Id;
+			data.currentParCompany_Id = currentParCompany_Id;
 			_writeFile("appParametrization.txt", JSON.stringify(data), function () {
 				parametrization = data;
 				openPlanejamentoColeta();
