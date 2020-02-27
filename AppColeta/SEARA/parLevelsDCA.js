@@ -6,6 +6,8 @@ function listarParLevelsDCA(objCabecalho) {
 
     setObjectToForm(objCabecalho);
 
+    objCabecalhoLevel1 = objCabecalho;
+
     disableHeaderFields(objCabecalho);
 
 }

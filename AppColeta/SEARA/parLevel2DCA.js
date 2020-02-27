@@ -96,9 +96,19 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
     $('div#app').html(html);
 
     setBreadcrumbsDCA();
+
+    if (Object.keys(objCabecalhoLevel1).length !== 0) {
+        setObjectToForm(objCabecalhoLevel1);
+    }
 }
 
 $('body').off('click', '[data-dca-par-level2-id]').on('click', '[data-dca-par-level2-id]', function (e) {
+
+    if (!hederFieldIsValid("#headerFieldLevel1")) {
+        openMensagem("Existem cabeçalhos obrigatórios não preenchidos!","blue", "white");
+        setTimeout(closeMensagem, 3000);
+        return false;
+    }
 
     currentParLevel2_Id = parseInt($(this).attr('data-dca-par-level2-id'));
     currentParLevel2DCATotalPorcentagem = parseInt($(this).attr('data-total-porcentagem'));

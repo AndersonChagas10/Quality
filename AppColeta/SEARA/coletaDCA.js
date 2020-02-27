@@ -1,6 +1,7 @@
 var coletaJson = [];
 var currentEvaluationDCA = {};
 var coletasDCA = [];
+var objCabecalhoLevel1 = [];
 
 function openColetaDCA(levels) {
 

@@ -2,6 +2,7 @@ function listarParLevel1(isVoltar) {
 
 	currentParLevel1_Id = null;
 	currentParLevel2_Id = null;
+	objCabecalhoLevel1 = {};
 
 	var listaParLevel1 = RetornarParLevel1(currentParCluster_Id);
 

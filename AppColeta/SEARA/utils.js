@@ -115,3 +115,45 @@ function disableHeaderFields(objForm) {
     });
 
 }
+
+function hederFieldIsValid(formId) {
+
+    var inputs = $(formId).find('input, select');
+
+    var isValid = true;
+
+    $(inputs).each(function () {
+
+        setInputBackGroundColorNone(this);
+
+        if ($(this).prop('type') == 'checkbox' || $(this).prop('type') == 'radio') {
+
+            if ($(this).prop('checked') === 'false') {
+                setInputBackGroundColorRed(this);
+                isValid = false;
+            }
+                
+        } else {
+
+            if (this.value === null || this.value === undefined || this.value === ""){
+                setInputBackGroundColorRed(this);
+                isValid = false;
+            }
+
+        }
+    });
+
+    return isValid;
+}
+
+function setInputBackGroundColorRed(input) {
+
+    $(input).css('background-color', '#ffeded');
+
+}
+
+function setInputBackGroundColorNone(input) {
+
+    $(input).css('background-color', '');
+
+}
