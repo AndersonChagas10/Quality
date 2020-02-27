@@ -64,3 +64,54 @@ function UmSeForNaNOuNull(valor){
 function TracoSeForNaN(valor){
     return isNaN(valor) ? '-' : valor;
 }
+
+function serializeFormToObject(divId){
+
+    var obj = {};
+
+    var inputs = $(divId).find('input, select');
+
+    $(inputs).each(function(){
+        
+        var id = $(this).attr('id');
+
+        if ($(this).prop('type') == 'checkbox' || $(this).prop('type') == 'radio') {
+            obj[id].push($(this).prop('checked'));
+
+        } else {
+            obj[id] = (this.value || '');
+        }
+
+    });
+
+    return obj;
+
+}
+
+function setObjectToForm(objForm) {
+
+    Object.keys(objForm).forEach(function (key) {
+
+        var input = $(document).find('[id=' + key + ']');
+
+        if ($(input).prop('type') == 'checkbox' || $(input).prop('type') == 'radio') {
+            $(input).attr('checked', objForm[key]);
+
+        } else {
+            $(input).val(objForm[key]);
+        }
+
+    });
+}
+
+function disableHeaderFields(objForm) {
+
+    Object.keys(objForm).forEach(function (key) {
+
+        var input = $(document).find('[id=' + key + ']');
+
+        $(input).prop('disabled', true);
+
+    });
+
+}

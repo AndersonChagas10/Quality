@@ -80,6 +80,9 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
         '               <div class="col-xs-6 text-center" style="padding:0px !important">' +
         getSelectProdutosDCA()+
         '</div>' +
+        '<div class="col-sx-12">' +
+        getParHeaderFieldLevel1({ Id: currentParLevel1_Id }) +
+        '</div>' +
         '				<div class="list-group" style="padding-top:5px;clear:both !important">                           ' +
         htmlLista +
         btnProximaAvaliacao +
@@ -104,7 +107,9 @@ $('body').off('click', '[data-dca-par-level2-id]').on('click', '[data-dca-par-le
     currentTotalSampleValue = $(this).attr('data-total-sample');
     //var currentEvaluationValue = $(this).attr('data-current-evaluation');
 
-    listarParLevelsDCA();
+    var objCabecalho = serializeFormToObject("#headerFieldLevel1");
+
+    listarParLevelsDCA(objCabecalho);
 
 });
 
