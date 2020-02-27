@@ -880,6 +880,35 @@ namespace SgqSystem.Controllers.Api.Formulario
         }
 
         [HttpPost]
+        [Route("GetFilteredUserSgqByCompanyByEmpresa")]
+        public List<UserSgq> GetFilteredUserSgqByCompanyByEmpresa(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            SgqDbDevEntities db = new SgqDbDevEntities();
+
+            var unidade_Id = db.ParCompanyXUserSgq.Where(x => x.ParCompany_Id == form.ParCompany_Ids.FirstOrDefault()).Select(x => x.ParCompany_Id).ToList();
+
+            var query = "";
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                if (unidade_Id.Count > 0)
+                {
+                    query = $@"SELECT DISTINCT TOP 500 usgq.Id, usgq.Name from UserSgq usgq WITH(NOLOCK)
+                               INNER JOIN ParCompanyXUserSgq pcxu ON usgq.Id = pcxu.UserSgq_Id
+                               WHERE usgq.Name LIKE '%{search}%' AND pcxu.ParCompany_Id IN(" + string.Join(",", unidade_Id) + ")";
+                }
+                else
+                {
+                    query = $@"SELECT DISTINCT TOP 500 Id, Name from UserSgq WITH (NOLOCK) Where Name like '%{search}%'";
+                }
+
+                var retorno = factory.SearchQuery<UserSgq>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
         [Route("GetFilteredUserSgqMonitor")]
         public List<UserSgq> GetFilteredUserSgqMonitor(string search, [FromBody] DataCarrierFormularioNew form)
         {
