@@ -2,10 +2,8 @@ function getHeader() {
     
     var html = '';
 
-    var parCompanys = $.grep(currentLogin.ParCompanyXUserSgq, function (o, i) { return o.ParCompany.Id == currentLogin.ParCompany_Id });
-    var parCompanyName = (parCompanys.length > 0
-        && typeof (parCompanys[0].ParCompany) != 'undefined') ? parCompanys[0].ParCompany.Name : "";
-
+     var parCompanys = $.grep(currentLogin.ParCompanyXUserSgq, function (o, i) { return o.ParCompany.Id == parCompanySelect });
+     var parCompanyName = parCompanys.length == 0 ? "" : parCompanys[0].ParCompany.Name;
 
     html = '<nav class="navbar navbar navbar-inverse">                                                                                                                      ' +
         '  <div class="container-fluid">                                                                                                                                   ' +

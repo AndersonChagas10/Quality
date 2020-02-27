@@ -93,7 +93,7 @@ function cleanGlobalVarParClusterGroup() {
 
      currentParCompany_Id = parseInt($(this).attr('data-par-company-id'));
 
-     parCompanys = currentParCompany_Id;
+     parCompanySelect = currentParCompany_Id;
 
      openParClusterGroup(currentParCompany_Id);
 
