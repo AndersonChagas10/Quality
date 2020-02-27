@@ -55,7 +55,7 @@ function listarParClusterGroup() {
                 '</button>';
         });
 
-        var voltar = '<a onclick="validaRota(openParCompany,null);" class="btn btn-warning">Voltar</a>';
+        var voltar = '<a onclick="voltarParcompany(openParCompany,null);" class="btn btn-warning">Voltar</a>';
 
         html = getHeader() +
             '<div class="container-fluid">                               ' +
@@ -92,3 +92,8 @@ $('body').off('click', '[data-par-cluster-group-id]').on('click', '[data-par-clu
     openParCluster(currentParClusterGroup_Id);
 
 });
+
+function voltarParcompany() {
+
+	listarParCompany(true);
+}
