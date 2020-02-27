@@ -1000,6 +1000,8 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "parStructure3", Value = "Regional"});
                 ResourcesInserir.Add(new ResourcePT() { Key = "user", Value = "Usuário" });
 
+                ResourcesInserir.Add(new ResourcePT() { Key = "seara_Produto", Value = "Seara Produto" });
+
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
                 if (resourcesParaInserir != null)

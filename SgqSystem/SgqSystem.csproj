@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -408,8 +408,11 @@
     <Compile Include="Controllers\Params\ParDepartmentsController.cs" />
     <Compile Include="Controllers\ParCargoXDepartmentsController.cs" />
     <Compile Include="Controllers\ParConsolidationTypesController.cs" />
+    <Compile Include="Controllers\ParFamiliaProdutoController.cs" />
+    <Compile Include="Controllers\ParFamiliaProdutoXParProdutoController.cs" />
     <Compile Include="Controllers\ParLevel3InputTypeController.cs" />
     <Compile Include="Controllers\ParLevel3XModuleController.cs" />
+    <Compile Include="Controllers\ParProdutoController.cs" />
     <Compile Include="Controllers\ParReasonTypesController.cs" />
     <Compile Include="Controllers\ParScoreTypesController.cs" />
     <Compile Include="Controllers\ParStructureGroupController.cs" />
@@ -681,6 +684,9 @@
     </Content>
     <Content Include="..\AppColeta\SEARA\menu.js">
       <Link>Scripts\appColeta\SEARA\menu.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\parCluster.js">
+      <Link>Scripts\appColeta\SEARA\parCluster.js</Link>
     </Content>
     <Content Include="..\AppColeta\SEARA\parHeaderField.js">
       <Link>Scripts\appColeta\SEARA\parHeaderField.js</Link>
@@ -2170,6 +2176,23 @@
     <Content Include="Views\RelatoriosSgq\RelatorioEdicao.cshtml" />
     <Content Include="Views\ScriptsVersion\Index.cshtml" />
     <Content Include="Views\Error\AcessoNegado.cshtml" />
+    <Content Include="Views\ParamsV2\ParL1Familia.cshtml" />
+    <Content Include="Views\ParamsV2\ParL2VincularPeso.cshtml" />
+    <Content Include="Views\ParProduto\Create.cshtml" />
+    <Content Include="Views\ParProduto\Delete.cshtml" />
+    <Content Include="Views\ParProduto\Details.cshtml" />
+    <Content Include="Views\ParProduto\Edit.cshtml" />
+    <Content Include="Views\ParProduto\Index.cshtml" />
+    <Content Include="Views\ParFamiliaProduto\Create.cshtml" />
+    <Content Include="Views\ParFamiliaProduto\Delete.cshtml" />
+    <Content Include="Views\ParFamiliaProduto\Details.cshtml" />
+    <Content Include="Views\ParFamiliaProduto\Edit.cshtml" />
+    <Content Include="Views\ParFamiliaProduto\Index.cshtml" />
+    <Content Include="Views\ParFamiliaProdutoXParProduto\Create.cshtml" />
+    <Content Include="Views\ParFamiliaProdutoXParProduto\Delete.cshtml" />
+    <Content Include="Views\ParFamiliaProdutoXParProduto\Details.cshtml" />
+    <Content Include="Views\ParFamiliaProdutoXParProduto\Edit.cshtml" />
+    <Content Include="Views\ParFamiliaProdutoXParProduto\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2261,7 +2284,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>false</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

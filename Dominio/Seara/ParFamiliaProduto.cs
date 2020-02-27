@@ -11,6 +11,11 @@ namespace Dominio.Seara
     [Table("ParFamiliaProduto")]
     public class ParFamiliaProduto : BaseModel
     {
+        public ParFamiliaProduto()
+        {
+            ParFamiliaProdutoXParProduto = new HashSet<ParFamiliaProdutoXParProduto>();
+        }
+
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -18,5 +23,11 @@ namespace Dominio.Seara
         public int? ParCompany_Id { get; set; }
 
         public bool IsActive { get; set; }
+
+        [ForeignKey("ParCompany_Id")]
+        public virtual ParCompany ParCompany { get; set; }
+
+        [NotMapped]
+        public virtual ICollection<ParFamiliaProdutoXParProduto> ParFamiliaProdutoXParProduto { get; set; }
     }
 }

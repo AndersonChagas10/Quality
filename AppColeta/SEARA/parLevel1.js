@@ -57,14 +57,14 @@ $('body').off('click', '[data-par-level1-id]').on('click', '[data-par-level1-id]
 
 });
 
-function RetornarParLevel1(cluster_Id){
+function RetornarParLevel1(parCluster_Id){
 	var listaParLevel1XCluster = $.grep(parametrization.listaParLevel1XCluster, function (item) {
-        return item.Cluster_Id == cluster_Id;
+        return item.ParCluster_Id == parCluster_Id;
 	}); 
 	
-	$.grep(parametrization.listaParLevel1, function (parLevel1) {
+	return $.grep(parametrization.listaParLevel1, function (parLevel1) {
 		var exists = $.grep(listaParLevel1XCluster, function (item) {
-			return item.ParLevel1 == parLevel1.Id;
+			return item.ParLevel1_Id == parLevel1.Id;
 		});
         return exists.length > 0;
     });

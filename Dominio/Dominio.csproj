@@ -118,6 +118,7 @@
     <Compile Include="ParAlert.cs" />
     <Compile Include="ParHeaderFieldGeral.cs" />
     <Compile Include="ParHeaderFieldXComponenteGenerico.cs" />
+    <Compile Include="Seara\ParLevel1XParFamiliaProduto.cs" />
     <Compile Include="ParLevel3XHelp.cs" />
     <Compile Include="ParLevel3XModule.cs" />
     <Compile Include="ParLevelHeaderField.cs" />
@@ -215,9 +216,10 @@
     <Compile Include="RotinaIntegracao.cs" />
     <Compile Include="ScreenComponent.cs" />
     <Compile Include="Seara\CollectionLevel2XSearaFamiliaProdutoXProduto.cs" />
-    <Compile Include="Seara\SearaFamiliaProdutoXProduto.cs" />
-    <Compile Include="Seara\SearaProduto.cs" />
-    <Compile Include="Seara\SearaFamiliaProduto.cs" />
+    <Compile Include="Seara\ParVinculoPesoParLevel2.cs" />
+    <Compile Include="Seara\ParFamiliaProdutoXProduto.cs" />
+    <Compile Include="Seara\ParProduto.cs" />
+    <Compile Include="Seara\ParFamiliaProduto.cs" />
     <Compile Include="Seed\AppScriptSeed.cs" />
     <Compile Include="Seed\DicionarioEstaticoSeed.cs" />
     <Compile Include="Seed\ResourceEnSeed.cs" />

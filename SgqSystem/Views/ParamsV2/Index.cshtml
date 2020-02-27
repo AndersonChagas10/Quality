@@ -148,6 +148,12 @@
         border: 1px solid #ccc;
         overflow: auto;
     }
+
+    .nopadding {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
 </style>
 
 
@@ -276,6 +282,11 @@
                                             Clusters
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="#l1_familia" data-toggle="tab" id="familias">
+                                            Família de Produto
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="col-xs-9">
@@ -291,6 +302,9 @@
                                     </div>
                                     <div class="tab-pane" id="l1_processo">
                                         @Html.Partial("ParL1Processo")
+                                    </div>
+                                    <div class="tab-pane" id="l1_familia">
+                                        @Html.Partial("ParL1Familia")
                                     </div>
                                 </div>
                             </div>
@@ -311,13 +325,18 @@
                                         </a>
                                     </li>
                                     <li>
-                                            <a href="#l2_avam" data-toggle="tab">
-                                                Avaliação e Amostra
-                                            </a>
-                                        </li>
+                                        <a href="#l2_avam" data-toggle="tab">
+                                            Avaliação e Amostra
+                                        </a>
+                                    </li>
                                     <li>
                                         <a href="#l2_cabecalho" data-toggle="tab">
                                             Campos de cabeçalhos
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#l2_peso" data-toggle="tab">
+                                            Peso
                                         </a>
                                     </li>
                                     @*<li>
@@ -336,13 +355,16 @@
                                         @Html.Partial("ParL2Avancados")
                                     </div>
                                     <div class="tab-pane" id="l2_avam">
-                                            @Html.Partial("ParL2Avam")
-                                        </div>
+                                        @Html.Partial("ParL2Avam")
+                                    </div>
                                     <div class="tab-pane" id="l2_cabecalho">
                                         @Html.Partial("ParL2Cabecalho")
                                     </div>
                                     <div class="tab-pane" id="l2_contador">
                                         @Html.Partial("ParL2Contador")
+                                    </div>
+                                    <div class="tab-pane" id="l2_peso">
+                                        @Html.Partial("ParL2VincularPeso")
                                     </div>
                                 </div>
                             </div>
@@ -489,6 +511,7 @@
         preencheSelect('selectL3AvamParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Indicador');
         preencheSelect('selectL3PesoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Indicador');
         preencheSelect('selectL3TipoDadoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Indicador');
+        preencheSelect('selectL2PesoParLevel1', 'Name', 'Id', data.ParLevels1, 'Selecione o Indicador');
         getSelectsL1();
     }
 
@@ -497,6 +520,7 @@
         preencheSelect('selectL3AvamParLevel2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento');
         preencheSelect('selectL3PesoParLevel2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento');
         preencheSelect('selectL3TipoDadoParLevel2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento');
+        preencheSelect('selectL2PesoParLevel2', 'Name', 'Id', data.ParLevels2, 'Selecione o Monitoramento');
         //getSelectsL2();
     }
 
@@ -576,9 +600,9 @@
                 });
 
                 ParL3TipoDado.load(listaVinculadaAUnidade);
-                
+
                 return;
-            } 
+            }
         }
         ParL3TipoDado.load(listaTipoDado);
     }
@@ -621,7 +645,7 @@
                 parDCAvam.load(listaAvAmVinculadaAUnidade);
 
                 return;
-            } 
+            }
         }
         parDCAvam.load(lista);
     }
@@ -855,6 +879,12 @@
                     preencheCampos('l1', '', ParLevel1, true);
                     parL1Processo.load(ParLevel1.ParLevel1XCluster);
                     parL1Cabecalho.load(ParLevel1.ParHeaderFieldsGeral);
+
+                    if (ParLevel1.ParLevel1XParFamiliaProduto.length > 0)
+                        preencheCampos('l1_familia', '', ParLevel1.ParLevel1XParFamiliaProduto[0], true);
+                    else
+                        preencheCampos('l1_familia', '', { ParLevel1_Id: ParLevel1.Id }, true);
+
                     verifyTabs('selectL1', 'l1');
                     closeLoader();
 
@@ -919,6 +949,7 @@
                     ParL2Avancados.set(data.Parlevel2);
                     parL2Cabecalho.load(data.Parlevel2.ParHeaderFieldsGeral);
                     parL2Avam.load(data.Parlevel2.ParEvaluation);
+                    parL2Peso.load(data.Parlevel2.ParVinculoPesoParLevel2s);
                     verifyTabs('selectL2', 'l2');
                     closeLoader();
                 },
@@ -1057,9 +1088,11 @@
                 preencheSelect('selectL1Cluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectParConsolidation', 'Name', 'Id', data.ParConsolidationTypes, 'Selecione o tipo de Consolidação');
                 preencheSelect('selectParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
+
                 preencheSelect('selectParScoreType', 'Name', 'Id', data.ParScoreTypes, 'Selecione o tipo de Score');
                 //preencheSelect('selectL1ParLevelDefiniton', 'Name', 'Id', data.ParLevelDefinitons, 'Selecione onde deve aparecer o cabeçalho');
                 preencheSelect('selectL1ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
+                preencheSelect('selectParFamilia', 'Name', 'Id', data.ParFamiliaProdutos, 'Selecione a familia de produtos');
 
 
                 preencheSelect('selectL3GeralParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');

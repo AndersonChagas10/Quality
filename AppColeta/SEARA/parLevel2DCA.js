@@ -1,4 +1,5 @@
 currentEvaluationDCA = {};
+var currentParLevel2DCATotalPorcentagem = 0;
 function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
 
     currentParLevel2_Id = null;
@@ -8,7 +9,8 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
     var htmlLista = "";
     var btnProximaAvaliacao = '<button class="btn btn-block btn-primary input-lg col-xs-12" data-proxima-av style="margin-top:10px">Próxima Avaliação</button>';
 
-    var totalDeConformidadeDeColetas = 0;
+    var quantidadeDeLevel2ComPeso = 0;
+    var porcentagemTotal = 0;
     var avaliacaoAtual = 0;
     $(listaParLevel2).each(function (i, o) {
 
@@ -17,6 +19,9 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
         if(avaliacaoAtual == 0 || currentEvaluationDCA.Evaluation < avaliacaoAtual){
             avaliacaoAtual = currentEvaluationDCA.Evaluation;
         }
+
+        var parVinculoPesoLevel2 = getParVinculoPesoParLevel2PorIndicador(o.Id,currentParLevel1_Id);
+        quantidadeDeLevel2ComPeso += parVinculoPesoLevel2.Peso;
     });
 
     var foiRealizadaColetaParaAProximaAvaliacao = $.grep(coletasDCA, function (o) {
@@ -34,25 +39,26 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
 
     $(listaParLevel2).each(function (i, o) {
 
-        var consolidadoAmostraTotal = getAmostraTotalEColetadaEConformePorMonitoramento({ Id: currentParLevel1_Id }, o, avaliacaoAtual);
+        var calculoPorMonitoramento = getCalculoPorMonitoramento(currentParLevel1_Id, o.Id, avaliacaoAtual);
 
         var style = '';
 
-        if (consolidadoAmostraTotal.ColetasSincronizadas) {
+        if (calculoPorMonitoramento.ColetasSincronizadas) {
             style = 'style="background-color:#ddd;cursor:not-allowed"';
         }else{
             btnProximaAvaliacao = '';
         }
 
-        porcentagemDeConformidadePorLevel2 = parseInt(consolidadoAmostraTotal.AmostraTotalColetadasConforme/consolidadoAmostraTotal.AmostraTotalColetada*100);
-        totalDeConformidadeDeColetas += ZeroSeForNaN(porcentagemDeConformidadePorLevel2);
+        var porcentagemTotalConsiderandoPeso = (calculoPorMonitoramento.ParVinculoPesoParLevel2.Peso/quantidadeDeLevel2ComPeso)*100;
+        porcentagemTotal += ZeroSeForNaN(calculoPorMonitoramento.Porcentagem);
 
         htmlLista += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
             '" data-dca-par-level2-id="' + o.Id + '" ' +
-            'data-current-evaluation="' + avaliacaoAtual + '">                       ' +
+            'data-current-evaluation="' + avaliacaoAtual + '"                       ' +
+            'data-total-porcentagem="' + porcentagemTotalConsiderandoPeso + '">                       ' +
             '	<div class="col-xs-4">' + o.Name + '</div>                                      ' +
-            '	<div class="col-xs-4 text-center">Conforme: '+ZeroSeForNaN(porcentagemDeConformidadePorLevel2)+'%</div>      ' +
-            '	<div class="col-xs-4 text-center">Respondido: '+ZeroSeForNaN(parseInt(consolidadoAmostraTotal.AmostraTotalColetada/consolidadoAmostraTotal.AmostraTotal*100))+'%</div>              ' +
+            '	<div class="col-xs-4 text-center">Conforme: '+ZeroSeForNaN(calculoPorMonitoramento.Porcentagem)+'% / '+porcentagemTotalConsiderandoPeso+'%</div>      ' +
+            '	<div class="col-xs-4 text-center">Respondido: '+ZeroSeForNaN(parseInt(calculoPorMonitoramento.AmostraTotalColetada/calculoPorMonitoramento.AmostraTotal*100))+'%</div>              ' +
             '</button>';
     });
 
@@ -69,7 +75,7 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
         '			  <div class="panel-body">                             ' +
         '               <div class="col-sm-12 text-center" style="padding:20px;margin-bottom:5px">Item: '+getParFamiliaProduto().Name+'</div>' +
         '               <div class="col-sm-12 btn-warning text-center" style="padding:20px;margin-bottom:5px">Avaliação ' + avaliacaoAtual + '</div>' +
-        '               <h2 class="col-xs-6 btn-info text-center" style="height:100px;padding-top: 35px;margin: 0px;">'+ZeroSeForNaN(parseInt(totalDeConformidadeDeColetas/listaParLevel2.length))+'%</h2>' +
+        '               <h2 class="col-xs-6 btn-info text-center" style="height:100px;padding-top: 35px;margin: 0px;">'+porcentagemTotal+'%</h2>' +
         '               <div class="col-xs-6 text-center" style="padding:0px !important">' +
         getSelectProdutosDCA()+
         '</div>' +
@@ -91,6 +97,7 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
 $('body').off('click', '[data-dca-par-level2-id]').on('click', '[data-dca-par-level2-id]', function (e) {
 
     currentParLevel2_Id = parseInt($(this).attr('data-dca-par-level2-id'));
+    currentParLevel2DCATotalPorcentagem = parseInt($(this).attr('data-total-porcentagem'));
 
     currentTotalEvaluationValue = $(this).attr('data-total-evaluation');
     currentTotalSampleValue = $(this).attr('data-total-sample');
@@ -215,3 +222,145 @@ function getResultEvaluationDCA(parLevel1_Id, parLevel2_Id) {
 $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', function (e) {
     listarParLevel2DCA(false, true)
  });
+
+ function getParVinculoPesoParLevel2PorIndicador(parLevel1_Id, parLevel2_Id){
+     var _parLevel1_Id = parLevel1_Id;
+     var _parLevel2_Id = parLevel2_Id;
+    var exists = $.grep(parametrization.listaParVinculoPesoParLevel2, function (parVinculoPesoLevel2) {
+        if(parVinculoPesoLevel2.ParLevel1_Id == _parLevel1_Id 
+            && parVinculoPesoLevel2.ParLevel2_Id == _parLevel2_Id){
+            return true;
+        }
+    });
+    
+    if(exists.length > 0){
+        return exists[0];
+    }else{
+        return {Peso:1,Equacao:''};
+    }
+ }
+
+ function getCalculoPorMonitoramento(parLevel1_Id, parLevel2_Id, avaliacaoAtual) {
+
+    var _avaliacaoAtual = avaliacaoAtual;
+    var _parLevel1_Id = parLevel1_Id;
+    var _parLevel2_Id = parLevel2_Id;
+    currentParLevel2_Id = _parLevel2_Id;
+    var listaDeTarefas = GetListaDeTarefasPorMonitoramento();
+
+    var tarefasVinculadas = $.grep(parametrization.listaParVinculoPeso, function (o) {
+        return o.ParLevel1_Id == _parLevel1_Id && o.ParLevel2_Id == _parLevel2_Id;
+    });
+
+     var totalTarefasComAlgumaNC = 0;
+    var totalTarefasAcimaLimiteNC = 0;
+    var totalDeAmostras = 0;
+    var totalDeAmostrasColetadas = 0;
+    var totalDeAmostrasColetadasConforme = 0;
+    var coletasSincronizadas = false;
+    $(tarefasVinculadas).each(function (i, o) {
+        var amostrasColetadas = 0;
+        var amostrasColetadasConforme = 0;
+        var vinculoPeso = o;
+
+        var quantidadeDeColetasPorTarefa = $.grep(coletasDCA, function (coletas) {
+            if(coletas.ParLevel1_Id == _parLevel1_Id 
+                && coletas.ParLevel2_Id == _parLevel2_Id 
+                && coletas.ParLevel3_Id == vinculoPeso.ParLevel3_Id
+                && coletas.Evaluation == _avaliacaoAtual
+                && coletas.Outros.indexOf('ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0){
+                    amostrasColetadasConforme += coletas.IsConform ? 1 : 0;
+                return true;
+            }
+        });
+        totalDeAmostrasColetadasConforme += amostrasColetadasConforme;
+
+        if (o.Sample > 0 && quantidadeDeColetasPorTarefa.length > 0) {
+            if (o.Sample > quantidadeDeColetasPorTarefa.length) {
+                amostrasColetadas += quantidadeDeColetasPorTarefa.length;
+            } else {
+                amostrasColetadas += o.Sample;
+            }
+        }else if(quantidadeDeColetasPorTarefa.length > 0){
+            amostrasColetadas += 1;
+        }
+        totalDeAmostrasColetadas += amostrasColetadas;
+
+        var tarefa = $.grep(listaDeTarefas, function (level3) {
+            if(level3.Id == vinculoPeso.ParLevel3_Id){
+                return true;
+            }
+        });
+        var limiteNCDaTarefa = 1;
+        if(tarefa.length > 0){
+            limiteNCDaTarefa = UmSeForNaNOuNull(tarefa[0].ParLevel3Value.LimiteNC);
+        }
+        if((amostrasColetadas-amostrasColetadasConforme) > limiteNCDaTarefa){
+            totalTarefasAcimaLimiteNC++;
+        }
+
+        if ((amostrasColetadas - amostrasColetadasConforme) > 0) {
+            totalTarefasComAlgumaNC++;
+        }
+
+        if(coletasSincronizadas == false && quantidadeDeColetasPorTarefa.length > 0)
+            coletasSincronizadas = quantidadeDeColetasPorTarefa[0].Synced == true;
+
+        totalDeAmostras += (o.Sample > 0) ? o.Sample : 0;
+    });
+
+    var parVinculoPesoParLevel2 = getParVinculoPesoParLevel2PorIndicador(_parLevel1_Id,_parLevel2_Id);
+
+    /*
+     * QtdeNC      = Quantidade total de Não Conformidades (Por amostra)
+     * QtdeC       = Quantidade total de Conformidade (Por amostra)
+     * QtdeTLNC    = Quantidade de tarefas que passaram do limite de Não Conformidade
+     * QtdeT       = Quantidade de tarefas
+     * QtdeTNC     = Quantidade de tarefas com alguma Não Conformidade
+     * QtdeTC      = Quantidade de tarefas com conformidade
+    */
+    var variaveisEquacao = [
+        { id: /QtdeNC/g, valor:(parseInt(totalDeAmostrasColetadas)-parseInt(totalDeAmostrasColetadasConforme)) },
+        { id: /QtdeC/g, valor: (parseInt(totalDeAmostrasColetadasConforme)) },
+        { id: /QtdeTLNC/g, valor: parseInt(totalTarefasAcimaLimiteNC) },
+        { id: /QtdeT/g, valor: parseInt(listaDeTarefas.length) },
+        { id: /QtdeTNC/g, valor: parseInt(totalTarefasComAlgumaNC) },
+        { id: /QtdeTC/g, valor: parseInt(listaDeTarefas.length) - parseInt(totalTarefasComAlgumaNC) }
+    ];
+    var equacao = parVinculoPesoParLevel2.Equacao;
+    variaveisEquacao.forEach(function (variavel) {
+        equacao = equacao.replace(variavel.id,variavel.valor);
+    });  
+    
+    var porcentagemEquacao = eval(equacao);
+    var porcentagemTotal = parseInt(totalDeAmostrasColetadasConforme)/parseInt(totalDeAmostrasColetadas)*100;
+
+    return {
+        AmostraTotal: parseInt(totalDeAmostras)
+        , AmostraTotalColetada: parseInt(totalDeAmostrasColetadas)
+        , AmostraTotalColetadasConforme: parseInt(totalDeAmostrasColetadasConforme)
+        , TotalTarefasAcimaLimiteNC: parseInt(totalTarefasAcimaLimiteNC)
+        , ColetasSincronizadas: coletasSincronizadas
+        , ParVinculoPesoParLevel2 : parVinculoPesoParLevel2
+        , Equacao : equacao
+        , PorcentagemEquacao : porcentagemEquacao
+        , Porcentagem : equacao.length > 0 ? porcentagemEquacao : porcentagemTotal
+        , PorcentagemTotalRespondida : porcentagemTotal
+    };
+
+}
+
+function GetListaDeTarefasPorMonitoramento(){
+    var listaDeTarefa = [];
+    var levels = GetLevelsDCA()
+    
+    levels.forEach(function (level1) {
+        level1.ParLevel2.forEach(function (level2) {
+            level2.ParLevel3.forEach(function (level3) {
+                listaDeTarefa.push(level3);
+            });
+        });
+    });
+
+    return listaDeTarefa;
+}
