@@ -2773,5 +2773,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-441</CardNumber>
+    <Version>???</Version>
+    <Description> MELHORIA - Alteração de unidade padrão na Coleta</Description>
+    <Script>
+    </Script>
+  </Card>
 
 </Cards>
