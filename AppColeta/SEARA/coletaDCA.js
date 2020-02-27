@@ -754,6 +754,12 @@ $('body').off('click', '[data-na-dca]').on('click', '[data-na-dca]', function (e
 
 $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', function () {
 
+    if(!hederFieldIsValid("#headerFieldLevel2")){
+        openMensagem("Existem cabeçalhos obrigatórios não preenchidos!","blue", "white");
+        setTimeout(closeMensagem, 3000);
+        return false;
+    }
+
     var $botaoColeta = $(this);  
     var linhaTarefa = $(this).parents('[data-linha-coleta]');
     var currentEvaluation = currentEvaluationDCA.Evaluation;
