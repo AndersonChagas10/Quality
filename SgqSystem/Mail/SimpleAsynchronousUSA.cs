@@ -108,7 +108,7 @@ namespace SgqSystem.Mail
             }
             catch (Exception ex)
             {
-                new CreateLog(new Exception("Erro no metodo [SendEmailUSA]", ex));
+                LogSystem.LogErrorBusiness.Register(new Exception("Erro no metodo [SendEmailUSA]", ex));
                 //throw ex;
             }
 
@@ -291,11 +291,11 @@ namespace SgqSystem.Mail
                         erro += error.PropertyName + ": " + error.ErrorMessage + " ";
                     }
 
-                    new CreateLog(new Exception($"Ocorreu um erro em: [CreateMailSgqAppDeviationUSA] --- {erro} ---", e));
+                    LogSystem.LogErrorBusiness.Register(new Exception($"Ocorreu um erro em: [CreateMailSgqAppDeviationUSA] --- {erro} ---", e));
                 }
                 catch (Exception e)
                 {
-                    new CreateLog(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviationUSA] - " + e.ToClient(), e));
+                    LogSystem.LogErrorBusiness.Register(new Exception("Ocorreu um erro em: [CreateMailSgqAppDeviationUSA] - " + e.ToClient(), e));
                 }
             }
 
