@@ -74,6 +74,34 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [Route("GetTabelaUnidadesSeara")]
+        public List<RelatorioDeResultadoSearaResultsSet> GetTabelaUnidadesSeara([FromBody] DTO.DataCarrierFormularioNew form)
+        {
+            var query = new RelatorioDeResultadoSearaResultsSet().SelectUnidadesSeara(form);
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _listaGrafico = factory.SearchQuery<RelatorioDeResultadoSearaResultsSet>(query).ToList();
+
+                return _listaGrafico;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetPorcCTotal")]
+        public List<RelatorioDeResultadoSearaResultsSet> GetPorcCTotal([FromBody] DTO.DataCarrierFormularioNew form)
+        {
+            var query = new RelatorioDeResultadoSearaResultsSet().SelectPorcCTotalSeara(form);
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _listaGrafico = factory.SearchQuery<RelatorioDeResultadoSearaResultsSet>(query).ToList();
+
+                return _listaGrafico;
+            }
+        }
+
+        [HttpPost]
         [Route("GetRelatorioDeResultadoSeara")]
         public List<ApontamentosDiariosResultSet> GetRelatorioDeResultadoSeara([FromBody] DataCarrierFormularioNew form)
         {
