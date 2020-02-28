@@ -451,10 +451,10 @@
             $('#RGTarefasPivotTable').hide();
         }
 
-        function GetGraficoIndicadorDepartamento(unit, unit_Id) {
+        function GetGraficoIndicadorDepartamento(cargo, cargo_Id) {
             
-            //objFiltro.Param.unitName = unit;
-            //objFiltro.Param.unit_Id = unit_Id;
+            objFiltro.Param.cargo = cargo;
+            objFiltro.Param.cargo_Id = cargo_Id;
             $("#PanelFull0").hide();
             pathDirect = 1;
 
@@ -1650,7 +1650,7 @@
                 level2Id: objFiltro.Param.level2_Id,
                 level3Id: Ids[self.x],
                 ParDepartments_Hash: data,
-                ParCargo_Id: (objFiltro.parCargo_Ids && objFiltro.parCargo_Ids.length == 1) ? objFiltro.parCargo_Ids[0] : ""
+                ParCargo_Id: objFiltro.Param.cargo_Id
             };
 
             openFTA(objFTA);
