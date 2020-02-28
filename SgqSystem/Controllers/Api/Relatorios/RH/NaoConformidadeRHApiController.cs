@@ -276,6 +276,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	                SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
 	                FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	                INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
+	                LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
+                        AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
+                        AND CuboL3.Cargo_Id = PVP.ParCargo_Id
+                        AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 				    LEFT JOIN ParCluster PC WITH (NOLOCK) ON CuboL3.ParCluster_Id = PC.Id
 		            LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id
 					LEft Join (select * from ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
@@ -431,6 +435,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	                SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
 	                FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	                INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
+	                LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
+                        AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
+                        AND CuboL3.Cargo_Id = PVP.ParCargo_Id
+                        AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 				    LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		            LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
 					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
@@ -605,6 +613,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	                SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
 	                FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	                INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
+	                LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
+                        AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
+                        AND CuboL3.Cargo_Id = PVP.ParCargo_Id
+                        AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 				    LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		            LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
 	                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
@@ -633,6 +645,273 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             }
 
             return _list;
+        }
+
+        [HttpPost]
+        [Route("GraficoDepartamentosPai")]
+        public List<NaoConformidadeRHResultsSet> GraficoDepartamentosPai([FromBody] DTO.DataCarrierFormularioNew form)
+        {
+
+            var whereDepartment = "";
+            var whereSecao = "";
+            var whereCargo = "";
+            var whereStructure3 = "";
+            var whereUnit = "";
+            //var whereShift = "";
+            var whereCluster = "";
+            //var whereCriticalLevel = "";
+            var whereClusterGroup = "";
+
+            //var whereModulo = "";
+            var whereStructure2 = "";
+            //var whereCriticalLevel = "";
+            var whereParLevel1 = "";
+            var whereParLevel2 = "";
+            var whereParLevel3 = "";
+
+            if (form.ParDepartment_Ids.Length > 0)
+            {
+                whereDepartment = $@" AND CuboL3.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
+            }
+
+            if (form.ParSecao_Ids.Length > 0)
+            {
+                whereSecao = $@" AND CuboL3.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
+            }
+
+            if (form.ParCargo_Ids.Length > 0)
+            {
+                whereCargo = $@" AND CuboL3.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
+            }
+
+            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+            {
+                whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+            else
+            {
+                whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
+
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+            }
+
+            if (form.ParCluster_Ids.Length > 0)
+            {
+                whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
+            }
+
+            if (form.ParStructure3_Ids.Length > 0)
+            {
+                whereStructure3 = $@"AND CuboL3.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
+            }
+
+            if (form.ParStructureGroup_Ids.Length > 0)
+            {
+                whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({ string.Join(",", form.ParStructure2_Ids)}) --Grupo De Empresa";
+            }
+
+            if (form.ParLevel1_Ids.Length > 0)
+            {
+                whereParLevel1 = $"AND CuboL3.ParLevel1_Id in ({ string.Join(",", form.ParLevel1_Ids)}) --Indicador";
+            }
+
+            if (form.ParLevel2_Ids.Length > 0)
+            {
+                whereParLevel2 = $"AND CuboL3.ParLevel2_Id in ({ string.Join(",", form.ParLevel2_Ids)}) --Monitoramento";
+            }
+
+            if (form.ParLevel3_Ids.Length > 0)
+            {
+                whereParLevel3 = $"AND CuboL3.ParLevel3_Id in ({ string.Join(",", form.ParLevel3_Ids)}) --Tarefa";
+            }
+
+            var query = $@"
+             
+            DECLARE @DATAINICIAL DATETIME = '" + form.startDate.ToString("yyyy-MM-dd") + " 00:00:00" + $@"'
+                                                                                                                                                                                                                                            
+            DECLARE @DATAFINAL   DATETIME = '" + form.endDate.ToString("yyyy-MM-dd") + " 23:59:59" + $@"'
+                                                                          
+            SELECT 
+	            D.NAME AS DepartamentoPaiName,
+	            D.Id AS DepartamentoPai_Id,
+	            SUM(WeiEvaluation) AS AV,
+	            SUM(WeiDefects) AS NC,
+	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
+	            LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
+                        AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
+                        AND CuboL3.Cargo_Id = PVP.ParCargo_Id
+                        AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
+	            INNER JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
+	            INNER JOIN ParLevel2 M WITH (NOLOCK) ON CuboL3.Parlevel2_Id = M.ID
+				INNER JOIN ParDepartment D ON CuboL3.Centro_De_Custo_Id = D.ID
+				INNER JOIN ParCargo CG ON CuboL3.Cargo_Id = CG.ID
+				LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
+		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
+                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
+	            WHERE 1=1
+                AND CuboL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+                AND C.Name  = '{ form.Param["unitName"] }'
+                {whereStructure2}
+                {whereStructure3}
+                {whereUnit}
+                {whereDepartment}
+                {whereSecao}
+                {whereCargo}
+                {whereCluster}
+                {whereClusterGroup}
+                {whereParLevel1}
+                {whereParLevel2}
+                {whereParLevel3}
+                GROUP BY 
+	                D.NAME, D.Id
+                ORDER BY 4 DESC 
+            ";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<NaoConformidadeRHResultsSet>(query).ToList();
+            }
+
+            return _list;
+
+        }
+        [HttpPost]
+        [Route("GraficoCargos")]
+        public List<NaoConformidadeRHResultsSet> GraficoCargos([FromBody] DTO.DataCarrierFormularioNew form)
+        {
+
+            var whereDepartment = "";
+            var whereSecao = "";
+            var whereCargo = "";
+            var whereStructure3 = "";
+            var whereUnit = "";
+            var whereCluster = "";
+            var whereClusterGroup = "";
+            var whereStructure2 = "";
+            var whereParLevel1 = "";
+            var whereParLevel2 = "";
+            var whereParLevel3 = "";
+
+            if (form.ParDepartment_Ids.Length > 0)
+            {
+                whereDepartment = $@" AND CuboL3.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
+            }
+
+            if (form.ParSecao_Ids.Length > 0)
+            {
+                whereSecao = $@" AND CuboL3.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
+            }
+
+            if (form.ParCargo_Ids.Length > 0)
+            {
+                whereCargo = $@" AND CuboL3.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
+            }
+
+            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+            {
+                whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+            }
+            else
+            {
+                whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", GetUserUnitsIds(form.ShowUserCompanies)) }) ";
+            }
+
+            if (form.ParClusterGroup_Ids.Length > 0)
+            {
+                whereClusterGroup = $@"AND PCG.Id in (" + string.Join(",", form.ParClusterGroup_Ids) + ")";
+            }
+
+            if (form.ParCluster_Ids.Length > 0)
+            {
+                whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
+            }
+
+            if (form.ParStructure3_Ids.Length > 0)
+            {
+                whereStructure3 = $@"AND CuboL3.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
+            }
+
+            if (form.ParStructureGroup_Ids.Length > 0)
+            {
+                whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({ string.Join(",", form.ParStructure2_Ids)}) --Grupo De Empresa";
+            }
+
+            if (form.ParLevel1_Ids.Length > 0)
+            {
+                whereParLevel1 = $"AND CuboL3.ParLevel1_Id in ({ string.Join(",", form.ParLevel1_Ids)}) --Indicador";
+            }
+
+            if (form.ParLevel2_Ids.Length > 0)
+            {
+                whereParLevel2 = $"AND CuboL3.ParLevel2_Id in ({ string.Join(",", form.ParLevel2_Ids)}) --Monitoramento";
+            }
+
+            if (form.ParLevel3_Ids.Length > 0)
+            {
+                whereParLevel3 = $"AND CuboL3.ParLevel3_Id in ({ string.Join(",", form.ParLevel3_Ids)}) --Tarefa";
+            }
+
+            var query = $@"
+             
+            DECLARE @DATAINICIAL DATETIME = '" + form.startDate.ToString("yyyy-MM-dd") + " 00:00:00" + $@"'
+                                                                                                                                                                                                                                            
+            DECLARE @DATAFINAL   DATETIME = '" + form.endDate.ToString("yyyy-MM-dd") + " 23:59:59" + $@"'
+                                                                          
+            SELECT 
+	            CG.NAME AS CargoName,
+	            CG.Id AS Cargo_Id,
+	            SUM(WeiEvaluation) AS AV,
+	            SUM(WeiDefects) AS NC,
+	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
+	            LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
+                        AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
+                        AND CuboL3.Cargo_Id = PVP.ParCargo_Id
+                        AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
+	            INNER JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
+	            INNER JOIN ParLevel2 M WITH (NOLOCK) ON CuboL3.Parlevel2_Id = M.ID
+				INNER JOIN ParDepartment D ON CuboL3.Centro_De_Custo_Id = D.ID
+                INNER JOIN ParDepartment D1 ON CuboL3.Secao_Id = D1.ID
+				INNER JOIN ParCargo CG ON CuboL3.Cargo_Id = CG.ID
+				LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
+		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
+                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
+	            WHERE 1=1
+                AND CuboL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+                AND D1.Id  = '{ form.Param["department_Id"] }'
+                {whereStructure2}
+                {whereStructure3}
+                {whereUnit}
+                {whereDepartment}
+                {whereSecao}
+                {whereCargo}
+                {whereCluster}
+                {whereClusterGroup}
+                {whereParLevel1}
+                {whereParLevel2}
+                {whereParLevel3}
+                GROUP BY 
+	                 CG.NAME, CG.Id
+                ORDER BY 4 DESC 
+            ";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<NaoConformidadeRHResultsSet>(query).ToList();
+            }
+
+            return _list;
+
         }
 
         [HttpPost]
@@ -754,6 +1033,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
 	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
+	            LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
+                        AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
+                        AND CuboL3.Cargo_Id = PVP.ParCargo_Id
+                        AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 	            INNER JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
 	            INNER JOIN ParLevel2 M WITH (NOLOCK) ON CuboL3.Parlevel2_Id = M.ID
 				INNER JOIN ParDepartment D ON CuboL3.Centro_De_Custo_Id = D.ID
@@ -766,7 +1049,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
 	            WHERE 1=1
                 AND CuboL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                AND C.Name  = '{ form.Param["unitName"] }'
+                AND D.Name  = '{ form.Param["departmentPaiName"] }'
                 {whereStructure2}
                 {whereStructure3}
                 {whereUnit}
@@ -1431,6 +1714,10 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            INNER JOIN ParLevel1 L WITH (NOLOCK)  ON CuboL3.Parlevel1_Id = L.ID
 	            INNER JOIN ParDepartment D WITH (NOLOCK) ON CuboL3.Secao_Id = D.Id
+	            LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
+                        AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
+                        AND CuboL3.Cargo_Id = PVP.ParCargo_Id
+                        AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 				LEFT JOIN ParCluster PC  ON CuboL3.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
                 LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
@@ -1438,7 +1725,8 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
 	            WHERE 1=1
 	            AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-		        AND C.Name = '{form.Param["unitName"] }'
+		        AND D.Id = '{form.Param["department_Id"] }'
+		        AND C.Id = '{form.Param["unit_Id"] }'
                 {whereStructure2}
                 {whereStructure3}
                 {whereUnit}
@@ -1868,6 +2156,10 @@ DROP TABLE #AMOSTRATIPO4 ";
 	            INNER JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
 	            INNER JOIN ParLevel2 M WITH (NOLOCK) ON CuboL3.Parlevel2_Id = M.ID
 	            INNER JOIN ParDepartment D WITH (NOLOCK) ON CuboL3.Secao_Id = D.ID
+	            LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
+                        AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
+                        AND CuboL3.Cargo_Id = PVP.ParCargo_Id
+                        AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 				LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
                 LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
@@ -1875,8 +2167,9 @@ DROP TABLE #AMOSTRATIPO4 ";
 				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
 	            WHERE 1=1
                 AND CuboL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-                AND (C.Name = '{form.Param["unitName"] }' OR C.Initials = '{ form.Param["unitName"] }')
-                AND L.Name = '{form.Param["level1Name"]}' 
+                AND C.Id = '{form.Param["unit_Id"] }' 
+                AND L.Id = '{form.Param["level1_Id"] }' 
+                AND D.Id = '{form.Param["department_Id"]}'
                 {whereStructure2}
                 {whereStructure3}
                 {whereUnit}
@@ -2010,8 +2303,12 @@ DROP TABLE #AMOSTRATIPO4 ";
 				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
 				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
 	            WHERE 1=1
-                 AND L.Name IN ('{ form.Param["level1Name"] }') 
-                 AND C.Name = '{ form.Param["unitName"] }'
+                -- AND L.Name IN ('{ form.Param["level1Name"] }') 
+                -- AND C.Name = '{ form.Param["unitName"] }'
+
+                 AND L.Id = '{ form.Param["level1_Id"] }'
+                 AND C.Id = '{ form.Param["unit_Id"] }'
+				 AND D.Id = '{ form.Param["department_Id"] }'
                  AND CollectionDate BETWEEN '{ form.startDate.ToString("yyyy-MM-dd") }' AND '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
                 {whereStructure2}
                 {whereStructure3}
@@ -2156,15 +2453,20 @@ DROP TABLE #AMOSTRATIPO4 ";
 	            INNER JOIN ParLevel2 M WITH (NOLOCK) ON CuboL3.Parlevel2_Id = M.ID
 	            INNER JOIN ParLevel3 T WITH (NOLOCK) ON CuboL3.Parlevel3_Id = T.ID
 	            INNER JOIN ParDepartment D WITH (NOLOCK) ON CuboL3.Secao_Id = D.ID
+	            LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
+                        AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
+                        AND CuboL3.Cargo_Id = PVP.ParCargo_Id
+                        AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 				LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
                 LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
 				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
 				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
 	            WHERE 1=1
-                AND L.Name IN ('{ form.Param["level1Name"] }') 
-                AND M.Name = '{ form.Param["level2Name"] }'
-                AND C.Name = '{ form.Param["unitName"] }'
+                AND L.Id = '{form.Param["level1_Id"]}' 
+                AND M.Id = '{form.Param["level2_Id"]}'
+                AND C.Id = '{form.Param["unit_Id"]}'
+                AND D.Id = '{form.Param["department_Id"]}'
                 AND CollectionDate BETWEEN '{ form.startDate.ToString("yyyy-MM-dd") }' AND '{ form.endDate.ToString("yyyy-MM-dd") } 23:59:59'
                 {whereDepartment}
                 {whereCluster}
@@ -2541,6 +2843,10 @@ public class NaoConformidadeRHResultsSet
     public string RegionalName { get; set; }
     public string DepartamentoName { get; set; }
     public string Departamento_Id { get; set; }
+    public string DepartamentoPaiName { get; set; }
+    public string DepartamentoPai_Id { get; set; }
+    public string CargoName { get; set; }
+    public string Cargo_Id { get; set; }
     public string Unidade_Id { get; set; }
     public string UnidadeName { get; set; }
     public string Monitoramento_Id { get; set; }
