@@ -254,9 +254,44 @@ namespace SgqSystem.Services
                     outerhtml +
                     "</ul>";
         }
-        public string listgroupItem(string id = null, string classe = null, string tags = null, string outerhtml = null, string totalDefeitos = null)
+
+        public string listgroupItemDIV(string id = null, string classe = null, string tags = null, string outerhtml = null, string totalDefeitos = null, bool inicioGrupo = false, bool fimGrupo = false, bool fimFinalGrupo = false, string Grupo = "" )
         {
             classe += " list-group-item";
+
+            var fim = "";
+            var fimFinal = "";
+            var inicio = "";
+
+            if (inicioGrupo)
+            {
+                
+                inicio = @" <div class='accordion' id='accordionExample" + id + @"'>
+                  <div class='card z-depth-0 bordered'>
+                    <div class='card-header' id='headingThree" + id + @"'>
+                      <h5 class='row list-group-item'>
+                        <button class='btn btn-link collapsed' type='button' data-toggle='collapse'
+                          data-target='#collapseThree" + id + @"' aria-expanded='false' aria-controls='collapseThree" + id + @"'>" +
+                                      Grupo +
+                                      @"
+                        </button>
+                      </h5>
+                    </div>
+                    <div id = 'collapseThree" + id + @"' class='collapse' aria-labelledby='headingThree" + id + @"' data-parent='#accordionExample" + id + @"'>
+                      <div class='card-body'>";
+            }
+
+            if (fimGrupo)
+            {
+                fim = " </div>    </div>  </div>  </div> ";
+            }
+
+            if (fimFinalGrupo)
+            {
+                fimFinal = " </div>    </div>  </div>  </div> ";
+            }          
+
+            
 
             if (!string.IsNullOrEmpty(tags))
             {
@@ -264,7 +299,54 @@ namespace SgqSystem.Services
                 tags = tags.Trim();
             }
 
-            return "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='" + totalDefeitos + "'>" + outerhtml + "</li>";
+            return fim + inicio + "<div id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='" + totalDefeitos + "'>" + outerhtml + "</div>" + fimFinal;
+        }
+
+        public string listgroupItem(string id = null, string classe = null, string tags = null, string outerhtml = null, string totalDefeitos = null, bool inicioGrupo = false, bool fimGrupo = false, bool fimFinalGrupo = false, string Grupo = "")
+        {
+            classe += " list-group-item";
+
+            var fim = "";
+            var fimFinal = "";
+            var inicio = "";
+
+            if (inicioGrupo)
+            {
+
+                inicio = @" <div class='accordion' id='accordionExample" + id + @"'>
+                  <div class='card z-depth-0 bordered'>
+                    <div class='card-header' id='headingThree" + id + @"'>
+                      <h5 class='row list-group-item'>
+                        <button class='btn btn-link collapsed' type='button' data-toggle='collapse'
+                          data-target='#collapseThree" + id + @"' aria-expanded='false' aria-controls='collapseThree" + id + @"'>" +
+                                      Grupo +
+                                      @"
+                        </button>
+                      </h5>
+                    </div>
+                    <div id = 'collapseThree" + id + @"' class='collapse' aria-labelledby='headingThree" + id + @"' data-parent='#accordionExample" + id + @"'>
+                      <div class='card-body'>";
+            }
+
+            if (fimGrupo)
+            {
+                fim = " </div>    </div>  </div>  </div> ";
+            }
+
+            if (fimFinalGrupo)
+            {
+                fimFinal = " </div>    </div>  </div>  </div> ";
+            }
+
+
+
+            if (!string.IsNullOrEmpty(tags))
+            {
+                tags = " " + tags;
+                tags = tags.Trim();
+            }
+
+            return fim + inicio + "<li id=\"" + id + "\" class=\"" + classe.Trim() + "\"" + tags + " totalDefeitos='" + totalDefeitos + "'>" + outerhtml + "</li>" + fimFinal;
         }
 
         public string accordeon(string id, string label, string classe = null, string outerhtml = null, bool aberto = false, bootstrapcolor? color = null, string accordeonId = "", string othersTags = null)
@@ -580,8 +662,8 @@ namespace SgqSystem.Services
                              int RuleId = 0, string RuleValue = null, decimal AlertValue = 0, int ParFrequency_Id = 0,
                              bool HasTakePhoto = false,
                              //Frequencia
-                             string FrequenciaTipo = "", string FrequenciaValor = "",
-                             string FrequenciaMensagemInativo = "")
+                             string FrequenciaTipo = "", string FrequenciaValor = "", 
+                             string FrequenciaMensagemInativo = "", string Departamento ="")
         {
 
             string tagLevel1Group = null;
@@ -635,10 +717,7 @@ namespace SgqSystem.Services
             if (parLevel3.ParLevel3InputType_Id == 11)
                 peso = "0";
 
-            string tags = " weight=\"" + peso + "\" intervalmin=\"" + parLevel3.IntervalMin.ToString().Replace(",", ".")
-                + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".")
-                + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id
-                + "\" hastakephoto=\"" + parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
+            string tags = " weight=\"" + peso + "\" IsKnockout=\"" + parLevel3.IsKnockout.ToString() + "\" intervalmin =\"" + parLevel3.IntervalMin.ToString().Replace(",", ".") + "\" intervalmax=\"" + parLevel3.IntervalMax.ToString().Replace(",", ".") + "\" weievaluation=\"0\" inputtype=\"" + parLevel3.ParLevel3InputType_Id + "\" hastakephoto=\"" + parLevel3.HasTakePhoto.ToString().ToLower() + "\"";
 
 
             //Gera o level3
@@ -743,10 +822,10 @@ namespace SgqSystem.Services
         public string level1(SGQDBContext.ParLevel1 ParLevel1, string tipoTela, int totalAvaliado, decimal totalDefeitos, decimal alertNivel1, decimal alertNivel2,
                              string alertaNivel3, int alertaAtual, int avaliacaoultimoalerta, int monitoramentoultimoalerta, decimal volumeAlertaIndicador, decimal metaIndicador,
                              decimal numeroAvaliacoes, decimal metaDia, decimal metaTolerancia, decimal metaAvaliacao,
-                             bool IsLimitedEvaluetionNumber, IEnumerable<ParRelapse> listParRelapse, string ParCluster_Id)
+                             bool IsLimitedEvaluetionNumber, IEnumerable<ParRelapse> listParRelapse, string ParCluster_Id, bool DisparaAlerta)
         {
 
-            StringBuilder tags = new StringBuilder("parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\" editlevel2=\"" + ParLevel1.EditLevel2.ToString().ToLower() + "\" hastakephoto=\"" + ParLevel1.HasTakePhoto.ToString().ToLower() + "\" ParCluster_Id=\"" + ParCluster_Id + "\"");
+            StringBuilder tags = new StringBuilder("parconsolidationtype_id=\"" + ParLevel1.ParConsolidationType_Id + "\" parfrequency_id=\"" + ParLevel1.ParFrequency_Id + "\" hasalert=\"" + ParLevel1.HasAlert.ToString().ToLower() + "\" isspecific=\"" + ParLevel1.IsSpecific.ToString().ToLower() + "\" totalavaliado=\"" + totalAvaliado + "\" totaldefeitos=\"" + totalDefeitos + "\" volumeAlertaIndicador=\"" + volumeAlertaIndicador + "\" metaIndicador=\"" + metaIndicador + "\" numeroAvaliacoes=\"" + numeroAvaliacoes + "\" metaDia=\"" + metaDia + "\" metaTolerancia=\"" + metaTolerancia + "\" metaAvaliacao=\"" + metaAvaliacao + "\" alertanivel1=\"" + alertNivel1 + "\" alertanivel2=\"" + alertNivel2 + "\" alertanivel3=\"" + alertaNivel3 + "\" alertaatual=\"" + alertaAtual + "\" avaliacaoultimoalerta=\"" + avaliacaoultimoalerta + "\" monitoramentoultimoalerta=\"" + monitoramentoultimoalerta + "\" av=\"0\" avdb=\"0\" ncdb=\"0\" avlocal=\"0\" nclocal=\"0\" nc=\"0\" haverealtimeconsolidation=\"" + ParLevel1.haveRealTimeConsolidation.ToString().ToLower() + "\" realtimeconsolitationupdate=\"" + ParLevel1.RealTimeConsolitationUpdate + "\" islimitedevaluetionnumber=\"" + ParLevel1.IsLimitedEvaluetionNumber.ToString().ToLower() + "\" hashkey=\"" + ParLevel1.hashKey + "\" ispartialsave=\"" + ParLevel1.IsPartialSave.ToString().ToLower() + "\" hascompleteevaluation=\"" + ParLevel1.HasCompleteEvaluation.ToString().ToLower() + "\" hasgrouplevel2=\"" + ParLevel1.HasGroupLevel2.ToString().ToLower() + "\" reaudit=\"" + ParLevel1.IsReaudit.ToString().ToLower() + "\" editlevel2=\"" + ParLevel1.EditLevel2.ToString().ToLower() + "\" hastakephoto=\"" + ParLevel1.HasTakePhoto.ToString().ToLower() + "\" ParCluster_Id=\"" + ParCluster_Id + "\" DisparaAlerta=\"" + DisparaAlerta + "\"");
 
             string btnReaudit = button(Resources.Resource.reaudit, type.submit, "", classe: "btn-primary pull-right btnReaudit btn-sm hide", style: "margin-left: 4px;");
             string btnCA = button(Resources.Resource.corrective_action, type.submit, "", classe: "btn-danger pull-right btnCALevel1 btn-sm hide");

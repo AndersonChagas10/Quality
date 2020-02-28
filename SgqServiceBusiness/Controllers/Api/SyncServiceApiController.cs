@@ -51,7 +51,7 @@ namespace SgqServiceBusiness.Api
 
         }
 
-        public static List<ParFrequency> parFrequency { get; set; } 
+        public static List<ParFrequency> parFrequency { get; set; }
 
         #region Funções
 
@@ -1316,14 +1316,14 @@ namespace SgqServiceBusiness.Api
 
                         var isRecravacao = new SGQDBContext.ParLevel1(db, quebraProcesso).getById(c.level01_Id).IsRecravacao == true;
 
-                        if (IsBEA == 3 
+                        if (IsBEA == 3
                             || IsBEA == 2
                             || isRecravacao
                             || c.level01_Id == 43
                             || c.level01_Id == 42
                             || c.level01_Id == 7
                             || c.level01_Id == 90
-                            || (c.Unit_Id == 4 && c.level01_Id == 22) 
+                            || (c.Unit_Id == 4 && c.level01_Id == 22)
                             || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
                             ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
@@ -5232,7 +5232,7 @@ namespace SgqServiceBusiness.Api
             htmlSelect += $@"<option value='0'> Selecione </option>";
             foreach (var item in usuariosSupervisor)
             {
-                htmlSelect += $@"<option value='{item.Id}'> {item.Name} </option>"; 
+                htmlSelect += $@"<option value='{item.Id}'> {item.Name} </option>";
             }
 
             string correctiveAction =
@@ -5280,11 +5280,11 @@ namespace SgqServiceBusiness.Api
                                     "<label>" + CommonData.getResource("product_disposition").Value.ToString() + ":</label>" +
                                     "<textarea id=\"ProductDisposition\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>";
-                                //"<div class=\"form-group\">" +
-                                //    "<label>" + CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
-                                //    "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
-                                //"</div>" +
-                                
+            //"<div class=\"form-group\">" +
+            //    "<label>" + CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
+            //    "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+            //"</div>" +
+
 
             if (GlobalConfig.Eua)
             {
@@ -5310,7 +5310,7 @@ namespace SgqServiceBusiness.Api
             }
             else
             {
-                correctiveAction +=$@"<div class='form-group'>
+                correctiveAction += $@"<div class='form-group'>
                                         <label>{CommonData.getResource("corrective_action").Value.ToString()}:</label>
                                         <div>
 		                                    <input type='checkbox' id='correctiveAction'>
@@ -5585,6 +5585,17 @@ namespace SgqServiceBusiness.Api
                                     meta = alertas.Meta;
                                 }
                             }
+                            else if (tipoAlerta == 7)  //reincidenciaKOAmostras
+                            {
+                                if (alertas != null)
+                                {
+                                    alertaNivel1 = valorAlerta;
+                                    alertaNivel2 = valorAlerta;
+                                    alertaNivel3 = "a7";
+                                    volumeAlerta = alertas.VolumeAlerta;
+                                    meta = alertas.Meta;
+                                }
+                            }
                             else
                             {
                                 if (alertas != null) //Fica como padrão JBS por indicador
@@ -5632,7 +5643,8 @@ namespace SgqServiceBusiness.Api
                                                          metaIndicador: meta,
                                                          IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber,
                                                          listParRelapse: listParRelapse,
-                                                         ParCluster_Id: parlevel1.ParCluster_Id.ToString());
+                                                         ParCluster_Id: parlevel1.ParCluster_Id.ToString(),
+                                                         DisparaAlerta: parlevel1.DisparaAlerta);
                             //Incrementa level1
                             parLevel1.Append(html.listgroupItem(parlevel1.Id.ToString(), classe: "row " + excecao, outerhtml: level01 + painelCounters));
                         }
@@ -5896,7 +5908,7 @@ namespace SgqServiceBusiness.Api
             var countDepto = 0;
             var listaParLevel1ParaAgrupar = (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.parLevel1ComAgrupamentoPorDepartamentoNaColeta as string)?.Split('|').ToList();
 
-            if (listaParLevel1ParaAgrupar.Contains(ParLevel1.ParLevel1_Id.ToString()))
+            if (GlobalConfig.Eua || listaParLevel1ParaAgrupar.Contains(ParLevel1.ParLevel1_Id.ToString()))
             {
                 foreach (var parlevel2count in parlevel02List) //LOOP3
                 {
@@ -5910,7 +5922,7 @@ namespace SgqServiceBusiness.Api
             #endregion
 
             //Enquando houver lista de level2
-            foreach (var parlevel2 in parlevel02List.OrderBy(x=>x.Departamento)) //LOOP3
+            foreach (var parlevel2 in parlevel02List.OrderBy(x => x.Departamento)) //LOOP3
             {
                 string frequencia = "";
                 //Verifica se pega avaliações e amostras padrão ou da company
@@ -6128,7 +6140,8 @@ namespace SgqServiceBusiness.Api
                                             reaudit: parlevel2.IsReaudit,
                                             HasTakePhoto: parlevel2.HasTakePhoto,
                                             FrequenciaValor: frequencia,
-                                            FrequenciaMensagemInativo: "");
+                                            FrequenciaMensagemInativo: "",
+                                            Departamento: parlevel2.Departamento);
 
                 var listLineCounter = ParCounterDB.GetParLevelXParCounterList(null, parlevel2, 2);
 
@@ -6762,13 +6775,25 @@ namespace SgqServiceBusiness.Api
                                                 );
 
                 //string HeaderLevel02 = null;
-                painellevel3 = new StringBuilder(html.listgroupItem(
-                                                     outerhtml: avaliacoes +
-                                                                amostras +
-                                                                painelLevel3HeaderListHtml.ToString() +
-                                                                painelLevel3HeaderListHtml2,
+                if (GlobalConfig.Eua)
+                {
+                    painellevel3 = new StringBuilder(html.listgroupItemDIV(
+                                                         outerhtml: avaliacoes +
+                                                                    amostras +
+                                                                    painelLevel3HeaderListHtml.ToString() +
+                                                                    painelLevel3HeaderListHtml2,
+                                                                    classe: "painel painelLevel03 row"));
+                }
+                else
+                {
+                    painellevel3 = new StringBuilder(html.listgroupItem(
+                                                         outerhtml: avaliacoes +
+                                                                    amostras +
+                                                                    painelLevel3HeaderListHtml.ToString() +
+                                                                    painelLevel3HeaderListHtml2,
+                                                                    classe: "painel painelLevel03 row"));
+                }
 
-                                        classe: "painel painelLevel03 row"));
                 painellevel3.Append(html.painelCounters(listCounter));
                 //          +
                 //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
@@ -7005,12 +7030,23 @@ namespace SgqServiceBusiness.Api
                 //Painel
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
-                painellevel3 = new StringBuilder(html.listgroupItem(
+                if (GlobalConfig.Eua)
+                {
+                    painellevel3 = new StringBuilder(html.listgroupItemDIV(
+                                        outerhtml: avaliacoes +
+                                                   amostras +
+                                                   painelLevel3HeaderListHtml,
+                                                    classe: "painel painelLevel03 row"));
+
+                }
+                else
+                {
+                    painellevel3 = new StringBuilder(html.listgroupItem(
                                                             outerhtml: avaliacoes +
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
-
-                                               classe: "painel painelLevel03 row"));
+                                                                       classe: "painel painelLevel03 row"));
+                }
 
                 painellevel3.Append(html.painelCounters(listCounter));
                 //+
@@ -7153,9 +7189,19 @@ namespace SgqServiceBusiness.Api
                                     style: "padding-right: 4px !important; padding-left: 4px !important;",
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2 hide");
 
-                painellevel3 = new StringBuilder(html.listgroupItem(
-                                                            outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
-                                               classe: "painel painelLevel03 row"));
+                if (GlobalConfig.Eua)
+                {
+
+                    painellevel3 = new StringBuilder(html.listgroupItemDIV(
+                                                                outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
+                                                   classe: "painel painelLevel03 row"));
+                }
+                else
+                {
+                    painellevel3 = new StringBuilder(html.listgroupItem(
+                                                                outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
+                                                   classe: "painel painelLevel03 row"));
+                }
 
                 painellevel3.Append(html.painelCounters(listCounter));
                 //+
@@ -7358,12 +7404,25 @@ namespace SgqServiceBusiness.Api
                     }
                 }
 
-                painellevel3 = new StringBuilder(html.listgroupItem(outerhtml: avaliacoes +
-                                                             amostras +
-                                                             defeitos +
-                                                             frequency +
-                                                             painelLevel3HeaderListHtml.ToString(),
-                                                  classe: "painel painelLevel03 row"));
+                if (GlobalConfig.Eua)
+                {
+                    painellevel3 = new StringBuilder(html.listgroupItemDIV(outerhtml: avaliacoes +
+                                                        amostras +
+                                                        defeitos +
+                                                        painelLevel3HeaderListHtml.ToString(),
+                                             classe: "painel painelLevel03 row"));
+
+                }
+                else
+                {
+                    painellevel3 = new StringBuilder(html.listgroupItem(outerhtml: avaliacoes +
+                                                                 amostras +
+                                                                 defeitos +
+                                                                 frequency +
+                                                                 painelLevel3HeaderListHtml.ToString(),
+                                                      classe: "painel painelLevel03 row"));
+                }
+
                 painellevel3.Append(html.painelCounters(listCounter));
 
                 //html.div(outerhtml: "teste", classe: "painel counters row", style: "background-color: #ff0000");
@@ -7956,7 +8015,6 @@ namespace SgqServiceBusiness.Api
             var arrayDeviations = deviations.Split('&');
 
 
-            List<SqlCommand> sql = new List<SqlCommand>();
             for (int i = 0; i < arrayDeviations.Length; i++)
             {
                 string[] deviation = arrayDeviations[i].Split(';');
@@ -7995,7 +8053,78 @@ namespace SgqServiceBusiness.Api
                 if (VerificaStringNulaUndefinedNaN(defects))
                     defects = "0";
 
-                var query = $@"INSERT INTO Deviation ([ParCompany_Id],
+                if (GlobalConfig.Eua)
+                {
+                    string sql = "";
+                    try
+                    {
+                        if (deviation.Count() < 10)
+                        {
+                            sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage]) " +
+                                    "VALUES " +
+                                    "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd HH:mm:ss") + "' , GetDate(), 0, " + HttpUtility.UrlDecode(deviationMessage) + ") ";
+                        }
+                        else
+                        {
+                            string deviation_period = deviation[9];
+                            string deviation_shift = deviation[10];
+                            string deviation_collectiondate = deviation[11];
+
+
+                            sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage],[Period],[Shift],[CollectionDate]) " +
+                                    "VALUES " +
+                                    "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd HH:mm:ss") + "' , GetDate(), 0, " + HttpUtility.UrlDecode(deviationMessage) + ", '" + deviation_period + "', '" + deviation_shift + "', '" + deviation_collectiondate + "') ";
+                        }
+
+
+
+                        string conexao = this.conexao;
+                        using (SqlConnection connection = new SqlConnection(conexao))
+                        {
+                            using (SqlCommand command = new SqlCommand(sql, connection))
+                            {
+                                connection.Open();
+                                var j = Convert.ToInt32(command.ExecuteNonQuery());
+                                //Se o registro for inserido retorno o Id da Consolidação
+                                if (j > 0)
+                                {
+                                    return null;
+                                }
+                                else
+                                {
+                                    //Caso ocorra algum erro, retorno zero
+                                    return null;
+                                }
+                            }
+                        }
+                    }
+                    //Caso ocorra alguma Exception, grava o log e retorna zero
+                    catch (SqlException ex)
+                    {
+                        /**
+                         * GABRIEL NUNES VOLTOU TIROU O LOG PARA MELHRAR PERFORMANCE
+                         * DATE 2017-07-27
+                         */
+                        int insertLog = insertLogJson(sql.ToString(), ex.Message, "N/A", "N/A", "insertDeviation");
+                        return "error";
+                    }
+                    catch (Exception ex)
+                    {
+                        /**
+                        * GABRIEL NUNES VOLTOU TIROU O LOG PARA MELHRAR PERFORMANCE
+                        * DATE 2017-07-27
+                        */
+                        int insertLog = insertLogJson(sql.ToString(), ex.Message, "N/A", "N/A", "insertDeviation");
+                        return "error";
+                    }
+
+                }
+                else
+                {
+                    List<SqlCommand> sql = new List<SqlCommand>();
+                    try
+                    {
+                        var query = $@"INSERT INTO Deviation ([ParCompany_Id],
                     [ParLevel1_Id],
                     [ParLevel2_Id],
                     [Evaluation],
@@ -8019,70 +8148,69 @@ namespace SgqServiceBusiness.Api
                     0,
                     @DeviationMessage)";
 
-                string conexao = this.conexao;
+                        string conexao = this.conexao;
 
-                using (SqlCommand cmd = new SqlCommand(query, new SqlConnection(conexao)))
-                {
-                    cmd.CommandType = CommandType.Text;
-                    cmd.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
-                    cmd.Parameters.Add(new SqlParameter("@ParLevel1_Id", ParLevel1_Id));
-                    cmd.Parameters.Add(new SqlParameter("@ParLevel2_Id", ParLevel2_Id));
-                    cmd.Parameters.Add(new SqlParameter("@Evaluation", Evaluation));
-                    cmd.Parameters.Add(new SqlParameter("@Sample", Sample));
-                    cmd.Parameters.Add(new SqlParameter("@AlertNumber", alertNumber));
-                    cmd.Parameters.Add(new SqlParameter("@Defects", defects));
-                    cmd.Parameters.Add(new SqlParameter("@Dt", dt.ToString("yyyyMMdd HH:mm:ss")));
-                    cmd.Parameters.Add(new SqlParameter("@DeviationMessage", HttpUtility.UrlDecode(deviationMessage)));
+                        using (SqlCommand cmd = new SqlCommand(query, new SqlConnection(conexao)))
+                        {
+                            cmd.CommandType = CommandType.Text;
+                            cmd.Parameters.Add(new SqlParameter("@ParCompany_Id", ParCompany_Id));
+                            cmd.Parameters.Add(new SqlParameter("@ParLevel1_Id", ParLevel1_Id));
+                            cmd.Parameters.Add(new SqlParameter("@ParLevel2_Id", ParLevel2_Id));
+                            cmd.Parameters.Add(new SqlParameter("@Evaluation", Evaluation));
+                            cmd.Parameters.Add(new SqlParameter("@Sample", Sample));
+                            cmd.Parameters.Add(new SqlParameter("@AlertNumber", alertNumber));
+                            cmd.Parameters.Add(new SqlParameter("@Defects", defects));
+                            cmd.Parameters.Add(new SqlParameter("@Dt", dt.ToString("yyyyMMdd HH:mm:ss")));
+                            cmd.Parameters.Add(new SqlParameter("@DeviationMessage", HttpUtility.UrlDecode(deviationMessage)));
 
-                    sql.Add(cmd);
-                }
+                            sql.Add(cmd);
+                        }
 
-            }
+                        foreach (var command in sql)
+                        {
 
-            try
-            {
+                            command.Connection.Open();
 
-                foreach (var command in sql)
-                {
+                            var j = Convert.ToInt32(command.ExecuteNonQuery());
+                            //Se o registro for inserido retorno o Id da Consolidação
+                            if (j > 0)
+                            {
+                                return null;
+                            }
+                            else
+                            {
+                                //Caso ocorra algum erro, retorno zero
+                                return null;
+                            }
 
-                    command.Connection.Open();
+                        }
 
-                    var i = Convert.ToInt32(command.ExecuteNonQuery());
-                    //Se o registro for inserido retorno o Id da Consolidação
-                    if (i > 0)
-                    {
                         return null;
                     }
-                    else
+                    //Caso ocorra alguma Exception, grava o log e retorna zero
+                    catch (SqlException ex)
                     {
-                        //Caso ocorra algum erro, retorno zero
-                        return null;
+                        /**
+                         * GABRIEL NUNES VOLTOU TIROU O LOG PARA MELHRAR PERFORMANCE
+                         * DATE 2017-07-27
+                         */
+                        int insertLog = insertLogJson(sql.ToString(), ex.Message, "N/A", "N/A", "insertDeviation");
+                        return "error";
                     }
-
+                    catch (Exception ex)
+                    {
+                        /**
+                        * GABRIEL NUNES VOLTOU TIROU O LOG PARA MELHRAR PERFORMANCE
+                        * DATE 2017-07-27
+                        */
+                        int insertLog = insertLogJson(sql.ToString(), ex.Message, "N/A", "N/A", "insertDeviation");
+                        return "error";
+                    }
                 }
-
-                return null;
             }
-            //Caso ocorra alguma Exception, grava o log e retorna zero
-            catch (SqlException ex)
-            {
-                /**
-                 * GABRIEL NUNES VOLTOU TIROU O LOG PARA MELHRAR PERFORMANCE
-                 * DATE 2017-07-27
-                 */
-                int insertLog = insertLogJson(sql.ToString(), ex.Message, "N/A", "N/A", "insertDeviation");
-                return "error";
-            }
-            catch (Exception ex)
-            {
-                /**
-                * GABRIEL NUNES VOLTOU TIROU O LOG PARA MELHRAR PERFORMANCE
-                * DATE 2017-07-27
-                */
-                int insertLog = insertLogJson(sql.ToString(), ex.Message, "N/A", "N/A", "insertDeviation");
-                return "error";
-            }
+            return null;
         }
+
 
         public string sendEmailAlerta()
         {
@@ -8300,7 +8428,7 @@ namespace SgqServiceBusiness.Api
                 var dataLiberacao = "";
                 if (!string.IsNullOrEmpty(datetimeTechinicalHour))
                 {
-                     dataLiberacao = DateTimeTechinical.Replace(DateTimeTechinical.Split(' ')[1], datetimeTechinicalHour);
+                    dataLiberacao = DateTimeTechinical.Replace(DateTimeTechinical.Split(' ')[1], datetimeTechinicalHour);
                 }
                 //inserir a acção corretiva com processo
 
@@ -8350,7 +8478,8 @@ namespace SgqServiceBusiness.Api
                 PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
                 phpDebug = 18;
 
-                if(!string.IsNullOrEmpty(dataLiberacao)){
+                if (!string.IsNullOrEmpty(dataLiberacao))
+                {
                     DateTimeTechinical = dataLiberacao;
                 }
                 int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure,
@@ -8405,9 +8534,9 @@ namespace SgqServiceBusiness.Api
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson("", "PHPDebug="+ phpDebug + " | " + ex.Message, "N/A", "N/A", "InsertCorrectiveAction");
+                int insertLog = insertLogJson("", "PHPDebug=" + phpDebug + " | " + ex.Message, "N/A", "N/A", "InsertCorrectiveAction");
 
-                return "erro="+ phpDebug;
+                return "erro=" + phpDebug;
                 throw ex;
             }
         }

@@ -77,9 +77,10 @@
                 var editado = crudNxN.retornaObjetoAlteradoRegraNc(obj);
                 $(e).parents('tr').removeData();
                 $(e).parents('tr').data(editado);
-                $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name);
-                $($(e).parents('tr').find('td')[1]).html(editado.Value);
-                $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable);
+                $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name)
+                $($(e).parents('tr').find('td')[1]).html(editado.Value)
+                $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable)
+                $($(e).parents('tr').find('td')[3]).html(editado.CorrectiveActionShowTable)
                 $('#crudNxNEdit').modal('hide');
             });
         }
@@ -162,15 +163,17 @@
         $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
 
         $('#crudNxNEdit #selectNotConformityRule').val(obj.ParNotConformityRule_Id);/*Preenche*/
-        $("#crudNxNEdit .check-box").bootstrapSwitch('state', obj.IsReaudit);
+        $("#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch('state', obj.IsReaudit);
+        $("#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_CorrectiveAction").bootstrapSwitch('state', obj.CorrectiveAction);
         $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val(obj.Value);
         $('#crudNxNEdit button').not('#save').not('.close').not('.btn-default').remove();
+
         $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit").bootstrapSwitch();
+        $("#paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_CorrectiveAction").bootstrapSwitch();
 
     },
     retornaObjetoAlteradoRegraNc: function (obj) {
-        /*Valida se pode criar o objeto*/      
-
+        /*Valida se pode criar o objeto*/  
         if ($('#crudNxNEdit #selectNotConformityRule :selected').val() <= 0) {
             alert("Por favor Selecione Regra de Não conformidade.");
             return;
@@ -184,8 +187,10 @@
         obj.ParNotConformityRule_Id = $('#crudNxNEdit #selectNotConformityRule :selected').val();
         obj.ParNotConformityRule_Name = $('#crudNxNEdit #selectNotConformityRule :selected').text();
         obj.Value = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val();
-        obj.IsReaudit = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked");
-        obj.IsReauditShowTable = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não";
+        obj.IsReaudit                 = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked");
+        obj.IsReauditShowTable        = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "Sim" : "Não";
+        obj.CorrectiveAction          = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_CorrectiveAction').is(":checked");
+        obj.CorrectiveActionShowTable = $('#crudNxNEdit #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_CorrectiveAction').is(":checked") ? "Sim" : "Não";
 
         return obj;
     },

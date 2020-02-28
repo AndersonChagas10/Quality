@@ -50,6 +50,10 @@ namespace Jobs
                     }
                     else if (GlobalConfig.Eua)
                     {
+                        SimpleAsynchronousUSA.CreateMailFromCorrectiveActionUSA();
+                        Thread.Sleep(new Random().Next(100, 500));
+                        SimpleAsynchronousUSA.CreateMailSgqAppDeviationUSA();
+                        Thread.Sleep(new Random().Next(100, 500));
                         SimpleAsynchronousUSA.SendMailUSA();
                     }
                 }

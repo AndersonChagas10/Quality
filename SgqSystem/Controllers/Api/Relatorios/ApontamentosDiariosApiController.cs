@@ -59,6 +59,23 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [Route("GetApontamentosDiariosUSA")]
+        public List<ApontamentosDiariosResultSet> GetApontamentosDiariosUSA([FromBody] FormularioParaRelatorioViewModel form)
+        {
+
+            CommonLog.SaveReport(form, "Report_Apontamentos_DiariosUSA");
+
+            var query = new ApontamentosDiariosResultSet().SelectUSA(form);
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<ApontamentosDiariosResultSet>(query).ToList();
+
+                return _list;
+            }
+        }
+
+        [HttpPost]
         [Route("GetApontamentosDiariosRH")]
         public List<ApontamentosDiariosResultSet> GetApontamentosDiariosRH([FromBody] DataCarrierFormularioNew form)
         {

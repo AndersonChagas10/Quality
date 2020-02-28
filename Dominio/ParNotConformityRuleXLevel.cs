@@ -29,6 +29,8 @@ namespace Dominio
 
         public bool IsActive { get; set; }
 
+        public bool? CorrectiveAction { get; set; }
+
         [ForeignKey("ParCompany_Id")]
         public virtual ParCompany ParCompany { get; set; }
 

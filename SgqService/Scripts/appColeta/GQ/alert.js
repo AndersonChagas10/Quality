@@ -2,6 +2,17 @@
 
 var defectsPerEvaluation = [];
 
+var listaDefeitos = [];
+
+function adicionaNaListaDeDefeitos(obj) {
+    if (listaDefeitos.length > 0) {
+        if (!!listaDefeitos[0].datetime && !!obj.datetime && listaDefeitos[0].datetime.substring(0, 10) != obj.datetime.substring(0, 10)) {
+            listaDefeitos = [];
+        }
+    }
+    listaDefeitos.push(obj);
+}
+
 
 /***********************************************************************************************
 INICIO DOS METODOS QUE GERAM ALERTA
@@ -83,7 +94,7 @@ setGravaAlerta()
 setEnviaEmail()
 */
 
-function setValoresLevel3Alertas(level3) {
+function setValoresLevel3Alertas(level3, level2Resultado) {
 
     var resultado = [];
 
@@ -95,7 +106,8 @@ function setValoresLevel3Alertas(level3) {
     //valor;
 
     //Trazer o tipo de input do level3
-    var inputType = parseInt($('.level3[id=' + level3.attr('level03id') + ']:visible').attr('inputtype'));
+    //var inputType = parseInt($('.level3[id=' + level3.attr('level03id') + ']:visible').attr('inputtype'));
+    var inputType = parseInt($('.level3[id=' + level3.attr('level03id') + ']').attr('inputtype'));
 
     /*****
     SE FOR CAMPO CALCULADO, PRECISAMOS REVERTER O VALOR PARA DECIMAL
@@ -358,6 +370,23 @@ function setValoresLevel3Alertas(level3) {
             break;
     }
 
+    if (defeitosPonderados > 0) {
+
+        adicionaNaListaDeDefeitos(
+            {
+                tipo: "defeito"
+                , parlevel1_id: level2Resultado.attr('level01id')
+                , parlevel2_id: level2Resultado.attr('level02id')
+                , datetime: level2Resultado.attr('datetime')
+                , shift: level2Resultado.attr('shift')
+                , period: level2Resultado.attr('period')
+                , sample: level2Resultado.attr('sample')
+                , evaluate: level2Resultado.attr('evaluate')
+                , parlevel3_id: level3.attr('level03id')
+                , isKO: $('#' + level3.attr('level03id') + '.level3:visible').attr('isknockout')
+            });
+    }
+
     resultado.push(avaliacoesPonderadas, avaliacoes, defeitos, defeitosPonderados, level3Avaliado, level3ComDefeitos);
 
     return resultado;
@@ -365,7 +394,9 @@ function setValoresLevel3Alertas(level3) {
 
 
 
-function setValoresLevel2Alertas(level1, level2, level2Result) {
+function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
+
+    var mensagemHtml = "";
 
     var totalAvaliacoesPonderadas = level2.attr('totalavaliacoesponderadas') != undefined ? parseFloat(level2.attr('totalavaliacoesponderadas')) : 0;
     var totalAvaliacoes = level2.attr('totalavaliacoes') != undefined ? parseFloat(level2.attr('totalavaliacoes')) : 0;
@@ -427,7 +458,7 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
 
             //verificar o tipo de input para amostragem om JB testar depois
             if (level3.attr('isnotevaluate') != 'true') {
-                var resultadoLevel3 = setValoresLevel3Alertas(level3);
+                var resultadoLevel3 = setValoresLevel3Alertas(level3, level2Resultado);
 
                 level3.attr('weievaluation', (resultadoLevel3[0] > 0 ? resultadoLevel3[0] : 0));
                 totalAvaliacoesPonderadas += (resultadoLevel3[0] > 0 ? resultadoLevel3[0] : 0);
@@ -558,8 +589,6 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                         break;
                 }
 
-                var mensagemHtml = "";
-
                 alertaatual = alertaatual + 1;
                 level1.attr('avaliacaoultimoalerta', $('.painel:visible .evaluateCurrent').text());
                 level1.attr('monitoramentoultimoalerta', _level2.id);
@@ -570,7 +599,12 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                 mensagemHtml = $('.message').html();
 
                 level1.attr('alertaatual', alertaatual);
-                level1.attr('havecorrectiveaction', 'true');
+                if (isEUA == true) {
+                    if($(_level1).attr('disparaalerta') == "True") {
+                        level1.attr('havecorrectiveaction', 'true');
+                    } else {
+                        level1.attr('havecorrectiveaction', 'true');
+                    }
 
                 if (level2Result) {
                     if (level1.attr('phase1')) {
@@ -635,8 +669,6 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                         break;
                 }
 
-                var mensagemHtml = "";
-
                 alertaatual = alertaatual + 1;
                 level1.attr('avaliacaoultimoalerta', $('.painel:visible .evaluateCurrent').text());
                 level1.attr('monitoramentoultimoalerta', _level2.id);
@@ -647,7 +679,16 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                 mensagemHtml = $('.message').html();
 
                 level1.attr('alertaatual', alertaatual);
-                level1.attr('havecorrectiveaction', 'true');
+
+                if (isEUA == true) {
+
+                    if ($(_level1).attr('disparaalerta') == "True") {
+                        level1.attr('havecorrectiveaction', 'true');
+                    }
+
+                } else {
+                    level1.attr('havecorrectiveaction', 'true');
+                }
 
                 if (level2Result) {
                     if (level1.attr('phase1')) {
@@ -745,8 +786,6 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                         break;
                 }
 
-                var mensagemHtml = "";
-
                 alertaatual = alertaatual + 1;
                 level1.attr('avaliacaoultimoalerta', $('.painel:visible .evaluateCurrent').text());
                 level1.attr('monitoramentoultimoalerta', _level2.id);
@@ -757,7 +796,17 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
                 mensagemHtml = $('.message').html();
 
                 level1.attr('alertaatual', alertaatual);
-                level1.attr('havecorrectiveaction', 'true');
+
+                if (isEUA == true) {
+
+                    if ($(_level1).attr('disparaalerta') == "True") {
+
+                        level1.attr('havecorrectiveaction', 'true');
+                    }
+
+                } else {
+                    level1.attr('havecorrectiveaction', 'true');
+                }
 
                 if (level2Result) {
                     if (level1.attr('phase1')) {
@@ -989,6 +1038,7 @@ function setValoresLevel2Alertas(level1, level2, level2Result) {
         //$('.level3Group:visible .level3:first').before(debug);
     }
 
+    mensagemAlerta.mensagem = mensagemHtml;
 
     var resultados = [];
     resultados.push(resultadoAvaliado, resultadoDefeitos, resultadoDefeitosL2);
@@ -1014,8 +1064,9 @@ function setValoresLevel1Alertas(level1, level2, level2Result) {
 
     var resultadoLevel2 = [];
 
+    var mensagemAlerta = { mensagem: ""};
     if (level2) {
-        resultadoLevel2 = setValoresLevel2Alertas(level1, level2, level2Result);
+        resultadoLevel2 = setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta);
     }
 
     //totalAvaliado = resultadoLevel2[0];
@@ -1033,7 +1084,7 @@ function setValoresLevel1Alertas(level1, level2, level2Result) {
 
     //setAlertaLevel2(level2, resultadoLevel2);
 
-    setAlertaLevel1(level1, resultadoLevel2, level2Result);
+    setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta);
 
     if (mostraDebug == true) {
         //var debug = '<b>totalavaliadoporindicador: </b>' + level1.attr('totalavaliado') +
@@ -1056,7 +1107,7 @@ function setValoresLevel1Alertas(level1, level2, level2Result) {
     return resultadoLevel2;
 }
 
-function setAlertaLevel1(level1, resultadoLevel2, level2Result) {
+function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) {
 
     var totalAvaliadoPorMonitoramento = resultadoLevel2[0];
     var totalDefeitosPorMonitoramento = resultadoLevel2[2];
@@ -1142,6 +1193,197 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result) {
                 controleAlertaCFF = true;
             }
         }
+
+        if (tipoDeAlerta == "a7") {
+
+            controleDeAlerta = false;
+
+            mensagem = "";
+
+            //alerta de KO
+
+            var valor = $.grep(listaDefeitos, function (obj) {
+                return obj.parlevel1_id == level2Result.attr('level01id')
+                    && obj.parlevel2_id == level2Result.attr('level02id')
+                    && obj.period == level2Result.attr('period')
+                    && obj.shift == level2Result.attr('shift')
+                    && obj.isKO == "True"
+                    && obj.evaluate == level2Result.attr('evaluate')
+                    && obj.tipo == "defeito"
+            })
+
+            if (valor.length > 0) {
+
+                var valor = $.grep(listaDefeitos, function (obj) {
+                    return obj.parlevel1_id == level2Result.attr('level01id')
+                        && obj.parlevel2_id == level2Result.attr('level02id')
+                        && obj.period == level2Result.attr('period')
+                        && obj.shift == level2Result.attr('shift')
+                        && obj.evaluate == level2Result.attr('evaluate')
+                        && obj.tipo == "alerta"
+                })
+
+                if (valor.length == 0) {
+                    controleDeAlerta = true;
+                    //alert("Alerta de KO");
+                    mensagem += " Critical "
+                }
+
+                adicionaNaListaDeDefeitos(
+                    {
+                        tipo: "alerta"
+                        , parlevel1_id: level2Result.attr('level01id')
+                        , parlevel2_id: level2Result.attr('level02id')
+                        , datetime: level2Result.attr('datetime')
+                        , shift: level2Result.attr('shift')
+                        , period: level2Result.attr('period')
+                        , sample: level2Result.attr('sample')
+                        , evaluate: level2Result.attr('evaluate')
+                        , parlevel3_id: ""
+                        , isKO: ""
+                    }
+                );
+
+            }
+
+            //alerta de reincidencia
+
+            var valor = $.grep(listaDefeitos, function (obj) {
+                return obj.parlevel1_id == level2Result.attr('level01id')
+                    && obj.parlevel2_id == level2Result.attr('level02id')
+                    && obj.period == level2Result.attr('period')
+                    && obj.shift == level2Result.attr('shift')
+                    && obj.evaluate == level2Result.attr('evaluate')
+                    && obj.tipo == "defeito"
+            })
+
+            var listaAmostraDefeito = []
+
+            for (var i = 0; i < valor.length; i++) {
+                listaAmostraDefeito.push(valor[i].parlevel3_id)
+            }
+
+            listaAmostraDefeito.sort()
+
+            var listaAmostraDefeitoUnica = listaAmostraDefeito;
+
+
+
+            var contador = 0
+
+            for (var i = 1; i < listaAmostraDefeitoUnica.length; i++) {
+                if (contador < 2) {
+                    if (listaAmostraDefeitoUnica[i] == listaAmostraDefeito[i - 1]) {
+                        contador++
+                    }
+                }
+            }
+
+            if (contador > 0) {
+
+
+                var valor = $.grep(listaDefeitos, function (obj) {
+                    return obj.parlevel1_id == level2Result.attr('level01id')
+                        && obj.parlevel2_id == level2Result.attr('level02id')
+                        && obj.period == level2Result.attr('period')
+                        && obj.shift == level2Result.attr('shift')
+                        && obj.evaluate == level2Result.attr('evaluate')
+                        && obj.tipo == "alerta"
+                })
+
+                if (valor.length == 0) {
+                    controleDeAlerta = true;
+                    //alert("Alerta de reincidencia com erros")
+                    mensagem += " One recurring defect "
+                }
+
+                adicionaNaListaDeDefeitos(
+                    {
+                        tipo: "alerta"
+                        , parlevel1_id: level2Result.attr('level01id')
+                        , parlevel2_id: level2Result.attr('level02id')
+                        , datetime: level2Result.attr('datetime')
+                        , shift: level2Result.attr('shift')
+                        , period: level2Result.attr('period')
+                        , sample: level2Result.attr('sample')
+                        , evaluate: level2Result.attr('evaluate')
+                        , parlevel3_id: ""
+                        , isKO: ""
+                    }
+                );
+
+            }
+
+            //alerta de amostras
+
+            var valor = $.grep(listaDefeitos, function (obj) {
+                return obj.parlevel1_id == level2Result.attr('level01id')
+                    && obj.parlevel2_id == level2Result.attr('level02id')
+                    && obj.period == level2Result.attr('period')
+                    && obj.shift == level2Result.attr('shift')
+                    && obj.evaluate == level2Result.attr('evaluate')
+                    && obj.tipo == "defeito"
+
+            })
+
+            var listaAmostraDefeito = []
+
+            for (var i = 0; i < valor.length; i++) {
+                listaAmostraDefeito.push(valor[i].sample)
+            }
+
+            listaAmostraDefeito.sort()
+
+            var listaAmostraDefeitoUnica = []
+
+            listaAmostraDefeitoUnica.push(listaAmostraDefeito[0])
+
+            for (var i = 1; i < listaAmostraDefeito.length; i++) {
+                if (listaAmostraDefeito[i] != listaAmostraDefeitoUnica[listaAmostraDefeitoUnica.length - 1])
+                    listaAmostraDefeitoUnica.push(listaAmostraDefeito[i])
+            }
+
+            if (listaAmostraDefeitoUnica.length > valorDoAlerta) {
+
+                var valor = $.grep(listaDefeitos, function (obj) {
+                    return obj.parlevel1_id == level2Result.attr('level01id')
+                        && obj.parlevel2_id == level2Result.attr('level02id')
+                        && obj.period == level2Result.attr('period')
+                        && obj.shift == level2Result.attr('shift')
+                        && obj.evaluate == level2Result.attr('evaluate')
+                        && obj.tipo == "alerta"
+                })
+
+                if (valor.length == 0) {
+
+                    controleDeAlerta = true;
+                    //alert("Alerta de amostras com erros")
+                    mensagem += listaAmostraDefeitoUnica.length + " defected pieces "
+                }
+
+                adicionaNaListaDeDefeitos(
+                    {
+                        tipo: "alerta"
+                        , parlevel1_id: level2Result.attr('level01id')
+                        , parlevel2_id: level2Result.attr('level02id')
+                        , datetime: level2Result.attr('datetime')
+                        , shift: level2Result.attr('shift')
+                        , period: level2Result.attr('period')
+                        , sample: level2Result.attr('sample')
+                        , evaluate: level2Result.attr('evaluate')
+                        , parlevel3_id: ""
+                        , isKO: ""
+                    }
+                );
+
+            }
+
+            
+
+        }
+
+
+
     }
 
 
@@ -1335,10 +1577,17 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result) {
                     }
                     break;
             }
+        } else if (tipoDeAlerta == "a7") {
+
+            //alert("Teste de Deus!");
+
+            //mensagem = "Falha USA Fred"
+            disparaalertas = true;
+
         }
     }
 
-    var mensagemHtml = "";
+    var mensagemHtml = mensagemAlerta.mensagem;
 
     if (disparaalertas == true) {
 
@@ -1366,34 +1615,39 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result) {
 
             disparaalertas = false;
             level1.attr('alertaatual', alertaatual);
-            level1.attr('havecorrectiveaction', 'true');
 
-            if (level1.attr("reaudit") == "true") {
-                level1.attr('havereaudit', 'true');
+            if (isEUA != true || (isEUA == true && $(_level1).attr('disparaalerta') == "True")) {
 
-                level2Result.attr('havereaudit', 'true');
-                level2Result.attr('reauditlevel', '1');
+                level1.attr('havecorrectiveaction', 'true');
 
-                var level3Group = $('.level3Group[level1id=' + $('.level1.selected').attr('id') + '][level2id=' + $('.level2.selected').attr('id') + ']');
+                if (level1.attr("reaudit") == "true") {
+                    level1.attr('havereaudit', 'true');
 
-                level3Group.find('select[linknumberevaluetion=true]').each(
-                    function (i, e) {
-                        ReauditByHeader.SetReaudit(
-                            $(e).attr('parheaderfield_id'), $(e).val(),
-                            level3Group.find('.headerEvaluationCount').text(),
-                            level3Group.find('.headerSampleCount').text(), 1,
-                            level2Result
-                        );
+                    level2Result.attr('havereaudit', 'true');
+                    level2Result.attr('reauditlevel', '1');
+
+                    var level3Group = $('.level3Group[level1id=' + $('.level1.selected').attr('id') + '][level2id=' + $('.level2.selected').attr('id') + ']');
+
+                    level3Group.find('select[linknumberevaluetion=true]').each(
+                        function (i, e) {
+                            ReauditByHeader.SetReaudit(
+                                $(e).attr('parheaderfield_id'), $(e).val(),
+                                level3Group.find('.headerEvaluationCount').text(),
+                                level3Group.find('.headerSampleCount').text(), 1,
+                                level2Result
+                            );
+                        }
+                    );
+
+                    if (level1.attr('isreaudit') != 'true') {
+                        var reauditnumber = level2Result.attr('reauditnumber') == undefined ? 0 : parseInt(level2Result.attr('reauditnumber'));
+                        level2Result.attr('reauditnumber', reauditnumber);
                     }
-                );
 
-                if (level1.attr('isreaudit') != 'true') {
-                    var reauditnumber = level2Result.attr('reauditnumber') == undefined ? 0 : parseInt(level2Result.attr('reauditnumber'));
-                    level2Result.attr('reauditnumber', reauditnumber);
+                    $('.level2.selected').attr('havereaudit', 'true');
                 }
-
-                $('.level2.selected').attr('havereaudit', 'true');
             }
+
         }
     } else {
 
@@ -1421,7 +1675,7 @@ function setGravaAlertaDBLocal(level1, alertaatual, defeitos, mensagem) {
     var sampleCurrent = $('.level3Group[level1id=' + $('.level1.selected').attr('id') + '][level2id=' + $('.level2.selected').attr('id') + '] .sampleCurrent').text();
 
     //verificar level2 com gabriel
-    var deviation = '<div class="deviation" parcompany_id="' + $('.App').attr('unidadeid') + '" parlevel1_id="' + level1.attr('id') + '" parlevel2_id="' + level2.attr('id') + '" evaluation="' + evaluateCurrent + '" sample="' + sampleCurrent + '" alertnumber="' + alertaatual + '" defects="' + defeitos + '" deviationdate="' + dateTimeFormat() + '" sync="false">' +
+    var deviation = '<div class="deviation" parcompany_id="' + $('.App').attr('unidadeid') + '" period="' + $('.App').attr('period') + '" shift="' + $('.App').attr('shift') + '" collectiondate="' + $('.App').attr('date') + '" parlevel1_id="' + level1.attr('id') + '" parlevel2_id="' + level2.attr('id') + '" evaluation="' + evaluateCurrent + '" sample="' + sampleCurrent + '" alertnumber="' + alertaatual + '" defects="' + defeitos + '" deviationdate="' + dateTimeFormat() + '" sync="false">' +
         '<div class="message">' + mensagem + '</div>' +
         '</div>';
 
@@ -1569,7 +1823,10 @@ function setGravaAlerta() {
         result += ";" + deviation.attr('alertnumber');// 5
         result += ";" + deviation.attr('defects');// 6
         result += ";" + deviation.attr('deviationdate');// 7
-        result += ";" + encodeURI(deviation.children('.message').text().replace(/ +(?= )/g, ''));// 7
+        result += ";" + encodeURI(deviation.children('.message').text().replace(/ +(?= )/g, '')).replace(/'/g, '');// 8
+        result += ";" + deviation.attr('period');// 9
+        result += ";" + deviation.attr('shift');// 10
+        result += ";" + deviation.attr('collectiondate');// 11
         //result += ";" + "alerta";// 7
 
         deviationsSend += "<deviation>" + result + "</deviation>";

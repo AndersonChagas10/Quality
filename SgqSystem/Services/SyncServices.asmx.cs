@@ -5092,6 +5092,17 @@ namespace SgqSystem.Services
                                     meta = alertas.Meta;
                                 }
                             }
+                            else if (tipoAlerta == 7)  //reincidenciaKOAmostras
+                            {
+                                if (alertas != null)
+                                {
+                                    alertaNivel1 = valorAlerta;
+                                    alertaNivel2 = valorAlerta;
+                                    alertaNivel3 = "a7";
+                                    volumeAlerta = alertas.VolumeAlerta;
+                                    meta = alertas.Meta;
+                                }
+                            }
                             else
                             {
                                 if (alertas != null) //Fica como padrão JBS por indicador
@@ -5139,7 +5150,8 @@ namespace SgqSystem.Services
                                                          metaIndicador: meta,
                                                          IsLimitedEvaluetionNumber: parlevel1.IsLimitedEvaluetionNumber,
                                                          listParRelapse: listParRelapse,
-                                                         ParCluster_Id: parlevel1.ParCluster_Id.ToString());
+                                                         ParCluster_Id: parlevel1.ParCluster_Id.ToString(),
+                                                         DisparaAlerta: parlevel1.DisparaAlerta);
                             //Incrementa level1
                             parLevel1.Append(html.listgroupItem(parlevel1.Id.ToString(), classe: "row " + excecao, outerhtml: level01 + painelCounters));
                         }
@@ -5392,6 +5404,25 @@ namespace SgqSystem.Services
                 sampleGroup = sample;
             }
 
+            var departamento = "";
+
+            var index = 0;
+            var count = parlevel02List.Count();
+
+            var auxDepto = "";
+            var countDepto = 0;
+
+            foreach (var parlevel2count in parlevel02List) //LOOP3
+            {
+                if (parlevel2count.Departamento != auxDepto)
+                {
+                    countDepto++;
+                }
+                auxDepto = parlevel2count.Departamento;
+            }
+
+      
+
             //Enquando houver lista de level2
             foreach (var parlevel2 in parlevel02List) //LOOP3
             {
@@ -5592,7 +5623,8 @@ namespace SgqSystem.Services
                                             reaudit: parlevel2.IsReaudit,
                                             HasTakePhoto: parlevel2.HasTakePhoto,
                                             FrequenciaValor: frequencia,
-                                            FrequenciaMensagemInativo: "");
+                                            FrequenciaMensagemInativo: "",
+                                            Departamento: parlevel2.Departamento);
 
                 var listLineCounter = ParCounterDB.GetParLevelXParCounterList(null, parlevel2, 2);
 
@@ -5604,14 +5636,53 @@ namespace SgqSystem.Services
                 }
 
                 //Gera linha do Level2
+
+                var inicioGrupo = false;
+                var fimGrupo = false;
+                var fimFinalGrupo = false;
+                var Grupo = "";
+
+                if (countDepto > 1)
+                {
+
+                    if (departamento == "")
+                    {
+                        Grupo = parlevel2.Departamento;
+                        inicioGrupo = true;
+                    }
+                    else if (departamento == parlevel2.Departamento)
+                    {
+                        inicioGrupo = false;
+                    }
+                    else if (departamento != parlevel2.Departamento)
+                    {
+                        Grupo = parlevel2.Departamento;
+                        inicioGrupo = true;
+                        fimGrupo = true;
+                    }
+
+                    if (++index == count)
+                    {
+                        fimFinalGrupo = true;
+                    }
+
+                    departamento = parlevel2.Departamento;
+
+                }
+
                 ParLevel2List += html.listgroupItem(
                                                     id: parlevel2.Id.ToString(),
-                                                    classe: "row",
+                                                    classe: "row gabriel " + parlevel2.Departamento,
+                                                    tags: "departamento='" + parlevel2.Departamento + "'",
                                                     outerhtml: level2 +
                                                                counters +
                                                                buttons +
                                                                html.div(classe: "level2Debug") +
-                                                               lineCounters
+                                                               lineCounters,
+                                                    inicioGrupo: inicioGrupo,
+                                                    fimGrupo: fimGrupo,
+                                                    fimFinalGrupo: fimFinalGrupo,
+                                                    Grupo: Grupo
                                                     );
 
 
@@ -6161,7 +6232,7 @@ namespace SgqSystem.Services
                                                 );
 
                 //string HeaderLevel02 = null;
-                painellevel3 = new StringBuilder(html.listgroupItem(
+                painellevel3 = new StringBuilder(html.listgroupItemDIV(
                                                      outerhtml: avaliacoes +
                                                                 amostras +
                                                                 painelLevel3HeaderListHtml.ToString() +
@@ -6404,7 +6475,7 @@ namespace SgqSystem.Services
                 //Painel
                 //O interessante é um painel só mas no momento está um painel para cada level3group
 
-                painellevel3 = new StringBuilder(html.listgroupItem(
+                painellevel3 = new StringBuilder(html.listgroupItemDIV(
                                                             outerhtml: avaliacoes +
                                                                        amostras +
                                                                        painelLevel3HeaderListHtml,
@@ -6552,7 +6623,7 @@ namespace SgqSystem.Services
                                     style: "padding-right: 4px !important; padding-left: 4px !important;",
                                     classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2 hide");
 
-                painellevel3 = new StringBuilder(html.listgroupItem(
+                painellevel3 = new StringBuilder(html.listgroupItemDIV(
                                                             outerhtml: amostras + avaliacoes + totalnc + ncdianteiro + nctraseiro + niveis + painelLevel3HeaderListHtml,
                                                classe: "painel painelLevel03 row"));
 
@@ -6746,7 +6817,7 @@ namespace SgqSystem.Services
                     }
                 }
 
-                painellevel3 = new StringBuilder(html.listgroupItem(outerhtml: avaliacoes +
+                painellevel3 = new StringBuilder(html.listgroupItemDIV(outerhtml: avaliacoes +
                                                              amostras +
                                                              defeitos +
                                                              painelLevel3HeaderListHtml.ToString(),
@@ -7294,7 +7365,7 @@ namespace SgqSystem.Services
 
             string divChangeServer =
                 html.div(style: "max-width:320px; margin: 0 auto; padding-right:15px; padding-left:15px",
-                outerhtml: html.button(label: "Atualizar o APP", id: "btnChangeHost", classe: "btn-lg btn-default btn-sm btn-block"));
+                outerhtml: html.button(label: CommonData.getResource("atualizarapp").Value.ToString(), id: "btnChangeHost", classe: "btn-lg btn-default btn-sm btn-block"));
 
             #region foot
 
@@ -7524,9 +7595,25 @@ namespace SgqSystem.Services
                 if (VerificaStringNulaUndefinedNaN(defects))
                     defects = "0";
 
-                sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage]) " +
-                        "VALUES " +
-                        "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd HH:mm:ss") + "' , GetDate(), 0, " + HttpUtility.UrlDecode(deviationMessage) + ")";
+                if(deviation.Count() < 10)
+                {
+                    sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage]) " +
+                            "VALUES " +
+                            "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd HH:mm:ss") + "' , GetDate(), 0, " + HttpUtility.UrlDecode(deviationMessage) + ") ";
+                }
+                else
+                {
+                    string deviation_period = deviation[9];
+                    string deviation_shift = deviation[10];
+                    string deviation_collectiondate = deviation[11];
+
+
+                    sql += "INSERT INTO Deviation ([ParCompany_Id],[ParLevel1_Id],[ParLevel2_Id],[Evaluation],[Sample],[AlertNumber],[Defects],[DeviationDate],[AddDate],[sendMail], [DeviationMessage],[Period],[Shift],[CollectionDate]) " +
+                            "VALUES " +
+                            "('" + ParCompany_Id + "' ,'" + ParLevel1_Id + "','" + ParLevel2_Id + "','" + Evaluation + "','" + Sample + "','" + alertNumber + "','" + defects + "', '" + dt.ToString("yyyyMMdd HH:mm:ss") + "' , GetDate(), 0, " + HttpUtility.UrlDecode(deviationMessage) + ", '" + deviation_period + "', '" + deviation_shift + "', '" + deviation_collectiondate + "') ";
+                }
+
+
             }
 
             string conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;

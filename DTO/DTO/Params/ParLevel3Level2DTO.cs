@@ -12,6 +12,7 @@ namespace DTO.DTO.Params
         public decimal Weight { get; set; }
         public bool IsActive { get; set; } = true;
 
+        public bool IsKnockout { get; set; } = false;
 
         public ParLevel2DTO ParLevel2 { get; set; }
         public ParLevel3DTO ParLevel3 { get; set; }

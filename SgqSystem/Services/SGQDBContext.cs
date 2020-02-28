@@ -49,6 +49,8 @@ namespace SGQDBContext
 
         public bool? IsRecravacao { get; set; }
 
+        public bool DisparaAlerta { get; set; }
+
         public ParLevel1()
         {
 
@@ -163,6 +165,7 @@ namespace SGQDBContext
                         	   ,AL.ParNotConformityRule_Id AS tipoAlerta
                         	   ,AL.[Value] AS valorAlerta
                         	   ,AL.IsReaudit AS IsReaudit
+                               ,AL.CorrectiveAction as DisparaAlerta
                         	   ,P1.HasCompleteEvaluation AS HasCompleteEvaluation
                         	   ,P1.HasGroupLevel2 AS HasGroupLevel2
                         	   ,P1.EditLevel2 AS EditLevel2
@@ -533,6 +536,8 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
         public int ParFrequency_Id { get; set; }
         public int ParDepartment_Id { get; set; }
 
+        public string Departamento { get; set; }
+
         public decimal Value { get; set; }
 
         public bool IsReaudit { get; set; }
@@ -610,12 +615,13 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
             if (parLevel1.IsFixedEvaluetionNumber)
             {
-                string sql = "   SELECT concat('" + parLevel1.ParCluster_Id + SgqServiceBusiness.Api.SyncServiceApiController.quebraProcesso + @"', CAST(PL2.Id AS VARCHAR)) AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id " +
+                string sql = "   SELECT concat('" + parLevel1.ParCluster_Id + SgqServiceBusiness.Api.SyncServiceApiController.quebraProcesso + @"', CAST(PL2.Id AS VARCHAR)) AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id, D.name as Departamento " +
                              "\n FROM ParLevel3Level2 P32   (nolock)                                                                                                                             " +
                              "\n INNER JOIN ParLevel3Level2Level1 P321  (nolock)                                                                                                                 " +
                              "\n ON P321.ParLevel3Level2_Id = P32.Id and p321.active = 1                                                                                                                  " +
                              "\n INNER JOIN ParLevel2 PL2   (nolock)                                                                                                                             " +
                              "\n ON PL2.Id = P32.ParLevel2_Id                                                                                                                          " +
+                             "\n inner join pardepartment d  on d.id = pl2.ParDepartment_Id " +
                              "\n  LEFT JOIN ParNotConformityRuleXLevel AL   (nolock)                                                                                                             " +
                              "\n  ON AL.ParLevel2_Id = PL2.Id  AND AL.IsActive = 1 AND (concat('" + parLevel1.ParCluster_Id + SgqServiceBusiness.Api.SyncServiceApiController.quebraProcesso + "', CAST(AL.ParLevel1_Id AS VARCHAR))  = '" + parLevel1.Id + "' OR AL.ParLevel1_Id IS NULL)                                                                                                     " +
                              "\n INNER JOIN (SELECT * FROM ParLevel2ControlCompany PL (nolock)  INNER JOIN                                                                                       " +
@@ -631,7 +637,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                              "\n AND PL2.IsActive = 1     " +
                              "\n AND (Familia.ParCompany_Id = " + ParCompany_Id + "  or Familia.ParCompany_Id IS NULL)                                                               " +
                              "\n and Familia.IsActive = 1 " +
-                             "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto             ";
+                             "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto, PL2.ParFrequency_id, D.name              ";
 
                 List<ParLevel2> parLevel2List = new List<ParLevel2>();
 
@@ -657,12 +663,15 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                            ,AL.value
                            ,AL.IsReaudit
                            ,PL2.ParFrequency_Id
+                           ,D.name as Departamento
                         FROM ParLevel3Level2 P32
                         INNER JOIN ParLevel3Level2Level1 P321
                         	ON P321.ParLevel3Level2_Id = P32.Id
                         		AND P321.Active = 1
                         INNER JOIN ParLevel2 PL2
                         	ON PL2.Id = P32.ParLevel2_Id
+                        inner join pardepartment d  
+                            on d.id = pl2.ParDepartment_Id 
                         LEFT JOIN ParNotConformityRuleXLevel AL
                         	ON AL.ParLevel2_Id = PL2.Id
                         		AND AL.IsActive = 1
@@ -720,7 +729,8 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                         		,AL.IsReaudit
                         		,AL.value
                         		,PL2.ParFrequency_Id
-                        		,PL2.HasTakePhoto";
+                        		,PL2.HasTakePhoto
+                                ,D.Name";
 
                 List<ParLevel2> parLevel2List = new List<ParLevel2>();
 
@@ -1144,6 +1154,9 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
         public bool HasTakePhoto { get; set; }
         public int ParLevel3Value_Id { get; set; }
 
+        public bool IsKnockout { get; set; }
+        
+
         private SqlConnection db { get; set; }
         public ParLevel3() { }
         public ParLevel3(SqlConnection _db)
@@ -1193,7 +1206,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             //Pega a data pela regra da frequencia
             SgqServiceBusiness.Api.SyncServiceApiController.getFrequencyDate(ParLevel2.ParFrequency_Id, DateCollect, ref dataInicio, ref dataFim);
 
-            string sql = "\n SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
+            string sql = "\n SELECT L32.IsKnockout as IsKnockout, L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
                          "\n ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, L3V.Id as ParLevel3Value_Id , MU.Name AS ParMeasurementUnit_Name, L32.Weight AS Weight, L3V.ParCompany_Id  AS ParCompany_id1 , L32.ParCompany_Id AS ParCompany_id2, L3V.DynamicValue, L3.HasTakePhoto                                                                                                                                                                                                                                       " +
                          "\n FROM ParLevel3 L3      (nolock)                                                                                                                                                                                                                                                                                                                                       " +
                          "\n INNER JOIN ParLevel3Value L3V      (nolock)                                                                                                                                                                                                                                                                                                                           " +
@@ -1220,7 +1233,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                          "\n  AND L321.ParLevel1_Id='" + ParLevel1.ParLevel1_Id + "'                                                                                                        " +
 
                          "\n  GROUP BY " +
-                            "\n    L321.ParLevel1_Id " +
+                            "\n    L32.IsKnockout, L321.ParLevel1_Id " +
                             "\n  , L2.Id " +
                             "\n  , L3G.Name " +
                             "\n  , L3.Name " +
@@ -1288,7 +1301,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
                 string ParLevel1_IdFilho = "\n  AND L321.ParLevel1_Id IN (" + ParLevel1Origin_Id + ") \n  AND L2.Id = '" + ParLevel2.ParLevel2_id + "'";
 
-                sqlFilho = " \n UNION ALL SELECT L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
+                sqlFilho = " \n UNION ALL SELECT L32.IsKnockout as IsKnockout, L3.Id AS Id, L3.Name AS Name, L3G.Id AS ParLevel3Group_Id, L3G.Name AS ParLevel3Group_Name, L3IT.Id AS ParLevel3InputType_Id, L3IT.Name AS ParLevel3InputType_Name, L3V.ParLevel3BoolFalse_Id AS ParLevel3BoolFalse_Id, L3BF.Name AS ParLevel3BoolFalse_Name, L3V.ParLevel3BoolTrue_Id AS ParLevel3BoolTrue_Id, L3BT.Name AS ParLevel3BoolTrue_Name, " +
                         "\n  ISNULL(L3V.IntervalMin, -9999999999999.9) AS IntervalMin, ISNULL(L3V.IntervalMax, 9999999999999.9) AS IntervalMax, L3V.Id as ParLevel3Value_Id, MU.Name AS ParMeasurementUnit_Name, " + sqlPeso + " AS Weight, L3V.ParCompany_Id AS ParCompany_id1 , L32.ParCompany_Id AS ParCompany_id2, L3V.DynamicValue, L3.HasTakePhoto " +
                         "\n FROM ParLevel3 L3     (nolock)                                                                                                                                                                                                                                                                                                                                        " +
                         "\n INNER JOIN ParLevel3Value L3V     (nolock)                                                                                                                                                                                                                                                                                                                            " +
@@ -1319,7 +1332,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
 
                         "\n  GROUP BY " +
-           "\n    L321.ParLevel1_Id " +
+           "\n    L32.IsKnockout, L321.ParLevel1_Id " +
            "\n  , L2.Id " +
            "\n  , L3G.Name " +
            "\n  , L3.Name " +
@@ -1352,7 +1365,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
             sql = "SELECT * FROM (" + sql;
 
-            sql += "\n  ) TOTAL  ORDER BY ISNULL(TOTAL.ParLevel3Group_Name,'ZZZ') ASC, 2 ASC,  15  DESC , 16  DESC    ";
+            sql += "\n  ) TOTAL  ORDER BY TOTAL.ParCompany_Id2 desc, ISNULL(TOTAL.ParLevel3Group_Name,'ZZZ') ASC, 2 ASC,  15  DESC , 16  DESC    ";
 
             List<ParLevel3> parLevel3List = new List<ParLevel3>();
             using (Factory factory = new Factory("DefaultConnection"))

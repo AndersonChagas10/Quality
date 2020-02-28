@@ -790,7 +790,7 @@ function retroactiveDateIsValid(dataRetroativa) {
     dataRetroativa = dataRetroativa.setHours(0, 0, 0, 0);
 
     //data que da ultima sincronização (login online)
-    var dataMax = new Date($('.App').attr('datelastsync'));
+    var dataMax = new Date(dateConvertToDefault($('.App').attr('datelastsync')));
     dataMax = new Date(dataMax.setDate(dataMax.getDate() + 2)).setHours(0, 0, 0, 0);
 
     //data do tablet

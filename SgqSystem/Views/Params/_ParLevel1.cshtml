@@ -829,6 +829,10 @@
                                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.IsReaudit, new { @class = "make-switch checkbox-erp" })
                                                                , @Html.Label(Resources.Resource.reaudit as string), Table.PosicaoLabel.top, button: "<button type='button' class='btn btn-primary btn-sm' onclick='RegraNcL1.adiciona();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
 
+                                            @Table.GerarColunaCheckbox(
+                                                                                                                                                @Html.EditorFor(model => model.paramsDto.parLevel1Dto.parNotConformityRuleXLevelDto.CorrectiveAction, new { @class = "make-switch checkbox-erp" })
+                                                                                                                                                , @Html.Label("Corrective Action"), Table.PosicaoLabel.top, button: "&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-primary btn-sm' onclick='RegraNcL1.adiciona();'><i class='fa fa-plus' aria-hidden='true'></i></button>")
+
                                         </tr>
                                     </tbody>
                                 </table>
@@ -839,6 +843,7 @@
                                             <th>@Resources.Resource.not_conformity_rule</th>
                                             <th>@Resources.Resource.value</th>
                                             <th>@Resources.Resource.reaudit</th>
+                                            <th>@Resources.Resource.corrective_action</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -2060,7 +2065,7 @@
         /*Setup*/
         level: 'ParLevel1',
         listObjSalvo: @Html.Raw(Json.Encode(@Model.paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto)),
-        tdsNames: ['ParNotConformityRule_Name', 'Value', 'IsReauditShowTable', 'btn'],
+        tdsNames: ['ParNotConformityRule_Name', 'Value', 'IsReauditShowTable', 'CorrectiveActionShowTable', 'btn'],
         adiciona: function () {
 
             /*Valida se pode criar o objeto*/
@@ -2110,8 +2115,10 @@
                     ParNotConformityRule_Id: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').val(),
                     ParNotConformityRule_Name: $('#' + RegraNcL1.level + ' #selectNotConformityRule :selected').text(),
                     Value: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_Value').val().replace(/[^0-9.]/g, ''),
-                    IsReaudit: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
+                    IsReaudit: $('#' + RegraNcL1.level +          ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
                     IsReauditShowTable: $('#' + RegraNcL1.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.y" : "@Resources.Resource.n",
+                    CorrectiveAction: $('#' + RegraNcL1.level +            ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_CorrectiveAction').is(":checked") ,
+                    CorrectiveActionShowTable: $('#' + RegraNcL1.level +   ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_CorrectiveAction').is(":checked") ? "@Resources.Resource.y" : "@Resources.Resource.n",
                     IsActive: true,
                     //btn: crudNxN.btnRemove + crudNxN.btnEdit,
                 }
@@ -2138,15 +2145,18 @@
                 dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].Value"] = o.Value;
                 dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReaudit"] = o.IsReaudit;
                 dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReauditShowTable"] = o.IsReauditShowTable;
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].CorrectiveAction"] = o.CorrectiveAction;
+                dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].CorrectiveActionShowTable"] = o.CorrectiveActionShowTable;
                 dados["paramsDto.parLevel1Dto.listParNotConformityRuleXLevelDto[" + c + "].IsActive"] = o.IsActive;
 
             });
 
         },/*Ok*/
-        carregaDadosDoDb: function(){
+        carregaDadosDoDb: function () {
             if( RegraNcL1.listObjSalvo != null){ /*Carrega regras de NC*/
                 RegraNcL1.listObjSalvo.forEach(function(o, c){
                     o["IsReauditShowTable"] = o.IsReaudit ? "@Resources.Resource.y" : "@Resources.Resource.n";
+                    o["CorrectiveActionShowTable"] = o.CorrectiveAction ? "@Resources.Resource.y" : "@Resources.Resource.n";
                     o["ParNotConformityRule_Name"] = o.ParNotConformityRule.Name;
                     crudNxN.adiciona(o, RegraNcL1.level + ' #tableRegraNc', RegraNcL1.tdsNames);
                 });

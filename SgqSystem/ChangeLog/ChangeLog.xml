@@ -2692,5 +2692,32 @@
       insert into ParLevelHeaderField values('Tarefa', 'ParLevel3Value', GetDate(), null, 1)
     </Script>
   </Card>
-  
+
+  <Card>
+    <CardNumber>SGQ-</CardNumber>
+    <Version>1.7.0</Version>
+    <Description>[MERGE] Realizado merge da versão do USA (03/2020)</Description>
+    <Script>
+      IF COL_LENGTH('parlevel3level2','IsKnockout') IS NULL
+      BEGIN
+      alter table parlevel3level2
+      add IsKnockout bit null;
+      END
+      GO
+
+      update parlevel3level2 set IsKnockout = 0 where IsKnockout is null
+      go
+
+      IF COL_LENGTH('ParNotConformityRuleXLevel','CorrectiveAction') IS NULL
+      BEGIN
+      ALTER TABLE ParNotConformityRuleXLevel
+      ADD CorrectiveAction BIT NULL
+      END
+      GO
+
+      UPDATE ParNotConformityRuleXLevel SET CorrectiveAction = 1 where CorrectiveAction is null
+      GO
+    </Script>
+  </Card>
+
 </Cards>

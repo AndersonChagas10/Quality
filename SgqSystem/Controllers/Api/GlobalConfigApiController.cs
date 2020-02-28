@@ -42,7 +42,7 @@ namespace SgqSystem.Controllers.Api
         {
             dynamic paramiters = form;
             string emailTo = paramiters.email;
-            SimpleAsynchronousUSA.SendMailUSA(emailTo);
+            //SimpleAsynchronousUSA.SendMailUSA(emailTo);
         }
 
         [HttpPost]

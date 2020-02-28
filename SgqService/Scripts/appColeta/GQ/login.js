@@ -450,8 +450,12 @@ function setupParCompanies() {
 function setDateLastSync() {
     if ($('.App').attr('serverdate')) {
 
-        var dataServidor = convertDate($('.App').attr('serverdate'));
-        const objLastSync = { Shift: parseInt($(shift).val()), Data: new Date(dataServidor).toLocaleDateString(), Unit: parseInt($('.App').attr('unidadeid')) }
+        var dataServidor = $('.App').attr('serverdate');
+        var objLastSync = {
+            Shift: parseInt($(shift).val()),
+            Data: new Date(convertDateBRToUSA(dataServidor)).toLocaleDateString(),
+            Unit: parseInt($('.App').attr('unidadeid'))
+        };
 
         _writeFile("dateLastSync.txt", JSON.stringify(objLastSync));
 

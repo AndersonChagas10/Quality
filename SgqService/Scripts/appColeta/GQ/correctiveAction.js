@@ -11,6 +11,8 @@
 
     //Instancio o Level01.
     var level01 = $('.level1[id=' + level01Id + ']');
+	
+	var haveReaudit = $(level01).attr('reaudit') == "true";
 
     var correctiveActionModal = $('#correctiveActionModal');
 
@@ -31,7 +33,7 @@
     var ConsolidationResult = $('.ResultsConsolidation .Resultlevel2[level1id=' + level01.attr('id') + '][havecorrectiveaction=true][unitid=' +
         $('.App').attr('unidadeid') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + ']:first');
 
-    if (isEUA == true) { //Só serve para CCA e CFF
+    if (isEUA == true && haveReaudit) { //Só serve para CCA e CFF
         ConsolidationResult = $('.ResultsConsolidation .Resultlevel2[level1id=' + level01.attr('id') + '][havecorrectiveaction=true][unitid=' +
             $('.App').attr('unidadeid') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][havereaudit=true]:last');
     }
@@ -130,7 +132,7 @@ function correctiveActionOpenPesoHB(level01Id, date, shift, period) {
     $('#AuditInformation').children('#starttime').text(dateTimeWithMinutes().slice(0, 16));
     correctiveActionModal.attr('level01id', $(_level1).attr('id'));
     correctiveActionModal.attr('level02id', $(_level2).attr('id'));
-	correctiveActionModal.attr('evaluationnumber', $(_level2).attr('evaluatecurrent'));
+    correctiveActionModal.attr('evaluationnumber', $(_level2).attr('evaluatecurrent'));
     // correctiveActionModal.attr('collectionlevel2_id', ConsolidationResult.attr('collectionlevel2_id_correctiveaction'));
 
     if (period) {
