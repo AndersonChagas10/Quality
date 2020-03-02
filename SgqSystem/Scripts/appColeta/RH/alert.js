@@ -56,13 +56,15 @@ function processAlertRole(coletaJson) {
 function setTimeoutOpenCorrectiveAction(e,c,n){
     var exists = e;
     var coleta = c;
+    var modal = "";
+    var body = "";
+    var salvaAcaoCorretiva = "";
+    var corpo = "";
+    var display = "";
+    var btnShowAcaoCorretiva = "";
     var numeroDeAlertas = n;
 
     setTimeout(function () {
-        
-        //colocar um botao no alerta que quando a acao corretiva nao for obrigatoria ele aparece,
-        //e quando clicar nele tira a propriedade none e mostra ela na tela, talvez com um botao de pular ou proximo
-        //caso ele nao queira responder o opcional. 
 
         var alerta = 
             '<div style="background-color:red; padding:10px;">' +
@@ -70,14 +72,25 @@ function setTimeoutOpenCorrectiveAction(e,c,n){
             '<p>Alerta ' + numeroDeAlertas + ' (' + exists[0].Name + ') foi disparado.</p>' +
             '</div>' +
             '<div style="text-align:center">' +
-            '<button class="btn btn-primary">Ok</button>' +
             '</div>' +
             '</div>';
 
         if(exists[0].HasCorrectiveAction){
-            var modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>';
-
-            var body = '<div class="form-group">' +
+            display = 'block';
+            fillAcaocorretiva();
+        }
+        else
+        {
+            display = 'none';
+            btnShowAcaoCorretiva = '<div>' +
+                '<button class="btn btn-secundary" data-id style="float:left;">Mostrar Ação Corretiva</button>' +
+                '</div>';
+            fillAcaocorretiva();
+        }
+        
+        function fillAcaocorretiva(){
+            modal = '<h3 style="font-weight:bold; display:' + display + ';">Ação Corretiva</h3>';
+            body = '<div class="form-group" style="display:' + display + ';">' +
                 '<div class="form-group col-xs-12">' +
                 '<strong>Informações</strong>' +
                 '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString() +
@@ -85,7 +98,7 @@ function setTimeoutOpenCorrectiveAction(e,c,n){
                 '<br/>Tarefa: ' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +
                 '<br/>Frequência: ' + $.grep(parametrization.listaParFrequency, function (item) { return item.Id == parametrization.currentParFrequency_Id; })[0].Name +
                 '</small></div>' +
-        
+            
                 '<div class="form-group col-xs-12">' +
                 '<label>Descrição da Falha:</label>' +
                 '<input name="DescriptionFailure" id="descriptionFailure" class="col-sx-12 form-control" style="height: 80px;">' +
@@ -98,37 +111,36 @@ function setTimeoutOpenCorrectiveAction(e,c,n){
                 '<label for="email">Ação Preventiva:</label>' +
                 '<input name="PreventativeMeasure" id="preventativeMeasure" class="form-control" style="height: 80px;">' +
                 '</div>';
-
-            var salvaAcaoCorretiva = '<button class="btn btn-primary" id="btnSendCA">Salvar Ação Corretiva</button>';
-
-        }else{
-            modal = "";
-            body = "";
-            salvaAcaoCorretiva = "";
+            salvaAcaoCorretiva = '<button class="btn btn-primary" id="btnSendCA" style="display:' + display + ';">Salvar Ação Corretiva</button>';
+            
+            corpo = 
+                '<div class="container">' +
+                '<div class="row" style="overflow:auto">' +
+                '<div>' +
+                alerta +                
+                '</div>' +
+                btnShowAcaoCorretiva +
+                '<hr>' +
+                modal +
+                '<hr>' +
+                '<div>' +
+                body +
+                '</div>' +
+                '<hr>' +
+                '<div class="form-group col-xs-6">' +
+                salvaAcaoCorretiva +
+                '</div>' +
+                '</div>' +
+                '</div>';
         }
-
-        var corpo = 
-            '<div class="container">' +
-            '<div class="row" style="overflow:auto">' +
-            '<div>' +
-            alerta +
-            '</div>' +
-            '<hr>' +
-            modal +
-            '<hr>' +
-            '<div>' +
-            body +
-            '</div>' +
-            '<hr>' +
-            '<div class="form-group col-xs-6">' +
-            salvaAcaoCorretiva +
-            '</div>' +
-            '</div>' +
-            '</div>';
 
         openModal(corpo, 'white', 'black');
 
-
+        $('body').off('click', '[data-id]').on('click', '[data-id]', function (e) {
+            display = 'block';
+            fillAcaocorretiva();
+            openModal(corpo, 'white', 'black');
+        });
 
         // openMensagem('Alerta ' + numeroDeAlertas + ' (' + exists[0].Name + ') foi disparado.', 'red', 'white');
         // //closeMensagem(3000);
