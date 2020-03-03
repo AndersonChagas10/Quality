@@ -81,7 +81,19 @@ namespace SgqSystem.Controllers.V2.Api
 
             var coletasRegistradas = listSimpleCollect.Where(x => x.HasError != true).ToList();
 
-            var coletasRegistradasPorCollectionLevel2 = coletasRegistradas
+            #region Consolidação Sincrona
+            int intervalTimeCollectionJob = 0;
+            try
+            {
+                Int32.TryParse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.CollectionJobTime0IsDisabled, out intervalTimeCollectionJob);
+            }
+            catch (Exception)
+            {
+            }
+
+            if (intervalTimeCollectionJob <= 0)
+            {
+                var coletasRegistradasPorCollectionLevel2 = coletasRegistradas
                 .Where(x => x.ParHeaderField_Id == null
                 && x.ParHeaderField_Value == null
                 && x.Evaluation != null
@@ -105,7 +117,9 @@ namespace SgqSystem.Controllers.V2.Api
                 .Distinct()
                 .ToList();
 
-            CollectionJob.ConsolidarCollectionLevel2(coletasRegistradasPorCollectionLevel2);
+                CollectionJob.ConsolidarCollectionLevel2(coletasRegistradasPorCollectionLevel2);
+            }
+            #endregion
 
             return Ok(coletasRegistradas);
         }
