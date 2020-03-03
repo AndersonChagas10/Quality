@@ -44,6 +44,34 @@ function getParHeaderFieldLevel2(parLevel1, parLevel2) {
         return '';
 }
 
+function getParHeaderFieldGeral(parLevel3) {
+    //buscar os campos de cabeçalho no nivel da tarefa
+    var lista = [];
+     parametrization.listaParHeaderFieldGeral.forEach(function (o, i) {
+         if (o.Generic_Id == parLevel3.ParLevel3Value.Id)
+             lista.push(o);
+    });
+
+    if (lista.length > 0) {
+        var retorno = '';
+        retorno += ' <div class="col-xs-12" data-level3 style="padding-left:10px;background-color: #e9ecef;">';
+        lista.forEach(function (o, i) {
+            retorno += ' <div class="col-xs-3"><small style="font-weight:550 !important">' + o.Name + '</small></div>';
+            retorno += ' <div class="col-xs-3 no-gutters">';
+            retorno += ' <div class="col-xs-12">';
+            retorno += ' <input type="number" class="col-xs-12 input-sm" data-cb="cb'+ o.Id +'" style="text-align: center;" >';
+            retorno += ' </div>';
+            retorno += ' </div>';
+        });
+        retorno += ' <div class="clearfix"></div>';
+        retorno += '</div></div>';
+
+    } else
+        return '';
+
+    return retorno;
+}
+
 
 function montarHeaderFields(parLevelHeaderFiel_Id, Generic_Id) {
 
