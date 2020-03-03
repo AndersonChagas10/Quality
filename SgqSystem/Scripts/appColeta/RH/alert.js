@@ -1,3 +1,5 @@
+var listaAlertaTamanho = [];
+
 function processAlertRole(coletaJson) {
 
     if (coletaJson.length == 0)
@@ -8,6 +10,7 @@ function processAlertRole(coletaJson) {
             && (o.ParCargo_Id == coletaJson[0].ParCargo_Id || o.ParCargo_Id == null)
     });
 
+    var objCorrectiveAction = [];
     for (var i = 0; i < coletaJson.length; i++) {
 
         var coleta = coletaJson[i];
@@ -37,8 +40,10 @@ function processAlertRole(coletaJson) {
         if (exists.length > 0) {
 
             numeroDeAlertas++;
-
-            setTimeoutOpenCorrectiveAction(exists,coleta,numeroDeAlertas)
+            
+            var recebeObj = montaObjCorrectiveAction(exists,coleta,numeroDeAlertas);
+            objCorrectiveAction.push(recebeObj);
+            listaAlertaTamanho = objCorrectiveAction;
 
             currentAlertsAgrupados.push({
                 ParDepartment_Id: coleta.ParDepartment_Id,
@@ -51,18 +56,37 @@ function processAlertRole(coletaJson) {
             });
         }
     }
+    
+    if(objCorrectiveAction.length > 0){
+        setTimeoutOpenCorrectiveAction(objCorrectiveAction, 0);
+    }
 }
 
-function setTimeoutOpenCorrectiveAction(e,c,n){
-    var exists = e;
-    var coleta = c;
+function montaObjCorrectiveAction(exists,coleta,numeroDeAlertas){
+    return {
+        exist: exists,
+        coleta: coleta,
+        numberAlert: numeroDeAlertas
+    }
+}
+
+function proximoElementLista(i){
+    i = i + 1;
+    setTimeoutOpenCorrectiveAction(listaAlertaTamanho, i);
+}
+
+function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
+    var i = index;
+    var exists = objCorrectiveAction[i].exist;
+    var coleta = objCorrectiveAction[i].coleta;
     var modal = "";
     var body = "";
     var salvaAcaoCorretiva = "";
     var corpo = "";
     var display = "";
     var btnShowAcaoCorretiva = "";
-    var numeroDeAlertas = n;
+    var btnNext = "";
+    var numeroDeAlertas = objCorrectiveAction[i].numberAlert;
 
     setTimeout(function () {
 
@@ -73,7 +97,15 @@ function setTimeoutOpenCorrectiveAction(e,c,n){
             '</div>' +
             '<div style="text-align:center">' +
             '</div>' +
-            '</div>';
+            '</div>';   
+
+        if(listaAlertaTamanho.length > 1){
+            if(i < objCorrectiveAction.length - 1){
+                btnNext = '<div>' +
+                    '<button class="btn btn-primary" onclick="proximoElementLista(' + i + ')" style="float:right;">Próxima Ação Corretiva</button>' +
+                    '</div>';
+            }
+        }
 
         if(exists[0].HasCorrectiveAction){
             display = 'block';
@@ -120,6 +152,7 @@ function setTimeoutOpenCorrectiveAction(e,c,n){
                 alerta +                
                 '</div>' +
                 btnShowAcaoCorretiva +
+                btnNext +
                 '<hr>' +
                 modal +
                 '<hr>' +
