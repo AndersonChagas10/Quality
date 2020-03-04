@@ -1,4 +1,4 @@
-var listaAlertaTamanho = [];
+var currentRecebeListaDeAlerta = [];
 
 function processAlertRole(coletaJson) {
 
@@ -43,7 +43,7 @@ function processAlertRole(coletaJson) {
             
             var recebeObj = montaObjCorrectiveAction(exists,coleta,numeroDeAlertas);
             objCorrectiveAction.push(recebeObj);
-            listaAlertaTamanho = objCorrectiveAction;
+            currentRecebeListaDeAlerta = objCorrectiveAction;
 
             currentAlertsAgrupados.push({
                 ParDepartment_Id: coleta.ParDepartment_Id,
@@ -70,23 +70,73 @@ function montaObjCorrectiveAction(exists,coleta,numeroDeAlertas){
     }
 }
 
-function proximoElementLista(i){
-    i = i + 1;
-    setTimeoutOpenCorrectiveAction(listaAlertaTamanho, i);
+function proximoElementLista(indexDaListaDeAlerta){
+    indexDaListaDeAlerta = indexDaListaDeAlerta + 1;
+    addObjLista(indexDaListaDeAlerta);
+    setTimeoutOpenCorrectiveAction(currentRecebeListaDeAlerta, indexDaListaDeAlerta);
+ 
 }
 
+function addObjLista(indexDaListaDeAlerta){
+    debugger
+    var correctiveActionResult = {};
+    if(listaObjCorrectiveAction.length > 0){
+        listaObjCorrectiveAction.forEach(function (oi) {
+            if(oi.objIndex != indexDaListaDeAlerta){
+                correctiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
+                correctiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
+                correctiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
+                listaObjCorrectiveAction.push(correctiveActionResult);
+            }
+        });
+    }
+    else{
+        correctiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
+        correctiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
+        correctiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
+        listaObjCorrectiveAction.push(correctiveActionResult);
+    }
+};
+
+function elementAnteriorLista(indexDaListaDeAlerta){
+    indexDaListaDeAlerta = indexDaListaDeAlerta - 1;
+    setTimeoutOpenCorrectiveAction(currentRecebeListaDeAlerta, indexDaListaDeAlerta);
+}
+
+var listaObjCorrectiveAction = [];
 function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
-    var i = index;
-    var exists = objCorrectiveAction[i].exist;
-    var coleta = objCorrectiveAction[i].coleta;
+    var exists = objCorrectiveAction[index].exist;
+    var coleta = objCorrectiveAction[index].coleta;
     var modal = "";
     var body = "";
-    var salvaAcaoCorretiva = "";
     var corpo = "";
     var display = "";
     var btnShowAcaoCorretiva = "";
     var btnNext = "";
-    var numeroDeAlertas = objCorrectiveAction[i].numberAlert;
+    var btnBack = "";
+    var numeroDeAlertas = objCorrectiveAction[index].numberAlert;
+
+    var correctiveAction = {};
+    var correctiveActionResult = {};
+    //var listaObjCorrectiveAction = [];
+
+    //Pegar os dados correntes
+    correctiveAction.CollectionLevel2 = {
+        ParLevel1_Id: coleta.ParLevel1_Id,
+        ParLevel2_Id: coleta.ParLevel2_Id,
+        UnitId: coleta.ParCompany_Id,
+        //Shift: 1,
+        EvaluationNumber: coleta.Evaluation,
+        Sample: coleta.Sample,
+        ParDepartment_Id: coleta.ParDepartment_Id,
+        ParCargo_Id: coleta.ParCargo_Id,
+        //ParCluster_Id: 1,
+        CollectionDate: getCurrentDate()
+    };
+
+    correctiveActionResult = {
+        objIndex: index
+    };
 
     setTimeout(function () {
 
@@ -99,12 +149,14 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
             '</div>' +
             '</div>';   
 
-        if(listaAlertaTamanho.length > 1){
-            if(i < objCorrectiveAction.length - 1){
-                btnNext = '<div>' +
-                    '<button class="btn btn-primary" onclick="proximoElementLista(' + i + ')" style="float:right;">Próxima Ação Corretiva</button>' +
-                    '</div>';
-            }
+        if(objCorrectiveAction.length > 1){
+            btnNext = '<div>' +
+                '<button class="btn btn-primary" id="next" onclick="proximoElementLista(' + index + ');" style="float:right;">Próxima Ação Corretiva</button>' +
+                '</div>';
+        
+            btnBack = '<div>' +
+            '<button class="btn btn-primary" id="back" onclick="elementAnteriorLista(' + index + ')" style="float:right;">Voltar Ação Corretiva</button>' +
+            '</div>';
         }
 
         if(exists[0].HasCorrectiveAction){
@@ -115,9 +167,13 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
         {
             display = 'none';
             btnShowAcaoCorretiva = '<div>' +
-                '<button class="btn btn-secundary" data-id style="float:left;">Mostrar Ação Corretiva</button>' +
+                '<button class="btn btn-secundary" data-showAcaoCorretiva style="float:left;">Mostrar Ação Corretiva</button>' +
                 '</div>';
             fillAcaocorretiva();
+        }
+
+        function p() {
+            alert('show')
         }
         
         function fillAcaocorretiva(){
@@ -143,7 +199,6 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
                 '<label for="email">Ação Preventiva:</label>' +
                 '<input name="PreventativeMeasure" id="preventativeMeasure" class="form-control" style="height: 80px;">' +
                 '</div>';
-            salvaAcaoCorretiva = '<button class="btn btn-primary" id="btnSendCA" style="display:' + display + ';">Salvar Ação Corretiva</button>';
             
             corpo = 
                 '<div class="container">' +
@@ -153,6 +208,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
                 '</div>' +
                 btnShowAcaoCorretiva +
                 btnNext +
+                btnBack +
                 '<hr>' +
                 modal +
                 '<hr>' +
@@ -161,7 +217,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
                 '</div>' +
                 '<hr>' +
                 '<div class="form-group col-xs-6">' +
-                salvaAcaoCorretiva +
+                '<button class="btn btn-primary" id="btnSendCA" style="display:' + display + ';">Salvar Ação Corretiva</button>' +
                 '</div>' +
                 '</div>' +
                 '</div>';
@@ -169,20 +225,50 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
 
         openModal(corpo, 'white', 'black');
 
-        $('body').off('click', '[data-id]').on('click', '[data-id]', function (e) {
+        if(index < objCorrectiveAction.length - 1){
+            $("#btnSendCA").attr('disabled', true);
+            $("#next").attr('disabled', false);
+            $("#back").attr('disabled', true);
+        }
+        else{
+            $("#btnSendCA").attr('disabled', false);
+            $("#next").attr('disabled', true);
+            $("#back").attr('disabled', false);
+        }
+
+        $('body').off('click', '[data-showAcaoCorretiva]').on('click', '[data-showAcaoCorretiva]', function (e) {
             display = 'block';
             fillAcaocorretiva();
             openModal(corpo, 'white', 'black');
         });
+      
+        
+        // $('#back').off().on('click', function () {
+        //     listaObjCorrectiveAction.forEach(function (oi) {
+        //         if(oi.objIndex == index){
+        //             $('#immediateCorrectiveAction').val(oi.ImmediateCorrectiveAction);
+        //             $('#preventativeMeasure').val(oi.PreventativeMeasure);
+        //             $('#descriptionFailure').val(oi.DescriptionFailure);
+        //         }
+        //     });
+        // });
 
-        // openMensagem('Alerta ' + numeroDeAlertas + ' (' + exists[0].Name + ') foi disparado.', 'red', 'white');
-        // //closeMensagem(3000);
+        $('#btnSendCA').off().on('click', function () {
 
-        // if (exists[0].HasCorrectiveAction) {
-        //     //Verificar se disparou alerta e se existe ação corretiva - Caso existir, abre o modal - após salvar a ação corretiva abre a função abaixo;
-        //     setTimeout(function () {
-        //         OpenCorrectiveAction(coleta);
-        //     }, 3100);
-        // }
+            //Inserir collectionLevel2 dentro do obj
+            correctiveAction.AuditorId = currentLogin.Id;
+            correctiveAction.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
+            correctiveAction.PreventativeMeasure = $('#preventativeMeasure').val();
+            correctiveAction.DescriptionFailure = $('#descriptionFailure').val();
+            listaObjCorrectiveAction.push(correctiveAction);
+
+            for (var j = 0; j < listaObjCorrectiveAction.length; j++) {
+
+                //Salvar corrective action na lista de correctiveAction
+                //globalAcoesCorretivasRealizadas.push(listaObjCorrectiveAction[j]);
+            }
+            // no final do salvar limpar a lista de acao respondida listaObjCorrectiveAction;
+            closeModal();
+        });
     }, 3500);
 }
