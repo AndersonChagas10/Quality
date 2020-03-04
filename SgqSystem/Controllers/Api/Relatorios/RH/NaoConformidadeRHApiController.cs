@@ -156,7 +156,8 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereParLevel2}
                 {whereParLevel3}
                 GROUP BY 
-	                Holding.NAME, Holding.Id";
+	                Holding.NAME, Holding.Id
+                ORDER by 5 desc";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -307,7 +308,8 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereParLevel2}
                     {whereParLevel3}
                 GROUP BY 
-	                GrupoDeEmpresa.NAME, GrupoDeEmpresa.Id 
+	                GrupoDeEmpresa.NAME, GrupoDeEmpresa.Id
+                    ORDER by 5 desc
                 ";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -469,6 +471,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereGrupoEmpresa}
                 GROUP BY 
 	                Regional.NAME, Regional.Id 
+                    ORDER by 5 desc
                 ";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -637,7 +640,8 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     {whereParLevel3}
                     {whereRegional}
                 GROUP BY 
-	                C.NAME, C.Id ";
+	                C.NAME, C.Id 
+                    ORDER by 5 desc";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -771,7 +775,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereParLevel3}
                 GROUP BY 
 	                D.NAME, D.Id
-                ORDER BY 4 DESC 
+                ORDER BY 5 DESC 
             ";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -902,7 +906,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereParLevel3}
                 GROUP BY 
 	                 CG.NAME, CG.Id
-                ORDER BY 4 DESC 
+                ORDER BY 5 DESC 
             ";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -1063,7 +1067,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereParLevel3}
             GROUP BY 
 	            D1.NAME, D1.Id
-            ORDER BY 4 DESC 
+            ORDER BY 5 DESC 
 ";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -1740,7 +1744,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 {whereParLevel3}
             GROUP BY 
 	            L.NAME, L.Id
-            ORDER BY 4 DESC
+            ORDER BY 5 DESC
  ";
 
 
@@ -2184,7 +2188,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 
             GROUP BY 
 	            M.NAME, M.Id
-            ORDER BY 4 DESC ";
+            ORDER BY 5 DESC ";
 
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -2481,7 +2485,7 @@ DROP TABLE #AMOSTRATIPO4 ";
                 {whereParLevel3}
         GROUP BY 
 	        T.NAME, T.ID
-        ORDER BY 4 DESC
+        ORDER BY 5 DESC
 ";
 
 
