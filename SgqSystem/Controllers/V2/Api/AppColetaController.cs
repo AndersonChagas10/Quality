@@ -75,8 +75,8 @@ namespace SgqSystem.Controllers.V2.Api
                 }
             }
 
-            var lista = listSimpleCollect.Where(x => x.HasError == true).ToList();
-            if (lista.Count == listSimpleCollect.Count)
+            var listaDeColetasComErro = listSimpleCollect.Where(x => x.HasError == true).ToList();
+            if (listaDeColetasComErro.Count == listSimpleCollect.Count)
                 return BadRequest("Ocorreu erro em todas as tentativas de registrar as coletas.");
 
             var coletasRegistradas = listSimpleCollect.Where(x => x.HasError != true).ToList();

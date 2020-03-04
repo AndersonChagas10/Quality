@@ -148,6 +148,9 @@ function loginOnline() {
         type: 'POST',
         success: function (data) {
 
+            currentBaixarGetResultadoAposEnviarOsDadosColetados = true;
+            enviarColeta();
+
             if (data && data.Retorno != null) {
                 //se for usuários diferentes ou unidade diferente, zera a parametrização
                 if (currentLogin){
@@ -159,10 +162,9 @@ function loginOnline() {
                         _writeFile("appParametrization.txt", '', aposLimparDadosDaParametrizacao);
 
                         _writeFile("planejamento.txt", '', function () { });
-
-
                     }
                 }
+                
                 _writeFile("login.txt", JSON.stringify(data.Retorno), function () {
                     globalLoginOnline = true;
                     loginSuccess(data.Retorno);

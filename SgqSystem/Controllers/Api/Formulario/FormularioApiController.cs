@@ -1393,7 +1393,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 INNER JOIN ParDepartment CentroCusto ON CentroCusto.Id = Secao.Parent_Id AND CentroCusto.Active = 1
                 WHERE 1 = 1
                 AND Secao.Active = 1
-                AND ParCargo.Name like '%{search}%'
+                AND Cargo.Name like '%{search}%'
                 {whereCentroCusto}
                 {whereSecao}
                 AND (CentroCusto.Parent_Id IS NULL OR CentroCusto.Parent_Id = 0)";
