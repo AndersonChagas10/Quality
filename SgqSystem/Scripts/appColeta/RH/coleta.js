@@ -188,7 +188,7 @@ function getInputLevel3(level3, level2, level1, striped) {
 
     var retorno = "";
 
-    var htmlLinhaHeaderFieldGeral = getParHeaderFieldGeral(level3);
+    var htmlLinhaHeaderFieldGeral = getParHeaderFieldGeral(level1,level2,level3);
 
     if (level3.ParLevel3InputType && level3.ParLevel3InputType.Id) {
 
@@ -1089,6 +1089,33 @@ function getCollectionHeaderFields() {
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
+                Parfrequency_Id: parametrization.currentParFrequency_Id
+            });
+
+    });
+
+
+    $('#headerFieldLevel3 input, #headerFieldLevel3 select').each(function () {
+
+        $self = $(this);
+
+        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
+        if ($self.val())
+
+            collectionHeaderFied.push({
+                ParHeaderField_Id: $self.attr("parheaderfield_id"),
+                ParHeaderField_Value: $self.val(),
+                Evaluation: currentEvaluationSample.Evaluation,
+                Sample: currentEvaluationSample.Sample,
+                ParDepartment_Id: currentParDepartment_Id,
+                ParCargo_Id: currentParCargo_Id,
+                ParCluster_Id: currentParCluster_Id,
+                ParCompany_Id: currentParCompany_Id,
+                CollectionDate: getCurrentDate(),
+                UserSgq_Id: currentLogin.Id,
+                ParLevel1_Id: $self.parents('#headerFieldLevel3').attr('parLevel1Id'),
+                ParLevel2_Id: $self.parents('#headerFieldLevel3').attr('parLevel2Id'),
+                ParLevel3_Id: $self.parents('#headerFieldLevel3').attr('parLevel3Id'),
                 Parfrequency_Id: parametrization.currentParFrequency_Id
             });
 
