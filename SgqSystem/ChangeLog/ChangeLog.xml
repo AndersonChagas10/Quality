@@ -2717,7 +2717,19 @@
 
       UPDATE ParNotConformityRuleXLevel SET CorrectiveAction = 1 where CorrectiveAction is null
       GO
+
+      BEGIN
+      IF NOT EXISTS (SELECT * FROM ParNotconformityrule WHERE Id = 7)
+      BEGIN
+      SET IDENTITY_INSERT ParNotconformityrule ON
+      insert into ParNotconformityrule values (7, 'Reincidencia KO Amostras', null, getdate(), null, 1);
+      SET IDENTITY_INSERT ParNotconformityrule OFF
+      END
+      END
+      GO
+      
     </Script>
+    
   </Card>
 
 </Cards>

@@ -599,12 +599,16 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
                 mensagemHtml = $('.message').html();
 
                 level1.attr('alertaatual', alertaatual);
+
                 if (isEUA == true) {
+
                     if($(_level1).attr('disparaalerta') == "True") {
                         level1.attr('havecorrectiveaction', 'true');
                     } else {
                         level1.attr('havecorrectiveaction', 'true');
                     }
+
+                }
 
                 if (level2Result) {
                     if (level1.attr('phase1')) {
@@ -640,6 +644,7 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
                     level2.attr('reauditnumber', reauditnumber);
                 }
             }
+
             else {
                 if (level2.attr("isreaudit") == "true") {
                     level2Result.removeAttr('havereaudit');
@@ -647,6 +652,7 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
                     level2.attr('reauditlevel', '0');
                 }
             }
+
         } else if (parseInt(level2.attr('parnotconformityrule_id')) == 5) {
             var tipoDeAlerta = $(_level2).attr("parnotconformityrule_id");
             var valorDoAlerta = parseFloat($(_level2).attr("parnotconformityrule_value").replace(',', '.'));
@@ -723,15 +729,19 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
 
                     level2.attr('reauditnumber', reauditnumber);
                 }
-            }
-            else {
+
+            } else {
+
                 if (level2.attr("isreaudit") == "true") {
                     level2Result.removeAttr('havereaudit');
                     level2.attr('havereaudit', 'false');
                     level2.attr('reauditlevel', '0');
                 }
+
             }
+
         } else if (parseInt(level2.attr('parnotconformityrule_id')) == 6) {
+
             var tipoDeAlerta = $(_level2).attr("parnotconformityrule_id");
             var valorDoAlerta = parseFloat($(_level2).attr("parnotconformityrule_value").replace(',', '.'));
 
@@ -744,30 +754,31 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
                 return o.level1_id == _level1.id && o.level2_id == _level2.id && o.evaluation == evaluateCurrent
 
 
-            })
-
-
+            });
 
             if (defectsNow.length == 0) {
 
                 defectsPerEvaluation.push({
                     'level1_id': _level1.id, 'level2_id': _level2.id, 'evaluation': evaluateCurrent
                     , 'defects': 0
-                })
+                });
 
                 defectsNow = $.grep(defectsPerEvaluation, function (o) {
 
                     return o.level1_id == _level1.id && o.level2_id == _level2.id && o.evaluation == evaluateCurrent
 
-                })
+                });
 
             }
 
             defectsNow[0].defects = defectsNow[0].defects + totalDefeitosL1L2;
 
             for (var i = 0; i < defectsPerEvaluation.length; i++) {
-                if (defectsPerEvaluation[i].level1_id == _level1.id && defectsPerEvaluation[i].level2_id == _level2.id && defectsPerEvaluation[i].evaluation == evaluateCurrent
-                ) {
+
+                if (defectsPerEvaluation[i].level1_id == _level1.id && 
+                    defectsPerEvaluation[i].level2_id == _level2.id && 
+                    defectsPerEvaluation[i].evaluation == evaluateCurrent) {
+
                     defectsPerEvaluation[i].defects = defectsNow[0].defects
                 }
             }
@@ -1201,7 +1212,7 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
             mensagem = "";
 
             //alerta de KO
-
+            //Verifica se existe defeitos do tipo KO na lista 
             var valor = $.grep(listaDefeitos, function (obj) {
                 return obj.parlevel1_id == level2Result.attr('level01id')
                     && obj.parlevel2_id == level2Result.attr('level02id')
@@ -1209,26 +1220,30 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
                     && obj.shift == level2Result.attr('shift')
                     && obj.isKO == "True"
                     && obj.evaluate == level2Result.attr('evaluate')
-                    && obj.tipo == "defeito"
-            })
+                    && obj.tipo == "defeito";
+            });
 
+            //Se existe defeito defeitos do tipo KO na lista 
             if (valor.length > 0) {
-
+                
+                //verifica se existe alerta na lista
                 var valor = $.grep(listaDefeitos, function (obj) {
                     return obj.parlevel1_id == level2Result.attr('level01id')
                         && obj.parlevel2_id == level2Result.attr('level02id')
                         && obj.period == level2Result.attr('period')
                         && obj.shift == level2Result.attr('shift')
                         && obj.evaluate == level2Result.attr('evaluate')
-                        && obj.tipo == "alerta"
-                })
+                        && obj.tipo == "alerta";
+                });
 
+                //Se existir alerta
                 if (valor.length == 0) {
                     controleDeAlerta = true;
                     //alert("Alerta de KO");
-                    mensagem += " Critical "
+                    mensagem += " Critical ";
                 }
 
+                //Adiciona um defeito do tipo alerta
                 adicionaNaListaDeDefeitos(
                     {
                         tipo: "alerta"
@@ -1247,34 +1262,33 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
             }
 
             //alerta de reincidencia
-
+            //Verifica se existe defeito
             var valor = $.grep(listaDefeitos, function (obj) {
                 return obj.parlevel1_id == level2Result.attr('level01id')
                     && obj.parlevel2_id == level2Result.attr('level02id')
                     && obj.period == level2Result.attr('period')
                     && obj.shift == level2Result.attr('shift')
                     && obj.evaluate == level2Result.attr('evaluate')
-                    && obj.tipo == "defeito"
-            })
+                    && obj.tipo == "defeito";
+            });
 
-            var listaAmostraDefeito = []
+            var listaAmostraDefeito = [];
 
             for (var i = 0; i < valor.length; i++) {
-                listaAmostraDefeito.push(valor[i].parlevel3_id)
+                listaAmostraDefeito.push(valor[i].parlevel3_id);
             }
 
-            listaAmostraDefeito.sort()
+            listaAmostraDefeito.sort();
 
             var listaAmostraDefeitoUnica = listaAmostraDefeito;
 
+            var contador = 0;
 
-
-            var contador = 0
-
+            //Verifica se existe mais de um defeito seguido para a mesma tarefa
             for (var i = 1; i < listaAmostraDefeitoUnica.length; i++) {
                 if (contador < 2) {
                     if (listaAmostraDefeitoUnica[i] == listaAmostraDefeito[i - 1]) {
-                        contador++
+                        contador++;
                     }
                 }
             }
@@ -1288,13 +1302,13 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
                         && obj.period == level2Result.attr('period')
                         && obj.shift == level2Result.attr('shift')
                         && obj.evaluate == level2Result.attr('evaluate')
-                        && obj.tipo == "alerta"
-                })
+                        && obj.tipo == "alerta";
+                });
 
                 if (valor.length == 0) {
                     controleDeAlerta = true;
                     //alert("Alerta de reincidencia com erros")
-                    mensagem += " One recurring defect "
+                    mensagem += " One recurring defect ";
                 }
 
                 adicionaNaListaDeDefeitos(
@@ -1322,25 +1336,25 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
                     && obj.period == level2Result.attr('period')
                     && obj.shift == level2Result.attr('shift')
                     && obj.evaluate == level2Result.attr('evaluate')
-                    && obj.tipo == "defeito"
+                    && obj.tipo == "defeito";
 
-            })
+            });
 
-            var listaAmostraDefeito = []
+            var listaAmostraDefeito = [];
 
             for (var i = 0; i < valor.length; i++) {
-                listaAmostraDefeito.push(valor[i].sample)
+                listaAmostraDefeito.push(valor[i].sample);
             }
 
-            listaAmostraDefeito.sort()
+            listaAmostraDefeito.sort();
 
-            var listaAmostraDefeitoUnica = []
+            var listaAmostraDefeitoUnica = [];
 
-            listaAmostraDefeitoUnica.push(listaAmostraDefeito[0])
+            listaAmostraDefeitoUnica.push(listaAmostraDefeito[0]);
 
             for (var i = 1; i < listaAmostraDefeito.length; i++) {
                 if (listaAmostraDefeito[i] != listaAmostraDefeitoUnica[listaAmostraDefeitoUnica.length - 1])
-                    listaAmostraDefeitoUnica.push(listaAmostraDefeito[i])
+                    listaAmostraDefeitoUnica.push(listaAmostraDefeito[i]);
             }
 
             if (listaAmostraDefeitoUnica.length > valorDoAlerta) {
@@ -1351,14 +1365,14 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
                         && obj.period == level2Result.attr('period')
                         && obj.shift == level2Result.attr('shift')
                         && obj.evaluate == level2Result.attr('evaluate')
-                        && obj.tipo == "alerta"
-                })
+                        && obj.tipo == "alerta";
+                });
 
                 if (valor.length == 0) {
 
                     controleDeAlerta = true;
                     //alert("Alerta de amostras com erros")
-                    mensagem += listaAmostraDefeitoUnica.length + " defected pieces "
+                    mensagem += listaAmostraDefeitoUnica.length + " defected pieces ";
                 }
 
                 adicionaNaListaDeDefeitos(
@@ -1373,17 +1387,11 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
                         , evaluate: level2Result.attr('evaluate')
                         , parlevel3_id: ""
                         , isKO: ""
+
                     }
                 );
-
             }
-
-            
-
         }
-
-
-
     }
 
 
@@ -1577,6 +1585,7 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
                     }
                     break;
             }
+            
         } else if (tipoDeAlerta == "a7") {
 
             //alert("Teste de Deus!");
