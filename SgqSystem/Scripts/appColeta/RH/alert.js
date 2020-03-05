@@ -1,4 +1,6 @@
 var currentRecebeListaDeAlerta = [];
+var currentCorrectiveActionResult = {};
+var listaObjCorrectiveAction = [];
 
 function processAlertRole(coletaJson) {
 
@@ -71,39 +73,49 @@ function montaObjCorrectiveAction(exists,coleta,numeroDeAlertas){
 }
 
 function proximoElementLista(indexDaListaDeAlerta){
-    indexDaListaDeAlerta = indexDaListaDeAlerta + 1;
     addObjLista(indexDaListaDeAlerta);
+    indexDaListaDeAlerta = indexDaListaDeAlerta + 1;
     setTimeoutOpenCorrectiveAction(currentRecebeListaDeAlerta, indexDaListaDeAlerta);
  
 }
 
 function addObjLista(indexDaListaDeAlerta){
-    debugger
-    var correctiveActionResult = {};
     if(listaObjCorrectiveAction.length > 0){
-        listaObjCorrectiveAction.forEach(function (oi) {
-            if(oi.objIndex != indexDaListaDeAlerta){
-                correctiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
-                correctiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
-                correctiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
-                listaObjCorrectiveAction.push(correctiveActionResult);
+        listaObjCorrectiveAction.forEach(function (o) {
+            if(o.objIndex != indexDaListaDeAlerta){
+                currentCorrectiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
+                currentCorrectiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
+                currentCorrectiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
+                listaObjCorrectiveAction.push(currentCorrectiveActionResult);
             }
         });
     }
     else{
-        correctiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
-        correctiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
-        correctiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
-        listaObjCorrectiveAction.push(correctiveActionResult);
+        currentCorrectiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
+        currentCorrectiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
+        currentCorrectiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
+        listaObjCorrectiveAction.push(currentCorrectiveActionResult);
     }
 };
 
 function elementAnteriorLista(indexDaListaDeAlerta){
     indexDaListaDeAlerta = indexDaListaDeAlerta - 1;
+    getObjLista(indexDaListaDeAlerta);
     setTimeoutOpenCorrectiveAction(currentRecebeListaDeAlerta, indexDaListaDeAlerta);
 }
 
-var listaObjCorrectiveAction = [];
+function getObjLista(indexDaListaDeAlerta){
+    listaObjCorrectiveAction.forEach(function (o) {
+        if(o.objIndex == indexDaListaDeAlerta){
+            setTimeout(function () {
+                $('#immediateCorrectiveAction').val(o.ImmediateCorrectiveAction);
+                $('#preventativeMeasure').val(o.PreventativeMeasure);
+                $('#descriptionFailure').val(o.DescriptionFailure);
+            },3800);
+        }
+    });
+}
+
 function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
     var exists = objCorrectiveAction[index].exist;
     var coleta = objCorrectiveAction[index].coleta;
@@ -117,7 +129,6 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
     var numeroDeAlertas = objCorrectiveAction[index].numberAlert;
 
     var correctiveAction = {};
-    var correctiveActionResult = {};
     //var listaObjCorrectiveAction = [];
 
     //Pegar os dados correntes
@@ -131,10 +142,11 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
         ParDepartment_Id: coleta.ParDepartment_Id,
         ParCargo_Id: coleta.ParCargo_Id,
         //ParCluster_Id: 1,
+        ListaRespostasAcaoCorretiva: [],
         CollectionDate: getCurrentDate()
     };
 
-    correctiveActionResult = {
+    currentCorrectiveActionResult = {
         objIndex: index
     };
 
@@ -151,7 +163,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
 
         if(objCorrectiveAction.length > 1){
             btnNext = '<div>' +
-                '<button class="btn btn-primary" id="next" onclick="proximoElementLista(' + index + ');" style="float:right;">Próxima Ação Corretiva</button>' +
+                '<button class="btn btn-primary" id="next" onclick="proximoElementLista(' + index + ')" style="float:right;">Próxima Ação Corretiva</button>' +
                 '</div>';
         
             btnBack = '<div>' +
@@ -170,10 +182,6 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
                 '<button class="btn btn-secundary" data-showAcaoCorretiva style="float:left;">Mostrar Ação Corretiva</button>' +
                 '</div>';
             fillAcaocorretiva();
-        }
-
-        function p() {
-            alert('show')
         }
         
         function fillAcaocorretiva(){
@@ -241,34 +249,29 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
             fillAcaocorretiva();
             openModal(corpo, 'white', 'black');
         });
-      
-        
-        // $('#back').off().on('click', function () {
-        //     listaObjCorrectiveAction.forEach(function (oi) {
-        //         if(oi.objIndex == index){
-        //             $('#immediateCorrectiveAction').val(oi.ImmediateCorrectiveAction);
-        //             $('#preventativeMeasure').val(oi.PreventativeMeasure);
-        //             $('#descriptionFailure').val(oi.DescriptionFailure);
-        //         }
-        //     });
-        // });
 
         $('#btnSendCA').off().on('click', function () {
 
             //Inserir collectionLevel2 dentro do obj
             correctiveAction.AuditorId = currentLogin.Id;
-            correctiveAction.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
-            correctiveAction.PreventativeMeasure = $('#preventativeMeasure').val();
-            correctiveAction.DescriptionFailure = $('#descriptionFailure').val();
-            listaObjCorrectiveAction.push(correctiveAction);
 
-            for (var j = 0; j < listaObjCorrectiveAction.length; j++) {
+            currentCorrectiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
+            currentCorrectiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
+            currentCorrectiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
 
+            listaObjCorrectiveAction.push(currentCorrectiveActionResult);
+
+            for (var i = 0; i < listaObjCorrectiveAction.length; i++) {
+                correctiveAction.CollectionLevel2.ListaRespostasAcaoCorretiva.push({
+                    ImmediateCorrectiveAction: listaObjCorrectiveAction[i].ImmediateCorrectiveAction,
+                    PreventativeMeasure: listaObjCorrectiveAction[i].PreventativeMeasure,
+                    DescriptionFailure: listaObjCorrectiveAction[i].DescriptionFailure
+                });    
                 //Salvar corrective action na lista de correctiveAction
-                //globalAcoesCorretivasRealizadas.push(listaObjCorrectiveAction[j]);
             }
-            // no final do salvar limpar a lista de acao respondida listaObjCorrectiveAction;
+            globalAcoesCorretivasRealizadas.push(correctiveAction);
             closeModal();
+            listaObjCorrectiveAction = null;
         });
     }, 3500);
 }

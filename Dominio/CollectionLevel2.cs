@@ -133,5 +133,8 @@ namespace Dominio
 
         [NotMapped]
         public string Outros { get; set; }
+
+        [NotMapped]
+        public List<CorrectiveAction> ListaRespostasAcaoCorretiva { get; set; }
     }
 }
