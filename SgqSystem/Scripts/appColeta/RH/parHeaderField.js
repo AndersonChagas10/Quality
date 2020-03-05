@@ -54,10 +54,11 @@ function getParHeaderFieldGeral(parLevel1, parLevel2, parLevel3) {
     
     if (lista.length > 0) {
         var retorno = '';
-        retorno += ' <div class="col-xs-12" id="headerFieldLevel3" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + ' data-level3 style="padding-left:10px;background-color: #e9ecef;">';
+        retorno += ' <div class="col-xs-12" id="headerFieldLevel3" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + ' data-level3 style="padding-left:10px;background-color: #e9ecef; padding-bottom: 5px;">';
         lista.forEach(function (o, i) {
+            
+            retorno += ' <div class="col-xs-3 no-gutters pull-right">';
             retorno += ' <div class="col-xs-3"><small style="font-weight:550 !important">' + o.Name + '</small></div>';
-            retorno += ' <div class="col-xs-3 no-gutters">';
             retorno += ' <div class="col-xs-12">';
             retorno += ' <input type="number" ParHeaderField_Id=' + o.Id +' class="col-xs-12 input-sm" data-cb="cb'+ o.Id +'" style="text-align: center;" >';
             retorno += ' </div>';

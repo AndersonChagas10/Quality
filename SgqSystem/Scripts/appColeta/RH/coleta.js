@@ -541,11 +541,9 @@ function getResultado(level3) {
 
     html +=
         '<div class="col-xs-6 no-gutters">' +
-        '   <div class="col-xs-2 input-sm" style="font-size: 8px;">' +
-        '   </div>' +
-        '   <div class="col-xs-8 no-gutters">' +
-        '       <div class="col-xs-8" style="padding: 0;">' +
-        '	        <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor data-equacao="' + level3.ParLevel3Value.DynamicValue + '" readonly/>' +
+        '   <div class="col-xs-12 no-gutters">' +
+        '       <div class="col-xs-10" style="padding: 0;">' +
+    '	        <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor data-equacao="' + level3.ParLevel3Value.DynamicValue + '" style=" text-align: center;" readonly/>' +
         '       </div>' +
         '   </div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +

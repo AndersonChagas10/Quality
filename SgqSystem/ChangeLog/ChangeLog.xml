@@ -2773,5 +2773,24 @@
     </Script>
   </Card>
 
-
+  <Card>
+    <CardNumber>SGQ-442</CardNumber>
+    <Version>1.6.0</Version>
+    <Description>[RH SESMT / 5S] COLETA - Novos tipos de dados de entrada: N inputs e Resultado</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Result_Level3XParHeaderFieldGeral' AND xtype='U')
+      create table Result_Level3XParHeaderFieldGeral (
+      Id int not null primary key identity,
+      [ResultLevel3_Id] [int] NULL ,
+      [ParHeaderFieldGeral_Id] int NULL,
+      [ParFieldType_Id] int NULL,
+      [Value] varchar(100) null,
+      [AddDate] [datetime] NOT NULL,
+      [Evaluation] int not null,
+      [Sample] int not null,
+      [AlterDate] [datetime] NULL,
+      [IsActive] [bit] NOT NULL DEFAULT ((1))
+      )
+    </Script>
+  </Card>
 </Cards>
