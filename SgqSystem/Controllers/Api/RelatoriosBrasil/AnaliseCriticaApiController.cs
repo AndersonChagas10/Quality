@@ -299,7 +299,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 if (form.Periodo[0] == 1)//Diario
                 {
                     wPeriodo = "convert(NVARCHAR, Data, 103)";
-                    orderBy = "S3._Data";
+                    orderBy = "CAST(SUBSTRING(_Data, 7, 4) + '-' + SUBSTRING(_Data, 4, 2) + '-' + SUBSTRING(_Data, 1, 2) as date)";
                     groupBy = ",Data";
                     data = ",Data as _Data";
                 }
@@ -307,12 +307,12 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 if (form.Periodo[0] == 2)//Semanal
                 {
                     wPeriodo = "CONCAT(CONCAT(DATEPART(YEAR, S1.Data), '-'), DatePart(WEEK, S1.Data))";
-                    orderBy = "CONVERT(INT,replace(S3.Data, '-', ''))";
+                    orderBy = "CONVERT(INT, SUBSTRING(_Data, 1, 4)), CONVERT(INT, SUBSTRING(_Data, 6, 2))";
                 }
                 if (form.Periodo[0] == 3)//Mensal
                 {
                     wPeriodo = "CONCAT(CONCAT(DATEPART(YEAR, S1.Data), '-'), DatePart(MONTH, S1.Data))";
-                    orderBy = "CONVERT(INT,replace(S3.Data, '-', ''))";
+                    orderBy = "CONVERT(INT, SUBSTRING(_Data, 1, 4)), CONVERT(INT, SUBSTRING(_Data, 6, 2))";
                 }
             }
 
@@ -392,7 +392,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 						level1_Id
             		   ,IsRuleConformity
             		   ,Level1Name
-            		   ,convert(date, Data, 103) as data
+            		   ,data
             		   ,Av
             		   ,NC
                        ,AvSemPeso
@@ -406,8 +406,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			level1_Id
             		   ,IsRuleConformity
             		   ,Level1Name
-            		   ,Unidade_Id
-            		   ,Unidade_Name
+            		   --,Unidade_Id
+            		  -- ,Unidade_Name
             		   ,{wPeriodo} as Data
             		   ,SUM(Av) AS Av
             		   ,SUM(AvSemPeso) AS AvSemPeso
@@ -550,15 +550,14 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     GROUP BY S1.level1_Id
             				,S1.IsRuleConformity
             				,S1.Level1Name
-            				,S1.Unidade_Id
-            				,S1.Unidade_Name
+            				--,S1.Unidade_Id
+            				--,S1.Unidade_Name
 							,{wPeriodo}
                              {groupBy}
 							) S2
                     group by level1_Id
                        , IsRuleConformity
                        , Level1Name
-                       , Data
                        , Av
                        , NC
                        , AvSemPeso
