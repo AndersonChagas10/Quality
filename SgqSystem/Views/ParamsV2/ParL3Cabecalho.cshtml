@@ -159,6 +159,9 @@
                     <thead>
                         <tr>
                             <th class="col-sm-2">
+                                Id
+                            </th>
+                            <th class="col-sm-2">
                                 Nome
                             </th>
                             <th class="col-sm-2">
@@ -239,6 +242,7 @@
                 let isChecked = o.IsRequired ? "checked" : "";
 
                 var html = '<tr>';
+                html += '<td>' + o.Id + '</td>';
                 html += '<td>' + o.Name + '</td>';
                 html += '<td>' + o.ParFieldType.Name + '</td>';
                 html += '<td>' + previewHeaderField + '</td>';
@@ -442,7 +446,7 @@
                 success: function (data) {
                     closeLoader();
                     openMessageModal("Feito", "Dados Salvos");
-                    debugger
+                    
                     $('#showModalCabecalho').trigger('click');
 
                 },

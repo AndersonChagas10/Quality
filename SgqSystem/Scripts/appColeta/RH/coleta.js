@@ -100,7 +100,6 @@ $('body')
 $('body')
     .off('input', '[data-level3] input:visible')
     .on('input', '[data-level3] input:visible', function () {
-
         var id = $(this).parents('[data-level3]').attr('data-level3');
 
         if (id != null || id != "") {
@@ -142,6 +141,7 @@ $('body')
                 $(o).trigger('input');
             }
         });
+        $("input[data-valor]").trigger('change');
     });
 
 
@@ -796,7 +796,7 @@ function resetarLinha(linha) {
 }
 
 $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
-    debugger
+    
     e.preventDefault();
 
     if (!HeaderFieldsIsValid()) {
