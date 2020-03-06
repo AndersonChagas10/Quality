@@ -2773,5 +2773,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-444</CardNumber>
+    <Version>1.6.0</Version>
+    <Description>[RH] BUG Alerta KO - Vincular usuário</Description>
+    <Script>
+    </Script>
+  </Card>
 
 </Cards>

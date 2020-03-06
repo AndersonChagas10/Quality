@@ -33,7 +33,7 @@ namespace SgqSystem.Controllers
 
             //buscar se ja existe um vinculo entre departamento e cargo, se sim bloquear a criação
             var parAlertXUserExistente = db.ParAlertXUser
-                                                    .Where(x => x.ParAlert_Id == parAlertXUser.ParAlert_Id && x.UserSgq_Id == parAlertXUser.UserSgq_Id)
+                                                    .Where(x => x.ParAlert_Id == parAlertXUser.ParAlert_Id && x.UserSgq_Id == parAlertXUser.UserSgq_Id && x.IsActive)
                                                     .FirstOrDefault();
 
             if (parAlertXUserExistente != null)
