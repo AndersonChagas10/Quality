@@ -1021,7 +1021,7 @@
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
                 title: Chart.Titulo('Cargo'),
-                subtitle: Chart.Subtitulo(Resources("unit"), objFiltro.Param.cargo),
+                subtitle: Chart.Subtitulo(Resources("unit"), objFiltro.Param.unitName),
                 xAxis: Chart.Xaxis(dataX),
                 yAxis: Chart.yAxisPadraoRelNc(),
                 legend: {
@@ -2071,7 +2071,7 @@
             }
         });
 
-        $('#btnDepartamento').on('click', function(){
+        $('# ').on('click', function(){
             popoverMain.addClass('hide');
             $('#RGOperacoesGrafico').empty();
             $('#RGDepartamentosGrafico').empty();
