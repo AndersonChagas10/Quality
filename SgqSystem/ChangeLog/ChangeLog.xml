@@ -2780,5 +2780,12 @@
     <Script>
     </Script>
   </Card>
+  <Card>
+    <CardNumber>SGQ-441</CardNumber>
+    <Version>1.6.0</Version>
+    <Description> MELHORIA - Alteração de unidade padrão na Coleta</Description>
+    <Script>
+    </Script>
+  </Card>
 
 </Cards>

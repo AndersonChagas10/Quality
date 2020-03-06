@@ -1,4 +1,5 @@
 var currentParCompany_Id;
+var currentUserSgq_Id;
 var currentParFrequency_Id;
 var parametrization = null;
 var currentParDepartment_Id;
@@ -37,6 +38,7 @@ function onOpenAppColeta() {
         _readFile("appParametrization.txt", function (param) {
             if (typeof (param) != 'undefined' && param.length > 0) {
                 parametrization = JSON.parse(param);
+                currentParCompany_Id = parametrization.ParCompany_Id;
                 listaParFrequency = parametrization.listaParFrequency;
                 atualizarVariaveisCurrent(parametrization);
             }
