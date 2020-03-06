@@ -2787,6 +2787,24 @@
     <Script>
     </Script>
   </Card>
+  <Card>
+    <CardNumber>SGQ-443</CardNumber>
+    <Version>1.6.0</Version>
+    <Description>[RH - 5S] MELHORIA - Relatório de Não Conformidades (Árvore de Centro de Custo)</Description>
+    <Script>
+      IF COL_LENGTH('DW.Cubo_Coleta_L2','ParCluster_Id') IS NULL
+      BEGIN
+      ALTER TABLE DW.Cubo_Coleta_L2 ADD ParCluster_Id int null
+      END
+
+      GO
+
+      IF COL_LENGTH('DW.Cubo_Coleta_L3','ParCluster_Id') IS NULL
+      BEGIN
+      ALTER TABLE DW.Cubo_Coleta_L3 ADD ParCluster_Id int null
+      END
+    </Script>
+  </Card>
 
   <Card>
     <CardNumber>SGQ-442</CardNumber>

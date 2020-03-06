@@ -10,6 +10,8 @@
     var urlGraficoRegional = Url.Action("GraficoRegional", "api/NaoConformidadeRH");
     var urlGraficoNegocio = Url.Action("GraficoNegocio", "api/NaoConformidadeRH");
     var urlGraficoDepartamentos = Url.Action("GraficoDepartamentos", "api/NaoConformidadeRH");
+    var urlGraficoCargo = Url.Action("GraficoCargos", "api/NaoConformidadeRH");
+    var urlGraficoDepartamentosPai = Url.Action("GraficoDepartamentosPai", "api/NaoConformidadeRH");
     var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoConformidadeRH");
     var urlGraficoNcPorUnidadeIndicador = Url.Action("GraficoIndicador", "api/NaoConformidadeRH");
     var urlGraficoMonitoramento = Url.Action("GraficoMonitoramento", "api/NaoConformidadeRH");
@@ -119,7 +121,9 @@
                 <div id="RGNegocioGrafico"></div>
                 <div id="RGRegionalGrafico"></div>
                 <div id="RGUnidadesGrafico"></div>
+                <div id="RGDepartamentosPaiGrafico"></div>
                 <div id="RGDepartamentosGrafico"></div>
+                <div id="RGCargoGrafico"></div>
                 <div id="RGDepartamentosShiftGrafico"></div>
                 <div id="RGOperacoesGrafico"></div>
                 <div id="RGOperacoesShiftGrafico"></div>
@@ -174,6 +178,8 @@
         var UnidadeUsuario = (@Html.Raw(Json.Encode(ViewBag.UnidadeUsuario)));
         var urlGetFta = @Html.Raw(Json.Encode(urlFtaGet));
         var urlGraficoDepartamentos = @Html.Raw(Json.Encode(urlGraficoDepartamentos));
+        var urlGraficoDepartamentosPai = @Html.Raw(Json.Encode(urlGraficoDepartamentosPai));
+        var urlGraficoCargo = @Html.Raw(Json.Encode(urlGraficoCargo));
         var UrlGraficoDepartamentosPorShift = @Html.Raw(Json.Encode(UrlGraficoDepartamentosPorShift));
         var UrlPivotTable = @Html.Raw(Json.Encode(UrlPivotTable));
         var urlGraficoIndicadorPorShift = @Html.Raw(Json.Encode(UrlGraficoIndicadorPorShift));
@@ -268,7 +274,9 @@
             $('#results').empty();
             $("#RGOperacoesGrafico").empty();
             $('#RGDepartamentosGrafico').empty();
+            $('#RGDepartamentosPaiGrafico').empty();
             $('#RGDepartamentosShiftGrafico').empty();
+            $('#RGCargoGrafico').empty();
             $('#RGOperacoesShiftGrafico').empty();
             $("#RGUnidadesGrafico").empty();
             $("#RGHoldingGrafico").empty();
@@ -356,12 +364,69 @@
         }
 
         /*GET*/
+        function GetGraficoCargo(cargo, cargo_Id) {
+            $("#PanelFull0").hide();
+            $("RGCargoGrafico").empty();
+            objFiltro.Param.departmentName = cargo;
+            objFiltro.Param.department_Id = cargo_Id;
 
-        function GetGraficoDepartamento(unidade, unidade_Id) {
+            $.ajax({
+                url: urlGraficoCargo,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            })
+                .done(function (data) {
+                    //console.log(data);
+                    GraficoCargo(data);
+                    closeLoader();
+                })
+                .fail(function (jqXHR, textStatus, msg) {
+                    //console.log(msg);
+                    //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                    closeLoader();
+                });
+
+            $('#RGTarefasPivotTable').hide();
+        }
+
+        function GetGraficoDepartamentoPai(unit, unit_Id) {
             $("#PanelFull0").hide();
             $("RGDepartamentosShiftGrafico").empty();
-            objFiltro.Param.unitName= unidade;
-            objFiltro.Param.unit_Id= unidade_Id;
+            objFiltro.Param.unitName = unit;
+            objFiltro.Param.unit_Id = unit_Id;
+
+            $.ajax({
+                url: urlGraficoDepartamentosPai,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            })
+                .done(function (data) {
+                    //console.log(data);
+                    GraficoDepartamentoPai(data);
+                    closeLoader();
+                })
+                .fail(function (jqXHR, textStatus, msg) {
+                    //console.log(msg);
+                    //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                    closeLoader();
+                });
+
+            $('#RGTarefasPivotTable').hide();
+        }
+
+        function GetGraficoDepartamento(department, department_Id) {
+            $("#PanelFull0").hide();
+            $("RGDepartamentosShiftGrafico").empty();
+            objFiltro.Param.departmentPaiName = department;
+            objFiltro.Param.departmentPai_Id = department_Id;
 
             $.ajax({
                 url: urlGraficoDepartamentos,
@@ -386,9 +451,10 @@
             $('#RGTarefasPivotTable').hide();
         }
 
-        function GetGraficoIndicadorDepartamento(departamento, departamento_Id) {
-            objFiltro.Param.departmentName = departamento;
-            objFiltro.Param.department_Id = departamento_Id;
+        function GetGraficoIndicadorDepartamento(cargo, cargo_Id) {
+            
+            objFiltro.Param.cargo = cargo;
+            objFiltro.Param.cargo_Id = cargo_Id;
             $("#PanelFull0").hide();
             pathDirect = 1;
 
@@ -416,8 +482,9 @@
         }
 
         function GetGraficoIndicadorUnidade(unidade, unidade_Id) {
+            
             $("#PanelFull0").hide();
-            objFiltro.Param.unitName = unidade;
+            //objFiltro.Param.unitName = unidade;
             objFiltro.Param.unit_Id = unidade_Id;
             pathDirect = 0;
 
@@ -486,12 +553,23 @@
                     return;
 
                 case "Departamento":
+                    
+                   IsDepartment = true;
+                   GetGraficoDepartamento(Aux, Aux2);
 
-                    IsDepartment = true;
-                   GetGraficoIndicadorDepartamento(Aux, Aux2);
+                    break;
+                case "DepartamentoPai":
+                    
+                    GetGraficoDepartamentoPai(Aux, Aux2);
+
+                    break;
+                case "Cargo":
+                    
+                    GetGraficoCargo(Aux, Aux2);
 
                     break;
                 case "Indicador":
+                    
                         GetMonitoramento(Aux, Aux2);
                         GetTarefasAcumuladas(Aux, Aux2);
 
@@ -914,9 +992,9 @@
                     }
                 },
                 series: [
-                    Chart.ProcNc(Proc, GetPopover, null, "", dataX, null, dataXId),
-                    Chart.NC(Nc, GetPopover, null, null, null, "", dataX, null, dataXId),
-                    Chart.Av(Av, GetPopover, null, null, null, "", dataX, null, dataXId)
+                    Chart.ProcNc(Proc, GetPopover, null, "DepartamentoPai", dataX, null, dataXId),
+                    Chart.NC(Nc, GetPopover, null, null, null, "DepartamentoPai", dataX, null, dataXId),
+                    Chart.Av(Av, GetPopover, null, null, null, "DepartamentoPai", dataX, null, dataXId)
                 ]
             }, function () {
                 $('#RGUnidadesGrafico').append(GeralNote);
@@ -925,6 +1003,95 @@
 
             $('.body-content').css('height', '3350px');
 
+        }
+        
+        function GraficoCargo(data) {
+            pathDirect = 1;
+            
+            var dataX = MapeiaValorParaHC(data, "CargoName");
+            var dataXId = MapeiaValorParaHC(data, "Cargo_Id");
+            var Nc = MapeiaValorParaHC(data, "Nc");
+            var Av = MapeiaValorParaHC(data, "Av");
+            var Proc = MapeiaValorParaHC(data, "Proc");
+            var selector = "RGCargoGrafico";
+            $('#' + selector).empty();
+
+            //$('#' + selector).empty().highcharts({
+            Highcharts.chart(selector, {
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo('Cargo'),
+                subtitle: Chart.Subtitulo(Resources("unit"), objFiltro.Param.cargo),
+                xAxis: Chart.Xaxis(dataX),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    //Chart.ProcNc(Proc, GetGraficoIndicadorDepartamento),
+                    //Chart.NC(Nc, GetGraficoIndicadorDepartamento),
+                    //Chart.Av(Av, GetGraficoIndicadorDepartamento),
+                    Chart.ProcNc(Proc, GetPopover, null, "DepartamentoShift", dataX, null, dataXId),
+                    Chart.NC(Nc, GetPopover, null, null, null, "DepartamentoShift", dataX, null, dataXId),
+                    Chart.Av(Av, GetPopover, null, null, null, "DepartamentoShift", dataX, null, dataXId),
+                ]
+            }, function () {
+                $('#' + selector).append(GeralNote);
+            });
+        }
+
+
+        function GraficoDepartamentoPai(data) {
+            pathDirect = 1;
+            var dataX = MapeiaValorParaHC(data, "DepartamentoPaiName");
+            var dataXId = MapeiaValorParaHC(data, "DepartamentoPai_Id");
+            var Nc = MapeiaValorParaHC(data, "Nc");
+            var Av = MapeiaValorParaHC(data, "Av");
+            var Proc = MapeiaValorParaHC(data, "Proc");
+            var selector = "RGDepartamentosPaiGrafico";
+            $('#' + selector).empty();
+
+            //$('#' + selector).empty().highcharts({
+
+            Highcharts.chart(selector, {
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(Resources("defects_per_costCenter_section")),
+                subtitle: Chart.Subtitulo(Resources("unit"), objFiltro.Param.unitName),
+                xAxis: Chart.Xaxis(dataX),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    //Chart.ProcNc(Proc, GetGraficoIndicadorDepartamento),
+                    //Chart.NC(Nc, GetGraficoIndicadorDepartamento),
+                    //Chart.Av(Av, GetGraficoIndicadorDepartamento),
+                    Chart.ProcNc(Proc, GetPopover, null, "Departamento", dataX, null, dataXId),
+                    Chart.NC(Nc, GetPopover, null, null, null, "Departamento", dataX, null, dataXId),
+                    Chart.Av(Av, GetPopover, null, null, null, "Departamento", dataX, null, dataXId),
+                ]
+            }, function () {
+                $('#' + selector).append(GeralNote);
+            });
         }
 
         function GraficoDepartamento(data) {
@@ -962,9 +1129,9 @@
                     //Chart.ProcNc(Proc, GetGraficoIndicadorDepartamento),
                     //Chart.NC(Nc, GetGraficoIndicadorDepartamento),
                     //Chart.Av(Av, GetGraficoIndicadorDepartamento),
-                    Chart.ProcNc(Proc, GetPopover, null, "Departamento", dataX, null, dataXId),
-                    Chart.NC(Nc, GetPopover, null, null, null, "Departamento", dataX, null, dataXId),
-                    Chart.Av(Av, GetPopover, null, null, null, "Departamento", dataX, null, dataXId),
+                    Chart.ProcNc(Proc, GetPopover, null, "Cargo", dataX, null, dataXId),
+                    Chart.NC(Nc, GetPopover, null, null, null, "Cargo", dataX, null, dataXId),
+                    Chart.Av(Av, GetPopover, null, null, null, "Cargo", dataX, null, dataXId),
                 ]
             }, function () {
                 $('#' + selector).append(GeralNote);
@@ -1097,7 +1264,7 @@
                     Chart.ProcNc(porc, GetPopover, null, "Indicador", nome, null, Ids),
                     Chart.NC(nc, GetPopover, null, null, null, "Indicador", nome, null, Ids),
                     Chart.Av(qtdAv, GetPopover, null, null, null, "Indicador", nome, null, Ids),
-                    Chart.Meta(meta, GetPopover, null, null, null, "Indicador"),
+                    //Chart.Meta(meta, GetPopover, null, null, null, "Indicador"),
                 ]
             }, function () {
                     $('#' + selector).append(GeralNote);
@@ -1150,7 +1317,7 @@
                     Chart.ProcNc(porc, GetPopover, null, "IndicadorShift", dataX, shift, dataXId),
                     Chart.NC(nc, GetPopover, null, null, null, "IndicadorShift", dataX, shift, dataXId),
                     Chart.Av(qtdAv, GetPopover, null, null, null, "IndicadorShift", dataX, shift, dataXId),
-                    Chart.Meta(meta, GetPopover, null, null, null, "IndicadorShift"),
+                   // Chart.Meta(meta, GetPopover, null, null, null, "IndicadorShift"),
                 ]
             }, function () {
                     $('#' + selector).append(GeralNote);
@@ -1483,7 +1650,7 @@
                 level2Id: objFiltro.Param.level2_Id,
                 level3Id: Ids[self.x],
                 ParDepartments_Hash: data,
-                ParCargo_Id: (objFiltro.parCargo_Ids && objFiltro.parCargo_Ids.length == 1) ? objFiltro.parCargo_Ids[0] : ""
+                ParCargo_Id: objFiltro.Param.cargo_Id
             };
 
             openFTA(objFTA);
