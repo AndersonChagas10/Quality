@@ -96,6 +96,55 @@ $('body')
         }
     });
 
+
+$('body')
+    .off('input', '[data-level3] input:visible')
+    .on('input', '[data-level3] input:visible', function () {
+        var id = $(this).parents('[data-level3]').attr('data-level3');
+
+        if (id != null || id != "") {
+            id = $(this).attr('data-cb');
+        }
+
+        $.each($('[data-equacao]:visible'), function (i, o) {
+            
+            if ($(o).attr('data-equacao').indexOf('{' + id + '}') >= 0 || $(o).attr('data-equacao').indexOf('{' + id + '?}') >= 0) {
+
+                var equacao = $(o).attr('data-equacao');
+
+                const regex = /{([^}]+)}/g;
+                var m;
+
+                while ((m = regex.exec($(o).attr('data-equacao'))) !== null) {
+                    // This is necessary to avoid infinite loops with zero-width matches
+                    if (m.index === regex.lastIndex) {
+                        regex.lastIndex++;
+                    }
+
+                    var valor = $('input[data-cb="' + m[1].replace('?', '') + '"]').val();
+                    if (valor)
+                        equacao = equacao.replace(m[0], valor);
+                    else {
+                        if (m[1].indexOf('?') >= 0) {
+                            equacao = equacao.replace(m[0], 0);
+                        }
+                    }
+                }
+
+                if (equacao.indexOf('{') != -1) {
+                    equacao = "";
+                }
+                else {
+                    equacao = eval(equacao);
+                }
+                $(o).val(equacao);
+                $(o).trigger('input');
+            }
+        });
+        $("input[data-valor]").trigger('change');
+    });
+
+
 var currentEvaluationSample = {};
 
 function getContador() {
@@ -138,6 +187,8 @@ function getLevel3(level3, level2, level1) {
 function getInputLevel3(level3, level2, level1, striped) {
 
     var retorno = "";
+
+    var htmlLinhaHeaderFieldGeral = getParHeaderFieldGeralLevel3(level1,level2,level3);
 
     if (level3.ParLevel3InputType && level3.ParLevel3InputType.Id) {
 
@@ -188,6 +239,9 @@ function getInputLevel3(level3, level2, level1, striped) {
             case 11: //Observacao
                 retorno += getObservacao(level3);
                 break;
+            case 10: //Resultado
+                retorno += getResultado(level3);
+                break;
             case 8: //Likert
                 retorno += getLikert(level3);
                 break;
@@ -199,9 +253,9 @@ function getInputLevel3(level3, level2, level1, striped) {
                 retorno += "";
                 return '';
         }
-
         retorno += '</div>';
 
+        retorno += htmlLinhaHeaderFieldGeral;
     }
 
     return retorno;
@@ -291,7 +345,7 @@ function getBinarioComTexto(level3) {
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-5">' +
-        '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao +'" data-texto/>' +
+        '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao + '" data-texto/>' +
         '</div>' +
         '<div class="col-xs-5">' +
         botao +
@@ -466,6 +520,40 @@ function getObservacao(level3) {
     return html;
 }
 
+function getResultado(level3) {
+
+
+    var btnNA = "";
+
+    if (level3.ParLevel3Value.IsAtiveNA == true) {
+        btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    }
+
+    var html = '';
+
+    if (level3.ParLevel3XHelp)
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+
+    else
+        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+
+    //var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+
+    html +=
+        '<div class="col-xs-6 no-gutters">' +
+        '   <div class="col-xs-12 no-gutters">' +
+        '       <div class="col-xs-10" style="padding: 0;">' +
+    '	        <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor data-equacao="' + level3.ParLevel3Value.DynamicValue + '" style=" text-align: center;" readonly/>' +
+        '       </div>' +
+        '   </div>' +
+        '   <div class="col-xs-2">' + btnNA + '</div>' +
+        // btnInfo +
+        '</div>' +
+        '<div class="clearfix"></div>';
+
+    return html;
+}
+
 function getTexto(level3) {
 
     var btnNA = "";
@@ -488,7 +576,7 @@ function getTexto(level3) {
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-10">' +
-        '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="'+ mensagemPadrao +'" data-tarefa data-valor/>' +
+        '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao + '" data-tarefa data-valor/>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -708,7 +796,7 @@ function resetarLinha(linha) {
 }
 
 $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
-
+    
     e.preventDefault();
 
     if (!HeaderFieldsIsValid()) {
@@ -1004,6 +1092,33 @@ function getCollectionHeaderFields() {
 
     });
 
+
+    $('#headerFieldLevel3 input, #headerFieldLevel3 select').each(function () {
+
+        $self = $(this);
+
+        //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
+        if ($self.val())
+
+            collectionHeaderFied.push({
+                ParHeaderField_Id: $self.attr("parheaderfield_id"),
+                ParHeaderField_Value: $self.val(),
+                Evaluation: currentEvaluationSample.Evaluation,
+                Sample: currentEvaluationSample.Sample,
+                ParDepartment_Id: currentParDepartment_Id,
+                ParCargo_Id: currentParCargo_Id,
+                ParCluster_Id: currentParCluster_Id,
+                ParCompany_Id: currentParCompany_Id,
+                CollectionDate: getCurrentDate(),
+                UserSgq_Id: currentLogin.Id,
+                ParLevel1_Id: $self.parents('#headerFieldLevel3').attr('parLevel1Id'),
+                ParLevel2_Id: $self.parents('#headerFieldLevel3').attr('parLevel2Id'),
+                ParLevel3_Id: $self.parents('#headerFieldLevel3').attr('parLevel3Id'),
+                Parfrequency_Id: parametrization.currentParFrequency_Id
+            });
+
+    });
+
     return collectionHeaderFied;
 }
 
@@ -1013,7 +1128,7 @@ function ColetasIsValid() {
     var data;
     for (var i = 0; i < linhasDaColeta.length; i++) {
         data = linhasDaColeta[i];
-        
+
         if ($(data).attr('data-conforme-na') != "") {
             if ($(data).attr('data-conforme') == ""
                 || $(data).attr('data-conforme') == null
@@ -1024,14 +1139,14 @@ function ColetasIsValid() {
             } else {
                 $(data).find("[data-tarefa]").css("background-color", "white");
             }
-        } 
+        }
     }
     if (errorCount > 0) {
         openMensagem("Atenção! Obrigatório responder todas as Tarefas.", "yellow", "black");
         mostraPerguntasObrigatorias(data);
         closeMensagem(2000);
         return false;
-    }else 
+    } else
         return true;
 }
 

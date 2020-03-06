@@ -404,6 +404,7 @@
 
     function closeModal() {
         $("#modalHeaderField").hide();
+       
     }
 
     $("#ParL3TipoDado #btnAvancadoL3TipoEntrada").on('click', function () {
@@ -585,7 +586,7 @@
                         openMessageModal("Feito", "Dados Salvos");
 
                         $('#selectL3').trigger('change');
-
+                        $("#showModalCabecalho").hide();
                         closeLoader();
 
                     },
@@ -649,6 +650,7 @@
                 $("#tabelaLikert tbody").empty();
                 $('#divEscalaLikert').hide();
                 $('#divCamposLikertIncluidos').hide();
+                $("#showModalCabecalho").hide();
                 $("#camposLikertIncluidos  ").empty();
             });
 
