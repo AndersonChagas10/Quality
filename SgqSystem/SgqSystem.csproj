@@ -1049,6 +1049,7 @@
     <Content Include="Scripts\appColeta\RH\utils.js" />
     <Content Include="Scripts\appColeta\RH\version.js" />
     <Content Include="Scripts\appColeta\RH\zoom.js" />
+    <Content Include="Scripts\heatmap.js" />
     <Content Include="Scripts\helper\mask.js" />
     <Content Include="Scripts\jquery-1.12.1.min.js" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
@@ -2200,6 +2201,7 @@
     <Content Include="Views\RelatoriosSgq\RelatorioFormularioSIF.cshtml" />
     <Content Include="Views\ParamsV2\ParL3Cabecalho.cshtml" />
     <Content Include="Views\ParamsV2\ParL3Qualification.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioDeResultadoSeara.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2291,7 +2293,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

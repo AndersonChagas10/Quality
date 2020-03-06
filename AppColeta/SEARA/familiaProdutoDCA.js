@@ -80,7 +80,7 @@ function getParProdutoPorFamiliaDeProduto(){
 
 function getSelectProdutosDCA() {
 
-	var htmlLista = '<select name="produtoDCA" size="5" class="form-control" style="height:100px;">'
+	var htmlLista = '<select name="produtoDCA" class="form-control" style="height:100px;">';
 
 	$(getParProdutoPorFamiliaDeProduto()).each(function (i, o) {
 		var selected = "";

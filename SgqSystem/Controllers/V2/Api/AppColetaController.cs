@@ -702,6 +702,7 @@ WHERE 1 = 1
             List<ParCluster> listaParCluster;
             List<ParLevel1XCluster> listaParLevel1XCluster;
             List<Dominio.Seara.ParVinculoPesoParLevel2> listaParVinculoPesoParLevel2;
+            List<Dominio.Seara.ParLevel1XParFamiliaProduto> listaParLevel1XParFamiliaProduto;
 
             List<Dominio.Seara.ParFamiliaProduto> listaParFamiliaProduto;
             List<Dominio.Seara.ParFamiliaProdutoXParProduto> listaParFamiliaProdutoXParProduto;
@@ -745,6 +746,11 @@ WHERE 1 = 1
                     })
                     .ToList()
                     .Where(x => listaParVinculoPeso.Any(y => y.ParLevel1_Id == x.Id))
+                    .ToList();
+
+                listaParLevel1XParFamiliaProduto = db.ParLevel1XParFamiliaProduto
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
                     .ToList();
 
                 listaParLevel1XCluster = db.ParLevel1XCluster
@@ -1019,7 +1025,8 @@ WHERE 1 = 1
                 listaParProduto,
                 listaParCluster,
                 listaParLevel1XCluster,
-                listaParVinculoPesoParLevel2
+                listaParVinculoPesoParLevel2,
+                listaParLevel1XParFamiliaProduto
             });
         }
 

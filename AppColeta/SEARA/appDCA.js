@@ -17,13 +17,13 @@ function setBreadcrumbsDCA() {
         isCurrent = false;
     }
 
-    if (currentParLevel1_Id) {
+    /*if (currentParLevel1_Id) {
         breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParLevel1, function (item) {
             return item.Id == currentParLevel1_Id;
         })[0].Name, 'validaRota(listarFamiliaProdutoDCA)', isCurrent) + breadcrumbLi;
 
         isCurrent = false;
-    }
+    }*/
 
     breadcrumb += breadcrumbLi + '</ol>';
 
