@@ -2722,12 +2722,12 @@
       IF NOT EXISTS (SELECT * FROM ParNotconformityrule WHERE Id = 7)
       BEGIN
       SET IDENTITY_INSERT ParNotconformityrule ON
-      insert into ParNotconformityrule values (7, 'Reincidencia KO Amostras', null, getdate(), null, 1);
+      insert into ParNotconformityrule (Id, Name, AddDate, IsActive) values (7, 'Reincidencia KO Amostras', getdate(), 1)
       SET IDENTITY_INSERT ParNotconformityrule OFF
       END
       END
       GO
-      
+
     </Script>
     
   </Card>
