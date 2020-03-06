@@ -396,6 +396,7 @@ namespace SgqSystem.Controllers.Api
                             acaoCorretiva.ImmediateCorrectiveAction = item.ImmediateCorrectiveAction;
                             acaoCorretiva.PreventativeMeasure = item.PreventativeMeasure;
                             acaoCorretiva.DescriptionFailure = item.DescriptionFailure;
+                            acaoCorretiva.ParLevel3_Id = item.ParLevel3_Id;
                             acaoCorretiva.AuditorId = correctiveAction.AuditorId; 
 
                             db.CorrectiveAction.Add(acaoCorretiva);

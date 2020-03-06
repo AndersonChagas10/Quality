@@ -86,6 +86,7 @@ function addObjLista(indexDaListaDeAlerta){
                 currentCorrectiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
                 currentCorrectiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
                 currentCorrectiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
+                currentCorrectiveActionResult.ParLevel3_Id = $('#parLevel3_Id').val();
                 listaObjCorrectiveAction.push(currentCorrectiveActionResult);
             }
         });
@@ -94,6 +95,7 @@ function addObjLista(indexDaListaDeAlerta){
         currentCorrectiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
         currentCorrectiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
         currentCorrectiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
+        currentCorrectiveActionResult.ParLevel3_Id = $('#parLevel3_Id').val();
         listaObjCorrectiveAction.push(currentCorrectiveActionResult);
     }
 };
@@ -111,6 +113,7 @@ function getObjLista(indexDaListaDeAlerta){
                 $('#immediateCorrectiveAction').val(o.ImmediateCorrectiveAction);
                 $('#preventativeMeasure').val(o.PreventativeMeasure);
                 $('#descriptionFailure').val(o.DescriptionFailure);
+                $('#parLevel3_Id').val(o.ParLevel3_Id);
             },3800);
         }
     });
@@ -192,6 +195,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
                 '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString() +
                 '<br/>Monitor: ' + currentLogin.Name +
                 '<br/>Tarefa: ' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +
+                '<input type="hidden" id="parLevel3_Id" value="' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Id + '">' +
                 '<br/>Frequência: ' + $.grep(parametrization.listaParFrequency, function (item) { return item.Id == parametrization.currentParFrequency_Id; })[0].Name +
                 '</small></div>' +
             
@@ -258,6 +262,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
             currentCorrectiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
             currentCorrectiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
             currentCorrectiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
+            currentCorrectiveActionResult.ParLevel3_Id = $('#parLevel3_Id').val();
 
             listaObjCorrectiveAction.push(currentCorrectiveActionResult);
 
@@ -265,10 +270,12 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
                 correctiveAction.CollectionLevel2.ListaRespostasAcaoCorretiva.push({
                     ImmediateCorrectiveAction: listaObjCorrectiveAction[i].ImmediateCorrectiveAction,
                     PreventativeMeasure: listaObjCorrectiveAction[i].PreventativeMeasure,
-                    DescriptionFailure: listaObjCorrectiveAction[i].DescriptionFailure
+                    DescriptionFailure: listaObjCorrectiveAction[i].DescriptionFailure,
+                    ParLevel3_Id: listaObjCorrectiveAction[i].ParLevel3_Id
                 });    
-                //Salvar corrective action na lista de correctiveAction
             }
+            
+            //Salvar corrective action na lista de correctiveAction
             globalAcoesCorretivasRealizadas.push(correctiveAction);
             closeModal();
             listaObjCorrectiveAction = null;
