@@ -1,6 +1,7 @@
 var currentRecebeListaDeAlerta = [];
 var currentCorrectiveActionResult = {};
 var listaObjCorrectiveAction = [];
+var listaExist = [];
 
 function processAlertRole(coletaJson) {
 
@@ -72,32 +73,56 @@ function montaObjCorrectiveAction(exists,coleta,numeroDeAlertas){
     }
 }
 
-function proximoElementLista(indexDaListaDeAlerta){
-    addObjLista(indexDaListaDeAlerta);
-    indexDaListaDeAlerta = indexDaListaDeAlerta + 1;
-    setTimeoutOpenCorrectiveAction(currentRecebeListaDeAlerta, indexDaListaDeAlerta);
- 
+function hideAlert() {
+    $("#alertObrigatorio").css("display", "none");
+    $("#alertOpcional").css("display", "none");
 }
 
-function addObjLista(indexDaListaDeAlerta){
-    if(listaObjCorrectiveAction.length > 0){
-        listaObjCorrectiveAction.forEach(function (o) {
-            if(o.objIndex != indexDaListaDeAlerta){
+function proximoElementLista(indexDaListaDeAlerta){
+    if(addObjLista(indexDaListaDeAlerta,listaExist) != false){
+        indexDaListaDeAlerta = indexDaListaDeAlerta + 1;
+        setTimeoutOpenCorrectiveAction(currentRecebeListaDeAlerta, indexDaListaDeAlerta);
+    }
+}
+
+function addObjLista(indexDaListaDeAlerta,listaExist){
+    if(listaExist[0].HasCorrectiveAction != false 
+        || ($('#immediateCorrectiveAction').val() != "" 
+            || $('#preventativeMeasure').val() != "" 
+            || $('#descriptionFailure').val() != ""
+        ))
+    {
+        if(listaExist[0].HasCorrectiveAction == false && ($('#immediateCorrectiveAction').val() == "" || $('#preventativeMeasure').val() == "" || $('#descriptionFailure').val() == "")){
+            $("#alertOpcional").css("display", "block");
+            return false;
+        }
+        else if(listaExist[0].HasCorrectiveAction == true && ($('#immediateCorrectiveAction').val() == "" || $('#preventativeMeasure').val() == "" || $('#descriptionFailure').val() == "")){
+            $("#alertObrigatorio").css("display", "block");
+            return false;
+        }
+        else{
+            if(listaObjCorrectiveAction.length > 0){
+                listaObjCorrectiveAction.forEach(function (o) {
+                    if(o.objIndex != indexDaListaDeAlerta){
+                        currentCorrectiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
+                        currentCorrectiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
+                        currentCorrectiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
+                        currentCorrectiveActionResult.ParLevel3_Id = $('#parLevel3_Id').val();
+                        listaObjCorrectiveAction.push(currentCorrectiveActionResult);
+                    }
+                });
+            }
+            else{
                 currentCorrectiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
                 currentCorrectiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
                 currentCorrectiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
                 currentCorrectiveActionResult.ParLevel3_Id = $('#parLevel3_Id').val();
                 listaObjCorrectiveAction.push(currentCorrectiveActionResult);
             }
-        });
+            return true;
+        } 
     }
-    else{
-        currentCorrectiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
-        currentCorrectiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
-        currentCorrectiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
-        currentCorrectiveActionResult.ParLevel3_Id = $('#parLevel3_Id').val();
-        listaObjCorrectiveAction.push(currentCorrectiveActionResult);
-    }
+    return true;
 };
 
 function elementAnteriorLista(indexDaListaDeAlerta){
@@ -130,6 +155,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
     var btnNext = "";
     var btnBack = "";
     var numeroDeAlertas = objCorrectiveAction[index].numberAlert;
+
 
     var correctiveAction = {};
     //var listaObjCorrectiveAction = [];
@@ -176,6 +202,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
 
         if(exists[0].HasCorrectiveAction){
             display = 'block';
+            listaExist = exists;
             fillAcaocorretiva();
         }
         else
@@ -184,6 +211,8 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
             btnShowAcaoCorretiva = '<div>' +
                 '<button class="btn btn-secundary" data-showAcaoCorretiva style="float:left;">Mostrar Ação Corretiva</button>' +
                 '</div>';
+
+            listaExist = exists;
             fillAcaocorretiva();
         }
         
@@ -215,6 +244,14 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
             corpo = 
                 '<div class="container">' +
                 '<div class="row" style="overflow:auto">' +
+                '<div id="alertObrigatorio" class="alert alert-warning alert-dismissible" style="display: none;" role="alert">' +
+                '<button type="button" class="close" onclick="hideAlert()"><span aria-hidden="true">&times;</span></button>'+
+                '<strong>Esse alerta é obrigatório, preencher todos os campos para continuar!</strong>'  +
+                '</div>' +
+                '<div id="alertOpcional" class="alert alert-warning alert-dismissible" style="display: none;" role="alert">' +
+                '<button type="button" class="close" onclick="hideAlert()"><span aria-hidden="true">&times;</span></button>'+
+                '<strong>Esse alerta é opcional, preencha todos os campos ou não preencha nenhum campo para continuar!</strong>'  +
+                '</div>' +
                 '<div>' +
                 alerta +                
                 '</div>' +
@@ -236,26 +273,30 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
         }
 
         openModal(corpo, 'white', 'black');
+        disableButtons();
 
-        if(index < objCorrectiveAction.length - 1){
-            $("#btnSendCA").attr('disabled', true);
-            $("#next").attr('disabled', false);
-            $("#back").attr('disabled', true);
+        function disableButtons(){
+            if(index < objCorrectiveAction.length - 1){
+                $("#btnSendCA").attr('disabled', true);
+                $("#next").attr('disabled', false);
+                $("#back").attr('disabled', true);
+            }
+            else{
+                $("#btnSendCA").attr('disabled', false);
+                $("#next").attr('disabled', true);
+                $("#back").attr('disabled', false);
+            }
         }
-        else{
-            $("#btnSendCA").attr('disabled', false);
-            $("#next").attr('disabled', true);
-            $("#back").attr('disabled', false);
-        }
-
+        
         $('body').off('click', '[data-showAcaoCorretiva]').on('click', '[data-showAcaoCorretiva]', function (e) {
             display = 'block';
             fillAcaocorretiva();
             openModal(corpo, 'white', 'black');
+            disableButtons();
         });
 
         $('#btnSendCA').off().on('click', function () {
-
+            
             //Inserir collectionLevel2 dentro do obj
             correctiveAction.AuditorId = currentLogin.Id;
 
@@ -274,7 +315,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
                     ParLevel3_Id: listaObjCorrectiveAction[i].ParLevel3_Id
                 });    
             }
-            
+
             //Salvar corrective action na lista de correctiveAction
             globalAcoesCorretivasRealizadas.push(correctiveAction);
             closeModal();
