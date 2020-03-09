@@ -42,8 +42,8 @@
                             @Table.GerarColunaCheckbox(@Html.EditorFor(model => model.paramsDto.parLevel3Level2.IsKnockout, new { @class = "make -switch checkbox-erp", @id = "pesoIsKnockout" })
                             , @Html.Label("Is Critical"), Table.PosicaoLabel.top)
 
-                            @Table.GerarColunaButton(@Html.DropDownList("pesoGroupLevel2", new SelectList(Model.paramsDto.parLevel3Dto.listGroupsLevel2, dataValueField: "Id", dataTextField: "Name"), Resources.Resource.select + "...", new { @class = "form-control input-sm", @id = "pesoGroupLevel2" })
-                               , @Html.Label(Resources.Resource.level2_group)
+                            @Table.GerarColunaButton(@Html.DropDownList("pesoGroupLevel2", new SelectList(Model.paramsDto.parLevel3Dto.listGroupsLevel2, dataValueField: "Id", dataTextField: "Name"), Resources.Resource.select as string + "...", new { @class = "form-control input-sm", @id = "pesoGroupLevel2" })
+                               , @Html.Label(Resources.Resource.level2_group as string)
                                , Table.PosicaoLabel.top
                                , button: "<button type='button' class='btn btn-primary btn-sm' onclick='" + @click + "' id=''>" + Resources.Resource.attach as string + "</button>")
 

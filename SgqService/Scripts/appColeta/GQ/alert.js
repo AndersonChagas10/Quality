@@ -1392,6 +1392,201 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
                 );
             }
         }
+
+        if (tipoDeAlerta == "a8") {
+
+        //    controleDeAlerta = false;
+
+        //    mensagem = "";
+
+        //    //alerta de KO
+        //    //Verifica se existe defeitos do tipo KO na lista 
+        //    var valor = $.grep(listaDefeitos, function (obj) {
+        //        return obj.parlevel1_id == level2Result.attr('level01id')
+        //            && obj.parlevel2_id == level2Result.attr('level02id')
+        //            && obj.period == level2Result.attr('period')
+        //            && obj.shift == level2Result.attr('shift')
+        //            && obj.isKO == "True"
+        //            && obj.evaluate == level2Result.attr('evaluate')
+        //            && obj.tipo == "defeito";
+        //    });
+
+        //    //Se existe defeito defeitos do tipo KO na lista 
+        //    if (valor.length > 0) {
+                
+        //        //verifica se existe alerta na lista
+        //        var valor = $.grep(listaDefeitos, function (obj) {
+        //            return obj.parlevel1_id == level2Result.attr('level01id')
+        //                && obj.parlevel2_id == level2Result.attr('level02id')
+        //                && obj.period == level2Result.attr('period')
+        //                && obj.shift == level2Result.attr('shift')
+        //                && obj.evaluate == level2Result.attr('evaluate')
+        //                && obj.tipo == "alerta";
+        //        });
+
+        //        //Se existir alerta
+        //        if (valor.length == 0) {
+        //            controleDeAlerta = true;
+        //            //alert("Alerta de KO");
+        //            mensagem += " Critical ";
+        //        }
+
+        //        //Adiciona um defeito do tipo alerta
+        //        adicionaNaListaDeDefeitos(
+        //            {
+        //                tipo: "alerta"
+        //                , parlevel1_id: level2Result.attr('level01id')
+        //                , parlevel2_id: level2Result.attr('level02id')
+        //                , datetime: level2Result.attr('datetime')
+        //                , shift: level2Result.attr('shift')
+        //                , period: level2Result.attr('period')
+        //                , sample: level2Result.attr('sample')
+        //                , evaluate: level2Result.attr('evaluate')
+        //                , parlevel3_id: ""
+        //                , isKO: ""
+        //            }
+        //        );
+
+        //    }
+
+        //    //alerta de reincidencia
+        //    //Verifica se existe defeito
+        //    var valor = $.grep(listaDefeitos, function (obj) {
+        //        return obj.parlevel1_id == level2Result.attr('level01id')
+        //            && obj.parlevel2_id == level2Result.attr('level02id')
+        //            && obj.period == level2Result.attr('period')
+        //            && obj.shift == level2Result.attr('shift')
+        //            && obj.evaluate == level2Result.attr('evaluate')
+        //            && obj.tipo == "defeito";
+        //    });
+
+        //    var listaAmostraDefeito = [];
+
+        //    for (var i = 0; i < valor.length; i++) {
+        //        listaAmostraDefeito.push(valor[i].parlevel3_id);
+        //    }
+
+        //    listaAmostraDefeito.sort();
+
+        //    var listaAmostraDefeitoUnica = listaAmostraDefeito;
+
+        //    var contador = 0;
+
+        //    //Verifica se existe mais de um defeito seguido para a mesma tarefa
+        //    for (var i = 1; i < listaAmostraDefeitoUnica.length; i++) {
+        //        if (contador < 2) {
+        //            if (listaAmostraDefeitoUnica[i] == listaAmostraDefeito[i - 1]) {
+        //                contador++;
+        //            }
+        //        }
+        //    }
+
+        //    if (contador > 0) {
+
+
+        //        var valor = $.grep(listaDefeitos, function (obj) {
+        //            return obj.parlevel1_id == level2Result.attr('level01id')
+        //                && obj.parlevel2_id == level2Result.attr('level02id')
+        //                && obj.period == level2Result.attr('period')
+        //                && obj.shift == level2Result.attr('shift')
+        //                && obj.evaluate == level2Result.attr('evaluate')
+        //                && obj.tipo == "alerta";
+        //        });
+
+        //        if (valor.length == 0) {
+        //            controleDeAlerta = true;
+        //            //alert("Alerta de reincidencia com erros")
+        //            mensagem += " One recurring defect ";
+        //        }
+
+        //        adicionaNaListaDeDefeitos(
+        //            {
+        //                tipo: "alerta"
+        //                , parlevel1_id: level2Result.attr('level01id')
+        //                , parlevel2_id: level2Result.attr('level02id')
+        //                , datetime: level2Result.attr('datetime')
+        //                , shift: level2Result.attr('shift')
+        //                , period: level2Result.attr('period')
+        //                , sample: level2Result.attr('sample')
+        //                , evaluate: level2Result.attr('evaluate')
+        //                , parlevel3_id: ""
+        //                , isKO: ""
+        //            }
+        //        );
+
+        //    }
+
+        //    //alerta de amostras com %NC -- Novo
+
+        //    //Saber a quantidade todal de defeitos na Avaliação
+
+        //    //Fazer o calculo para saber o quanto a quantidade de defeitos representa em porcentagem ao toal da avaliação
+
+        //    var valor = $.grep(listaDefeitos, function (obj) {
+        //        return obj.parlevel1_id == level2Result.attr('level01id')
+        //            && obj.parlevel2_id == level2Result.attr('level02id')
+        //            && obj.period == level2Result.attr('period')
+        //            && obj.shift == level2Result.attr('shift')
+        //            && obj.evaluate == level2Result.attr('evaluate')
+        //            && obj.tipo == "defeito";
+
+        //    });
+
+        //    var listaAmostraDefeito = [];
+
+        //    for (var i = 0; i < valor.length; i++) {
+        //        listaAmostraDefeito.push(valor[i].sample);
+        //    }
+
+        //    listaAmostraDefeito.sort();
+
+        //    var listaAmostraDefeitoUnica = [];
+
+        //    listaAmostraDefeitoUnica.push(listaAmostraDefeito[0]);
+
+        //    for (var i = 1; i < listaAmostraDefeito.length; i++) {
+        //        if (listaAmostraDefeito[i] != listaAmostraDefeitoUnica[listaAmostraDefeitoUnica.length - 1])
+        //            listaAmostraDefeitoUnica.push(listaAmostraDefeito[i]);
+        //    }
+
+        //    //Precisa ser avaliação com peso? acho que sim
+        //    var porcentagemNC = (listaAmostraDefeitoUnica.length / volumealertaindicador ) * 100;
+
+        //    if (porcentagemNC > valorDoAlerta) {
+
+        //        var valor = $.grep(listaDefeitos, function (obj) {
+        //            return obj.parlevel1_id == level2Result.attr('level01id')
+        //                && obj.parlevel2_id == level2Result.attr('level02id')
+        //                && obj.period == level2Result.attr('period')
+        //                && obj.shift == level2Result.attr('shift')
+        //                && obj.evaluate == level2Result.attr('evaluate')
+        //                && obj.tipo == "alerta";
+        //        });
+
+        //        if (valor.length == 0) {
+
+        //            controleDeAlerta = true;
+        //            //alert("Alerta de amostras com erros")
+        //            mensagem += porcentagemNC + "% de defeitos ";
+        //        }
+
+        //        adicionaNaListaDeDefeitos(
+        //            {
+        //                tipo: "alerta"
+        //                , parlevel1_id: level2Result.attr('level01id')
+        //                , parlevel2_id: level2Result.attr('level02id')
+        //                , datetime: level2Result.attr('datetime')
+        //                , shift: level2Result.attr('shift')
+        //                , period: level2Result.attr('period')
+        //                , sample: level2Result.attr('sample')
+        //                , evaluate: level2Result.attr('evaluate')
+        //                , parlevel3_id: ""
+        //                , isKO: ""
+
+        //            }
+        //        );
+        //    }
+        }
     }
 
 
