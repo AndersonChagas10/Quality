@@ -86,81 +86,78 @@ public class RelatorioDeResultadoSearaResultsSet
                  DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
                  DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
 
-              	DECLARE @MES table (ID INT , Name VARCHAR(10))
+                    DECLARE @MES TABLE (
+	                    ID INT
+                       ,Name VARCHAR(10)
+                    )
 
-INSERT INTO @MES (ID, Name)
-	VALUES (1, 'Jan')
-INSERT INTO @MES (ID, Name)
-	VALUES (2, 'Fev')
-INSERT INTO @MES (ID, Name)
-	VALUES (3, 'Mar')
-INSERT INTO @MES (ID, Name)
-	VALUES (4, 'Abr')
-INSERT INTO @MES (ID, Name)
-	VALUES (5, 'Mai')
-INSERT INTO @MES (ID, Name)
-	VALUES (6, 'Jun')
-INSERT INTO @MES (ID, Name)
-	VALUES (7, 'Jul')
-INSERT INTO @MES (ID, Name)
-	VALUES (8, 'Ago')
-INSERT INTO @MES (ID, Name)
-	VALUES (9, 'Set')
-INSERT INTO @MES (ID, Name)
-	VALUES (10, 'Out')
-INSERT INTO @MES (ID, Name)
-	VALUES (11, 'Nov')
-INSERT INTO @MES (ID, Name)
-	VALUES (12, 'Dez')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (1, '01')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (2, '02')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (3, '03')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (4, '04')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (5, '05')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (6, '06')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (7, '07')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (8, '08')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (9, '09')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (10, '10')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (11, '11')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (12, '12')
 
 
-SELECT
-	UnidadeName
-   ,a.Data
-   ,((SUM(AV) - SUM(NC)) / SUM(AV)) * 100 AS PORCC
-FROM (SELECT
-		C.Name AS UnidadeName
-	   ,C.ID AS Unidade_Id
-	   ,SUM(WeiEvaluation) AS AV
-	   ,SUM(WeiEvaluation) - SUM(WeiDefects) AS C
-	   ,SUM(WeiDefects) AS NC
-		--,((SUM(WeiEvaluation) - SUM(WeiDefects)) / SUM(WeiEvaluation)) * 100 AS PORCC
-		--,((SUM(WeiDefects)) / SUM(WeiEvaluation)) * 100 AS PORCNC
-	   ,M.Name + '/' + CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR) AS Data
 
-	FROM DW.Cubo_Coleta_L3 CUBOL3 WITH (NOLOCK)
+                    SELECT
+	                    PC.Name AS UnidadeName
+                       ,SUM(WeiEvaluation) AS AV
+                       ,SUM(WeiEvaluation) - SUM(WeiDefects) AS C
+                       ,((SUM(WeiEvaluation) - SUM(WeiDefects)) / SUM(WeiEvaluation)) * 100 AS PORCC
+                       ,M.Name + '/' + CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR) AS Data
 
-	INNER JOIN ParCompany C WITH (NOLOCK)
-		ON CUBOL3.UnitId = C.ID
+                    FROM DW.Cubo_Coleta_L3 CUBOL3 WITH (NOLOCK)
 
-	INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
-		ON CUBOL3.ParLevel1_Id = PL1.ID
+                    INNER JOIN ParCompany PC WITH (NOLOCK)
+	                    ON CUBOL3.UnitId = PC.ID
 
-	INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
-		ON CUBOL3.ParLevel2_Id = PL2.ID
+                    INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
+	                    ON CUBOL3.ParLevel1_Id = PL1.ID
 
-	INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
-		ON CUBOL3.ParLevel3_Id = PL3.ID
+                    INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
+	                    ON CUBOL3.ParLevel2_Id = PL2.ID
 
-	OUTER APPLY (SELECT TOP 1
-			CL2.ID
-		   ,CL2.CollectionDate
-		FROM CollectionLevel2 CL2
-		WHERE CL2.CollectionDate = CUBOL3.CollectionDate) CL2
+                    INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
+	                    ON CUBOL3.ParLevel3_Id = PL3.ID
 
-	INNER JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP
-		ON CSFP.CollectionLevel2_Id = CL2.ID
+                    OUTER APPLY (SELECT TOP 1
+		                    CL2.ID
+	                       ,CL2.CollectionDate
+	                    FROM CollectionLevel2 CL2
+	                    WHERE CL2.CollectionDate = CUBOL3.CollectionDate) CL2
 
-	INNER JOIN ParFamiliaProduto SFP WITH (NOLOCK)
-		ON CSFP.ParFamiliaProduto_Id = SFP.ID
+                    INNER JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP
+	                    ON CSFP.CollectionLevel2_Id = CL2.ID
 
-	INNER JOIN ParProduto SP WITH (NOLOCK)
-		ON CSFP.ParProduto_Id = SP.ID
+                    INNER JOIN ParFamiliaProduto SFP WITH (NOLOCK)
+	                    ON CSFP.ParFamiliaProduto_Id = SFP.ID
 
-	INNER JOIN @MES M
-		ON M.ID = DATEPART(MONTH, CUBOL3.CollectionDate)
+                    INNER JOIN ParProduto SP WITH (NOLOCK)
+	                    ON CSFP.ParProduto_Id = SP.ID
 
-	WHERE 1 = 1
+                    INNER JOIN @MES M
+	                    ON M.ID = DATEPART(MONTH, CUBOL3.CollectionDate)
+
+                    WHERE 1 = 1
 
                         AND CUBOL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 
@@ -173,15 +170,10 @@ FROM (SELECT
                     {whereParLevel2}
                     {whereParLevel3}
 
-                    	GROUP BY C.Name
-			,CUBOL3.CollectionDate
-			,M.Name
-			,C.ID) a
-
-GROUP BY a.Data
-		,a.UnidadeName
-ORDER BY a.Data DESC               
-
+                    GROUP BY PC.Name
+		            ,CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR)
+		            ,M.Name             
+                    ORDER BY CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR) DESC
                 ";
         return query;
     }
