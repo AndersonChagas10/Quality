@@ -139,7 +139,7 @@ function getObjLista(indexDaListaDeAlerta){
                 $('#preventativeMeasure').val(o.PreventativeMeasure);
                 $('#descriptionFailure').val(o.DescriptionFailure);
                 $('#parLevel3_Id').val(o.ParLevel3_Id);
-            },3800);
+            },100);
         }
     });
 }
@@ -179,12 +179,16 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
         objIndex: index
     };
 
-    setTimeout(function () {
+    //setTimeout(function () {
 
         var alerta = 
             '<div style="background-color:red; padding:10px;">' +
             '<div>' +
-            '<p>Alerta ' + numeroDeAlertas + ' (' + exists[0].Name + ') foi disparado.</p>' +
+            //'<p>Alerta ' + numeroDeAlertas + ' (' + exists[0].Name + ') foi disparado.</p>' +
+            '<p> (' + exists[0].Name + ') no(a) ('+ $.grep(parametrization.listaParLevel1, function (o, i) { return o.Id == coleta.ParLevel1_Id; })[0].Name +')' +
+            'para a medida de controle: ('+ $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +')' +
+            ' identificado durante o monitoramento: ('+ $.grep(parametrization.listaParLevel2, function (o, i) { return o.Id == coleta.ParLevel2_Id; })[0].Name +').' +
+            '</p>' +
             '</div>' +
             '<div style="text-align:center">' +
             '</div>' +
@@ -196,7 +200,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
                 '</div>';
         
             btnBack = '<div>' +
-            '<button class="btn btn-primary" id="back" onclick="elementAnteriorLista(' + index + ')" style="float:right;">Voltar Ação Corretiva</button>' +
+            '<button class="btn btn-primary" id="back" onclick="elementAnteriorLista(' + index + ')" style="float:left;">Voltar Ação Corretiva</button>' +
             '</div>';
         }
 
@@ -209,7 +213,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
         {
             display = 'none';
             btnShowAcaoCorretiva = '<div>' +
-                '<button class="btn btn-secundary" data-showAcaoCorretiva style="float:left;">Mostrar Ação Corretiva</button>' +
+                '<button class="btn btn-secundary" data-showAcaoCorretiva style="float:left;margin-left: 350px;">Mostrar Ação Corretiva</button>' +
                 '</div>';
 
             listaExist = exists;
@@ -255,10 +259,14 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
                 '<div>' +
                 alerta +                
                 '</div>' +
+                '<div style="padding-top: 10px;">' +
+                btnBack +
                 btnShowAcaoCorretiva +
                 btnNext +
-                btnBack +
+                '</div>' +
+                '<div style="margin-top:60px;">' +
                 '<hr>' +
+                '</div>' +
                 modal +
                 '<hr>' +
                 '<div>' +
@@ -293,19 +301,15 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
             fillAcaocorretiva();
             openModal(corpo, 'white', 'black');
             disableButtons();
+            getObjLista(index);
         });
 
-        $('#btnSendCA').off().on('click', function () {
+        $('body').off('click', '#btnSendCA').on('click', '#btnSendCA', function () {
             
             //Inserir collectionLevel2 dentro do obj
             correctiveAction.AuditorId = currentLogin.Id;
 
-            currentCorrectiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
-            currentCorrectiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
-            currentCorrectiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
-            currentCorrectiveActionResult.ParLevel3_Id = $('#parLevel3_Id').val();
-
-            listaObjCorrectiveAction.push(currentCorrectiveActionResult);
+            addObjLista(index,listaExist);
 
             for (var i = 0; i < listaObjCorrectiveAction.length; i++) {
                 correctiveAction.CollectionLevel2.ListaRespostasAcaoCorretiva.push({
@@ -321,5 +325,5 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
             closeModal();
             listaObjCorrectiveAction = null;
         });
-    }, 3500);
+    //}, 3500);
 }
