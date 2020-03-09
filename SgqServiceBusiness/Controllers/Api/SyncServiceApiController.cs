@@ -5233,7 +5233,14 @@ namespace SgqServiceBusiness.Api
             var usuariosSupervisor = new List<UserSgq>();
             using (var db = new SgqDbDevEntities())
             {
-                usuariosSupervisor = db.UserSgq.Where(x => x.Role.Contains("Supervisor") && x.IsActive == true).OrderBy(x => x.Name).ToList();
+                if (GlobalConfig.Eua)
+                {
+                    usuariosSupervisor = db.UserSgq.Where(x => x.Role.Contains("Supervisor") && x.IsActive == true).OrderBy(x => x.Name).ToList();
+                }
+                else
+                {
+                    usuariosSupervisor = db.UserSgq.Where(x => x.IsActive == true).OrderBy(x => x.Name).ToList();
+                }
             }
 
             var htmlSelect = "";
