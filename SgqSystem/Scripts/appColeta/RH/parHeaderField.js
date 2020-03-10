@@ -44,6 +44,55 @@ function getParHeaderFieldLevel2(parLevel1, parLevel2) {
         return '';
 }
 
+function getParQualification(parLevel1, parLevel2, parLevel3) {
+    debugger
+    var listaParLevel3ValueFiltrada = [];
+    var listaParQualificationxParLevel3Value = [];
+
+    parametrization.listaParLevel3Value.forEach(function (o, i) {
+        if (o.ParLevel1_Id == parLevel1.Id && o.ParLevel2_Id == parLevel2.Id && o.ParLevel3_Id == parLevel3.Id)
+            listaParLevel3ValueFiltrada.push(o);
+    });
+    var retorno = '';
+    if (listaParLevel3ValueFiltrada.length > 0) {
+        parametrization.listaPargroupQualificationXParLevel3Value.forEach(function (o, i) {
+            if (o.ParLevel3Value_Id == listaParLevel3ValueFiltrada[i].Id)
+                listaParQualificationxParLevel3Value.push(o);
+        });
+        if (listaParQualificationxParLevel3Value.length > 0) {
+            //retorno += ' <div class="col-xs-12" id="parQualificationLevel3" parLevel3Id=' + parLevel3.Id + ' data-level3 style="padding-left:10px;background-color: #e9ecef; padding-bottom: 5px;">';
+            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
+            html += '<label class="font-small" style="height: 22px;">' + parametrization.listaPargroupQualification[0].Name + '</label>';
+            html += '<select class="form-control input-sm ddl" id="cb' + 10 + ' linknumberevaluetion="false">';
+            listaParQualificationxParLevel3Value.forEach(function (o, i) {
+                html += '<option> Selecione </option>';
+                html += '<option> Estrutural </option>';
+                html += '<option> Comportamental </option>';
+            });
+            html += '</select>';
+            html += '</div>';
+
+           
+            retorno += ' <div class="col-xs-12" id="qualificationLevel3" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + ' data-level3 style="padding-left:10px;background-color: #e9ecef; padding-bottom: 5px;">';
+            listaParQualificationxParLevel3Value.forEach(function (o, i) {
+
+                retorno += ' <div class="col-xs-3 no-gutters pull-right">';
+                retorno += ' <div class="col-xs-3"><small style="font-weight:550 !important">' + parametrization.listaPargroupQualification[0].Name + '</small></div>';
+                retorno += ' <div class="col-xs-12">';
+                retorno += ' <input type="number" ParHeaderField_Id=' + o.Id + ' class="col-xs-12 input-sm" data-cb="cb' + o.Id + '" style="text-align: center;" >';
+                retorno += ' </div>';
+                retorno += ' </div>';
+            });
+            retorno += ' <div class="clearfix"></div>';
+            retorno += '</div>';
+          
+        } else
+            return '';
+    } 
+
+    return html;
+}
+
 function getParHeaderFieldGeralLevel3(parLevel1, parLevel2, parLevel3) {
     //buscar os campos de cabeçalho no nivel da tarefa
     var lista = [];

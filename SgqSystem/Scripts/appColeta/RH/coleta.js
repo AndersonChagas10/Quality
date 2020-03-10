@@ -188,7 +188,9 @@ function getInputLevel3(level3, level2, level1, striped) {
 
     var retorno = "";
 
-    var htmlLinhaHeaderFieldGeral = getParHeaderFieldGeralLevel3(level1,level2,level3);
+    var htmlLinhaHeaderFieldGeral = getParHeaderFieldGeralLevel3(level1, level2, level3);
+
+    var htmlLinhaParQualification = getParQualification(level1, level2, level3);
 
     if (level3.ParLevel3InputType && level3.ParLevel3InputType.Id) {
 
@@ -256,6 +258,8 @@ function getInputLevel3(level3, level2, level1, striped) {
         retorno += '</div>';
 
         retorno += htmlLinhaHeaderFieldGeral;
+
+        retorno += htmlLinhaParQualification;
     }
 
     return retorno;
