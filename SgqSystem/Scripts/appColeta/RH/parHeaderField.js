@@ -48,8 +48,10 @@ function getParHeaderFieldGeralLevel3(parLevel1, parLevel2, parLevel3) {
     //buscar os campos de cabeçalho no nivel da tarefa
     var lista = [];
     parametrization.listaParHeaderFieldGeral.forEach(function (o, i) {
-        if (o.Generic_Id == parLevel3.ParLevel3Value.Id && o.ParLevelHeaderField_Id == 4)
-             lista.push(o);
+        if (parLevel3.ParLevel3Value != undefined) {
+            if (o.Generic_Id == parLevel3.ParLevel3Value.Id && o.ParLevelHeaderField_Id == 4)
+                lista.push(o);
+        }
     });
     
     if (lista.length > 0) {
