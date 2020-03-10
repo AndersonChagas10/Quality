@@ -1,7 +1,7 @@
 var currentRecebeListaDeAlerta = [];
-var currentCorrectiveActionResult = {};
-var listaObjCorrectiveAction = [];
-var listaExist = [];
+var currentRespostasDaAcaoCorretiva = {};
+var currentlistaObjCorrectiveAction = [];
+var currentlistaSeExisteAlerta = [];
 
 function processAlertRole(coletaJson) {
 
@@ -78,46 +78,46 @@ function hideAlert() {
     $("#alertOpcional").css("display", "none");
 }
 
-function proximoElementLista(indexDaListaDeAlerta){
-    if(addObjLista(indexDaListaDeAlerta,listaExist) != false){
+function proximoElementoDaListaDeAlertas(indexDaListaDeAlerta){
+    if(adicionaObjNaListaDeRespostasDaAcaoCorretiva(indexDaListaDeAlerta,currentlistaSeExisteAlerta) != false){
         indexDaListaDeAlerta = indexDaListaDeAlerta + 1;
         setTimeoutOpenCorrectiveAction(currentRecebeListaDeAlerta, indexDaListaDeAlerta);
     }
 }
 
-function addObjLista(indexDaListaDeAlerta,listaExist){
-    if(listaExist[0].HasCorrectiveAction != false 
+function adicionaObjNaListaDeRespostasDaAcaoCorretiva(indexDaListaDeAlerta,currentlistaSeExisteAlerta){
+    if(currentlistaSeExisteAlerta[0].HasCorrectiveAction != false 
         || ($('#immediateCorrectiveAction').val() != "" 
             || $('#preventativeMeasure').val() != "" 
             || $('#descriptionFailure').val() != ""
         ))
     {
-        if(listaExist[0].HasCorrectiveAction == false && ($('#immediateCorrectiveAction').val() == "" || $('#preventativeMeasure').val() == "" || $('#descriptionFailure').val() == "")){
+        if(currentlistaSeExisteAlerta[0].HasCorrectiveAction == false && ($('#immediateCorrectiveAction').val() == "" || $('#preventativeMeasure').val() == "" || $('#descriptionFailure').val() == "")){
             $("#alertOpcional").css("display", "block");
             return false;
         }
-        else if(listaExist[0].HasCorrectiveAction == true && ($('#immediateCorrectiveAction').val() == "" || $('#preventativeMeasure').val() == "" || $('#descriptionFailure').val() == "")){
+        else if(currentlistaSeExisteAlerta[0].HasCorrectiveAction == true && ($('#immediateCorrectiveAction').val() == "" || $('#preventativeMeasure').val() == "" || $('#descriptionFailure').val() == "")){
             $("#alertObrigatorio").css("display", "block");
             return false;
         }
         else{
-            if(listaObjCorrectiveAction.length > 0){
-                listaObjCorrectiveAction.forEach(function (o) {
+            if(currentlistaObjCorrectiveAction.length > 0){
+                currentlistaObjCorrectiveAction.forEach(function (o) {
                     if(o.objIndex != indexDaListaDeAlerta){
-                        currentCorrectiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
-                        currentCorrectiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
-                        currentCorrectiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
-                        currentCorrectiveActionResult.ParLevel3_Id = $('#parLevel3_Id').val();
-                        listaObjCorrectiveAction.push(currentCorrectiveActionResult);
+                        currentRespostasDaAcaoCorretiva.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
+                        currentRespostasDaAcaoCorretiva.PreventativeMeasure = $('#preventativeMeasure').val();
+                        currentRespostasDaAcaoCorretiva.DescriptionFailure = $('#descriptionFailure').val();
+                        currentRespostasDaAcaoCorretiva.ParLevel3_Id = $('#parLevel3_Id').val();
+                        currentlistaObjCorrectiveAction.push(currentRespostasDaAcaoCorretiva);
                     }
                 });
             }
             else{
-                currentCorrectiveActionResult.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
-                currentCorrectiveActionResult.PreventativeMeasure = $('#preventativeMeasure').val();
-                currentCorrectiveActionResult.DescriptionFailure = $('#descriptionFailure').val();
-                currentCorrectiveActionResult.ParLevel3_Id = $('#parLevel3_Id').val();
-                listaObjCorrectiveAction.push(currentCorrectiveActionResult);
+                currentRespostasDaAcaoCorretiva.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
+                currentRespostasDaAcaoCorretiva.PreventativeMeasure = $('#preventativeMeasure').val();
+                currentRespostasDaAcaoCorretiva.DescriptionFailure = $('#descriptionFailure').val();
+                currentRespostasDaAcaoCorretiva.ParLevel3_Id = $('#parLevel3_Id').val();
+                currentlistaObjCorrectiveAction.push(currentRespostasDaAcaoCorretiva);
             }
             return true;
         } 
@@ -125,14 +125,14 @@ function addObjLista(indexDaListaDeAlerta,listaExist){
     return true;
 };
 
-function elementAnteriorLista(indexDaListaDeAlerta){
+function elementoAnteriorDaListaDeAlertas(indexDaListaDeAlerta){
     indexDaListaDeAlerta = indexDaListaDeAlerta - 1;
-    getObjLista(indexDaListaDeAlerta);
+    pegaValorDoObjDaListaDeAlertas(indexDaListaDeAlerta);
     setTimeoutOpenCorrectiveAction(currentRecebeListaDeAlerta, indexDaListaDeAlerta);
 }
 
-function getObjLista(indexDaListaDeAlerta){
-    listaObjCorrectiveAction.forEach(function (o) {
+function pegaValorDoObjDaListaDeAlertas(indexDaListaDeAlerta){
+    currentlistaObjCorrectiveAction.forEach(function (o) {
         if(o.objIndex == indexDaListaDeAlerta){
             setTimeout(function () {
                 $('#immediateCorrectiveAction').val(o.ImmediateCorrectiveAction);
@@ -156,9 +156,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
     var btnBack = "";
     var numeroDeAlertas = objCorrectiveAction[index].numberAlert;
 
-
     var correctiveAction = {};
-    //var listaObjCorrectiveAction = [];
 
     //Pegar os dados correntes
     correctiveAction.CollectionLevel2 = {
@@ -175,11 +173,9 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
         CollectionDate: getCurrentDate()
     };
 
-    currentCorrectiveActionResult = {
+    currentRespostasDaAcaoCorretiva = {
         objIndex: index
     };
-
-    //setTimeout(function () {
 
         var alerta = 
             '<div style="background-color:red; padding:10px;">' +
@@ -196,17 +192,17 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
 
         if(objCorrectiveAction.length > 1){
             btnNext = '<div>' +
-                '<button class="btn btn-primary" id="next" onclick="proximoElementLista(' + index + ')" style="float:right;">Próxima Ação Corretiva</button>' +
+                '<button class="btn btn-primary" id="next" onclick="proximoElementoDaListaDeAlertas(' + index + ')" style="float:right;">Próxima Ação Corretiva</button>' +
                 '</div>';
         
             btnBack = '<div>' +
-            '<button class="btn btn-primary" id="back" onclick="elementAnteriorLista(' + index + ')" style="float:left;">Voltar Ação Corretiva</button>' +
+            '<button class="btn btn-primary" id="back" onclick="elementoAnteriorDaListaDeAlertas(' + index + ')" style="float:left;">Voltar Ação Corretiva</button>' +
             '</div>';
         }
 
         if(exists[0].HasCorrectiveAction){
             display = 'block';
-            listaExist = exists;
+            currentlistaSeExisteAlerta = exists;
             fillAcaocorretiva();
         }
         else
@@ -216,7 +212,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
                 '<button class="btn btn-secundary" data-showAcaoCorretiva style="float:left;margin-left: 350px;">Mostrar Ação Corretiva</button>' +
                 '</div>';
 
-            listaExist = exists;
+            currentlistaSeExisteAlerta = exists;
             fillAcaocorretiva();
         }
         
@@ -301,7 +297,7 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
             fillAcaocorretiva();
             openModal(corpo, 'white', 'black');
             disableButtons();
-            getObjLista(index);
+            pegaValorDoObjDaListaDeAlertas(index);
         });
 
         $('body').off('click', '#btnSendCA').on('click', '#btnSendCA', function () {
@@ -309,21 +305,20 @@ function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
             //Inserir collectionLevel2 dentro do obj
             correctiveAction.AuditorId = currentLogin.Id;
 
-            addObjLista(index,listaExist);
+            adicionaObjNaListaDeRespostasDaAcaoCorretiva(index,currentlistaSeExisteAlerta);
 
-            for (var i = 0; i < listaObjCorrectiveAction.length; i++) {
+            for (var i = 0; i < currentlistaObjCorrectiveAction.length; i++) {
                 correctiveAction.CollectionLevel2.ListaRespostasAcaoCorretiva.push({
-                    ImmediateCorrectiveAction: listaObjCorrectiveAction[i].ImmediateCorrectiveAction,
-                    PreventativeMeasure: listaObjCorrectiveAction[i].PreventativeMeasure,
-                    DescriptionFailure: listaObjCorrectiveAction[i].DescriptionFailure,
-                    ParLevel3_Id: listaObjCorrectiveAction[i].ParLevel3_Id
+                    ImmediateCorrectiveAction: currentlistaObjCorrectiveAction[i].ImmediateCorrectiveAction,
+                    PreventativeMeasure: currentlistaObjCorrectiveAction[i].PreventativeMeasure,
+                    DescriptionFailure: currentlistaObjCorrectiveAction[i].DescriptionFailure,
+                    ParLevel3_Id: currentlistaObjCorrectiveAction[i].ParLevel3_Id
                 });    
             }
 
             //Salvar corrective action na lista de correctiveAction
             globalAcoesCorretivasRealizadas.push(correctiveAction);
             closeModal();
-            listaObjCorrectiveAction = null;
+            currentlistaObjCorrectiveAction = null;
         });
-    //}, 3500);
 }
