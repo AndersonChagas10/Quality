@@ -1,4 +1,4 @@
-var currentRecebeListaDeAlerta = [];
+var currentListaDeColetaComAlertaEAcaoCorretiva = [];
 var currentRespostasDaAcaoCorretiva = {};
 var currentlistaObjCorrectiveAction = [];
 var currentlistaSeExisteAlerta = [];
@@ -13,7 +13,7 @@ function processAlertRole(coletaJson) {
             && (o.ParCargo_Id == coletaJson[0].ParCargo_Id || o.ParCargo_Id == null)
     });
 
-    var objCorrectiveAction = [];
+    currentListaDeColetaComAlertaEAcaoCorretiva = [];
     for (var i = 0; i < coletaJson.length; i++) {
 
         var coleta = coletaJson[i];
@@ -21,8 +21,8 @@ function processAlertRole(coletaJson) {
         if (coleta.IsConform)
             continue;
 
-        //retorna se existe alguem alerta vigente para este cenario
-        var exists = $.grep(listaParAlertPreFiltrada, function (o, i) {
+        //retorna se existe algum alerta vigente para este cenario
+        var listaAlertasVigente = $.grep(listaParAlertPreFiltrada, function (o, i) {
             return (o.ParCompany_Id == coleta.ParCompany_Id || o.ParCompany_Id == null)
                 && (o.ParLevel1_Id == coleta.ParLevel1_Id || o.ParLevel1_Id == null)
                 && (o.ParLevel2_Id == coleta.ParLevel2_Id || o.ParLevel2_Id == null)
@@ -40,13 +40,15 @@ function processAlertRole(coletaJson) {
                 && o.ParLevel3_Id == coleta.ParLevel3_Id
         }).length;
 
-        if (exists.length > 0) {
+        if (listaAlertasVigente.length > 0) {
 
             numeroDeAlertas++;
             
-            var recebeObj = montaObjCorrectiveAction(exists,coleta,numeroDeAlertas);
-            objCorrectiveAction.push(recebeObj);
-            currentRecebeListaDeAlerta = objCorrectiveAction;
+            currentListaDeColetaComAlertaEAcaoCorretiva.push({
+                listaAlertasVigente: listaAlertasVigente,
+                coleta: coleta,
+                numberAlert: numeroDeAlertas
+            });
 
             currentAlertsAgrupados.push({
                 ParDepartment_Id: coleta.ParDepartment_Id,
@@ -60,17 +62,131 @@ function processAlertRole(coletaJson) {
         }
     }
     
-    if(objCorrectiveAction.length > 0){
-        setTimeoutOpenCorrectiveAction(objCorrectiveAction, 0);
+    if(currentListaDeColetaComAlertaEAcaoCorretiva.length > 0){
+        abreModalCorrectiveAction(currentListaDeColetaComAlertaEAcaoCorretiva, 0);
     }
 }
 
-function montaObjCorrectiveAction(exists,coleta,numeroDeAlertas){
-    return {
-        exist: exists,
-        coleta: coleta,
-        numberAlert: numeroDeAlertas
+function abreModalCorrectiveAction(listaDeColetaComAlertaEAcaoCorretiva, index){
+    var listaAlertasVigente = listaDeColetaComAlertaEAcaoCorretiva[index].listaAlertasVigente;
+    var coleta = listaDeColetaComAlertaEAcaoCorretiva[index].coleta;
+
+    var correctiveAction = {};
+
+    //Pegar os dados correntes
+    correctiveAction.CollectionLevel2 = {
+        ParLevel1_Id: coleta.ParLevel1_Id,
+        ParLevel2_Id: coleta.ParLevel2_Id,
+        UnitId: coleta.ParCompany_Id,
+        //Shift: 1,
+        EvaluationNumber: coleta.Evaluation,
+        Sample: coleta.Sample,
+        ParDepartment_Id: coleta.ParDepartment_Id,
+        ParCargo_Id: coleta.ParCargo_Id,
+        //ParCluster_Id: 1,
+        CollectionDate: getCurrentDate()
+    };
+
+    currentRespostasDaAcaoCorretiva = correctiveAction;
+    currentRespostasDaAcaoCorretiva.objIndex = index;
+
+    var corpo = montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, listaAlertasVigente, index);
+    openModal(corpo, 'white', 'black');
+    disableButtons();
+}
+        
+function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, listaAlertasVigente, index){
+    var modal = "";
+    var body = "";
+    var corpo = "";
+    var display = "";
+    var btnShowAcaoCorretiva = "";
+    var btnNext = "";
+    var btnBack = "";
+    
+    var alerta = montaHtmlModalAlerta(listaAlertasVigente);
+
+    if(listaAlertasVigente[0].HasCorrectiveAction){
+        display = 'block';
     }
+    else
+    {
+        display = 'none';
+        btnShowAcaoCorretiva = '<div>' +
+            '<button class="btn btn-secundary" data-showAcaoCorretiva style="float:left;margin-left: 350px;">Mostrar Ação Corretiva</button>' +
+            '</div>';
+    }
+    currentlistaSeExisteAlerta = listaAlertasVigente;
+
+    if(listaDeColetaComAlertaEAcaoCorretiva.length > 1){
+        btnNext = '<div>' +
+            '<button class="btn btn-primary" id="next" onclick="proximoElementoDaListaDeAlertas(' + index + ')" style="float:right;">Próxima Ação Corretiva</button>' +
+            '</div>';
+    
+        btnBack = '<div>' +
+        '<button class="btn btn-primary" id="back" onclick="elementoAnteriorDaListaDeAlertas(' + index + ')" style="float:left;">Voltar Ação Corretiva</button>' +
+        '</div>';
+    }
+
+    modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>';
+    body = '<div class="form-group">' +
+        '<div class="form-group col-xs-12">' +
+        '<strong>Informações</strong>' +
+        '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString() +
+        '<br/>Monitor: ' + currentLogin.Name +
+        '<br/>Tarefa: ' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +
+        '<input type="hidden" id="parLevel3_Id" value="' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Id + '">' +
+        '<br/>Frequência: ' + $.grep(parametrization.listaParFrequency, function (item) { return item.Id == parametrization.currentParFrequency_Id; })[0].Name +
+        '</small></div>' +
+    
+        '<div class="form-group col-xs-12">' +
+        '<label>Descrição da Falha:</label>' +
+        '<input name="DescriptionFailure" id="descriptionFailure" class="col-sx-12 form-control" style="height: 80px;">' +
+        '</div>' +
+        '<div class="form-group col-xs-12">' +
+        '<label for="email">Ação Corretiva Imediata:</label>' +
+        '<input name="ImmediateCorrectiveAction" id="immediateCorrectiveAction" class="form-control" style="height: 80px;">' +
+        '</div>' +
+        '<div class="form-group col-xs-12">' +
+        '<label for="email">Ação Preventiva:</label>' +
+        '<input name="PreventativeMeasure" id="preventativeMeasure" class="form-control" style="height: 80px;">' +
+        '</div>';
+    
+    corpo = 
+        '<div class="container" id="modalAcaoCorretiva">' +
+        '<div class="row" style="overflow:auto">' +
+        '<div id="alertObrigatorio" class="alert alert-warning alert-dismissible" style="display: none;" role="alert">' +
+        '<button type="button" class="close" onclick="hideAlert()"><span aria-hidden="true">&times;</span></button>'+
+        '<strong>Esse alerta é obrigatório, preencher todos os campos para continuar!</strong>'  +
+        '</div>' +
+        '<div id="alertOpcional" class="alert alert-warning alert-dismissible" style="display: none;" role="alert">' +
+        '<button type="button" class="close" onclick="hideAlert()"><span aria-hidden="true">&times;</span></button>'+
+        '<strong>Esse alerta é opcional, preencha todos os campos ou não preencha nenhum campo para continuar!</strong>'  +
+        '</div>' +
+        '<div>' +
+        alerta +                
+        '</div>' +
+        '<div style="padding-top: 10px;">' +
+        btnBack +
+        btnShowAcaoCorretiva +
+        btnNext +
+        '</div>' +
+        '<div style="margin-top:60px;">' +
+        '<hr>' +
+        '</div>' +
+        '<div id="bodyModalAcaoCorretiva" style="display:'+ display +';">' +
+        modal +
+        '<hr>' +
+        body +
+        '<hr>' +
+        '<div class="form-group col-xs-6">' +
+        '<button class="btn btn-primary" id="btnSendCA" data-index="' + index + '">Salvar Ação Corretiva</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>';
+
+    return corpo;
 }
 
 function hideAlert() {
@@ -80,8 +196,9 @@ function hideAlert() {
 
 function proximoElementoDaListaDeAlertas(indexDaListaDeAlerta){
     if(adicionaObjNaListaDeRespostasDaAcaoCorretiva(indexDaListaDeAlerta,currentlistaSeExisteAlerta) != false){
-        indexDaListaDeAlerta = indexDaListaDeAlerta + 1;
-        setTimeoutOpenCorrectiveAction(currentRecebeListaDeAlerta, indexDaListaDeAlerta);
+        indexDaListaDeAlerta++;
+        abreModalCorrectiveAction(currentListaDeColetaComAlertaEAcaoCorretiva, indexDaListaDeAlerta);
+        pegaValorDoObjDaListaDeAlertas(indexDaListaDeAlerta);
     }
 }
 
@@ -101,22 +218,17 @@ function adicionaObjNaListaDeRespostasDaAcaoCorretiva(indexDaListaDeAlerta,curre
             return false;
         }
         else{
+            var novaAcaoCorretiva = true;
             if(currentlistaObjCorrectiveAction.length > 0){
                 currentlistaObjCorrectiveAction.forEach(function (o) {
-                    if(o.objIndex != indexDaListaDeAlerta){
-                        currentRespostasDaAcaoCorretiva.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
-                        currentRespostasDaAcaoCorretiva.PreventativeMeasure = $('#preventativeMeasure').val();
-                        currentRespostasDaAcaoCorretiva.DescriptionFailure = $('#descriptionFailure').val();
-                        currentRespostasDaAcaoCorretiva.ParLevel3_Id = $('#parLevel3_Id').val();
-                        currentlistaObjCorrectiveAction.push(currentRespostasDaAcaoCorretiva);
+                    if(o.objIndex == indexDaListaDeAlerta){
+                        novaAcaoCorretiva = false;
+                        currentRespostasDaAcaoCorretiva = preencheObjetoAcaoCorretiva(currentRespostasDaAcaoCorretiva);
                     }
                 });
             }
-            else{
-                currentRespostasDaAcaoCorretiva.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
-                currentRespostasDaAcaoCorretiva.PreventativeMeasure = $('#preventativeMeasure').val();
-                currentRespostasDaAcaoCorretiva.DescriptionFailure = $('#descriptionFailure').val();
-                currentRespostasDaAcaoCorretiva.ParLevel3_Id = $('#parLevel3_Id').val();
+            if(novaAcaoCorretiva){
+                currentRespostasDaAcaoCorretiva = preencheObjetoAcaoCorretiva(currentRespostasDaAcaoCorretiva);
                 currentlistaObjCorrectiveAction.push(currentRespostasDaAcaoCorretiva);
             }
             return true;
@@ -127,198 +239,76 @@ function adicionaObjNaListaDeRespostasDaAcaoCorretiva(indexDaListaDeAlerta,curre
 
 function elementoAnteriorDaListaDeAlertas(indexDaListaDeAlerta){
     indexDaListaDeAlerta = indexDaListaDeAlerta - 1;
+    abreModalCorrectiveAction(currentListaDeColetaComAlertaEAcaoCorretiva, indexDaListaDeAlerta);
     pegaValorDoObjDaListaDeAlertas(indexDaListaDeAlerta);
-    setTimeoutOpenCorrectiveAction(currentRecebeListaDeAlerta, indexDaListaDeAlerta);
 }
 
 function pegaValorDoObjDaListaDeAlertas(indexDaListaDeAlerta){
     currentlistaObjCorrectiveAction.forEach(function (o) {
         if(o.objIndex == indexDaListaDeAlerta){
-            setTimeout(function () {
-                $('#immediateCorrectiveAction').val(o.ImmediateCorrectiveAction);
-                $('#preventativeMeasure').val(o.PreventativeMeasure);
-                $('#descriptionFailure').val(o.DescriptionFailure);
-                $('#parLevel3_Id').val(o.ParLevel3_Id);
-            },100);
+            $('#immediateCorrectiveAction').val(o.ImmediateCorrectiveAction);
+            $('#preventativeMeasure').val(o.PreventativeMeasure);
+            $('#descriptionFailure').val(o.DescriptionFailure);
+            $('#parLevel3_Id').val(o.ParLevel3_Id);
         }
     });
 }
 
-function setTimeoutOpenCorrectiveAction(objCorrectiveAction, index){
-    var exists = objCorrectiveAction[index].exist;
-    var coleta = objCorrectiveAction[index].coleta;
-    var modal = "";
-    var body = "";
-    var corpo = "";
-    var display = "";
-    var btnShowAcaoCorretiva = "";
-    var btnNext = "";
-    var btnBack = "";
-    var numeroDeAlertas = objCorrectiveAction[index].numberAlert;
+function montaHtmlModalAlerta(listaAlertasVigente){
+    var alerta = '<div style="background-color:red; padding:10px;">' +
+    '<div>' +
+    '<p> (' + listaAlertasVigente[0].Name + ') no(a) ('+ $.grep(parametrization.listaParLevel1, function (o, i) { return o.Id == coleta.ParLevel1_Id; })[0].Name +')' +
+    'para a medida de controle: ('+ $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +')' +
+    ' identificado durante o monitoramento: ('+ $.grep(parametrization.listaParLevel2, function (o, i) { return o.Id == coleta.ParLevel2_Id; })[0].Name +').' +
+    '</p>' +
+    '</div>' +
+    '<div style="text-align:center">' +
+    '</div>' +
+    '</div>'; 
+    return alerta;
+}
 
-    var correctiveAction = {};
+function disableButtons(){
+    if(index < currentListaDeColetaComAlertaEAcaoCorretiva.length - 1){
+        $("#modalAcaoCorretiva #btnSendCA").attr('disabled', true);
+        $("#modalAcaoCorretiva #next").attr('disabled', false);
+        $("#modalAcaoCorretiva #back").attr('disabled', true);
+    }
+    else{
+        $("#modalAcaoCorretiva #btnSendCA").attr('disabled', false);
+        $("#modalAcaoCorretiva #next").attr('disabled', true);
+        $("#modalAcaoCorretiva #back").attr('disabled', false);
+    }
+}
 
-    //Pegar os dados correntes
-    correctiveAction.CollectionLevel2 = {
-        ParLevel1_Id: coleta.ParLevel1_Id,
-        ParLevel2_Id: coleta.ParLevel2_Id,
-        UnitId: coleta.ParCompany_Id,
-        //Shift: 1,
-        EvaluationNumber: coleta.Evaluation,
-        Sample: coleta.Sample,
-        ParDepartment_Id: coleta.ParDepartment_Id,
-        ParCargo_Id: coleta.ParCargo_Id,
-        //ParCluster_Id: 1,
-        ListaRespostasAcaoCorretiva: [],
-        CollectionDate: getCurrentDate()
-    };
+$('body').off('click', '[data-showAcaoCorretiva]').on('click', '[data-showAcaoCorretiva]', function (e) {
+    display = 'block';
+    var corpo = montaHtmlModalAcaoCorretiva();
+    openModal(corpo, 'white', 'black');
+    disableButtons();
+});
 
-    currentRespostasDaAcaoCorretiva = {
-        objIndex: index
-    };
+$('body').off('click', '#btnSendCA').on('click', '#btnSendCA', function () {
+    
+    var index = $(this).attr('data-index');
+    //Inserir collectionLevel2 dentro do obj
 
-        var alerta = 
-            '<div style="background-color:red; padding:10px;">' +
-            '<div>' +
-            //'<p>Alerta ' + numeroDeAlertas + ' (' + exists[0].Name + ') foi disparado.</p>' +
-            '<p> (' + exists[0].Name + ') no(a) ('+ $.grep(parametrization.listaParLevel1, function (o, i) { return o.Id == coleta.ParLevel1_Id; })[0].Name +')' +
-            'para a medida de controle: ('+ $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +')' +
-            ' identificado durante o monitoramento: ('+ $.grep(parametrization.listaParLevel2, function (o, i) { return o.Id == coleta.ParLevel2_Id; })[0].Name +').' +
-            '</p>' +
-            '</div>' +
-            '<div style="text-align:center">' +
-            '</div>' +
-            '</div>';   
+    adicionaObjNaListaDeRespostasDaAcaoCorretiva(index,currentlistaSeExisteAlerta);
 
-        if(objCorrectiveAction.length > 1){
-            btnNext = '<div>' +
-                '<button class="btn btn-primary" id="next" onclick="proximoElementoDaListaDeAlertas(' + index + ')" style="float:right;">Próxima Ação Corretiva</button>' +
-                '</div>';
-        
-            btnBack = '<div>' +
-            '<button class="btn btn-primary" id="back" onclick="elementoAnteriorDaListaDeAlertas(' + index + ')" style="float:left;">Voltar Ação Corretiva</button>' +
-            '</div>';
-        }
+    for (var i = 0; i < currentlistaObjCorrectiveAction.length; i++) {
+        //Salvar corrective action na lista de correctiveAction
+        currentlistaObjCorrectiveAction[i].AuditorId = currentLogin.Id;
+        globalAcoesCorretivasRealizadas.push(currentlistaObjCorrectiveAction[i]);
+    }
 
-        if(exists[0].HasCorrectiveAction){
-            display = 'block';
-            currentlistaSeExisteAlerta = exists;
-            fillAcaocorretiva();
-        }
-        else
-        {
-            display = 'none';
-            btnShowAcaoCorretiva = '<div>' +
-                '<button class="btn btn-secundary" data-showAcaoCorretiva style="float:left;margin-left: 350px;">Mostrar Ação Corretiva</button>' +
-                '</div>';
+    closeModal();
+    currentlistaObjCorrectiveAction = null;
+});
 
-            currentlistaSeExisteAlerta = exists;
-            fillAcaocorretiva();
-        }
-        
-        function fillAcaocorretiva(){
-            modal = '<h3 style="font-weight:bold; display:' + display + ';">Ação Corretiva</h3>';
-            body = '<div class="form-group" style="display:' + display + ';">' +
-                '<div class="form-group col-xs-12">' +
-                '<strong>Informações</strong>' +
-                '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString() +
-                '<br/>Monitor: ' + currentLogin.Name +
-                '<br/>Tarefa: ' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +
-                '<input type="hidden" id="parLevel3_Id" value="' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Id + '">' +
-                '<br/>Frequência: ' + $.grep(parametrization.listaParFrequency, function (item) { return item.Id == parametrization.currentParFrequency_Id; })[0].Name +
-                '</small></div>' +
-            
-                '<div class="form-group col-xs-12">' +
-                '<label>Descrição da Falha:</label>' +
-                '<input name="DescriptionFailure" id="descriptionFailure" class="col-sx-12 form-control" style="height: 80px;">' +
-                '</div>' +
-                '<div class="form-group col-xs-12">' +
-                '<label for="email">Ação Corretiva Imediata:</label>' +
-                '<input name="ImmediateCorrectiveAction" id="immediateCorrectiveAction" class="form-control" style="height: 80px;">' +
-                '</div>' +
-                '<div class="form-group col-xs-12">' +
-                '<label for="email">Ação Preventiva:</label>' +
-                '<input name="PreventativeMeasure" id="preventativeMeasure" class="form-control" style="height: 80px;">' +
-                '</div>';
-            
-            corpo = 
-                '<div class="container">' +
-                '<div class="row" style="overflow:auto">' +
-                '<div id="alertObrigatorio" class="alert alert-warning alert-dismissible" style="display: none;" role="alert">' +
-                '<button type="button" class="close" onclick="hideAlert()"><span aria-hidden="true">&times;</span></button>'+
-                '<strong>Esse alerta é obrigatório, preencher todos os campos para continuar!</strong>'  +
-                '</div>' +
-                '<div id="alertOpcional" class="alert alert-warning alert-dismissible" style="display: none;" role="alert">' +
-                '<button type="button" class="close" onclick="hideAlert()"><span aria-hidden="true">&times;</span></button>'+
-                '<strong>Esse alerta é opcional, preencha todos os campos ou não preencha nenhum campo para continuar!</strong>'  +
-                '</div>' +
-                '<div>' +
-                alerta +                
-                '</div>' +
-                '<div style="padding-top: 10px;">' +
-                btnBack +
-                btnShowAcaoCorretiva +
-                btnNext +
-                '</div>' +
-                '<div style="margin-top:60px;">' +
-                '<hr>' +
-                '</div>' +
-                modal +
-                '<hr>' +
-                '<div>' +
-                body +
-                '</div>' +
-                '<hr>' +
-                '<div class="form-group col-xs-6">' +
-                '<button class="btn btn-primary" id="btnSendCA" style="display:' + display + ';">Salvar Ação Corretiva</button>' +
-                '</div>' +
-                '</div>' +
-                '</div>';
-        }
-
-        openModal(corpo, 'white', 'black');
-        disableButtons();
-
-        function disableButtons(){
-            if(index < objCorrectiveAction.length - 1){
-                $("#btnSendCA").attr('disabled', true);
-                $("#next").attr('disabled', false);
-                $("#back").attr('disabled', true);
-            }
-            else{
-                $("#btnSendCA").attr('disabled', false);
-                $("#next").attr('disabled', true);
-                $("#back").attr('disabled', false);
-            }
-        }
-        
-        $('body').off('click', '[data-showAcaoCorretiva]').on('click', '[data-showAcaoCorretiva]', function (e) {
-            display = 'block';
-            fillAcaocorretiva();
-            openModal(corpo, 'white', 'black');
-            disableButtons();
-            pegaValorDoObjDaListaDeAlertas(index);
-        });
-
-        $('body').off('click', '#btnSendCA').on('click', '#btnSendCA', function () {
-            
-            //Inserir collectionLevel2 dentro do obj
-            correctiveAction.AuditorId = currentLogin.Id;
-
-            adicionaObjNaListaDeRespostasDaAcaoCorretiva(index,currentlistaSeExisteAlerta);
-
-            for (var i = 0; i < currentlistaObjCorrectiveAction.length; i++) {
-                correctiveAction.CollectionLevel2.ListaRespostasAcaoCorretiva.push({
-                    ImmediateCorrectiveAction: currentlistaObjCorrectiveAction[i].ImmediateCorrectiveAction,
-                    PreventativeMeasure: currentlistaObjCorrectiveAction[i].PreventativeMeasure,
-                    DescriptionFailure: currentlistaObjCorrectiveAction[i].DescriptionFailure,
-                    ParLevel3_Id: currentlistaObjCorrectiveAction[i].ParLevel3_Id
-                });    
-            }
-
-            //Salvar corrective action na lista de correctiveAction
-            globalAcoesCorretivasRealizadas.push(correctiveAction);
-            closeModal();
-            currentlistaObjCorrectiveAction = null;
-        });
+function preencheObjetoAcaoCorretiva(acaoCorretiva){
+    acaoCorretiva.ImmediateCorrectiveAction = $('#immediateCorrectiveAction').val();
+    acaoCorretiva.PreventativeMeasure = $('#preventativeMeasure').val();
+    acaoCorretiva.DescriptionFailure = $('#descriptionFailure').val();
+    acaoCorretiva.ParLevel3_Id = $('#parLevel3_Id').val();
+    return acaoCorretiva;
 }

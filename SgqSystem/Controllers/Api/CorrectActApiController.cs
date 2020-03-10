@@ -270,23 +270,19 @@ namespace SgqSystem.Controllers.Api
                         var secao = db.ParDepartment.Where(x => x.Id == correctiveAction.CollectionLevel2.ParDepartment_Id).FirstOrDefault();
                         var departamento = db.ParDepartment.Where(x => x.Id == secao.Parent_Id).FirstOrDefault();
 
-                        
+
                         db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "emailMock: " + DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.emailMock as string });
                         db.SaveChanges();
 
-                        CorrectiveAction acaoCorretiva = new CorrectiveAction();
-
-                        foreach (var item in correctiveAction.CollectionLevel2.ListaRespostasAcaoCorretiva)
-                        {
-                            Task.Run(() => MailSender.SendMail(
-                                "sgq@jbs.com.br",
-                                "Pi@ui1628",
-                                "correio.jbs.com.br",
-                                587,
-                                false,
-                                DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.emailMock as string,
-                                "Alerta KO emitido para o Indicador: Risco no uso de EPI´s, Monitoramento: Monitoramento do uso de EPI´s, Tarefa: O colaborador está utilizando luva anticorte sem folga nas pontas dos dedos, apertada ou esticada na palma da mão? Unidade: CGR - JBS S.A. - Campo Grande – CGR (02.916.265/0077-68)",
-                                $@"
+                        Task.Run(() => MailSender.SendMail(
+                            "sgq@jbs.com.br",
+                            "Pi@ui1628",
+                            "correio.jbs.com.br",
+                            587,
+                            false,
+                            DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.emailMock as string,
+                            "Alerta KO emitido para o Indicador: Risco no uso de EPI´s, Monitoramento: Monitoramento do uso de EPI´s, Tarefa: O colaborador está utilizando luva anticorte sem folga nas pontas dos dedos, apertada ou esticada na palma da mão? Unidade: CGR - JBS S.A. - Campo Grande – CGR (02.916.265/0077-68)",
+                            $@"
                                 <p>{DateTime.Now.ToString("dd/MM/yyyy HH:mm")}, Alerta emitido para o <u>Indicador</u>: Risco no uso de EPI&acute;s,
                                 <u>Monitoramento</u>: Monitoramento do uso de EPI&acute;s, 
                                 <u>Tarefa</u>: O colaborador est&aacute; utilizando luva anticorte sem folga nas pontas dos dedos, apertada ou esticada na palma da m&atilde;o? 
@@ -370,54 +366,38 @@ namespace SgqSystem.Controllers.Api
                                 </tr>
                                 <tr>
                                 <td width='566'>
-                                <p><strong>Descrição da Falha:</strong> {item.DescriptionFailure}
+                                <p><strong>Descrição da Falha:</strong> {correctiveAction.DescriptionFailure}
                                 
                                 </tr>
                                 <tr>
                                 <td width='566'>
-                                <p><strong>Ação Corretiva Imediata;</strong>{item.ImmediateCorrectiveAction}</p>
+                                <p><strong>Ação Corretiva Imediata;</strong>{correctiveAction.ImmediateCorrectiveAction}</p>
                                 </td>
                                 </tr>
                                 <tr>
                                 <td width='566'>
-                                <p><strong>Medida Preventiva:</strong> {item.PreventativeMeasure}</p>
+                                <p><strong>Medida Preventiva:</strong> {correctiveAction.PreventativeMeasure}</p>
                                 </td>
                                 </tr>
                                 </tbody>
                                 </table>
                                 "));
 
-                            //correctiveAction.CollectionLevel2_Id = collectionLevel2.Id;
-                            //correctiveAction.CollectionLevel2 = collectionLevel2;
 
-                            acaoCorretiva.CollectionLevel2_Id = collectionLevel2.Id;
-                            acaoCorretiva.CollectionLevel02Id = collectionLevel2.Id;
-                            //acaoCorretiva.CollectionLevel2 = collectionLevel2;
-                            acaoCorretiva.ImmediateCorrectiveAction = item.ImmediateCorrectiveAction;
-                            acaoCorretiva.PreventativeMeasure = item.PreventativeMeasure;
-                            acaoCorretiva.DescriptionFailure = item.DescriptionFailure;
-                            acaoCorretiva.ParLevel3_Id = item.ParLevel3_Id;
-                            acaoCorretiva.AuditorId = correctiveAction.AuditorId; 
 
-                            db.CorrectiveAction.Add(acaoCorretiva);
-                            db.SaveChanges();
-                        }
+                        correctiveAction.CollectionLevel2_Id = collectionLevel2.Id;
+                        correctiveAction.CollectionLevel02Id = collectionLevel2.Id;
+
+                        db.CorrectiveAction.Add(correctiveAction);
+                        db.SaveChanges();
 
                         collectionLevel2.HaveCorrectiveAction = true;
                         db.Entry(collectionLevel2).State = EntityState.Modified;
                         db.SaveChanges();
 
-                        //Não estava retornando na query acima então pego aqui novamente
-                        db.Configuration.LazyLoadingEnabled = false;
-                        collectionLevel2.ParCargo_Id = db.CollectionLevel2XParCargo.Where(x => x.CollectionLevel2_Id == collectionLevel2.Id).Select(x => x.ParCargo_Id).FirstOrDefault();
-                        collectionLevel2.ParDepartment_Id = db.CollectionLevel2XParDepartment.Where(x => x.CollectionLevel2_Id == collectionLevel2.Id).Select(x => x.ParDepartment_Id).FirstOrDefault();
-
-                        db.SaveChanges();
-
                         correctiveActionsSave.Add(correctiveAction);
 
                     }
-
                 }
                 catch (Exception ex)
                 {
