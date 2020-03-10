@@ -82,7 +82,7 @@ function level1Show(inicio, cluster) {
             getCollectionPhase();
             loadTotalAvaliacoesPorIndicadorPorAvaliacao();
             getHeaderResultList();
-            getListParMultipleValuesXParCompany();
+            //getListParMultipleValuesXParCompany();
 
         }, 1000);
 
