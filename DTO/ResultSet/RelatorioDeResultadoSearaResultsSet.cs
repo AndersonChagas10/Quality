@@ -120,9 +120,9 @@ public class RelatorioDeResultadoSearaResultsSet
 
                     SELECT
 	                    PC.Name AS UnidadeName
-                       ,SUM(WeiEvaluation) AS AV
-                       ,SUM(WeiEvaluation) - SUM(WeiDefects) AS C
-                       ,((SUM(WeiEvaluation) - SUM(WeiDefects)) / SUM(WeiEvaluation)) * 100 AS PORCC
+                       ,SUM(CUBOL3.WeiEvaluation) AS AV
+                       ,SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects) AS C
+                       ,((SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects)) / SUM(CUBOL3.WeiEvaluation)) * 100 AS PORCC
                        ,M.Name + '/' + CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR) AS Data
 
                     FROM DW.Cubo_Coleta_L3 CUBOL3 WITH (NOLOCK)
@@ -139,20 +139,17 @@ public class RelatorioDeResultadoSearaResultsSet
                     INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
 	                    ON CUBOL3.ParLevel3_Id = PL3.ID
 
-                    OUTER APPLY (SELECT TOP 1
-		                    CL2.ID
-	                       ,CL2.CollectionDate
-	                    FROM CollectionLevel2 CL2
-	                    WHERE CL2.CollectionDate = CUBOL3.CollectionDate) CL2
+				 INNER join CollectionLevel2 cl2
+				  on cl2.CollectionDate = CUBOL3.CollectionDate
 
-                    INNER JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP
-	                    ON CSFP.CollectionLevel2_Id = CL2.ID
+					left JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP
+						ON CSFP.CollectionLevel2_Id = CL2.Id
 
-                    INNER JOIN ParFamiliaProduto SFP WITH (NOLOCK)
-	                    ON CSFP.ParFamiliaProduto_Id = SFP.ID
+                    left JOIN ParFamiliaProduto SFP WITH (NOLOCK)
+	                    ON CSFP.ParFamiliaProduto_Id = SFP.Id
 
-                    INNER JOIN ParProduto SP WITH (NOLOCK)
-	                    ON CSFP.ParProduto_Id = SP.ID
+                    left JOIN ParProduto SP WITH (NOLOCK)
+	                    ON CSFP.ParProduto_Id = SP.Id
 
                     INNER JOIN @MES M
 	                    ON M.ID = DATEPART(MONTH, CUBOL3.CollectionDate)
@@ -254,20 +251,14 @@ public class RelatorioDeResultadoSearaResultsSet
 		INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
 			ON CUBOL3.ParLevel3_Id = PL3.ID
 
-		OUTER APPLY (SELECT TOP 1
-				CL2.ID
-			   ,CL2.CollectionDate
-			FROM CollectionLevel2 CL2
-			WHERE CL2.CollectionDate = CUBOL3.CollectionDate) CL2
-
-		INNER JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP
-			ON CSFP.CollectionLevel2_Id = CL2.ID
-
-		INNER JOIN ParFamiliaProduto SFP WITH (NOLOCK)
-			ON CSFP.ParFamiliaProduto_Id = SFP.ID
-
-		INNER JOIN ParProduto SP WITH (NOLOCK)
-			ON CSFP.ParProduto_Id = SP.ID
+						 INNER join CollectionLevel2 cl2	
+				  on cl2.CollectionDate = CUBOL3.CollectionDate	
+					left JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP	
+						ON CSFP.CollectionLevel2_Id = CL2.Id	
+                    left JOIN ParFamiliaProduto SFP WITH (NOLOCK)	
+	                    ON CSFP.ParFamiliaProduto_Id = SFP.Id	
+                    left JOIN ParProduto SP WITH (NOLOCK)	
+	                    ON CSFP.ParProduto_Id = SP.Id
 
 		WHERE 1 = 1
 
@@ -868,16 +859,18 @@ public class RelatorioDeResultadoSearaResultsSet
 					INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
 						ON CUBOL3.ParLevel3_Id = PL3.Id
 							
-					OUTER APPLY (SELECT TOP 1 CL2.id FROM collectionlevel2 CL2 
-								WHERE CL2.CollectionDate = CUBOL3.CollectionDate) CL2
+					--CROSS APPLY (SELECT TOP 1 CL2.id FROM collectionlevel2 CL2 
+					--			WHERE CL2.CollectionDate = CUBOL3.CollectionDate) CL2
+				 INNER join CollectionLevel2 cl2
+				  on cl2.CollectionDate = CUBOL3.CollectionDate
 
-					INNER JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP
+					left JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP
 						ON CSFP.CollectionLevel2_Id = CL2.Id
 
-                    INNER JOIN ParFamiliaProduto SFP WITH (NOLOCK)
+                    left JOIN ParFamiliaProduto SFP WITH (NOLOCK)
 	                    ON CSFP.ParFamiliaProduto_Id = SFP.Id
 
-                    INNER JOIN ParProduto SP WITH (NOLOCK)
+                    left JOIN ParProduto SP WITH (NOLOCK)
 	                    ON CSFP.ParProduto_Id = SP.Id
 
 					WHERE 1 = 1
