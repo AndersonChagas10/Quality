@@ -6624,7 +6624,7 @@ namespace SgqServiceBusiness.Api
                 retorno += html.div(
                                             outerhtml: form_group,
                                             classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
-                                            style: "padding-right: 4px !important; padding-left: 4px !important;height:90px !important"
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;height:90px !important;display:table"
                                             );
 
 
