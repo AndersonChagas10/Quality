@@ -912,8 +912,8 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourceEN() { Key = "parStructure2", Value = "Business Group" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "parStructure3", Value = "Regional" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "user", Value = "User" });
-
                 ResourcesInserir.Add(new ResourceEN() { Key = "seara_Produto", Value = "Seara Produto" });
+                ResourcesInserir.Add(new ResourceEN() { Key = "new_update_the_app_will_be_update", Value = "New update available. The application will be updated!" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourceKeys.Contains(x.Key));
 

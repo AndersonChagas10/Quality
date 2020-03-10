@@ -24,7 +24,7 @@ function getVersionAPI() {
 
 function OpenAppMustBeUpdated(data){
     setTimeout(function(){
-        navigator.notification.alert('Nova atualização disponivel. A aplicação será atualizada!', 
+        navigator.notification.alert(getResource("new_update_the_app_will_be_update"),
         ReloadAfterUpdatVersion, 
         'Atualização', 
         'OK');
