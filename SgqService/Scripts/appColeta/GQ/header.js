@@ -290,41 +290,41 @@ function getHeaderResultList(){
     }
 }
 
-function getListParMultipleValuesXParCompany(){
-    listHeaders = [];
-    var unitid = parseInt($('.App').attr('unidadeid'));
+// function getListParMultipleValuesXParCompany(){
+//     listHeaders = [];
+//     var unitid = parseInt($('.App').attr('unidadeid'));
 
-    $('.level1').each(function(index, element){
-        if($('.level02Result[sync=false]').length == 0 && unitid != undefined) {
-            $.ajax({
-                url: urlPreffix+"/api/ParHeader/GetListParMultipleValuesXParCompany/"+unitid+"/"+$(element).attr('id'),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                headers: token(),
-                type: 'GET',
-                success: function (result) {
-                    listHeaders.push({level1id: $(element).attr('id'), list: result });
-                    _writeFile("ListHeaders_"+$(element).attr('id')+".json", JSON.stringify(result));
-                },
-                error: function (e) {
-                    _readFile("ListHeaders_"+$(element).attr('id')+".json", function(result){
-                        if(result){
-                            listHeaders.push({level1id: JSON.parse(result)[0].ParLevel1_Id, list: JSON.parse(result) });
-                        }
-                    });
-                }
-            });
-        } else {
-            _readFile("ListHeaders_"+$(element).attr('id')+".json", function(result){
-                if(result){
-                    try{
-                    listHeaders.push({level1id: JSON.parse(result)[0].ParLevel1_Id, list: JSON.parse(result) });
-                    }catch(e){}
-                }
-            });
-        }
-    });
-}
+//     $('.level1').each(function(index, element){
+//         if($('.level02Result[sync=false]').length == 0 && unitid != undefined) {
+//             $.ajax({
+//                 url: urlPreffix+"/api/ParHeader/GetListParMultipleValuesXParCompany/"+unitid+"/"+$(element).attr('id'),
+//                 contentType: 'application/json; charset=utf-8',
+//                 dataType: 'json',
+//                 headers: token(),
+//                 type: 'GET',
+//                 success: function (result) {
+//                     listHeaders.push({level1id: $(element).attr('id'), list: result });
+//                     _writeFile("ListHeaders_"+$(element).attr('id')+".json", JSON.stringify(result));
+//                 },
+//                 error: function (e) {
+//                     _readFile("ListHeaders_"+$(element).attr('id')+".json", function(result){
+//                         if(result){
+//                             listHeaders.push({level1id: JSON.parse(result)[0].ParLevel1_Id, list: JSON.parse(result) });
+//                         }
+//                     });
+//                 }
+//             });
+//         } else {
+//             _readFile("ListHeaders_"+$(element).attr('id')+".json", function(result){
+//                 if(result){
+//                     try{
+//                     listHeaders.push({level1id: JSON.parse(result)[0].ParLevel1_Id, list: JSON.parse(result) });
+//                     }catch(e){}
+//                 }
+//             });
+//         }
+//     });
+// }
 
 function saveListHeaders(){
     _writeFile("ListHeaders.json", JSON.stringify(listHeaders));
