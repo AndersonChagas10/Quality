@@ -8813,20 +8813,24 @@ namespace SgqServiceBusiness.Api
             try
             {
 
-                var sql = $@"SELECT
-                    	RL3.Id
-                       ,SUM(PMV.PunishmentValue) AS PunishmentValue
-                       ,RL3.IsConform
-                    FROM CollectionLevel2XParHeaderField CL2XHF
-                    INNER JOIN Result_Level3 RL3
-                    	ON RL3.CollectionLevel2_Id = CL2XHF.CollectionLevel2_Id
-                    INNER JOIN ParHeaderField PHF
-                    	ON PHF.Id = CL2XHF.ParHeaderField_Id
-                    INNER JOIN ParMultipleValues PMV
-                    	ON PMV.Id = CAST(CL2XHF.Value as int)
-                    WHERE CL2XHF.CollectionLevel2_Id = @CollectionLevel2_Id
-                    and CL2XHF.ParFieldType_Id in (1,2,3)
-                    GROUP BY RL3.Id, RL3.IsConform";
+                var sql = $@"SELECT     
+                                       RL3.id , 
+                                       Sum(PMV.punishmentvalue) AS PunishmentValue , 
+                                       RL3.isconform 
+                            FROM       
+	                            (select top 50000 
+		                            collectionlevel2_id,parheaderfield_id,Cast(value AS INT) as value,parfieldtype_id 
+		                            from CollectionLevel2XParHeaderField with (nolock) 
+		                            order by id desc
+		                            ) CL2XHF  
+                            INNER JOIN result_level3 RL3  with (nolock)
+                            ON         RL3.collectionlevel2_id = CL2XHF.collectionlevel2_id 
+                            INNER JOIN parmultiplevalues PMV with (nolock) 
+                            ON         PMV.id = CL2XHF.value 
+                            WHERE      CL2XHF.collectionlevel2_id = @CollectionLevel2_Id
+                            AND        CL2XHF.parfieldtype_id IN (1,2,3) 
+                            GROUP BY   RL3.id, 
+                                       RL3.isconform";
 
 
                 using (Factory factory = new Factory("DefaultConnection"))

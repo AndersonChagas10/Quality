@@ -175,8 +175,19 @@ namespace SgqServiceBusiness.Api
                             verificacaoSalvar.AddRange(verificacaoListJBS);
 
                         var key = model.VerificacaoTipificacao[0].Chave;
-                        var jaExiste = dbSgq.VerificacaoTipificacaoV2.Where(r => r.Key.Equals(key)).ToList();
-                        if (jaExiste.IsNotNull()) { dbSgq.VerificacaoTipificacaoV2.RemoveRange(jaExiste); }
+
+                        List<VerificacaoTipificacaoV2> jaExiste = new List<VerificacaoTipificacaoV2>();
+                        using (Factory factory = new Factory("DefaultConnection"))
+                        {
+                            string consultaVerificacaoTipificacaoV2 = $"select * from VerificacaoTipificacaoV2 where [key] = '{key}'";
+                            jaExiste = factory.SearchQuery<VerificacaoTipificacaoV2>(consultaVerificacaoTipificacaoV2);
+
+                            if (jaExiste.IsNotNull())
+                            {
+                                string deleteVerificacaoTipificacaoV2 = $"delete VerificacaoTipificacaoV2 where [key] = '{key}'";
+                                 factory.ExecuteSql(deleteVerificacaoTipificacaoV2);
+                            }
+                        }
 
                         foreach (var ver in verificacaoSalvar)
                         {
