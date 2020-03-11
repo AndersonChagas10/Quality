@@ -103,6 +103,17 @@ function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, lista
     var btnShowAcaoCorretiva = "";
     var btnNext = "";
     var btnBack = "";
+    var secao = "";
+    var centroCusto = "";
+
+    for(var i = 0; i < parametrization.listaParDepartment.length; i++){
+        if(parametrization.listaParDepartment[i].Parent_Id != null){
+            secao = parametrization.listaParDepartment[i].Name;
+        }
+        else{
+            centroCusto = parametrization.listaParDepartment[i].Name;
+        }
+    }
     
     var alerta = montaHtmlModalAlerta(listaAlertasVigente,coleta);
 
@@ -131,12 +142,20 @@ function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, lista
     modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>';
     body = '<div class="form-group">' +
         '<div class="form-group col-xs-12">' +
-        '<strong>Informações</strong>' +
-        '<small><br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString() +
-        '<br/>Monitor: ' + currentLogin.Name +
-        '<br/>Tarefa: ' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +
+        '<strong><small>Unidade: ' + $.grep(currentLogin.ParCompanyXUserSgq, function (o, i) { return o.ParCompany.Id == currentParCompany_Id })[0].ParCompany.Name +
+        '<br/>Data/Hora: ' + currentCollectDate.toLocaleDateString() + ' ' + currentCollectDate.toLocaleTimeString() +
+        '<br/>Monitor: ' + currentLogin.Name +'</strong>' +
         '<input type="hidden" id="parLevel3_Id" value="' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Id + '">' +
+        '<br/><br/><strong>Informações</strong>' +
+        '<br/>Cluster: ' +  $.grep(parametrization.listaParCluster, function (o, i) { return o.Id == currentParCluster_Id; })[0].Name +
         '<br/>Frequência: ' + $.grep(parametrization.listaParFrequency, function (item) { return item.Id == parametrization.currentParFrequency_Id; })[0].Name +
+        '<br/>Centro de Custo: ' + centroCusto +
+        '<br/>Seção: ' + secao +
+        '<br/>Cargo: ' + $.grep(parametrization.listaParCargo, function (o, i) { return o.Id == coleta.ParCargo_Id; })[0].Name + 
+        '<br/>Indicador: ' + $.grep(parametrization.listaParLevel1, function (o, i) { return o.Id == coleta.ParLevel1_Id; })[0].Name +
+        '<br/>Monitoramento: ' + $.grep(parametrization.listaParLevel2, function (o, i) { return o.Id == coleta.ParLevel2_Id; })[0].Name +
+        '<br/>Medida de Controle: ' + $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +
+        '<br/>Alerta: KO - ' + listaAlertasVigente[0].Name +
         '</small></div>' +
     
         '<div class="form-group col-xs-12">' +
@@ -259,7 +278,7 @@ function montaHtmlModalAlerta(listaAlertasVigente,coleta){
     var alerta = '<div style="background-color:red; padding:10px;">' +
     '<div>' +
     '<p> (' + listaAlertasVigente[0].Name + ') no(a) ('+ $.grep(parametrization.listaParLevel1, function (o, i) { return o.Id == coleta.ParLevel1_Id; })[0].Name +')' +
-    'para a medida de controle: ('+ $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +')' +
+    ' para a medida de controle: ('+ $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +')' +
     ' identificado durante o monitoramento: ('+ $.grep(parametrization.listaParLevel2, function (o, i) { return o.Id == coleta.ParLevel2_Id; })[0].Name +').' +
     '</p>' +
     '</div>' +
