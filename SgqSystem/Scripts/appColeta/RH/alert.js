@@ -90,12 +90,12 @@ function abreModalCorrectiveAction(listaDeColetaComAlertaEAcaoCorretiva, index){
     currentRespostasDaAcaoCorretiva = correctiveAction;
     currentRespostasDaAcaoCorretiva.objIndex = index;
 
-    var corpo = montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, listaAlertasVigente, index);
+    var corpo = montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, listaAlertasVigente, index, coleta);
     openModal(corpo, 'white', 'black');
-    disableButtons();
+    disableButtons(index);
 }
         
-function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, listaAlertasVigente, index){
+function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, listaAlertasVigente, index,coleta){
     var modal = "";
     var body = "";
     var corpo = "";
@@ -104,7 +104,7 @@ function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, lista
     var btnNext = "";
     var btnBack = "";
     
-    var alerta = montaHtmlModalAlerta(listaAlertasVigente);
+    var alerta = montaHtmlModalAlerta(listaAlertasVigente,coleta);
 
     if(listaAlertasVigente[0].HasCorrectiveAction){
         display = 'block';
@@ -238,6 +238,7 @@ function adicionaObjNaListaDeRespostasDaAcaoCorretiva(indexDaListaDeAlerta,curre
 };
 
 function elementoAnteriorDaListaDeAlertas(indexDaListaDeAlerta){
+    adicionaObjNaListaDeRespostasDaAcaoCorretiva(indexDaListaDeAlerta,currentlistaSeExisteAlerta)
     indexDaListaDeAlerta = indexDaListaDeAlerta - 1;
     abreModalCorrectiveAction(currentListaDeColetaComAlertaEAcaoCorretiva, indexDaListaDeAlerta);
     pegaValorDoObjDaListaDeAlertas(indexDaListaDeAlerta);
@@ -254,7 +255,7 @@ function pegaValorDoObjDaListaDeAlertas(indexDaListaDeAlerta){
     });
 }
 
-function montaHtmlModalAlerta(listaAlertasVigente){
+function montaHtmlModalAlerta(listaAlertasVigente,coleta){
     var alerta = '<div style="background-color:red; padding:10px;">' +
     '<div>' +
     '<p> (' + listaAlertasVigente[0].Name + ') no(a) ('+ $.grep(parametrization.listaParLevel1, function (o, i) { return o.Id == coleta.ParLevel1_Id; })[0].Name +')' +
@@ -268,7 +269,7 @@ function montaHtmlModalAlerta(listaAlertasVigente){
     return alerta;
 }
 
-function disableButtons(){
+function disableButtons(index){
     if(index < currentListaDeColetaComAlertaEAcaoCorretiva.length - 1){
         $("#modalAcaoCorretiva #btnSendCA").attr('disabled', true);
         $("#modalAcaoCorretiva #next").attr('disabled', false);
@@ -283,9 +284,7 @@ function disableButtons(){
 
 $('body').off('click', '[data-showAcaoCorretiva]').on('click', '[data-showAcaoCorretiva]', function (e) {
     display = 'block';
-    var corpo = montaHtmlModalAcaoCorretiva();
-    openModal(corpo, 'white', 'black');
-    disableButtons();
+    $("#bodyModalAcaoCorretiva").show();
 });
 
 $('body').off('click', '#btnSendCA').on('click', '#btnSendCA', function () {

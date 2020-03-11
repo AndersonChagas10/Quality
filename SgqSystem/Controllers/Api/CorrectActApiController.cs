@@ -383,13 +383,20 @@ namespace SgqSystem.Controllers.Api
                                 </table>
                                 "));
 
+                        CorrectiveAction acaoCorretiva = new CorrectiveAction();
 
+                        acaoCorretiva.CollectionLevel2_Id = collectionLevel2.Id;
+                        acaoCorretiva.CollectionLevel02Id = collectionLevel2.Id;
+                        acaoCorretiva.ImmediateCorrectiveAction = correctiveAction.ImmediateCorrectiveAction;
+                        acaoCorretiva.PreventativeMeasure = correctiveAction.PreventativeMeasure;
+                        acaoCorretiva.DescriptionFailure = correctiveAction.DescriptionFailure;
+                        acaoCorretiva.ParLevel3_Id = correctiveAction.ParLevel3_Id;
+                        acaoCorretiva.AuditorId = correctiveAction.AuditorId;
 
-                        correctiveAction.CollectionLevel2_Id = collectionLevel2.Id;
-                        correctiveAction.CollectionLevel02Id = collectionLevel2.Id;
-
-                        db.CorrectiveAction.Add(correctiveAction);
+                        db.CorrectiveAction.Add(acaoCorretiva);
                         db.SaveChanges();
+
+                        collectionLevel2 = db.CollectionLevel2.Where(x => x.Id == collectionLevel2.Id).FirstOrDefault();
 
                         collectionLevel2.HaveCorrectiveAction = true;
                         db.Entry(collectionLevel2).State = EntityState.Modified;
