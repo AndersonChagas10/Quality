@@ -2,6 +2,7 @@ var currentListaDeColetaComAlertaEAcaoCorretiva = [];
 var currentRespostasDaAcaoCorretiva = {};
 var currentlistaObjCorrectiveAction = [];
 var currentlistaSeExisteAlerta = [];
+var currentQtdAlerta = 1;
 
 function processAlertRole(coletaJson) {
 
@@ -130,12 +131,14 @@ function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, lista
     currentlistaSeExisteAlerta = listaAlertasVigente;
 
     if(listaDeColetaComAlertaEAcaoCorretiva.length > 1){
+       
         btnNext = '<div>' +
-            '<button class="btn btn-primary" id="next" onclick="proximoElementoDaListaDeAlertas(' + index + ')" style="float:right;">Próxima Ação Corretiva</button>' +
-            '</div>';
+        '<button class="btn btn-primary" id="next" onclick="proximoElementoDaListaDeAlertas(' + index + ')" style="float:right;">Próximo Alerta' +
+        ' ('+ currentQtdAlerta + "/" + currentListaDeColetaComAlertaEAcaoCorretiva.length +')</button>' +
+        '</div>';
     
         btnBack = '<div>' +
-        '<button class="btn btn-primary" id="back" onclick="elementoAnteriorDaListaDeAlertas(' + index + ')" style="float:left;">Voltar Ação Corretiva</button>' +
+        '<button class="btn btn-primary" id="back" onclick="elementoAnteriorDaListaDeAlertas(' + index + ')" style="float:left;">Voltar Alerta</button>' +
         '</div>';
     }
 
@@ -199,7 +202,7 @@ function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, lista
         body +
         '<hr>' +
         '<div class="form-group col-xs-6">' +
-        '<button class="btn btn-primary" id="btnSendCA" data-index="' + index + '">Salvar Ação Corretiva</button>' +
+        '<button class="btn btn-primary" id="btnSendCA" data-index="' + index + '">Salvar todas as Ações Corretivas</button>' +
         '</div>' +
         '</div>' +
         '</div>' +
@@ -215,6 +218,7 @@ function hideAlert() {
 
 function proximoElementoDaListaDeAlertas(indexDaListaDeAlerta){
     if(adicionaObjNaListaDeRespostasDaAcaoCorretiva(indexDaListaDeAlerta,currentlistaSeExisteAlerta) != false){
+        currentQtdAlerta++;
         indexDaListaDeAlerta++;
         abreModalCorrectiveAction(currentListaDeColetaComAlertaEAcaoCorretiva, indexDaListaDeAlerta);
         pegaValorDoObjDaListaDeAlertas(indexDaListaDeAlerta);
@@ -257,7 +261,8 @@ function adicionaObjNaListaDeRespostasDaAcaoCorretiva(indexDaListaDeAlerta,curre
 };
 
 function elementoAnteriorDaListaDeAlertas(indexDaListaDeAlerta){
-    adicionaObjNaListaDeRespostasDaAcaoCorretiva(indexDaListaDeAlerta,currentlistaSeExisteAlerta)
+    adicionaObjNaListaDeRespostasDaAcaoCorretiva(indexDaListaDeAlerta,currentlistaSeExisteAlerta);
+    currentQtdAlerta--;
     indexDaListaDeAlerta = indexDaListaDeAlerta - 1;
     abreModalCorrectiveAction(currentListaDeColetaComAlertaEAcaoCorretiva, indexDaListaDeAlerta);
     pegaValorDoObjDaListaDeAlertas(indexDaListaDeAlerta);
@@ -289,15 +294,20 @@ function montaHtmlModalAlerta(listaAlertasVigente,coleta){
 }
 
 function disableButtons(index){
-    if(index < currentListaDeColetaComAlertaEAcaoCorretiva.length - 1){
-        $("#modalAcaoCorretiva #btnSendCA").attr('disabled', true);
-        $("#modalAcaoCorretiva #next").attr('disabled', false);
-        $("#modalAcaoCorretiva #back").attr('disabled', true);
-    }
-    else{
-        $("#modalAcaoCorretiva #btnSendCA").attr('disabled', false);
+    if(index >= currentListaDeColetaComAlertaEAcaoCorretiva.length - 1){
+        $("#modalAcaoCorretiva #btnSendCA").show();
         $("#modalAcaoCorretiva #next").attr('disabled', true);
         $("#modalAcaoCorretiva #back").attr('disabled', false);
+    }
+    else if(index > 0 ){
+        $("#modalAcaoCorretiva #btnSendCA").hide();
+        $("#modalAcaoCorretiva #next").attr('disabled', false);
+        $("#modalAcaoCorretiva #back").attr('disabled', false);
+    }
+    else{
+        $("#modalAcaoCorretiva #btnSendCA").hide();
+        $("#modalAcaoCorretiva #next").attr('disabled', false);
+        $("#modalAcaoCorretiva #back").attr('disabled', true);
     }
 }
 
@@ -309,18 +319,19 @@ $('body').off('click', '[data-showAcaoCorretiva]').on('click', '[data-showAcaoCo
 $('body').off('click', '#btnSendCA').on('click', '#btnSendCA', function () {
     
     var index = $(this).attr('data-index');
-    //Inserir collectionLevel2 dentro do obj
 
-    adicionaObjNaListaDeRespostasDaAcaoCorretiva(index,currentlistaSeExisteAlerta);
+    if(adicionaObjNaListaDeRespostasDaAcaoCorretiva(index,currentlistaSeExisteAlerta) != false){
 
-    for (var i = 0; i < currentlistaObjCorrectiveAction.length; i++) {
-        //Salvar corrective action na lista de correctiveAction
-        currentlistaObjCorrectiveAction[i].AuditorId = currentLogin.Id;
-        globalAcoesCorretivasRealizadas.push(currentlistaObjCorrectiveAction[i]);
+        for (var i = 0; i < currentlistaObjCorrectiveAction.length; i++) {
+            //Salvar corrective action na lista de correctiveAction
+            currentlistaObjCorrectiveAction[i].AuditorId = currentLogin.Id;
+            globalAcoesCorretivasRealizadas.push(currentlistaObjCorrectiveAction[i]);
+        }
+    
+        closeModal();
+        currentlistaObjCorrectiveAction = null;
+        currentQtdAlerta = null;
     }
-
-    closeModal();
-    currentlistaObjCorrectiveAction = null;
 });
 
 function preencheObjetoAcaoCorretiva(acaoCorretiva){
