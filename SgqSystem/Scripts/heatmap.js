@@ -246,7 +246,7 @@ function RetornaValorExpMedia(idSeletor, dataCondicaoSeletor, expressao) {
         }
         try {
             if (html != "(0/0)*100") {
-                return Math.round(eval(html));
+                return (eval(html)).toFixed(2);
             }
         } catch (e) {
             return 0;

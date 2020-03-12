@@ -718,12 +718,12 @@
         var config = {};
 
         function updateConfig() {
-            w = window.innerWidth - 100;
+            w = $('#resultsUnidades').parent().innerWidth();
             config = {
-                maxWidth: w * 0.8,
-                widthColumn1: (w * .2) + "px",
-                widthColumn2: (w * .549) + "px",
-                widthColumn3: (w * .25) + "px",
+                maxWidth: w * .98,
+                widthColumn1: (w * .1) + "px",
+                widthColumn2: (w * .65) + "px",
+                widthColumn3: (w * .2) + "px",
                 colorMin: "ff0000",
                 colorMid: "fef104",
                 colorMax: "00e600",
@@ -748,7 +748,6 @@
                 dataType: "JSON",
                 contentType: "application/json; charset=utf-8",
                 success: function (retornoArray) {
-                    debugger
                     if (retornoArray) {
                         config.tituloDesdobramento = tituloDesdobramento;
                         config.Cabecalho = "<a class='cabecalho' data-titulo='{Data}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{Data}</a>";
@@ -756,10 +755,11 @@
                         config.tituloIndicador = "Unidade";
                         config.json = retornoArray;
                         config.idPlaceholder = "#resultsUnidades";
-                        config.cellWidth = "100";
+                        config.cellWidth = "66";
                         config.Valores = [
-                           
-                            { "title": "% C", "render": function () { return '{PorcC}'; }, "groupFunction": "AVG"}
+                            { "title": "Conforme", "render": function () { return '{C}'; } },
+                            { "title": "Avaliado", "render": function () { return '{Av}'; } },
+                            { "title": "% C", "render": function () { return '<a style="color:#000 !important;font-weight:bold;" class="valores" data-titulo="{Cabecalho} | {Indicador}" data-tituloDesdobramento="' + config.tituloDesdobramento + '" data-serviceProviderId="{ServiceProviderId}">{PorcC}</a>'; },  "groupFunction": "AVG", "Exp": "({Conforme}/{Avaliado})*100" }
                             ];
                         if (retornoArray.length > 0) {
                             HeatMap.Inicializar(
