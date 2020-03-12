@@ -20,8 +20,10 @@ namespace SgqSystem.Controllers
             List<string> versions;
             var listChangeLog = GetChangeLogByVersion(version, out versions);
             var listVersionName = versions.OrderBy(x => x).ToList();
+            string scriptValidaçãoGMUD = "";
 
-            ViewBag.Versions = geVersions(listVersionName);
+            ViewBag.Versions = GeVersions(listVersionName, out scriptValidaçãoGMUD);
+            ViewBag.ScriptValidaçãoGMUD = scriptValidaçãoGMUD;
             return View(listChangeLog);
         }
 
@@ -53,10 +55,10 @@ namespace SgqSystem.Controllers
             return changeLogs;
         }
 
-        private List<Version> geVersions(List<string> versions)
+        private List<Version> GeVersions(List<string> versions, out string scriptValidaçãoGMUD)
         {
+            scriptValidaçãoGMUD = ScriptVerificacaoGMUD.GetInicio();
 
-            //List<ChangeLog> changeLogs = new List<ChangeLog>();
             List<Version> Versoes = new List<Version>();
             var path = Path.Combine(@AppDomain.CurrentDomain.BaseDirectory, "ChangeLog", "ChangeLog.xml");
 
@@ -64,19 +66,34 @@ namespace SgqSystem.Controllers
 
             foreach (var versao in versions)
             {
-                var hasInMigrationHistory = true;
+                bool hasInMigrationHistory = true;
+                string queryMeioScript = "";
+                bool isFirstCard = true;
 
                 foreach (XElement card in XElement.Load(path).Elements("Card"))
-                {                   
-                    if (card.Element("Version").Value.Contains(versao) && 
-                        card.Element("Script").Value != null && 
+                {
+                    if (card.Element("Version").Value.Contains(versao) &&
+                        card.Element("Script").Value != null &&
                         card.Element("Script").Value != "")
                     {
-                        hasInMigrationHistory = hasAnyNoInsert(card.Element("CardNumber").Value, listMigrationHistory);
 
-                        if (!hasInMigrationHistory)
-                            break;
+                        bool hasAnyNoInsert = HasAnyNoInsert(card.Element("CardNumber").Value, listMigrationHistory);
+                        queryMeioScript += ScriptVerificacaoGMUD.GetValidacao(isFirstCard, card.Element("CardNumber").Value);
+                        isFirstCard = false;
+
+                        if (!hasAnyNoInsert)
+                        {
+                            hasInMigrationHistory = false;
+                        }                        
                     }
+                }
+
+                //Se tiver script adiciona a versão na lista de validação
+                if (queryMeioScript != "")
+                {
+                    scriptValidaçãoGMUD += ScriptVerificacaoGMUD.GetInicioWhen();
+                    scriptValidaçãoGMUD += queryMeioScript;
+                    scriptValidaçãoGMUD += ScriptVerificacaoGMUD.GetFimWhen(versao);
                 }
 
                 Versoes.Add(new Version
@@ -86,11 +103,13 @@ namespace SgqSystem.Controllers
                 });
             }
 
+            scriptValidaçãoGMUD += ScriptVerificacaoGMUD.GetFim();
+
             return Versoes;
         }
 
         //Se algum card não estiver no banco, retornar na lista de versões HasInMigrationHistory = false
-        private bool hasAnyNoInsert(string CardNumber, List<MigrationHistory> listMigrationHistory)
+        private bool HasAnyNoInsert(string CardNumber, List<MigrationHistory> listMigrationHistory)
         {
             var hasAnyNoInsert = false;
 
@@ -101,6 +120,8 @@ namespace SgqSystem.Controllers
 
             return hasAnyNoInsert;
         }
+
+
 
     }
 
@@ -129,4 +150,42 @@ namespace SgqSystem.Controllers
             }
         }
     }
+
+    public static class ScriptVerificacaoGMUD
+    {
+        public static string GetInicio()
+        {
+            return $@" SELECT CASE ";
+        }
+
+        public static string GetFim()
+        {
+            return $@" END Current_SGQ_Version ";
+        }
+
+        public static string GetInicioWhen()
+        {
+            return $@" WHEN ( ";
+        }
+
+        public static string GetFimWhen(string versaoNome)
+        {
+            return $@" ) THEN '{versaoNome}' ";
+        }
+
+        public static string GetValidacao(bool first, string cardName)
+        {
+            var retorno = " ";
+
+            if (!first)
+            {
+                retorno += "OR ";
+            }
+
+            retorno += $@" NOT EXISTS (SELECT * FROM MigrationHistory WHERE Name = '{cardName}') ";
+
+            return retorno;
+        }
+    }
+
 }

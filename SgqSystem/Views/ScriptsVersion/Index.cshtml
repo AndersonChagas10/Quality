@@ -26,6 +26,13 @@
                 <div class="col-sm-2 form-group">
                     <ul>
                         <li>
+                            <strong>Script versão atual</strong>
+                            <button class="btn btn-sm btn-primary pull-right" id="btnBaixarScriptVersao" style="margin-top:-5px !important;"> Baixar</button>
+                        </li>
+                    </ul>
+                    <ul>
+
+                        <li>
                             <strong>Versões</strong>
                             <ul>
 
@@ -48,11 +55,7 @@
                             <h2 class="panel-title">
                                 <a id="v103" class="ing">
                                     Versão @Html.Raw(Model[0].Version)
-                                    <button class="btn btn-sm btn-primary pull-right"
-                                            id="btnBaixarScripts"
-                                            style="margin-top:-5px !important;">
-                                        Baixar Scripts
-                                    </button>
+                                    <button class="btn btn-sm btn-primary pull-right" id="btnBaixarScripts" style="margin-top:-5px !important;"> Baixar Scripts </button>
                                 </a>
                             </h2>
                         </div>
@@ -119,7 +122,13 @@
                 <text>download("@Html.Raw(Model[0].Version+".txt")", script);</text>
             }
 
-        })
+        });
+
+        $("#btnBaixarScriptVersao").on("click", () => {
+
+           download("@Html.Raw("ScriptVerificacaoVersao.txt")", "@Html.Raw(ViewBag.ScriptValidaçãoGMUD)");
+
+        });
 
     </script>
 }
