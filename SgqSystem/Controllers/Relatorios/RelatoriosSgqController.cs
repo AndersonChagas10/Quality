@@ -7755,6 +7755,12 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult RelatorioConsistencyCallMSP()
+        {
+            return View(form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult AnaliseCritica()
         {
             return View(form);
