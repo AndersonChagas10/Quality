@@ -2826,4 +2826,20 @@
       )
     </Script>
   </Card>
+
+  <Card>
+    <CardNumber>SGQ-469</CardNumber>
+    <Version>1.7.0</Version>
+    <Description>[5S / RH SESMT] [MARCOS] COLETA - Criar tipo de dado de entrada binário com múltipla escolha</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ResultLevel3XParQualification' AND xtype='U')
+      create table ResultLevel3XParQualification(
+      Id int not null identity primary key,
+      AddDate Date not null,
+      ResultLevel3_Id int not null,
+      [Qualification_Value] varchar(100) null
+      )
+    </Script>
+  </Card>
+
 </Cards>

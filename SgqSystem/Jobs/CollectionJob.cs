@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace SgqSystem.Jobs
 {
@@ -35,7 +36,8 @@ namespace SgqSystem.Jobs
                 try
                 {
                     Int32.TryParse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.CollectionJobTime0IsDisabled, out intervalTimeCollectionJob);
-                }catch(Exception)
+                }
+                catch (Exception)
                 {
 
                 }
@@ -61,10 +63,11 @@ namespace SgqSystem.Jobs
         {
             try
             {
+                List<string> listaQualificacao = new List<string>();
                 using (var db = new SgqDbDevEntities())
                 {
                     //var headerFieldsProcess_Id = new List<int>();
-                    var parLevel3List = db.ParLevel3.Select(x => new { x.Name, x.Id } ).ToList();
+                    var parLevel3List = db.ParLevel3.Select(x => new { x.Name, x.Id }).ToList();
                     int consolidationLevel2_Id = returnConsolidationLevel2Id();
 
                     foreach (var collectionLevel2MontadoDaCollection in collectionsLevel2MontadoDaCollection)
@@ -90,14 +93,16 @@ namespace SgqSystem.Jobs
                                 db.CollectionLevel2XParDepartment.Add(new CollectionLevel2XParDepartment() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParDepartment_Id = collectionLevel2MontadoDaCollection.ParDepartment_Id.Value });
 
                             if (collectionLevel2MontadoDaCollection.Outros?.GetIntFromJsonText("ParFamiliaProduto_Id") != null)
+                            {
                                 db.CollectionLevel2XParFamiliaProdutoXParProduto.Add(
-                                    new Dominio.Seara.CollectionLevel2XParFamiliaProdutoXParProduto() {
+                                    new Dominio.Seara.CollectionLevel2XParFamiliaProdutoXParProduto()
+                                    {
                                         AddDate = DateTime.Now,
                                         CollectionLevel2_Id = collectionLevel2Save.Id,
                                         ParFamiliaProduto_Id = collectionLevel2MontadoDaCollection.Outros.GetIntFromJsonText("ParFamiliaProduto_Id").Value,
                                         ParProduto_Id = collectionLevel2MontadoDaCollection.Outros.GetIntFromJsonText("ParProduto_Id")
                                     });
-
+                            }
                             db.SaveChanges();
                         }
                         else
@@ -125,6 +130,37 @@ namespace SgqSystem.Jobs
                                 resultLevel3.ParLevel3_Name = parLevel3List.Where(x => x.Id == resultLevel3.ParLevel3_Id).Select(x => x.Name).FirstOrDefault();
                                 db.Result_Level3.Add(resultLevel3);
                                 db.SaveChanges();
+
+                               
+                                if (resultLevel3.Outros != null || resultLevel3.Outros != "")
+                                {
+                                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+
+                                    dynamic listaQualificacaoSerializada = serializer.Deserialize<object>(resultLevel3.Outros);
+
+
+                                    if (listaQualificacaoSerializada != null && listaQualificacaoSerializada["Qualification_Value"] != null)
+                                    {
+                                        foreach (var item in listaQualificacaoSerializada["Qualification_Value"])
+                                        {
+                                            listaQualificacao.Add(item as string);
+                                        }
+                                    }
+
+                                    if (listaQualificacao.Count > 0)
+                                    {
+                                        foreach (var item in listaQualificacao)
+                                        {
+                                            db.ResultLevel3XParQualification.Add(
+                                            new ResultLevel3XParQualification()
+                                            {
+                                                AddDate = DateTime.Now,
+                                                ResultLevel3_Id = resultLevel3.Id,
+                                                Qualification_Value = int.Parse(item)
+                                            });
+                                        }
+                                    }
+                                }
 
                                 DeleteHeaderFieldLevel3IfExist(resultLevel3);
 
@@ -207,7 +243,7 @@ namespace SgqSystem.Jobs
 
                 var queryParCargo = "";
                 var queryParDepartment = "";
-                var queryParLevel3= "";
+                var queryParLevel3 = "";
 
                 if (collectionLevel2.ParCargo_Id == null || collectionLevel2.ParCargo_Id == 0)
                     queryParCargo = "Is NULL";
@@ -220,7 +256,7 @@ namespace SgqSystem.Jobs
                 else
                     queryParDepartment = " = " + collectionLevel2.ParDepartment_Id;
 
-                    queryParLevel3 = " = " + resultLevel3.ParLevel3_Id;
+                queryParLevel3 = " = " + resultLevel3.ParLevel3_Id;
 
                 var sql = $@"SELECT
                             	CL.ParHeaderField_Id as ParHeaderFieldGeral_Id
@@ -342,6 +378,7 @@ namespace SgqSystem.Jobs
                         ,WeiEvaluation
                         ,Evaluation
                         ,WeiDefects
+                        ,Outros
                         ,HasPhoto  FROM Collection 
                     WHERE Evaluation = {collection.EvaluationNumber} AND IsProcessed = 0 AND
                         Sample = {collection.Sample} AND ParLevel1_Id = {collection.ParLevel1_Id} AND
@@ -349,7 +386,7 @@ namespace SgqSystem.Jobs
                         Period_Id = {collection.Period} AND ParCompany_Id = {collection.UnitId} 
                         AND (ParCluster_Id = {collection.ParCluster_Id ?? 0} OR ParCluster_Id IS NULL)
                         AND (ParCargo_Id = {collection.ParCargo_Id ?? 0} OR ParCargo_Id IS NULL)
-                        AND ParFrequency_Id {((collection.ParFrequency_Id > 0) ? (" = "+ collection.ParFrequency_Id) : " IS NULL")} 
+                        AND ParFrequency_Id {((collection.ParFrequency_Id > 0) ? (" = " + collection.ParFrequency_Id) : " IS NULL")} 
                         AND (ParDepartment_Id = {collection.ParDepartment_Id ?? 0}  OR ParDepartment_Id IS NULL)
                         AND ParHeaderField_Id IS NULL
                         AND CAST(CONVERT(VARCHAR(19), IIF(DATEPART(MILLISECOND, CollectionDate) > 500, DATEADD(SECOND, 1, CollectionDate), CollectionDate), 120) AS DATE) = '{collection.CollectionDate.ToString("yyyy-MM-dd")}'";
@@ -394,7 +431,7 @@ namespace SgqSystem.Jobs
             collection.Key = collection.CollectionDate.ToString("yyyy-MM-dd") + "-" + collection.UnitId + "-" +
                 collection.ParLevel1_Id + "-" + collection.ParLevel2_Id + "-" + collection.Shift + "-" +
                 collection.ParCluster_Id + "-" + collection.ParCargo_Id + "-" + collection.ParDepartment_Id + "-" +
-                collection.EvaluationNumber + "-" + collection.Sample + "-" + collection.ParFrequency_Id + "-" + 
+                collection.EvaluationNumber + "-" + collection.Sample + "-" + collection.ParFrequency_Id + "-" +
                 collection.Outros?.GetFromJsonText("ParFamiliaProduto_Id");
 
             return collection;
@@ -453,7 +490,7 @@ namespace SgqSystem.Jobs
                     queryParCargo = "Is NULL";
                 else
                     queryParCargo = " = " + collectionLevel2.ParCargo_Id;
-         
+
 
                 if (collectionLevel2.ParDepartment_Id == null || collectionLevel2.ParDepartment_Id == 0)
                     queryParDepartment = "Is NULL";

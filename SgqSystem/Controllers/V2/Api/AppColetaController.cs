@@ -99,7 +99,8 @@ namespace SgqSystem.Controllers.V2.Api
                     ParDepartment_Id = x.ParDepartment_Id,
                     ParFrequency_Id = x.Parfrequency_Id,
                     AuditorId = x.UserSgq_Id ?? 0,
-                    CollectionDate = x.CollectionDate.Value
+                    CollectionDate = x.CollectionDate.Value,
+                    Outros = x.Outros
                 })
                 .Distinct()
                 .ToList();

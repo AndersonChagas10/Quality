@@ -300,6 +300,7 @@ namespace Dominio
         public virtual DbSet<PargroupQualificationXParQualification> PargroupQualificationXParQualification { get; set; }
         public virtual DbSet<PargroupQualificationXParLevel3Value> PargroupQualificationXParLevel3Value { get; set; }
         public virtual DbSet<Result_Level3XParHeaderFieldGeral> Result_Level3XParHeaderFieldGeral { get; set; }
+        public virtual DbSet<ResultLevel3XParQualification> ResultLevel3XParQualification { get; set; }
 
         public virtual DbSet<Seara.ParFamiliaProduto> ParFamiliaProduto { get; set; }
         public virtual DbSet<Seara.ParProduto> ParProduto { get; set; }

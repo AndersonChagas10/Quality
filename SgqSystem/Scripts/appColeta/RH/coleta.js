@@ -76,7 +76,6 @@ function openColeta(levels) {
     });
 
     setBreadcrumbs();
-
 }
 
 $('body')
@@ -96,6 +95,19 @@ $('body')
         }
     });
 
+$('body')
+    .off('change', '[data-level3] select:visible')
+    .on('change', '[data-level3] select:visible', function () {
+
+        var qualificationLevel3Value_Value = $(this).parents('[data-level3]').attr('data-ParQualificationLevel3Value');
+
+        if (qualificationLevel3Value_Value != null || qualificationLevel3Value_Value != "") {
+            var qualification_Id = $("[data-qualificationSelect] :selected").val();
+        }
+
+        $("input[data-valor]").trigger('change');
+    });
+
 
 $('body')
     .off('input', '[data-level3] input:visible')
@@ -107,7 +119,7 @@ $('body')
         }
 
         $.each($('[data-equacao]:visible'), function (i, o) {
-            
+
             if ($(o).attr('data-equacao').indexOf('{' + id + '}') >= 0 || $(o).attr('data-equacao').indexOf('{' + id + '?}') >= 0) {
 
                 var equacao = $(o).attr('data-equacao');
@@ -547,7 +559,7 @@ function getResultado(level3) {
         '<div class="col-xs-6 no-gutters">' +
         '   <div class="col-xs-12 no-gutters">' +
         '       <div class="col-xs-10" style="padding: 0;">' +
-    '	        <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor data-equacao="' + level3.ParLevel3Value.DynamicValue + '" style=" text-align: center;" readonly/>' +
+        '	        <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor data-equacao="' + level3.ParLevel3Value.DynamicValue + '" style=" text-align: center;" readonly/>' +
         '       </div>' +
         '   </div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +
@@ -703,6 +715,7 @@ function validaCampoEmBrancoNA() {
 }
 
 $('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
+
     var linha = $(this).parents('[data-conforme]');
 
     resetarLinha(linha);
@@ -722,8 +735,9 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
             linha.attr('data-conforme', linha.attr('data-default-answer'));
             setFieldColorWhite($(this));
         }
-
     }
+
+    validateShowQualification(linha);
 
     if (linha.attr('data-conforme') == "1") {
         $(this).text($(this).attr('data-positivo'));
@@ -738,6 +752,68 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
     $(this).removeClass('btn-secundary');
 
 });
+
+function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
+    
+    var retorno = '';
+
+    var listaParQualificationxParLevel3Value = validaParqualification(level1Id, level2Id, level3Id);
+
+    if (listaParQualificationxParLevel3Value.length > 0) {
+
+        listaParQualificationxParLevel3Value.forEach(function (o, i) {
+
+            var qualificationGroupName = '';
+            
+            if (parametrization.listaPargroupQualification[i] != undefined) {
+                qualificationGroupName = parametrization.listaPargroupQualification[i].Name;
+            } else {
+                qualificationGroupName = parametrization.listaPargroupQualification[0].Name;
+            }
+
+            if ($(linhaLevel3).attr('data-conforme') == o.Value) {
+                var options = '';
+
+                parametrization.listaParQualification.forEach(function (obj, i) {
+                    options += '<option value="' + obj.Id + '" data-qualification>' + obj.Name + '</option >';
+                });
+
+                retorno += ' <div class="col-xs-3 no-gutters" data-ParQualificationLevel3Value="' + o.Value + '">';
+                retorno += ' <div class="col-xs-12"><small style="font-weight:550 !important">' + qualificationGroupName +'</small></div>';
+                retorno += ' <div class="col-xs-12">';
+                retorno += ' <select class="form-control input-sm ddl" data-qualificationSelect>';
+                retorno += ' <option value="">Selecione...</option>';
+                retorno += options;
+                retorno += ' </select>';
+                retorno += ' </div>';
+                retorno += ' </div>';
+               
+            }
+        });
+
+        retorno += ' <div class="clearfix"></div>';
+    } else
+        return '';
+
+    return retorno;
+}
+
+
+function validateShowQualification(linhaLevel3) {
+
+    $("[data-qualificationLevel3Value]").each(function (i, o) {
+        var selectsQualificationHtml = criaLinhaParQualification($(o).attr('parlevel1Id'), $(o).attr('parlevel2Id'), $(o).attr('parlevel3Id'), linhaLevel3);
+
+        $(o).html('');
+        if (selectsQualificationHtml != "") {
+            $(o).append(selectsQualificationHtml);
+            $(o).removeClass('hidden');
+        } else {
+            $(o).AddClass('hidden');
+        }
+    });
+
+}
 
 function setFieldColorGray(campo) {
     $(campo).css('background-color', '#E8E8E8');
@@ -800,7 +876,7 @@ function resetarLinha(linha) {
 }
 
 $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
-    
+    debugger
     e.preventDefault();
 
     if (!HeaderFieldsIsValid()) {
@@ -831,9 +907,6 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         };
     }
 
-    //var collectionHeaderFields = getCollectionHeaderFields();
-    //console.table(collectionHeaderFields);
-
     //Insere valores da coleta
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
         var data = $(o);
@@ -861,7 +934,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,
                 WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
-                ParCluster_Id: currentParCluster_Id
+                ParCluster_Id: currentParCluster_Id,
+                Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')) })
                 /*
 				"Shift_Id":1,
 				"Period_Id":1,
@@ -1017,6 +1091,29 @@ function OpenCorrectiveAction(coleta) {
 
     });
 
+}
+
+function getQualificationCollection(ParLevel1_Id, ParLevel2_Id, ParLevel3_Id) {
+
+    var collectionQualification = [];
+
+    $('[data-qualificationlevel3value] select').each(function () {
+
+        $self = $(this);
+
+        var level1Id = $self.parents('[data-level3]').attr('parlevel1id');
+        var level2Id = $self.parents('[data-level3]').attr('parlevel2id');
+        var level3Id = $self.parents('[data-level3]').attr('parlevel3id');
+ 
+        if (level1Id == ParLevel1_Id && level2Id == ParLevel2_Id && level3Id == ParLevel3_Id) {
+            //validar se o tem é referente aquela tarefa, para salvar
+            collectionQualification.push($self.val());
+        } else {
+            return "";
+        }
+    });
+
+    return collectionQualification;
 }
 
 function getCollectionHeaderFields() {

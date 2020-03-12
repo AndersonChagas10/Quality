@@ -51,5 +51,8 @@ namespace Dominio
 
         [ForeignKey("ParLevel3_Id")]
         public virtual ParLevel3 ParLevel3 { get; set; }
+
+        [NotMapped]
+        public string Outros { get; set; }
     }
 }
