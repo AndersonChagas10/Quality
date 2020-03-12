@@ -329,8 +329,8 @@ $('body').off('click', '#btnSendCA').on('click', '#btnSendCA', function () {
         }
     
         closeModal();
-        currentlistaObjCorrectiveAction = null;
-        currentQtdAlerta = null;
+        currentlistaObjCorrectiveAction = [];
+        currentQtdAlerta = 1;
     }
 });
 
