@@ -195,7 +195,7 @@ namespace SgqSystem.Jobs
                        ,IIF(UserSgq_Id is null, 0,UserSgq_Id) as AuditorId
                        ,CONVERT(VARCHAR(19),IIF(DATEPART(MILLISECOND,CollectionDate)>500,DATEADD(SECOND,1,CollectionDate),CollectionDate),120) AS CollectionDate
                        ,GETDATE() as StartPhaseDate
-                        FROM Collection
+                        FROM Collection with (nolock)
                         WHERE IsProcessed = 0
                         AND ParHeaderField_Id IS NULL
                         AND ParHeaderField_Value IS NULL
@@ -238,7 +238,7 @@ namespace SgqSystem.Jobs
                         ,WeiEvaluation
                         ,Evaluation
                         ,WeiDefects
-                        ,HasPhoto  FROM Collection 
+                        ,HasPhoto  FROM Collection with (nolock)
                     WHERE Evaluation = {collection.EvaluationNumber} AND IsProcessed = 0 AND
                         Sample = {collection.Sample} AND ParLevel1_Id = {collection.ParLevel1_Id} AND
                         ParLevel2_Id = {collection.ParLevel2_Id} AND Shift_Id = {collection.Shift} AND
@@ -320,8 +320,8 @@ namespace SgqSystem.Jobs
         private static void DeleteHeaderFieldIfExists(CollectionLevel2 collectionLevel2)
         {
             var sql = $@"delete CollectionLevel2XParHeaderFieldGeral WHERE Id in(
-                         select CL2XHF.Id FROM CollectionLevel2XParHeaderFieldGeral CL2XHF
-                         inner JOIN CollectionLevel2 C2 on C2.Id = CL2XHF.CollectionLevel2_Id
+                         select CL2XHF.Id FROM CollectionLevel2XParHeaderFieldGeral CL2XHF with (nolock)
+                         inner JOIN CollectionLevel2 C2 with (nolock) on C2.Id = CL2XHF.CollectionLevel2_Id
                          AND C2.[key] = '{ collectionLevel2.Key }'
                          AND CL2XHF.CollectionLevel2_Id = { collectionLevel2.Id }
                          )";
@@ -364,8 +364,8 @@ namespace SgqSystem.Jobs
                                ,CL.Sample
                                ,CL.Id as Collection_Id
                                ,{collectionLevel2.Id} as CollectionLevel2_Id
-                            FROM Collection CL
-                            INNER JOIN ParHeaderFieldGeral PHFG on CL.ParHeaderField_Id = PHFG.Id
+                            FROM Collection CL with (nolock)
+                            INNER JOIN ParHeaderFieldGeral PHFG with (nolock) on CL.ParHeaderField_Id = PHFG.Id
                             WHERE 1 =1 AND ParHeaderField_Id IS NOT NULL
                             AND CL.UserSgq_Id = {collectionLevel2.AuditorId}
                             AND cl.Shift_Id = {collectionLevel2.Shift}

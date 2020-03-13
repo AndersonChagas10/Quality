@@ -112,6 +112,11 @@ function enviarColeta() {
 						enviarColetaEmExecucao = false;
 						atualizaColetasAposSincronizacao(data);
 						enviarColeta();
+						
+						if(currentBaixarGetResultadoAposEnviarOsDadosColetados == true
+							&& globalColetasRealizadas.length == 0){
+							sincronizarResultado();
+						}
 					},
 					timeout: 600000,
 					error: function () {
@@ -126,6 +131,11 @@ function enviarColeta() {
 
 	} else {
 
+		if (currentBaixarGetResultadoAposEnviarOsDadosColetados == true
+			&& globalColetasRealizadas.length == 0
+			&& parametrization != null) {
+			sincronizarResultado();
+		}
 		enviarAcaoCorretiva();
 
 	}

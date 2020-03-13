@@ -1497,7 +1497,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 INNER JOIN ParDepartment CentroCusto ON CentroCusto.Id = Secao.Parent_Id AND CentroCusto.Active = 1
                 WHERE 1 = 1
                 AND Secao.Active = 1
-                AND ParCargo.Name like '%{search}%'
+                AND Cargo.Name like '%{search}%'
                 {whereCentroCusto}
                 {whereSecao}
                 AND (CentroCusto.Parent_Id IS NULL OR CentroCusto.Parent_Id = 0)";
@@ -1964,6 +1964,12 @@ namespace SgqSystem.Controllers.Api.Formulario
                             	FROM UserSgq US WITH (NOLOCK)
                             	WHERE US.Id = {usuarioLogado.Id})";
 
+            var whereFiltroUnidades = "";
+            if(form.ParCompany_Ids.Length > 0)
+            {
+                whereFiltroUnidades += $"AND PC.ID in ({string.Join(",", form.ParCompany_Ids)})";
+            }
+
             using (var factory = new Factory("DefaultConnection"))
             {
 
@@ -1980,6 +1986,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             AND CentroCusto.Hash IS NULL
                             {whereUnidadesUsuario}
                             AND CentroCusto.Name LIKE '%{search}%'
+                            {whereFiltroUnidades}
                             ORDER BY CentroCusto.Name";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
