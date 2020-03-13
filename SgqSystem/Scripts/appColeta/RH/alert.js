@@ -126,7 +126,7 @@ function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, lista
     {
         display = 'none';
         btnShowAcaoCorretiva = '<div class="col-sm-3">' +
-            '<button class="btn btn-secundary" data-showAcaoCorretiva>Mostrar Ação Corretiva</button>' +
+            '<button class="btn btn-secundary" data-showAcaoCorretiva>Preencher Ação Corretiva</button>' +
             '</div>';
     }
     currentlistaSeExisteAlerta = listaAlertasVigente;
@@ -281,7 +281,7 @@ function pegaValorDoObjDaListaDeAlertas(indexDaListaDeAlerta){
 }
 
 function montaHtmlModalAlerta(listaAlertasVigente,coleta){
-    var alerta = '<div style="background-color:red; padding:10px;">' +
+    var alerta = '<div style="background-color:red; color:#ffffff; padding:10px;">' +
     '<div>' +
     '<p> (' + listaAlertasVigente[0].Name + ') no(a) ('+ $.grep(parametrization.listaParLevel1, function (o, i) { return o.Id == coleta.ParLevel1_Id; })[0].Name +')' +
     ' para a medida de controle: ('+ $.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == coleta.ParLevel3_Id; })[0].Name +')' +
