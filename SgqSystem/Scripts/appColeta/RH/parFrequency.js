@@ -157,7 +157,7 @@ function chamaGetAppParametrization(){
 				openPlanejamentoColeta();
 				closeMensagem();
 			});
-			sincronizarResultado(currentParFrequency_Id);
+			sincronizarResultado();
 		},
 		timeout: 600000,
 		error: function () {
