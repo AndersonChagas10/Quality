@@ -718,11 +718,11 @@
         var config = {};
 
         function updateConfig() {
-            w = window.innerWidth - 100;
+            w = $('#resultsUnidades').parent().innerWidth();
             config = {
-                maxWidth: w * 0.8,
+                maxWidth: w * .98,
                 widthColumn1: (w * .1) + "px",
-                widthColumn2: (w * .5) + "px",
+                widthColumn2: (w * .65) + "px",
                 widthColumn3: (w * .2) + "px",
                 colorMin: "ff0000",
                 colorMid: "fef104",
