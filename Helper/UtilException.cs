@@ -1,38 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Text;
 
 namespace SgqSystem.Helpers
 {
-    public static class UtilException
+    public static class UtilSqlCommand
     {
-
-        public static string ToClient(this Exception exception)
+        public static void AddParameterNullable(SqlCommand cmd, string key, dynamic valor)
         {
-            string stackTrace = "";
-            string message = "";
-
-            if (exception.InnerException != null)
+            if (valor == null)
             {
-                if (exception.InnerException.InnerException != null)
-                {
-                    stackTrace = exception.InnerException.InnerException.StackTrace;
-                    message = exception.InnerException.InnerException.Message;
-                }
-                else
-                {
-                    stackTrace = exception.InnerException.StackTrace;
-                    message = exception.InnerException.Message;
-                }
+                cmd.Parameters.Add(new SqlParameter(key, DBNull.Value));
             }
             else
             {
-                stackTrace = exception.StackTrace;
-                message = exception.Message;
+                cmd.Parameters.Add(new SqlParameter(key, valor));
             }
-
-            stackTrace = $"Ocorreu um erro inesperado: {message} -> {stackTrace}";
-            return stackTrace;
         }
     }
 }

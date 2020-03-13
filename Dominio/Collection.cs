@@ -55,5 +55,8 @@ namespace Dominio
 
         [NotMapped]
         public bool? HasError { get; set; }
+
+        [NotMapped]
+        public string GUIID { get; set; }
     }
 }

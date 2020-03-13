@@ -2834,4 +2834,89 @@
     <Script>      
     </Script>
   </Card>
+  <Card>
+    <CardNumber>SGQ-447</CardNumber>
+    <Version>1.3.0</Version>
+    <Description>[SS] Adicionado a estrutura de DW com as tabelas</Description>
+    <Script>
+      Insert into MigrationHistory (Name, AddDate) VALUES ('Criado Schema DW',GetDate())
+      GO
+      IF NOT EXISTS (
+      SELECT  schema_name
+      FROM    information_schema.schemata
+      WHERE   schema_name = 'DW' )
+      BEGIN
+      EXEC sp_executesql N'CREATE SCHEMA DW'
+      END
+
+      GO
+
+      Insert into MigrationHistory (Name, AddDate) VALUES ('Adicionado Tabela DW.Cubo_Coleta_L2',GetDate())
+      GO
+      IF NOT EXISTS (
+      SELECT 1
+      FROM sys.objects INNER JOIN sys.schemas ON sys.objects.schema_id = sys.schemas.schema_id
+      WHERE sys.objects.name='Cubo_Coleta_L2' AND sys.objects.type='U' AND sys.schemas.name = 'DW')
+      CREATE TABLE [DW].[Cubo_Coleta_L2](
+      [CollectionDate] [datetime] NULL,
+      [ParFrequency_Id] [int] NULL,
+      [Holding] [int] NOT NULL,
+      [GrupoDeEmpresa] [int] NOT NULL,
+      [Regional] [int] NOT NULL,
+      [UnitId] [int] NOT NULL,
+      [Centro_De_Custo_Id] [int] NULL,
+      [Secao_Id] [int] NOT NULL,
+      [Cargo_Id] [int] NOT NULL,
+      [ParLevel1_Id] [int] NOT NULL,
+      [ParLevel2_Id] [int] NOT NULL,
+      [AuditorId] [int] NOT NULL,
+      [WeiEvaluation] [decimal](38, 10) NULL,
+      [WeiDefects] [decimal](15, 5) NULL
+      ) ON [PRIMARY]
+
+      GO
+      Insert into MigrationHistory (Name, AddDate) VALUES ('Adicionado Tabela DW.Cubo_Coleta_L3',GetDate())
+      GO
+      IF NOT EXISTS (
+      SELECT 1
+      FROM sys.objects INNER JOIN sys.schemas ON sys.objects.schema_id = sys.schemas.schema_id
+      WHERE sys.objects.name='Cubo_Coleta_L3' AND sys.objects.type='U' AND sys.schemas.name = 'DW')
+      CREATE TABLE [DW].[Cubo_Coleta_L3](
+      [CollectionDate] [datetime] NULL,
+      [ParFrequency_Id] [int] NULL,
+      [Holding] [int] NOT NULL,
+      [GrupoDeEmpresa] [int] NOT NULL,
+      [Regional] [int] NOT NULL,
+      [UnitId] [int] NOT NULL,
+      [Centro_De_Custo_Id] [int] NULL,
+      [Secao_Id] [int] NOT NULL,
+      [Cargo_Id] [int] NOT NULL,
+      [ParLevel1_Id] [int] NOT NULL,
+      [ParLevel2_Id] [int] NOT NULL,
+      [ParLevel3_Id] [int] NOT NULL,
+      [AuditorId] [int] NOT NULL,
+      [WeiEvaluation] [decimal](38, 10) NULL,
+      [WeiDefects] [decimal](30, 8) NULL,
+      [ParCluster_Id] [int] NULL
+      ) ON [PRIMARY]
+
+      GO
+
+      IF COL_LENGTH('DW.Cubo_Coleta_L3', 'ParCluster_Id') IS NULL
+      BEGIN
+      ALTER TABLE [DW].[Cubo_Coleta_L3]
+      ADD ParCluster_Id [int] NULL
+      END
+
+      GO
+
+      IF COL_LENGTH('DW.Cubo_Coleta_L2', 'ParCluster_Id') IS NULL
+      BEGIN
+      ALTER TABLE [DW].[Cubo_Coleta_L2]
+      ADD ParCluster_Id [int] NULL
+      END
+
+    </Script>
+  </Card>
+
 </Cards>
