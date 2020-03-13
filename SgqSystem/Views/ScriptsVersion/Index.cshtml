@@ -1,5 +1,4 @@
 ﻿@model  List<SgqSystem.Controllers.ChangeLog>
-
 @{
     ViewBag.Title = "Versão dos Scripts";
     var @urlBuscarScript = Url.Action("GetScriptsVersion", "api/ScriptsVersion");
@@ -27,13 +26,21 @@
                 <div class="col-sm-2 form-group">
                     <ul>
                         <li>
+                            <strong>Script versão atual</strong>
+                            <button class="btn btn-sm btn-primary pull-right" id="btnBaixarScriptVersao" style="margin-top:-5px !important;"> Baixar</button>
+                        </li>
+                    </ul>
+                    <ul>
+
+                        <li>
                             <strong>Versões</strong>
                             <ul>
 
-                                @foreach (var v in (List<string>)ViewBag.Versions)
+                                @foreach (var v in (List<SgqSystem.Controllers.Version>)ViewBag.Versions)
                                 {
                                     <li>
-                                        <a href="?version=@Html.Raw(v)">@Html.Raw(v)</a>
+                                        <a href="?version=@Html.Raw(v.Name)">@Html.Raw(v.Name)</a>
+                                        <i class="@Html.Raw(v.Fa_Icon)" aria-hidden="true"></i>
                                     </li>
                                 }
                             </ul>
@@ -43,43 +50,41 @@
 
                 @if (Model.Count > 0)
                 {
-                <div class="panel-group col-sm-10">
-                    <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0">
-                        <h2 class="panel-title">
-                            <a id="v103" class="ing">
-                                Versão @Html.Raw(Model[0].Version)
-                                <button class="btn btn-sm btn-primary pull-right" 
-                                        id="btnBaixarScripts"
-                                        style="margin-top:-5px !important;">Baixar Scripts</button>
-                            </a>
-                        </h2>
-                    </div>
+                    <div class="panel-group col-sm-10">
+                        <div class="panel-heading accordion-toggle question-toggle collapsed" data-toggle="collapse" data-parent="#faqAccordion" data-target="#question0">
+                            <h2 class="panel-title">
+                                <a id="v103" class="ing">
+                                    Versão @Html.Raw(Model[0].Version)
+                                    <button class="btn btn-sm btn-primary pull-right" id="btnBaixarScripts" style="margin-top:-5px !important;"> Baixar Scripts </button>
+                                </a>
+                            </h2>
+                        </div>
 
-                    @for(int i = 0; i < Model.Count; i++)
-                    {
-                        <div id="pt1" class="panel panel-default ">
-                            <div class="panel-heading accordion-toggle question-toggle collapsed" 
-                                 data-toggle="collapse" data-target="@Html.Raw("#changeLog"+i)">
-                                <h4 class="panel-title">
-                                    <a href="#" id="" class="ing">@Html.Raw(Model[i].CardNumber) - @Html.Raw(Model[i].Description)</a>
-                                </h4>
-                            </div>
-                            <div id="@Html.Raw("changeLog"+i)" class="panel-collapse collapse" style="height: 0px;">
-                                <div class="panel-body">
-                                    @if (Model[i].Script.Length > 0)
-                                    {
-                                        <pre>Insert into MigrationHistory (Name, AddDate) VALUES ('@Html.Raw(Model[i].CardNumber)',GetDate())</pre>
+                        @for (int i = 0; i < Model.Count; i++)
+                        {
+                            <div id="pt1" class="panel panel-default ">
+                                <div class="panel-heading accordion-toggle question-toggle collapsed"
+                                     data-toggle="collapse" data-target="@Html.Raw("#changeLog"+i)">
+                                    <h4 class="panel-title">
+                                        <a href="#" id="" class="ing">@Html.Raw(Model[i].CardNumber) - @Html.Raw(Model[i].Description)</a>
+                                    </h4>
+                                </div>
+                                <div id="@Html.Raw("changeLog"+i)" class="panel-collapse collapse" style="height: 0px;">
+                                    <div class="panel-body">
+                                        @if (Model[i].Script.Length > 0)
+                                        {
+                                            <pre>Insert into MigrationHistory (Name, AddDate) VALUES ('@Html.Raw(Model[i].CardNumber)',GetDate())</pre>
 
-                                        <pre>@Html.Raw(Model[i].Script)</pre>
-                                    }
-                                    else
-                                    {
-                                        <small>Não há scripts nesta entrega</small>
-                                    }
+                                            <pre>@Html.Raw(Model[i].Script)</pre>
+                                        }
+                                        else
+                                        {
+                                            <small>Não há scripts nesta entrega</small>
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    }
+                        }
                     </div>
                 }
             </div>
@@ -88,7 +93,7 @@
 </div>
 @section Scripts {
     <script>
-        
+
         function download(filename, text) {
             var element = document.createElement('a');
             element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
@@ -117,7 +122,13 @@
                 <text>download("@Html.Raw(Model[0].Version+".txt")", script);</text>
             }
 
-        })
+        });
+
+        $("#btnBaixarScriptVersao").on("click", () => {
+
+           download("@Html.Raw("ScriptVerificacaoVersao.txt")", "@Html.Raw(ViewBag.ScriptValidaçãoGMUD)");
+
+        });
 
     </script>
 }
