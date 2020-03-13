@@ -69,6 +69,7 @@
     <Compile Include="NetworkConnection\NetworkConnection.cs" />
     <Compile Include="NumericExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtilSqlCommand.cs" />
     <Compile Include="UtilException.cs" />
     <Compile Include="UtilType.cs" />
   </ItemGroup>

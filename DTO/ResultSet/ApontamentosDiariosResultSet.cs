@@ -425,11 +425,11 @@ public class ApontamentosDiariosResultSet
             var sqlDepartamentoPelaHash = "";
             foreach (var item in form.ParSecao_Ids)
             {
-                sqlDepartamentoPelaHash += $@"OR PD.Hash like '{item}|%'
-                            OR PD.Hash like '%|{item}|%'
-                            OR PD.Hash = '{item}'";
+                sqlDepartamentoPelaHash += $@"OR Secao.Hash like '{item}|%'
+                            OR Secao.Hash like '%|{item}|%'
+                            OR Secao.Hash = '{item}'";
             }
-            sqlDepartment = $@" AND (PD.Id in ({string.Join(",", form.ParSecao_Ids)}) 
+            sqlDepartment = $@" AND (Secao.Id in ({string.Join(",", form.ParSecao_Ids)}) 
                              {sqlDepartamentoPelaHash})";
         }
         else if (form.ParDepartment_Ids.Length > 0)
@@ -437,11 +437,11 @@ public class ApontamentosDiariosResultSet
             var sqlDepartamentoPelaHash = "";
             foreach (var item in form.ParDepartment_Ids)
             {
-                sqlDepartamentoPelaHash += $@"OR PD.Hash like '{item}|%'
-                            OR PD.Hash like '%|{item}|%'
-                            OR PD.Hash = '{item}'";
+                sqlDepartamentoPelaHash += $@"OR Centro.Hash like '{item}|%'
+                            OR Centro.Hash like '%|{item}|%'
+                            OR Centro.Hash = '{item}'";
             }
-            sqlDepartment = $@" AND (PD.Id in ({string.Join(",", form.ParDepartment_Ids)}) 
+            sqlDepartment = $@" AND (Centro.Id in ({string.Join(",", form.ParDepartment_Ids)}) 
                              {sqlDepartamentoPelaHash})";
         }
 

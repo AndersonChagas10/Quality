@@ -17,6 +17,7 @@ using System.Web.Http.Cors;
 using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using SgqSystem.Jobs;
+using System.Data.SqlClient;
 
 namespace SgqSystem.Controllers.V2.Api
 {
@@ -48,40 +49,173 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("SetCollect")]
         public IHttpActionResult SetCollect(List<Collection> listSimpleCollect)
         {
+            #region Gambi Log de Coletas
+            var guiid = Guid.NewGuid();
+            LogSystem.LogErrorBusiness.TryRegister(new Exception("Iniciado o registro das coletas (" + listSimpleCollect.Count + ")")
+                , new { GUIID = guiid.ToString() });
+            #endregion
 
-            using (var db = new SgqDbDevEntities())
+            //var parLevel3List = db.ParLevel3.ToList();
+
+            //Adiciona os arquivos na Collection
+            foreach (var item in listSimpleCollect)
             {
-                //var parLevel3List = db.ParLevel3.ToList();
 
-                //Adiciona os arquivos na Collection
-                foreach (var item in listSimpleCollect)
+                try
                 {
+                    item.AddDate = DateTime.Now;
+                    item.Shift_Id = 1;
+                    item.Period_Id = 1;
+                    item.IsProcessed = false;
 
-                    try
+                    string sql = $@"
+INSERT INTO [dbo].[Collection]
+           ([CollectionDate]
+           ,[AddDate]
+           ,[UserSgq_Id]
+           ,[Shift_Id]
+           ,[Period_Id]
+           ,[ParCargo_Id]
+           ,[ParCompany_Id]
+           ,[ParDepartment_Id]
+           ,[ParCluster_Id]
+           ,[ParLevel1_Id]
+           ,[ParLevel2_Id]
+           ,[ParLevel3_Id]
+           ,[CollectionType]
+           ,[Weigth]
+           ,[IntervalMin]
+           ,[IntervalMax]
+           ,[Value]
+           ,[ValueText]
+           ,[IsNotEvaluate]
+           ,[IsConform]
+           ,[Defects]
+           ,[PunishimentValue]
+           ,[WeiEvaluation]
+           ,[Evaluation]
+           ,[WeiDefects]
+           ,[HasPhoto]
+           ,[Sample]
+           ,[HaveCorrectiveAction]
+           ,[Parfrequency_Id]
+           ,[AlertLevel]
+           ,[ParHeaderField_Id]
+           ,[ParHeaderField_Value]
+           ,[IsProcessed])
+     VALUES
+           (@CollectionDate
+           ,@AddDate
+           ,@UserSgq_Id
+           ,@Shift_Id
+           ,@Period_Id
+           ,@ParCargo_Id
+           ,@ParCompany_Id
+           ,@ParDepartment_Id
+           ,@ParCluster_Id
+           ,@ParLevel1_Id
+           ,@ParLevel2_Id
+           ,@ParLevel3_Id
+           ,@CollectionType
+           ,@Weigth
+           ,@IntervalMin
+           ,@IntervalMax
+           ,@Value
+           ,@ValueText
+           ,@IsNotEvaluate
+           ,@IsConform
+           ,@Defects
+           ,@PunishimentValue
+           ,@WeiEvaluation
+           ,@Evaluation
+           ,@WeiDefects
+           ,@HasPhoto
+           ,@Sample
+           ,@HaveCorrectiveAction
+           ,@Parfrequency_Id
+           ,@AlertLevel
+           ,@ParHeaderField_Id
+           ,@ParHeaderField_Value
+           ,@IsProcessed);
+            SELECT @@IDENTITY AS 'Identity';";
+
+                    using (Factory factory = new Factory("DefaultConnection"))
                     {
-                        item.AddDate = DateTime.Now;
-                        item.Shift_Id = 1;
-                        item.Period_Id = 1;
-                        item.IsProcessed = false;
-                    }
-                    catch (Exception ex)
-                    {
-                        item.HasError = true;
-                        //Registrar LOG
+                        using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                        {
+                            cmd.CommandType = CommandType.Text;
+                            UtilSqlCommand.AddParameterNullable(cmd, "@CollectionDate", item.CollectionDate);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@AddDate", item.AddDate);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@UserSgq_Id", item.UserSgq_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Shift_Id", item.Shift_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Period_Id", item.Period_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParCargo_Id", item.ParCargo_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParCompany_Id", item.ParCompany_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartment_Id", item.ParDepartment_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParCluster_Id", item.ParCluster_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel1_Id", item.ParLevel1_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel2_Id", item.ParLevel2_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel3_Id", item.ParLevel3_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@CollectionType", item.CollectionType);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Weigth", item.Weigth);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@IntervalMin", item.IntervalMin);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@IntervalMax", item.IntervalMax);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Value", item.Value);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ValueText", item.ValueText);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@IsNotEvaluate", item.IsNotEvaluate);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@IsConform", item.IsConform);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Defects", item.Defects);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@PunishimentValue", item.PunishimentValue);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@WeiEvaluation", item.WeiEvaluation);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Evaluation", item.Evaluation);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@WeiDefects", item.WeiDefects);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@HasPhoto", item.HasPhoto);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Sample", item.Sample);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@HaveCorrectiveAction", item.HaveCorrectiveAction);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Parfrequency_Id", item.Parfrequency_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@AlertLevel", item.AlertLevel);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParHeaderField_Id", item.ParHeaderField_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParHeaderField_Value", item.ParHeaderField_Value);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@IsProcessed", item.IsProcessed);
+                            var id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                            item.Id = id;
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    item.HasError = true;
+                    item.GUIID = guiid.ToString();
 
-                db.Collection.AddRange(listSimpleCollect);
-                db.SaveChanges();
+                    LogSystem.LogErrorBusiness.TryRegister(ex, new { GUIID = guiid.ToString() });
+                }
             }
 
-            var lista = listSimpleCollect.Where(x => x.HasError == true).ToList();
-            if (lista.Count == listSimpleCollect.Count)
+            var listaDeColetasComErro = listSimpleCollect.Where(x => x.HasError == true).ToList();
+            var listaDeColetasSemErro = listSimpleCollect.Where(x => x.HasError != true).ToList();
+
+            #region Gambi Log de Coletas
+            LogSystem.LogErrorBusiness.TryRegister(new Exception("Finalizou a inserção das coletas (" + listaDeColetasSemErro.Count + "/" + listSimpleCollect.Count + ")"),
+                new { GUIID = guiid.ToString(), ListaCollection = string.Join(",", listaDeColetasSemErro.Select(x => x.Id)) });
+            #endregion
+
+            if (listaDeColetasComErro.Count == listSimpleCollect.Count)
                 return BadRequest("Ocorreu erro em todas as tentativas de registrar as coletas.");
 
-            var coletasRegistradas = listSimpleCollect.Where(x => x.HasError != true).ToList();
+            #region Consolidação Sincrona
+            int intervalTimeCollectionJob = 0;
+            try
+            {
+                Int32.TryParse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.CollectionJobTime0IsDisabled, out intervalTimeCollectionJob);
+            }
+            catch (Exception)
+            {
+            }
 
-            var coletasRegistradasPorCollectionLevel2 = coletasRegistradas
+            if (intervalTimeCollectionJob <= 0)
+            {
+                var coletasRegistradasPorCollectionLevel2 = listaDeColetasSemErro
                 .Where(x => x.ParHeaderField_Id == null
                 && x.ParHeaderField_Value == null
                 && x.Evaluation != null
@@ -105,9 +239,19 @@ namespace SgqSystem.Controllers.V2.Api
                 .Distinct()
                 .ToList();
 
-            CollectionJob.ConsolidarCollectionLevel2(coletasRegistradasPorCollectionLevel2);
+                CollectionJob.ConsolidarCollectionLevel2(coletasRegistradasPorCollectionLevel2);
+            }
+            #endregion
 
-            return Ok(coletasRegistradas);
+            #region Gambi Log de Coletas
+            try
+            {
+                LogSystem.LogErrorBusiness.Register(new Exception("Finalizado sem nenhum problema"), new { GUIID = guiid.ToString() });
+            }
+            catch { }
+            #endregion
+
+            return Ok(listaDeColetasSemErro);
         }
 
         [HttpPost]
