@@ -25,233 +25,237 @@ function validHeader() {
 }
 
 function loadHeaders() {
-    showNoParents();
+    //showNoParents();
+
+    $('.level3Group[level1id=' + $('.level1.selected').attr('id') + '][level2id=' + $('.level2.selected').attr('id') + '] .painelLevel03 .header .form-control[parfieldtype_id=1]').each(function (index, elem) {
+        $(elem).val(0);
+    });
 }
 
 $(document).on('change', '.header:visible select', function(){
 
-    var id = parseInt($(this).attr('parheaderfield_id'));
-    var selects = [];
-    var that = $(this);
+    // var id = parseInt($(this).attr('parheaderfield_id'));
+    // var selects = [];
+    // var that = $(this);
 
-    var optionSelected = that.children('option:selected');
+    // var optionSelected = that.children('option:selected');
 
-    that.children('option[selected]').removeAttr('selected');
+    // that.children('option[selected]').removeAttr('selected');
 
-    var panelLevel3;
-    if($('.level2.selected').length > 0) {
-        panelLevel3 = $('.level3Group[level1id='+$('.level1.selected').attr('id')+'][level2id='+$('.level2.selected').attr('id')+'] .painelLevel03').clone();
-    } else {
-        panelLevel3 = $('.painelLevel03:visible').clone();
-    }
+    // var panelLevel3;
+    // if($('.level2.selected').length > 0) {
+    //     panelLevel3 = $('.level3Group[level1id='+$('.level1.selected').attr('id')+'][level2id='+$('.level2.selected').attr('id')+'] .painelLevel03').clone();
+    // } else {
+    //     panelLevel3 = $('.painelLevel03:visible').clone();
+    // }
 
-    if(hasMultipleList(id)){
-        var value = parseInt($(this).val());
-        var hashkey = optionSelected.attr('hashkey');
-        var parheaderfield_id = parseInt($(this).attr('parheaderfield_id'));
+    // if(hasMultipleList(id)){
+    //     var value = parseInt($(this).val());
+    //     var hashkey = optionSelected.attr('hashkey');
+    //     var parheaderfield_id = parseInt($(this).attr('parheaderfield_id'));
 
-        panelLevel3.find('option[hashkey='+hashkey+']').attr('selected', 'selected');
+    //     panelLevel3.find('option[hashkey='+hashkey+']').attr('selected', 'selected');
 
-        if(value > 0 && !!hashkey)
-        {
-            var headers = panelLevel3.find('.header');
+    //     if(value > 0 && !!hashkey)
+    //     {
+    //         var headers = panelLevel3.find('.header');
 
-            headers.each(function(index1, elem1){
-                if(!$(elem1).parent().hasClass('hide')){
-                    $.grep(listHeadersTemp, function(o) { return o.ParHeaderField_Id == $(elem1).children('select').attr('parheaderfield_id')})
-                        .forEach(function(o, i){
-                            if(!$(elem1).parent().hasClass('hide')){
-                                if(parseInt(o.ParMultipleValues_Id) > 0 
-                                && o.HashKey.split('-').length > hashkey.split('-').length) {
-                                    if(hashkey.indexOf('-') < 0){
-                                        if(hashkey == o.HashKey.substring(0, hashkey.length)){
-                                            $(elem1).parent().addClass('hide');
-                                        }
-                                    } 
-                                    else {
-                                        $(elem1).parent().addClass('hide');
-                                    }
-                                }
-                            }
-                        });
+    //         headers.each(function(index1, elem1){
+    //             if(!$(elem1).parent().hasClass('hide')){
+    //                 $.grep(listHeadersTemp, function(o) { return o.ParHeaderField_Id == $(elem1).children('select').attr('parheaderfield_id')})
+    //                     .forEach(function(o, i){
+    //                         if(!$(elem1).parent().hasClass('hide')){
+    //                             if(parseInt(o.ParMultipleValues_Id) > 0 
+    //                             && o.HashKey.split('-').length > hashkey.split('-').length) {
+    //                                 if(hashkey.indexOf('-') < 0){
+    //                                     if(hashkey == o.HashKey.substring(0, hashkey.length)){
+    //                                         $(elem1).parent().addClass('hide');
+    //                                     }
+    //                                 } 
+    //                                 else {
+    //                                     $(elem1).parent().addClass('hide');
+    //                                 }
+    //                             }
+    //                         }
+    //                     });
 
-                }
-            });
+    //             }
+    //         });
 
-            var elem = null;
-            $.grep(listHeadersTemp, function(o, i){
-                if(o.HashKey.indexOf(hashkey) == 0 && o.ParHeaderField_Id != parheaderfield_id){
+    //         var elem = null;
+    //         $.grep(listHeadersTemp, function(o, i){
+    //             if(o.HashKey.indexOf(hashkey) == 0 && o.ParHeaderField_Id != parheaderfield_id){
 
-                    if(elem == null || elem.attr('parheaderfield_id') != o.ParHeaderField_Id){
-                        elem = panelLevel3.find('.header select[parheaderfield_id='+o.ParHeaderField_Id+']');
-                    } 
+    //                 if(elem == null || elem.attr('parheaderfield_id') != o.ParHeaderField_Id){
+    //                     elem = panelLevel3.find('.header select[parheaderfield_id='+o.ParHeaderField_Id+']');
+    //                 } 
                     
-                    if((o.HashKey.split("-").length - 1) == (hashkey.split("-").length)){
-                        if(selects.indexOf(o.ParHeaderField_Id) < 0){
-                            $(elem).empty();
-                            $(elem).append($('<option value="0">'+getResource('select')+'...'+'</option>'));
-                            $(elem).parent().parent().removeClass('hide');
-                            selects.push(o.ParHeaderField_Id);
-                        }
-                        $(elem).append(optionHtml(o));
-                    }else if((o.HashKey.split("-").length - 1) > (hashkey.split("-").length)){
-                        if(!$(elem).parent().parent().hasClass('hide')){
-                            $(elem).empty();
-                            $(elem).parent().parent().addClass('hide');
-                        }                    
-                    }
-                } 
-            });
-        } else {
-            var elem = null;
-            hashkey = that.children('option:last:not(".hide")').attr('hashkey') ? that.children('option:last:not(".hide")').attr('hashkey') : "";
-            $.grep(listHeadersTemp, function(o, i){
-                if(o.ParHeaderField_Id != parheaderfield_id){
+    //                 if((o.HashKey.split("-").length - 1) == (hashkey.split("-").length)){
+    //                     if(selects.indexOf(o.ParHeaderField_Id) < 0){
+    //                         $(elem).empty();
+    //                         $(elem).append($('<option value="0">'+getResource('select')+'...'+'</option>'));
+    //                         $(elem).parent().parent().removeClass('hide');
+    //                         selects.push(o.ParHeaderField_Id);
+    //                     }
+    //                     $(elem).append(optionHtml(o));
+    //                 }else if((o.HashKey.split("-").length - 1) > (hashkey.split("-").length)){
+    //                     if(!$(elem).parent().parent().hasClass('hide')){
+    //                         $(elem).empty();
+    //                         $(elem).parent().parent().addClass('hide');
+    //                     }                    
+    //                 }
+    //             } 
+    //         });
+    //     } else {
+    //         var elem = null;
+    //         hashkey = that.children('option:last:not(".hide")').attr('hashkey') ? that.children('option:last:not(".hide")').attr('hashkey') : "";
+    //         $.grep(listHeadersTemp, function(o, i){
+    //             if(o.ParHeaderField_Id != parheaderfield_id){
 
-                    if(elem == null || elem.attr('parheaderfield_id') != o.ParHeaderField_Id){
-                        elem = panelLevel3.find('.header select[parheaderfield_id='+o.ParHeaderField_Id+']');
+    //                 if(elem == null || elem.attr('parheaderfield_id') != o.ParHeaderField_Id){
+    //                     elem = panelLevel3.find('.header select[parheaderfield_id='+o.ParHeaderField_Id+']');
 
-                        var list = $.grep(listHeadersTemp, function(o) { return o.ParHeaderField_Id == $(elem).attr('parheaderfield_id')})
+    //                     var list = $.grep(listHeadersTemp, function(o) { return o.ParHeaderField_Id == $(elem).attr('parheaderfield_id')})
 
-                        if(list.length > 0)
-                            if((hashkey.split("-").length - 1) < ((list[0].HashKey ? list[0].HashKey : "").split("-").length -1)){
-                                if(!$(elem).parent().parent().hasClass('hide')){
-                                    $(elem).empty();
-                                    $(elem).parent().parent().addClass('hide');
-                                }                    
-                            }
-                    } 
+    //                     if(list.length > 0)
+    //                         if((hashkey.split("-").length - 1) < ((list[0].HashKey ? list[0].HashKey : "").split("-").length -1)){
+    //                             if(!$(elem).parent().parent().hasClass('hide')){
+    //                                 $(elem).empty();
+    //                                 $(elem).parent().parent().addClass('hide');
+    //                             }                    
+    //                         }
+    //                 } 
                                         
-                }
-            });
-        }
+    //             }
+    //         });
+    //     }
         
-        var options = panelLevel3.find('.header .form-control[parfieldtype_id=1] option[value!=0]:selected');
-        panelLevel3.find('.header .form-control[parfieldtype_id!=1]').parent().parent().addClass('hide');
+    //     var options = panelLevel3.find('.header .form-control[parfieldtype_id=1] option[value!=0]:selected');
+    //     panelLevel3.find('.header .form-control[parfieldtype_id!=1]').parent().parent().addClass('hide');
         
-        options.each(function(i1, o1){
-            var headers = panelLevel3.find('.header');
+    //     options.each(function(i1, o1){
+    //         var headers = panelLevel3.find('.header');
 
-            headers.each(function(i2, o2){
-                var haskeys = $(o2).attr('hashkeys');
-                if(!!haskeys){
-                    var valid = false;
-                    haskeys.split(';').forEach(function(element) {
-                        if(element.indexOf($(o1).attr('hashkey')+"-i") == 0){
-                            $(o2).parent().removeClass('hide');
-                            $(o2).children('.form-control').val('');
-                        }
-                    }, this);
-                } else if ($(o2).children('.form-control[parfieldtype_id!=1]').length > 0){
-                    $(o2).parent().removeClass('hide');
-                }  
+    //         headers.each(function(i2, o2){
+    //             var haskeys = $(o2).attr('hashkeys');
+    //             if(!!haskeys){
+    //                 var valid = false;
+    //                 haskeys.split(';').forEach(function(element) {
+    //                     if(element.indexOf($(o1).attr('hashkey')+"-i") == 0){
+    //                         $(o2).parent().removeClass('hide');
+    //                         $(o2).children('.form-control').val('');
+    //                     }
+    //                 }, this);
+    //             } else if ($(o2).children('.form-control[parfieldtype_id!=1]').length > 0){
+    //                 $(o2).parent().removeClass('hide');
+    //             }  
                 
-            });
-        });
+    //         });
+    //     });
 
-    }
+    // }
 
-    if(that.children('option[selected]').length == 0 && parseInt(optionSelected.val()) > 0){
-        panelLevel3.find('select[parheaderfield_id='+id+'] option[value='+optionSelected.val()+']').attr('selected', 'selected');
-    }
+    // if(that.children('option[selected]').length == 0 && parseInt(optionSelected.val()) > 0){
+    //     panelLevel3.find('select[parheaderfield_id='+id+'] option[value='+optionSelected.val()+']').attr('selected', 'selected');
+    // }
 
-    panelLevel3.find('.header .form-control[parfieldtype_id!=1]').each(function(index, elem){
-        if(!$(elem).parent().attr('hashkeys') || $(elem).parent().attr('hashkeys').indexOf('i') == 0)
-            $(elem).parent().parent().removeClass('hide');
-    });
+    // panelLevel3.find('.header .form-control[parfieldtype_id!=1]').each(function(index, elem){
+    //     if(!$(elem).parent().attr('hashkeys') || $(elem).parent().attr('hashkeys').indexOf('i') == 0)
+    //         $(elem).parent().parent().removeClass('hide');
+    // });
 
-    if($('.level2.selected').length > 0) {
-        $('.level3Group[level1id='+$('.level1.selected').attr('id')+'][level2id='+$('.level2.selected').attr('id')+'] .painelLevel03').replaceWith(panelLevel3);
-    } else {
-        $('.painelLevel03:visible').replaceWith(panelLevel3);
-    }
+    // if($('.level2.selected').length > 0) {
+    //     $('.level3Group[level1id='+$('.level1.selected').attr('id')+'][level2id='+$('.level2.selected').attr('id')+'] .painelLevel03').replaceWith(panelLevel3);
+    // } else {
+    //     $('.painelLevel03:visible').replaceWith(panelLevel3);
+    // }
 
-    window.localStorage.setItem("cb-"+$('.level1.selected').attr('id')+"-"+this.id, this.value);
+    // window.localStorage.setItem("cb-"+$('.level1.selected').attr('id')+"-"+this.id, this.value);
 
     setEvaluationByHeadersSelection();
 
 });
 
-function optionHtml(o){
-    return $('<option value="'+o.ParMultipleValues_Id
-        +'" punishmentvalue="'+o.PunishmentValue
-        +'" parent_id="'+o.Parent_ParMultipleValues_Id
-        +'" parcompany_id="'+o.ParCompany_Id
-        +'" hashkey="'+o.HashKey
-        +'">'+o.Name
-        +'</option>');
-}
+// function optionHtml(o){
+//     return $('<option value="'+o.ParMultipleValues_Id
+//         +'" punishmentvalue="'+o.PunishmentValue
+//         +'" parent_id="'+o.Parent_ParMultipleValues_Id
+//         +'" parcompany_id="'+o.ParCompany_Id
+//         +'" hashkey="'+o.HashKey
+//         +'">'+o.Name
+//         +'</option>');
+// }
 
-function hasMultipleListParent(id){
-    var v = $.hasElem(listHeadersTemp, function(o){
-        return o.Parent_ParMultipleValues_Id == null && o.ParHeaderField_Id == id;
-    });
+// function hasMultipleListParent(id){
+//     var v = $.hasElem(listHeadersTemp, function(o){
+//         return o.Parent_ParMultipleValues_Id == null && o.ParHeaderField_Id == id;
+//     });
 
-    return v;
-}
+//     return v;
+// }
 
-function hasMultipleList(id){
-    var v = $.hasElem(listHeadersTemp, function(o){
-        return o.ParHeaderField_Id == id;
-    });
+// function hasMultipleList(id){
+//     var v = $.hasElem(listHeadersTemp, function(o){
+//         return o.ParHeaderField_Id == id;
+//     });
 
-    return v;
-}
+//     return v;
+// }
 
-$.extend({
-    hasElem: function(elems, validateCb){
-        var i;
-        for( i=0 ; i < elems.length ; ++i ) {
-            if( validateCb( elems[i], i ) )
-                return true;
-        }
-        return false;
-    }
-});
+// $.extend({
+//     hasElem: function(elems, validateCb){
+//         var i;
+//         for( i=0 ; i < elems.length ; ++i ) {
+//             if( validateCb( elems[i], i ) )
+//                 return true;
+//         }
+//         return false;
+//     }
+// });
 
-function showNoParents(){
+// function showNoParents(){
 
-    $('.level3Group[level1id='+$('.level1.selected').attr('id')+'][level2id='+$('.level2.selected').attr('id')+'] .painelLevel03 .header .form-control[parfieldtype_id=1]').each(function(index, elem){
-        var id = parseInt($(elem).attr('parheaderfield_id'));
-        var cache = window.localStorage.getItem("cb-"+$('.level1.selected').attr('id')+"-"+id);
+//     $('.level3Group[level1id='+$('.level1.selected').attr('id')+'][level2id='+$('.level2.selected').attr('id')+'] .painelLevel03 .header .form-control[parfieldtype_id=1]').each(function(index, elem){
+//         var id = parseInt($(elem).attr('parheaderfield_id'));
+//         var cache = window.localStorage.getItem("cb-"+$('.level1.selected').attr('id')+"-"+id);
                 
-        if(hasMultipleListParent(id)) {
-            $(elem).empty();
-            $(elem).append($('<option value="0">'+getResource('select')+'...'+'</option>'));
-            $.grep(listHeadersTemp, function(o, i){
-                if(o.ParHeaderField_Id == id){
-                    $(elem).append(optionHtml(o));
-                }
-            });
-            $('select[id='+id+']:visible').replaceWith($(elem));
-            if(!!cache){
-                $(elem).val(cache).change();
-            }
-        }else{
-            if(hasMultipleList(id)){
-                if($(elem).children('option').length == 0){
-                    $(elem).parent().parent().addClass('hide');
-                }
-                else if(!!cache){
-                    $(elem).val(cache).change();
-                }
-            } else {
-                $(elem).val($(elem).children('option[selected]').val());
-            }
-        }
-    });
+//         if(hasMultipleListParent(id)) {
+//             $(elem).empty();
+//             $(elem).append($('<option value="0">'+getResource('select')+'...'+'</option>'));
+//             $.grep(listHeadersTemp, function(o, i){
+//                 if(o.ParHeaderField_Id == id){
+//                     $(elem).append(optionHtml(o));
+//                 }
+//             });
+//             $('select[id='+id+']:visible').replaceWith($(elem));
+//             if(!!cache){
+//                 $(elem).val(cache).change();
+//             }
+//         }else{
+//             if(hasMultipleList(id)){
+//                 if($(elem).children('option').length == 0){
+//                     $(elem).parent().parent().addClass('hide');
+//                 }
+//                 else if(!!cache){
+//                     $(elem).val(cache).change();
+//                 }
+//             } else {
+//                 $(elem).val($(elem).children('option[selected]').val());
+//             }
+//         }
+//     });
 
-    $('.level3Group[level1id='+$('.level1.selected').attr('id')+'][level2id='+$('.level2.selected').attr('id')+'] .painelLevel03 .header .form-control[parfieldtype_id=2]')
-    .each(function(index, elem){
-        $(elem).val($(elem).children('option[selected]').val());
-    });
+//     $('.level3Group[level1id='+$('.level1.selected').attr('id')+'][level2id='+$('.level2.selected').attr('id')+'] .painelLevel03 .header .form-control[parfieldtype_id=2]')
+//     .each(function(index, elem){
+//         $(elem).val($(elem).children('option[selected]').val());
+//     });
 
-    $('.level3Group[level1id='+$('.level1.selected').attr('id')+'][level2id='+$('.level2.selected').attr('id')+'] .painelLevel03 .header .form-control[parfieldtype_id!=1]').each(function(index, elem){
-        if(!$(elem).parent().attr('hashkeys') || $(elem).parent().attr('hashkeys').indexOf('i') == 0)
-            $(elem).parent().parent().removeClass('hide');
-    });
+//     $('.level3Group[level1id='+$('.level1.selected').attr('id')+'][level2id='+$('.level2.selected').attr('id')+'] .painelLevel03 .header .form-control[parfieldtype_id!=1]').each(function(index, elem){
+//         if(!$(elem).parent().attr('hashkeys') || $(elem).parent().attr('hashkeys').indexOf('i') == 0)
+//             $(elem).parent().parent().removeClass('hide');
+//     });
 
-}
+// }
 
 function getHeaderResultList(){
     var unitid = parseInt($('.App').attr('unidadeid'));
@@ -286,41 +290,41 @@ function getHeaderResultList(){
     }
 }
 
-function getListParMultipleValuesXParCompany(){
-    listHeaders = [];
-    var unitid = parseInt($('.App').attr('unidadeid'));
+// function getListParMultipleValuesXParCompany(){
+//     listHeaders = [];
+//     var unitid = parseInt($('.App').attr('unidadeid'));
 
-    $('.level1').each(function(index, element){
-        if($('.level02Result[sync=false]').length == 0 && unitid != undefined) {
-            $.ajax({
-                url: urlPreffix+"/api/ParHeader/GetListParMultipleValuesXParCompany/"+unitid+"/"+$(element).attr('id'),
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                headers: token(),
-                type: 'GET',
-                success: function (result) {
-                    listHeaders.push({level1id: $(element).attr('id'), list: result });
-                    _writeFile("ListHeaders_"+$(element).attr('id')+".json", JSON.stringify(result));
-                },
-                error: function (e) {
-                    _readFile("ListHeaders_"+$(element).attr('id')+".json", function(result){
-                        if(result){
-                            listHeaders.push({level1id: JSON.parse(result)[0].ParLevel1_Id, list: JSON.parse(result) });
-                        }
-                    });
-                }
-            });
-        } else {
-            _readFile("ListHeaders_"+$(element).attr('id')+".json", function(result){
-                if(result){
-                    try{
-                    listHeaders.push({level1id: JSON.parse(result)[0].ParLevel1_Id, list: JSON.parse(result) });
-                    }catch(e){}
-                }
-            });
-        }
-    });
-}
+//     $('.level1').each(function(index, element){
+//         if($('.level02Result[sync=false]').length == 0 && unitid != undefined) {
+//             $.ajax({
+//                 url: urlPreffix+"/api/ParHeader/GetListParMultipleValuesXParCompany/"+unitid+"/"+$(element).attr('id'),
+//                 contentType: 'application/json; charset=utf-8',
+//                 dataType: 'json',
+//                 headers: token(),
+//                 type: 'GET',
+//                 success: function (result) {
+//                     listHeaders.push({level1id: $(element).attr('id'), list: result });
+//                     _writeFile("ListHeaders_"+$(element).attr('id')+".json", JSON.stringify(result));
+//                 },
+//                 error: function (e) {
+//                     _readFile("ListHeaders_"+$(element).attr('id')+".json", function(result){
+//                         if(result){
+//                             listHeaders.push({level1id: JSON.parse(result)[0].ParLevel1_Id, list: JSON.parse(result) });
+//                         }
+//                     });
+//                 }
+//             });
+//         } else {
+//             _readFile("ListHeaders_"+$(element).attr('id')+".json", function(result){
+//                 if(result){
+//                     try{
+//                     listHeaders.push({level1id: JSON.parse(result)[0].ParLevel1_Id, list: JSON.parse(result) });
+//                     }catch(e){}
+//                 }
+//             });
+//         }
+//     });
+// }
 
 function saveListHeaders(){
     _writeFile("ListHeaders.json", JSON.stringify(listHeaders));
