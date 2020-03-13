@@ -1,6 +1,7 @@
 var coletaJson = [];
 var currentEvaluationDCA = {};
 var coletasDCA = [];
+var objCabecalhoLevel1 = [];
 
 function openColetaDCA(levels) {
 
@@ -140,6 +141,7 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
         retorno += ' data-sample="' + amostraAtual + '"';
         retorno += ' data-sampleMax="' + amostraTotal + '"';
         retorno += ' data-amostra-completa="' + amostraCompleta + '"';
+        retorno += ' data-parlevel3inputtype="' + level3.ParLevel3InputType.Id + '"';
         retorno += ' data-synced="' + synced + '"';
         retorno += ' style="padding-left:10px;' + colorStriped + '">';
 
@@ -517,7 +519,6 @@ function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 }
 
 function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
-
     var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
     var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
@@ -711,7 +712,6 @@ $('body').off('click', '[data-na-dca]').on('click', '[data-na-dca]', function (e
 
  $('body').off('click', '[data-info-limitenc]').on('click', '[data-info-limitenc]', function (e) {
 
-    debugger
     var linha = $(this);
     var title = $(linha).text();    
 
@@ -753,6 +753,12 @@ $('body').off('click', '[data-na-dca]').on('click', '[data-na-dca]', function (e
 
 $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', function () {
 
+    if(!hederFieldIsValid("#headerFieldLevel2")){
+        openMensagem("Existem cabeçalhos obrigatórios não preenchidos!","yellow", "black");
+        setTimeout(closeMensagem, 3000);
+        return false;
+    }
+
     var $botaoColeta = $(this);  
     var linhaTarefa = $(this).parents('[data-linha-coleta]');
     var currentEvaluation = currentEvaluationDCA.Evaluation;
@@ -762,57 +768,95 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
     var maxSample = parseInt($(linhaTarefa).attr('data-samplemax'));
     var $botaoNa = $(linhaTarefa).find('[data-na-dca]');
 
-    $botaoColeta.prop("disabled", true);
-    $botaoNa.prop("disabled", true);
+    var coletaDCA = {};
+    var parParLevel3InputType_Id =  linhaTarefa.attr('data-parlevel3inputtype');
+    var numeroProximaAmostra = currentSample;
 
-    var coletaDCA = {
-        Id: 0,
-        CollectionDate: getCurrentDate(),
-        UserSgq_Id: currentLogin.Id,
-        Shift_Id: 1,
-        Period_Id: 1,
-        //ParCargo_Id: 
-        ParCompany_Id: currentParCompany_Id,
-        //ParDepartment_Id: 
-        ParLevel1_Id: currentParLevel1_Id,
-        //ParCluster_Id
-        ParLevel2_Id: currentParLevel2_Id,
-        ParLevel3_Id: parseInt($(linhaTarefa).attr('data-level3')),
-        //CollectionType
-        Weigth: $(linhaTarefa).attr('data-peso'),
-        IntervalMin: $(linhaTarefa).attr('data-min') == "null" ? null : $(linhaTarefa).attr('data-min'),
-        IntervalMax: $(linhaTarefa).attr('data-max') == "null" ? null : $(linhaTarefa).attr('data-max'),
-        Value: typeof ($(linhaTarefa).find('input[data-valor]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-valor]').val(),
-        ValueText: typeof ($(linhaTarefa).find('input[data-texto]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-texto]').val(),
-        IsConform: isNA ? 1 : $(linhaTarefa).attr('data-conforme') == "1",
-        IsNotEvaluate: isNA,
-        Defects: isNA ? 0 : $(linhaTarefa).attr('data-conforme') == "1" ? 0 : 1,
-        //PunishimentValue: 
-        WeiEvaluation: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')) * currentEvaluation,
-        Evaluation: currentEvaluation,
-        WeiDefects: isNA ? 0 : ($(linhaTarefa).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(linhaTarefa).attr('data-peso')),
-        //HasPhoto: 
-        Sample: currentSample,
-        //HaveCorrectiveAction: 
-        //Parfrequency_Id: currentParFrequency_Id
-        //AlertLevel: 
-        //ParHeaderField_Id: 
-        //ParHeaderField_Value: 
-        //ParHeaderField_Value: 
-        //IsProcessed: 
-        Outros: '{ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', ParProduto_Id:'+currentProdutoDCA_Id+'}'
+    if(parParLevel3InputType_Id == 2){
 
-    };
+        var quantidadeDeDefeitos = linhaTarefa.find('input[type="number"]').val();
+        
+        if(maxSample < quantidadeDeDefeitos || quantidadeDeDefeitos < 0){
+            openMensagem("Foi informado mais defeitos que a quantidade de amostra!","yellow", "black");
+            setTimeout(closeMensagem, 3000);
+            return false;
+        }
 
-    coletasDCA.push(coletaDCA);
+        for(var i = 0; i < maxSample; i++){
+            var isConform = true;
+            if(i < quantidadeDeDefeitos){
+                isConform = false;
+            }
 
-    //Contar quantidade de NC
-    qtdeNC += coletaDCA.WeiDefects;
+            var coletaDCA = {
+                Id: 0,
+                CollectionDate: getCurrentDate(),
+                UserSgq_Id: currentLogin.Id,
+                Shift_Id: 1,
+                Period_Id: 1,
+                ParCompany_Id: currentParCompany_Id,
+                ParLevel1_Id: currentParLevel1_Id,
+                ParLevel2_Id: currentParLevel2_Id,
+                ParLevel3_Id: parseInt($(linhaTarefa).attr('data-level3')),
+                Weigth: $(linhaTarefa).attr('data-peso'),
+                IntervalMin: $(linhaTarefa).attr('data-min') == "null" ? null : $(linhaTarefa).attr('data-min'),
+                IntervalMax: $(linhaTarefa).attr('data-max') == "null" ? null : $(linhaTarefa).attr('data-max'),
+                Value: typeof ($(linhaTarefa).find('input[data-valor]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-valor]').val(),
+                ValueText: typeof ($(linhaTarefa).find('input[data-texto]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-texto]').val(),
+                IsConform: isNA ? 1 : isConform,
+                IsNotEvaluate: isNA,
+                Defects: isNA ? 0 : isConform ? 0 : 1,
+                WeiEvaluation: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')) * currentEvaluation,
+                Evaluation: currentEvaluation,
+                WeiDefects: isNA ? 0 : (isConform ? 0 : 1) * parseInt($(linhaTarefa).attr('data-peso')),
+                Sample: currentSample,
+                Outros: '{ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', ParProduto_Id:'+currentProdutoDCA_Id+'}'
+            };
 
-    var numeroProximaAmostra = currentSample + 1;
+            coletasDCA.push(coletaDCA);
+
+            //Contar quantidade de NC
+            qtdeNC += coletaDCA.WeiDefects;
+            numeroProximaAmostra++;
+        }
+
+    }else{
+        var coletaDCA = {
+            Id: 0,
+            CollectionDate: getCurrentDate(),
+            UserSgq_Id: currentLogin.Id,
+            Shift_Id: 1,
+            Period_Id: 1,
+            ParCompany_Id: currentParCompany_Id,
+            ParLevel1_Id: currentParLevel1_Id,
+            ParLevel2_Id: currentParLevel2_Id,
+            ParLevel3_Id: parseInt($(linhaTarefa).attr('data-level3')),
+            Weigth: $(linhaTarefa).attr('data-peso'),
+            IntervalMin: $(linhaTarefa).attr('data-min') == "null" ? null : $(linhaTarefa).attr('data-min'),
+            IntervalMax: $(linhaTarefa).attr('data-max') == "null" ? null : $(linhaTarefa).attr('data-max'),
+            Value: typeof ($(linhaTarefa).find('input[data-valor]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-valor]').val(),
+            ValueText: typeof ($(linhaTarefa).find('input[data-texto]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-texto]').val(),
+            IsConform: isNA ? 1 : $(linhaTarefa).attr('data-conforme') == "1",
+            IsNotEvaluate: isNA,
+            Defects: isNA ? 0 : $(linhaTarefa).attr('data-conforme') == "1" ? 0 : 1,
+            WeiEvaluation: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')) * currentEvaluation,
+            Evaluation: currentEvaluation,
+            WeiDefects: isNA ? 0 : ($(linhaTarefa).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(linhaTarefa).attr('data-peso')),
+            Sample: currentSample,
+            Outros: '{ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', ParProduto_Id:'+currentProdutoDCA_Id+'}'
+        };
+
+        coletasDCA.push(coletaDCA);
+
+        //Contar quantidade de NC
+        qtdeNC += coletaDCA.WeiDefects;
+        numeroProximaAmostra++;
+    }
 
     $(linhaTarefa).attr('data-qtdeNc', qtdeNC);
     $(linhaTarefa).find('.amostraNC').html(qtdeNC);
+    $botaoColeta.prop("disabled", true);
+    $botaoNa.prop("disabled", true);
 
     if (numeroProximaAmostra > maxSample) {
         numeroProximaAmostra = maxSample;

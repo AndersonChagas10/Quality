@@ -1,8 +1,14 @@
-function listarParLevelsDCA() {
+function listarParLevelsDCA(objCabecalho) {
 
     var levels = GetLevelsDCA();
 
     openColetaDCA(levels);
+
+    setObjectToForm(objCabecalho);
+
+    objCabecalhoLevel1 = objCabecalho;
+
+    disableHeaderFields(objCabecalho);
 
 }
 

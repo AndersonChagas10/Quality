@@ -39,7 +39,8 @@ function clickPlanejar() {
 	if (currentParFrequency_Id > 0) {
 		openPlanejamentoColeta();
     } else {
-        openParClusterGroup();
+		openParCompany();
+        //openParClusterGroup();
         //openParCluster(); //antigo
 	}
 }

@@ -50,19 +50,20 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
         }
 
         var porcentagemTotalConsiderandoPeso = (calculoPorMonitoramento.ParVinculoPesoParLevel2.Peso/quantidadeDeLevel2ComPeso)*100;
-        porcentagemTotal += ZeroSeForNaN(calculoPorMonitoramento.Porcentagem);
+        var porcentagemAtualConsiderandoPeso = (calculoPorMonitoramento.Porcentagem / 100) * porcentagemTotalConsiderandoPeso;
+        porcentagemTotal += ZeroSeForNaN(porcentagemAtualConsiderandoPeso);
 
         htmlLista += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
             '" data-dca-par-level2-id="' + o.Id + '" ' +
             'data-current-evaluation="' + avaliacaoAtual + '"                       ' +
             'data-total-porcentagem="' + porcentagemTotalConsiderandoPeso + '">                       ' +
             '	<div class="col-xs-4">' + o.Name + '</div>                                      ' +
-            '	<div class="col-xs-4 text-center">Conforme: '+ZeroSeForNaN(calculoPorMonitoramento.Porcentagem)+'% / '+porcentagemTotalConsiderandoPeso+'%</div>      ' +
+            '	<div class="col-xs-4 text-center">Conforme: ' + ZeroSeForNaN(porcentagemAtualConsiderandoPeso)+'% / '+porcentagemTotalConsiderandoPeso+'%</div>      ' +
             '	<div class="col-xs-4 text-center">Respondido: '+ZeroSeForNaN(parseInt(calculoPorMonitoramento.AmostraTotalColetada/calculoPorMonitoramento.AmostraTotal*100))+'%</div>              ' +
             '</button>';
     });
 
-    var voltar = '<a onclick="listarFamiliaProdutoDCA(' + isVoltar + ');" class="btn btn-warning">Voltar</a>';
+    var voltar = '<a onclick="listarParLevel1(' + isVoltar + ');" class="btn btn-warning">Voltar</a>';
 
     html = getHeader() +
         '<div class="container-fluid">                                           ' +
@@ -79,6 +80,9 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
         '               <div class="col-xs-6 text-center" style="padding:0px !important">' +
         getSelectProdutosDCA()+
         '</div>' +
+        '<div class="col-sx-12">' +
+        getParHeaderFieldLevel1({ Id: currentParLevel1_Id }) +
+        '</div>' +
         '				<div class="list-group" style="padding-top:5px;clear:both !important">                           ' +
         htmlLista +
         btnProximaAvaliacao +
@@ -92,9 +96,20 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
     $('div#app').html(html);
 
     setBreadcrumbsDCA();
+    $('select[name="produtoDCA"]').trigger('change');
+
+    if (Object.keys(objCabecalhoLevel1).length !== 0) {
+        setObjectToForm(objCabecalhoLevel1);
+    }
 }
 
 $('body').off('click', '[data-dca-par-level2-id]').on('click', '[data-dca-par-level2-id]', function (e) {
+
+    if (!hederFieldIsValid("#headerFieldLevel1")) {
+        openMensagem("Existem cabeçalhos obrigatórios não preenchidos!","blue", "white");
+        setTimeout(closeMensagem, 3000);
+        return false;
+    }
 
     currentParLevel2_Id = parseInt($(this).attr('data-dca-par-level2-id'));
     currentParLevel2DCATotalPorcentagem = parseInt($(this).attr('data-total-porcentagem'));
@@ -103,7 +118,9 @@ $('body').off('click', '[data-dca-par-level2-id]').on('click', '[data-dca-par-le
     currentTotalSampleValue = $(this).attr('data-total-sample');
     //var currentEvaluationValue = $(this).attr('data-current-evaluation');
 
-    listarParLevelsDCA();
+    var objCabecalho = serializeFormToObject("#headerFieldLevel1");
+
+    listarParLevelsDCA(objCabecalho);
 
 });
 
@@ -252,6 +269,7 @@ $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', fun
         return o.ParLevel1_Id == _parLevel1_Id && o.ParLevel2_Id == _parLevel2_Id;
     });
 
+     var totalTarefasComAlgumaNC = 0;
     var totalTarefasAcimaLimiteNC = 0;
     var totalDeAmostras = 0;
     var totalDeAmostrasColetadas = 0;
@@ -291,11 +309,15 @@ $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', fun
             }
         });
         var limiteNCDaTarefa = 1;
-        if(tarefa.length > 0){
+        if (tarefa.length > 0 && tarefa[0] && tarefa[0].ParLevel3Value){
             limiteNCDaTarefa = UmSeForNaNOuNull(tarefa[0].ParLevel3Value.LimiteNC);
         }
         if((amostrasColetadas-amostrasColetadasConforme) > limiteNCDaTarefa){
             totalTarefasAcimaLimiteNC++;
+        }
+
+        if ((amostrasColetadas - amostrasColetadasConforme) > 0) {
+            totalTarefasComAlgumaNC++;
         }
 
         if(coletasSincronizadas == false && quantidadeDeColetasPorTarefa.length > 0)
@@ -307,21 +329,35 @@ $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', fun
     var parVinculoPesoParLevel2 = getParVinculoPesoParLevel2PorIndicador(_parLevel1_Id,_parLevel2_Id);
 
     /*
-    Quantidade de Não Conformidade total = QtdeNC
-    Quantidade de tarefas que atingiram limite de NC = QtdeTLNC
-    Quantidade de tarefa = QtdeT
+     * QtdeNC      = Quantidade total de Não Conformidades (Por amostra)
+     * QtdeC       = Quantidade total de Conformidade (Por amostra)
+     * QtdeTLNC    = Quantidade de tarefas que passaram do limite de Não Conformidade
+     * QtdeT       = Quantidade de tarefas
+     * QtdeTNC     = Quantidade de tarefas com alguma Não Conformidade
+     * QtdeTC      = Quantidade de tarefas com conformidade
     */
     var variaveisEquacao = [
-        {id:/QtdeNC/g, valor:(parseInt(totalDeAmostrasColetadas)-parseInt(totalDeAmostrasColetadasConforme))},
-        {id:/QtdeTLNC/g, valor:parseInt(totalTarefasAcimaLimiteNC)},
-        {id:/QtdeT/g, valor:parseInt(listaDeTarefas.length)}
+        { id: /QtdeNC/g, valor:(parseInt(totalDeAmostrasColetadas)-parseInt(totalDeAmostrasColetadasConforme)) },
+        { id: /QtdeTLNC/g, valor: parseInt(totalTarefasAcimaLimiteNC) },
+        { id: /QtdeTNC/g, valor: parseInt(totalTarefasComAlgumaNC) },
+        { id: /QtdeTC/g, valor: parseInt(listaDeTarefas.length) - parseInt(totalTarefasComAlgumaNC) },
+        { id: /QtdeC/g, valor: (parseInt(totalDeAmostrasColetadasConforme)) },
+        { id: /QtdeT/g, valor: parseInt(listaDeTarefas.length) },
     ];
     var equacao = parVinculoPesoParLevel2.Equacao;
     variaveisEquacao.forEach(function (variavel) {
         equacao = equacao.replace(variavel.id,variavel.valor);
     });  
-    
-    var porcentagemEquacao = eval(equacao);
+
+     try {
+
+        var porcentagemEquacao = eval(equacao);
+
+     } catch (e) {
+         console.warn(e);
+         porcentagemEquacao = null;
+     }
+
     var porcentagemTotal = parseInt(totalDeAmostrasColetadasConforme)/parseInt(totalDeAmostrasColetadas)*100;
 
     return {

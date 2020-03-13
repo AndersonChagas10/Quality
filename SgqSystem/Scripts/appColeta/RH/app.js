@@ -1,4 +1,5 @@
 var currentParCompany_Id;
+var currentUserSgq_Id;
 var currentParFrequency_Id;
 var parametrization = null;
 var currentParDepartment_Id;
@@ -21,6 +22,7 @@ var currentPlanejamento = [];
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
+var currentBaixarGetResultadoAposEnviarOsDadosColetados = false;
 
 //Script para exibir erros no Mobile
 // window.onerror = function (errorMsg, url, lineNumber) {
@@ -37,6 +39,7 @@ function onOpenAppColeta() {
         _readFile("appParametrization.txt", function (param) {
             if (typeof (param) != 'undefined' && param.length > 0) {
                 parametrization = JSON.parse(param);
+                currentParCompany_Id = parametrization.ParCompany_Id;
                 listaParFrequency = parametrization.listaParFrequency;
                 atualizarVariaveisCurrent(parametrization);
             }
@@ -56,30 +59,39 @@ function aposLimparDadosDaParametrizacao(){
     currentParClusterGroup_Id = null;
 }
 
-function sincronizarResultado(frequencyId) {
+function sincronizarResultado() {
+
+    if(globalColetasRealizadas.length > 0){
+        openMensagem('Favor solicitar a sincronização dos resultados após o termino do envio dos dados coletados.', 'yellow', 'black');
+        closeMensagem(2000);
+        return;
+    }
 
     openMensagem('Sincronizando resultado', 'blue', 'white');
+    currentBaixarGetResultadoAposEnviarOsDadosColetados = false;
 
-    $.ajax({
-        data: JSON.stringify({
-            ParCompany_Id: currentParCompany_Id,
-            ParFrequency_Id: currentParFrequency_Id,
-            ParCluster_Id: currentParCluster_Id,
-            CollectionDate: convertDateToJson(currentCollectDate)
-        }),
-        url: urlPreffix + '/api/AppColeta/GetResults/',
-        type: 'POST',
-        contentType: "application/json",
-        success: function (data) {
-            coletasAgrupadas = data;
-            AtualizarArquivoDeColetas();
-            closeMensagem();
-        },
-        timeout: 600000,
-        error: function () {
-            closeMensagem();
-        }
-    });
+    setTimeout(function(){
+        $.ajax({
+            data: JSON.stringify({
+                ParCompany_Id: currentParCompany_Id,
+                ParFrequency_Id: currentParFrequency_Id,
+                ParCluster_Id: currentParCluster_Id,
+                CollectionDate: convertDateToJson(currentCollectDate)
+            }),
+            url: urlPreffix + '/api/AppColeta/GetResults/',
+            type: 'POST',
+            contentType: "application/json",
+            success: function (data) {
+                coletasAgrupadas = data;
+                AtualizarArquivoDeColetas();
+                closeMensagem();
+            },
+            timeout: 600000,
+            error: function () {
+                closeMensagem();
+            }
+        });
+    },5000);
 }
 
 function sincronizarColeta() {

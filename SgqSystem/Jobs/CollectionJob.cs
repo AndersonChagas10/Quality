@@ -126,6 +126,10 @@ namespace SgqSystem.Jobs
                                 db.Result_Level3.Add(resultLevel3);
                                 db.SaveChanges();
 
+                                DeleteHeaderFieldLevel3IfExist(resultLevel3);
+
+                                RegisterHeaderFieldLevel3(db, resultLevel3, collectionLevel2Consolidada);
+
                                 collectionsProcessed_Id.Add(collectionId);
                             }
                             catch (Exception ex)
@@ -148,6 +152,106 @@ namespace SgqSystem.Jobs
             {
                 //return BadRequest(ex.ToClient());
             }
+        }
+
+        private static void DeleteHeaderFieldLevel3IfExist(Result_Level3 resultLevel3)
+        {
+            var sql = $@"delete Result_Level3XParHeaderFieldGeral WHERE Id in(
+                        select ResultL3XHeaderF.Id FROM Result_Level3XParHeaderFieldGeral ResultL3XHeaderF
+						where ResultL3XHeaderF.Id  = '{ resultLevel3.Id }'
+                         )";
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                factory.ExecuteSql(sql);
+            }
+        }
+
+        private static void RegisterHeaderFieldLevel3(SgqDbDevEntities db, Result_Level3 resultLevel3, CollectionLevel2 collectionLevel2)
+        {
+            //se não existir insere um novo
+            var headerFieldsLevel3 = GetHeaderFieldsByResultLevel3(resultLevel3, collectionLevel2);
+
+            if (headerFieldsLevel3.Count > 0)
+            {
+                try
+                {
+                    foreach (var item in headerFieldsLevel3)
+                    {
+                        item.ResultLevel3_Id = resultLevel3.Id;
+                        item.IsActive = true;
+                    }
+
+                    db.Result_Level3XParHeaderFieldGeral.AddRange(headerFieldsLevel3);
+                    db.SaveChanges();
+
+                    var headerFieldsCollectionsIds = headerFieldsLevel3.Select(x => x.Collection_Id).ToList();
+                    db.Database.ExecuteSqlCommand("UPDATE Collection set IsProcessed = 1 where Id in (" + string.Join(",", headerFieldsCollectionsIds) + ")");
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+        }
+
+        private static List<Result_Level3XParHeaderFieldGeral> GetHeaderFieldsByResultLevel3(Result_Level3 resultLevel3, CollectionLevel2 collectionLevel2)
+        {
+            var headerFieldsLevel3 = new List<Result_Level3XParHeaderFieldGeral>();
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+
+                var collectionDate = collectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss");
+
+                var queryParCargo = "";
+                var queryParDepartment = "";
+                var queryParLevel3= "";
+
+                if (collectionLevel2.ParCargo_Id == null || collectionLevel2.ParCargo_Id == 0)
+                    queryParCargo = "Is NULL";
+                else
+                    queryParCargo = " = " + collectionLevel2.ParCargo_Id;
+
+
+                if (collectionLevel2.ParDepartment_Id == null || collectionLevel2.ParDepartment_Id == 0)
+                    queryParDepartment = "Is NULL";
+                else
+                    queryParDepartment = " = " + collectionLevel2.ParDepartment_Id;
+
+                    queryParLevel3 = " = " + resultLevel3.ParLevel3_Id;
+
+                var sql = $@"SELECT
+                            	CL.ParHeaderField_Id as ParHeaderFieldGeral_Id
+                               ,CL.ParHeaderField_Value as Value
+                               ,PHFG.ParFieldType_Id
+                               ,PHFG.Name as ParHeaderField_Name
+                               ,CL.Evaluation
+                               ,CL.Sample
+                               ,CL.Id as Collection_Id
+                               ,{collectionLevel2.Id} as CollectionLevel2_Id
+                            FROM Collection CL
+                            INNER JOIN ParHeaderFieldGeral PHFG on CL.ParHeaderField_Id = PHFG.Id
+                            WHERE 1 =1 AND ParHeaderField_Id IS NOT NULL
+                            AND CL.UserSgq_Id = {collectionLevel2.AuditorId}
+                            AND cl.Shift_Id = {collectionLevel2.Shift}
+                            AND cl.Period_Id = {collectionLevel2.Period}
+                            AND CL.ParCargo_Id {queryParCargo}
+                            AND cl.ParCompany_Id = {collectionLevel2.UnitId}
+                            AND cl.ParLevel3_Id {queryParLevel3}
+                            AND ((cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id IS NULL AND cl.ParLevel2_Id IS NULL) OR
+                                (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id IS NULL) OR
+                                (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id = {collectionLevel2.ParLevel2_Id}))
+                            AND cl.Evaluation = {collectionLevel2.EvaluationNumber}
+                            AND (cl.Sample = {collectionLevel2.Sample} 
+                                OR cl.Outros like '%ParFamiliaProduto_Id%') 
+                            AND Cl.CollectionDate BETWEEN DATEADD(minute, -5, '{collectionDate}') and DATEADD(minute, 5, '{collectionDate}')";
+
+                headerFieldsLevel3 = factory.SearchQuery<Result_Level3XParHeaderFieldGeral>(sql).ToList();
+            }
+
+            return headerFieldsLevel3;
         }
 
         public static void UpdateCollectionStatus(SgqDbDevEntities db, List<int> collectionsProcessed_Id, List<int> collectionWithError_Id)
@@ -195,7 +299,7 @@ namespace SgqSystem.Jobs
                        ,IIF(UserSgq_Id is null, 0,UserSgq_Id) as AuditorId
                        ,CONVERT(VARCHAR(19),IIF(DATEPART(MILLISECOND,CollectionDate)>500,DATEADD(SECOND,1,CollectionDate),CollectionDate),120) AS CollectionDate
                        ,GETDATE() as StartPhaseDate
-                        FROM Collection
+                        FROM Collection with (nolock)
                         WHERE IsProcessed = 0
                         AND ParHeaderField_Id IS NULL
                         AND ParHeaderField_Value IS NULL
@@ -238,7 +342,7 @@ namespace SgqSystem.Jobs
                         ,WeiEvaluation
                         ,Evaluation
                         ,WeiDefects
-                        ,HasPhoto  FROM Collection 
+                        ,HasPhoto  FROM Collection with (nolock)
                     WHERE Evaluation = {collection.EvaluationNumber} AND IsProcessed = 0 AND
                         Sample = {collection.Sample} AND ParLevel1_Id = {collection.ParLevel1_Id} AND
                         ParLevel2_Id = {collection.ParLevel2_Id} AND Shift_Id = {collection.Shift} AND
@@ -247,6 +351,7 @@ namespace SgqSystem.Jobs
                         AND (ParCargo_Id = {collection.ParCargo_Id ?? 0} OR ParCargo_Id IS NULL)
                         AND ParFrequency_Id {((collection.ParFrequency_Id > 0) ? (" = "+ collection.ParFrequency_Id) : " IS NULL")} 
                         AND (ParDepartment_Id = {collection.ParDepartment_Id ?? 0}  OR ParDepartment_Id IS NULL)
+                        AND ParHeaderField_Id IS NULL
                         AND CAST(CONVERT(VARCHAR(19), IIF(DATEPART(MILLISECOND, CollectionDate) > 500, DATEADD(SECOND, 1, CollectionDate), CollectionDate), 120) AS DATE) = '{collection.CollectionDate.ToString("yyyy-MM-dd")}'";
 
             using (Factory factory = new Factory("DefaultConnection"))
@@ -320,8 +425,8 @@ namespace SgqSystem.Jobs
         private static void DeleteHeaderFieldIfExists(CollectionLevel2 collectionLevel2)
         {
             var sql = $@"delete CollectionLevel2XParHeaderFieldGeral WHERE Id in(
-                         select CL2XHF.Id FROM CollectionLevel2XParHeaderFieldGeral CL2XHF
-                         inner JOIN CollectionLevel2 C2 on C2.Id = CL2XHF.CollectionLevel2_Id
+                         select CL2XHF.Id FROM CollectionLevel2XParHeaderFieldGeral CL2XHF with (nolock)
+                         inner JOIN CollectionLevel2 C2 with (nolock) on C2.Id = CL2XHF.CollectionLevel2_Id
                          AND C2.[key] = '{ collectionLevel2.Key }'
                          AND CL2XHF.CollectionLevel2_Id = { collectionLevel2.Id }
                          )";
@@ -364,14 +469,15 @@ namespace SgqSystem.Jobs
                                ,CL.Sample
                                ,CL.Id as Collection_Id
                                ,{collectionLevel2.Id} as CollectionLevel2_Id
-                            FROM Collection CL
-                            INNER JOIN ParHeaderFieldGeral PHFG on CL.ParHeaderField_Id = PHFG.Id
+                            FROM Collection CL with (nolock)
+                            INNER JOIN ParHeaderFieldGeral PHFG with (nolock) on CL.ParHeaderField_Id = PHFG.Id
                             WHERE 1 =1 AND ParHeaderField_Id IS NOT NULL
                             AND CL.UserSgq_Id = {collectionLevel2.AuditorId}
                             AND cl.Shift_Id = {collectionLevel2.Shift}
                             AND cl.Period_Id = {collectionLevel2.Period}
                             AND CL.ParCargo_Id {queryParCargo}
                             AND cl.ParCompany_Id = {collectionLevel2.UnitId}
+                            AND cl.ParLevel3_Id Is NULL
                             AND ((cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id IS NULL AND cl.ParLevel2_Id IS NULL) OR
                                 (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id IS NULL) OR
                                 (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id = {collectionLevel2.ParLevel2_Id}))

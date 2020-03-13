@@ -465,6 +465,7 @@
     <Compile Include="Controllers\V2\Api\AppColetaController.cs" />
     <Compile Include="Controllers\V2\Api\DepartmentXRotinaApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParClusterApiController.cs" />
+    <Compile Include="Controllers\V2\Api\ParCompanyApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParClusterGroupApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParDepartmentXHeaderFieldApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParFrequencyController.cs" />
@@ -1034,6 +1035,7 @@
     <Content Include="Scripts\appColeta\RH\menu.js" />
     <Content Include="Scripts\appColeta\RH\parCargo.js" />
     <Content Include="Scripts\appColeta\RH\parCluster.js" />
+    <Content Include="Scripts\appColeta\RH\parCompany.js" />
     <Content Include="Scripts\appColeta\RH\parClusterGroup.js" />
     <Content Include="Scripts\appColeta\RH\parDepartment.js" />
     <Content Include="Scripts\appColeta\RH\planejamentoColeta.js" />
@@ -1046,6 +1048,7 @@
     <Content Include="Scripts\appColeta\RH\utils.js" />
     <Content Include="Scripts\appColeta\RH\version.js" />
     <Content Include="Scripts\appColeta\RH\zoom.js" />
+    <Content Include="Scripts\heatmap.js" />
     <Content Include="Scripts\helper\mask.js" />
     <Content Include="Scripts\jquery-1.12.1.min.js" />
     <Content Include="Scripts\noframework.waypoints.min.js" />
@@ -2197,6 +2200,8 @@
     <Content Include="Views\RelatoriosSgq\RelatorioFormularioSIF.cshtml" />
     <Content Include="Views\ParamsV2\ParL3Cabecalho.cshtml" />
     <Content Include="Views\RelatoriosSgq\ApontamentosDiariosUSA.cshtml" />
+    <Content Include="Views\ParamsV2\ParL3Qualification.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioDeResultadoSeara.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2292,7 +2297,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57506/</IISUrl>
+          <IISUrl>http://localhost/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

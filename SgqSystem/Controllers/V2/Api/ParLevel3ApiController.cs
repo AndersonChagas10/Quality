@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.V2.Api
@@ -227,6 +228,8 @@ namespace SgqSystem.Controllers.V2.Api
                         db.ParLevel3XHelp
                         .Where(x => x.IsActive == true && x.ParLevel3_Id == parLevel3.Id)
                         .ToList();
+
+
                 }
                 catch (Exception ex)
                 {
@@ -242,6 +245,31 @@ namespace SgqSystem.Controllers.V2.Api
             }
 
             return Ok(parlevel3Result);
+        }
+
+        [HttpGet]
+        [Route("GetPargroupQualificationXParLevel3Value/{level3Value_id}")]
+        public IHttpActionResult GetPargroupQualificationXParLevel3Value(int level3Value_id)
+        {
+
+            var lista = new List<PargroupQualificationXParLevel3Value>();
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+
+                lista = db.PargroupQualificationXParLevel3Value
+                    .Where(x => x.ParLevel3Value_Id == level3Value_id && x.IsActive)
+                    .ToList();
+
+                foreach (var item in lista)
+                {
+                    item.ParLevel3Value = db.ParLevel3Value.Where(x => x.Id == item.ParLevel3Value_Id).FirstOrDefault();
+
+                    item.PargroupQualification = db.PargroupQualification.Where(x => x.Id == item.PargroupQualification_Id).FirstOrDefault();
+                }
+            }
+            return Ok(lista);
         }
 
         [HttpGet]
@@ -472,6 +500,90 @@ namespace SgqSystem.Controllers.V2.Api
                 }
 
                 return true;
+            }
+        }
+
+        [HttpPost]
+        [Route("PostPargroupQualificationXParLevel3Value")]
+        public IHttpActionResult PostPargroupQualificationXParLevel3Value(PargroupQualificationXParLevel3Value form)
+        {
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (!SaveOrUpdatePargroupQualificationXParLevel3Value(form))
+                    {
+                        return Ok(new { mensagem = "Já existe um vinculo com os dados inseridos." });
+                    }
+
+                    return StatusCode(HttpStatusCode.NoContent);
+                }
+                catch (Exception ex)
+                {
+
+                    return StatusCode(HttpStatusCode.BadRequest);
+                }
+            }
+        }
+
+        private bool SaveOrUpdatePargroupQualificationXParLevel3Value(PargroupQualificationXParLevel3Value form)
+        {
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                try
+                {
+                    if (validaDuplicidade(form))
+                    {
+                        if (form.Id > 0)
+                        {
+                            db.Configuration.LazyLoadingEnabled = false;
+                            var pargroupQualificationXParLevel3ValueOld = db.PargroupQualificationXParLevel3Value.Find(form.Id);
+                            pargroupQualificationXParLevel3ValueOld.PargroupQualification_Id = form.PargroupQualification_Id;
+                            pargroupQualificationXParLevel3ValueOld.ParLevel3Value_Id = form.ParLevel3Value_Id;
+                            pargroupQualificationXParLevel3ValueOld.Value = form.Value;
+                            pargroupQualificationXParLevel3ValueOld.IsActive = form.IsActive;
+
+                        }
+                        else
+                        {
+                            var pargroupQualificationXParLevel3ValueSalvo = db.PargroupQualificationXParLevel3Value.Add(form);
+                            db.SaveChanges();
+                        }
+
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        private bool validaDuplicidade(PargroupQualificationXParLevel3Value form)
+        {
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                var objSalvo = db.PargroupQualificationXParLevel3Value
+                    .Where(x => x.PargroupQualification_Id == form.PargroupQualification_Id
+                    && x.ParLevel3Value_Id == form.ParLevel3Value_Id
+                    && x.Value == form.Value
+                    && x.IsActive
+                    && x.Id != form.Id).FirstOrDefault();
+
+                if (objSalvo == null)
+                    return true;
+                else
+                    return false;
             }
         }
 

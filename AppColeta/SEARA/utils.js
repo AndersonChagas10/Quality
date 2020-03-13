@@ -64,3 +64,96 @@ function UmSeForNaNOuNull(valor){
 function TracoSeForNaN(valor){
     return isNaN(valor) ? '-' : valor;
 }
+
+function serializeFormToObject(divId){
+
+    var obj = {};
+
+    var inputs = $(divId).find('input, select');
+
+    $(inputs).each(function(){
+        
+        var id = $(this).attr('id');
+
+        if ($(this).prop('type') == 'checkbox' || $(this).prop('type') == 'radio') {
+            obj[id].push($(this).prop('checked'));
+
+        } else {
+            obj[id] = (this.value || '');
+        }
+
+    });
+
+    return obj;
+
+}
+
+function setObjectToForm(objForm) {
+
+    Object.keys(objForm).forEach(function (key) {
+
+        var input = $(document).find('[id=' + key + ']');
+
+        if ($(input).prop('type') == 'checkbox' || $(input).prop('type') == 'radio') {
+            $(input).attr('checked', objForm[key]);
+
+        } else {
+            $(input).val(objForm[key]);
+        }
+
+    });
+}
+
+function disableHeaderFields(objForm) {
+
+    Object.keys(objForm).forEach(function (key) {
+
+        var input = $(document).find('[id=' + key + ']');
+
+        $(input).prop('disabled', true);
+
+    });
+
+}
+
+function hederFieldIsValid(formId) {
+
+    var inputs = $(formId).find('input, select');
+
+    var isValid = true;
+
+    $(inputs).each(function () {
+
+        setInputBackGroundColorNone(this);
+
+        if ($(this).prop('type') == 'checkbox' || $(this).prop('type') == 'radio') {
+
+            if ($(this).prop('checked') === 'false') {
+                setInputBackGroundColorRed(this);
+                isValid = false;
+            }
+                
+        } else {
+
+            if (this.value === null || this.value === undefined || this.value === ""){
+                setInputBackGroundColorRed(this);
+                isValid = false;
+            }
+
+        }
+    });
+
+    return isValid;
+}
+
+function setInputBackGroundColorRed(input) {
+
+    $(input).css('background-color', '#ffeded');
+
+}
+
+function setInputBackGroundColorNone(input) {
+
+    $(input).css('background-color', '');
+
+}

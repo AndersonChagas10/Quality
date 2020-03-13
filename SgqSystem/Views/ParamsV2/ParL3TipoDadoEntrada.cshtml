@@ -216,7 +216,7 @@
 
             <div class="col-sm-4 divLimiteNC" hidden="hidden">
                 <div class="form-group">
-                    <label>Limite de NC:</label>
+                    <label>Limite de não conformidade tolerável:</label>
                     <input type="number" class="form-control" id="limiteNC" name="LimiteNC">
                 </div>
 
@@ -268,7 +268,7 @@
                 </div>*@
         </div>
 
-        <div class="col-sm-2">
+        <div class="col-sm-3">
 
             <div class="form-group" data-action>
                 <label></label>
@@ -324,7 +324,7 @@
                             Intervalo Máximo
                         </th>
                         <th class="col-sm-1">
-                            Limite de NC
+                            Limite NC Tolerável
                         </th>
                         <th class="col-sm-1">
                             Equação
@@ -353,6 +353,23 @@
             </div>
             <div class="modal-body">
                 @Html.Partial("ParL3Cabecalho")
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modalQualification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="closeModalQualification()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <br />
+            </div>
+            <div class="modal-body">
+                @Html.Partial("ParL3Qualification")
             </div>
         </div>
     </div>
@@ -387,6 +404,7 @@
 
     function closeModal() {
         $("#modalHeaderField").hide();
+       
     }
 
     $("#ParL3TipoDado #btnAvancadoL3TipoEntrada").on('click', function () {
@@ -490,6 +508,24 @@
 
     //});
 
+    function openQualificationModal(level3Value_id) {
+
+        $("#modalQualification").show();
+
+        $("#ParLevel3Value_Id").val(level3Value_id);
+        $.ajax({
+            url: '@Url.Action("GetPargroupQualificationXParLevel3Value", "api/ParLevel3Api")/' + level3Value_id +'',
+		    type: 'Get',
+		    dataType: "json",
+		    data: {},
+		    contentType: "application/json",
+            success: function (data) {
+                ParL3Qualification.load(data);
+		    }
+	    });
+
+    }
+
     var ParL3TipoDado = {
 
         //paramtros
@@ -522,7 +558,7 @@
                 var boleanoTrue = (o.ParLevel3BoolTrue_Id == null ? "0" : o.ParLevel3BoolTrue_Id);
                 var boleanoFalse = (o.ParLevel3BoolFalse_Id == null ? "0" : o.ParLevel3BoolFalse_Id);
                 html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolTrue_Id"]', boleanoTrue, 'Todos') + '</td>';
-                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolFalse_Id"]', boleanoFalse, 'Todos') + '</td>';                
+                html += '<td>' + valorDoSelect('#ParL3TipoDado select[name="ParLevel3BoolFalse_Id"]', boleanoFalse, 'Todos') + '</td>';
                 html += '<td>' + (o.IntervalMin == null ? "" : o.IntervalMin) + '</td>';
                 html += '<td>' + (o.IntervalMax == null ? "" : o.IntervalMax) + '</td>';
                 html += '<td>' + (o.LimiteNC == null ? "" : o.LimiteNC)  + '</td>';
@@ -550,7 +586,7 @@
                         openMessageModal("Feito", "Dados Salvos");
 
                         $('#selectL3').trigger('change');
-
+                        $("#showModalCabecalho").hide();
                         closeLoader();
 
                     },
@@ -579,9 +615,10 @@
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
 
                 ParL3TipoDado.insertTable(obj);
-
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
+                if (obj.ParLevel3InputType_Id == 1 || obj.ParLevel3InputType_Id == 6)
+                    $('#' + id + ' [data-form] [data-action]').append('<button onclick="openQualificationModal(' + obj.Id + ')" data-qualification class="form-control btn btn-primary col-md-4">Adicionar Qualificação</button>');
 
                 //mostra o botão para abrir a modal dos cabeçalhos
                 $("#showModalCabecalho").show()
@@ -608,11 +645,13 @@
             });
 
             $('#' + id).on('click', '[data-cancel]', function (e) {
+
                 apagaCampos(id);
                 $("#tabelaLikert tbody").empty();
                 $('#divEscalaLikert').hide();
                 $('#divCamposLikertIncluidos').hide();
-                $("#camposLikertIncluidos tbody").empty();
+                $("#showModalCabecalho").hide();
+                $("#camposLikertIncluidos  ").empty();
             });
 
             //Salvar o campo editado ou cria um novo
@@ -658,8 +697,22 @@
                 switch (parLevel3InputType_Id) {
 
                     case 1: //Binário
+                        showInput('selectL3TipoDadoParLevel3BoolTrue');
+                        showInput('selectL3TipoDadoParLevel3BoolFalse');
+                        showInput('checkboxL3IsRequired');
+                        showInput('selectL3IsDefaultAnswer');
+                        showInput('btnAddMultipleText');
+                        $("#selectL3IsDefaultAnswer").val('true');
+                        hideInput('DefaultMessageText');
+                        hideInput('StringSizeAllowed');
+                        break;
                     case 6: //Binario Com Texto
-                        
+                        showInput('selectL3TipoDadoParLevel3BoolTrue');
+                        showInput('selectL3TipoDadoParLevel3BoolFalse');
+                        showInput('checkboxL3IsRequired');
+                        showInput('selectL3IsDefaultAnswer');
+                        showInput('btnAddMultipleText');
+                        $("#selectL3IsDefaultAnswer").val('true');
                         showInput('DefaultMessageText');
                         showInput('StringSizeAllowed');
                         break;
@@ -806,7 +859,7 @@
 
             if (typeof (obj['DynamicValue']) == 'undefined')
                 obj['DynamicValue'] = '';
-            
+
 
             if (obj.ParInputTypeValues.length > 0)
                 if (obj.ParInputTypeValues[0]['ParLevel3Value_Id'] != 'undefined' || obj.ParInputTypeValues[0]['ParLevel3Value_Id'] != null)
@@ -958,7 +1011,8 @@
         hideInput('ShowLevel3Limits');
         hideInput('DefaultMessageText');
         hideInput('StringSizeAllowed');
-        
+        hideInput('btnAddQualification');
+        $("#modalQualification").hide();
     }
 
     let hideInput = function (id) {

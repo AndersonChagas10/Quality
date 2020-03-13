@@ -44,6 +44,37 @@ function getParHeaderFieldLevel2(parLevel1, parLevel2) {
         return '';
 }
 
+function getParHeaderFieldGeralLevel3(parLevel1, parLevel2, parLevel3) {
+    //buscar os campos de cabeçalho no nivel da tarefa
+    var lista = [];
+    parametrization.listaParHeaderFieldGeral.forEach(function (o, i) {
+        if (parLevel3.ParLevel3Value != undefined) {
+            if (o.Generic_Id == parLevel3.ParLevel3Value.Id && o.ParLevelHeaderField_Id == 4)
+                lista.push(o);
+        }
+    });
+    
+    if (lista.length > 0) {
+        var retorno = '';
+        retorno += ' <div class="col-xs-12" id="headerFieldLevel3" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + ' data-level3 style="padding-left:10px;background-color: #e9ecef; padding-bottom: 5px;">';
+        lista.forEach(function (o, i) {
+            
+            retorno += ' <div class="col-xs-3 no-gutters pull-right">';
+            retorno += ' <div class="col-xs-3"><small style="font-weight:550 !important">' + o.Name + '</small></div>';
+            retorno += ' <div class="col-xs-12">';
+            retorno += ' <input type="number" ParHeaderField_Id=' + o.Id +' class="col-xs-12 input-sm" data-cb="cb'+ o.Id +'" style="text-align: center;" >';
+            retorno += ' </div>';
+            retorno += ' </div>';
+        });
+        retorno += ' <div class="clearfix"></div>';
+        retorno += '</div>';
+
+    } else
+        return '';
+
+    return retorno;
+}
+
 
 function montarHeaderFields(parLevelHeaderFiel_Id, Generic_Id) {
 

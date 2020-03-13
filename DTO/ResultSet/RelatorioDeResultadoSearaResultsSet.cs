@@ -27,9 +27,257 @@ public class RelatorioDeResultadoSearaResultsSet
     public decimal? PorcC { get; internal set; }
     public int? Shift { get; set; }
     public string dataX { get; set; }
+    public string Data { get; set; }
 
 
 
+    public string SelectUnidadesSeara(DataCarrierFormularioNew form)
+    {
+        var whereDepartment = "";
+        var whereSecao = "";
+        var whereCargo = "";
+        var whereStructure = "";
+        var whereUnit = "";
+        var whereParLevel1 = "";
+        var whereParLevel2 = "";
+        var whereParLevel3 = "";    
+
+        if (form.ParLevel1_Ids.Length > 0)
+        {
+            whereParLevel1 = $@" AND CUBOL3.Parlevel1_Id in ({string.Join(",", form.ParLevel1_Ids)}) ";
+        }
+
+        if (form.ParLevel2_Ids.Length > 0)
+        {
+            whereParLevel2 = $@" AND CUBOL3.Parlevel2_Id in ({string.Join(",", form.ParLevel2_Ids)}) ";
+        }
+
+        if (form.ParLevel3_Ids.Length > 0)
+        {
+            whereParLevel3 = $@" AND CUBOL3.Parlevel3_Id in ({string.Join(",", form.ParLevel3_Ids)}) ";
+        }
+
+        if (form.ParDepartment_Ids.Length > 0)
+        {
+            whereDepartment = $@" AND CUBOL3.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
+        }
+
+        if (form.ParSecao_Ids.Length > 0)
+        {
+            whereSecao = $@" AND CUBOL3.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
+        }
+
+        if (form.ParCargo_Ids.Length > 0)
+        {
+            whereCargo = $@" AND CUBOL3.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
+        }
+
+        if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+        {
+            whereUnit = $@"AND CUBOL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+        }
+
+        if (form.ParStructure_Ids.Length > 0)
+        {
+            whereStructure = $@"AND CUBOL3.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+        }
+
+        var query = $@"
+                 DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+                 DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
+
+                    DECLARE @MES TABLE (
+	                    ID INT
+                       ,Name VARCHAR(10)
+                    )
+
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (1, '01')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (2, '02')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (3, '03')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (4, '04')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (5, '05')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (6, '06')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (7, '07')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (8, '08')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (9, '09')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (10, '10')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (11, '11')
+                    INSERT INTO @MES (ID, Name)
+	                    VALUES (12, '12')
+
+
+
+                    SELECT
+	                    PC.Name AS UnidadeName
+                       ,SUM(CUBOL3.WeiEvaluation) AS AV
+                       ,SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects) AS C
+                       ,((SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects)) / SUM(CUBOL3.WeiEvaluation)) * 100 AS PORCC
+                       ,M.Name + '/' + CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR) AS Data
+
+                    FROM DW.Cubo_Coleta_L3 CUBOL3 WITH (NOLOCK)
+
+                    INNER JOIN ParCompany PC WITH (NOLOCK)
+	                    ON CUBOL3.UnitId = PC.ID
+
+                    INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
+	                    ON CUBOL3.ParLevel1_Id = PL1.ID
+
+                    INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
+	                    ON CUBOL3.ParLevel2_Id = PL2.ID
+
+                    INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
+	                    ON CUBOL3.ParLevel3_Id = PL3.ID
+
+				 INNER join CollectionLevel2 cl2
+				  on cl2.CollectionDate = CUBOL3.CollectionDate
+
+					left JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP
+						ON CSFP.CollectionLevel2_Id = CL2.Id
+
+                    left JOIN ParFamiliaProduto SFP WITH (NOLOCK)
+	                    ON CSFP.ParFamiliaProduto_Id = SFP.Id
+
+                    left JOIN ParProduto SP WITH (NOLOCK)
+	                    ON CSFP.ParProduto_Id = SP.Id
+
+                    INNER JOIN @MES M
+	                    ON M.ID = DATEPART(MONTH, CUBOL3.CollectionDate)
+
+                    WHERE 1 = 1
+
+                        AND CUBOL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    {whereStructure}
+                    {whereUnit}
+                    {whereDepartment}
+                    {whereSecao}
+                    {whereCargo}
+                    {whereParLevel1}
+                    {whereParLevel2}
+                    {whereParLevel3}
+
+                    GROUP BY PC.Name
+		            ,CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR)
+		            ,M.Name             
+                    ORDER BY CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR) DESC
+                ";
+        return query;
+    }
+
+    public string SelectPorcCTotalSeara(DataCarrierFormularioNew form)
+    {
+        var whereDepartment = "";
+        var whereSecao = "";
+        var whereCargo = "";
+        var whereStructure = "";
+        var whereUnit = "";
+        var whereParLevel1 = "";
+        var whereParLevel2 = "";
+        var whereParLevel3 = "";
+
+        if (form.ParLevel1_Ids.Length > 0)
+        {
+            whereParLevel1 = $@" AND CUBOL3.Parlevel1_Id in ({string.Join(",", form.ParLevel1_Ids)}) ";
+        }
+
+        if (form.ParLevel2_Ids.Length > 0)
+        {
+            whereParLevel2 = $@" AND CUBOL3.Parlevel2_Id in ({string.Join(",", form.ParLevel2_Ids)}) ";
+        }
+
+        if (form.ParLevel3_Ids.Length > 0)
+        {
+            whereParLevel3 = $@" AND CUBOL3.Parlevel3_Id in ({string.Join(",", form.ParLevel3_Ids)}) ";
+        }
+
+        if (form.ParDepartment_Ids.Length > 0)
+        {
+            whereDepartment = $@" AND CUBOL3.Centro_De_Custo_Id in ({string.Join(",", form.ParDepartment_Ids)}) ";
+        }
+
+        if (form.ParSecao_Ids.Length > 0)
+        {
+            whereSecao = $@" AND CUBOL3.Secao_Id in ({string.Join(",", form.ParSecao_Ids)}) ";
+        }
+
+        if (form.ParCargo_Ids.Length > 0)
+        {
+            whereCargo = $@" AND CUBOL3.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
+        }
+
+        if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+        {
+            whereUnit = $@"AND CUBOL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
+        }
+
+        if (form.ParStructure_Ids.Length > 0)
+        {
+            whereStructure = $@"AND CUBOL3.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+        }
+
+        var query = $@"
+                 DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+                 DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
+
+                SELECT
+		(SUM(c) / SUM(av)) * 100 AS PORCC
+
+	FROM (SELECT
+		   SUM(CUBOL3.WeiEvaluation) AS AV
+		   ,SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects) AS C
+
+		FROM DW.Cubo_Coleta_L3 CUBOL3 WITH (NOLOCK)
+
+		INNER JOIN ParCompany C WITH (NOLOCK)
+			ON CUBOL3.UnitId = C.ID
+
+		INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
+			ON CUBOL3.ParLevel1_Id = PL1.ID
+
+		INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
+			ON CUBOL3.ParLevel2_Id = PL2.ID
+
+		INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
+			ON CUBOL3.ParLevel3_Id = PL3.ID
+
+						 INNER join CollectionLevel2 cl2	
+				  on cl2.CollectionDate = CUBOL3.CollectionDate	
+					left JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP	
+						ON CSFP.CollectionLevel2_Id = CL2.Id	
+                    left JOIN ParFamiliaProduto SFP WITH (NOLOCK)	
+	                    ON CSFP.ParFamiliaProduto_Id = SFP.Id	
+                    left JOIN ParProduto SP WITH (NOLOCK)	
+	                    ON CSFP.ParProduto_Id = SP.Id
+
+		WHERE 1 = 1
+
+        AND CUBOL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    {whereStructure}
+                    {whereUnit}
+                    {whereDepartment}
+                    {whereSecao}
+                    {whereCargo}
+                    {whereParLevel1}
+                    {whereParLevel2}
+                    {whereParLevel3}
+
+                    GROUP BY CUBOL3.CollectionDate) a
+
+                ";
+        return query;
+    }
 
     public string SelectSeara(DataCarrierFormularioNew form, string userUnits)
     {
@@ -611,16 +859,18 @@ public class RelatorioDeResultadoSearaResultsSet
 					INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
 						ON CUBOL3.ParLevel3_Id = PL3.Id
 							
-					OUTER APPLY (SELECT TOP 1 CL2.id FROM collectionlevel2 CL2 
-								WHERE CL2.CollectionDate = CUBOL3.CollectionDate) CL2
+					--CROSS APPLY (SELECT TOP 1 CL2.id FROM collectionlevel2 CL2 
+					--			WHERE CL2.CollectionDate = CUBOL3.CollectionDate) CL2
+				 INNER join CollectionLevel2 cl2
+				  on cl2.CollectionDate = CUBOL3.CollectionDate
 
-					INNER JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP
+					left JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP
 						ON CSFP.CollectionLevel2_Id = CL2.Id
 
-                    INNER JOIN ParFamiliaProduto SFP WITH (NOLOCK)
+                    left JOIN ParFamiliaProduto SFP WITH (NOLOCK)
 	                    ON CSFP.ParFamiliaProduto_Id = SFP.Id
 
-                    INNER JOIN ParProduto SP WITH (NOLOCK)
+                    left JOIN ParProduto SP WITH (NOLOCK)
 	                    ON CSFP.ParProduto_Id = SP.Id
 
 					WHERE 1 = 1
