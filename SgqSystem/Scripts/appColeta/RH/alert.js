@@ -28,7 +28,8 @@ function processAlertRole(coletaJson) {
                 && (o.ParLevel1_Id == coleta.ParLevel1_Id || o.ParLevel1_Id == null)
                 && (o.ParLevel2_Id == coleta.ParLevel2_Id || o.ParLevel2_Id == null)
                 && o.ParLevel3_Id == coleta.ParLevel3_Id
-                && o.ParAlertType_Id == 1;
+                && o.ParAlertType_Id == 1
+                && (o.ParSecao_Ids == currentParDepartment_Id || o.ParSecao_Ids == null);
         });
 
         //retorna todos os alertas para somar o numero do alerta
@@ -124,20 +125,20 @@ function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, lista
     else
     {
         display = 'none';
-        btnShowAcaoCorretiva = '<div>' +
-            '<button class="btn btn-secundary" data-showAcaoCorretiva style="float:left;margin-left: 350px;">Mostrar Ação Corretiva</button>' +
+        btnShowAcaoCorretiva = '<div class="col-sm-3">' +
+            '<button class="btn btn-secundary" data-showAcaoCorretiva>Mostrar Ação Corretiva</button>' +
             '</div>';
     }
     currentlistaSeExisteAlerta = listaAlertasVigente;
 
     if(listaDeColetaComAlertaEAcaoCorretiva.length > 1){
        
-        btnNext = '<div>' +
+        btnNext = '<div class="col-sm-3">' +
         '<button class="btn btn-primary" id="next" onclick="proximoElementoDaListaDeAlertas(' + index + ')" style="float:right;">Próximo Alerta' +
         ' ('+ currentQtdAlerta + "/" + currentListaDeColetaComAlertaEAcaoCorretiva.length +')</button>' +
         '</div>';
     
-        btnBack = '<div>' +
+        btnBack = '<div class="col-sm-3">' +
         '<button class="btn btn-primary" id="back" onclick="elementoAnteriorDaListaDeAlertas(' + index + ')" style="float:left;">Voltar Alerta</button>' +
         '</div>';
     }
@@ -191,6 +192,7 @@ function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, lista
         '<div style="padding-top: 10px;">' +
         btnBack +
         btnShowAcaoCorretiva +
+        '<div class="col-sm-3"><button class="btn btn-primary" id="btnSendCA" data-index="' + index + '">Salvar e Fechar Ações Corretivas</button></div>' +
         btnNext +
         '</div>' +
         '<div style="margin-top:60px;">' +
@@ -202,7 +204,6 @@ function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, lista
         body +
         '<hr>' +
         '<div class="form-group col-xs-6">' +
-        '<button class="btn btn-primary" id="btnSendCA" data-index="' + index + '">Salvar todas as Ações Corretivas</button>' +
         '</div>' +
         '</div>' +
         '</div>' +
