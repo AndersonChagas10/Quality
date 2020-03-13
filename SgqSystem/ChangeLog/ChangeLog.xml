@@ -2826,4 +2826,12 @@
       )
     </Script>
   </Card>
+
+  <Card>
+    <CardNumber>SGQ-474</CardNumber>
+    <Version>1.6.0</Version>
+    <Description>[GQ] Relatório Formulário SIF - Alteração nos filtros.</Description>
+    <Script>      
+    </Script>
+  </Card>
 </Cards>
