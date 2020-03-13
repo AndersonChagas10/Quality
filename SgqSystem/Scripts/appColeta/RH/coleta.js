@@ -71,6 +71,12 @@ function openColeta(levels) {
 
     $('div#app').html(html);
 
+    //chamar o metodo que valida e monta se pode criar a qualificação 
+    $('[data-binario]').parents('[data-conforme]').each(function (i,o) {
+        validateShowQualification(o);
+    });
+    
+
     $('.panel-body button, .panel-body input, .panel-body select').off('click').on('click', function (e) {
         interacaoComFormulario++;
     });
