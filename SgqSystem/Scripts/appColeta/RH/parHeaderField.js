@@ -18,7 +18,7 @@ function getParHeaderFieldLevel1(parLevel1) {
 
     if (cabecalhos)
 
-        return '<div id="headerFieldLevel1" data-collapse-target="'+parLevel1.Id+'" class="col-xs-12" parLevel1Id=' + parLevel1.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;background-color:#edf5fc;">' +
+        return '<div id="headerFieldLevel1" data-collapse-target="' + parLevel1.Id + '" class="col-xs-12" parLevel1Id=' + parLevel1.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;background-color:#edf5fc;">' +
             montarBotoesRotinaIntegracao() +
             cabecalhos +
             '</div>';
@@ -35,13 +35,29 @@ function getParHeaderFieldLevel2(parLevel1, parLevel2) {
 
     if (cabecalhos)
 
-        return '<div id="headerFieldLevel2" data-collapse-target="'+parLevel1.Id+'-'+parLevel2.Id+'" class="col-xs-12" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;background-color:#fcf4e3;">' +
+        return '<div id="headerFieldLevel2" data-collapse-target="' + parLevel1.Id + '-' + parLevel2.Id + '" class="col-xs-12" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;background-color:#fcf4e3;">' +
             montarBotoesRotinaIntegracao() +
             cabecalhos +
             '</div>';
 
     else
         return '';
+}
+
+function getParQualification(parLevel1, parLevel2, parLevel3) {
+
+    var retorno = '';
+
+    if (validaParqualification(parLevel1.Id, parLevel2.Id, parLevel3.Id).length > 0) {
+
+        retorno += ' <div class="col-xs-12 hidden" style="padding-left:10px;background-color: #e9ecef; padding-bottom: 5px;" data-level3 data-qualificationLevel3Value parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + '>';
+
+        retorno += ' <div class="clearfix"></div>';
+        retorno += '</div>';
+
+    }
+
+    return retorno;
 }
 
 function getParHeaderFieldGeralLevel3(parLevel1, parLevel2, parLevel3) {
@@ -53,16 +69,16 @@ function getParHeaderFieldGeralLevel3(parLevel1, parLevel2, parLevel3) {
                 lista.push(o);
         }
     });
-    
+
     if (lista.length > 0) {
         var retorno = '';
         retorno += ' <div class="col-xs-12" id="headerFieldLevel3" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + ' data-level3 style="padding-left:10px;background-color: #e9ecef; padding-bottom: 5px;">';
         lista.forEach(function (o, i) {
-            
+
             retorno += ' <div class="col-xs-3 no-gutters pull-right">';
             retorno += ' <div class="col-xs-3"><small style="font-weight:550 !important">' + o.Name + '</small></div>';
             retorno += ' <div class="col-xs-12">';
-            retorno += ' <input type="number" ParHeaderField_Id=' + o.Id +' class="col-xs-12 input-sm" data-cb="cb'+ o.Id +'" style="text-align: center;" >';
+            retorno += ' <input type="number" ParHeaderField_Id=' + o.Id + ' class="col-xs-12 input-sm" data-cb="cb' + o.Id + '" style="text-align: center;" >';
             retorno += ' </div>';
             retorno += ' </div>';
         });

@@ -238,7 +238,8 @@ INSERT INTO [dbo].[Collection]
                     ParDepartment_Id = x.ParDepartment_Id,
                     ParFrequency_Id = x.Parfrequency_Id,
                     AuditorId = x.UserSgq_Id ?? 0,
-                    CollectionDate = x.CollectionDate.Value
+                    CollectionDate = x.CollectionDate.Value,
+                    Outros = x.Outros
                 })
                 .Distinct()
                 .ToList();
@@ -288,6 +289,11 @@ INSERT INTO [dbo].[Collection]
             List<ParEvaluation> listaParEvaluation;
             List<ParCluster> listaParCluster;
             List<ParClusterGroup> listaParClusterGroup;
+            List<ParQualificationViewModel> listaParQualification;
+            List<PargroupQualificationXParQualificationVewModel> listaPargroupQualificationXParQualification;
+            List<PargroupQualificationXParLevel3ValueViewModel> listaPargroupQualificationXParLevel3Value;
+            List<PargroupQualificationViewModel> listaPargroupQualification;
+
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
@@ -628,6 +634,77 @@ INSERT INTO [dbo].[Collection]
 
                 listaParClusterGroup = db.ParClusterGroup
                     .Where(x => x.IsActive && x.Id == appParametrization.ParClusterGroup_Id).ToList();
+
+                var listaParLevel3_Ids = new List<int>();
+                foreach (var item in listaParLevel3Value)
+                {
+                    listaParLevel3_Ids.Add(item.Id);
+                }
+
+                listaPargroupQualificationXParLevel3Value = db.PargroupQualificationXParLevel3Value
+                     .Where(x => listaParLevel3_Ids.Any(y => y == x.ParLevel3Value_Id))
+                     .Select(x => new PargroupQualificationXParLevel3ValueViewModel()
+                     {
+                         Id = x.Id,
+                         PargroupQualification_Id = x.PargroupQualification_Id,
+                         ParLevel3Value_Id = x.ParLevel3Value_Id,
+                         Value = x.Value,
+                         IsActive = x.IsActive
+                     })
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                var listaPargroupQualificationXParLevel3Value_Ids = new List<int>();
+                foreach (var item in listaPargroupQualificationXParLevel3Value)
+                {
+                    listaPargroupQualificationXParLevel3Value_Ids.Add(item.PargroupQualification_Id);
+                }
+
+                listaPargroupQualificationXParQualification = db.PargroupQualificationXParQualification
+                    .Select(x => new PargroupQualificationXParQualificationVewModel()
+                    {
+                        Id = x.Id,
+                        PargroupQualification_Id = x.PargroupQualification_Id,
+                        ParQualification_Id = x.ParQualification_Id,
+                        IsActive = x.IsActive
+                    })
+                    .Where(x => listaPargroupQualificationXParLevel3Value_Ids.Any(y => y == x.PargroupQualification_Id))
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                var listaPargroupQualificationXParQualification_Ids = new List<int?>();
+                foreach (var item in listaPargroupQualificationXParQualification)
+                {
+                    listaPargroupQualificationXParQualification_Ids.Add(item.ParQualification_Id);
+                }
+
+                listaParQualification = db.ParQualification
+                    .Select(x => new ParQualificationViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        IsActive = x.IsActive
+                    })
+                    .Where(x => listaPargroupQualificationXParQualification_Ids.Any(y => y== x.Id))
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                var listaPargroupQualification_Ids = new List<int?>();
+                foreach (var item in listaPargroupQualificationXParQualification)
+                {
+                    listaPargroupQualification_Ids.Add(item.Id);
+                }
+
+                listaPargroupQualification = db.PargroupQualification
+                   .Select(x => new PargroupQualificationViewModel()
+                   {
+                       Id = x.Id,
+                       Name = x.Name,
+                       IsActive = x.IsActive
+                   })
+                   .Where(x => listaPargroupQualification_Ids.Any(y => y == x.Id))
+                   .Where(x => x.IsActive)
+                   .ToList();
             }
 
             return Ok(new
@@ -657,8 +734,12 @@ INSERT INTO [dbo].[Collection]
                 listaRotinaIntegracaoOffline,
                 listaParCluster,
                 listaParClusterGroup,
-                listaParEvaluation
-            });
+                listaParEvaluation,
+                listaParQualification,
+                listaPargroupQualification,
+                listaPargroupQualificationXParQualification,
+                listaPargroupQualificationXParLevel3Value
+        });
         }
 
         [HttpPost]
