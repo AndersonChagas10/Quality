@@ -720,20 +720,20 @@ public class RelatorioDeResultadoSearaResultsSet
 
         if (form.ShowModeloGrafico_Id[0] == 2)
         {
-            campos = $@" cast(year(CollectionDate) as varchar) + '-' + case when LEN(cast(month(CollectionDate) as varchar)) = 1 then '0' + cast(month(CollectionDate) as varchar) else cast(month(CollectionDate) as varchar) end  AS UnidadeName, 0 as Unidade_Id ";
-            groupBy = $@" GROUP BY cast(year(CollectionDate) as varchar) + '-' + case when LEN(cast(month(CollectionDate) as varchar)) = 1 then '0' + cast(month(CollectionDate) as varchar) else cast(month(CollectionDate) as varchar) end ";
+            campos = $@" cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(month(CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(month(CUBOL3.CollectionDate) as varchar) else cast(month(CUBOL3.CollectionDate) as varchar) end  AS UnidadeName, 0 as Unidade_Id ";
+            groupBy = $@" GROUP BY cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(month(CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(month(CUBOL3.CollectionDate) as varchar) else cast(month(CUBOL3.CollectionDate) as varchar) end ";
             orderBy = "ORDER BY 1 ASC";
         }
         else if (form.ShowModeloGrafico_Id[0] == 3)
         {
-            campos = $@" cast(year(CollectionDate) as varchar) + '-' + case when LEN(cast(datepart(week,CollectionDate) as varchar)) = 1 then '0' + cast(datepart(week,CollectionDate) as varchar) else cast(datepart(week,CollectionDate) as varchar) end  AS UnidadeName, 0 as Unidade_Id ";
-            groupBy = $@" GROUP BY cast(year(CollectionDate) as varchar) + '-' + case when LEN(cast(datepart(week,CollectionDate) as varchar)) = 1 then '0' + cast(datepart(week,CollectionDate) as varchar) else cast(datepart(week,CollectionDate) as varchar) end ";
+            campos = $@" cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(datepart(week,CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(datepart(week,CUBOL3.CollectionDate) as varchar) else cast(datepart(week,CUBOL3.CollectionDate) as varchar) end  AS UnidadeName, 0 as Unidade_Id ";
+            groupBy = $@" GROUP BY cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(datepart(week,CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(datepart(week,CUBOL3.CollectionDate) as varchar) else cast(datepart(week,CUBOL3.CollectionDate) as varchar) end ";
             orderBy = "ORDER BY 1 ASC";
         }
         else if (form.ShowModeloGrafico_Id[0] == 4)
         {
-            campos = $@" convert(varchar, CollectionDate ,103)  AS UnidadeName, 0 as Unidade_Id ";
-            groupBy = $@" GROUP BY convert(varchar, CollectionDate ,103) ";
+            campos = $@" convert(varchar, CUBOL3.CollectionDate ,103) Data ,C.Name as UnidadeName, 0 as Unidade_Id ";
+            groupBy = $@" GROUP BY convert(varchar, CUBOL3.CollectionDate ,103)	,C.Name ";
             orderBy = "ORDER BY 1 ASC";
         }
         else if (form.ShowDimensaoGrafico_Id.Length > 0)
@@ -834,45 +834,30 @@ public class RelatorioDeResultadoSearaResultsSet
 					UnidadeName
 					,Unidade_Id
 					,AV
-					,NC
+					,(NC)
 					,C
 					,(C / AV) * 100 AS PORCC
 					,(NC / AV) * 100 AS PORCNC
                     {selects}
 				FROM (SELECT 
 	                {campos}
-                    ,SUM(CUBOL3.WeiEvaluation) AS AV
-					,SUM(CUBOL3.WeiDefects) AS NC
-					,SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects) AS C
-                    
-	                FROM DW.Cubo_Coleta_L3 CUBOL3 WITH (NOLOCK)
-
-					INNER JOIN ParCompany C WITH (NOLOCK)
-						ON CUBOL3.UnitId = C.Id
-
-					INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
-						ON CUBOL3.ParLevel1_Id = PL1.Id
-
-					INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
-						ON CUBOL3.ParLevel2_Id = PL2.Id
-
-					INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
-						ON CUBOL3.ParLevel3_Id = PL3.Id
-							
-					--CROSS APPLY (SELECT TOP 1 CL2.id FROM collectionlevel2 CL2 
-					--			WHERE CL2.CollectionDate = CUBOL3.CollectionDate) CL2
-				 INNER join CollectionLevel2 cl2
-				  on cl2.CollectionDate = CUBOL3.CollectionDate
-
-					left JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP
-						ON CSFP.CollectionLevel2_Id = CL2.Id
-
-                    left JOIN ParFamiliaProduto SFP WITH (NOLOCK)
-	                    ON CSFP.ParFamiliaProduto_Id = SFP.Id
-
-                    left JOIN ParProduto SP WITH (NOLOCK)
-	                    ON CSFP.ParProduto_Id = SP.Id
-
+                    ,SUM(CUBOL3.WeiEvaluation) AS AV	
+					,SUM(CUBOL3.WeiDefects) AS NC	
+					,SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects) AS C	
+                    	
+	        FROM DW.Cubo_Coleta_L3 CUBOL3 WITH (NOLOCK)	
+					INNER JOIN ParCompany C WITH (NOLOCK)	
+						ON CUBOL3.UnitId = C.Id	
+					INNER JOIN ParLevel1 PL1 WITH (NOLOCK)	
+						ON CUBOL3.ParLevel1_Id = PL1.Id	
+					INNER JOIN ParLevel2 PL2 WITH (NOLOCK)	
+						ON CUBOL3.ParLevel2_Id = PL2.Id	
+					INNER JOIN ParLevel3 PL3 WITH (NOLOCK)	
+						ON CUBOL3.ParLevel3_Id = PL3.Id	
+                    left JOIN ParFamiliaProduto SFP WITH (NOLOCK)	
+	                    ON SFP.Id = CUBOL3.ParFamiliaProduto_id	
+                    left JOIN ParProduto SP WITH (NOLOCK)	
+	                    ON  SP.Id = CUBOL3.ParProduto_Id	
 					WHERE 1 = 1
 					AND CUBOL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 
