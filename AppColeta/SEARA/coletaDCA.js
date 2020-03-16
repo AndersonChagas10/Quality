@@ -751,6 +751,20 @@ $('body').off('click', '[data-na-dca]').on('click', '[data-na-dca]', function (e
 
  });
 
+ 
+ $('body')
+    .off('keyup', '[data-linha-coleta][data-parlevel3inputtype="2"] input')
+    .on('keyup', '[data-linha-coleta][data-parlevel3inputtype="2"] input', function () {
+    var quantidadeDeDefeitos = $(this).val();
+    var linhaTarefa = $(this).parent('[data-linha-coleta]');
+    var maxSample = parseInt($(linhaTarefa).attr('data-samplemax'));
+            
+    $(this).removeClass('btn-danger');
+    if(maxSample < quantidadeDeDefeitos || quantidadeDeDefeitos < 0){
+        $(this).addClass('btn-danger');
+    }
+});
+
 $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', function () {
 
     if(!hederFieldIsValid("#headerFieldLevel2")){
@@ -809,7 +823,7 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
                 WeiEvaluation: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')) * currentEvaluation,
                 Evaluation: currentEvaluation,
                 WeiDefects: isNA ? 0 : (isConform ? 0 : 1) * parseInt($(linhaTarefa).attr('data-peso')),
-                Sample: currentSample,
+                Sample: ++currentSample,
                 Outros: '{ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', ParProduto_Id:'+currentProdutoDCA_Id+'}'
             };
 
