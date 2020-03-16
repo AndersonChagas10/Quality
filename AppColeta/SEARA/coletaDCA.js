@@ -756,7 +756,7 @@ $('body').off('click', '[data-na-dca]').on('click', '[data-na-dca]', function (e
     .off('keyup', '[data-linha-coleta][data-parlevel3inputtype="2"] input')
     .on('keyup', '[data-linha-coleta][data-parlevel3inputtype="2"] input', function () {
     var quantidadeDeDefeitos = $(this).val();
-    var linhaTarefa = $(this).parent('[data-linha-coleta]');
+    var linhaTarefa = $(this).parents('[data-linha-coleta]');
     var maxSample = parseInt($(linhaTarefa).attr('data-samplemax'));
             
     $(this).removeClass('btn-danger');
