@@ -76,6 +76,8 @@ public class ApontamentosDiariosResultSet
 
     public string CriticalLevel { get; set; }
 
+    public string Qualification_Group { get; set; }
+
     public string Select(DataCarrierFormulario form)
     {
         var dtInit = form._dataInicio.ToString("yyyyMMdd");
@@ -932,10 +934,16 @@ public class ApontamentosDiariosResultSet
 					   ,R3.IsConform
 					   ,R3.IsNotEvaluate
 					   ,R3.WeiEvaluation
-					   ,R3.WeiDefects INTO #Result_Level3
+					   ,R3.WeiDefects
+                       ,RPQ.Qualification_Value	
+					   ,PQ.Name INTO #Result_Level3
 					FROM Result_Level3 R3 WITH (NOLOCK)
 					INNER JOIN #CollectionLevel2 C2
 						ON R3.CollectionLevel2_Id = C2.Id
+                    INNER JOIN ResultLevel3XParQualification RPQ	
+						on rpq.ResultLevel3_Id = r3.Id	
+					INNER JOIN ParQualification PQ	
+						ON PQ.id = RPQ.Qualification_Value
 	
 
 										CREATE INDEX IDX_Result_Level3_CollectionLevel2_ID ON #Result_Level3(CollectionLevel2_Id);
@@ -1131,6 +1139,7 @@ public class ApontamentosDiariosResultSet
 					   ,pgc.Name as GrupoCluster
 					   ,psg.Name as GrupoEmpresa
 					   ,pg.Name as regional
+                       ,R3.name Qualification_Group
 					FROM #CollectionLevel2 C2 (NOLOCK)
 					INNER JOIN ParCompany UN with (NOLOCK)
 						ON UN.Id = C2.UnitId
