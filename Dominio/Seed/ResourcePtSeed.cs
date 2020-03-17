@@ -999,6 +999,8 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "parStructure2", Value = "Grupo de Empresa"});
                 ResourcesInserir.Add(new ResourcePT() { Key = "parStructure3", Value = "Regional"});
                 ResourcesInserir.Add(new ResourcePT() { Key = "user", Value = "Usuário" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "consistency_call", Value = "Consistency Call" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "product", Value = "Produto" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
