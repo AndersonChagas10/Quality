@@ -530,7 +530,7 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     
     html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info-limitenc><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div></a>';
 
-    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra hide">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
     var htmlAmostraNC = '<div class="col-xs-2 amostras-nc">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
@@ -791,7 +791,7 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
         var quantidadeDeDefeitos = linhaTarefa.find('input[type="number"]').val();
         
         if(maxSample < quantidadeDeDefeitos || quantidadeDeDefeitos < 0){
-            openMensagem("Foi informado mais defeitos que a quantidade de amostra!","yellow", "black");
+            openMensagem("O valor digitado não está de acordo com o número de amostra.","yellow", "black");
             setTimeout(closeMensagem, 3000);
             return false;
         }
