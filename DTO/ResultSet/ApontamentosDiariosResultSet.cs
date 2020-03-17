@@ -940,9 +940,9 @@ public class ApontamentosDiariosResultSet
 					FROM Result_Level3 R3 WITH (NOLOCK)
 					INNER JOIN #CollectionLevel2 C2
 						ON R3.CollectionLevel2_Id = C2.Id
-                    INNER JOIN ResultLevel3XParQualification RPQ	
+                    LEFT JOIN ResultLevel3XParQualification RPQ	
 						on rpq.ResultLevel3_Id = r3.Id	
-					INNER JOIN ParQualification PQ	
+					LEFT JOIN ParQualification PQ	
 						ON PQ.id = RPQ.Qualification_Value
 	
 
@@ -1139,7 +1139,7 @@ public class ApontamentosDiariosResultSet
 					   ,pgc.Name as GrupoCluster
 					   ,psg.Name as GrupoEmpresa
 					   ,pg.Name as regional
-                       ,R3.name Qualification_Group
+                       ,ISNULL( R3.Name, 'Sem dados' )Qualification_Group
 					FROM #CollectionLevel2 C2 (NOLOCK)
 					INNER JOIN ParCompany UN with (NOLOCK)
 						ON UN.Id = C2.UnitId
