@@ -80,3 +80,9 @@ function criaHtmlSelect(titulo,options){
 	'	<select class="form-control">'+options+'</select>'+
 	'</div>';
 }
+
+function dateDiff(date1, date2) {
+    var dataInicial = new Date(date1);
+    var dataFinal = new Date(date2);
+    return Math.abs(dataFinal - dataInicial) / 1000 / 60 / 60 / 24;
+}
