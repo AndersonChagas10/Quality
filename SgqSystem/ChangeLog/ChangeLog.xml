@@ -2546,5 +2546,13 @@
 
     </Script>
   </Card>
+  
+  <Card>
+    <CardNumber>SGQ-483</CardNumber>
+    <Version>1.3.0</Version>
+    <Description> [GQ] Retorno dos pontos da tabela de edição.</Description>
+    <Script>
+    </Script>
+  </Card>
 
 </Cards>
