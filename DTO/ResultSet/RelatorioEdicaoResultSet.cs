@@ -26,10 +26,10 @@ namespace DTO.ResultSet
 
         private string _valor_Texto { get; set; }
 
-        public string Valor_Texto 
+        public string Valor_Texto
         {
-             get { return _result_Level3?.ValueText == "undefined" || _result_Level3?.ValueText == "null" ?  "" : _result_Level3?.ValueText ?? this._valor_Texto; } 
-             set { _valor_Texto = value; }
+            get { return _result_Level3?.ValueText == "undefined" || _result_Level3?.ValueText == "null" ? "" : _result_Level3?.ValueText ?? this._valor_Texto; }
+            set { _valor_Texto = value; }
         }
 
 
@@ -48,14 +48,14 @@ namespace DTO.ResultSet
         public bool IsConform { get { return Convert.ToBoolean(_result_Level3?.IsConform); } }
         public string Conforme { get; set; }
         public int EvaluationNumber { get; set; }
-        public string AVALIADO_NAO_AVALIADO { get { return Convert.ToString( _result_Level3?.IsNotEvaluate == false? 0 : 1); } }
+        public string AVALIADO_NAO_AVALIADO { get { return Convert.ToString(_result_Level3?.IsNotEvaluate == false ? 0 : 1); } }
         public int Avaliado { get; set; }
         public string Avaliacao { get; set; }
         public string Amostra { get; set; }
         public System.DateTime Data_Adicao { get; set; }
         public string _Data_Adicao { get { return Data_Adicao.ToShortDateString(); } }
-        public string Av_Peso { get { return Convert.ToString(_result_Level3?.WeiEvaluation); } }
-        public string NC_Peso { get { return Convert.ToString(_result_Level3?.WeiDefects); } }
+        public string Av_Peso { get { return Convert.ToString(Convert.ToInt32(_result_Level3?.WeiEvaluation)); } }
+        public string NC_Peso { get { return Convert.ToString(Convert.ToInt32(_result_Level3?.WeiDefects)); } }
         public string CamposCabecalho { get; set; }
         public string json { get; set; }
         private Dominio.Result_Level3 _result_Level3
@@ -91,7 +91,7 @@ namespace DTO.ResultSet
         {
             var dtInit = form.startDate.ToString("yyyyMMdd");
             var dtF = form.endDate.ToString("yyyyMMdd");
-            
+
             var sqlModulo = "";
             var sqlTurno = "";
             var sqlUnidade = "";
@@ -367,7 +367,7 @@ namespace DTO.ResultSet
             var dtInit = form.startDate.ToString("yyyyMMdd");
             var dtF = form.endDate.ToString("yyyyMMdd");
 
-            var  sqlModulo = "";
+            var sqlModulo = "";
             var sqlTurno = "";
             var sqlUnidade = "";
             var sqlLevel1 = "";
@@ -613,4 +613,3 @@ namespace DTO.ResultSet
             return query;
         }
     }
-}
