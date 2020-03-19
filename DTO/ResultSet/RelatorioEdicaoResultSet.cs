@@ -22,16 +22,48 @@ namespace DTO.ResultSet
         public string Nome_Cabecalho { get { return _CollectionLevel2XParHeaderField?.ParHeaderField_Name; } }
 
         public string HeaderField_Editado { get; set; }
-        public string Resultado { get { return _result_Level3?.Value ?? _CollectionLevel2XParHeaderField?.Value; } }
+        public string Resultado
+        {
+            get
+            {
+                DateTime data;
+                if (DateTime.TryParse(_result_Level3?.Value, out data))
+                {
+                    return data.ToString("dd/MM/yyyy");
+                }
+                else if (_CollectionLevel2XParHeaderField?.ParHeaderField_ValueName != null)
+                {
+                    return _CollectionLevel2XParHeaderField?.ParHeaderField_ValueName;
+                }
+                else
+                {
+                    return _result_Level3?.Value;
+                }
+            }
+        }
 
         private string _valor_Texto { get; set; }
 
         public string Valor_Texto
         {
-            get { return _result_Level3?.ValueText == "undefined" || _result_Level3?.ValueText == "null" ? "" : _result_Level3?.ValueText ?? this._valor_Texto; }
+            get
+            {
+                DateTime data;
+                if (DateTime.TryParse(this._valor_Texto, out data))
+                {
+                    return data.ToString("dd/MM/yyyy");
+                }
+                else if (_result_Level3?.ValueText != "undefined" && _result_Level3?.ValueText != "null" && _result_Level3?.ValueText != null)
+                {
+                    return _result_Level3?.ValueText;
+                }
+                else
+                {
+                    return this._valor_Texto;
+                }
+            }
             set { _valor_Texto = value; }
         }
-
 
         public int? Evaluation { get { return Convert.ToInt32(_result_Level3?.Evaluation ?? _CollectionLevel2XParHeaderField?.Evaluation); } }
         public Nullable<int> Sample { get { return _CollectionLevel2XParHeaderField?.Sample; } }
@@ -188,176 +220,134 @@ namespace DTO.ResultSet
             #endregion
 
             var query = $@"
-                   SELECT
-							CL2HF.CollectionLevel2_Id
-						   ,STUFF((SELECT DISTINCT
-									', ' + CONCAT(HF.Name, ': ', CASE
-										WHEN CL2HF2.ParFieldType_Id = 1 OR
-											CL2HF2.ParFieldType_Id = 3 THEN PMV.Name
-										WHEN CL2HF2.ParFieldType_Id = 2 THEN CASE
-												WHEN HF.Description = 'Produto' THEN CAST(PRD.nCdProduto AS VARCHAR(500)) + ' - ' + PRD.cNmProduto
-												ELSE EQP.Nome
-											END
-										WHEN CL2HF2.ParFieldType_Id = 6 THEN CONVERT(VARCHAR, CL2HF2.Value, 103)
-										ELSE CL2HF2.Value
-									END)
-								FROM CollectionLevel2XParHeaderField CL2HF2 (NOLOCK)
-								LEFT JOIN CollectionLevel2 CL2 (NOLOCK)
-									ON CL2.Id = CL2HF2.CollectionLevel2_Id
-								LEFT JOIN ParHeaderField HF (NOLOCK)
-									ON CL2HF2.ParHeaderField_Id = HF.Id
-								LEFT JOIN ParLevel2 L2 (NOLOCK)
-									ON L2.Id = CL2.ParLevel2_Id
-								LEFT JOIN ParMultipleValues PMV (NOLOCK)
-									ON CL2HF2.Value = CAST(PMV.Id AS VARCHAR(500))
-									AND CL2HF2.ParFieldType_Id <> 2
-								LEFT JOIN Equipamentos EQP (NOLOCK)
-									ON CAST(EQP.Id AS VARCHAR(500)) = CL2HF2.Value
-									AND EQP.ParCompany_Id = CL2.UnitId
-									AND CL2HF2.ParFieldType_Id = 2
-								LEFT JOIN Produto PRD WITH (NOLOCK)
-									ON CAST(PRD.nCdProduto AS VARCHAR(500)) = CL2HF2.Value
-									AND CL2HF2.ParFieldType_Id = 2
-								WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
-								FOR XML PATH (''))
-							, 1, 1, '') AS HeaderFieldLis INTO #CollectionLevel2XParHeaderField2
-						FROM CollectionLevel2XParHeaderField CL2HF (NOLOCK)
-						INNER JOIN CollectionLevel2 CL2 (NOLOCK)
-							ON CL2.Id = CL2HF.CollectionLevel2_Id
-						LEFT JOIN ParHeaderField HF (NOLOCK)
-							ON CL2HF.ParHeaderField_Id = HF.Id
-						LEFT JOIN ParLevel2 L2 (NOLOCK)
-							ON L2.Id = CL2.ParLevel2_Id
-						GROUP BY CL2HF.CollectionLevel2_Id
-
-	        	DECLARE @dtinicio varchar(30), @dtfinal varchar(30)
-	        	--SET @dtinicio = '2019-01-30 00:00:51'
-	        	--SET @dtfinal = '2019-12-31 23:59:59'
-
-	        	SELECT
-							cl.Id ID_collectionlv2
-						   ,p1.Name AS Indicador
-						   ,p2.Name AS Monitoramento
-						   ,cl.CollectionDate AS _Data_Coleta
-						   ,lt.AddDate AS _Data_Alteracao
-						   --,clhf.ParHeaderField_Name as Nome_Cabecalho
-						   --,SUBSTRING(cl2hf.headerfieldlis,9,15) Resultado
-						   ,CLHF.Value as Valor_Texto 
-						   --,CLHF.Evaluation
-						   --,CLHF.Sample
-						   ,USC.Name AS Usuario_Coleta
-						   ,USA.Name AS Usuario_Alteracao
-						   ,lt.ParReason_Id
-						   ,pr.Motivo
-						   ,lt.Motivo AS DescMotivo
-						   ,CASE
-								WHEN lt.ParReason_Id IS NULL THEN 'Original'
-								ELSE 'Editado'
-							END AS 'ORIGINAL_EDITADO' 
-							,cl.adddate as Data_Adicao
-							,lt.Json as json
-
-						FROM
-						-- Log
-						LogTrack lt
-
-						--Edição Cabeçalho
-
-						-- Coleta  
-						INNER JOIN CollectionLevel2XParHeaderField CLHF (NOLOCK)
-
-							ON CLHF.Id = lt.Json_Id
-
-						LEFT JOIN CollectionLevel2 cl (NOLOCK)
-
-							ON cl.Id = CLHF.CollectionLevel2_Id
-
-						LEFT JOIN #CollectionLevel2XParHeaderField2 cl2hf (NOLOCK)
-							ON cl2hf.CollectionLevel2_Id = cl.Id
-
-                        LEFT JOIN ParLevel1XModule plx 
-				        	ON plx.ParLevel1_Id = cl.ParLevel1_Id
-
-						-- Parametrizacao
-						LEFT JOIN ParLevel1 p1 (NOLOCK)
-
-							ON p1.Id = cl.ParLevel1_Id
-
-						LEFT JOIN ParLevel2 p2 (NOLOCK)
-
-							ON p2.Id = cl.ParLevel2_Id
-
-						LEFT JOIN ParLevel1XModule pxm
-							ON pxm.ParLevel1_Id = p1.Id
-
-
-						LEFT JOIN ParCompany pc
-							ON pc.Id = cl.UnitId
-
-						-- Dim Usuario
-
-						left JOIN UserSgq USC (NOLOCK)
-
-							ON USC.Id = cl.AuditorId
-
-						LEFT JOIN UserSgq USA (NOLOCK)
-
-							ON USA.Id = lt.UserSgq_Id
-
-						-- Cabeçalho
-						LEFT JOIN ParHeaderField ph (NOLOCK)
-
-							ON ph.Id = CLHF.ParHeaderField_Id
-
-
-						-- Motivos
-						LEFT JOIN ParReason pr (NOLOCK)
-
-							ON pr.Id = lt.ParReason_Id
-
-
-						INNER JOIN ParMultipleValues pmv (NOLOCK)
-
-							ON pmv.Id = ph.Id
-
-
-						WHERE 1 = 1
-
-               AND cl.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-               AND lt.Tabela = 'CollectionLevel2XParHeaderField'-- Tabela
-                         { sqlModulo }                         
-                         { sqlTurno }                         
-                         { sqlUnidade }
-                         { sqlLevel1 } 
-                         { sqlLevel2 } 
-                         { sqlSgqMonitor }
-                         { sqlParReason }
-               
-
-              GROUP BY cl.Id
-								,p1.Name
-								,p2.Name
-								,cl.CollectionDate
-								,lt.AddDate
-								,cl2hf.headerfieldlis
-								,CLHF.Value
-								,CLHF.Evaluation
-								,CLHF.Sample
-								,USC.Name
-								,USA.Name
-								,lt.ParReason_Id
-								,pr.Motivo
-								,lt.Motivo
-								,cl.adddate
-								,clhf.ParHeaderField_Name
-                                ,lt.Json
-						ORDER BY lt.AddDate ASC
-
-
-               DROP TABLE #CollectionLevel2XParHeaderField2
-
-
-            ";
+                    --DECLARE @dtinicio varchar(30)
+                    --DECLARE @dtfinal varchar(30)
+                    --SET @dtinicio = '2019-01-30 00:00:51'
+                    --SET @dtfinal = '2019-12-31 23:59:59'
+                    
+                    SELECT
+                    	cl.Id ID_collectionlv2
+                       ,p1.Name AS Indicador
+                       ,p2.Name AS Monitoramento
+                       ,cl.CollectionDate AS _Data_Coleta
+                       ,lt.AddDate AS _Data_Alteracao
+                       ,CASE
+                    		WHEN CLHF.ParFieldType_Id = 1 OR
+                    			CLHF.ParFieldType_Id = 3 THEN PMV.Name
+                    		WHEN CLHF.ParFieldType_Id = 2 THEN CASE
+                    				WHEN HF.Description = 'Produto' THEN CAST(PRD.nCdProduto AS VARCHAR(500)) + ' - ' + PRD.cNmProduto
+                    				ELSE EQP.Nome
+                    			END
+                    		WHEN CLHF.ParFieldType_Id = 6 THEN CONVERT(VARCHAR, CLHF.Value, 103)
+                    		ELSE CLHF.Value
+                    	END Valor_Texto
+                    	--,CLHF.Evaluation
+                    	--,CLHF.Sample
+                       ,USC.Name AS Usuario_Coleta
+                       ,USA.Name AS Usuario_Alteracao
+                       ,lt.ParReason_Id
+                       ,pr.Motivo
+                       ,lt.Motivo AS DescMotivo
+                       ,CASE
+                    		WHEN lt.ParReason_Id IS NULL THEN 'Original'
+                    		ELSE 'Editado'
+                    	END AS 'ORIGINAL_EDITADO'
+                       ,cl.AddDate AS Data_Adicao
+                       ,lt.json AS json
+                    
+                    FROM
+                    -- Log
+                    LogTrack lt
+                    
+                    --Edição Cabeçalho
+                    
+                    -- Coleta  
+                    INNER JOIN CollectionLevel2XParHeaderField CLHF WITH (NOLOCK)
+                    	ON CLHF.Id = lt.Json_Id
+                    
+                    LEFT JOIN CollectionLevel2 cl WITH (NOLOCK)
+                    	ON cl.Id = CLHF.CollectionLevel2_Id
+                    
+                    LEFT JOIN ParLevel1XModule plx WITH (NOLOCK)
+                    	ON plx.ParLevel1_Id = cl.ParLevel1_Id
+                    
+                    -- Parametrizacao
+                    LEFT JOIN ParLevel1 p1 WITH (NOLOCK)
+                    	ON p1.Id = cl.ParLevel1_Id
+                    
+                    LEFT JOIN ParLevel2 p2 WITH (NOLOCK)
+                    	ON p2.Id = cl.ParLevel2_Id
+                    
+                    LEFT JOIN ParLevel1XModule pxm WITH (NOLOCK)
+                    	ON pxm.ParLevel1_Id = p1.Id
+                    
+                    
+                    LEFT JOIN ParCompany pc WITH (NOLOCK)
+                    	ON pc.Id = cl.UnitId
+                    
+                    -- Dim Usuario
+                    
+                    LEFT JOIN UserSgq USC WITH (NOLOCK)
+                    	ON USC.Id = cl.AuditorId
+                    
+                    LEFT JOIN UserSgq USA WITH (NOLOCK)
+                    	ON USA.Id = lt.UserSgq_Id
+                    
+                    -- Motivos
+                    LEFT JOIN ParReason pr WITH (NOLOCK)
+                    	ON pr.Id = lt.ParReason_Id
+                    
+                    
+                    LEFT JOIN ParMultipleValues PMV WITH (NOLOCK)
+                    	ON CLHF.Value = CAST(PMV.Id AS VARCHAR(500))
+                    
+                    LEFT JOIN Produto PRD WITH (NOLOCK)
+                    	ON CAST(PRD.nCdProduto AS VARCHAR(500)) = CLHF.Value
+                    
+                    
+                    LEFT JOIN ParHeaderField HF WITH (NOLOCK)
+                    	ON CLHF.ParHeaderField_Id = HF.Id
+                    
+                    LEFT JOIN Equipamentos EQP WITH (NOLOCK)
+                    	ON CAST(EQP.Id AS VARCHAR(500)) = CLHF.Value
+                    		AND EQP.ParCompany_Id = cl.UnitId
+                    		AND CLHF.ParFieldType_Id = 2
+                    WHERE 1 = 1
+                    
+                    --      AND cl.CollectionDate BETWEEN '20190310 00:00' AND '20200310  23:59:59' -- Filtro Data
+                    AND lt.Tabela = 'CollectionLevel2XParHeaderField'-- Tabela
+                    { sqlModulo }                         
+                    { sqlTurno }                         
+                    { sqlUnidade }
+                    { sqlLevel1 } 
+                    { sqlLevel2 } 
+                    { sqlSgqMonitor }
+                    { sqlParReason }
+                    GROUP BY cl.Id
+                    		,p1.Name
+                    		,p2.Name
+                    		,cl.CollectionDate
+                    		,lt.AddDate
+                    		,CLHF.Value
+                    		,CLHF.Evaluation
+                    		,CLHF.Sample
+                    		,USC.Name
+                    		,USA.Name
+                    		,lt.ParReason_Id
+                    		,pr.Motivo
+                    		,lt.Motivo
+                    		,cl.AddDate
+                    		,lt.json
+                    		,PMV.Name
+                    		,CLHF.ParFieldType_Id
+                    		,HF.Description
+                    		,PRD.nCdProduto
+                    		,PRD.cNmProduto
+                    		,EQP.Nome
+                    
+                    ORDER BY lt.AddDate ASC
+                    
+                    DROP TABLE #CollectionLevel2XParHeaderField2";
 
             return query;
         }
@@ -613,3 +603,4 @@ namespace DTO.ResultSet
             return query;
         }
     }
+}
