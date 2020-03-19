@@ -2919,4 +2919,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-492</CardNumber>
+    <Version>1.6.0</Version>
+    <Description>[RH SESMT] Opção Data no tipo de dado de entrada Resultado.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
