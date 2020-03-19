@@ -516,7 +516,7 @@ namespace DTO.ResultSet
 				   --,rl.ValueText as Valor_Texto 
 	        	    ,CASE
 	        		 	WHEN rl.isconform = 1 THEN 'Conforme'
-	        		 	ELSE 'Nâo Conforme'
+	        		 	ELSE 'Não Conforme'
 	        		 END AS Conforme
 	        	   --,CASE
 	        		--	WHEN rl.IsNotEvaluate = 0 THEN 'Avaliado'

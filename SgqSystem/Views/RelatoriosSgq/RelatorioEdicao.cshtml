@@ -31,25 +31,45 @@
 
     @*<div class="page-content-wrapper">
         <div class="page-content">*@
-            <div id="divRelatorioEdicao"></div>
+    <div id="divRelatorioEdicao"></div>
 
-            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
-            <div id="divTable">
-                <table id="resultadoEdicao" class="table table-striped"></table>
-            </div>
-        @*</div>
-    </div>*@
+    @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+    <div id="divTable">
+        <table id="resultadoEdicao" class="table table-striped"></table>
+    </div>
+    @*</div>
+        </div>*@
 }
 
 @section Scripts {
     <script>
-
         var urlGet = '@Html.Raw(@urlGet)';
+        var $btn = $('#btnSend');
+
+        $(document).ready(function () {
+
+            closeLeftSidebar();
+
+            $("#btnSend").click(function (e) {
+                enviarFiltro(true);
+            });
+
+            $('[name="parModule_Ids"]').parent().find('label strong').append('<span style="color:red;font-size:20px"> *</span>');
+        });
 
         function enviarFiltro() {
+            $btn.button('loading');
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            $btn.button('reset');
+
             openLoader('Aguarde...');
             //$('#resultadoEdicao').empty();
-            $('#divRelatorioEdicao').empty(); 
+            $('#divRelatorioEdicao').empty();
 
             $('#divTable').hide();
 
@@ -74,6 +94,18 @@
             });
         }
 
+        function ValidaDadosParaEnvio() {
+
+            GuardJs.esconderMensagem();
+
+            //Modulo
+            if (!objFiltro.parModule_Ids || objFiltro.parModule_Ids.length <= 0) {
+                GuardJs.exibirMensagemAlerta("O filtro Módulo é obrigatório")
+                return false;
+            }
+            return true;
+        }
+
         function preencheRetornoGrafico(msg) {
             $('#divRelatorioEdicao').html("<div class='alert alert-info'>" + msg + "</div>");
         }
@@ -87,24 +119,24 @@
             else {
 
                 //Fim Regra
-               
+
                 var colunas = [];
 
                 var tipoEdicao = $("[name='tipoEdicao']").val();
 
-               
+
                 if (tipoEdicao == 1)
                 {
-                     // EdicaoResultado 
+                     // EdicaoResultado
                     colunas = [
                         { title: "@Resources.Resource.audit", mData: "Indicador" },
                         { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
                         { title: "Tarefa", mData: "Tarefa" },
-                        { title: "Data Coleta", mData: "Data_Coleta" }, 
+                        { title: "Data Coleta", mData: "Data_Coleta" },
                         { title: "Data Alteração", mData: "Data_Alteracao" },
                         { title: "Resultado", mData: "Resultado" },
-                        { title: "Valor do Texto ", mData: "Valor_Texto" }, 
-                        { title: "Conforme?", mData: "Conforme" }, 
+                        { title: "Valor do Texto ", mData: "Valor_Texto" },
+                        { title: "Conforme?", mData: "Conforme" },
                         { title: "Nâo avaliado", mData: "AVALIADO_NAO_AVALIADO" },
                         { title: "Quem", mData: "Usuario_Coleta" },
                         { title: "Tipo Motivo", mData: "Motivo" },
@@ -125,20 +157,20 @@
                     colunas = [
                         { title: "@Resources.Resource.audit", mData: "Indicador" },
                         { title: "@Resources.Resource.monitoring", mData: "Monitoramento" },
-                        { title: "Data da Coleta", mData: "Data_Coleta" }, 
-                        { title: "Data Alteracao", mData: "Data_Alteracao" }, 
+                        { title: "Data da Coleta", mData: "Data_Coleta" },
+                        { title: "Data Alteracao", mData: "Data_Alteracao" },
                         { title: "Nome Cabeçalho", mData: "Nome_Cabecalho" },
                         { title: "Resultado", mData: "Resultado" },
                         //{ title: "Valor Alt", mData: "Resultado" },
-                        { title: "Valor do Texto", mData: "Valor_Texto" }, 
+                        { title: "Valor do Texto", mData: "Valor_Texto" },
                         { title: "Quem", mData: "Usuario_Coleta" },
                         { title: "Tipo Motivo", mData: "Motivo" },
                         { title: "Justificativa", mData: "DescMotivo" },
                         { title: "Original/Editado", mData: "ORIGINAL_EDITADO" },
                         { title: "Avaliado", mData: "Avaliado" },
-                        { title: "Não Conforme(Com Peso)", mData: "Avaliado" }, 
-                        { title: "Avaliação", mData: "Evaluation" },  
-                        { title: "Amostra", mData: "Sample" }, 
+                        { title: "Não Conforme(Com Peso)", mData: "Avaliado" },
+                        { title: "Avaliação", mData: "Evaluation" },
+                        { title: "Amostra", mData: "Sample" },
                         { title: "Data de Adição", mData: "_Data_Adicao" }
                     ]
                 }
@@ -171,45 +203,25 @@
                     }
                 });
 
-                var $btn = $('#btnSend');
+                //var $btn = $('#btnSend');
 
-                $("#btnSend").click(function () {
-                    Send(true);
+                //$("#btnSend").click(function () {
+                //    Send(true);
+                //});
 
-                });
+                //function Send(toggle) {
 
-                function Send(toggle) {
+                //    $btn.button('loading');
 
-                    $btn.button('loading');
+                //    if (!ValidaDadosParaEnvio()) {
+                //        $btn.button('reset');
+                //        return;
+                //    }
 
-                    if (!ValidaDadosParaEnvio()) {
-                        $btn.button('reset');
-                        return;
-                    }
-
-                    $btn.button('reset');
-                }
-
-                function ValidaDadosParaEnvio() {
-
-                    GuardJs.esconderMensagem();
-
-                    //Modulo
-                    if (!objFiltro.tipoEdicao || objFiltro.tipoEdicao.length <= 0) {
-                        GuardJs.exibirMensagemAlerta("O filtro Tipo de Edição é obrigatório")
-                        return false;
-                    }
-
-                    return true;
-
-                }
-
-                //function enviarFiltro() {
-
+                //    $btn.button('reset');
                 //}
             }
         }
-
     </script>
 }
 
