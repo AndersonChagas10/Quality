@@ -184,6 +184,12 @@
                         var oTable = $('#resultadoEdicao').dataTable();
                         if (oTable.length > 0) {
                             oTable.fnAdjustColumnSizing();
+                            var tabela = oTable[0];
+                            for (var i = 0; i < tabela.rows.length; i++) {
+                                if (tabela.rows[i].cells[10].innerText == "Editado") {
+                                    $(tabela.rows[i]).css('background-color', '##d9d9d9 !important');
+                                }
+                            }
                         }
                     }, 100);
                 }
