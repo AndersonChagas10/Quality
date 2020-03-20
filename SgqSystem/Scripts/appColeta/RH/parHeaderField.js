@@ -50,7 +50,7 @@ function getParQualification(parLevel1, parLevel2, parLevel3) {
 
     if (validaParqualification(parLevel1.Id, parLevel2.Id, parLevel3.Id).length > 0) {
 
-        retorno += ' <div class="col-xs-12 hidden" style="padding-left:10px;background-color: #e9ecef; padding-bottom: 5px;" data-level3 data-qualificationLevel3Value parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + '>';
+        retorno += ' <div class="col-xs-12 hidden" data-collapse-target="' + parLevel1.Id + '-' + parLevel2.Id + '" style="padding-left:10px;background-color: #e9ecef; padding-bottom: 5px;" data-level3 data-qualificationLevel3Value parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + '>';
         retorno += ' <div class="clearfix"></div>';
         retorno += '</div>';
 
@@ -71,7 +71,7 @@ function getParHeaderFieldGeralLevel3(parLevel1, parLevel2, parLevel3) {
 
     if (lista.length > 0) {
         var retorno = '';
-        retorno += ' <div class="col-xs-12" id="headerFieldLevel3" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + ' data-level3 style="padding-left:10px;background-color: #e9ecef; padding-bottom: 5px;">';
+        retorno += ' <div class="col-xs-12" data-collapse-target="' + parLevel1.Id + '-' + parLevel2.Id + '" id="headerFieldLevel3" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + ' data-level3 style="padding-left:10px;background-color: #e9ecef; padding-bottom: 5px;">';
         lista.forEach(function (o, i) {
 
             retorno += ' <div class="col-xs-3 no-gutters pull-right">';
