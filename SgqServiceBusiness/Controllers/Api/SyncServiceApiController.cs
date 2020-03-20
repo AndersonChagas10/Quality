@@ -51,7 +51,7 @@ namespace SgqServiceBusiness.Api
 
         }
 
-        public static List<ParFrequency> parFrequency { get; set; } 
+        public static List<ParFrequency> parFrequency { get; set; }
 
         #region Funções
 
@@ -1316,14 +1316,14 @@ namespace SgqServiceBusiness.Api
 
                         var isRecravacao = new SGQDBContext.ParLevel1(db, quebraProcesso).getById(c.level01_Id).IsRecravacao == true;
 
-                        if (IsBEA == 3 
+                        if (IsBEA == 3
                             || IsBEA == 2
                             || isRecravacao
                             || c.level01_Id == 43
                             || c.level01_Id == 42
                             || c.level01_Id == 7
                             || c.level01_Id == 90
-                            || (c.Unit_Id == 4 && c.level01_Id == 22) 
+                            || (c.Unit_Id == 4 && c.level01_Id == 22)
                             || (c.Unit_Id == 4 && c.level01_Id == 47)) //se fora a unidade de CPG reconsolida o Vácuo GRD
                             ReconsolidationToLevel3(CollectionLevel2Id.ToString());
 
@@ -5247,7 +5247,7 @@ namespace SgqServiceBusiness.Api
             htmlSelect += $@"<option value='0'> Selecione </option>";
             foreach (var item in usuariosSupervisor)
             {
-                htmlSelect += $@"<option value='{item.Id}'> {item.Name} </option>"; 
+                htmlSelect += $@"<option value='{item.Id}'> {item.Name} </option>";
             }
 
             string correctiveAction =
@@ -5288,32 +5288,17 @@ namespace SgqServiceBusiness.Api
                                     "<textarea id=\"DescriptionFailure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>" +
                                 "<div class=\"form-group\">" +
-                                    "<label>" + CommonData.getResource("immediate_corrective_action").Value.ToString() + ":</label>" +
+                                    "<label>" + CommonData.getResource("appcoleta_corrective_action_modal_input").Value.ToString() + ":</label>" +
                                     "<textarea id=\"ImmediateCorrectiveAction\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>" +
                                 "<div class=\"form-group\">" +
                                     "<label>" + CommonData.getResource("product_disposition").Value.ToString() + ":</label>" +
                                     "<textarea id=\"ProductDisposition\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
-                                "</div>" +
-                                //"<div class=\"form-group\">" +
-                                //    "<label>" + CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
-                                //    "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
-                                //"</div>" +
-                                $@"<div class='form-group'>
-                                        <label>{CommonData.getResource("corrective_action").Value.ToString()}:</label>
-                                        <div>
-		                                    <input type='checkbox' id='correctiveAction'>
-		                                    <label id='mensagemPadrao'>{DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.DefaultMessageCorrectiveAction}</label>
-                                        </div>
-	                                    <textarea id='PreventativeMeasure' class='form-control custom-control' rows='3' style='resize:none'></textarea>
-                                    </div>
-                                    <div id='divSelectSupervisor' class='form-group'>
-                                          <label>Supervisor</label>
-                                          <select id='TechinicalSignature' class='form-control custom-control'>
-		                                    {htmlSelect}
-	                                    </select>  
-                                    </div>
-                                </div>";
+                                "</div>";
+            //"<div class=\"form-group\">" +
+            //    "<label>" + CommonData.getResource("preventive_measure").Value.ToString() + ":</label>" +
+            //    "<textarea id=\"PreventativeMeasure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
+            //"</div>" +
 
             if (GlobalConfig.Eua)
             {
@@ -5336,6 +5321,24 @@ namespace SgqServiceBusiness.Api
                                         "</div>" +
                                     "</div>" +
                                 "</div>";
+            }
+            else
+            {
+                correctiveAction += $@"<div class='form-group'>
+                                       <label>{CommonData.getResource("corrective_action").Value.ToString()}:</label>
+                                       <div>
+		                                    <input type='checkbox' id='correctiveAction'>
+		                                    <label id='mensagemPadrao'>{DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.DefaultMessageCorrectiveAction}</label>
+                                       </div>
+	                                    <textarea id='PreventativeMeasure' class='form-control custom-control' rows='3' style='resize:none'></textarea>
+                                   </div>
+                                   <div id='divSelectSupervisor' class='form-group'>
+                                         <label>Supervisor<span style=""color: red""> *</span></label>
+                                         <select id='TechinicalSignature' class='form-control custom-control'>
+		                                    {htmlSelect}
+	                                    </select>  
+                                   </div>
+                               </div>";
             }
 
 
@@ -5921,7 +5924,7 @@ namespace SgqServiceBusiness.Api
             #endregion
 
             //Enquando houver lista de level2
-            foreach (var parlevel2 in parlevel02List.OrderBy(x=>x.Departamento)) //LOOP3
+            foreach (var parlevel2 in parlevel02List.OrderBy(x => x.Departamento)) //LOOP3
             {
                 string frequencia = "";
                 //Verifica se pega avaliações e amostras padrão ou da company
@@ -8311,7 +8314,7 @@ namespace SgqServiceBusiness.Api
                 var dataLiberacao = "";
                 if (!string.IsNullOrEmpty(datetimeTechinicalHour))
                 {
-                     dataLiberacao = DateTimeTechinical.Replace(DateTimeTechinical.Split(' ')[1], datetimeTechinicalHour);
+                    dataLiberacao = DateTimeTechinical.Replace(DateTimeTechinical.Split(' ')[1], datetimeTechinicalHour);
                 }
                 //inserir a acção corretiva com processo
 
@@ -8361,7 +8364,8 @@ namespace SgqServiceBusiness.Api
                 PreventativeMeasure = HttpUtility.UrlDecode(PreventativeMeasure, System.Text.Encoding.Default);
                 phpDebug = 18;
 
-                if(!string.IsNullOrEmpty(dataLiberacao)){
+                if (!string.IsNullOrEmpty(dataLiberacao))
+                {
                     DateTimeTechinical = dataLiberacao;
                 }
                 int id = correctiveActionInsert(AuditorId, CollectionLevel2_Id, SlaughterId, TechinicalId, DateTimeSlaughter, DateTimeTechinical, DateCorrectiveAction, AuditStartTime, DescriptionFailure,
@@ -8416,9 +8420,9 @@ namespace SgqServiceBusiness.Api
             }
             catch (Exception ex)
             {
-                int insertLog = insertLogJson("", "PHPDebug="+ phpDebug + " | " + ex.Message, "N/A", "N/A", "InsertCorrectiveAction");
+                int insertLog = insertLogJson("", "PHPDebug=" + phpDebug + " | " + ex.Message, "N/A", "N/A", "InsertCorrectiveAction");
 
-                return "erro="+ phpDebug;
+                return "erro=" + phpDebug;
                 throw ex;
             }
         }

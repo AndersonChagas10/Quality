@@ -989,6 +989,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "click_to_unfold", Value = "Clique no gráfico para desdobrar para o próximo nível" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "click_to_fta", Value = "Clique no gráfico para criar o Formulário de Tratamento de Anomalia" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "pdca_menu_item", Value = "Exibir no PDCA" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "appcoleta_corrective_action_modal_input", Value = "Correção" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
