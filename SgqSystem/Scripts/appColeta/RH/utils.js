@@ -84,5 +84,5 @@ function criaHtmlSelect(titulo,options){
 function dateDiff(date1, date2) {
     var dataInicial = new Date(date1);
     var dataFinal = new Date(date2);
-    return Math.abs(dataFinal - dataInicial) / 1000 / 60 / 60 / 24;
+    return (dataFinal - dataInicial) / 1000 / 60 / 60 / 24;
 }
