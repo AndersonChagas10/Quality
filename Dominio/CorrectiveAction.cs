@@ -45,6 +45,8 @@ namespace Dominio
 
         public int? EmailContent_Id { get; set; }
 
+        public int? ParLevel3_Id { get; set; }
+
         [ForeignKey("CollectionLevel02Id")]
         public virtual CollectionLevel2 CollectionLevel2 { get; set; }
 

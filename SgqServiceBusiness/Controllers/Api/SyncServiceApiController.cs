@@ -5596,6 +5596,17 @@ namespace SgqServiceBusiness.Api
                                     meta = alertas.Meta;
                                 }
                             }
+                            else if (tipoAlerta == 8)  //reincidenciaKOAmostras%
+                            {
+                                if (alertas != null)
+                                {
+                                    alertaNivel1 = valorAlerta;
+                                    alertaNivel2 = valorAlerta;
+                                    alertaNivel3 = "a8";
+                                    volumeAlerta = alertas.VolumeAlerta;
+                                    meta = alertas.Meta;
+                                }
+                            }
                             else
                             {
                                 if (alertas != null) //Fica como padrão JBS por indicador

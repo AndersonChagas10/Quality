@@ -370,6 +370,45 @@ function setValoresLevel3Alertas(level3, level2Resultado) {
             break;
     }
 
+    //cria lista sem os dados 2020-03-02	
+    var listaDefeitosExiste = $.grep(listaDefeitos, function (obj) {
+        return (
+            obj.parlevel1_id == level2Resultado.attr('level01id')
+            && obj.parlevel2_id == level2Resultado.attr('level02id')
+            && obj.parlevel3_id == level3.attr('level03id')
+            && obj.period == level2Resultado.attr('period')
+            && obj.shift == level2Resultado.attr('shift')
+            && obj.evaluate == level2Resultado.attr('evaluate')
+            && obj.tipo == 'defeito'
+            && parseInt(obj.sample) >= parseInt(level2Resultado.attr('sample'))
+        )
+    })
+    for (i = 0; i < listaDefeitos.length; i++) {
+        for (j = 0; j < listaDefeitosExiste.length; j++) {
+            if (listaDefeitos[i] == listaDefeitosExiste[j]) {
+                listaDefeitos[i] = ''
+            }
+        }
+    }
+    listaDefeitosExiste = $.grep(listaDefeitos, function (obj) {
+        return (
+            obj.parlevel1_id == level2Resultado.attr('level01id')
+            && obj.parlevel2_id == level2Resultado.attr('level02id')
+            && obj.period == level2Resultado.attr('period')
+            && obj.shift == level2Resultado.attr('shift')
+            && obj.evaluate == level2Resultado.attr('evaluate')
+            && obj.tipo == 'alerta'
+            && parseInt(obj.sample) >= parseInt(level2Resultado.attr('sample'))
+        )
+    })
+    for (i = 0; i < listaDefeitos.length; i++) {
+        for (j = 0; j < listaDefeitosExiste.length; j++) {
+            if (listaDefeitos[i] == listaDefeitosExiste[j]) {
+                listaDefeitos[i] = ''
+            }
+        }
+    }
+
     if (defeitosPonderados > 0) {
 
         adicionaNaListaDeDefeitos(
@@ -391,8 +430,6 @@ function setValoresLevel3Alertas(level3, level2Resultado) {
 
     return resultado;
 }
-
-
 
 function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
 
@@ -575,8 +612,8 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
 
             var mensagem = "";
 
-            if (totalDefeitosL1L2Acumulado > valorDoAlerta) {
-                mensagem = getResource("nc_target_exceed") + " (" + (totalDefeitosL1L2Acumulado).toFixed(2) + ") " + getResource("nc_of") + " (" + valorDoAlerta.toFixed(2) + ") " + getResource("allowed");
+            if (totalDefeitosL1L2 > valorDoAlerta) {	
+                mensagem = getResource("nc_target_exceed") + " (" + (totalDefeitosL1L2).toFixed(2) + ") " + getResource("nc_of") + " (" + valorDoAlerta.toFixed(2) + ") " + getResource("allowed");
 
                 switch (alertaatual) {
                     case 0: mensagem += "<br><br>" + getResource("supervisor_notification");
@@ -1060,7 +1097,6 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
     return resultados;
 }
 
-
 function setValoresLevel1Alertas(level1, level2, level2Result) {
 
     //  var totalAvaliado = parseFloat(level1.attr('totalavaliado'));
@@ -1295,7 +1331,6 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
 
             if (contador > 0) {
 
-
                 var valor = $.grep(listaDefeitos, function (obj) {
                     return obj.parlevel1_id == level2Result.attr('level01id')
                         && obj.parlevel2_id == level2Result.attr('level02id')
@@ -1329,7 +1364,6 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
             }
 
             //alerta de amostras
-
             var valor = $.grep(listaDefeitos, function (obj) {
                 return obj.parlevel1_id == level2Result.attr('level01id')
                     && obj.parlevel2_id == level2Result.attr('level02id')
@@ -1395,197 +1429,13 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
 
         if (tipoDeAlerta == "a8") {
 
-        //    controleDeAlerta = false;
+            debugger
 
-        //    mensagem = "";
+            //defeitos do tipo KO
 
-        //    //alerta de KO
-        //    //Verifica se existe defeitos do tipo KO na lista 
-        //    var valor = $.grep(listaDefeitos, function (obj) {
-        //        return obj.parlevel1_id == level2Result.attr('level01id')
-        //            && obj.parlevel2_id == level2Result.attr('level02id')
-        //            && obj.period == level2Result.attr('period')
-        //            && obj.shift == level2Result.attr('shift')
-        //            && obj.isKO == "True"
-        //            && obj.evaluate == level2Result.attr('evaluate')
-        //            && obj.tipo == "defeito";
-        //    });
+            //reincidencia -- mais de 2 defeitos para a mesma tarefa
 
-        //    //Se existe defeito defeitos do tipo KO na lista 
-        //    if (valor.length > 0) {
-                
-        //        //verifica se existe alerta na lista
-        //        var valor = $.grep(listaDefeitos, function (obj) {
-        //            return obj.parlevel1_id == level2Result.attr('level01id')
-        //                && obj.parlevel2_id == level2Result.attr('level02id')
-        //                && obj.period == level2Result.attr('period')
-        //                && obj.shift == level2Result.attr('shift')
-        //                && obj.evaluate == level2Result.attr('evaluate')
-        //                && obj.tipo == "alerta";
-        //        });
-
-        //        //Se existir alerta
-        //        if (valor.length == 0) {
-        //            controleDeAlerta = true;
-        //            //alert("Alerta de KO");
-        //            mensagem += " Critical ";
-        //        }
-
-        //        //Adiciona um defeito do tipo alerta
-        //        adicionaNaListaDeDefeitos(
-        //            {
-        //                tipo: "alerta"
-        //                , parlevel1_id: level2Result.attr('level01id')
-        //                , parlevel2_id: level2Result.attr('level02id')
-        //                , datetime: level2Result.attr('datetime')
-        //                , shift: level2Result.attr('shift')
-        //                , period: level2Result.attr('period')
-        //                , sample: level2Result.attr('sample')
-        //                , evaluate: level2Result.attr('evaluate')
-        //                , parlevel3_id: ""
-        //                , isKO: ""
-        //            }
-        //        );
-
-        //    }
-
-        //    //alerta de reincidencia
-        //    //Verifica se existe defeito
-        //    var valor = $.grep(listaDefeitos, function (obj) {
-        //        return obj.parlevel1_id == level2Result.attr('level01id')
-        //            && obj.parlevel2_id == level2Result.attr('level02id')
-        //            && obj.period == level2Result.attr('period')
-        //            && obj.shift == level2Result.attr('shift')
-        //            && obj.evaluate == level2Result.attr('evaluate')
-        //            && obj.tipo == "defeito";
-        //    });
-
-        //    var listaAmostraDefeito = [];
-
-        //    for (var i = 0; i < valor.length; i++) {
-        //        listaAmostraDefeito.push(valor[i].parlevel3_id);
-        //    }
-
-        //    listaAmostraDefeito.sort();
-
-        //    var listaAmostraDefeitoUnica = listaAmostraDefeito;
-
-        //    var contador = 0;
-
-        //    //Verifica se existe mais de um defeito seguido para a mesma tarefa
-        //    for (var i = 1; i < listaAmostraDefeitoUnica.length; i++) {
-        //        if (contador < 2) {
-        //            if (listaAmostraDefeitoUnica[i] == listaAmostraDefeito[i - 1]) {
-        //                contador++;
-        //            }
-        //        }
-        //    }
-
-        //    if (contador > 0) {
-
-
-        //        var valor = $.grep(listaDefeitos, function (obj) {
-        //            return obj.parlevel1_id == level2Result.attr('level01id')
-        //                && obj.parlevel2_id == level2Result.attr('level02id')
-        //                && obj.period == level2Result.attr('period')
-        //                && obj.shift == level2Result.attr('shift')
-        //                && obj.evaluate == level2Result.attr('evaluate')
-        //                && obj.tipo == "alerta";
-        //        });
-
-        //        if (valor.length == 0) {
-        //            controleDeAlerta = true;
-        //            //alert("Alerta de reincidencia com erros")
-        //            mensagem += " One recurring defect ";
-        //        }
-
-        //        adicionaNaListaDeDefeitos(
-        //            {
-        //                tipo: "alerta"
-        //                , parlevel1_id: level2Result.attr('level01id')
-        //                , parlevel2_id: level2Result.attr('level02id')
-        //                , datetime: level2Result.attr('datetime')
-        //                , shift: level2Result.attr('shift')
-        //                , period: level2Result.attr('period')
-        //                , sample: level2Result.attr('sample')
-        //                , evaluate: level2Result.attr('evaluate')
-        //                , parlevel3_id: ""
-        //                , isKO: ""
-        //            }
-        //        );
-
-        //    }
-
-        //    //alerta de amostras com %NC -- Novo
-
-        //    //Saber a quantidade todal de defeitos na Avaliação
-
-        //    //Fazer o calculo para saber o quanto a quantidade de defeitos representa em porcentagem ao toal da avaliação
-
-        //    var valor = $.grep(listaDefeitos, function (obj) {
-        //        return obj.parlevel1_id == level2Result.attr('level01id')
-        //            && obj.parlevel2_id == level2Result.attr('level02id')
-        //            && obj.period == level2Result.attr('period')
-        //            && obj.shift == level2Result.attr('shift')
-        //            && obj.evaluate == level2Result.attr('evaluate')
-        //            && obj.tipo == "defeito";
-
-        //    });
-
-        //    var listaAmostraDefeito = [];
-
-        //    for (var i = 0; i < valor.length; i++) {
-        //        listaAmostraDefeito.push(valor[i].sample);
-        //    }
-
-        //    listaAmostraDefeito.sort();
-
-        //    var listaAmostraDefeitoUnica = [];
-
-        //    listaAmostraDefeitoUnica.push(listaAmostraDefeito[0]);
-
-        //    for (var i = 1; i < listaAmostraDefeito.length; i++) {
-        //        if (listaAmostraDefeito[i] != listaAmostraDefeitoUnica[listaAmostraDefeitoUnica.length - 1])
-        //            listaAmostraDefeitoUnica.push(listaAmostraDefeito[i]);
-        //    }
-
-        //    //Precisa ser avaliação com peso? acho que sim
-        //    var porcentagemNC = (listaAmostraDefeitoUnica.length / volumealertaindicador ) * 100;
-
-        //    if (porcentagemNC > valorDoAlerta) {
-
-        //        var valor = $.grep(listaDefeitos, function (obj) {
-        //            return obj.parlevel1_id == level2Result.attr('level01id')
-        //                && obj.parlevel2_id == level2Result.attr('level02id')
-        //                && obj.period == level2Result.attr('period')
-        //                && obj.shift == level2Result.attr('shift')
-        //                && obj.evaluate == level2Result.attr('evaluate')
-        //                && obj.tipo == "alerta";
-        //        });
-
-        //        if (valor.length == 0) {
-
-        //            controleDeAlerta = true;
-        //            //alert("Alerta de amostras com erros")
-        //            mensagem += porcentagemNC + "% de defeitos ";
-        //        }
-
-        //        adicionaNaListaDeDefeitos(
-        //            {
-        //                tipo: "alerta"
-        //                , parlevel1_id: level2Result.attr('level01id')
-        //                , parlevel2_id: level2Result.attr('level02id')
-        //                , datetime: level2Result.attr('datetime')
-        //                , shift: level2Result.attr('shift')
-        //                , period: level2Result.attr('period')
-        //                , sample: level2Result.attr('sample')
-        //                , evaluate: level2Result.attr('evaluate')
-        //                , parlevel3_id: ""
-        //                , isKO: ""
-
-        //            }
-        //        );
-        //    }
+            //percentual de NC
         }
     }
 
@@ -1789,6 +1639,11 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
             disparaalertas = true;
 
         }
+        else if (tipoDeAlerta == "a8") {
+
+            disparaalertas = true;
+
+        }
     }
 
     var mensagemHtml = mensagemAlerta.mensagem;
@@ -1878,10 +1733,19 @@ function setGravaAlertaDBLocal(level1, alertaatual, defeitos, mensagem) {
     var evaluateCurrent = $('.level3Group[level1id=' + $('.level1.selected').attr('id') + '][level2id=' + $('.level2.selected').attr('id') + '] .evaluateCurrent').text();
     var sampleCurrent = $('.level3Group[level1id=' + $('.level1.selected').attr('id') + '][level2id=' + $('.level2.selected').attr('id') + '] .sampleCurrent').text();
 
-    //verificar level2 com gabriel
-    var deviation = '<div class="deviation" parcompany_id="' + $('.App').attr('unidadeid') + '" period="' + $('.App').attr('period') + '" shift="' + $('.App').attr('shift') + '" collectiondate="' + $('.App').attr('date') + '" parlevel1_id="' + level1.attr('id') + '" parlevel2_id="' + level2.attr('id') + '" evaluation="' + evaluateCurrent + '" sample="' + sampleCurrent + '" alertnumber="' + alertaatual + '" defects="' + defeitos + '" deviationdate="' + dateTimeFormat() + '" sync="false">' +
-        '<div class="message">' + mensagem + '</div>' +
-        '</div>';
+    var unidadeId = $('.App').attr('unidadeid');	
+    var period = $('.App').attr('period');	
+    var shift = $('.App').attr('shift');	
+    var date = $('.App').attr('date');	
+    var level1Id = level1.attr('id');	
+    var level2Id = level2.attr('id');	
+
+    //verificar level2 com gabriel	
+    var deviation = '<div class="deviation" parcompany_id="' + unidadeId + '" period="' + period + '" shift="' + shift + '" collectiondate="' + date + '" parlevel1_id="' + level1Id + '" parlevel2_id="' + level2Id + '" evaluation="' + evaluateCurrent + '" sample="' + sampleCurrent + '" alertnumber="' + alertaatual + '" defects="' + defeitos + '" deviationdate="' + dateTimeFormat() + '" sync="false">' +	
+        '<div class="messageDeviation">' + mensagem + '</div>' +	
+        '</div>';	
+
+    apagaDeviationDuplicada(unidadeId, period, shift, date, level1Id, level2Id, evaluateCurrent, sampleCurrent);
 
     var deviations = $('.Deviations');
 
@@ -2070,3 +1934,14 @@ function setGravaAlerta() {
 $(document).on('change', 'select#selectCattleType', function (e) {
     $('span.cattleType').html($("select#selectCattleType :selected").text());
 });
+
+//Função criada para "corrigir" um problema dos USA - (Repetindo a mesma av e estourando alerta) - 02-03-2020	
+function apagaDeviationDuplicada(unidadeId, period, shift, date, level1Id, level2Id, evaluateCurrent, sampleCurrent) {
+    var deviations = $('.Deviations');
+    var deviationCurrent = deviations.find('[parcompany_id="' + unidadeId + '"][period="' + period + '"][shift="' + shift + '"][collectiondate="' + date + '"][parlevel1_id="' + level1Id + '"][parlevel2_id="' + level2Id + '"][evaluation="' + evaluateCurrent + '"]');
+    $.each(deviationCurrent, function () {
+        //apagar amostras que forem maior ou igual a esta	
+        if (parseInt($(this).attr('sample')) >= sampleCurrent)
+            $(this).remove();
+    });
+}

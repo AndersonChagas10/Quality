@@ -2975,4 +2975,17 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-445</CardNumber>
+    <Version>1.7.0</Version>
+    <Description>[RH SESMT] Alerta KO - Coleta</Description>
+    <Script>
+      IF COL_LENGTH('CorrectiveAction','ParLevel3_Id') IS NULL
+      BEGIN
+      alter table CorrectiveAction
+      add ParLevel3_Id int null
+      END
+    </Script>
+  </Card>
+
 </Cards>
