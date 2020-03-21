@@ -340,5 +340,6 @@ function preencheObjetoAcaoCorretiva(acaoCorretiva){
     acaoCorretiva.PreventativeMeasure = $('#preventativeMeasure').val();
     acaoCorretiva.DescriptionFailure = $('#descriptionFailure').val();
     acaoCorretiva.ParLevel3_Id = $('#parLevel3_Id').val();
+    acaoCorretiva.DateCorrectiveAction = getCurrentDate();
     return acaoCorretiva;
 }

@@ -393,6 +393,7 @@ namespace SgqSystem.Controllers.Api
                         acaoCorretiva.DescriptionFailure = correctiveAction.DescriptionFailure;
                         acaoCorretiva.ParLevel3_Id = correctiveAction.ParLevel3_Id;
                         acaoCorretiva.AuditorId = correctiveAction.AuditorId;
+                        acaoCorretiva.DateCorrectiveAction = correctiveAction.DateCorrectiveAction;
 
                         db.CorrectiveAction.Add(acaoCorretiva);
                         db.SaveChanges();

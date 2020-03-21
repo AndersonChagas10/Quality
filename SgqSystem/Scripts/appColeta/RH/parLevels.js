@@ -44,9 +44,8 @@ function montarLevel1(level1List) {
         });
 
         levels1.forEach(function (parLevel1) {
-            level1List.push($.extend({},parLevel1));
-
             montarLevel2(parLevel1);
+            level1List.push($.extend({},parLevel1));
         });
     });
 }
@@ -73,8 +72,8 @@ function montarLevel2(parLevel1) {
         });
 
         Level2.forEach(function (parLevel2, index) {
-            level2List.push($.extend({},parLevel2));
             montarLevel3(parLevel1, parLevel2, index)
+            level2List.push($.extend({},parLevel2));
         });
 
     });
