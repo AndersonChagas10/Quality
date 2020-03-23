@@ -143,7 +143,7 @@
                             </li>
                             <li class="divider"> </li>
                             <li>
-                                <a href="@Url.Action("LogOut", "UserAuthentication")">
+                                <a onclick="delete_cookie('webControlCookie')" href="@Url.Action("LogOut", "UserAuthentication")">
                                     <i class="fa fa-sign-out" aria-hidden="true"></i> @Resources.Resource.log_out
                                 </a>
                             </li>
@@ -209,5 +209,8 @@
         //$('.page-content').css('padding-right', '30px');
     }
 
+    function delete_cookie(name) {
+        document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
 
 </script>

@@ -16,14 +16,30 @@ $(document).on('click','#btnMessageOk', function(e){
     preenchePCC1b(); 
 });
 
-function clonarHF(a){ 
+function clonarHF(a) {
+
     var headerFieldGroupVisiveis = $('[hfg]:visible').not('[data-vinculo]');
+
     countHeaderFieldGroup++;
-    headerFieldGroupVisiveis = $.grep(headerFieldGroupVisiveis, function(o, c){ return $(o).attr('hfg') == $(a).attr('hfg') }); 
-    $.each(headerFieldGroupVisiveis,function(i,o){
-        if(!$(o).parent().attr('data-vinculo')){
+
+    var hasNoGroup = ($(a).attr('hfg') === '-');
+
+    if (hasNoGroup) {
+
+        headerFieldGroupVisiveis = [];
+        headerFieldGroupVisiveis.push(a);
+
+    } else {
+
+        headerFieldGroupVisiveis = $.grep(headerFieldGroupVisiveis, function (o, c) {
+            return $(o).attr('hfg') == $(a).attr('hfg')
+        });
+    }
+
+    $.each(headerFieldGroupVisiveis, function (i, o) {
+        if (!$(o).parent().attr('data-vinculo')) {
             var elementoClonado = $(o).parent().clone(true, true);
-            elementoClonado.attr('data-vinculo',countHeaderFieldGroup);
+            elementoClonado.attr('data-vinculo', countHeaderFieldGroup);
             elementoClonado.insertAfter($(o).parent());
         }
     });
