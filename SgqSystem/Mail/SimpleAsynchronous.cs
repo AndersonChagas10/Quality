@@ -270,15 +270,21 @@ namespace SgqSystem.Mail
                     /*Cria Novos Emails de acordo com a quantidade do pool na emailContent*/
                     DateTime dateLimit = DateTime.Now.AddHours(-24);
                     DateTime dateLimitDeviation = DateTime.Now.AddHours(-72);
-                    var Mails = db.Deviation.Where(r => r.AlertNumber > 0
-                    && (r.sendMail == null || r.sendMail == false)
-                    && r.DeviationMessage != null
-                    && r.DeviationMessage != "null"
-                    && r.DeviationDate > dateLimitDeviation
-                    && r.AddDate > dateLimit)
-                        .OrderBy(r => r.AddDate)
-                        .Take(tamanhoDoPool)
-                        .ToList();
+
+                    string sqlDeviations = $@"SELECT TOP {tamanhoDoPool}
+                                            *
+                                            FROM (SELECT TOP 1000 * FROM DEVIATION WITH (NOLOCK) WHERE DeviationMessage is not null AND DeviationMessage != 'null' ORDER BY ID DESC) A
+                                            WHERE 1=1
+                                            AND AlertNumber > 0
+                                            AND (sendMail IS NULL OR sendMail = 0)
+                                            AND DeviationDate > '{dateLimitDeviation.ToString("yyyy-MM-dd HH:mm")}'
+                                            AND AddDate > '{dateLimit.ToString("yyyy-MM-dd HH:mm")}'
+                                            ORDER BY AddDate";
+                    List<Deviation> Mails = new List<Deviation>();
+                    using (Factory factory = new Factory("DefaultConnection"))
+                    {
+                        Mails = factory.SearchQuery<Deviation>(sqlDeviations);
+                    }
 
                     if (Mails != null && Mails.Count() > 0)
                     {

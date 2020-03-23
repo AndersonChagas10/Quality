@@ -36,6 +36,9 @@
             $('.App').attr('unidadeid') + '][shift=' + $('.App').attr('shift') + '][period=' + $('.App').attr('period') + '][havereaudit=true]:last');
     }
 
+    if ($('.App').attr('local') == "brasil") {
+        $("#btnSendCorrectiveAction").prop("disabled", true);
+    }
 
     /*
         if (!ConsolidationResult.length) {
@@ -127,7 +130,7 @@ function correctiveActionOpenPesoHB(level01Id, date, shift, period) {
     $('#AuditInformation').children('#starttime').text(dateTimeWithMinutes().slice(0, 16));
     correctiveActionModal.attr('level01id', $(_level1).attr('id'));
     correctiveActionModal.attr('level02id', $(_level2).attr('id'));
-	correctiveActionModal.attr('evaluationnumber', $(_level2).attr('evaluatecurrent'));
+    correctiveActionModal.attr('evaluationnumber', $(_level2).attr('evaluatecurrent'));
     // correctiveActionModal.attr('collectionlevel2_id', ConsolidationResult.attr('collectionlevel2_id_correctiveaction'));
 
     if (period) {
@@ -476,13 +479,23 @@ $(document).on('click', '#correctiveAction', function (e) {
     }
 });
 
+$(document).on('change', '#TechinicalSignature', function (e) {
+    if ($('.App').attr('local') == "brasil") {
+        if ($("#TechinicalSignature").val() == 0) {
+            $("#btnSendCorrectiveAction").prop("disabled", true);
+        } else {
+            $("#btnSendCorrectiveAction").prop("disabled", false);
+        }
+    }
+}).change();
+
 $(document).on('click', '#btnSendCorrectiveAction', function (e) {
 
     var techinicalSignature;
     if ($("#divSelectSupervisor").is(':visible')) {
-         techinicalSignature = $('#TechinicalSignature :selected').val(); 
+        techinicalSignature = $('#TechinicalSignature :selected').val();
     } else {
-         techinicalSignature = $('.TechinicalSignature').attr('userid');
+        techinicalSignature = $('.TechinicalSignature').attr('userid');
     }
 
     var message = '';
