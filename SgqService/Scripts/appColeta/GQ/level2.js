@@ -244,6 +244,9 @@
 
             var linha = level2.parent().find('a');
 
+            if (!!$(linha).attr('parlevel1_id_group'))
+                continue;
+
             var avaliacaoTotal = parseInt(linha.attr('evaluate'));
             var amostraTotal = parseInt(linha.attr('sample'));
 
