@@ -4495,15 +4495,15 @@ namespace SgqServiceBusiness.Api
             int evaluate = 0;
 
             string sql = $@"
-                DECLARE @ParLevel1_id int =  @ParLevel1_Id
-                DECLARE @ParCluster_id int = @ParCluster_Id 
+                DECLARE @ParLevel1__Id int =  @ParLevel1_Id
+                DECLARE @ParCluster__Id int = @ParCluster_Id 
                 SELECT max(Number) as av FROM ParEvaluation EV (nolock) 
                 WHERE ParLevel2_id in ( 
                 SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 (nolock) 
                 inner join ParLevel3Level2 P32 (nolock) 
                 on p32.id = p321.ParLevel3Level2_Id 
-                where p321.ParLevel1_Id = @ParLevel1_id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 
-                and Ev.ParCluster_Id = @ParCluster_Id
+                where p321.ParLevel1_Id = @ParLevel1__Id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 
+                and Ev.ParCluster_Id = @ParCluster__Id
                 group by p32.ParLevel2_Id
                 )
                 and ev.IsActive = 1 
@@ -4536,7 +4536,7 @@ namespace SgqServiceBusiness.Api
                 }
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return evaluate;
@@ -4854,16 +4854,15 @@ namespace SgqServiceBusiness.Api
             int evaluate = 0;
 
             string sql = $@"
-                DECLARE @ParCompany_id int = 16
-                DECLARE @ParLevel1_id int =  @ParLevel1_Id
-                DECLARE @ParCluster_id int = @ParCluster_Id 
+                DECLARE @ParLevel1__Id int =  @ParLevel1_Id
+                DECLARE @ParCluster__Id int = @ParCluster_Id 
                 SELECT max(Number) as av FROM ParSample EV (nolock)  
                 WHERE ParLevel2_id in ( 
                 SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 (nolock)  
                 inner join ParLevel3Level2 P32  (nolock) 
                 on p32.id = p321.ParLevel3Level2_Id 
-                where p321.ParLevel1_Id = @ParLevel1_id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 
-                and Ev.ParCluster_Id = @ParCluster_Id 
+                where p321.ParLevel1_Id = @ParLevel1__Id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 
+                and Ev.ParCluster_Id = @ParCluster__Id 
                 group by p32.ParLevel2_Id 
                 )
                 and ev.IsActive = 1
@@ -4894,7 +4893,7 @@ namespace SgqServiceBusiness.Api
                 }
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return evaluate;
