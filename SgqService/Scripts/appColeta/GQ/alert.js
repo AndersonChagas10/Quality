@@ -4,6 +4,9 @@ var defectsPerEvaluation = [];
 
 var listaDefeitos = [];
 
+var listaDeDefeitosAlerta8 = [];
+var listaDeAlertasAlerta8 = [];
+
 function adicionaNaListaDeDefeitos(obj) {
     if (listaDefeitos.length > 0) {
         if (!!listaDefeitos[0].datetime && !!obj.datetime && listaDefeitos[0].datetime.substring(0, 10) != obj.datetime.substring(0, 10)) {
@@ -382,14 +385,16 @@ function setValoresLevel3Alertas(level3, level2Resultado) {
             && obj.tipo == 'defeito'
             && parseInt(obj.sample) >= parseInt(level2Resultado.attr('sample'))
         )
-    })
+    });
+
     for (i = 0; i < listaDefeitos.length; i++) {
         for (j = 0; j < listaDefeitosExiste.length; j++) {
             if (listaDefeitos[i] == listaDefeitosExiste[j]) {
-                listaDefeitos[i] = ''
+                listaDefeitos[i] = '';
             }
         }
     }
+
     listaDefeitosExiste = $.grep(listaDefeitos, function (obj) {
         return (
             obj.parlevel1_id == level2Resultado.attr('level01id')
@@ -399,8 +404,9 @@ function setValoresLevel3Alertas(level3, level2Resultado) {
             && obj.evaluate == level2Resultado.attr('evaluate')
             && obj.tipo == 'alerta'
             && parseInt(obj.sample) >= parseInt(level2Resultado.attr('sample'))
-        )
-    })
+        );
+    });
+
     for (i = 0; i < listaDefeitos.length; i++) {
         for (j = 0; j < listaDefeitosExiste.length; j++) {
             if (listaDefeitos[i] == listaDefeitosExiste[j]) {
@@ -409,20 +415,43 @@ function setValoresLevel3Alertas(level3, level2Resultado) {
         }
     }
 
+    var parlevel1_id = level2Resultado.attr('level01id');
+    var parlevel2_id = level2Resultado.attr('level02id');
+    var parlevel3_id = level3.attr('level03id')
+    var datetime = level2Resultado.attr('datetime');
+    var shift = level2Resultado.attr('shift');
+    var period = level2Resultado.attr('period');
+    var sample = level2Resultado.attr('sample');
+    var evaluate = level2Resultado.attr('evaluate');
+    var isKO = JSON.parse($('#' + level3.attr('level03id') + '.level3:visible').attr('isknockout').toLowerCase());
+
     if (defeitosPonderados > 0) {
 
-        adicionaNaListaDeDefeitos(
-            {
-                tipo: "defeito"
-                , parlevel1_id: level2Resultado.attr('level01id')
-                , parlevel2_id: level2Resultado.attr('level02id')
-                , datetime: level2Resultado.attr('datetime')
-                , shift: level2Resultado.attr('shift')
-                , period: level2Resultado.attr('period')
-                , sample: level2Resultado.attr('sample')
-                , evaluate: level2Resultado.attr('evaluate')
-                , parlevel3_id: level3.attr('level03id')
-                , isKO: $('#' + level3.attr('level03id') + '.level3:visible').attr('isknockout')
+        adicionaNaListaDeDefeitos({
+            tipo: "defeito"
+            , parlevel1_id: level2Resultado.attr('level01id')
+            , parlevel2_id: level2Resultado.attr('level02id')
+            , datetime: level2Resultado.attr('datetime')
+            , shift: level2Resultado.attr('shift')
+            , period: level2Resultado.attr('period')
+            , sample: level2Resultado.attr('sample')
+            , evaluate: level2Resultado.attr('evaluate')
+            , parlevel3_id: level3.attr('level03id')
+            , isKO: $('#' + level3.attr('level03id') + '.level3:visible').attr('isknockout')
+        });
+
+        if ($(_level1).attr('alertanivel3') == "a8")
+
+            listaDeDefeitosAlerta8.push({
+                Date: datetime
+                , ParLevel1_Id: parlevel1_id
+                , ParLevel2_Id: parlevel2_id
+                , ParLevel3_Id: parlevel3_id
+                , Shift: shift
+                , Period: period
+                , Evaluate: evaluate
+                , Sample: sample
+                , IsKO: isKO
             });
     }
 
@@ -612,7 +641,7 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
 
             var mensagem = "";
 
-            if (totalDefeitosL1L2 > valorDoAlerta) {	
+            if (totalDefeitosL1L2 > valorDoAlerta) {
                 mensagem = getResource("nc_target_exceed") + " (" + (totalDefeitosL1L2).toFixed(2) + ") " + getResource("nc_of") + " (" + valorDoAlerta.toFixed(2) + ") " + getResource("allowed");
 
                 switch (alertaatual) {
@@ -639,7 +668,7 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
 
                 if (isEUA == true) {
 
-                    if($(_level1).attr('disparaalerta') == "True") {
+                    if ($(_level1).attr('disparaalerta') == "True") {
                         level1.attr('havecorrectiveaction', 'true');
                     } else {
                         level1.attr('havecorrectiveaction', 'true');
@@ -812,8 +841,8 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
 
             for (var i = 0; i < defectsPerEvaluation.length; i++) {
 
-                if (defectsPerEvaluation[i].level1_id == _level1.id && 
-                    defectsPerEvaluation[i].level2_id == _level2.id && 
+                if (defectsPerEvaluation[i].level1_id == _level1.id &&
+                    defectsPerEvaluation[i].level2_id == _level2.id &&
                     defectsPerEvaluation[i].evaluation == evaluateCurrent) {
 
                     defectsPerEvaluation[i].defects = defectsNow[0].defects
@@ -1111,7 +1140,7 @@ function setValoresLevel1Alertas(level1, level2, level2Result) {
 
     var resultadoLevel2 = [];
 
-    var mensagemAlerta = { mensagem: ""};
+    var mensagemAlerta = { mensagem: "" };
     if (level2) {
         resultadoLevel2 = setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta);
     }
@@ -1261,7 +1290,7 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
 
             //Se existe defeito defeitos do tipo KO na lista 
             if (valor.length > 0) {
-                
+
                 //verifica se existe alerta na lista
                 var valor = $.grep(listaDefeitos, function (obj) {
                     return obj.parlevel1_id == level2Result.attr('level01id')
@@ -1360,7 +1389,6 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
                         , isKO: ""
                     }
                 );
-
             }
 
             //alerta de amostras
@@ -1427,15 +1455,33 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
             }
         }
 
+        //alert8.js
         if (tipoDeAlerta == "a8") {
 
             debugger
+            controleDeAlerta = false;
 
-            //defeitos do tipo KO
+            if (!hasAlert(level2Result)) {
 
-            //reincidencia -- mais de 2 defeitos para a mesma tarefa
+                var haveAlert = getAlertKO(level2Result);
+                if (haveAlert) {
+                    controleDeAlerta = true;
 
-            //percentual de NC
+                } else {
+
+                    haveAlert = getAlertReincidencia(level2Result);
+                    if (haveAlert) {
+                        controleDeAlerta = true;
+
+                    } else {
+
+                        haveAlert = getAlertPorcentageNC(level2Result);
+                        if (haveAlert) {
+                            controleDeAlerta = true;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -1630,7 +1676,7 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
                     }
                     break;
             }
-            
+
         } else if (tipoDeAlerta == "a7") {
 
             //alert("Teste de Deus!");
@@ -1733,17 +1779,17 @@ function setGravaAlertaDBLocal(level1, alertaatual, defeitos, mensagem) {
     var evaluateCurrent = $('.level3Group[level1id=' + $('.level1.selected').attr('id') + '][level2id=' + $('.level2.selected').attr('id') + '] .evaluateCurrent').text();
     var sampleCurrent = $('.level3Group[level1id=' + $('.level1.selected').attr('id') + '][level2id=' + $('.level2.selected').attr('id') + '] .sampleCurrent').text();
 
-    var unidadeId = $('.App').attr('unidadeid');	
-    var period = $('.App').attr('period');	
-    var shift = $('.App').attr('shift');	
-    var date = $('.App').attr('date');	
-    var level1Id = level1.attr('id');	
-    var level2Id = level2.attr('id');	
+    var unidadeId = $('.App').attr('unidadeid');
+    var period = $('.App').attr('period');
+    var shift = $('.App').attr('shift');
+    var date = $('.App').attr('date');
+    var level1Id = level1.attr('id');
+    var level2Id = level2.attr('id');
 
     //verificar level2 com gabriel	
-    var deviation = '<div class="deviation" parcompany_id="' + unidadeId + '" period="' + period + '" shift="' + shift + '" collectiondate="' + date + '" parlevel1_id="' + level1Id + '" parlevel2_id="' + level2Id + '" evaluation="' + evaluateCurrent + '" sample="' + sampleCurrent + '" alertnumber="' + alertaatual + '" defects="' + defeitos + '" deviationdate="' + dateTimeFormat() + '" sync="false">' +	
-        '<div class="messageDeviation">' + mensagem + '</div>' +	
-        '</div>';	
+    var deviation = '<div class="deviation" parcompany_id="' + unidadeId + '" period="' + period + '" shift="' + shift + '" collectiondate="' + date + '" parlevel1_id="' + level1Id + '" parlevel2_id="' + level2Id + '" evaluation="' + evaluateCurrent + '" sample="' + sampleCurrent + '" alertnumber="' + alertaatual + '" defects="' + defeitos + '" deviationdate="' + dateTimeFormat() + '" sync="false">' +
+        '<div class="messageDeviation">' + mensagem + '</div>' +
+        '</div>';
 
     apagaDeviationDuplicada(unidadeId, period, shift, date, level1Id, level2Id, evaluateCurrent, sampleCurrent);
 
