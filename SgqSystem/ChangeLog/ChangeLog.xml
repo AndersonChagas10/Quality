@@ -2918,5 +2918,17 @@
 
     </Script>
   </Card>
+  <Card>
+    <CardNumber>SGQ-491</CardNumber>
+    <Version>1.6.0</Version>
+    <Description>[SGQ-491] ParL3TipoDadoEntrada - Adição da flag "Texto N/C Obrigatório" no tipo de dado de entrada Binário com Texto.</Description>
+    <Script>
+      IF COL_LENGTH('ParLevel3Value','IsNCTextRequired') IS NULL
+      BEGIN
+      ALTER TABLE ParLevel3Value
+      ADD IsNCTextRequired bit null
+      END
+    </Script>
+  </Card>
 
 </Cards>
