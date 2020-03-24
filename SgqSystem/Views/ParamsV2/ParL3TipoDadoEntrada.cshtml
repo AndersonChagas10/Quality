@@ -182,7 +182,7 @@
         <div class="col-sm-4">
 
             <div class="form-group">
-                <label>É Obrigatorio:</label>
+                <label>É Obrigatório:</label>
                 <br />
                 <label class="switch">
                     <input type="checkbox" id="checkboxL3IsRequired" name="IsRequired">
@@ -191,6 +191,20 @@
             </div>
 
         </div>
+
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label>Texto N/C Obrigatório:</label>
+                <br />
+                <label class="switch">
+                    <input type="checkbox" id="checkboxL3IsNCTextRequired" name="IsNCTextRequired">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+        </div>
+
         <div class="col-sm-4">
 
             <div class="form-group">
@@ -256,16 +270,16 @@
             </div>
 
             @*<div class="row">
-                    <div class="td-erp">
-                        <div id="divBtnSalvar" class="col-sm-6">
-                            <button class="form-control btn btn-primary" data-add>Salvar</button>
-                        </div>
-
-                        <div id="divBtnCancelar" class="col-sm-6" style="display:none">
-                            <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
-                        </div>
+                <div class="td-erp">
+                    <div id="divBtnSalvar" class="col-sm-6">
+                        <button class="form-control btn btn-primary" data-add>Salvar</button>
                     </div>
-                </div>*@
+
+                    <div id="divBtnCancelar" class="col-sm-6" style="display:none">
+                        <button class="form-control btn btn-default" data-add-cancel>Cancelar</button>
+                    </div>
+                </div>
+            </div>*@
         </div>
 
         <div class="col-sm-3">
@@ -707,6 +721,7 @@
                         hideInput('StringSizeAllowed');
                         break;
                     case 6: //Binario Com Texto
+                        showInput('checkboxL3IsNCTextRequired');
                         showInput('selectL3TipoDadoParLevel3BoolTrue');
                         showInput('selectL3TipoDadoParLevel3BoolFalse');
                         showInput('checkboxL3IsRequired');
@@ -895,6 +910,7 @@
             obj['LimiteNC'] = formdata.LimiteNC;
             obj['IsActive'] = true;
             obj['IsRequired'] = formdata.IsRequired;
+            obj['IsNCTextRequired'] = formdata.IsNCTextRequired;
             obj['IsDefaultAnswer'] = formdata.IsDefaultAnswer;
             obj['ParCompany_Id'] = formdata.ParCompany_Id;
             obj['ParLevel1_Id'] = formdata.ParLevel1_Id;
@@ -1000,6 +1016,7 @@
 
     let setInputsInputTypeHidden = function () {
 
+        hideInput('checkboxL3IsNCTextRequired');
         hideInput('selectL3TipoDadoParLevel3BoolTrue');
         hideInput('selectL3TipoDadoParLevel3BoolFalse');
         hideInput('checkboxL3IsRequired');
