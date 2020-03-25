@@ -8,6 +8,7 @@ namespace DTO.ResultSet
 {
     public class RelatorioConsistencyCallMSPResultSet
     {
+        public string Product { get; set; }
         public string Flavor { get; set; }
         public string Raw_side { get; set; }
         public decimal? Batch1 { get; set; }
@@ -31,19 +32,35 @@ namespace DTO.ResultSet
         public decimal? Meat_temperature_min2 { get; set; }
         public decimal? Meat_temperature_actual1 { get; set; }
         public decimal? Meat_temperature_actual2 { get; set; }
-        public decimal? Thickness_avg_max { get; set; }
-        public decimal? Thickness_avg_min { get; set; }
-        public decimal? Thickness_avg1 { get; set; }
-        public decimal? Thickness_avg2 { get; set; }
-        public decimal? Thickness_sample_size1 { get; set; }
-        public decimal? Thickness_sample_size2 { get; set; }
-        public decimal? Out_spec_target { get; set; }
-        public decimal? Porc_out_spec1 { get; set; }
-        public decimal? Porc_out_spec2 { get; set; }
-        public decimal? Porc_LSL1 { get; set; }
-        public decimal? Porc_LSL2 { get; set; }
-        public decimal? Porc_USL1 { get; set; }
-        public decimal? Porc_USL2 { get; set; }
+
+        public decimal? Thickness_avg_max_CDCM { get; set; }
+        public decimal? Thickness_avg_min_CDCM { get; set; }
+        public decimal? Thickness_avg1_CDCM { get; set; }
+        public decimal? Thickness_avg2_CDCM { get; set; }
+        public decimal? Thickness_sample_size1_CDCM { get; set; }
+        public decimal? Thickness_sample_size2_CDCM { get; set; }
+        public decimal? Out_spec_target_CDCM { get; set; }
+        public decimal? Porc_out_spec1_CDCM { get; set; }
+        public decimal? Porc_out_spec2_CDCM { get; set; }
+        public decimal? Porc_LSL1_CDCM { get; set; }
+        public decimal? Porc_LSL2_CDCM { get; set; }
+        public decimal? Porc_USL1_CDCM { get; set; }
+        public decimal? Porc_USL2_CDCM { get; set; }
+
+        public decimal? Thickness_avg_max_BL { get; set; }
+        public decimal? Thickness_avg_min_BL { get; set; }
+        public decimal? Thickness_avg1_BL { get; set; }
+        public decimal? Thickness_avg2_BL { get; set; }
+        public decimal? Thickness_sample_size1_BL { get; set; }
+        public decimal? Thickness_sample_size2_BL { get; set; }
+        public decimal? Out_spec_target_BL { get; set; }
+        public decimal? Porc_out_spec1_BL { get; set; }
+        public decimal? Porc_out_spec2_BL { get; set; }
+        public decimal? Porc_LSL1_BL { get; set; }
+        public decimal? Porc_LSL2_BL { get; set; }
+        public decimal? Porc_USL1_BL { get; set; }
+        public decimal? Porc_USL2_BL { get; set; }
+
         public decimal? Meat_weight_inside_smokehouse_target { get; set; }
         public decimal? Meat_weight_inside_smokehouse { get; set; }
         public decimal? Porc_purge_target { get; set; }
@@ -66,9 +83,10 @@ namespace DTO.ResultSet
         public decimal? Standard_pull_moisture_max { get; set; }
         public decimal? Standard_pull_moisture_min { get; set; }
         public decimal? Pull_moisture_avg { get; set; }
-        public decimal? Standing_room_temperature { get; set; }
-        public decimal? Standing_room_temperature_avg1 { get; set; }
-        public decimal? Standing_room_temperature_avg2 { get; set; }
+        public decimal? Staging_room_temperature1 { get; set; }
+        public decimal? Staging_room_temperature2 { get; set; }
+        public decimal? Staging_room_temperature_avg1 { get; set; }
+        public decimal? Staging_room_temperature_avg2 { get; set; }
         public decimal? Packing_water_activity_max { get; set; }
         public decimal? Packing_water_activity { get; set; }
         public decimal? Packing_moisture_avg_min { get; set; }
@@ -77,8 +95,10 @@ namespace DTO.ResultSet
         public decimal? Reanalysis_foss_1 { get; set; }
         public decimal? Reanalysis_foss_2 { get; set; }
         public decimal? Alpenas_moisture { get; set; }
-        public decimal? Packing_room_temperature_max { get; set; }
-        public decimal? Packing_room_temperature { get; set; }
+        public decimal? Packing_room_temperature_max1 { get; set; }
+        public decimal? Packing_room_temperature_max2 { get; set; }
+        public decimal? Packing_room_temperature1 { get; set; }
+        public decimal? Packing_room_temperature2 { get; set; }
         public decimal? Yield_target_min { get; set; }
         public decimal? Yield_target { get; set; }
         public decimal? Yield { get; set; }
@@ -92,9 +112,10 @@ namespace DTO.ResultSet
         public decimal? Porc_out_spec { get; set; }
         public decimal? Porc_lsl { get; set; }
         public decimal? Porc_usl { get; set; }
-        public decimal? Filters_on_smokehouse_exhaustion { get; set; }
+        public string Filters_on_smokehouse_exhaustion { get; set; }
         public decimal? Reprocessing_target { get; set; }
-        public decimal? Rework { get; set; }
+        public decimal? Rework1 { get; set; }
+        public decimal? Rework2 { get; set; }
         public decimal? Cooking_flavor { get; set; }
         public decimal? Odor { get; set; }
         public decimal? Texture { get; set; }
@@ -102,528 +123,2479 @@ namespace DTO.ResultSet
         public string Observations { get; set; }
 
 
-        public string SelectEdicaoCabecalho(DataCarrierFormularioNew form)
+        public string SelectFlavor(DataCarrierFormularioNew form)
         {
             var dtInit = form.startDate.ToString("yyyyMMdd");
             var dtF = form.endDate.ToString("yyyyMMdd");
-            
-            var sqlModulo = "";
-            var sqlTurno = "";
-            var sqlUnidade = "";
-            var sqlLevel1 = "";
-            var sqlLevel2 = "";
-            var sqlLevel3 = "";
-            var sqlDepartment = "";
-            var sqlCargo = "";
-            var formatDate = "";
-            var sqlSgqMonitor = "";
-            var sqlParReason = "";
-
-            #region Filtros
-
-            if (form.ParModule_Ids.Length > 0)
-            {
-                sqlModulo = $"\n AND plx.ParModule_Id in ({string.Join(",", form.ParModule_Ids)})";
-            }
-
-            if (form.Shift_Ids.Length > 0)
-            {
-                sqlTurno = $"\n AND [Shift] in ({string.Join(",", form.Shift_Ids)})";
-            }
-
-            if (form.ParCompany_Ids.Length > 0)
-            {
-                sqlUnidade = $"\n AND cl.UnitId in ({string.Join(",", form.ParCompany_Ids)})";
-            }
-
-            if (form.ParLevel1_Ids.Length > 0)
-            {
-                sqlLevel1 = $"\n AND cl.ParLevel1_id in ({string.Join(",", form.ParLevel1_Ids)})";
-            }
-
-            if (form.ParLevel2_Ids.Length > 0)
-            {
-                sqlLevel2 = $"\n AND cl.ParLevel2_Id in ({string.Join(",", form.ParLevel2_Ids)})";
-            }
-
-            if (form.ParLevel3_Ids.Length > 0)
-            {
-                sqlLevel3 = $"\n AND rl.ParLevel3_Id  in ({string.Join(",", form.ParLevel3_Ids)})";
-            }
-
-            if (form.userSgqMonitor_Ids.Length > 0)
-            {
-                sqlSgqMonitor = $"\n AND cl.AuditorId  in ({string.Join(",", form.userSgqMonitor_Ids)})";
-            }
-
-            if (form.ParReason_Ids.Length > 0)
-            {
-                sqlParReason = $"\n AND lt.ParReason_Id  in ({string.Join(",", form.ParReason_Ids)})";
-            }
-
-            if (form.ParSecao_Ids.Length > 0)
-            {
-                var sqlDepartamentoPelaHash = "";
-                foreach (var item in form.ParSecao_Ids)
-                {
-                    sqlDepartamentoPelaHash += $@"OR PD.Hash like '{item}|%'
-                            OR PD.Hash like '%|{item}|%'
-                            OR PD.Hash = '{item}'";
-                }
-                sqlDepartment = $@" AND (PD.Id in ({string.Join(",", form.ParSecao_Ids)}) 
-                             {sqlDepartamentoPelaHash})";
-            }
-            else if (form.ParDepartment_Ids.Length > 0)
-            {
-                var sqlDepartamentoPelaHash = "";
-                foreach (var item in form.ParDepartment_Ids)
-                {
-                    sqlDepartamentoPelaHash += $@"OR PD.Hash like '{item}|%'
-                            OR PD.Hash like '%|{item}|%'
-                            OR PD.Hash = '{item}'";
-                }
-                sqlDepartment = $@" AND (PD.Id in ({string.Join(",", form.ParDepartment_Ids)}) 
-                             {sqlDepartamentoPelaHash})";
-            }
-
-            if (form.ParCargo_Ids.Length > 0)
-            {
-                sqlCargo = $"\n AND PCargo.Id  in ({string.Join(",", form.ParCargo_Ids)})";
-            }
-
-            if (GlobalConfig.Eua)
-            {
-                formatDate = "CONVERT(varchar, CONVERT(DATE, CL2HF2.value, 111), 101)";
-            }
-            else
-            {
-                formatDate = "CONVERT(varchar, CONVERT(DATE, CL2HF2.value, 111), 103)";
-            }
-
-            #endregion
 
             var query = $@"
-                   SELECT
-							CL2HF.CollectionLevel2_Id
-						   ,STUFF((SELECT DISTINCT
-									', ' + CONCAT(HF.Name, ': ', CASE
-										WHEN CL2HF2.ParFieldType_Id = 1 OR
-											CL2HF2.ParFieldType_Id = 3 THEN PMV.Name
-										WHEN CL2HF2.ParFieldType_Id = 2 THEN CASE
-												WHEN HF.Description = 'Produto' THEN CAST(PRD.nCdProduto AS VARCHAR(500)) + ' - ' + PRD.cNmProduto
-												ELSE EQP.Nome
-											END
-										WHEN CL2HF2.ParFieldType_Id = 6 THEN CONVERT(VARCHAR, CL2HF2.Value, 103)
-										ELSE CL2HF2.Value
-									END)
-								FROM CollectionLevel2XParHeaderField CL2HF2 (NOLOCK)
-								LEFT JOIN CollectionLevel2 CL2 (NOLOCK)
-									ON CL2.Id = CL2HF2.CollectionLevel2_Id
-								LEFT JOIN ParHeaderField HF (NOLOCK)
-									ON CL2HF2.ParHeaderField_Id = HF.Id
-								LEFT JOIN ParLevel2 L2 (NOLOCK)
-									ON L2.Id = CL2.ParLevel2_Id
-								LEFT JOIN ParMultipleValues PMV (NOLOCK)
-									ON CL2HF2.Value = CAST(PMV.Id AS VARCHAR(500))
-									AND CL2HF2.ParFieldType_Id <> 2
-								LEFT JOIN Equipamentos EQP (NOLOCK)
-									ON CAST(EQP.Id AS VARCHAR(500)) = CL2HF2.Value
-									AND EQP.ParCompany_Id = CL2.UnitId
-									AND CL2HF2.ParFieldType_Id = 2
-								LEFT JOIN Produto PRD WITH (NOLOCK)
-									ON CAST(PRD.nCdProduto AS VARCHAR(500)) = CL2HF2.Value
-									AND CL2HF2.ParFieldType_Id = 2
-								WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
-								FOR XML PATH (''))
-							, 1, 1, '') AS HeaderFieldLis INTO #CollectionLevel2XParHeaderField2
-						FROM CollectionLevel2XParHeaderField CL2HF (NOLOCK)
-						INNER JOIN CollectionLevel2 CL2 (NOLOCK)
-							ON CL2.Id = CL2HF.CollectionLevel2_Id
-						LEFT JOIN ParHeaderField HF (NOLOCK)
-							ON CL2HF.ParHeaderField_Id = HF.Id
-						LEFT JOIN ParLevel2 L2 (NOLOCK)
-							ON L2.Id = CL2.ParLevel2_Id
-						GROUP BY CL2HF.CollectionLevel2_Id
+                   -- SABOR
 
-	        	DECLARE @dtinicio varchar(30), @dtfinal varchar(30)
-	        	--SET @dtinicio = '2019-01-30 00:00:51'
-	        	--SET @dtfinal = '2019-12-31 23:59:59'
-
-	        	SELECT
-							cl.Id ID_collectionlv2
-						   ,p1.Name AS Indicador
-						   ,p2.Name AS Monitoramento
-						   ,cl.CollectionDate AS _Data_Coleta
-						   ,lt.AddDate AS _Data_Alteracao
-						   --,clhf.ParHeaderField_Name as Nome_Cabecalho
-						   --,SUBSTRING(cl2hf.headerfieldlis,9,15) Resultado
-						   ,CLHF.Value as Valor_Texto 
-						   --,CLHF.Evaluation
-						   --,CLHF.Sample
-						   ,USC.Name AS Usuario_Coleta
-						   ,USA.Name AS Usuario_Alteracao
-						   ,lt.ParReason_Id
-						   ,pr.Motivo
-						   ,lt.Motivo AS DescMotivo
-						   ,CASE
-								WHEN lt.ParReason_Id IS NULL THEN 'Original'
-								ELSE 'Editado'
-							END AS 'ORIGINAL_EDITADO' 
-							,cl.adddate as Data_Adicao
-							,lt.Json as json
-
-						FROM
-						-- Log
-						LogTrack lt
-
-						--Edição Cabeçalho
-
-						-- Coleta  
-						INNER JOIN CollectionLevel2XParHeaderField CLHF (NOLOCK)
-
-							ON CLHF.Id = lt.Json_Id
-
-						LEFT JOIN CollectionLevel2 cl (NOLOCK)
-
-							ON cl.Id = CLHF.CollectionLevel2_Id
-
-						LEFT JOIN #CollectionLevel2XParHeaderField2 cl2hf (NOLOCK)
-							ON cl2hf.CollectionLevel2_Id = cl.Id
-
-                        LEFT JOIN ParLevel1XModule plx 
-				        	ON plx.ParLevel1_Id = cl.ParLevel1_Id
-
-						-- Parametrizacao
-						LEFT JOIN ParLevel1 p1 (NOLOCK)
-
-							ON p1.Id = cl.ParLevel1_Id
-
-						LEFT JOIN ParLevel2 p2 (NOLOCK)
-
-							ON p2.Id = cl.ParLevel2_Id
-
-						LEFT JOIN ParLevel1XModule pxm
-							ON pxm.ParLevel1_Id = p1.Id
-
-
-						LEFT JOIN ParCompany pc
-							ON pc.Id = cl.UnitId
-
-						-- Dim Usuario
-
-						left JOIN UserSgq USC (NOLOCK)
-
-							ON USC.Id = cl.AuditorId
-
-						LEFT JOIN UserSgq USA (NOLOCK)
-
-							ON USA.Id = lt.UserSgq_Id
-
-						-- Cabeçalho
-						LEFT JOIN ParHeaderField ph (NOLOCK)
-
-							ON ph.Id = CLHF.ParHeaderField_Id
-
-
-						-- Motivos
-						LEFT JOIN ParReason pr (NOLOCK)
-
-							ON pr.Id = lt.ParReason_Id
-
-
-						INNER JOIN ParMultipleValues pmv (NOLOCK)
-
-							ON pmv.Id = ph.Id
-
-
-						WHERE 1 = 1
-
-               AND cl.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-               AND lt.Tabela = 'CollectionLevel2XParHeaderField'-- Tabela
-                         { sqlModulo }                         
-                         { sqlTurno }                         
-                         { sqlUnidade }
-                         { sqlLevel1 } 
-                         { sqlLevel2 } 
-                         { sqlSgqMonitor }
-                         { sqlParReason }
-               
-
-              GROUP BY cl.Id
-								,p1.Name
-								,p2.Name
-								,cl.CollectionDate
-								,lt.AddDate
-								,cl2hf.headerfieldlis
-								,CLHF.Value
-								,CLHF.Evaluation
-								,CLHF.Sample
-								,USC.Name
-								,USA.Name
-								,lt.ParReason_Id
-								,pr.Motivo
-								,lt.Motivo
-								,cl.adddate
-								,clhf.ParHeaderField_Name
-                                ,lt.Json
-						ORDER BY lt.AddDate ASC
-
-
-               DROP TABLE #CollectionLevel2XParHeaderField2
-
-
-            ";
+            SELECT
+             PMV_S.Name,SUM(R.WeiEvaluation) AS Amostras
+             FROM CollectionLevel2 C
+             INNER JOIN CollectionLevel2XParHeaderField CHF
+              ON C.id = CHF.CollectionLevel2_Id
+             --LEFT JOIN ParMultipleValues PMV_P
+             -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+             -- AND CHF.ParHeaderField_Name = 'PRODUTO'
+             LEFT JOIN ParMultipleValues PMV_S
+              ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+              AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+             INNER JOIN Result_Level3 R
+              ON C.ID = R.CollectionLevel2_Id
+             WHERE 1=1
+             AND CONVERT(DATE,C.CollectionDate) BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+             AND ParLevel1_Id = 182 
+             AND ParLevel2_Id = 670 
+             AND ParLevel3_Id = 1900
+             AND CHF.ParHeaderField_Name = 'SABOR'
+            GROUP BY 
+             PMV_S.Name
+                        ";
 
             return query;
         }
 
-        public string SelectEdicaoResultado(DataCarrierFormularioNew form)
+        public string SelectProduct(DataCarrierFormularioNew form)
         {
             var dtInit = form.startDate.ToString("yyyyMMdd");
             var dtF = form.endDate.ToString("yyyyMMdd");
 
-            var  sqlModulo = "";
-            var sqlTurno = "";
-            var sqlUnidade = "";
-            var sqlLevel1 = "";
-            var sqlLevel2 = "";
-            var sqlLevel3 = "";
-            var sqlDepartment = "";
-            var sqlCargo = "";
-            var formatDate = "";
-            var sqlSgqMonitor = "";
-            var sqlParReason = "";
+            var query = $@"
+                   -- PRODUTO
 
+                    SELECT
+                     PMV_P.Name,SUM(R.WeiEvaluation) AS Amostras
+                     FROM CollectionLevel2 C
+                     INNER JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                      ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     --LEFT JOIN ParMultipleValues PMV_S
+                     -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                     -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                     -- AND CHF.ParHeaderField_Name = 'SABOR'
+                     INNER JOIN Result_Level3 R
+                      ON C.ID = R.CollectionLevel2_Id
+                     WHERE 1=1
+                     AND CONVERT(DATE,C.CollectionDate) BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND ParLevel1_Id = 182 
+                     AND ParLevel2_Id = 670 
+                     AND ParLevel3_Id = 1900
+                     AND CHF.ParHeaderField_Name = 'PRODUTO'
+                    GROUP BY 
+                     PMV_P.Name
 
-            if (form.ParModule_Ids.Length > 0)
-            {
-                sqlModulo = $"\n AND plx.ParModule_Id in ({string.Join(",", form.ParModule_Ids)})";
-            }
+                        ";
 
-            if (form.Shift_Ids.Length > 0)
-            {
-                sqlTurno = $"\n AND [Shift] in ({string.Join(",", form.Shift_Ids)})";
-            }
+            return query;
+        }
 
-            if (form.ParCompany_Ids.Length > 0)
-            {
-                sqlUnidade = $"\n AND cl.UnitId in ({string.Join(",", form.ParCompany_Ids)})";
-            }
+        public string SelectBatch1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
 
-            if (form.ParLevel1_Ids.Length > 0)
-            {
-                sqlLevel1 = $"\n AND cl.ParLevel1_id in ({string.Join(",", form.ParLevel1_Ids)})";
-            }
+            var query = $@"
 
-            if (form.ParLevel2_Ids.Length > 0)
-            {
-                sqlLevel2 = $"\n AND cl.ParLevel2_Id in ({string.Join(",", form.ParLevel2_Ids)})";
-            }
+            SELECT
+             S.Description AS Shift_Name,SUM(R.WeiEvaluation) AS Amostras
+             FROM CollectionLevel2 C
+             --INNER JOIN CollectionLevel2XParHeaderField CHF
+             --ON C.id = CHF.CollectionLevel2_Id
+            --LEFT JOIN ParMultipleValues PMV_P
+             --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+            -- AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+            -- AND CHF.ParHeaderField_Name = 'PRODUTO'
+            --LEFT JOIN ParMultipleValues PMV_S
+             --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+            -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+             INNER JOIN Result_Level3 R
+              ON C.ID = R.CollectionLevel2_Id
+             INNER JOIN Shift S
+              ON C.Shift = S.ID
+             WHERE 1 = 1
+             AND CONVERT(DATE, C.CollectionDate) BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 182
+             AND ParLevel2_Id = 670
+             AND ParLevel3_Id = 1900
+             GROUP BY
+              S.Description
+                        ";
 
-            if (form.ParLevel3_Ids.Length > 0)
-            {
-                sqlLevel3 = $"\n AND rl.ParLevel3_Id  in ({string.Join(",", form.ParLevel3_Ids)})";
-            }
+            return query;
+        }
 
-            if (form.userSgqMonitor_Ids.Length > 0)
-            {
-                sqlSgqMonitor = $"\n AND cl.AuditorId  in ({string.Join(",", form.userSgqMonitor_Ids)})";
-            }
+        public string SelectBatch2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
 
-            if (form.ParReason_Ids.Length > 0)
-            {
-                sqlParReason = $"\n AND lt.ParReason_Id  in ({string.Join(",", form.ParReason_Ids)})";
-            }
+            var query = $@"
 
-            if (form.ParSecao_Ids.Length > 0)
-            {
-                var sqlDepartamentoPelaHash = "";
-                foreach (var item in form.ParSecao_Ids)
-                {
-                    sqlDepartamentoPelaHash += $@"OR PD.Hash like '{item}|%'
-                            OR PD.Hash like '%|{item}|%'
-                            OR PD.Hash = '{item}'";
-                }
-                sqlDepartment = $@" AND (PD.Id in ({string.Join(",", form.ParSecao_Ids)}) 
-                             {sqlDepartamentoPelaHash})";
-            }
-            else if (form.ParDepartment_Ids.Length > 0)
-            {
-                var sqlDepartamentoPelaHash = "";
-                foreach (var item in form.ParDepartment_Ids)
-                {
-                    sqlDepartamentoPelaHash += $@"OR PD.Hash like '{item}|%'
-                            OR PD.Hash like '%|{item}|%'
-                            OR PD.Hash = '{item}'";
-                }
-                sqlDepartment = $@" AND (PD.Id in ({string.Join(",", form.ParDepartment_Ids)}) 
-                             {sqlDepartamentoPelaHash})";
-            }
+            SELECT
+             S.Description AS Shift_Name,SUM(R.WeiEvaluation) AS Amostras
+             FROM CollectionLevel2 C
+             --INNER JOIN CollectionLevel2XParHeaderField CHF
+             --ON C.id = CHF.CollectionLevel2_Id
+            --LEFT JOIN ParMultipleValues PMV_P
+             --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+            -- AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+            -- AND CHF.ParHeaderField_Name = 'PRODUTO'
+            --LEFT JOIN ParMultipleValues PMV_S
+             --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+            -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+             INNER JOIN Result_Level3 R
+              ON C.ID = R.CollectionLevel2_Id
+             INNER JOIN Shift S
+              ON C.Shift = S.ID
+             WHERE 1 = 1
+             AND CONVERT(DATE, C.CollectionDate) BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 182
+             AND ParLevel2_Id = 670
+             AND ParLevel3_Id = 1900
+             GROUP BY
+              S.Description
+                        ";
 
-            if (form.ParCargo_Ids.Length > 0)
-            {
-                sqlCargo = $"\n AND PCargo.Id  in ({string.Join(",", form.ParCargo_Ids)})";
-            }
+            return query;
+        }
 
-            if (GlobalConfig.Eua)
-            {
-                formatDate = "CONVERT(varchar, CONVERT(DATE, CL2HF2.value, 111), 101)";
-            }
-            else
-            {
-                formatDate = "CONVERT(varchar, CONVERT(DATE, CL2HF2.value, 111), 103)";
-            }
+        public string SelectPorcWater1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
 
-            var query = $@" 
-               --DECLARE @dtinicio varchar(30), @dtfinal varchar(30)
-	        	--SET @dtinicio = '2019-01-30 00:00:51'
-	        	--SET @dtfinal = '2019-12-31 23:59:59'
+            var query = $@"
+
+            -- # CARNE Por TURNO Total de CARNE
+
+            SELECT
+             S.Description AS Shift_Name,PMV_P.NAME AS Produtos
+             --,SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_AU --Agua_Utilizada
+             ,SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_PC --Agua_Utilizada
+                 --,ISNULL(NULLIF(SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)), 0) /
+                 --NULLIF(SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)), 0) * 100, 0)[% _AGUA]
+             FROM CollectionLevel2 C
+             INNER JOIN CollectionLevel2XParHeaderField CHF
+              ON C.id = CHF.CollectionLevel2_Id
+             LEFT JOIN ParMultipleValues PMV_P
+              ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+              AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+             --LEFT JOIN ParMultipleValues PMV_S
+             --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+            -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+             INNER JOIN Result_Level3 R
+              ON C.ID = R.CollectionLevel2_Id
+             INNER JOIN Shift S
+              ON C.Shift = S.ID
+             WHERE 1 = 1
+             AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 181
+             AND ParLevel2_Id = 664
+             AND ParLevel3_id = 1868
+             AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+             GROUP BY
+              S.Description,PMV_P.NAME
+                        ";
+
+            return query;
+        }
+
+        public string SelectPorcWater2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                -- # AGUA Por TURNO Total de Agua
 
                 SELECT
-							CL2HF.CollectionLevel2_Id
-						   ,STUFF((SELECT DISTINCT
-									', ' + CONCAT(HF.Name, ': ', CASE
-										WHEN CL2HF2.ParFieldType_Id = 1 OR
-											CL2HF2.ParFieldType_Id = 3 THEN PMV.Name
-										WHEN CL2HF2.ParFieldType_Id = 2 THEN CASE
-												WHEN HF.Description = 'Produto' THEN CAST(PRD.nCdProduto AS VARCHAR(500)) + ' - ' + PRD.cNmProduto
-												ELSE EQP.Nome
-											END
-										WHEN CL2HF2.ParFieldType_Id = 6 THEN CONVERT(VARCHAR, CL2HF2.Value, 103)
-										ELSE CL2HF2.Value
-									END)
-								FROM CollectionLevel2XParHeaderField CL2HF2 (NOLOCK)
-								LEFT JOIN CollectionLevel2 CL2 (NOLOCK)
-									ON CL2.Id = CL2HF2.CollectionLevel2_Id
-								LEFT JOIN ParHeaderField HF (NOLOCK)
-									ON CL2HF2.ParHeaderField_Id = HF.Id
-								LEFT JOIN ParLevel2 L2 (NOLOCK)
-									ON L2.Id = CL2.ParLevel2_Id
-								LEFT JOIN ParMultipleValues PMV (NOLOCK)
-									ON CL2HF2.Value = CAST(PMV.Id AS VARCHAR(500))
-									AND CL2HF2.ParFieldType_Id <> 2
-								LEFT JOIN Equipamentos EQP (NOLOCK)
-									ON CAST(EQP.Id AS VARCHAR(500)) = CL2HF2.Value
-									AND EQP.ParCompany_Id = CL2.UnitId
-									AND CL2HF2.ParFieldType_Id = 2
-								LEFT JOIN Produto PRD WITH (NOLOCK)
-									ON CAST(PRD.nCdProduto AS VARCHAR(500)) = CL2HF2.Value
-									AND CL2HF2.ParFieldType_Id = 2
-								WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
-								FOR XML PATH (''))
-							, 1, 1, '') AS HeaderFieldLis INTO #CollectionLevel2XParHeaderField2
-						FROM CollectionLevel2XParHeaderField CL2HF (NOLOCK)
-						INNER JOIN CollectionLevel2 CL2 (NOLOCK)
-							ON CL2.Id = CL2HF.CollectionLevel2_Id
-						LEFT JOIN ParHeaderField HF (NOLOCK)
-							ON CL2HF.ParHeaderField_Id = HF.Id
-						LEFT JOIN ParLevel2 L2 (NOLOCK)
-							ON L2.Id = CL2.ParLevel2_Id
-						GROUP BY CL2HF.CollectionLevel2_Id
+                 S.Description AS Shift_Name,PMV_P.NAME AS Produtos
+                 ,SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_AU --Agua_Utilizada
+                     --,SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_PC --Agua_Utilizada
+                         --,ISNULL(NULLIF(SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)), 0) /
+                         --NULLIF(SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)), 0) * 100, 0)[% _AGUA]
+                 FROM CollectionLevel2 C
+                 INNER JOIN CollectionLevel2XParHeaderField CHF
+                  ON C.id = CHF.CollectionLevel2_Id
+                 LEFT JOIN ParMultipleValues PMV_P
+                  ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                  AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
 
-	        	SELECT
-	        		p1.Name AS Indicador
-	        	   ,p2.Name AS Monitoramento
-	        	   --,p3.Name AS Tarefa
-	        	   ,cl.CollectionDate as _Data_Coleta
-				   ,cl.AlterDate as _Data_Alteracao
-	        	   --,rl.Value as Resultado 
-				   --,rl.ValueText as Valor_Texto 
-	        	    ,CASE
-	        		 	WHEN rl.isconform = 1 THEN 'Conforme'
-	        		 	ELSE 'Nâo Conforme'
-	        		 END AS Conforme
-	        	   --,CASE
-	        		--	WHEN rl.IsNotEvaluate = 0 THEN 'Avaliado'
-	        			--ELSE 'Não Avaliado'
-	        		--END AS 'AVALIADO_NAO_AVALIADO'
+                 --LEFT JOIN ParMultipleValues PMV_S
+                 --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                 INNER JOIN Result_Level3 R
+                  ON C.ID = R.CollectionLevel2_Id
+                 INNER JOIN Shift S
+                  ON C.Shift = S.ID
+                 WHERE 1 = 1
+                 AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                            Variável do Código
+                AND ParLevel1_Id = 181
+                 AND ParLevel2_Id = 663
+                 AND ParLevel3_id = 1867
+                 AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+                 GROUP BY
+                  S.Description,PMV_P.NAME
+                        ";
 
-	        	   ,USC.Name AS Usuario_Coleta
-	        	   ,USA.Name AS Usuario_Alteracao
-	        	   ,lt.ParReason_Id
-	        	   ,pr.Motivo
-	        	   ,lt.Motivo as DescMotivo
-	        	   ,CASE
-                       WHEN lt.ParReason_Id IS NULL THEN 'Original'
+            return query;
+        }
 
-                       ELSE 'Editado'
+        public string SelectPorcWater3(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
 
-                   END AS 'ORIGINAL_EDITADO'
-				   --,rl.WeiEvaluation AS Av_Peso
-				   --,rl.IsNotEvaluate AS  Avaliado
-				   --,cl.WeiDefects AS NC_Peso
-				   ,cl.EvaluationNumber as Avaliacao
-				   ,cl.Sample as Amostra
-				   ,clxp.HeaderFieldLis AS CamposCabecalho
-				   ,cl.AddDate as Data_Adicao
-				   ,lt.json
+            var query = $@"
 
+            -- % AGUA Por TURNO Por Produtos
 
-                FROM
-               -- Log
-               LogTrack lt
+            SELECT
+             S.Description AS Shift_Name,PMV_P.NAME AS Produtos
+             --,SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_AU --Agua_Utilizada
+                 --,SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_PC --Agua_Utilizada
+             ,ISNULL(NULLIF(SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)), 0) /
+             NULLIF(SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)), 0) * 100, 0)[% _AGUA]
+             FROM CollectionLevel2 C
+             INNER JOIN CollectionLevel2XParHeaderField CHF
+              ON C.id = CHF.CollectionLevel2_Id
+             LEFT JOIN ParMultipleValues PMV_P
+              ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+              AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
 
-               -- Coleta
-               INNER JOIN Result_Level3 rl(NOLOCK)
+             --LEFT JOIN ParMultipleValues PMV_S
+             --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+            -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+             INNER JOIN Result_Level3 R
+              ON C.ID = R.CollectionLevel2_Id
+             INNER JOIN Shift S
+              ON C.Shift = S.ID
+             WHERE 1 = 1
+             AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 181
+             AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+             GROUP BY
+              S.Description,PMV_P.NAME
+                        ";
 
-                   ON rl.Id = lt.Json_Id
+            return query;
+        }
 
-               LEFT JOIN CollectionLevel2 cl(NOLOCK)
+        public string SelectPorcWater4(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
 
-                   ON cl.Id = rl.CollectionLevel2_Id
+            var query = $@"
 
-			    LEFT JOIN #CollectionLevel2XParHeaderField2 clxp
-			    ON clxp.CollectionLevel2_Id = cl.Id
+            SELECT
+             S.Description AS Shift_Name
+             ,SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_AU --Agua_Utilizada
+             ,SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_PC --Agua_Utilizada
+             ,SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)) /
+             SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)) * 100[% _AGUA]
+             FROM CollectionLevel2 C
+             --INNER JOIN CollectionLevel2XParHeaderField CHF
+             --ON C.id = CHF.CollectionLevel2_Id
+            --LEFT JOIN ParMultipleValues PMV_P
+             --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+            -- AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+            -- AND CHF.ParHeaderField_Name = 'PRODUTO'
+            --LEFT JOIN ParMultipleValues PMV_S
+             --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+            -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+             INNER JOIN Result_Level3 R
+              ON C.ID = R.CollectionLevel2_Id
+             INNER JOIN Shift S
+              ON C.Shift = S.ID
+             WHERE 1 = 1
+             AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 181
+             GROUP BY
+              S.Description
+                        ";
 
-                LEFT JOIN ParLevel1XModule plx 
-					ON plx.ParLevel1_Id = cl.ParLevel1_Id
+            return query;
+        }
 
-               -- Parametrizacao
-               LEFT JOIN ParLevel1 p1(NOLOCK)
+        public string SelectMeatAgeAVG(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
 
-                   ON p1.Id = cl.ParLevel1_Id
+            var query = $@"
 
-               LEFT JOIN ParLevel2 p2(NOLOCK)
-
-                   ON p2.Id = cl.ParLevel2_Id
-
-               LEFT JOIN ParLevel3 p3(NOLOCK)
-
-                   ON p3.Id = rl.ParLevel3_Id
-
-				LEFT JOIN ParCompany pc
-							ON pc.Id = cl.UnitId
-
-               -- Dim Usuario
-
-               LEFT JOIN UserSgq USC(NOLOCK)
-
-                   ON USC.Id = cl.AuditorId
-
-               LEFT JOIN UserSgq USA(NOLOCK)
-
-                   ON USA.Id = lt.UserSgq_Id
-
-               -- Motivos
-               LEFT JOIN ParReason pr(NOLOCK)
-
-                   ON pr.Id = lt.ParReason_Id
+            --AVG IDADE CARNE Por TURNO Total de CARNE
 
 
-               WHERE 1 = 1
+            SELECT
+             --S.Description AS Shift_Name, PMV_P.NAME AS Produtos
+              --,SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_AU --Agua_Utilizada
+             AVG(IIF(1 = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_Carne --Agua_Utilizada
+                 --,ISNULL(NULLIF(SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)), 0) /
+                 --NULLIF(SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)), 0) * 100, 0)[% _AGUA]
+             FROM CollectionLevel2 C
+             INNER JOIN CollectionLevel2XParHeaderField CHF
+              ON C.id = CHF.CollectionLevel2_Id
+             LEFT JOIN ParMultipleValues PMV_P
+              ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+              AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
 
-               AND cl.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-               AND Tabela = 'Result_Level3'-- Tabela
-                         { sqlModulo }                         
-                         { sqlTurno }                         
-                         { sqlUnidade }                        
-                         { sqlLevel1 } 
-                         { sqlLevel2 }
-                         { sqlLevel3 }
-                         { sqlSgqMonitor }
-                         { sqlParReason }
+             --LEFT JOIN ParMultipleValues PMV_S
+             --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+            -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+             INNER JOIN Result_Level3 R
+              ON C.ID = R.CollectionLevel2_Id
+             INNER JOIN Shift S
+              ON C.Shift = S.ID
+             WHERE 1 = 1
+             AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 180
+             AND ParLevel2_Id = 653
+             AND ParLevel3_id = 2009
+             AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+             --GROUP BY
+             --S.Description,PMV_P.NAME
+                        ";
 
-              ORDER BY cl.CollectionDate, p1.Name, p2.Name,p3.name, lt.AddDate ASC ";
+            return query;
+        }
+
+        public string SelectMeatAgeMin(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+            --MIN IDADE CARNE Por TURNO Total de CARNE
+
+           SELECT
+             --S.Description AS Shift_Name, PMV_P.NAME AS Produtos
+              --,SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_AU --Agua_Utilizada
+             MIN(IIF(1 = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_Carne --Agua_Utilizada
+                 --,ISNULL(NULLIF(SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)), 0) /
+                 --NULLIF(SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)), 0) * 100, 0)[% _AGUA]
+             FROM CollectionLevel2 C
+             INNER JOIN CollectionLevel2XParHeaderField CHF
+              ON C.id = CHF.CollectionLevel2_Id
+             LEFT JOIN ParMultipleValues PMV_P
+              ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+              AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+             --LEFT JOIN ParMultipleValues PMV_S
+             --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+            -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+             INNER JOIN Result_Level3 R
+              ON C.ID = R.CollectionLevel2_Id
+             INNER JOIN Shift S
+              ON C.Shift = S.ID
+             WHERE 1 = 1
+             AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 180
+             AND ParLevel2_Id = 653
+             AND ParLevel3_id = 2009
+             AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+             --GROUP BY
+             --S.Description,PMV_P.NAME
+                        ";
+
+            return query;
+        }
+
+        public string SelectMeatAgeMax(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+            --MAX IDADE CARNE Por TURNO Total de CARNE
+
+           SELECT
+             --S.Description AS Shift_Name, PMV_P.NAME AS Produtos
+              --,SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_AU --Agua_Utilizada
+             MAX(IIF(1 = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_Carne --Agua_Utilizada
+                 --,ISNULL(NULLIF(SUM(IIF(1 = 1 AND ParLevel2_Id = 663 AND ParLevel3_id = 1867, CAST(R.Value AS DECIMAL(38, 8)), 0)), 0) /
+                 --NULLIF(SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)), 0) * 100, 0)[% _AGUA]
+             FROM CollectionLevel2 C
+             INNER JOIN CollectionLevel2XParHeaderField CHF
+              ON C.id = CHF.CollectionLevel2_Id
+             LEFT JOIN ParMultipleValues PMV_P
+              ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+              AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+             --LEFT JOIN ParMultipleValues PMV_S
+             --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+            -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+             INNER JOIN Result_Level3 R
+              ON C.ID = R.CollectionLevel2_Id
+             INNER JOIN Shift S
+              ON C.Shift = S.ID
+             WHERE 1 = 1
+             AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 180
+             AND ParLevel2_Id = 653
+             AND ParLevel3_id = 2009
+             AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+             --GROUP BY
+             --S.Description,PMV_P.NAME
+                        ";
+
+            return query;
+        }
+
+        public string SelectFlats(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+            -- % AGUA Por Produtos Agrupados
+             -- No Documento diz que Coxão Mole é Diferente de Lagarto, ao contrário do Parametrizado, que diz que são iguais(Eyes)
+
+            SELECT
+              AGRUP.Produtos
+             ,ISNULL(NULLIF(AGRUP.Amostras_S1, 0) /
+              NULLIF(TOTAIS.Amostras_S1_, 0), 1) * 100 AS Turno_1_PCcarne
+               , ISNULL(NULLIF(AGRUP.Amostras_S2, 0) /
+                NULLIF(TOTAIS.Amostras_S2_, 0), 1) *100 AS Turno_2_PCcarne
+             FROM(
+             SELECT
+              SUBSTRING(PMV_P.NAME, CHARINDEX('/', PMV_P.NAME) + 2, LEN(PMV_P.NAME))  AS Produtos
+              , SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_S1-- Agua_Utilizada
+              , SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 2, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_S2-- Agua_Utilizada
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+              -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 181
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+              GROUP BY
+               SUBSTRING(PMV_P.NAME, CHARINDEX('/', PMV_P.NAME) + 2, LEN(PMV_P.NAME))
+             )AGRUP,(
+              SELECT
+               SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_S1_ --Agua_Utilizada
+              ,SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 2, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_S2_ --Agua_Utilizada
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 181
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+             ) AS TOTAIS
+                        ";
+
+            return query;
+        }
+
+        public string SelectInsiders(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+            -- % AGUA Por Produtos Agrupados
+             -- No Documento diz que Coxão Mole é Diferente de Lagarto, ao contrário do Parametrizado, que diz que são iguais(Eyes)
+
+            SELECT
+              AGRUP.Produtos
+             ,ISNULL(NULLIF(AGRUP.Amostras_S1, 0) /
+              NULLIF(TOTAIS.Amostras_S1_, 0), 1) * 100 AS Turno_1_PCcarne
+               , ISNULL(NULLIF(AGRUP.Amostras_S2, 0) /
+                NULLIF(TOTAIS.Amostras_S2_, 0), 1) *100 AS Turno_2_PCcarne
+             FROM(
+             SELECT
+              SUBSTRING(PMV_P.NAME, CHARINDEX('/', PMV_P.NAME) + 2, LEN(PMV_P.NAME))  AS Produtos
+              , SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_S1-- Agua_Utilizada
+              , SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 2, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_S2-- Agua_Utilizada
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+              -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 181
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+              GROUP BY
+               SUBSTRING(PMV_P.NAME, CHARINDEX('/', PMV_P.NAME) + 2, LEN(PMV_P.NAME))
+             )AGRUP,(
+              SELECT
+               SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_S1_ --Agua_Utilizada
+              ,SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 2, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_S2_ --Agua_Utilizada
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 181
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+             ) AS TOTAIS
+                        ";
+
+            return query;
+        }
+
+        public string SelectEyes(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+            -- % AGUA Por Produtos Agrupados
+             -- No Documento diz que Coxão Mole é Diferente de Lagarto, ao contrário do Parametrizado, que diz que são iguais(Eyes)
+
+            SELECT
+              AGRUP.Produtos
+             ,ISNULL(NULLIF(AGRUP.Amostras_S1, 0) /
+              NULLIF(TOTAIS.Amostras_S1_, 0), 1) * 100 AS Turno_1_PCcarne
+               , ISNULL(NULLIF(AGRUP.Amostras_S2, 0) /
+                NULLIF(TOTAIS.Amostras_S2_, 0), 1) *100 AS Turno_2_PCcarne
+             FROM(
+             SELECT
+              SUBSTRING(PMV_P.NAME, CHARINDEX('/', PMV_P.NAME) + 2, LEN(PMV_P.NAME))  AS Produtos
+              , SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_S1-- Agua_Utilizada
+              , SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 2, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_S2-- Agua_Utilizada
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+              -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 181
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+              GROUP BY
+               SUBSTRING(PMV_P.NAME, CHARINDEX('/', PMV_P.NAME) + 2, LEN(PMV_P.NAME))
+             )AGRUP,(
+              SELECT
+               SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_S1_ --Agua_Utilizada
+              ,SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 2, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Amostras_S2_ --Agua_Utilizada
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 181
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+             ) AS TOTAIS
+                        ";
+
+            return query;
+        }
+
+        public string SelectTumblerBatchSize1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+            SELECT
+               SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS kg_Carne --Agua_Utilizada
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 181
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+
+                        ";
+
+            return query;
+        }
+
+        public string SelectTumblerBatchSize2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+                   -- kg Carne Por SABOR
+                 --No Documento diz que Coxão Mole é Diferente de Lagarto, ao contrário do Parametrizado, que diz que são iguais(Eyes)
+
+                  SELECT
+                   PMV_P.NAME AS Produto,
+                   SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS kg_Carne --Agua_Utilizada
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                 -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1 = 1
+                  AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                            Variável do Código
+                AND ParLevel1_Id = 181
+                  AND CHF.ParHeaderField_Name = 'SABOR'
+                  GROUP BY
+                   PMV_P.NAME
+                        ";
+
+            return query;
+        }
+
+        public string SelectTumblerBatchSize3(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+                -- kg Carne Por Produtos/ Mercado
+                 -- No Documento diz que Coxão Mole é Diferente de Lagarto, ao contrário do Parametrizado, que diz que são iguais(Eyes)
+
+                  SELECT
+                   PMV_P.NAME AS Produto,
+                   SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS kg_Carne --Agua_Utilizada
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                 -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1 = 1
+                  AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                            Variável do Código
+                AND ParLevel1_Id = 181
+                  AND CHF.ParHeaderField_Name = 'PRODUTO'
+                  GROUP BY
+                   PMV_P.NAME
+                        ";
+
+            return query;
+        }
+
+        public string SelectTumblerBatchSize4(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+            --kg Carne Por Produtos Agrupados
+             --No Documento diz que Coxão Mole é Diferente de Lagarto, ao contrário do Parametrizado, que diz que são iguais(Eyes)
+
+              SELECT
+               PMV_P.NAME AS Produto,
+               SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS kg_Carne --Agua_Utilizada
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 181
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+              GROUP BY
+               PMV_P.NAME
+                        ";
+
+            return query;
+        }
+
+        public string SelectProductAppearance(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+            --kg Carne Por SABOR
+         -- No Documento diz que Coxão Mole é Diferente de Lagarto, ao contrário do Parametrizado, que diz que são iguais(Eyes)
+
+              SELECT
+               PMV_P.NAME AS Produto,
+               SUM(IIF(1 = 1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS kg_Carne --Agua_Utilizada
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 181
+              AND CHF.ParHeaderField_Name = 'SABOR'
+              GROUP BY
+               PMV_P.NAME
+                        ";
+
+            return query;
+        }
+
+        public string SelectSeasoningDistribuition(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+                 -- Perguntas sobre a distribuição dos temperos?
+
+                  SELECT
+                   ParLevel3_Name as Tarefa,
+                   SUM(R.WeiEvaluation) AS Conforme, --Agua_Utilizada
+                   SUM(R.WeiDefects) AS[Não Conforme]-- Agua_Utilizada
+                FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                 -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1 = 1
+                  AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                            Variável do Código
+                AND ParLevel1_Id = 182
+                  AND ParLevel3_Id in (1904)
+                  AND CHF.ParHeaderField_Name = 'SABOR'
+                  GROUP BY
+                   ParLevel3_Name
+                        ";
+
+            return query;
+        }
+
+        public string SelectMeatTemperatureActual1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+            --Temperatura
+
+              SELECT
+              'C' Temp,
+               MIN(CAST(R.Value AS DECIMAL(38, 8))) AS Temperatura_Minima, --
+                MAX(CAST(R.Value AS DECIMAL(38, 8))) AS Temperatura_Maxima,  --
+                 AVG(CAST(R.Value AS DECIMAL(38, 8))) AS Temperatura_Media  --
+                 FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 180
+              AND ParLevel3_Id in (1851)
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+            UNION ALL
+
+              SELECT
+              'F' Temp,
+               ((MIN(CAST(R.Value AS DECIMAL(38, 8)))) * 9 / 5) + 32 AS Temperatura_Minima, --
+                      ((MAX(CAST(R.Value AS DECIMAL(38, 8)))) * 9 / 5) + 32 AS Temperatura_Maxima,  --
+                             ((AVG(CAST(R.Value AS DECIMAL(38, 8)))) * 9 / 5) + 32 AS Temperatura_Media  --
+                                   FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 180
+              AND ParLevel3_Id in (1851)
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+                        ";
+
+            return query;
+        }
+
+        public string SelectMeatTemperaturaActual2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+            --Temperatura
+
+              SELECT
+              'C' Temp,
+               MIN(CAST(R.Value AS DECIMAL(38, 8))) AS Temperatura_Minima, --
+                MAX(CAST(R.Value AS DECIMAL(38, 8))) AS Temperatura_Maxima,  --
+                 AVG(CAST(R.Value AS DECIMAL(38, 8))) AS Temperatura_Media  --
+                 FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 180
+              AND ParLevel3_Id in (1851)
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+            UNION ALL
+
+              SELECT
+              'F' Temp,
+               ((MIN(CAST(R.Value AS DECIMAL(38, 8)))) * 9 / 5) + 32 AS Temperatura_Minima, --
+                      ((MAX(CAST(R.Value AS DECIMAL(38, 8)))) * 9 / 5) + 32 AS Temperatura_Maxima,  --
+                             ((AVG(CAST(R.Value AS DECIMAL(38, 8)))) * 9 / 5) + 32 AS Temperatura_Media  --
+                                   FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 180
+              AND ParLevel3_Id in (1851)
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+                        ";
+
+            return query;
+        }
+
+        public string SelectThicknessAVG1_CDCM(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+            --Coxão Duro + Coxão Mole
+
+             SELECT
+              PMV_P.NAME Produto_Materia_Prima,
+               MIN(CAST(R.Value AS DECIMAL(38, 8))) AS Espessura_Minima, --
+                MAX(CAST(R.Value AS DECIMAL(38, 8))) AS Espessura_Maxima,  --
+                 AVG(IIF(Shift = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Espessura_Media_Turno_1,  --
+                    AVG(IIF(Shift = 2, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Espessura_Media_Turno_2,  --
+                       SUM(IIF(Shift = 1, R.WeiEvaluation, 0)) AS Avaliações_Turno_1,
+                         SUM(IIF(Shift = 2, R.WeiEvaluation, 0)) AS Avaliações_Turno_2
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 180
+              AND ParLevel3_Id in (1848)
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+              GROUP BY PMV_P.NAME
+                        ";
+
+            return query;
+        }
+
+        public string SelectThicknessAVG2_CDCM(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+            --Coxão Duro + Coxão Mole
+
+             SELECT
+              PMV_P.NAME Produto_Materia_Prima,
+               MIN(CAST(R.Value AS DECIMAL(38, 8))) AS Espessura_Minima, --
+                MAX(CAST(R.Value AS DECIMAL(38, 8))) AS Espessura_Maxima,  --
+                 AVG(IIF(Shift = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Espessura_Media_Turno_1,  --
+                    AVG(IIF(Shift = 2, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Espessura_Media_Turno_2,  --
+                       SUM(IIF(Shift = 1, R.WeiEvaluation, 0)) AS Avaliações_Turno_1,
+                         SUM(IIF(Shift = 2, R.WeiEvaluation, 0)) AS Avaliações_Turno_2
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+
+              --LEFT JOIN ParMultipleValues PMV_S
+              --ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+             -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                        Variável do Código
+            AND ParLevel1_Id = 180
+              AND ParLevel3_Id in (1848)
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+              GROUP BY PMV_P.NAME
+                ";
+
+            return query;
+        }
+
+        public string SelectThicknessSampleSize1_CDCM(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                -- Coxão Duro + Coxão Mole 
+
+                  SELECT
+                  PMV_P.NAME Produto_Materia_Prima,
+                   MIN(CAST(R.Value AS DECIMAL(38,8))) AS Espessura_Minima, -- 
+                   MAX(CAST(R.Value AS DECIMAL(38,8))) AS Espessura_Maxima,  -- 
+                   AVG(IIF(Shift = 1,CAST(R.Value AS DECIMAL(38,8)),0)) AS Espessura_Media_Turno_1,  -- 
+                   AVG(IIF(Shift = 2,CAST(R.Value AS DECIMAL(38,8)),0)) AS Espessura_Media_Turno_2,  -- 
+                   SUM(IIF(Shift = 1,R.WeiEvaluation,0)) AS Avaliações_Turno_1,
+                   SUM(IIF(Shift = 2,R.WeiEvaluation,0)) AS Avaliações_Turno_2
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 180 
+                  AND ParLevel3_Id in (1848)
+                  AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+                  GROUP BY PMV_P.NAME
+"
+;
+
+            return query;
+        }
+
+        public string SelectThicknessSampleSize2_CDCM(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                    -- Coxão Duro + Coxão Mole 
+
+                      SELECT
+                      PMV_P.NAME Produto_Materia_Prima,
+                       MIN(CAST(R.Value AS DECIMAL(38,8))) AS Espessura_Minima, -- 
+                       MAX(CAST(R.Value AS DECIMAL(38,8))) AS Espessura_Maxima,  -- 
+                       AVG(IIF(Shift = 1,CAST(R.Value AS DECIMAL(38,8)),0)) AS Espessura_Media_Turno_1,  -- 
+                       AVG(IIF(Shift = 2,CAST(R.Value AS DECIMAL(38,8)),0)) AS Espessura_Media_Turno_2,  -- 
+                       SUM(IIF(Shift = 1,R.WeiEvaluation,0)) AS Avaliações_Turno_1,
+                       SUM(IIF(Shift = 2,R.WeiEvaluation,0)) AS Avaliações_Turno_2
+                      FROM CollectionLevel2 C
+                      INNER JOIN CollectionLevel2XParHeaderField CHF
+                       ON C.id = CHF.CollectionLevel2_Id
+                      LEFT JOIN ParMultipleValues PMV_P
+                       ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                       AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                      --LEFT JOIN ParMultipleValues PMV_S
+                      -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                      -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                      INNER JOIN Result_Level3 R
+                       ON C.ID = R.CollectionLevel2_Id
+                      INNER JOIN Shift S
+                       ON C.Shift = S.ID
+                      WHERE 1=1
+                      AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                      AND ParLevel1_Id = 180 
+                      AND ParLevel3_Id in (1848)
+                      AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+                      GROUP BY PMV_P.NAME
+                    ";
+
+            return query;
+        }
+
+        public string SelectMeatCanadianRequirements1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                 -- Meet Canadian Requirements: 71°C 60 min (YES/NO/NA)
+
+                  SELECT 'C' AS Sentido,
+                   SUM(IIF(Shift = 1,R.WeiEvaluation,0)) AS Avaliações_Turno_1,
+                   SUM(IIF(Shift = 2,R.WeiEvaluation,0)) AS Avaliações_Turno_2
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 187 
+                  AND ParLevel3_Id in (1947)
+                  AND CHF.ParHeaderField_Name = 'SABOR'
+                  UNION ALL
+                SELECT 'NC',
+                   SUM(IIF(Shift = 1,R.WeiDefects,0)) AS Avaliações_Turno_1,
+                   SUM(IIF(Shift = 2,R.WeiDefects,0)) AS Avaliações_Turno_2
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 187 
+                  AND ParLevel3_Id in (1947)
+                  AND CHF.ParHeaderField_Name = 'SABOR'
+                ";
+
+            return query;
+        }
+
+        public string SelectMeatCanadianRequirements2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                 -- Meet Canadian Requirements: 71°C 60 min (YES/NO/NA)
+
+                  SELECT 'C' AS Sentido,
+                   SUM(IIF(Shift = 1,R.WeiEvaluation,0)) AS Avaliações_Turno_1,
+                   SUM(IIF(Shift = 2,R.WeiEvaluation,0)) AS Avaliações_Turno_2
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 187 
+                  AND ParLevel3_Id in (1947)
+                  AND CHF.ParHeaderField_Name = 'SABOR'
+                  UNION ALL
+                SELECT 'NC',
+                   SUM(IIF(Shift = 1,R.WeiDefects,0)) AS Avaliações_Turno_1,
+                   SUM(IIF(Shift = 2,R.WeiDefects,0)) AS Avaliações_Turno_2
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 187 
+                  AND ParLevel3_Id in (1947)
+                  AND CHF.ParHeaderField_Name = 'SABOR'
+                ";
+
+            return query;
+        }
+
+        public string SelectWaitTimeAVG1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                -- Qual o tempo de equalização do produto?
+
+                SELECT 
+                   AVG(IIF(Shift = 1,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMedio_Turno_1,
+                   AVG(IIF(Shift = 2,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMedio_Turno_2,
+                   MAX(IIF(Shift = 1,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMaximo_Turno_1,
+                   MAX(IIF(Shift = 2,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMaximo_Turno_2
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 188
+                  AND ParLevel3_Id in (1956)
+                  AND CHF.ParHeaderField_Name = 'SABOR'";
+
+            return query;
+        }
+
+        public string SelectWaitTimeAVG2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"GRT3:
+
+                -- Qual o tempo de equalização do produto?
+
+                SELECT 
+                   AVG(IIF(Shift = 1,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMedio_Turno_1,
+                   AVG(IIF(Shift = 2,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMedio_Turno_2,
+                   MAX(IIF(Shift = 1,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMaximo_Turno_1,
+                   MAX(IIF(Shift = 2,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMaximo_Turno_2
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 188
+                  AND ParLevel3_Id in (1956)
+                  AND CHF.ParHeaderField_Name = 'SABOR'";
+
+            return query;
+        }
+
+        public string SelectMaxTime1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"GRT3:
+
+                -- Qual o tempo de equalização do produto?
+
+                SELECT 
+                   AVG(IIF(Shift = 1,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMedio_Turno_1,
+                   AVG(IIF(Shift = 2,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMedio_Turno_2,
+                   MAX(IIF(Shift = 1,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMaximo_Turno_1,
+                   MAX(IIF(Shift = 2,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMaximo_Turno_2
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 188
+                  AND ParLevel3_Id in (1956)
+                  AND CHF.ParHeaderField_Name = 'SABOR'";
+
+            return query;
+        }
+
+        public string SelectMaxTime2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"GRT3:
+
+                -- Qual o tempo de equalização do produto?
+
+                SELECT 
+                   AVG(IIF(Shift = 1,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMedio_Turno_1,
+                   AVG(IIF(Shift = 2,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMedio_Turno_2,
+                   MAX(IIF(Shift = 1,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMaximo_Turno_1,
+                   MAX(IIF(Shift = 2,CAST(R.Value AS DECIMAL(38,8)),0)) AS TempoMaximo_Turno_2
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 188
+                  AND ParLevel3_Id in (1956)
+                  AND CHF.ParHeaderField_Name = 'SABOR'";
+
+            return query;
+        }
+
+        public string SelectPullMoistureAVG(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"GRT3:
+                 -- Qual a umidade aferida?
+
+                  SELECT
+                   MIN(CAST(R.Value AS DECIMAL(38,8))) AS MIN_Packing_Moisture ,  -- 
+                   MAX(CAST(R.Value AS DECIMAL(38,8))) AS MAX_Packing_Moisture , -- 
+                   AVG(CAST(R.Value AS DECIMAL(38,8))) AS AVG_Packing_Moisture  -- 
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  --AND ParLevel1_Id = 188 
+                  AND ParLevel3_Id in (1948)
+                  AND CHF.ParHeaderField_Name = 'SABOR'";
+
+            return query;
+        }
+
+        public string SelectStagingRoomTemperature1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                  SELECT
+                  'C' Temp,
+                   MIN(CAST(R.Value AS DECIMAL(38,8))) AS Temperatura_Minima, -- 
+                   MAX(CAST(R.Value AS DECIMAL(38,8))) AS Temperatura_Maxima,  -- 
+                   AVG(CAST(R.Value AS DECIMAL(38,8))) AS Temperatura_Media  -- 
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 188 
+                  AND ParLevel3_Id in (1954)
+                  AND CHF.ParHeaderField_Name = 'SABOR'
+
+                UNION ALL
+
+                  SELECT
+                  'F' Temp,
+                   ((MIN(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Minima, -- 
+                   ((MAX(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Maxima,  -- 
+                   ((AVG(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Media  -- 
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 188 
+                  AND ParLevel3_Id in (1954)
+                  AND CHF.ParHeaderField_Name = 'SABOR'";
+
+            return query;
+        }
+
+        public string SelectStagingRoomTemperature2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                  SELECT
+                  'C' Temp,
+                   MIN(CAST(R.Value AS DECIMAL(38,8))) AS Temperatura_Minima, -- 
+                   MAX(CAST(R.Value AS DECIMAL(38,8))) AS Temperatura_Maxima,  -- 
+                   AVG(CAST(R.Value AS DECIMAL(38,8))) AS Temperatura_Media  -- 
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 188 
+                  AND ParLevel3_Id in (1954)
+                  AND CHF.ParHeaderField_Name = 'SABOR'
+
+                UNION ALL
+
+                  SELECT
+                  'F' Temp,
+                   ((MIN(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Minima, -- 
+                   ((MAX(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Maxima,  -- 
+                   ((AVG(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Media  -- 
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 188 
+                  AND ParLevel3_Id in (1954)
+                  AND CHF.ParHeaderField_Name = 'SABOR'";
+
+            return query;
+        }
+
+        public string SelectPackingWaterActivity(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                 -- Qual o resultado aferido no equipamento Aqualab?
+
+
+                  SELECT
+  
+                   AVG(CAST(R.Value AS DECIMAL(38,8))) AS AVG_Packing_Water_Activity  -- 
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 187 
+                  AND ParLevel3_Id in (1946)
+                  AND CHF.ParHeaderField_Name = 'SABOR'
+                ";
+
+            return query;
+        }
+
+        public string SelectPackingMoistureAVG(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                  SELECT
+                   MIN(CAST(R.Value AS DECIMAL(38,8))) AS MIN_Packing_Moisture ,  -- 
+                   MAX(CAST(R.Value AS DECIMAL(38,8))) AS MAX_Packing_Moisture , -- 
+                   AVG(CAST(R.Value AS DECIMAL(38,8))) AS AVG_Packing_Moisture  -- 
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 188 
+                  AND ParLevel3_Id in (1957)
+                  AND CHF.ParHeaderField_Name = 'SABOR'
+                ";
+
+            return query;
+        }
+
+        public string SelectReanalysisFoss1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+                 -- Qual a umidade aferida?
+
+                  SELECT
+                   MIN(CAST(R.Value AS DECIMAL(38,8))) AS MIN_Packing_Moisture ,  -- 
+                   MAX(CAST(R.Value AS DECIMAL(38,8))) AS MAX_Packing_Moisture , -- 
+                   AVG(CAST(R.Value AS DECIMAL(38,8))) AS AVG_Packing_Moisture  -- 
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  --AND ParLevel1_Id = 188 
+                  AND ParLevel3_Id in (1948)
+                  AND CHF.ParHeaderField_Name = 'SABOR'";
+
+            return query;
+        }
+
+        public string SelectReanalysisFoss2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+                 -- Qual a umidade fria aferida?
+
+                  SELECT
+                   MIN(CAST(R.Value AS DECIMAL(38,8))) AS MIN_Packing_Moisture ,  -- 
+                   MAX(CAST(R.Value AS DECIMAL(38,8))) AS MAX_Packing_Moisture , -- 
+                   AVG(CAST(R.Value AS DECIMAL(38,8))) AS AVG_Packing_Moisture  -- 
+                  FROM CollectionLevel2 C
+                  INNER JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+  
+                  --LEFT JOIN ParMultipleValues PMV_S
+                  -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_S.ID AS VARCHAR(30))
+                  -- AND CHF.ParHeaderField_Id = PMV_S.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                  AND ParLevel1_Id = 188 
+                  AND ParLevel3_Id in (1957)
+                  AND CHF.ParHeaderField_Name = 'SABOR'";
+
+            return query;
+        }
+
+        public string SelectPackingRoomTempertureMax1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"Script:
+
+                SELECT 
+                  MAX(CAST(R.Value AS DECIMAL(38,8))) AS MAX_Packing_Moisture,  -- 
+                  Avg(CAST(R.Value AS DECIMAL(38,8))) AS AVG_Packing_Moisture,
+                  ((MAX(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Maxima,  -- 
+                  ((AVG(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Media  -- 
+                  FROM CollectionLevel2 C
+                  LEFT JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND ParLevel3_Id in (2001)
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data";
+
+            return query;
+        }
+
+        public string SelectPackingRoomTempertureMax2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"Script:
+
+                SELECT 
+                  MAX(CAST(R.Value AS DECIMAL(38,8))) AS MAX_Packing_Moisture,  -- 
+                  Avg(CAST(R.Value AS DECIMAL(38,8))) AS AVG_Packing_Moisture,
+                  ((MAX(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Maxima,  -- 
+                  ((AVG(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Media  -- 
+                  FROM CollectionLevel2 C
+                  LEFT JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND ParLevel3_Id in (2001)
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data";
+
+            return query;
+        }
+
+        public string SelectPackingRoomTemperture1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"Script:
+
+                SELECT 
+                  MAX(CAST(R.Value AS DECIMAL(38,8))) AS MAX_Packing_Moisture,  -- 
+                  Avg(CAST(R.Value AS DECIMAL(38,8))) AS AVG_Packing_Moisture,
+                  ((MAX(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Maxima,  -- 
+                  ((AVG(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Media  -- 
+                  FROM CollectionLevel2 C
+                  LEFT JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND ParLevel3_Id in (2001)
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data";
+
+            return query;
+        }
+
+        public string SelectPackingRoomTemperture2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                SELECT 
+                  MAX(CAST(R.Value AS DECIMAL(38,8))) AS MAX_Packing_Moisture,  -- 
+                  Avg(CAST(R.Value AS DECIMAL(38,8))) AS AVG_Packing_Moisture,
+                  ((MAX(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Maxima,  -- 
+                  ((AVG(CAST(R.Value AS DECIMAL(38,8))))*9/5)+32 AS Temperatura_Media  -- 
+                  FROM CollectionLevel2 C
+                  LEFT JOIN CollectionLevel2XParHeaderField CHF
+                   ON C.id = CHF.CollectionLevel2_Id
+                  LEFT JOIN ParMultipleValues PMV_P
+                   ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                   AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                  INNER JOIN Result_Level3 R
+                   ON C.ID = R.CollectionLevel2_Id
+                  INNER JOIN Shift S
+                   ON C.Shift = S.ID
+                  WHERE 1=1
+                  AND ParLevel3_Id in (2001)
+                  AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data";
+
+            return query;
+        }
+
+        public string SelectWoodChips(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                    SELECT
+                      SUM(CAST(R.Value AS DECIMAL(38, 8))) AS MAX_CHIPS
+                      ,AVG(CAST(R.Value AS DECIMAL(38, 8))) AS AVG_CHIPS
+                     FROM CollectionLevel2 C
+
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                      ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                       AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                       INNER JOIN Shift S
+                      ON C.Shift = S.Id
+                     WHERE 1 = 1
+                     AND ParLevel3_Id IN (1941)
+                     AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data";
+
+            return query;
+        }
+
+        public string SelectFinalProductThicknessAVG(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                    SELECT
+                      AVG(CAST(R.Value AS DECIMAL(38, 8))) AS MED_ESPESSURA,
+                      COUNT (DISTINCT c.Id) AS AMOSTRAS
+                     FROM CollectionLevel2 C
+ 
+                     --LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      --ON C.Id = CHF.CollectionLevel2_Id
+                     --LEFT JOIN ParMultipleValues PMV_P
+                     -- ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      -- AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                    --   INNER JOIN Shift S
+                    --  ON C.Shift = S.Id
+                     WHERE 1 = 1
+                     AND ParLevel3_Id IN (1967)
+                     AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND 1=1 AND ParLevel2_Id = 700 AND ParLevel3_id = 1967";
+
+            return query;
+        }
+
+        public string SelectRework1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                    ---- tarefa 2002
+
+                     SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2002
+ 
+                    ---- tarefa 2003
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2003
+ 
+                    ---- tarefa 2004
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2004
+
+                    ---- tarefa 2005
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2005";
+
+            return query;
+        }
+
+        public string SelectRework2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                    ---- tarefa 2002
+
+                     SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2002
+
+
+
+
+ 
+                    ---- tarefa 2003
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2003
+
+
+
+ 
+                    ---- tarefa 2004
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2004
+
+
+
+ 
+                    ---- tarefa 2005
+
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2005";
+
+            return query;
+        }
+
+        public string SelectCookingFlavor(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"Script:
+
+                    ---- tarefa 2002
+
+                     SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2002
+
+                    ---- tarefa 2003
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2003
+
+                    ---- tarefa 2004
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2004
+
+                    ---- tarefa 2005
+
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2005";
+
+            return query;
+        }
+
+        public string SelectOdor(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"Script:
+
+                    ---- tarefa 2002
+
+                     SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2002
+
+
+
+
+ 
+                    ---- tarefa 2003
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2003
+
+
+
+ 
+                    ---- tarefa 2004
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2004
+
+
+
+ 
+                    ---- tarefa 2005
+
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2005";
+
+            return query;
+        }
+
+        public string SelectTexture(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"Script:
+
+                    ---- tarefa 2002
+
+                     SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2002
+
+
+
+
+ 
+                    ---- tarefa 2003
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2003
+
+
+
+ 
+                    ---- tarefa 2004
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2004
+
+
+
+ 
+                    ---- tarefa 2005
+
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2005";
+
+            return query;
+        }
+
+        public string SelectAppearance(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"Script:
+
+                    ---- tarefa 2002
+
+                     SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2002
+
+
+
+
+ 
+                    ---- tarefa 2003
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2003
+
+
+
+ 
+                    ---- tarefa 2004
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2004
+
+
+
+ 
+                    ---- tarefa 2005
+
+
+                      SELECT
+                     COUNT(*) Total
+                     FROM CollectionLevel2 C
+ 
+                     LEFT JOIN CollectionLevel2XParHeaderField CHF
+                      ON C.Id = CHF.CollectionLevel2_Id
+                     LEFT JOIN ParMultipleValues PMV_P
+                     ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.Id AS VARCHAR(30))
+                      AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                     INNER JOIN Result_Level3 R
+                      ON C.Id = R.CollectionLevel2_Id
+                     WHERE 1 = 1
+                     AND CONVERT(DATE,C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
+                     AND c.ParLevel1_Id = 205 
+                     AND c.ParLevel2_Id = 729
+                     AND r.parlevel3_id = 2005";
 
             return query;
         }
