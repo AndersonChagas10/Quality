@@ -83,6 +83,39 @@ public class RelatorioDeResultadoSearaResultsSet
         }
 
         var query = $@"
+
+            SELECT CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,
+               C2.ParFrequency_Id ,
+               S2.ParStructureParent_Id AS Holding ,
+               S1.ParStructureParent_Id AS GrupoDeEmpresa ,
+               CS.ParStructure_Id AS Regional ,
+               C2.UnitId ,
+               D.Parent_Id AS Centro_De_Custo_Id ,
+               C2XDP.ParDepartment_Id AS Secao_Id ,
+               C2XCG.ParCargo_Id AS Cargo_Id ,
+               C2.ParLevel1_Id ,
+               C2.ParLevel2_Id ,
+               R3.ParLevel3_Id ,
+               C2.AuditorId ,
+               R3.WeiEvaluation ,
+               R3.WeiDefects,
+	           cfpp.ParFamiliaProduto_Id,
+	           cfpp.ParProduto_Id
+	           INTO #CUBOLEVEL3
+        FROM CollectionLevel2 C2 WITH (NOLOCK)
+        INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
+        LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) ON C2.ID = C2XDP.CollectionLevel2_Id
+        LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) ON C2.ID = C2XCG.CollectionLevel2_Id
+        LEFT JOIN ParDepartment D WITH (NOLOCK) ON C2XDP.ParDepartment_Id = D.Id
+        LEFT JOIN ParCompanyXStructure CS ON CS.ParCompany_Id = c2.UnitId
+        LEFT JOIN ParStructure S1 ON CS.ParStructure_Id = S1.Id
+        LEFT JOIN ParStructure S2 ON S1.ParStructureParent_Id = S2.Id
+        LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP on cfpp.CollectionLevel2_Id = c2.Id
+        WHERE 1=1
+          AND R3.IsNotEvaluate = 0
+
+     --------------------------------
+
                  DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
                  DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
 
@@ -125,7 +158,7 @@ public class RelatorioDeResultadoSearaResultsSet
                        ,((SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects)) / SUM(CUBOL3.WeiEvaluation)) * 100 AS PORCC
                        ,M.Name + '/' + CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR) AS Data
 
-                    FROM DW.Cubo_Coleta_L3 CUBOL3 WITH (NOLOCK)
+                    FROM #CUBOLEVEL3 CUBOL3 WITH (NOLOCK)
 
                     INNER JOIN ParCompany PC WITH (NOLOCK)
 	                    ON CUBOL3.UnitId = PC.ID
@@ -227,6 +260,39 @@ public class RelatorioDeResultadoSearaResultsSet
         }
 
         var query = $@"
+
+        SELECT CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,
+               C2.ParFrequency_Id ,
+               S2.ParStructureParent_Id AS Holding ,
+               S1.ParStructureParent_Id AS GrupoDeEmpresa ,
+               CS.ParStructure_Id AS Regional ,
+               C2.UnitId ,
+               D.Parent_Id AS Centro_De_Custo_Id ,
+               C2XDP.ParDepartment_Id AS Secao_Id ,
+               C2XCG.ParCargo_Id AS Cargo_Id ,
+               C2.ParLevel1_Id ,
+               C2.ParLevel2_Id ,
+               R3.ParLevel3_Id ,
+               C2.AuditorId ,
+               R3.WeiEvaluation ,
+               R3.WeiDefects,
+	           cfpp.ParFamiliaProduto_Id,
+	           cfpp.ParProduto_Id
+	           INTO #CUBOLEVEL3
+        FROM CollectionLevel2 C2 WITH (NOLOCK)
+        INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
+        LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) ON C2.ID = C2XDP.CollectionLevel2_Id
+        LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) ON C2.ID = C2XCG.CollectionLevel2_Id
+        LEFT JOIN ParDepartment D WITH (NOLOCK) ON C2XDP.ParDepartment_Id = D.Id
+        LEFT JOIN ParCompanyXStructure CS ON CS.ParCompany_Id = c2.UnitId
+        LEFT JOIN ParStructure S1 ON CS.ParStructure_Id = S1.Id
+        LEFT JOIN ParStructure S2 ON S1.ParStructureParent_Id = S2.Id
+        LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP on cfpp.CollectionLevel2_Id = c2.Id
+        WHERE 1=1
+          AND R3.IsNotEvaluate = 0
+
+     --------------------------------
+
                  DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
                  DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
 
@@ -237,7 +303,8 @@ public class RelatorioDeResultadoSearaResultsSet
 		   SUM(CUBOL3.WeiEvaluation) AS AV
 		   ,SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects) AS C
 
-		FROM DW.Cubo_Coleta_L3 CUBOL3 WITH (NOLOCK)
+		-- FROM DW.Cubo_Coleta_L3 CUBOL3 WITH (NOLOCK)
+        FROM #CUBOLEVEL3 CUBOL3 WITH (NOLOCK)
 
 		INNER JOIN ParCompany C WITH (NOLOCK)
 			ON CUBOL3.UnitId = C.ID
@@ -827,6 +894,38 @@ public class RelatorioDeResultadoSearaResultsSet
         }
 
         var query = $@"
+
+            SELECT CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,
+               C2.ParFrequency_Id ,
+               S2.ParStructureParent_Id AS Holding ,
+               S1.ParStructureParent_Id AS GrupoDeEmpresa ,
+               CS.ParStructure_Id AS Regional ,
+               C2.UnitId ,
+               D.Parent_Id AS Centro_De_Custo_Id ,
+               C2XDP.ParDepartment_Id AS Secao_Id ,
+               C2XCG.ParCargo_Id AS Cargo_Id ,
+               C2.ParLevel1_Id ,
+               C2.ParLevel2_Id ,
+               R3.ParLevel3_Id ,
+               C2.AuditorId ,
+               R3.WeiEvaluation ,
+               R3.WeiDefects,
+	           cfpp.ParFamiliaProduto_Id,
+	           cfpp.ParProduto_Id
+	           INTO #CUBOLEVEL3
+        FROM CollectionLevel2 C2 WITH (NOLOCK)
+        INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
+        LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) ON C2.ID = C2XDP.CollectionLevel2_Id
+        LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) ON C2.ID = C2XCG.CollectionLevel2_Id
+        LEFT JOIN ParDepartment D WITH (NOLOCK) ON C2XDP.ParDepartment_Id = D.Id
+        LEFT JOIN ParCompanyXStructure CS ON CS.ParCompany_Id = c2.UnitId
+        LEFT JOIN ParStructure S1 ON CS.ParStructure_Id = S1.Id
+        LEFT JOIN ParStructure S2 ON S1.ParStructureParent_Id = S2.Id
+        LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP on cfpp.CollectionLevel2_Id = c2.Id
+        WHERE 1=1
+          AND R3.IsNotEvaluate = 0
+
+     --------------------------------
                  DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
                  DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
 
@@ -845,7 +944,7 @@ public class RelatorioDeResultadoSearaResultsSet
 					,SUM(CUBOL3.WeiDefects) AS NC	
 					,SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects) AS C	
                     	
-	        FROM DW.Cubo_Coleta_L3 CUBOL3 WITH (NOLOCK)	
+	        FROM #CUBOLEVEL3 CUBOL3 WITH (NOLOCK)	
 					INNER JOIN ParCompany C WITH (NOLOCK)	
 						ON CUBOL3.UnitId = C.Id	
 					INNER JOIN ParLevel1 PL1 WITH (NOLOCK)	
