@@ -12,11 +12,13 @@ function openColeta(levels) {
 
         var hasLevel2 = false;
 
+        if(level1.ParLevel2 != undefined)
         level1.ParLevel2.forEach(function (level2) {
 
             var hasLevel3 = false;
             var striped = true;
 
+            if(level2.ParLevel3 != undefined)
             level2.ParLevel3.forEach(function (level3) {
 
                 var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
@@ -72,10 +74,10 @@ function openColeta(levels) {
     $('div#app').html(html);
 
     //chamar o metodo que valida e monta se pode criar a qualificação 
-    $('[data-binario]').parents('[data-conforme]').each(function (i,o) {
+    $('[data-binario]').parents('[data-conforme]').each(function (i, o) {
         validateShowQualification(o);
     });
-    
+
 
     $('.panel-body button, .panel-body input, .panel-body select').off('click').on('click', function (e) {
         interacaoComFormulario++;
@@ -367,10 +369,10 @@ function getBinarioComTexto(level3) {
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-5">' +
-        '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao + '" data-texto/>' +
+        botao +
         '</div>' +
         '<div class="col-xs-5">' +
-        botao +
+        '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao + '" data-texto/>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -760,7 +762,7 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
 });
 
 function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
-    
+
     var retorno = '';
 
     var listaParQualificationxParLevel3Value = validaParqualification(level1Id, level2Id, level3Id);
@@ -770,12 +772,13 @@ function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
         listaParQualificationxParLevel3Value.forEach(function (o, i) {
 
             var qualificationGroupName = '';
-            
+
             if (parametrization.listaPargroupQualification[i] != undefined) {
                 qualificationGroupName = parametrization.listaPargroupQualification[i].Name;
             } else {
                 qualificationGroupName = parametrization.listaPargroupQualification[0].Name;
             }
+
 
             if ($(linhaLevel3).attr('data-conforme') == o.Value) {
                 var options = '';
@@ -784,16 +787,16 @@ function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
                     options += '<option value="' + obj.Id + '" data-qualification>' + obj.Name + '</option >';
                 });
 
-                retorno += ' <div class="col-xs-3 no-gutters" data-ParQualificationLevel3Value="' + o.Value + '">';
-                retorno += ' <div class="col-xs-12"><small style="font-weight:550 !important">' + qualificationGroupName +'</small></div>';
+                retorno += ' <div class="col-xs-3 no-gutters pull-right" data-ParQualificationLevel3Value="' + o.Value + '">';
+                retorno += ' <div class="col-xs-12"><small style="font-weight:550 !important">' + qualificationGroupName + '</small></div>';
                 retorno += ' <div class="col-xs-12">';
                 retorno += ' <select class="form-control input-sm ddl" data-qualificationSelect>';
                 retorno += ' <option value="">Selecione...</option>';
                 retorno += options;
                 retorno += ' </select>';
+                retorno += ' </div>';                
                 retorno += ' </div>';
-                retorno += ' </div>';
-               
+
             }
         });
 
@@ -807,18 +810,23 @@ function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
 
 function validateShowQualification(linhaLevel3) {
 
-    $("[data-qualificationLevel3Value]").each(function (i, o) {
-        var selectsQualificationHtml = criaLinhaParQualification($(o).attr('parlevel1Id'), $(o).attr('parlevel2Id'), $(o).attr('parlevel3Id'), linhaLevel3);
+    $(linhaLevel3).siblings('[data-qualificationLevel3Value]').each(function (i, o) {
 
-        $(o).html('');
-        if (selectsQualificationHtml != "") {
-            $(o).append(selectsQualificationHtml);
-            $(o).removeClass('hidden');
-        } else {
-            $(o).AddClass('hidden');
+        if ($(linhaLevel3).attr('data-level1') == $(o).attr('parlevel1Id')
+            && $(linhaLevel3).attr('data-level2') == $(o).attr('parlevel2Id')
+            && $(linhaLevel3).attr('data-level3') == $(o).attr('parlevel3Id')) {
+
+            var selectsQualificationHtml = criaLinhaParQualification($(o).attr('parlevel1Id'), $(o).attr('parlevel2Id'), $(o).attr('parlevel3Id'), linhaLevel3);
+
+            $(o).html('');
+            if (selectsQualificationHtml != "") {
+                $(o).append(selectsQualificationHtml);
+                $(o).removeClass('hidden');
+            } else {
+                $(o).AddClass('hidden');
+            }
         }
     });
-
 }
 
 function setFieldColorGray(campo) {
@@ -882,7 +890,7 @@ function resetarLinha(linha) {
 }
 
 $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
-    debugger
+    
     e.preventDefault();
 
     if (!HeaderFieldsIsValid()) {
@@ -1110,7 +1118,7 @@ function getQualificationCollection(ParLevel1_Id, ParLevel2_Id, ParLevel3_Id) {
         var level1Id = $self.parents('[data-level3]').attr('parlevel1id');
         var level2Id = $self.parents('[data-level3]').attr('parlevel2id');
         var level3Id = $self.parents('[data-level3]').attr('parlevel3id');
- 
+
         if (level1Id == ParLevel1_Id && level2Id == ParLevel2_Id && level3Id == ParLevel3_Id) {
             //validar se o tem é referente aquela tarefa, para salvar
             collectionQualification.push($self.val());

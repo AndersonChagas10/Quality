@@ -271,8 +271,8 @@ namespace SgqSystem.Controllers.Api
                         var secao = db.ParDepartment.Where(x => x.Id == correctiveAction.CollectionLevel2.ParDepartment_Id).FirstOrDefault();
                         var departamento = db.ParDepartment.Where(x => x.Id == secao.Parent_Id).FirstOrDefault();
 
-                        
-                             db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "emailMock: " + DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.emailMock as string });
+
+                        db.ErrorLog.Add(new Dominio.ErrorLog() { AddDate = DateTime.Now, StackTrace = "emailMock: " + DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.emailMock as string });
                         db.SaveChanges();
 
                         Task.Run(() => MailSender.SendMail(
@@ -284,127 +284,129 @@ namespace SgqSystem.Controllers.Api
                             DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.emailMock as string,
                             "Alerta KO emitido para o Indicador: Risco no uso de EPI´s, Monitoramento: Monitoramento do uso de EPI´s, Tarefa: O colaborador está utilizando luva anticorte sem folga nas pontas dos dedos, apertada ou esticada na palma da mão? Unidade: CGR - JBS S.A. - Campo Grande – CGR (02.916.265/0077-68)",
                             $@"
-<p>{DateTime.Now.ToString("dd/MM/yyyy HH:mm")}, Alerta emitido para o <u>Indicador</u>: Risco no uso de EPI&acute;s,
-<u>Monitoramento</u>: Monitoramento do uso de EPI&acute;s, 
-<u>Tarefa</u>: O colaborador est&aacute; utilizando luva anticorte sem folga nas pontas dos dedos, apertada ou esticada na palma da m&atilde;o? 
-<u>Frequ&ecirc;ncia</u>: Semanal, <u>Cargo</u>: <strong>{cargo?.Name}</strong>, 
-<u>Se&ccedil;&atilde;o</u>: <strong>{secao?.Name}</strong> e 
-<u>Centro de Custo</u>: <strong>{departamento?.Name}</strong> da <u>Unidade</u>: CGR - JBS S.A. - Campo Grande &ndash; CGR (02.916.265/0077-68).<br /> <br /> Alerta KO disparado. N&atilde;o Conformidade em Tarefa de Risco Intoler&aacute;vel. O superior e o SESMT ser&atilde;o notificados para tomada de a&ccedil;&atilde;o corretiva imediata para o Posto de Trabalho.</p>
-<p>&nbsp;</p>
-<p><strong>CGR - JBS S.A. - Campo Grande &ndash; CGR (02.916.265/0077-68)</strong></p>
-<p><strong>Formul&aacute;rio de A&ccedil;&atilde;o Corretiva</strong></p>
-<table>
-<tbody>
-<tr>
-<td width='566'>
-<p><strong>A&ccedil;&atilde;o Corretiva Tomada: </strong></p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Data/Hora:</strong>&nbsp;{DateTime.Now.ToString("dd/MM/yyyy HH:mm")}</p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Auditor:&nbsp;</strong>{collectionLevel2.UserSgq?.Name }</p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Frequ&ecirc;ncia:</strong> Semanal</p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>&nbsp;</strong></p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Informa&ccedil;&atilde;o da Auditoria:</strong></p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Indicador:&nbsp;</strong>Risco no uso de EPI&acute;s</p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Monitoramento:</strong> Monitoramento do uso de EPI&acute;s</p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Tarefa:</strong> O colaborador est&aacute; utilizando luva anticorte sem folga nas pontas dos dedos, apertada ou esticada na palma da m&atilde;o?</p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>&nbsp;</strong></p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Centro de Custo:</strong> {departamento?.Name}
+                                <p>{DateTime.Now.ToString("dd/MM/yyyy HH:mm")}, Alerta emitido para o <u>Indicador</u>: Risco no uso de EPI&acute;s,
+                                <u>Monitoramento</u>: Monitoramento do uso de EPI&acute;s, 
+                                <u>Tarefa</u>: O colaborador est&aacute; utilizando luva anticorte sem folga nas pontas dos dedos, apertada ou esticada na palma da m&atilde;o? 
+                                <u>Frequ&ecirc;ncia</u>: Semanal, <u>Cargo</u>: <strong>{cargo?.Name}</strong>, 
+                                <u>Se&ccedil;&atilde;o</u>: <strong>{secao?.Name}</strong> e 
+                                <u>Centro de Custo</u>: <strong>{departamento?.Name}</strong> da <u>Unidade</u>: CGR - JBS S.A. - Campo Grande &ndash; CGR (02.916.265/0077-68).<br /> <br /> Alerta KO disparado. N&atilde;o Conformidade em Tarefa de Risco Intoler&aacute;vel. O superior e o SESMT ser&atilde;o notificados para tomada de a&ccedil;&atilde;o corretiva imediata para o Posto de Trabalho.</p>
+                                <p>&nbsp;</p>
+                                <p><strong>CGR - JBS S.A. - Campo Grande &ndash; CGR (02.916.265/0077-68)</strong></p>
+                                <p><strong>Formul&aacute;rio de A&ccedil;&atilde;o Corretiva</strong></p>
+                                <table>
+                                <tbody>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>A&ccedil;&atilde;o Corretiva Tomada: </strong></p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Data/Hora:</strong>&nbsp;{DateTime.Now.ToString("dd/MM/yyyy HH:mm")}</p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Auditor:&nbsp;</strong>{collectionLevel2.UserSgq?.Name }</p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Frequ&ecirc;ncia:</strong> Semanal</p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>&nbsp;</strong></p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Informa&ccedil;&atilde;o da Auditoria:</strong></p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Indicador:&nbsp;</strong>Risco no uso de EPI&acute;s</p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Monitoramento:</strong> Monitoramento do uso de EPI&acute;s</p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Tarefa:</strong> O colaborador est&aacute; utilizando luva anticorte sem folga nas pontas dos dedos, apertada ou esticada na palma da m&atilde;o?</p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>&nbsp;</strong></p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Centro de Custo:</strong> {departamento?.Name}
+                                
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Se&ccedil;&atilde;o:&nbsp;</strong>{secao?.Name}</p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Cargo:</strong> {cargo?.Name}</p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>&nbsp;</strong></p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Descrição da Falha:</strong> {correctiveAction.DescriptionFailure}
+                                
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Ação Corretiva Imediata;</strong>{correctiveAction.ImmediateCorrectiveAction}</p>
+                                </td>
+                                </tr>
+                                <tr>
+                                <td width='566'>
+                                <p><strong>Medida Preventiva:</strong> {correctiveAction.PreventativeMeasure}</p>
+                                </td>
+                                </tr>
+                                </tbody>
+                                </table>
+                                "));
 
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Se&ccedil;&atilde;o:&nbsp;</strong>{secao?.Name}</p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Cargo:</strong> {cargo?.Name}</p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>&nbsp;</strong></p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Descrição da Falha:</strong> {correctiveAction.DescriptionFailure}
+                        CorrectiveAction acaoCorretiva = new CorrectiveAction();
 
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Ação Corretiva Imediata;</strong>{correctiveAction.ImmediateCorrectiveAction}</p>
-</td>
-</tr>
-<tr>
-<td width='566'>
-<p><strong>Medida Preventiva:</strong> {correctiveAction.PreventativeMeasure}</p>
-</td>
-</tr>
-</tbody>
-</table>
-"));
+                        acaoCorretiva.CollectionLevel2_Id = collectionLevel2.Id;
+                        acaoCorretiva.CollectionLevel02Id = collectionLevel2.Id;
+                        acaoCorretiva.ImmediateCorrectiveAction = correctiveAction.ImmediateCorrectiveAction;
+                        acaoCorretiva.PreventativeMeasure = correctiveAction.PreventativeMeasure;
+                        acaoCorretiva.DescriptionFailure = correctiveAction.DescriptionFailure;
+                        acaoCorretiva.ParLevel3_Id = correctiveAction.ParLevel3_Id;
+                        acaoCorretiva.AuditorId = correctiveAction.AuditorId;
+                        acaoCorretiva.DateCorrectiveAction = correctiveAction.DateCorrectiveAction;
+
+                        db.CorrectiveAction.Add(acaoCorretiva);
+                        db.SaveChanges();
+
+                        collectionLevel2 = db.CollectionLevel2.Where(x => x.Id == collectionLevel2.Id).FirstOrDefault();
 
                         collectionLevel2.HaveCorrectiveAction = true;
                         db.Entry(collectionLevel2).State = EntityState.Modified;
                         db.SaveChanges();
 
-
-                        //Não estava retornando na query acima então pego aqui novamente
-                        db.Configuration.LazyLoadingEnabled = false;
-                        collectionLevel2.ParCargo_Id = db.CollectionLevel2XParCargo.Where(x => x.CollectionLevel2_Id == collectionLevel2.Id).Select(x => x.ParCargo_Id).FirstOrDefault();
-                        collectionLevel2.ParDepartment_Id = db.CollectionLevel2XParDepartment.Where(x => x.CollectionLevel2_Id == collectionLevel2.Id).Select(x => x.ParDepartment_Id).FirstOrDefault();
-
-                        correctiveAction.CollectionLevel2_Id = collectionLevel2.Id;
-                        correctiveAction.CollectionLevel2 = collectionLevel2;
-
-                        db.CorrectiveAction.Add(correctiveAction);
-
-                        db.SaveChanges();
-
                         correctiveActionsSave.Add(correctiveAction);
 
                     }
-
                 }
                 catch (Exception ex)
                 {

@@ -2919,6 +2919,14 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-492</CardNumber>
+    <Version>1.6.0</Version>
+    <Description>[RH SESMT] Opção Data no tipo de dado de entrada Resultado.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 
   <Card>
     <CardNumber>SGQ-</CardNumber>
@@ -2972,6 +2980,19 @@
       ResultLevel3_Id int not null,
       [Qualification_Value] varchar(100) null
       )
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-445</CardNumber>
+    <Version>1.7.0</Version>
+    <Description>[RH SESMT] Alerta KO - Coleta</Description>
+    <Script>
+      IF COL_LENGTH('CorrectiveAction','ParLevel3_Id') IS NULL
+      BEGIN
+      alter table CorrectiveAction
+      add ParLevel3_Id int null
+      END
     </Script>
   </Card>
 

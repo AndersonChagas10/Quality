@@ -44,9 +44,8 @@ function montarLevel1(level1List) {
         });
 
         levels1.forEach(function (parLevel1) {
-            level1List.push(parLevel1);
-
             montarLevel2(parLevel1);
+            level1List.push($.extend({},parLevel1));
         });
     });
 }
@@ -73,8 +72,8 @@ function montarLevel2(parLevel1) {
         });
 
         Level2.forEach(function (parLevel2, index) {
-            level2List.push(parLevel2);
             montarLevel3(parLevel1, parLevel2, index)
+            level2List.push($.extend({},parLevel2));
         });
 
     });
@@ -125,7 +124,7 @@ function montarLevel3(parLevel1, parLevel2, index) {
 
             level3["ParLevel3XHelp"] = getParLevel3XHelp(level3);
 
-            level3List.push(level3);
+            level3List.push($.extend({},level3));
 
         });
 
@@ -161,7 +160,7 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
             obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
             obj.ParCargo_Id == currentParCargo_Id &&
             obj.ParDepartment_Id == currentParDepartment_Id &&
-            obj.ParCompany_Id == currentLogin.ParCompany_Id;
+            obj.ParCompany_Id == currentParCompany_Id;
     });
 
     //Considerar Level1, Level2, Level3, Frequencia, Cargo, Departamento e todas as Unidades
@@ -211,7 +210,7 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
                 obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
                 obj.ParCargo_Id == null &&
                 obj.ParDepartment_Id == null &&
-                obj.ParCompany_Id == currentLogin.ParCompany_Id;
+                obj.ParCompany_Id == currentParCompany_Id;
         });
     }
 
