@@ -919,7 +919,23 @@ public class ApontamentosDiariosResultSet
 		CREATE INDEX IDX_CollectionLevel2_12345 ON #CollectionLevel2(ID,UnitId,CollectionDate,ParLevel1_Id,ParLevel2_Id);
 
 
-					-- Result Level 3
+					-- Result Level 3 x Qualification
+						SELECT
+							r3.Id
+						   ,STUFF((SELECT DISTINCT
+									', ' + pq.Name
+								FROM ResultLevel3XParQualification r3q
+								INNER JOIN ParQualification pq
+									ON pq.Id = r3q.Qualification_Value
+								WHERE r3q.ResultLevel3_Id = r3.Id
+								FOR XML PATH (''))
+							, 1, 1, '') Qualification INTO #Qualification
+						FROM ResultLevel3XParQualification r3q
+						LEFT JOIN Result_Level3 r3
+							ON r3.Id = r3q.ResultLevel3_Id
+						LEFT JOIN ParQualification pq
+							ON pq.Id = r3q.Qualification_Value
+						GROUP BY r3.Id
 
 					SELECT
 						R3.Id
@@ -935,15 +951,12 @@ public class ApontamentosDiariosResultSet
 					   ,R3.IsNotEvaluate
 					   ,R3.WeiEvaluation
 					   ,R3.WeiDefects
-                       ,RPQ.Qualification_Value	
-					   ,PQ.Name INTO #Result_Level3
+                       ,QL.Qualification INTO #Result_Level3
 					FROM Result_Level3 R3 WITH (NOLOCK)
 					INNER JOIN #CollectionLevel2 C2
 						ON R3.CollectionLevel2_Id = C2.Id
-                    LEFT JOIN ResultLevel3XParQualification RPQ	
-						on rpq.ResultLevel3_Id = r3.Id	
-					LEFT JOIN ParQualification PQ	
-						ON PQ.id = RPQ.Qualification_Value
+                    LEFT JOIN #Qualification QL 
+						ON QL.ID = R3.ID
 	
 
 										CREATE INDEX IDX_Result_Level3_CollectionLevel2_ID ON #Result_Level3(CollectionLevel2_Id);
@@ -1139,7 +1152,7 @@ public class ApontamentosDiariosResultSet
 					   ,pgc.Name as GrupoCluster
 					   ,psg.Name as GrupoEmpresa
 					   ,pg.Name as regional
-                       ,ISNULL( R3.Name, 'Sem dados' )Qualification_Group
+                       ,ISNULL( R3.qualification, 'Sem dados' )Qualification_Group
 					FROM #CollectionLevel2 C2 (NOLOCK)
 					INNER JOIN ParCompany UN with (NOLOCK)
 						ON UN.Id = C2.UnitId
@@ -1206,6 +1219,7 @@ public class ApontamentosDiariosResultSet
 					DROP TABLE #CollectionLevel2XParHeaderFieldGeral2
 					DROP TABLE #CollectionLevel2XCluster
 					DROP TABLE #CollectionLevel2XCollectionJson
+					Drop TABLE #Qualification
 
                 ";
 
