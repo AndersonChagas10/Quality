@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using SgqService.ViewModels;
 
 namespace SgqSystem.Controllers.Api.Relatorios
 {
@@ -17,7 +18,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
     {
         private List<RelatorioConsistencyCallMSPResultSet> _list { get; set; }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetlistaTabelaConsistencyCall")]
         public RelatorioConsistencyCallMSPResultSet listaTabelaConsistencyCall([FromBody] DataCarrierFormularioNew form)
         {
@@ -78,61 +79,152 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                obj.Flavor = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectFlavor).ToString();
-                obj.Product = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectProduct).ToString();
-                obj.Batch1 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectBatch1));
-                obj.Batch2 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectBatch2));
-                var porcWater1 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPorcWater1));
-                var porcWater2 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPorcWater2));
-                var porcWater3 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPorcWater3));
-                var porcWater4 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPorcWater4));
-                obj.Meat_age_avg = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatAgeAVG));
-                obj.Meat_age_min_max1 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatAgeMin));
-                obj.Meat_age_min_max2 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatAgeMax));
-                obj.Flats = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectFlats));
-                obj.Insides = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectInsiders));
-                obj.Eyes = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectEyes));
-                var Tumbler_batch_size1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectTumblerBatchSize1).ToString();
-                var Tumbler_batch_size2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectTumblerBatchSize2).ToString();
-                var Tumbler_batch_size3 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectTumblerBatchSize3).ToString();
-                var Tumbler_batch_size4 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectTumblerBatchSize4).ToString();
-                obj.Product_appearance = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectProductAppearance).ToString();
-                obj.Seasoning_distribuition = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectSeasoningDistribuition).ToString();
-                obj.Meat_temperature_actual1 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatTemperatureActual1));
-                obj.Meat_temperature_actual2 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatTemperaturaActual2));
-                obj.Thickness_avg1_CDCM = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectThicknessAVG1_CDCM));
-                obj.Thickness_avg2_CDCM = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectThicknessAVG2_CDCM));
-                obj.Thickness_sample_size1_CDCM = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectThicknessSampleSize1_CDCM));
-                obj.Thickness_sample_size2_CDCM = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectThicknessSampleSize2_CDCM));
-                obj.Meet_requirements1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatCanadianRequirements1).ToString();
-                obj.Meet_requirements2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatCanadianRequirements2).ToString();
-                var meat_time_avg1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectWaitTimeAVG1).ToString();
-                var meat_time_avg2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectWaitTimeAVG2).ToString();
-                obj.Max_time1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMaxTime1).ToString();
-                obj.Max_time2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMaxTime2).ToString();
-                obj.Pull_moisture_avg = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPullMoistureAVG));
-                obj.Staging_room_temperature1 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectStagingRoomTemperature1));
-                obj.Staging_room_temperature2 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectStagingRoomTemperature2));
-                obj.Packing_water_activity = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPackingWaterActivity));
-                obj.Packing_moisture_avg = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPackingMoistureAVG));
-                obj.Reanalysis_foss_1 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectReanalysisFoss1));
-                obj.Reanalysis_foss_2 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectReanalysisFoss2));
-                obj.Packing_room_temperature_max1 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPackingRoomTempertureMax1));
-                obj.Packing_room_temperature_max2 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPackingRoomTempertureMax2));
-                obj.Packing_room_temperature1 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPackingRoomTemperture1));
-                obj.Packing_room_temperature2 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPackingRoomTemperture2));
-                obj.Wood_chips = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectWoodChips));
-                obj.Final_product_thickness_avg = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectFinalProductThicknessAVG));
-                obj.Rework1 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectRework1));
-                obj.Rework2 = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectRework2));
-                obj.Cooking_flavor = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectCookingFlavor));
-                obj.Odor = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectOdor));
-                obj.Texture = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectTexture));
-                obj.Appearance = Convert.ToDecimal(factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectAppearance));
+                var flavor = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectFlavor).ToList();
+                obj.Flavor = flavor.ToString();
+
+                var product = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectProduct).ToList();
+                obj.Product = product.ToString();
+
+                var batch1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectBatch1).ToList();
+                obj.Batch1 = Convert.ToDecimal(batch1);
+
+                var batch2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectBatch2).ToList();
+                obj.Batch2 = Convert.ToDecimal(batch2);
+
+                var porcWater1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPorcWater1).ToList();
+                var porcWater2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPorcWater2).ToList();
+                var porcWater3 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPorcWater3).ToList();
+                var porcWater4 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPorcWater4).ToList();
+                obj.PorcWater1 = Convert.ToDecimal(porcWater1);
+                obj.PorcWater2 = Convert.ToDecimal(porcWater2);
+
+                var meat_age_avg = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatAgeAVG).ToList();
+                obj.Meat_age_avg = Convert.ToDecimal(meat_age_avg);
+
+                var meat_age_min_max1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatAgeMin).ToList();
+                obj.Meat_age_min_max1 = Convert.ToDecimal(meat_age_min_max1);
+
+                var meat_age_min_max2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatAgeMax).ToList();
+                obj.Meat_age_min_max2 = Convert.ToDecimal(meat_age_min_max2);
+
+                var flats = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectFlats).ToList();
+                obj.Flats = Convert.ToDecimal(flats);
+
+                var insides = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectInsiders).ToList();
+                obj.Insides = Convert.ToDecimal(insides);
+
+                var eyes = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectEyes).ToList();
+                obj.Eyes = Convert.ToDecimal(eyes);
+
+                var tumbler_batch_size1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectTumblerBatchSize1).ToList();
+                var tumbler_batch_size2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectTumblerBatchSize2).ToList();
+                var tumbler_batch_size3 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectTumblerBatchSize3).ToList();
+                var tumbler_batch_size4 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectTumblerBatchSize4).ToList();
+                obj.Tumbler_batch_size = Convert.ToDecimal(tumbler_batch_size1);
+
+                var product_appearance = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectProductAppearance).ToList();
+                obj.Product_appearance = product_appearance.ToString();
+
+                var seasoning_distribuition = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectSeasoningDistribuition).ToList();
+                obj.Seasoning_distribuition = seasoning_distribuition.ToString();
+
+                var meat_temperature_actual1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatTemperatureActual1).ToList();
+                obj.Meat_temperature_actual1 = Convert.ToDecimal(meat_temperature_actual1);
+
+                var meat_temperature_actual2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatTemperaturaActual2).ToList();
+                obj.Meat_temperature_actual2 = Convert.ToDecimal(meat_temperature_actual2);
+
+                var thickness_avg1_CDCM = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectThicknessAVG1_CDCM).ToList();
+                obj.Thickness_avg1_CDCM = Convert.ToDecimal(thickness_avg1_CDCM);
+
+                var thickness_avg2_CDCM = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectThicknessAVG2_CDCM).ToList();
+                obj.Thickness_avg2_CDCM = Convert.ToDecimal(thickness_avg2_CDCM);
+
+                var thickness_sample_size1_CDCM = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectThicknessSampleSize1_CDCM).ToList();
+                obj.Thickness_sample_size1_CDCM = Convert.ToDecimal(thickness_sample_size1_CDCM);
+
+                var thickness_sample_size2_CDCM = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectThicknessSampleSize2_CDCM).ToList();
+                obj.Thickness_sample_size2_CDCM = Convert.ToDecimal(thickness_sample_size2_CDCM);
+
+                var meet_requirements1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatCanadianRequirements1).ToList();
+                obj.Meet_requirements1 = meet_requirements1.ToString();
+
+                var meet_requirements2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMeatCanadianRequirements2).ToList();
+                obj.Meet_requirements2 = meet_requirements2.ToString();
+
+                var wait_time_avg1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectWaitTimeAVG1).ToList();
+                obj.Wait_time_avg1 = Convert.ToInt32(wait_time_avg1);
+
+                var wait_time_avg2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectWaitTimeAVG2).ToList();
+                obj.Wait_time_avg2 = Convert.ToInt32(wait_time_avg2);
+
+                var max_time1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMaxTime1).ToList();
+                obj.Max_time1 = max_time1.ToString();
+
+                var max_time2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectMaxTime2).ToList();
+                obj.Max_time2 = max_time2.ToString();
+
+                var pull_moisture_avg = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPullMoistureAVG).ToList();
+                obj.Pull_moisture_avg = Convert.ToDecimal(pull_moisture_avg);
+
+                var staging_room_temperature1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectStagingRoomTemperature1).ToList();
+                obj.Staging_room_temperature1 = Convert.ToDecimal(staging_room_temperature1);
+
+                var staging_room_temperature2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectStagingRoomTemperature2).ToList();
+                obj.Staging_room_temperature2 = Convert.ToDecimal(staging_room_temperature2);
+
+                var packing_water_activity = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPackingWaterActivity).ToList();
+                obj.Packing_water_activity = Convert.ToDecimal(packing_water_activity);
+
+                var packing_moisture_avg = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPackingMoistureAVG).ToList();
+                obj.Packing_moisture_avg = Convert.ToDecimal(packing_moisture_avg);
+
+                var reanalysis_foss_1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectReanalysisFoss1).ToList();
+                obj.Reanalysis_foss_1 = Convert.ToDecimal(reanalysis_foss_1);
+
+                var reanalysis_foss_2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectReanalysisFoss2).ToList();
+                obj.Reanalysis_foss_2 = Convert.ToDecimal(reanalysis_foss_2);
+
+                var packing_room_temperature_max1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPackingRoomTempertureMax1).ToList();
+                obj.Packing_room_temperature_max1 = Convert.ToDecimal(packing_room_temperature_max1);
+
+                var packing_room_temperature_max2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPackingRoomTempertureMax2).ToList();
+                obj.Packing_room_temperature_max2 = Convert.ToDecimal(packing_room_temperature_max2);
+
+                var packing_room_temperature1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPackingRoomTemperture1).ToList();
+                obj.Packing_room_temperature1 = Convert.ToDecimal(packing_room_temperature1);
+
+                var packing_room_temperature2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectPackingRoomTemperture2).ToList();
+                obj.Packing_room_temperature2 = Convert.ToDecimal(packing_room_temperature2);
+
+                var wood_chips = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectWoodChips).ToList();
+                obj.Wood_chips = Convert.ToDecimal(wood_chips);
+
+                var final_product_thickness_avg = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectFinalProductThicknessAVG).ToList();
+                obj.Final_product_thickness_avg = Convert.ToDecimal(final_product_thickness_avg);
+
+                var rework1 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectRework1).ToList();
+                obj.Rework1 = Convert.ToDecimal(rework1);
+
+                var rework2 = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectRework2).ToList();
+                obj.Rework2 = Convert.ToDecimal(rework2);
+
+                var cooking_flavor = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectCookingFlavor).ToList();
+                obj.Cooking_flavor = Convert.ToDecimal(cooking_flavor);
+
+                var odor = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectOdor).ToList();
+                obj.Odor = Convert.ToDecimal(odor);
+
+                var texture = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectTexture).ToList();
+                obj.Texture = Convert.ToDecimal(texture);
+
+                var appearance = factory.SearchQuery<RelatorioConsistencyCallMSPResultSet>(querySelectAppearance).ToList();
+                obj.Appearance = Convert.ToDecimal(appearance);
             }
 
-            obj.PorcWater1 = (decimal)20.5;
-            obj.PorcWater2 = (decimal)18.5;
+            // Itens que não tem query \/
+
+            obj.Raw_side = "March 27, 2019";
             obj.Meat_age_target = 14; //dado correto
             obj.Meat_temperature_max1 = 7; //dado correto
             obj.Meat_temperature_max2 = (decimal)44.6; //dado correto
@@ -167,6 +259,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
             obj.Meat_weight_inside_smokehouse = (decimal)5.64;
             obj.Porc_purge_target = 6; //dado correto
             obj.Porc_purge = 4;
+
             obj.Cooking = "March 29, 2019";
             obj.Marination_time_max = 96; //dado correto
             obj.Marination_time_min = 44; //dado correto
@@ -186,7 +279,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
             obj.Alpenas_moisture = 10;
             obj.Yield_target = (decimal)54; //dado correto
             obj.Yield_target_min = (decimal)55.6; //dado correto
-            obj.Yield = (decimal)57.4;
+            obj.Yield1 = (decimal)57.4;
+            obj.Yield2 = (decimal)57.4;
             obj.Wood_chips_target = (decimal)7.0; //dado correto
             obj.Final_product_thickness_max = (decimal)5.79; //dado correto
             obj.Final_product_thickness_min = (decimal)4.21; //dado correto

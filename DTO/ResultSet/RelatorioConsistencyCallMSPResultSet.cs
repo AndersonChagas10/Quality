@@ -71,7 +71,8 @@ namespace DTO.ResultSet
         public int Marination_time_min { get; set; }
         public int Marination_time_max { get; set; }
         public int Marination_time { get; set; }
-        public int Wait_time_avg { get; set; }
+        public int Wait_time_avg1 { get; set; }
+        public int Wait_time_avg2 { get; set; }
         public string Max_time1 { get; set; }
         public string Max_time2 { get; set; }
         public string Time_by_sample1 { get; set; }
@@ -101,7 +102,8 @@ namespace DTO.ResultSet
         public decimal? Packing_room_temperature2 { get; set; }
         public decimal? Yield_target_min { get; set; }
         public decimal? Yield_target { get; set; }
-        public decimal? Yield { get; set; }
+        public decimal? Yield1 { get; set; }
+        public decimal? Yield2 { get; set; }
         public decimal? Wood_chips_target { get; set; }
         public decimal? Wood_chips { get; set; }
         public decimal? Final_product_thickness_max { get; set; }
@@ -219,7 +221,6 @@ namespace DTO.ResultSet
               ON C.Shift = S.ID
              WHERE 1 = 1
              AND CONVERT(DATE, C.CollectionDate) BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 182
              AND ParLevel2_Id = 670
              AND ParLevel3_Id = 1900
@@ -255,7 +256,6 @@ namespace DTO.ResultSet
               ON C.Shift = S.ID
              WHERE 1 = 1
              AND CONVERT(DATE, C.CollectionDate) BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 182
              AND ParLevel2_Id = 670
              AND ParLevel3_Id = 1900
@@ -297,7 +297,6 @@ namespace DTO.ResultSet
               ON C.Shift = S.ID
              WHERE 1 = 1
              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 181
              AND ParLevel2_Id = 664
              AND ParLevel3_id = 1868
@@ -340,7 +339,6 @@ namespace DTO.ResultSet
                   ON C.Shift = S.ID
                  WHERE 1 = 1
                  AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                            Variável do Código
                 AND ParLevel1_Id = 181
                  AND ParLevel2_Id = 663
                  AND ParLevel3_id = 1867
@@ -383,7 +381,6 @@ namespace DTO.ResultSet
               ON C.Shift = S.ID
              WHERE 1 = 1
              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 181
              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
              GROUP BY
@@ -422,7 +419,6 @@ namespace DTO.ResultSet
               ON C.Shift = S.ID
              WHERE 1 = 1
              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 181
              GROUP BY
               S.Description
@@ -463,7 +459,6 @@ namespace DTO.ResultSet
               ON C.Shift = S.ID
              WHERE 1 = 1
              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 180
              AND ParLevel2_Id = 653
              AND ParLevel3_id = 2009
@@ -506,7 +501,6 @@ namespace DTO.ResultSet
               ON C.Shift = S.ID
              WHERE 1 = 1
              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 180
              AND ParLevel2_Id = 653
              AND ParLevel3_id = 2009
@@ -548,7 +542,6 @@ namespace DTO.ResultSet
               ON C.Shift = S.ID
              WHERE 1 = 1
              AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 180
              AND ParLevel2_Id = 653
              AND ParLevel3_id = 2009
@@ -597,7 +590,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 181
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
               GROUP BY
@@ -622,7 +614,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 181
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
              ) AS TOTAIS
@@ -668,7 +659,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 181
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
               GROUP BY
@@ -693,7 +683,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 181
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
              ) AS TOTAIS
@@ -739,7 +728,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 181
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
               GROUP BY
@@ -764,7 +752,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 181
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
              ) AS TOTAIS
@@ -797,7 +784,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 181
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
 
@@ -834,7 +820,6 @@ namespace DTO.ResultSet
                    ON C.Shift = S.ID
                   WHERE 1 = 1
                   AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                            Variável do Código
                 AND ParLevel1_Id = 181
                   AND CHF.ParHeaderField_Name = 'SABOR'
                   GROUP BY
@@ -872,7 +857,6 @@ namespace DTO.ResultSet
                    ON C.Shift = S.ID
                   WHERE 1 = 1
                   AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                            Variável do Código
                 AND ParLevel1_Id = 181
                   AND CHF.ParHeaderField_Name = 'PRODUTO'
                   GROUP BY
@@ -910,7 +894,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 181
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
               GROUP BY
@@ -948,7 +931,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 181
               AND CHF.ParHeaderField_Name = 'SABOR'
               GROUP BY
@@ -986,7 +968,6 @@ namespace DTO.ResultSet
                    ON C.Shift = S.ID
                   WHERE 1 = 1
                   AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                            Variável do Código
                 AND ParLevel1_Id = 182
                   AND ParLevel3_Id in (1904)
                   AND CHF.ParHeaderField_Name = 'SABOR'
@@ -1027,7 +1008,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 180
               AND ParLevel3_Id in (1851)
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
@@ -1054,7 +1034,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 180
               AND ParLevel3_Id in (1851)
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
@@ -1093,7 +1072,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 180
               AND ParLevel3_Id in (1851)
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
@@ -1120,7 +1098,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 180
               AND ParLevel3_Id in (1851)
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
@@ -1162,7 +1139,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 180
               AND ParLevel3_Id in (1848)
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
@@ -1204,7 +1180,6 @@ namespace DTO.ResultSet
                ON C.Shift = S.ID
               WHERE 1 = 1
               AND CONVERT(DATE, C.CollectionDate)  BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59' -- Filtro Data
-                        Variável do Código
             AND ParLevel1_Id = 180
               AND ParLevel3_Id in (1848)
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
