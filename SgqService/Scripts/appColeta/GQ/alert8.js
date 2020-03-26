@@ -15,7 +15,7 @@ function hasAlert(level2Result) {
 
 }
 
-function getAlertKO(level2Result){
+function getAlertKO(level2Result, mensagem){
 
     var haveAlertKO = false;
 
@@ -40,7 +40,7 @@ function getAlertKO(level2Result){
     return haveAlertKO;
 }
 
-function getAlertReincidencia(level2Result) {
+function getAlertReincidencia(level2Result, mensagem) {
 
     var haveAlertReincidencia = false;
 
@@ -78,9 +78,9 @@ function getAlertReincidencia(level2Result) {
     return haveAlertReincidencia;
 }
 
-function getAlertPorcentageNC(level2Result) {
+function getAlertPorcentageNC(level2Result, mensagem) {
     
-    var listaReincidencia = $.grep(listaDeDefeitosAlerta8, function (obj) {
+    var listaDefeitos = $.grep(listaDeDefeitosAlerta8, function (obj) {
         return obj.ParLevel1_Id == level2Result.attr('level01id')
         && obj.ParLevel2_Id == level2Result.attr('level02id')
         && obj.Date.substr(0, 10) == level2Result.attr('datetime').substr(0, 10)
@@ -91,14 +91,52 @@ function getAlertPorcentageNC(level2Result) {
     
     var haveAlertPorcentagemNC = false;
     
-    var sampleNumber = parseInt($(_level2).attr('sample'));
-    var level3Number = parseInt($('.level3:visible').length);
-    var volumeTotalAvaliacao = (sampleNumber * level3Number);
-    var totalLevel3WithDefects = listaReincidencia.length;
-    var porcentagemNC = (totalLevel3WithDefects / volumeTotalAvaliacao) * 100;
-    var alertaNivel2 = parseFloat($(_level1).attr('alertanivel2'));
+    // var sampleNumber = parseInt($(_level2).attr('sample'));
+    // var level3Number = parseInt($('.level3:visible').length);
+    // var volumeTotalAvaliacao = (sampleNumber * level3Number);
+    // var totalLevel3WithDefects = listaDefeitos.length;
+    // var porcentagemNC = (totalLevel3WithDefects / volumeTotalAvaliacao) * 100;
+    // var alertaNivel2 = parseFloat($(_level1).attr('alertanivel2'));
     
-    if (porcentagemNC > alertaNivel2){
+    var tipoConsolidacao = parseInt($(_level1).attr('parconsolidationtype_id'));
+
+    var IsRuleConformity = false; //Anda não existe essa flag no _level1
+
+    var qtdeNCToleravelAv = 0;
+
+    //se for consolidação 1 e 2
+    switch (tipoConsolidacao) {
+
+        case 1:
+        case 2:
+
+            var volumealertaindicador = parseFloat($(_level1).attr('volumealertaindicador'));
+            var metaIndicador = parseFloat($(_level1).attr('metaindicador'));
+            var qtdeNCToleravelVolume = (metaIndicador / 100) * volumealertaindicador;
+            var alertaNivel2 = parseFloat($(_level1).attr('alertanivel2'));
+            qtdeNCToleravelAv = Math.round((alertaNivel2 * qtdeNCToleravelVolume) / 100);
+
+            break;
+
+        case 3:
+
+
+            break;
+
+        default:
+
+            break;
+    }
+
+
+    //se for consolidacao 3 (4, 5 e 6 não vai ter esse tipo de alerta por enquanto)
+
+    // if (porcentagemNC > alertaNivel2){
+    //     haveAlertPorcentagemNC = true;
+    //     appendAlerta(level2Result);
+    // }
+
+    if (listaDefeitos.length > qtdeNCToleravelAv) {
         haveAlertPorcentagemNC = true;
         appendAlerta(level2Result);
     }
@@ -116,4 +154,22 @@ function appendAlerta(level2Result){
         , Period: level2Result.attr('period')
         , Evaluate: level2Result.attr('evaluate')
     });
+}
+
+function getMensagemAlertaCritico(parLevel3_name) {
+
+    return "Tarefa: " + parLevel3_name + " de nível crítico ";
+
+}
+
+function getMensagemAlertaReincidencia(parLevel3_name) {
+
+    return "Tarefa: " + parLevel3_name + " com NC disparada por recorência";
+
+}
+
+function getMensagemAlertaPorcentagemNC(porcentagemNC, metaIndicador) {
+
+    return "Foi execida a primeira meta tolerância* (" + porcentagemNC + "% NC de " + metaIndicador + " % meta indicador).";
+
 }

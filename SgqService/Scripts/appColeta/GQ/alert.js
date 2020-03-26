@@ -1463,15 +1463,19 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
 
             if (!hasAlert(level2Result)) {
 
-                var haveAlert = getAlertKO(level2Result);
+                var haveAlert = getAlertKO(level2Result, mensagem);
                 if (haveAlert) {
                     controleDeAlerta = true;
 
+                    getAlertMessage(tipoDeAlerta, alertaatual, ((defeitosLevel1 / (volumealertaindicador / 100 * metaIndicador)) * metaIndicador).toFixed(2), metaIndicador.toFixed(2));
+
                 } else {
 
-                    haveAlert = getAlertReincidencia(level2Result);
+                    haveAlert = getAlertReincidencia(level2Result, mensagem);
                     if (haveAlert) {
                         controleDeAlerta = true;
+
+                        getAlertMessage(tipoDeAlerta, alertaatual, ((defeitosLevel1 / (volumealertaindicador / 100 * metaIndicador)) * metaIndicador).toFixed(2), metaIndicador.toFixed(2));
 
                     } else {
 
