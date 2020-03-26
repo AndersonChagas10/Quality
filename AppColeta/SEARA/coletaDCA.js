@@ -530,7 +530,7 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     
     html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info-limitenc><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div></a>';
 
-    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>/' + amostraTotal + '</div>';
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra hide">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>' + amostraTotal + '</div>';
     var htmlMaxMin = '<div class="col-xs-1">' + 0 + '</div>';
     var htmlAmostraNC = '<div class="col-xs-2 amostras-nc">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
     //var htmlEsconder = '<div class="col-xs-1></div>';
@@ -751,6 +751,20 @@ $('body').off('click', '[data-na-dca]').on('click', '[data-na-dca]', function (e
 
  });
 
+ 
+ $('body')
+    .off('keyup', '[data-linha-coleta][data-parlevel3inputtype="2"] input')
+    .on('keyup', '[data-linha-coleta][data-parlevel3inputtype="2"] input', function () {
+    var quantidadeDeDefeitos = $(this).val();
+    var linhaTarefa = $(this).parents('[data-linha-coleta]');
+    var maxSample = parseInt($(linhaTarefa).attr('data-samplemax'));
+            
+    $(this).removeClass('btn-danger');
+    if(maxSample < quantidadeDeDefeitos || quantidadeDeDefeitos < 0){
+        $(this).addClass('btn-danger');
+    }
+});
+
 $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', function () {
 
     if(!hederFieldIsValid("#headerFieldLevel2")){
@@ -777,7 +791,7 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
         var quantidadeDeDefeitos = linhaTarefa.find('input[type="number"]').val();
         
         if(maxSample < quantidadeDeDefeitos || quantidadeDeDefeitos < 0){
-            openMensagem("Foi informado mais defeitos que a quantidade de amostra!","yellow", "black");
+            openMensagem("O valor digitado não está de acordo com o número de amostra.","yellow", "black");
             setTimeout(closeMensagem, 3000);
             return false;
         }
@@ -809,7 +823,7 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
                 WeiEvaluation: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')) * currentEvaluation,
                 Evaluation: currentEvaluation,
                 WeiDefects: isNA ? 0 : (isConform ? 0 : 1) * parseInt($(linhaTarefa).attr('data-peso')),
-                Sample: currentSample,
+                Sample: ++currentSample,
                 Outros: '{ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+', ParProduto_Id:'+currentProdutoDCA_Id+'}'
             };
 

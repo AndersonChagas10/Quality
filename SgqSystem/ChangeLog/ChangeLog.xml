@@ -2919,4 +2919,25 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-431</CardNumber>
+    <Version>1.5.0</Version>
+    <Description>[Relatório Resultado][Seara] Adição da tabela % Conforme das Unidades e adicionada a Pivot Table ao relatório</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS  WHERE TABLE_NAME='Cubo_Coleta_L3' AND TABLE_SCHEMA = 'DW' AND COLUMN_NAME = 'ParFamiliaProduto_id' )
+      AND EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS  WHERE TABLE_NAME='Cubo_Coleta_L3' AND TABLE_SCHEMA = 'DW')
+      BEGIN
+
+      ALTER TABLE [DW].[Cubo_Coleta_L3]  ADD  ParFamiliaProduto_id INT
+      END
+
+      IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS  WHERE TABLE_NAME='Cubo_Coleta_L3' AND TABLE_SCHEMA = 'DW' AND COLUMN_NAME = 'ParProduto_Id')
+      AND EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS  WHERE TABLE_NAME='Cubo_Coleta_L3' AND TABLE_SCHEMA = 'DW')
+      BEGIN
+
+      ALTER TABLE [DW].[Cubo_Coleta_L3]  ADD  ParProduto_Id INT
+      END
+    </Script>
+  </Card>
+
 </Cards>

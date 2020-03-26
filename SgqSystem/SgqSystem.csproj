@@ -26,8 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>true</Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -362,6 +361,7 @@
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
+    <Compile Include="Controllers\Api\Relatorios\MSP\RelatorioConsistencyCallMSPApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\MSP\RelatorioMSPApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RelatorioEdicaoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RelatorioFormularioSIFApiController.cs" />
@@ -2202,6 +2202,7 @@
     <Content Include="Views\ParamsV2\ParL3Cabecalho.cshtml" />
     <Content Include="Views\ParamsV2\ParL3Qualification.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioDeResultadoSeara.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioConsistencyCallMSP.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
