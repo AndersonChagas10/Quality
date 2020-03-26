@@ -17,24 +17,35 @@ namespace SgqServiceBusiness.Api
             var TransformedDate = CommonDate.TransformDateFormatToAnother(
                                                     Date, "MMddyyyy", "yyyy-MM-dd");
 
-            var sql =
-                "SELECT                                                                        " +
-                "IIF(CC.ParCluster_Id is null, CAST(C.ParLevel1_Id AS BIGINT), CONCAT(CC.ParCluster_Id,'98789', C.ParLevel1_Id)) AS ParLevel1_Id," +
-                "IIF(CC.ParCluster_Id is null, CAST(C.ParLevel2_Id AS BIGINT), CONCAT(CC.ParCluster_Id,'98789', C.ParLevel2_Id)) AS ParLevel2_Id," +
-                "C.Period AS Period,                                                           " +
-                "C.Shift AS Shift,                                                             " +
-                "CP.ParHeaderField_Id AS ParHeaderField_Id,                                    " +
-                "CP.Value AS Value,                                                            " +
-                "C.EvaluationNumber AS Evaluation,                                             " +
-                "C.Sample AS Sample                                                            " +
-                "FROM CollectionLevel2XParHeaderField CP (NOLOCK)                              " +
-                "LEFT JOIN CollectionLevel2 C (NOLOCK) ON C.Id = CP.CollectionLevel2_Id        " +
-                "LEFT JOIN CollectionLevel2XCluster CC (NOLOCK) ON CC.CollectionLevel2_Id = C.Id " +
-                "LEFT JOIN ParHeaderField PH (NOLOCK) ON CP.ParHeaderField_Id = PH.Id          " +
-                "AND PH.LinkNumberEvaluetion = 1                                               " +
-                "WHERE C.UnitId = " + UnitId + " AND                                           " +
-                "C.CollectionDate BETWEEN '" + TransformedDate + " 00:00' AND                  " +
-                "'" + TransformedDate + " 23:59:59'";
+            var sql = $@"SELECT Iif(CC.parcluster_id IS NULL, Cast(C.parlevel1_id AS BIGINT), 
+              Concat(CC.parcluster_id, '98789', C.parlevel1_id)) AS ParLevel1_Id 
+       , 
+       Iif(CC.parcluster_id IS NULL, Cast(C.parlevel2_id AS BIGINT), 
+       Concat(CC.parcluster_id, '98789', C.parlevel2_id))        AS ParLevel2_Id 
+       , 
+       C.period                                                  AS 
+       Period, 
+       C.shift                                                   AS Shift, 
+       CP.parheaderfield_id                                      AS 
+       ParHeaderField_Id, 
+       CP.value                                                  AS Value, 
+       C.evaluationnumber                                        AS Evaluation, 
+       C.sample                                                  AS Sample 
+FROM  collectionlevel2 C (nolock) 
+       CROSS APPLY (select parheaderfield_id, value 
+						from 
+							(select top 200000 parheaderfield_id, value, collectionlevel2_id 
+							from collectionlevel2xparheaderfield  (nolock)
+							order by id desc) TEMPCP
+						WHERE C.id = collectionlevel2_id ) CP
+       LEFT JOIN collectionlevel2xcluster CC (nolock) 
+              ON CC.collectionlevel2_id = C.id 
+       LEFT JOIN parheaderfield PH (nolock) 
+              ON CP.parheaderfield_id = PH.id 
+AND PH.LinkNumberEvaluetion = 1                             
+WHERE C.UnitId = { UnitId } AND                         
+C.CollectionDate BETWEEN '{ TransformedDate } 00:00' AND
+'{ TransformedDate } 23:59:59'";
 
             List<CollectionHeaderField> Lista1 = new List<CollectionHeaderField>();
             using (Factory factory = new Factory("DefaultConnection"))

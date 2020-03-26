@@ -495,9 +495,9 @@ $(document).on('click', '#btnSendCorrectiveAction', function (e) {
 
     var techinicalSignature;
     if ($("#divSelectSupervisor").is(':visible')) {
-         techinicalSignature = $('#TechinicalSignature :selected').val(); 
+        techinicalSignature = $('#TechinicalSignature :selected').val();
     } else {
-         techinicalSignature = $('.TechinicalSignature').attr('userid');
+        techinicalSignature = $('.TechinicalSignature').attr('userid');
     }
 
     var message = '';
