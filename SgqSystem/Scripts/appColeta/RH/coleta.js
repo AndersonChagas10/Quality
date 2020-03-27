@@ -12,11 +12,13 @@ function openColeta(levels) {
 
         var hasLevel2 = false;
 
+        if(level1.ParLevel2 != undefined)
         level1.ParLevel2.forEach(function (level2) {
 
             var hasLevel3 = false;
             var striped = true;
 
+            if(level2.ParLevel3 != undefined)
             level2.ParLevel3.forEach(function (level3) {
 
                 var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
