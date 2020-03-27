@@ -201,8 +201,15 @@
                             }, "visible": regraEdit
                         },
 
-                        { title: "@Resources.Resource.edit_header", mData: null, defaultContent: '<button id="editHeader" class="btn btn-link custom-button" data-toggle="modal" data-target="#modalHeaderField">' + "@Resources.Resource.edit_header" + '</button>', "visible": regraEdit },
-
+                        {
+                            title: "@Resources.Resource.edit_header", mData: null, mRender: function (data, type, full) {
+                                if (data.HeaderFieldList.length > 0) {
+                                    return '<button id="editHeader" class="btn btn-link custom-button" data-toggle="modal" data-target="#modalHeaderField">' + "@Resources.Resource.edit_header" + '</button>';
+                                } else {
+                                    return null;
+                                }
+                            }, "visible": regraEdit
+                        },
 
                         { title: "@Resources.Resource.unit", mData: "Unidade" },
                         { title: "@Resources.Resource.cluster", mData: "Processo" },
