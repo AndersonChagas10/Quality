@@ -46,6 +46,8 @@ namespace Dominio
 
         public bool? IsRequired { get; set; }
 
+        public bool? IsNCTextRequired { get; set; }
+
         public bool? IsDefaultAnswer { get; set; }
 
         public int? ParCluster_Id { get; set; }

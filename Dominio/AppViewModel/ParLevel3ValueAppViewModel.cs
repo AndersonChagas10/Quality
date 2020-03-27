@@ -30,6 +30,8 @@
 
         public bool? IsRequired { get; set; }
 
+        public bool? IsNCTextRequired { get; set; }
+
         public string DefaultMessageText { get; set; }
 
         public int? StringSizeAllowed { get; set; }
