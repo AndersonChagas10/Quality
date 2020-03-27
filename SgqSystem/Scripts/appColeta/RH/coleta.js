@@ -123,7 +123,7 @@ $('body')
         var id = $(this).parents('[data-level3]').attr('data-level3');
 
         if (id != null || id != "") {
-            id = $(this).attr('data-cb');
+            id = $(this).attr('id');
         }
 
         $.each($('[data-equacao]:visible'), function (i, o) {
@@ -141,7 +141,7 @@ $('body')
                         regex.lastIndex++;
                     }
 
-                    var valor = $('input[data-cb="' + m[1].replace('?', '') + '"]').val();
+                    var valor = $('input[id="' + m[1].replace('?', '') + '"]').val();
                     if (valor)
                         equacao = equacao.replace(m[0], valor);
                     else {
