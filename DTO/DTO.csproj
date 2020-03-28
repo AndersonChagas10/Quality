@@ -204,6 +204,7 @@
     <Compile Include="ResultSet\RelatorioEdicaoResultSet.cs" />
     <Compile Include="ResultSet\ScorecardResultSet.cs" />
     <Compile Include="ResultSet\TabelaDinamicaResultados.cs" />
+    <Compile Include="ResultSet\TabelaConsistencyCallMSPResultSet.cs" />
     <Compile Include="ResultSet\VisaoGeralDaAreaResultSet.cs" />
     <Compile Include="Services\BaseDomain.cs" />
     <Compile Include="Services\CompanyDomain.cs" />

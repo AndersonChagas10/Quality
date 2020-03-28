@@ -7,8 +7,8 @@
     var url = Url.Action("Index", "Home");
     var urlGetTabelaConsistencyCall = Url.Action("GetlistaTabelaConsistencyCall", "api/RelatorioConsistencyCallMSP");
 
-    ViewBag.ShowCurrentDate = false;
-    ViewBag.ShowRangeDate = true;
+    ViewBag.ShowCurrentDate = true;
+    ViewBag.ShowRangeDate = false;
     ViewBag.ShowParModule = true;
     ViewBag.ShowParCompany = true;
     ViewBag.ShowShift = true;
@@ -169,7 +169,7 @@
             }
 
             else {
-                $("#flavor").html(retornoArray.Flavor);
+                $("#flavor").html(retornoArray.Product + " - " + retornoArray.Flavor);
                 $("#divFlavor").show();
                 $("#TabelaConsistencyCall").show();
 
