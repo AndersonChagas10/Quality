@@ -105,16 +105,21 @@ function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, lista
     var btnShowAcaoCorretiva = "";
     var btnNext = "";
     var btnBack = "";
-    var secao = "";
-    var centroCusto = "";
+    var secao;
+    var centroCusto;
 
-    for(var i = 0; i < parametrization.listaParDepartment.length; i++){
-        if(parametrization.listaParDepartment[i].Parent_Id != null){
-            secao = parametrization.listaParDepartment[i].Name;
-        }
-        else{
-            centroCusto = parametrization.listaParDepartment[i].Name;
-        }
+    for (var i = 0; i < listaDeColetaComAlertaEAcaoCorretiva.length; i++) {
+        secao = $.grep(parametrization.listaParDepartment, function (o, j) {
+            if (o.Id == listaDeColetaComAlertaEAcaoCorretiva[i].coleta.ParDepartment_Id)
+                return o;
+            }
+        );
+
+        centroCusto = $.grep(parametrization.listaParDepartment, function (o, j) {
+            if (o.Id == secao[0].Parent_Id)
+                return o;
+            }
+        );
     }
     
     var alerta = montaHtmlModalAlerta(listaAlertasVigente,coleta);
@@ -153,8 +158,8 @@ function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, lista
         '<br/><br/><strong>Informações</strong>' +
         '<br/>Cluster: ' +  $.grep(parametrization.listaParCluster, function (o, i) { return o.Id == currentParCluster_Id; })[0].Name +
         '<br/>Frequência: ' + $.grep(parametrization.listaParFrequency, function (item) { return item.Id == parametrization.currentParFrequency_Id; })[0].Name +
-        '<br/>Centro de Custo: ' + centroCusto +
-        '<br/>Seção: ' + secao +
+        '<br/>Centro de Custo: ' + centroCusto[0].Name +
+        '<br/>Seção: ' + secao[0].Name +
         '<br/>Cargo: ' + $.grep(parametrization.listaParCargo, function (o, i) { return o.Id == coleta.ParCargo_Id; })[0].Name + 
         '<br/>Indicador: ' + $.grep(parametrization.listaParLevel1, function (o, i) { return o.Id == coleta.ParLevel1_Id; })[0].Name +
         '<br/>Monitoramento: ' + $.grep(parametrization.listaParLevel2, function (o, i) { return o.Id == coleta.ParLevel2_Id; })[0].Name +
