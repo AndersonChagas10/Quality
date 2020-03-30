@@ -168,24 +168,24 @@
             $('#divTable').hide();
             $('#divApontamentos').hide();
 
-            $.ajax({
-                url: urlGet,
-                type: 'post',
-                data: JSON.stringify(objFiltro),
-                dataType: "JSON",
-                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
-                beforeSend: function () {
-                }
-            })
-            .done(function (data) {
-                GerarTabela(data);
-                closeLoader();
-            })
-            .fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
-                preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
-                closeLoader();
-            });
+            //$.ajax({
+            //    url: urlGet,
+            //    type: 'post',
+            //    data: JSON.stringify(objFiltro),
+            //    dataType: "JSON",
+            //    contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+            //    beforeSend: function () {
+            //    }
+            //})
+            //.done(function (data) {
+            //    GerarTabela(data);
+            //    closeLoader();
+            //})
+            //.fail(function (jqXHR, textStatus, msg) {
+            //    console.log(msg);
+            //    preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+            //    closeLoader();
+            //});
 
             $.ajax({
                 url: urlGetPorcCTotal,
@@ -206,8 +206,8 @@
                 closeLoader();
             });
 
-            $("#PivotTable").css("display", "none");
-            $('#RGTarefasPivotTable').hide();
+            //$("#PivotTable").css("display", "none");
+            //$('#RGTarefasPivotTable').hide();
         };
 
 
@@ -237,6 +237,7 @@
             var Av = MapeiaValorParaHC(data, "Av");
             var PorcNc = MapeiaValorParaHC(data, "PorcNc");
             var PorcC = MapeiaValorParaHC(data, "PorcC");
+            var Total = MapeiaValorParaHC(data, "TOTAL");
             var modeloGrafico = document.getElementById('modeloGrafico');
             var dimensaoGrafico = document.getElementById('dimensaoGrafico');
             var tituloGrafico = modeloGrafico.options[modeloGrafico.selectedIndex].text;
@@ -267,6 +268,7 @@
                 series: [
                     Chart.PorcNc(PorcNc, null, null, "", dataX, null, dataXId),
                     Chart.PorcC(PorcC, null, null, "", dataX, null, dataXId),
+                    Chart.Total(Total, null, null, "", dataX, null, dataXId),
                     Chart.C(C, null, null, null, null, "", dataX, null, dataXId),
                     Chart.NC(Nc, null, null, null, null, "", dataX, null, dataXId),
                     Chart.Av(Av, null, null, null, null, "", dataX, null, dataXId)
@@ -409,6 +411,7 @@
             CorMeta: function () { return '#67D184' },
             CorTotalPorcNc: function () { return '#FF6347' },
             CorTotalPorcC: function () { return '#FF6300' },
+            CorTotalTotal: function () { return '#000000' },
             Legend: function () {
                 return {
                     layout: 'horizontal',
@@ -618,6 +621,39 @@
                 };
 
             },
+            Total: function (data, func, funcParaAcumuladas, grafico, arr, arr2, arr3) {
+                $.each(data, function (a, b) {
+                    data[a] = parseFloat(b) > 100 ? 100 : b;
+                });
+                return {
+                    name: '% SEARA',
+                    color: Chart.CorTotalTotal(),//'rgba(240,124,0,1)',
+                    data: data,
+                    yAxis: 1,
+                    tooltip: {
+                        valueSuffix: ' %'
+                    },
+                    //pointPadding: 0.4,
+                    //pointPlacement: -0.2,
+                    dataLabels: Chart.DataLabelPadrao('%'),
+                    point: {
+                        events: {
+                            click: function () {
+                                if (!!arr2) {
+                                    func(arr[this.x], grafico, arr2[this.x], arr3[this.x]);
+                                } else {
+                                    func(arr[this.x], grafico, undefined, arr3[this.x]);
+                                }
+                            }
+                        }
+                    },
+                    tooltip: {
+                        valueDecimals: 2,
+                        valueSuffix: ' % (' + Resources('conform') + ' * ' + Resources('weight')
+                    }
+                };
+
+            },
             Meta: function (data, func, nome, id, funcParaAcumuladas){
 
                 return {
@@ -781,20 +817,20 @@
             return arrayData;
         }
 
-        $("#tabela").on('click', function () {
-                $("#PivotTable").css("display", "none");
-                $("#resultsApontamentos_wrapper").css("display","block");
-         });
+        //$("#tabela").on('click', function () {
+        //        $("#PivotTable").css("display", "none");
+        //        $("#resultsApontamentos_wrapper").css("display","block");
+        // });
 
-        $("#pivot-table").on('click', function () {
-            $('#divFilterReports').addClass('hide');
-            $('#divReportContent').attr('class', 'col-sm-12');
-            $('#btnToggleDivFilterReports').text('> Mostrar Filtros');
-            var arrayData = makeArrayData($('#resultsApontamentos').DataTable().rows({ search: 'applied', page: 'all' }).data());
-            $("#resultsApontamentos_wrapper").css("display", "none");
-            CarregaPivotTable(arrayData, "PivotTable");
-            $("#PivotTable").css("display", "block");
-        });
+        //$("#pivot-table").on('click', function () {
+        //    $('#divFilterReports').addClass('hide');
+        //    $('#divReportContent').attr('class', 'col-sm-12');
+        //    $('#btnToggleDivFilterReports').text('> Mostrar Filtros');
+        //    var arrayData = makeArrayData($('#resultsApontamentos').DataTable().rows({ search: 'applied', page: 'all' }).data());
+        //    $("#resultsApontamentos_wrapper").css("display", "none");
+        //    CarregaPivotTable(arrayData, "PivotTable");
+        //    $("#PivotTable").css("display", "block");
+        //});
 
         function GerarTabela(retornoArray) {
 

@@ -29,6 +29,12 @@ public class RelatorioDeResultadoSearaResultsSet
     public string dataX { get; set; }
     public string Data { get; set; }
 
+    public string ParCompany_Id { get; set; }
+    public string ParLevel1_Id { get; set; }
+    public string ParLevel2_Id { get; set; }
+    public decimal? PESOTOTAL { get; set; }
+    public decimal? TOTAL { get; set; }
+
 
 
     public string SelectUnidadesSeara(DataCarrierFormularioNew form)
@@ -40,7 +46,22 @@ public class RelatorioDeResultadoSearaResultsSet
         var whereUnit = "";
         var whereParLevel1 = "";
         var whereParLevel2 = "";
-        var whereParLevel3 = "";    
+        var whereParLevel3 = "";
+
+        var campos2 = " ,C.ParCompany_Id as Parcompany_id, null as parlevel1_id, null as parlevel2_id, null as data ";
+        var campos3 = " , null as data";
+        var campos5 = "";
+        var groupBy = "  GROUP BY C.NAME, C.Id  ";
+        var groupBy2 = " GROUP BY C.ParCompany_Id, data ";
+        var groupBy5 = "";
+        var selectTotal = " SELECT A.UnidadeName, A.AV, A.C, A.C, B.TOTAL AS PORCC, A.DATA FROM #RR1 A INNER JOIN #RR2 B ON A.DATA = B.DATA1 ";
+
+        if(1==1)
+        {
+            campos5 = " ,M.Name + '/' + CAST(DATEPART(YEAR, data1) AS VARCHAR) as data1 ";
+            groupBy5 = "  , M.Name + '/' + CAST(DATEPART(YEAR, data1) AS VARCHAR) ";
+        }
+
 
         if (form.ParLevel1_Ids.Length > 0)
         {
@@ -84,6 +105,9 @@ public class RelatorioDeResultadoSearaResultsSet
 
         var query = $@"
 
+  DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+                 DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
+
             SELECT CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,
                C2.ParFrequency_Id ,
                S2.ParStructureParent_Id AS Holding ,
@@ -100,24 +124,33 @@ public class RelatorioDeResultadoSearaResultsSet
                R3.WeiEvaluation ,
                R3.WeiDefects,
 	           cfpp.ParFamiliaProduto_Id,
-	           cfpp.ParProduto_Id
+	           cfpp.ParProduto_Id,
+               C2.ID AS CollectionLevel2_Id,
+			   R3V.LimiteNC,
+			   PL2P.Equacao,
+			   PL2P.Peso,
+			   c2.evaluationNumber as Avaliacao
 	           INTO #CUBOLEVEL3
         FROM CollectionLevel2 C2 WITH (NOLOCK)
         INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
+
+        INNER JOIN parlevel3value R3V WITH (NOLOCK) ON R3V.parlevel3_id = R3.parlevel3_id and R3V.ParLevel1_id = C2.ParLevel1_id and R3V.parlevel2_id = C2.ParLevel2_id and R3V.IsActive = 1 
+		INNER JOIN ParVinculoPesoParLevel2 PL2P WITH (NOLOCK) ON PL2P.ParLevel1_Id = C2.ParLevel1_Id AND PL2P.ParLevel2_Id = C2.ParLevel2_Id AND PL2P.IsActive = 1
+
         LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) ON C2.ID = C2XDP.CollectionLevel2_Id
         LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) ON C2.ID = C2XCG.CollectionLevel2_Id
         LEFT JOIN ParDepartment D WITH (NOLOCK) ON C2XDP.ParDepartment_Id = D.Id
-        LEFT JOIN ParCompanyXStructure CS ON CS.ParCompany_Id = c2.UnitId
+        LEFT JOIN ParCompanyXStructure CS ON CS.ParCompany_Id = c2.UnitId and cs.active = 1
         LEFT JOIN ParStructure S1 ON CS.ParStructure_Id = S1.Id
         LEFT JOIN ParStructure S2 ON S1.ParStructureParent_Id = S2.Id
         LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP on cfpp.CollectionLevel2_Id = c2.Id
         WHERE 1=1
           AND R3.IsNotEvaluate = 0
+          AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 
      --------------------------------
 
-                 DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
-                 DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
+               
 
                     DECLARE @MES TABLE (
 	                    ID INT
@@ -158,8 +191,10 @@ public class RelatorioDeResultadoSearaResultsSet
                        ,((SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects)) / SUM(CUBOL3.WeiEvaluation)) * 100 AS PORCC
                        ,M.Name + '/' + CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR) AS Data
 
+                    INTO #RR1
                     FROM #CUBOLEVEL3 CUBOL3 WITH (NOLOCK)
 
+                    
                     INNER JOIN ParCompany PC WITH (NOLOCK)
 	                    ON CUBOL3.UnitId = PC.ID
 
@@ -171,7 +206,7 @@ public class RelatorioDeResultadoSearaResultsSet
 
                     INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
 	                    ON CUBOL3.ParLevel3_Id = PL3.ID
-
+/*
 				 INNER join CollectionLevel2 cl2
 				  on cl2.CollectionDate = CUBOL3.CollectionDate
 
@@ -183,7 +218,7 @@ public class RelatorioDeResultadoSearaResultsSet
 
                     left JOIN ParProduto SP WITH (NOLOCK)
 	                    ON CSFP.ParProduto_Id = SP.Id
-
+*/
                     INNER JOIN @MES M
 	                    ON M.ID = DATEPART(MONTH, CUBOL3.CollectionDate)
 
@@ -204,6 +239,241 @@ public class RelatorioDeResultadoSearaResultsSet
 		            ,CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR)
 		            ,M.Name             
                     ORDER BY CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR) DESC
+
+-------------------------------------------------------------------------------
+
+SELECT -- MONITORAMENTO
+			B.PARLEVEL1_ID,
+			sum(Peso) Peso
+			INTO #PESOMONITORAMENTOINDICADOR
+			   FROM (
+			   
+			    SELECT -- TAREFA
+
+					parlevel1_id,
+					parlevel2_id,
+					AVG(Peso) Peso
+
+				FROM (
+				
+					SELECT
+					   
+					   CUBOL3.parlevel1_id, 
+					   CUBOL3.parlevel2_id, 
+					   CUBOL3.parlevel3_id, 
+					   AVG(CUBOL3.Peso) Peso
+
+					FROM #CUBOLEVEL3 CUBOL3 WITH (NOLOCK)
+
+					INNER JOIN ParCompany C WITH (NOLOCK)
+						ON CUBOL3.UnitId = C.ID
+
+					INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
+						ON CUBOL3.ParLevel1_Id = PL1.ID
+
+					INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
+						ON CUBOL3.ParLevel2_Id = PL2.ID
+
+					INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
+						ON CUBOL3.ParLevel3_Id = PL3.ID
+
+					INNER join CollectionLevel2 cl2	
+						on cl2.id = CUBOL3.CollectionLevel2_Id		
+					LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP	
+						ON CSFP.CollectionLevel2_Id = CL2.Id	
+					LEFT JOIN ParFamiliaProduto SFP WITH (NOLOCK)	
+						ON CSFP.ParFamiliaProduto_Id = SFP.Id	
+					LEFT JOIN ParProduto SP WITH (NOLOCK)	
+						ON CSFP.ParProduto_Id = SP.Id
+
+					WHERE 1 = 1
+
+					AND CUBOL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    {whereStructure}
+                    {whereUnit}
+                    {whereDepartment}
+                    {whereSecao}
+                    {whereCargo}
+                    {whereParLevel1}
+                    {whereParLevel2}
+                    {whereParLevel3}
+                    
+                
+                    GROUP BY CUBOL3.parlevel1_id, CUBOL3.parlevel2_id, CUBOL3.parlevel3_id
+				) a
+				GROUP BY parlevel1_id,
+					parlevel2_id
+				) B
+				GROUP BY B.PARLEVEL1_ID
+
+
+SELECT 
+AVG(PESOTOTAL) AS PESOTOTAL
+,AVG(TOTAL) AS TOTAL
+,Parcompany_id 
+,parlevel1_id 
+,parlevel2_id
+,data
+{campos5}
+
+INTO #RR2 FROM (
+
+SELECT -- INDICADOR
+    
+	--C.ParCompany_Id,
+	--C.ParLevel1_Id,
+	SUM(C.PESO) AS [PESOTOTAL]
+	,SUM( (C.PESO / PM.PESO) * CASE WHEN C.PARLEVEL2_ID = 605 THEN RESPOSTA3 ELSE RESPOSTA2 END) TOTAL -- 0 98,125 0 100 97,5
+    ,DATA1, AVALIACAO
+   
+{campos2}
+	
+	FROM (
+
+            SELECT -- MONITORAMENTO
+			B.ParCompany_Id,
+			B.PARLEVEL1_ID,
+			B.PARLEVEL2_ID,
+            b.data,
+			avg(Peso) Peso,
+			COUNT(DISTINCT(B.PARLEVEL3_ID)) [NÚMERO DE TAREFAS],
+
+			SUM(IIF(RESPOSTA = 1, 1, 0)) SOMA,
+
+			CASE 
+				WHEN MIN(RESPOSTA) = 0 THEN 0 --ESTOREI O LIMITE
+				WHEN SUM(RESPOSTA) = COUNT(DISTINCT(B.PARLEVEL3_ID)) THEN 100 --TIREI NOTA MÁXIMA
+				ELSE 95 + (SUM(IIF(RESPOSTA = 1, 1, 0)) / cast(COUNT(DISTINCT(B.PARLEVEL3_ID)) as FLOAT) * 5) -- NEM ESTOUREI, NEM ZEREI
+			END RESPOSTA2,
+			   -- QtdeTLNC > 0 ? 0 : (QtdeNC == 0 ? 100 : 95 + (QtdeTC/QtdeT*5))
+
+			CASE 
+				WHEN max(RESPOSTA) = 1 and min(RESPOSTA) = 1 THEN 100 --TIREI NOTA MÁXIMA
+				WHEN (cast(COUNT(DISTINCT(B.PARLEVEL3_ID)) as FLOAT) - 1) = 0 THEN 0
+				ELSE 60 * (SUM(IIF(RESPOSTA = 1, 1, 0)) / (cast(COUNT(DISTINCT(B.PARLEVEL3_ID)) as FLOAT) - 1)) -- NEM ESTOUREI, NEM ZEREI
+			END RESPOSTA3,
+            DATA1, AVALIACAO
+			   --(QtdeNC == 0 ? 100 : 60 * (QtdeTC / (QtdeT -1)))
+
+			   FROM (
+			   
+			    SELECT -- TAREFA
+
+					parCompany_Id,
+					parlevel1_id,
+					parlevel2_id,
+					parlevel3_id,
+                    data,
+					AV,
+					Defeitos,
+					LimiteNC,
+					Peso,
+					
+					CASE 
+						WHEN LimiteNC < Defeitos THEN 0 --ESTOREI O LIMITE
+						WHEN Defeitos = 0 THEN 1 --TIREI NOTA MÁXIMA
+						ELSE 2 -- NEM ESTOUREI, NEM ZEREI
+					END RESPOSTA,
+
+                    DATA1, AVALIACAO
+
+
+					 
+
+				FROM (
+				
+					SELECT
+					   
+					   CUBOL3.UnitId as parcompany_id,
+					   CUBOL3.parlevel1_id, 
+					   CUBOL3.parlevel2_id, 
+					   CUBOL3.parlevel3_id, 
+					   sum(CUBOL3.WeiEvaluation) AV, 
+					   sum(CUBOL3.WeiDefects) Defeitos,
+					   AVG(CUBOL3.LimiteNC) LimiteNC,
+					   AVG(CUBOL3.Peso) Peso
+                       , CAST(CUBOL3.COLLECTIONDATE AS DATE) DATA1, CUBOL3.Avaliacao
+					  
+{campos3}
+
+
+					  
+
+					FROM #CUBOLEVEL3 CUBOL3 WITH (NOLOCK)
+
+					INNER JOIN ParCompany C WITH (NOLOCK)
+						ON CUBOL3.UnitId = C.ID
+
+					INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
+						ON CUBOL3.ParLevel1_Id = PL1.ID
+
+					INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
+						ON CUBOL3.ParLevel2_Id = PL2.ID
+
+					INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
+						ON CUBOL3.ParLevel3_Id = PL3.ID
+
+					INNER join CollectionLevel2 cl2	
+						on cl2.id = CUBOL3.CollectionLevel2_Id		
+					LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP	
+						ON CSFP.CollectionLevel2_Id = CL2.Id	
+					LEFT JOIN ParFamiliaProduto SFP WITH (NOLOCK)	
+						ON CSFP.ParFamiliaProduto_Id = SFP.Id	
+					LEFT JOIN ParProduto SP WITH (NOLOCK)	
+						ON CSFP.ParProduto_Id = SP.Id
+
+					WHERE 1 = 1
+
+					AND CUBOL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    {whereStructure}
+                    {whereUnit}
+                    {whereDepartment}
+                    {whereSecao}
+                    {whereCargo}
+                    {whereParLevel1}
+                    {whereParLevel2}
+                    {whereParLevel3}
+                    
+ {groupBy}
+                
+                    , CUBOL3.UnitId, CUBOL3.parlevel1_id, CUBOL3.parlevel2_id, CUBOL3.parlevel3_id, CUBOL3.Centro_De_Custo_Id, CUBOL3.Secao_Id, CUBOL3.Cargo_Id, CUBOL3.UnitId, CUBOL3.Equacao, CUBOL3.Avaliacao, CAST(CUBOL3.COLLECTIONDATE AS DATE)
+				) a
+
+				) B
+				GROUP BY B.parcompany_id, B.PARLEVEL1_ID,  B.PARLEVEL2_ID, data, DATA1, AVALIACAO
+
+		) C
+		INNER JOIN #PESOMONITORAMENTOINDICADOR PM ON PM.ParLevel1_Id = C.ParLevel1_Id
+		
+ {groupBy2} , DATA1, AVALIACAO, C.PARLEVEL1_ID 
+
+) D
+
+INNER JOIN @MES M
+ON M.ID = DATEPART(MONTH, data1)
+
+GROUP BY Parcompany_id 
+,parlevel1_id 
+,parlevel2_id
+,data
+{groupBy5}
+		DROP TABLE #PESOMONITORAMENTOINDICADOR
+		DROP TABLE #CUBOLEVEL3  
+
+    {selectTotal}
+
+   
+
+   DROP TABLE #RR1    
+   DROP TABLE #RR2
+
+-------------------------------------------------------------------------------
+
+
+
+
                 ";
         return query;
     }
@@ -218,6 +488,13 @@ public class RelatorioDeResultadoSearaResultsSet
         var whereParLevel1 = "";
         var whereParLevel2 = "";
         var whereParLevel3 = "";
+
+        var campos2 = " ,C.ParCompany_Id as Parcompany_id, null as parlevel1_id, null as parlevel2_id, null as data ";
+        var campos3 = " , null as data";
+        var groupBy = "  GROUP BY C.NAME, C.Id  ";
+        var groupBy2 = " GROUP BY C.ParCompany_Id, data ";
+        var selectTotal = " SELECT TOP 1 TOTAL AS PORCC FROM #RR2  ";
+
 
         if (form.ParLevel1_Ids.Length > 0)
         {
@@ -261,6 +538,9 @@ public class RelatorioDeResultadoSearaResultsSet
 
         var query = $@"
 
+                 DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+                 DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
+
         SELECT CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,
                C2.ParFrequency_Id ,
                S2.ParStructureParent_Id AS Holding ,
@@ -277,28 +557,39 @@ public class RelatorioDeResultadoSearaResultsSet
                R3.WeiEvaluation ,
                R3.WeiDefects,
 	           cfpp.ParFamiliaProduto_Id,
-	           cfpp.ParProduto_Id
+	           cfpp.ParProduto_Id,
+               C2.ID AS CollectionLevel2_Id,
+			   R3V.LimiteNC,
+			   PL2P.Equacao,
+			   PL2P.Peso,
+			   c2.evaluationNumber as Avaliacao
 	           INTO #CUBOLEVEL3
         FROM CollectionLevel2 C2 WITH (NOLOCK)
         INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
+
+        INNER JOIN parlevel3value R3V WITH (NOLOCK) ON R3V.parlevel3_id = R3.parlevel3_id and R3V.ParLevel1_id = C2.ParLevel1_id and R3V.parlevel2_id = C2.ParLevel2_id and R3V.IsActive = 1 
+		INNER JOIN ParVinculoPesoParLevel2 PL2P WITH (NOLOCK) ON PL2P.ParLevel1_Id = C2.ParLevel1_Id AND PL2P.ParLevel2_Id = C2.ParLevel2_Id AND PL2P.IsActive = 1
+
+
         LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) ON C2.ID = C2XDP.CollectionLevel2_Id
         LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) ON C2.ID = C2XCG.CollectionLevel2_Id
         LEFT JOIN ParDepartment D WITH (NOLOCK) ON C2XDP.ParDepartment_Id = D.Id
-        LEFT JOIN ParCompanyXStructure CS ON CS.ParCompany_Id = c2.UnitId
+        LEFT JOIN ParCompanyXStructure CS ON CS.ParCompany_Id = c2.UnitId and cs.active = 1
         LEFT JOIN ParStructure S1 ON CS.ParStructure_Id = S1.Id
         LEFT JOIN ParStructure S2 ON S1.ParStructureParent_Id = S2.Id
         LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP on cfpp.CollectionLevel2_Id = c2.Id
         WHERE 1=1
           AND R3.IsNotEvaluate = 0
+          AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 
      --------------------------------
 
-                 DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
-                 DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
+                 
 
                 SELECT
 		(SUM(c) / SUM(av)) * 100 AS PORCC
 
+    into #RR1
 	FROM (SELECT
 		   SUM(CUBOL3.WeiEvaluation) AS AV
 		   ,SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects) AS C
@@ -306,6 +597,7 @@ public class RelatorioDeResultadoSearaResultsSet
 		-- FROM DW.Cubo_Coleta_L3 CUBOL3 WITH (NOLOCK)
         FROM #CUBOLEVEL3 CUBOL3 WITH (NOLOCK)
 
+/*
 		INNER JOIN ParCompany C WITH (NOLOCK)
 			ON CUBOL3.UnitId = C.ID
 
@@ -326,6 +618,7 @@ public class RelatorioDeResultadoSearaResultsSet
 	                    ON CSFP.ParFamiliaProduto_Id = SFP.Id	
                     left JOIN ParProduto SP WITH (NOLOCK)	
 	                    ON CSFP.ParProduto_Id = SP.Id
+*/
 
 		WHERE 1 = 1
 
@@ -341,6 +634,231 @@ public class RelatorioDeResultadoSearaResultsSet
                     {whereParLevel3}
 
                     GROUP BY CUBOL3.CollectionDate) a
+
+-------------------------------------------------------------------------------
+
+SELECT -- MONITORAMENTO
+			B.PARLEVEL1_ID,
+			sum(Peso) Peso
+			INTO #PESOMONITORAMENTOINDICADOR
+			   FROM (
+			   
+			    SELECT -- TAREFA
+
+					parlevel1_id,
+					parlevel2_id,
+					AVG(Peso) Peso
+
+				FROM (
+				
+					SELECT
+					   
+					   CUBOL3.parlevel1_id, 
+					   CUBOL3.parlevel2_id, 
+					   CUBOL3.parlevel3_id, 
+					   AVG(CUBOL3.Peso) Peso
+
+					FROM #CUBOLEVEL3 CUBOL3 WITH (NOLOCK)
+
+					INNER JOIN ParCompany C WITH (NOLOCK)
+						ON CUBOL3.UnitId = C.ID
+
+					INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
+						ON CUBOL3.ParLevel1_Id = PL1.ID
+
+					INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
+						ON CUBOL3.ParLevel2_Id = PL2.ID
+
+					INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
+						ON CUBOL3.ParLevel3_Id = PL3.ID
+
+					INNER join CollectionLevel2 cl2	
+						on cl2.id = CUBOL3.CollectionLevel2_Id		
+					LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP	
+						ON CSFP.CollectionLevel2_Id = CL2.Id	
+					LEFT JOIN ParFamiliaProduto SFP WITH (NOLOCK)	
+						ON CSFP.ParFamiliaProduto_Id = SFP.Id	
+					LEFT JOIN ParProduto SP WITH (NOLOCK)	
+						ON CSFP.ParProduto_Id = SP.Id
+
+					WHERE 1 = 1
+
+					AND CUBOL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    {whereStructure}
+                    {whereUnit}
+                    {whereDepartment}
+                    {whereSecao}
+                    {whereCargo}
+                    {whereParLevel1}
+                    {whereParLevel2}
+                    {whereParLevel3}
+                    
+                
+                    GROUP BY CUBOL3.parlevel1_id, CUBOL3.parlevel2_id, CUBOL3.parlevel3_id
+				) a
+				GROUP BY parlevel1_id,
+					parlevel2_id
+				) B
+				GROUP BY B.PARLEVEL1_ID
+
+SELECT 
+AVG(PESOTOTAL) AS PESOTOTAL
+,AVG(TOTAL) AS TOTAL
+,Parcompany_id 
+,parlevel1_id 
+,parlevel2_id
+,data
+
+INTO #RR2 FROM (
+
+SELECT -- INDICADOR
+    
+	--C.ParCompany_Id,
+	--C.ParLevel1_Id,
+	SUM(C.PESO) AS [PESOTOTAL]
+	,SUM( (C.PESO / PM.PESO) * CASE WHEN C.PARLEVEL2_ID = 605 THEN RESPOSTA3 ELSE RESPOSTA2 END) TOTAL -- 0 98,125 0 100 97,5
+, DATA1, AVALIACAO
+   
+{campos2}
+	
+	 FROM (
+
+            SELECT -- MONITORAMENTO
+			B.ParCompany_Id,
+			B.PARLEVEL1_ID,
+			B.PARLEVEL2_ID,
+            b.data,
+			avg(Peso) Peso,
+			COUNT(DISTINCT(B.PARLEVEL3_ID)) [NÚMERO DE TAREFAS],
+
+			SUM(IIF(RESPOSTA = 1, 1, 0)) SOMA,
+
+			CASE 
+				WHEN MIN(RESPOSTA) = 0 THEN 0 --ESTOREI O LIMITE
+				WHEN SUM(RESPOSTA) = COUNT(DISTINCT(B.PARLEVEL3_ID)) THEN 100 --TIREI NOTA MÁXIMA
+				ELSE 95 + (SUM(IIF(RESPOSTA = 1, 1, 0)) / cast(COUNT(DISTINCT(B.PARLEVEL3_ID)) as FLOAT) * 5) -- NEM ESTOUREI, NEM ZEREI
+			END RESPOSTA2,
+			   -- QtdeTLNC > 0 ? 0 : (QtdeNC == 0 ? 100 : 95 + (QtdeTC/QtdeT*5))
+
+			CASE 
+				WHEN max(RESPOSTA) = 1 and min(RESPOSTA) = 1 THEN 100 --TIREI NOTA MÁXIMA
+				WHEN (cast(COUNT(DISTINCT(B.PARLEVEL3_ID)) as FLOAT) - 1) = 0 THEN 0
+				ELSE 60 * (SUM(IIF(RESPOSTA = 1, 1, 0)) / (cast(COUNT(DISTINCT(B.PARLEVEL3_ID)) as FLOAT) - 1)) -- NEM ESTOUREI, NEM ZEREI
+			END RESPOSTA3
+, DATA1, AVALIACAO
+			   --(QtdeNC == 0 ? 100 : 60 * (QtdeTC / (QtdeT -1)))
+
+			   FROM (
+			   
+			    SELECT -- TAREFA
+
+					parCompany_Id,
+					parlevel1_id,
+					parlevel2_id,
+					parlevel3_id,
+                    data,
+					AV,
+					Defeitos,
+					LimiteNC,
+					Peso,
+					
+					CASE 
+						WHEN LimiteNC < Defeitos THEN 0 --ESTOREI O LIMITE
+						WHEN Defeitos = 0 THEN 1 --TIREI NOTA MÁXIMA
+						ELSE 2 -- NEM ESTOUREI, NEM ZEREI
+					END RESPOSTA
+, DATA1, AVALIACAO
+
+
+					 
+
+				FROM (
+				
+					SELECT
+					   
+					   CUBOL3.UnitId as parcompany_id,
+					   CUBOL3.parlevel1_id, 
+					   CUBOL3.parlevel2_id, 
+					   CUBOL3.parlevel3_id, 
+					   sum(CUBOL3.WeiEvaluation) AV, 
+					   sum(CUBOL3.WeiDefects) Defeitos,
+					   AVG(CUBOL3.LimiteNC) LimiteNC,
+					   AVG(CUBOL3.Peso) Peso
+, CAST(CUBOL3.COLLECTIONDATE AS DATE) DATA1, AVALIACAO
+					  
+{campos3}
+
+
+					  
+
+					FROM #CUBOLEVEL3 CUBOL3 WITH (NOLOCK)
+
+					INNER JOIN ParCompany C WITH (NOLOCK)
+						ON CUBOL3.UnitId = C.ID
+
+					INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
+						ON CUBOL3.ParLevel1_Id = PL1.ID
+
+					INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
+						ON CUBOL3.ParLevel2_Id = PL2.ID
+
+					INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
+						ON CUBOL3.ParLevel3_Id = PL3.ID
+
+					INNER join CollectionLevel2 cl2	
+						on cl2.id = CUBOL3.CollectionLevel2_Id		
+					LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP	
+						ON CSFP.CollectionLevel2_Id = CL2.Id	
+					LEFT JOIN ParFamiliaProduto SFP WITH (NOLOCK)	
+						ON CSFP.ParFamiliaProduto_Id = SFP.Id	
+					LEFT JOIN ParProduto SP WITH (NOLOCK)	
+						ON CSFP.ParProduto_Id = SP.Id
+
+					WHERE 1 = 1
+
+					AND CUBOL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    {whereStructure}
+                    {whereUnit}
+                    {whereDepartment}
+                    {whereSecao}
+                    {whereCargo}
+                    {whereParLevel1}
+                    {whereParLevel2}
+                    {whereParLevel3}
+                    
+ {groupBy}
+                
+                    , CUBOL3.UnitId, CUBOL3.parlevel1_id, CUBOL3.parlevel2_id, CUBOL3.parlevel3_id, CUBOL3.Centro_De_Custo_Id, CUBOL3.Secao_Id, CUBOL3.Cargo_Id, CUBOL3.UnitId, CUBOL3.Equacao, CUBOL3.Avaliacao, CAST(CUBOL3.COLLECTIONDATE AS DATE)
+				) a
+
+				) B
+				GROUP BY B.parcompany_id, B.PARLEVEL1_ID,  B.PARLEVEL2_ID, data, DATA1, AVALIACAO
+
+		) C
+		INNER JOIN #PESOMONITORAMENTOINDICADOR PM ON PM.ParLevel1_Id = C.ParLevel1_Id
+		
+ {groupBy2} , DATA1, AVALIACAO, C.PARLEVEL1_ID
+
+) D
+
+GROUP BY Parcompany_id 
+,parlevel1_id 
+,parlevel2_id
+,data
+
+		DROP TABLE #PESOMONITORAMENTOINDICADOR
+		DROP TABLE #CUBOLEVEL3  
+
+    {selectTotal}
+
+   
+
+   DROP TABLE #RR1    
+   DROP TABLE #RR2
+
+-------------------------------------------------------------------------------
 
                 ";
         return query;
@@ -781,27 +1299,44 @@ public class RelatorioDeResultadoSearaResultsSet
         var whereParLevel2 = "";
         var whereParLevel3 = "";
         var campos = "";
+        var campos2 = "";
+        var campos3 = ", null as data ";
         var groupBy = "";
+        var groupBy2 = " GROUP BY data, c.parlevel1_id, parlevel2_id, parcompany_id  ";
         var orderBy = "";
         var selects = "";
+        var selectTotal = "";
+        var campos4 = "AVG(PESOTOTAL) AS PESOTOTAL, AVG(TOTAL) AS TOTAL";
 
         if (form.ShowModeloGrafico_Id[0] == 2)
         {
             campos = $@" cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(month(CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(month(CUBOL3.CollectionDate) as varchar) else cast(month(CUBOL3.CollectionDate) as varchar) end  AS UnidadeName, 0 as Unidade_Id ";
+            campos2 = $@" , Data, null as parlevel1_id, null as parlevel2_id, null as parcompany_id ";
+            campos3 = $@" , cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(month(CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(month(CUBOL3.CollectionDate) as varchar) else cast(month(CUBOL3.CollectionDate) as varchar) end  AS Data ";
             groupBy = $@" GROUP BY cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(month(CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(month(CUBOL3.CollectionDate) as varchar) else cast(month(CUBOL3.CollectionDate) as varchar) end ";
             orderBy = "ORDER BY 1 ASC";
+            selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADEname = B.data ";
+            campos4 = " sum(PESOTOTAL) AS PESOTOTAL, sum(TOTAL) AS TOTAL";
         }
         else if (form.ShowModeloGrafico_Id[0] == 3)
         {
             campos = $@" cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(datepart(week,CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(datepart(week,CUBOL3.CollectionDate) as varchar) else cast(datepart(week,CUBOL3.CollectionDate) as varchar) end  AS UnidadeName, 0 as Unidade_Id ";
+            campos2 = $@" , Data, null as parlevel1_id, null as parlevel2_id, null as parcompany_id  ";
+            campos3 = $@" , cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(datepart(week,CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(datepart(week,CUBOL3.CollectionDate) as varchar) else cast(datepart(week,CUBOL3.CollectionDate) as varchar) end  AS Data ";
             groupBy = $@" GROUP BY cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(datepart(week,CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(datepart(week,CUBOL3.CollectionDate) as varchar) else cast(datepart(week,CUBOL3.CollectionDate) as varchar) end ";
             orderBy = "ORDER BY 1 ASC";
+            selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADEname = B.data ";
+            campos4 = " sum(PESOTOTAL) AS PESOTOTAL, sum(TOTAL) AS TOTAL";
         }
         else if (form.ShowModeloGrafico_Id[0] == 4)
         {
-            campos = $@" convert(varchar, CUBOL3.CollectionDate ,103) Data ,C.Name as UnidadeName, 0 as Unidade_Id ";
+            campos = $@" convert(varchar, CUBOL3.CollectionDate ,103) UnidadeName, 0 as Unidade_Id ";
+            campos2 = $@" , Data, null as parlevel1_id, null as parlevel2_id, null as parcompany_id  ";
+            campos3 = $@" , convert(varchar, CUBOL3.CollectionDate ,103) Data ";
             groupBy = $@" GROUP BY convert(varchar, CUBOL3.CollectionDate ,103)	,C.Name ";
             orderBy = "ORDER BY 1 ASC";
+            selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADEname = B.Data ";
+            campos4 = " sum(PESOTOTAL) AS PESOTOTAL, sum(TOTAL) AS TOTAL";
         }
         else if (form.ShowDimensaoGrafico_Id.Length > 0)
         {
@@ -809,31 +1344,52 @@ public class RelatorioDeResultadoSearaResultsSet
             {
                 case 0: //UNIDADES
                     campos = $@" C.NAME AS UnidadeName, C.Id as Unidade_Id ";
+                    campos2 = $@" ,C.ParCompany_Id as Parcompany_id, null as parlevel1_id, null as parlevel2_id, null as data ";
                     groupBy = $@" GROUP BY C.NAME, C.Id ";
+                    groupBy2 = $@" GROUP BY C.ParCompany_Id, data ";
                     orderBy = "ORDER BY 4 DESC";
+                    selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADE_ID = B.PARCOMPANY_ID ";
                     break;
 
                 case 1: //INDICADORES
                     campos = $@" PL1.NAME AS UnidadeName, PL1.Id as Unidade_Id ";
+                    campos2 = $@" ,null as Parcompany_id, C.parlevel1_id as parlevel1_id, null as parlevel2_id, null as data  ";
                     groupBy = $@" GROUP BY PL1.NAME, PL1.Id ";
+                    groupBy2 = $@" GROUP BY C.ParLevel1_Id, data ";
                     orderBy = "ORDER BY 4 DESC";
+                    selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADE_ID = B.PARLevel1_id  ";
                     break;
 
                 case 2: //MONITORAMENTOS
                     campos = $@" PL2.NAME AS UnidadeName, PL2.Id as Unidade_Id ";
+                    campos2 = $@" ,null as Parcompany_id, null as parlevel1_id, C.parlevel2_id as parlevel2_id , null as data  ";
                     groupBy = $@" GROUP BY PL2.NAME, PL2.Id ";
+                    groupBy2 = $@" GROUP BY C.ParLevel2_id, data ";
                     orderBy = "ORDER BY 4 DESC";
+                    selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADE_ID = B.PARlevel2_ID ";
                     break;
 
                 case 3: //TAREFAS
+                    //campos = $@" PL3.NAME AS UnidadeName, PL3.Id as Unidade_Id ";
+                    
+                    //groupBy = $@" GROUP BY PL3.NAME, PL3.Id ";
+                    
+                    //orderBy = "ORDER BY 4 DESC";
+
                     campos = $@" PL3.NAME AS UnidadeName, PL3.Id as Unidade_Id ";
+                    campos2 = $@" ,null as Parcompany_id, null as parlevel1_id, C.parlevel2_id as parlevel2_id , null as data  ";
                     groupBy = $@" GROUP BY PL3.NAME, PL3.Id ";
+                    groupBy2 = $@" GROUP BY C.ParLevel2_id, data ";
                     orderBy = "ORDER BY 4 DESC";
+                    selectTotal = " SELECT *, NULL AS PESOTOTAL, NULL AS TOTAL FROM #RR1 A  ";
+                    
+
                     break;
 
                 case 4: //FAMÍLIA DE PRODUTO
                     selects = $@", ParFamiliaProduto_Id";
                     campos = $@" SFP.NAME AS UnidadeName, C.Id as Unidade_Id , CSFP.ParFamiliaProduto_Id ";
+                   
                     groupBy = $@" GROUP BY SFP.Name, C.Id, CSFP.ParFamiliaProduto_Id ";
                     orderBy = "ORDER BY 4 DESC";
                     break;
@@ -841,6 +1397,7 @@ public class RelatorioDeResultadoSearaResultsSet
                 case 5: //SKU
                     selects = $@", ParProduto_Id";
                     campos = $@" SP.NAME AS UnidadeName, C.Id as Unidade_Id , CSFP.ParProduto_Id ";
+                   
                     groupBy = $@" GROUP BY SP.Name, C.Id, CSFP.ParProduto_Id ";
                     orderBy = "ORDER BY 4 DESC";
                     break;
@@ -895,6 +1452,9 @@ public class RelatorioDeResultadoSearaResultsSet
 
         var query = $@"
 
+            DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+            DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
+
             SELECT CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,
                C2.ParFrequency_Id ,
                S2.ParStructureParent_Id AS Holding ,
@@ -911,23 +1471,30 @@ public class RelatorioDeResultadoSearaResultsSet
                R3.WeiEvaluation ,
                R3.WeiDefects,
 	           cfpp.ParFamiliaProduto_Id,
-	           cfpp.ParProduto_Id
+	           cfpp.ParProduto_Id,
+			   C2.ID AS CollectionLevel2_Id,
+			   R3V.LimiteNC,
+			   PL2P.Equacao,
+			   PL2P.Peso,
+			   c2.evaluationNumber as Avaliacao
 	           INTO #CUBOLEVEL3
         FROM CollectionLevel2 C2 WITH (NOLOCK)
         INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
+		INNER JOIN parlevel3value R3V WITH (NOLOCK) ON R3V.parlevel3_id = R3.parlevel3_id and R3V.ParLevel1_id = C2.ParLevel1_id and R3V.parlevel2_id = C2.ParLevel2_id and R3V.IsActive = 1 
+		INNER JOIN ParVinculoPesoParLevel2 PL2P WITH (NOLOCK) ON PL2P.ParLevel1_Id = C2.ParLevel1_Id AND PL2P.ParLevel2_Id = C2.ParLevel2_Id AND PL2P.IsActive = 1
+
         LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) ON C2.ID = C2XDP.CollectionLevel2_Id
         LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) ON C2.ID = C2XCG.CollectionLevel2_Id
         LEFT JOIN ParDepartment D WITH (NOLOCK) ON C2XDP.ParDepartment_Id = D.Id
-        LEFT JOIN ParCompanyXStructure CS ON CS.ParCompany_Id = c2.UnitId
+        LEFT JOIN ParCompanyXStructure CS ON CS.ParCompany_Id = c2.UnitId and cs.active = 1
         LEFT JOIN ParStructure S1 ON CS.ParStructure_Id = S1.Id
         LEFT JOIN ParStructure S2 ON S1.ParStructureParent_Id = S2.Id
         LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP on cfpp.CollectionLevel2_Id = c2.Id
         WHERE 1=1
           AND R3.IsNotEvaluate = 0
-
+          AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
      --------------------------------
-                 DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
-                 DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
+                 
 
                 SELECT
 					UnidadeName
@@ -938,7 +1505,7 @@ public class RelatorioDeResultadoSearaResultsSet
 					,(C / AV) * 100 AS PORCC
 					,(NC / AV) * 100 AS PORCNC
                     {selects}
-				FROM (SELECT 
+				INTO #RR1 FROM (SELECT 
 	                {campos}
                     ,SUM(CUBOL3.WeiEvaluation) AS AV	
 					,SUM(CUBOL3.WeiDefects) AS NC	
@@ -970,6 +1537,219 @@ public class RelatorioDeResultadoSearaResultsSet
                     {whereParLevel3}
                     {groupBy}) CUBO
                     {orderBy}
+
+SELECT -- MONITORAMENTO
+			B.PARLEVEL1_ID,
+			sum(Peso) Peso
+			INTO #PESOMONITORAMENTOINDICADOR
+			   FROM (
+			   
+			    SELECT -- TAREFA
+
+					parlevel1_id,
+					parlevel2_id,
+					AVG(Peso) Peso
+
+				FROM (
+				
+					SELECT
+					   
+					   CUBOL3.parlevel1_id, 
+					   CUBOL3.parlevel2_id, 
+					   CUBOL3.parlevel3_id, 
+					   AVG(CUBOL3.Peso) Peso
+
+					FROM #CUBOLEVEL3 CUBOL3 WITH (NOLOCK)
+
+					INNER JOIN ParCompany C WITH (NOLOCK)
+						ON CUBOL3.UnitId = C.ID
+
+					INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
+						ON CUBOL3.ParLevel1_Id = PL1.ID
+
+					INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
+						ON CUBOL3.ParLevel2_Id = PL2.ID
+
+					INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
+						ON CUBOL3.ParLevel3_Id = PL3.ID
+
+					INNER join CollectionLevel2 cl2	
+						on cl2.id = CUBOL3.CollectionLevel2_Id		
+					LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP	
+						ON CSFP.CollectionLevel2_Id = CL2.Id	
+					LEFT JOIN ParFamiliaProduto SFP WITH (NOLOCK)	
+						ON CSFP.ParFamiliaProduto_Id = SFP.Id	
+					LEFT JOIN ParProduto SP WITH (NOLOCK)	
+						ON CSFP.ParProduto_Id = SP.Id
+
+					WHERE 1 = 1
+
+					AND CUBOL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    {whereStructure}
+                    {whereUnit}
+                    {whereDepartment}
+                    {whereSecao}
+                    {whereCargo}
+                    {whereParLevel1}
+                    {whereParLevel2}
+                    {whereParLevel3}
+                    
+                
+                    GROUP BY CUBOL3.parlevel1_id, CUBOL3.parlevel2_id, CUBOL3.parlevel3_id
+				) a
+				GROUP BY parlevel1_id,
+					parlevel2_id
+				) B
+				GROUP BY B.PARLEVEL1_ID
+
+SELECT 
+{campos4}
+,Parcompany_id 
+,parlevel1_id 
+,parlevel2_id
+,data
+
+INTO #RR2 FROM (
+
+SELECT -- INDICADOR
+    
+	--C.ParCompany_Id,
+	--C.ParLevel1_Id,
+	SUM(C.PESO) AS [PESOTOTAL]
+	,SUM( (C.PESO / PM.PESO) * CASE WHEN C.PARLEVEL2_ID = 605 THEN RESPOSTA3 ELSE RESPOSTA2 END) TOTAL -- 0 98,125 0 100 97,5
+ , DATA1, AVALIACAO
+    {campos2}
+	
+	FROM (
+
+            SELECT -- MONITORAMENTO
+			B.ParCompany_Id,
+			B.PARLEVEL1_ID,
+			B.PARLEVEL2_ID,
+            b.data,
+			avg(Peso) Peso,
+			COUNT(DISTINCT(B.PARLEVEL3_ID)) [NÚMERO DE TAREFAS],
+
+			SUM(IIF(RESPOSTA = 1, 1, 0)) SOMA,
+
+			CASE 
+				WHEN MIN(RESPOSTA) = 0 THEN 0 --ESTOREI O LIMITE
+				WHEN SUM(RESPOSTA) = COUNT(DISTINCT(B.PARLEVEL3_ID)) THEN 100 --TIREI NOTA MÁXIMA
+				ELSE 95 + (SUM(IIF(RESPOSTA = 1, 1, 0)) / cast(COUNT(DISTINCT(B.PARLEVEL3_ID)) as FLOAT) * 5) -- NEM ESTOUREI, NEM ZEREI
+			END RESPOSTA2,
+			   -- QtdeTLNC > 0 ? 0 : (QtdeNC == 0 ? 100 : 95 + (QtdeTC/QtdeT*5))
+
+			CASE 
+				WHEN max(RESPOSTA) = 1 and min(RESPOSTA) = 1 THEN 100 --TIREI NOTA MÁXIMA
+				WHEN (cast(COUNT(DISTINCT(B.PARLEVEL3_ID)) as FLOAT) - 1) = 0 THEN 0
+				ELSE 60 * (SUM(IIF(RESPOSTA = 1, 1, 0)) / (cast(COUNT(DISTINCT(B.PARLEVEL3_ID)) as FLOAT) - 1)) -- NEM ESTOUREI, NEM ZEREI
+			END RESPOSTA3
+ , DATA1, AVALIACAO
+			   --(QtdeNC == 0 ? 100 : 60 * (QtdeTC / (QtdeT -1)))
+
+			   FROM (
+			   
+			    SELECT -- TAREFA
+
+					parCompany_Id,
+					parlevel1_id,
+					parlevel2_id,
+					parlevel3_id,
+                    data,
+					AV,
+					Defeitos,
+					LimiteNC,
+					Peso,
+					
+					CASE 
+						WHEN LimiteNC < Defeitos THEN 0 --ESTOREI O LIMITE
+						WHEN Defeitos = 0 THEN 1 --TIREI NOTA MÁXIMA
+						ELSE 2 -- NEM ESTOUREI, NEM ZEREI
+					END RESPOSTA
+ , DATA1, AVALIACAO
+
+					 
+
+				FROM (
+				
+					SELECT
+					   
+					   CUBOL3.UnitId as parcompany_id,
+					   CUBOL3.parlevel1_id, 
+					   CUBOL3.parlevel2_id, 
+					   CUBOL3.parlevel3_id, 
+					   sum(CUBOL3.WeiEvaluation) AV, 
+					   sum(CUBOL3.WeiDefects) Defeitos,
+					   AVG(CUBOL3.LimiteNC) LimiteNC,
+					   AVG(CUBOL3.Peso) Peso
+, CAST(CUBOL3.COLLECTIONDATE AS DATE) DATA1, CUBOL3.AVALIACAO
+					  {campos3}
+
+
+					  
+
+					FROM #CUBOLEVEL3 CUBOL3 WITH (NOLOCK)
+
+					INNER JOIN ParCompany C WITH (NOLOCK)
+						ON CUBOL3.UnitId = C.ID
+
+					INNER JOIN ParLevel1 PL1 WITH (NOLOCK)
+						ON CUBOL3.ParLevel1_Id = PL1.ID
+
+					INNER JOIN ParLevel2 PL2 WITH (NOLOCK)
+						ON CUBOL3.ParLevel2_Id = PL2.ID
+
+					INNER JOIN ParLevel3 PL3 WITH (NOLOCK)
+						ON CUBOL3.ParLevel3_Id = PL3.ID
+
+					INNER join CollectionLevel2 cl2	
+						on cl2.id = CUBOL3.CollectionLevel2_Id		
+					LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CSFP	
+						ON CSFP.CollectionLevel2_Id = CL2.Id	
+					LEFT JOIN ParFamiliaProduto SFP WITH (NOLOCK)	
+						ON CSFP.ParFamiliaProduto_Id = SFP.Id	
+					LEFT JOIN ParProduto SP WITH (NOLOCK)	
+						ON CSFP.ParProduto_Id = SP.Id
+
+					WHERE 1 = 1
+
+					AND CUBOL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+
+                    {whereStructure}
+                    {whereUnit}
+                    {whereDepartment}
+                    {whereSecao}
+                    {whereCargo}
+                    {whereParLevel1}
+                    {whereParLevel2}
+                    {whereParLevel3}
+                    {groupBy}
+                
+                    , CUBOL3.UnitId, CUBOL3.parlevel1_id, CUBOL3.parlevel2_id, CUBOL3.parlevel3_id, CUBOL3.Centro_De_Custo_Id, CUBOL3.Secao_Id, CUBOL3.Cargo_Id, CUBOL3.UnitId, CUBOL3.Equacao, CUBOL3.Avaliacao, CAST(CUBOL3.COLLECTIONDATE AS DATE)
+				) a
+
+				) B
+				GROUP BY B.parcompany_id, B.PARLEVEL1_ID,  B.PARLEVEL2_ID, data, DATA1, AVALIACAO
+
+		) C
+		INNER JOIN #PESOMONITORAMENTOINDICADOR PM ON PM.ParLevel1_Id = C.ParLevel1_Id
+		{groupBy2} , DATA1, AVALIACAO, C.PARLEVEL1_ID
+
+) D
+
+GROUP BY Parcompany_id 
+,parlevel1_id 
+,parlevel2_id
+,data
+
+		DROP TABLE #PESOMONITORAMENTOINDICADOR
+		DROP TABLE #CUBOLEVEL3  
+
+   {selectTotal}
+   
+   DROP TABLE #RR1    
+   DROP TABLE #RR2
 
                 ";
         return query;
