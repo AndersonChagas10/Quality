@@ -4546,15 +4546,15 @@ namespace SgqServiceBusiness.Api
             int evaluate = 0;
 
             string sql = $@"
-                DECLARE @ParLevel1_id int =  @ParLevel1_Id
-                DECLARE @ParCluster_id int = @ParCluster_Id 
+                DECLARE @ParLevel1__Id int =  @ParLevel1_Id
+                DECLARE @ParCluster__Id int = @ParCluster_Id 
                 SELECT max(Number) as av FROM ParEvaluation EV (nolock) 
                 WHERE ParLevel2_id in ( 
                 SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 (nolock) 
                 inner join ParLevel3Level2 P32 (nolock) 
                 on p32.id = p321.ParLevel3Level2_Id 
-                where p321.ParLevel1_Id = @ParLevel1_id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 
-                and Ev.ParCluster_Id = @ParCluster_Id
+                where p321.ParLevel1_Id = @ParLevel1__Id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 
+                and Ev.ParCluster_Id = @ParCluster__Id
                 group by p32.ParLevel2_Id
                 )
                 and ev.IsActive = 1 
@@ -4587,7 +4587,7 @@ namespace SgqServiceBusiness.Api
                 }
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return evaluate;
@@ -4905,16 +4905,15 @@ namespace SgqServiceBusiness.Api
             int evaluate = 0;
 
             string sql = $@"
-                DECLARE @ParCompany_id int = 16
-                DECLARE @ParLevel1_id int =  @ParLevel1_Id
-                DECLARE @ParCluster_id int = @ParCluster_Id 
+                DECLARE @ParLevel1__Id int =  @ParLevel1_Id
+                DECLARE @ParCluster__Id int = @ParCluster_Id 
                 SELECT max(Number) as av FROM ParSample EV (nolock)  
                 WHERE ParLevel2_id in ( 
                 SELECT p32.ParLevel2_Id FROM ParLevel3Level2Level1 P321 (nolock)  
                 inner join ParLevel3Level2 P32  (nolock) 
                 on p32.id = p321.ParLevel3Level2_Id 
-                where p321.ParLevel1_Id = @ParLevel1_id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 
-                and Ev.ParCluster_Id = @ParCluster_Id 
+                where p321.ParLevel1_Id = @ParLevel1__Id and (p32.ParCompany_Id is null) and P321.Active = 1 and p32.IsActive = 1 
+                and Ev.ParCluster_Id = @ParCluster__Id 
                 group by p32.ParLevel2_Id 
                 )
                 and ev.IsActive = 1
@@ -4945,7 +4944,7 @@ namespace SgqServiceBusiness.Api
                 }
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 return evaluate;
@@ -5225,7 +5224,14 @@ namespace SgqServiceBusiness.Api
             var usuariosSupervisor = new List<UserSgq>();
             using (var db = new SgqDbDevEntities())
             {
-                usuariosSupervisor = db.UserSgq.Where(x => x.Role.Contains("Supervisor") && x.IsActive == true).OrderBy(x => x.Name).ToList();
+                if (GlobalConfig.Eua)
+                {
+                    usuariosSupervisor = db.UserSgq.Where(x => x.Role.Contains("Supervisor") && x.IsActive == true).OrderBy(x => x.Name).ToList();
+                }
+                else
+                {
+                    usuariosSupervisor = db.UserSgq.Where(x => x.IsActive == true).OrderBy(x => x.Name).ToList();
+                }
             }
 
             var htmlSelect = "";
@@ -5273,7 +5279,7 @@ namespace SgqServiceBusiness.Api
                                     "<textarea id=\"DescriptionFailure\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>" +
                                 "<div class=\"form-group\">" +
-                                    "<label>" + CommonData.getResource("immediate_corrective_action").Value.ToString() + ":</label>" +
+                                    "<label>" + CommonData.getResource("appcoleta_corrective_action_modal_input").Value.ToString() + ":</label>" +
                                     "<textarea id=\"ImmediateCorrectiveAction\" class=\"form-control custom-control\" rows=\"3\" style=\"resize:none\"></textarea>" +
                                 "</div>" +
                                 "<div class=\"form-group\">" +
@@ -5315,16 +5321,16 @@ namespace SgqServiceBusiness.Api
                                         <div>
 		                                    <input type='checkbox' id='correctiveAction'>
 		                                    <label id='mensagemPadrao'>{DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.DefaultMessageCorrectiveAction}</label>
-                                        </div>
+                                       </div>
 	                                    <textarea id='PreventativeMeasure' class='form-control custom-control' rows='3' style='resize:none'></textarea>
-                                    </div>
-                                    <div id='divSelectSupervisor' class='form-group'>
-                                          <label>Supervisor<span style=""color: red""> *</span></label>
-                                          <select id='TechinicalSignature' class='form-control custom-control'>
+                                   </div>
+                                   <div id='divSelectSupervisor' class='form-group'>
+                                         <label>Supervisor<span style=""color: red""> *</span></label>
+                                         <select id='TechinicalSignature' class='form-control custom-control'>
 		                                    {htmlSelect}
 	                                    </select>  
-                                    </div>
-                                </div>";
+                                   </div>
+                               </div>";
             }
 
 
@@ -5592,6 +5598,17 @@ namespace SgqServiceBusiness.Api
                                     alertaNivel1 = valorAlerta;
                                     alertaNivel2 = valorAlerta;
                                     alertaNivel3 = "a7";
+                                    volumeAlerta = alertas.VolumeAlerta;
+                                    meta = alertas.Meta;
+                                }
+                            }
+                            else if (tipoAlerta == 8)  //reincidenciaKOAmostras%
+                            {
+                                if (alertas != null)
+                                {
+                                    alertaNivel1 = valorAlerta;
+                                    alertaNivel2 = valorAlerta;
+                                    alertaNivel3 = "a8";
                                     volumeAlerta = alertas.VolumeAlerta;
                                     meta = alertas.Meta;
                                 }
@@ -6633,7 +6650,7 @@ namespace SgqServiceBusiness.Api
                 retorno += html.div(
                                             outerhtml: form_group,
                                             classe: "col-xs-6 col-sm-4 col-md-3 col-lg-2",
-                                            style: "padding-right: 4px !important; padding-left: 4px !important;height:90px !important"
+                                            style: "padding-right: 4px !important; padding-left: 4px !important;height:90px !important;display:table"
                                             );
 
 
@@ -9080,20 +9097,24 @@ namespace SgqServiceBusiness.Api
             try
             {
 
-                var sql = $@"SELECT
-                    	RL3.Id
-                       ,SUM(PMV.PunishmentValue) AS PunishmentValue
-                       ,RL3.IsConform
-                    FROM CollectionLevel2XParHeaderField CL2XHF
-                    INNER JOIN Result_Level3 RL3
-                    	ON RL3.CollectionLevel2_Id = CL2XHF.CollectionLevel2_Id
-                    INNER JOIN ParHeaderField PHF
-                    	ON PHF.Id = CL2XHF.ParHeaderField_Id
-                    INNER JOIN ParMultipleValues PMV
-                    	ON PMV.Id = CAST(CL2XHF.Value as int)
-                    WHERE CL2XHF.CollectionLevel2_Id = @CollectionLevel2_Id
-                    and CL2XHF.ParFieldType_Id in (1,2,3)
-                    GROUP BY RL3.Id, RL3.IsConform";
+                var sql = $@"SELECT     
+                                       RL3.id , 
+                                       Sum(PMV.punishmentvalue) AS PunishmentValue , 
+                                       RL3.isconform 
+                            FROM       
+	                            (select top 50000 
+		                            collectionlevel2_id,parheaderfield_id,Cast(value AS INT) as value,parfieldtype_id 
+		                            from CollectionLevel2XParHeaderField with (nolock) 
+		                            order by id desc
+		                            ) CL2XHF  
+                            INNER JOIN result_level3 RL3  with (nolock)
+                            ON         RL3.collectionlevel2_id = CL2XHF.collectionlevel2_id 
+                            INNER JOIN parmultiplevalues PMV with (nolock) 
+                            ON         PMV.id = CL2XHF.value 
+                            WHERE      CL2XHF.collectionlevel2_id = @CollectionLevel2_Id
+                            AND        CL2XHF.parfieldtype_id IN (1,2,3) 
+                            GROUP BY   RL3.id, 
+                                       RL3.isconform";
 
 
                 using (Factory factory = new Factory("DefaultConnection"))

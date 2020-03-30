@@ -131,9 +131,11 @@ namespace SgqSystem.Jobs
                                 db.Result_Level3.Add(resultLevel3);
                                 db.SaveChanges();
 
-                               
+                                #region Lógica para consolidar qualificação no result level3
                                 if (resultLevel3.Outros != null || resultLevel3.Outros != "")
                                 {
+                                    listaQualificacao = new List<string>();
+
                                     JavaScriptSerializer serializer = new JavaScriptSerializer();
 
                                     dynamic listaQualificacaoSerializada = serializer.Deserialize<object>(resultLevel3.Outros);
@@ -161,6 +163,7 @@ namespace SgqSystem.Jobs
                                         }
                                     }
                                 }
+                                #endregion
 
                                 DeleteHeaderFieldLevel3IfExist(resultLevel3);
 

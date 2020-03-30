@@ -120,15 +120,16 @@ namespace SgqSystem.Controllers.Api.Formulario
                 var query = $@"SELECT DISTINCT TOP 500 ID, Description as Name FROM shift WITH (NOLOCK)
                         WHERE Description like '%{search}%'";
 
-                var retorno = new List<Select3ViewModel>();
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+                //var retorno = new List<Select3ViewModel>();
 
-                Select3ViewModel shiftTodos = new Select3ViewModel();
-                shiftTodos.Hash = null;
-                shiftTodos.Name = "Todos";
-                shiftTodos.Id = 0;
+                //Select3ViewModel shiftTodos = new Select3ViewModel();
+                //shiftTodos.Hash = null;
+                //shiftTodos.Name = "Todos";
+                //shiftTodos.Id = 0;
 
-                retorno.Add(shiftTodos);
-                retorno.AddRange(factory.SearchQuery<Select3ViewModel>(query).ToList());
+                //retorno.Add(shiftTodos);
+                //retorno.AddRange(factory.SearchQuery<Select3ViewModel>(query).ToList());
 
                 return retorno;
             }
