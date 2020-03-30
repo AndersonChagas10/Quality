@@ -130,7 +130,7 @@ function correctiveActionOpenPesoHB(level01Id, date, shift, period) {
     $('#AuditInformation').children('#starttime').text(dateTimeWithMinutes().slice(0, 16));
     correctiveActionModal.attr('level01id', $(_level1).attr('id'));
     correctiveActionModal.attr('level02id', $(_level2).attr('id'));
-	correctiveActionModal.attr('evaluationnumber', $(_level2).attr('evaluatecurrent'));
+    correctiveActionModal.attr('evaluationnumber', $(_level2).attr('evaluatecurrent'));
     // correctiveActionModal.attr('collectionlevel2_id', ConsolidationResult.attr('collectionlevel2_id_correctiveaction'));
 
     if (period) {
@@ -493,9 +493,9 @@ $(document).on('click', '#btnSendCorrectiveAction', function (e) {
 
     var techinicalSignature;
     if ($("#divSelectSupervisor").is(':visible')) {
-         techinicalSignature = $('#TechinicalSignature :selected').val(); 
+        techinicalSignature = $('#TechinicalSignature :selected').val();
     } else {
-         techinicalSignature = $('.TechinicalSignature').attr('userid');
+        techinicalSignature = $('.TechinicalSignature').attr('userid');
     }
 
     var message = '';

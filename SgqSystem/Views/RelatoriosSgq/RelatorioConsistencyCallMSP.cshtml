@@ -1,0 +1,287 @@
+﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
+@using DTO
+@{
+    Layout = "~\\Views\\RelatoriosSgq\\_FilterReports.cshtml";
+    ViewBag.Title = Resources.Resource.consistency_call; //"Consistency Call"
+
+    var url = Url.Action("Index", "Home");
+    var urlGetTabelaConsistencyCall = Url.Action("GetlistaTabelaConsistencyCall", "api/RelatorioConsistencyCallMSP");
+
+    ViewBag.ShowCurrentDate = false;
+    ViewBag.ShowRangeDate = true;
+    ViewBag.ShowParModule = true;
+    ViewBag.ShowParCompany = true;
+    ViewBag.ShowShift = true;
+}
+
+@section Content {
+
+    <style>
+        .panel-info {
+            border-color: #999;
+        }
+
+        .panel-info > .panel-heading {
+            background-color: #ccc;
+            border-color: #999;
+            color: #333;
+        }
+
+        .table {
+            border: 1px solid lightgrey;
+        }
+
+        #divFlavor #TabelaConsistencyCall {
+            font-family: 'Copperplate Gothic';
+        }
+
+        .firstCol {
+            width: 60%;
+        }
+
+        .good {
+            color: limegreen;
+            font-weight:bold;
+        }
+
+        .bad {
+            color: red;
+            font-weight:bolder;
+        }
+
+        .target {
+            color: blue;
+        }
+
+    </style>
+
+    <div class="page-content-wrapper">
+        <div class="page-content">
+
+            <div id="formBodyContent">
+                @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+                <div class="text-center" id="divFlavor" hidden>
+                    <p style="margin-bottom: 0;">Flavor</p>
+                    <div class="bg-info text-center">
+                        <div id="flavor" style="font-weight: bold; font-size: 30px; padding-bottom: 15px; padding-top: 15px;"></div>
+                    </div>
+                </div>
+                
+
+                <div id="TabelaConsistencyCall" style="padding-top: 30px;" hidden>
+                    <button class="btnConsistencyCall col-lg-6" id="btnRawSide" type="button" onclick="ShowRawSide()">Raw Side</button>
+                    <button class="btnConsistencyCall col-lg-6" id="btnCooking" type="button" onclick="ShowCooking()">Cooking</button>
+                    <div id="rawSide" hidden>
+
+                    </div>
+                    <div id="cooking" hidden>
+
+                    </div>
+                </div>
+
+                <div id="loading"></div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+
+        var urlGetTabelaConsistencyCall = '@Html.Raw(urlGetTabelaConsistencyCall)';
+        var $btn = $('#btnSend');
+
+        $(document).ready(function () {
+            closeLeftSidebar();
+            $(".sidebar-toggler").removeClass("hide");
+            $(".page-sidebar-wrapper").removeClass("hide");
+
+            $("#btnSend").click(function (e) {
+                Send(true);
+            });
+
+            $('.levels').hide();
+
+            $('.sidebar-nav select').select2();
+            });
+
+        function enviarFiltro() {
+            openLoader('Aguarde...');
+            $btn.button('loading');
+            $('#results').empty();
+
+            if (!ValidaDadosParaEnvio()) {
+                $btn.button('reset');
+                return;
+            }
+
+            $.ajax({
+                url: urlGetTabelaConsistencyCall,
+                type: 'get',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            })
+            .done(function (data) {
+                MontaTabelaConsistencyCall(data);
+                $btn.button('reset');
+                closeLoader();
+            })
+            .fail(function (jqXHR, textStatus, msg) {
+                console.log(msg);
+                $btn.button('reset');
+                preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                closeLoader();
+            });
+        };
+
+    function ValidaDadosParaEnvio() {
+        GuardJs.resetForValidation(objFiltro);
+        GuardJs.CheckRangeDateTime(objFiltro.endDate, objFiltro.startDate, "Initial date", "End date");
+
+        if (!GuardJs.isValid)
+            return !GuardJs.isValid;
+        GuardJs.esconderMensagem();
+
+        return true;
+        };
+
+        function MontaTabelaConsistencyCall(retornoArray) {
+            if(retornoArray.length == 0){
+                GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
+            }
+
+            else {
+                $("#flavor").html(retornoArray.Flavor);
+                $("#divFlavor").show();
+                $("#TabelaConsistencyCall").show();
+
+                var tableRawSide = "<table class='table table-hover table-striped'><tbody><tr><th scope='row' class='firstCol'> Raw side </th><td colspan='2' align='center'><b>" + retornoArray.Raw_side + "</b></td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Batch </td><td align='center'>" + retornoArray.Batch1 + " %</td><td align='center'>" + retornoArray.Batch2 + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Water % <b>(According to the marination time and flavor)</b></td><td align='center' class='good'>" + retornoArray.PorcWater1 + " % </td><td align='center' class='good'>" + retornoArray.PorcWater2 + " % </td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Meat Age - Target (max) </td><td colspan='2' align='center' class='target'>" + retornoArray.Meat_age_target + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Meat Age (average in days) </td><td colspan='2' align='center' class='good'>" + retornoArray.Meat_age_avg + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Meat Age (minimum and maximum) </td><td align='center' class='good'>" + retornoArray.Meat_age_min_max1 + "</td><td align='center' class='bad'>" + retornoArray.Meat_age_min_max2 + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Flats </td><td colspan='2' align='center' class='good'>" + retornoArray.Flats + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Insides </td><td colspan='2' align='center' class='good'>" + retornoArray.Insides + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Eyes </td><td colspan='2' align='center' class='good'>" + retornoArray.Eyes + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Tumbler batch size <b>(kg of meat according to the product)</b> </td><td colspan='2' align='center' class='good'>" + retornoArray.Tumbler_batch_size + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Product appearance </td><td colspan='2' align='center' class='good'>" + retornoArray.Product_appearance + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Seasoning distribuition </td><td colspan='2' align='center' class='good'>" + retornoArray.Seasoning_distribuition + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Meat temperature (target Max) </td><td align='center' class='target' colspan='2'>" + retornoArray.Meat_temperature_max1 + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Meat temperature (target Min) </td><td align='center' class='target' colspan='2'>" + retornoArray.Meat_temperature_min1 + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Meat temperature actual </td><td align='center' class='good' colspan='2'>" + retornoArray.Meat_temperature_actual1 + "</td></tr></tbody></table>";
+
+                var tableCMeCD = "<h4><b> COXÃO DURO + COXÃO MOLE </b></h4>" +
+                    "<table class='table table-hover table-striped'><tbody><tr><td scope='row' class='firstCol'> Thickness average (mm) - Target max </td><td colspan='2' align='center' class='target'>" + retornoArray.Thickness_avg_max + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Thickness average (mm) - Target min </td><td colspan='2' align='center' class='target'>" + retornoArray.Thickness_avg_min + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Thickness average (7mm - flats, 6.1mm - wedges/eyes) </td><td align='center' class='good'>" + retornoArray.Thickness_avg1 + "</td><td align='center' class='good'>" + retornoArray.Thickness_avg2 + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Thickness sample size </td><td align='center' class='good'>" + retornoArray.Thickness_sample_size1 + "</td><td align='center' class='good'>" + retornoArray.Thickness_sample_size2 + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Out of Spec target </td><td colspan='2' align='center' class='target'>" + retornoArray.Out_spec_target + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> % out of spec (April/12th on +/- 1.2mm) </td><td align='center'>" + retornoArray.Porc_out_spec1 + " % </td><td align='center'>" + retornoArray.Porc_out_spec2 + " % </td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> % <LSL </td><td align='center' class='good'>" + retornoArray.Porc_LSL1 + " % </td><td align='center' class='good'>" + retornoArray.Porc_LSL2 + " % </td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> % >USL </td><td align='center' class='good'>" + retornoArray.Porc_USL1 + " % </td><td align='center' class='good'>" + retornoArray.Porc_USL2 + " % </td></tr></tbody></table>";
+
+                var tableBeL = "<h4><b> BORBOLETA + LAGARTO </b></h4>" +
+                    "<table class='table table-hover table-striped'><tbody><tr><td scope='row' class='firstCol'> Thickness average (mm) - Target max </td><td colspan='2' align='center' class='target'>" + retornoArray.Thickness_avg_max + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Thickness average (mm) - Target min </td><td colspan='2' align='center' class='target'>" + retornoArray.Thickness_avg_min + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Thickness average (7mm - flats, 6.1mm - wedges/eyes) </td><td align='center' class='good'>" + retornoArray.Thickness_avg1 + "</td><td align='center' class='good'>" + retornoArray.Tumbler_batch_size + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Thickness sample size </td><td align='center' colspan='2' class='good'>" + retornoArray.Thickness_sample_size + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Out of Spec target </td><td colspan='2' align='center' class='target'>" + retornoArray.Out_of_spec_target + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> % out of spec (April/12th on +/- 1.2mm) </td><td align='center' class='good' colspan='2'>" + retornoArray.Porc_out_spec + " % </td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> %<LSL </td><td align='center' class='good'>" + retornoArray.Porc_LSL1 + " % </td><td align='center' class='good'>" + retornoArray.Porc_LSL2 + " % </td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> %>USL </td><td align='center' class='good'>" + retornoArray.Porc_USL1 + " % </td><td align='center' class='good'>" + retornoArray.Porc_USL2 + " % </td></tr></tbody></table>";
+
+                var tableFinalRawSide = "<table class='table table-hover table-striped'><tbody><tr><td scope='row' class='firstCol'> Meat Weight inside smokehouse (lb/process (raw) Target </td><td align='center' class='target'>" + retornoArray.Meat_weight_inside_smokehouse_target + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Meat Weight inside smokehouse (lb/process (raw) </td><td align='center' class='good'>" + retornoArray.Meat_weight_inside_smokehouse + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Purge % Target </td><td align='center' class='target'>" + retornoArray.Porc_purge_target + " % </td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Purge % </td><td align='center' class='good'>" + retornoArray.Porc_purge + " % </td></tr></tbody></table>";
+
+                var tableCooking = "<table class='table table-hover table-striped'><tbody><tr><th scope='row' class='firstCol'><b> Cooking </b></th><td colspan='2' align='center'><b>" + retornoArray.Cooking + "</b></td></tr>" +
+                    "<tr><th scope='row' class='firstCol'> Meet Canadian Requirements: 71°C 60 min (YES/NO/NA) </th><td align='center' class='good'>" + retornoArray.Meet_requirements1 + "</td><td align='center'>" + retornoArray.Meet_requirements2 + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Marination time (hours max) </td><td colspan='2' align='center' class='target'>" + retornoArray.Marination_time_max + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Marination time (hours min) </td><td colspan='2' align='center' class='target'>" + retornoArray.Marination_time_min + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Marination time (hours) </td><td colspan='2' align='center' class='good'>" + retornoArray.Marination_time + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Wait time average <b>(30 - 180 min)</b> </td><td align='center' class='good'>" + retornoArray.Wait_time_avg + "</td><td align='center'>" + retornoArray.Wait_time_avg + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> <b>Tempo máximo</b> que o produto que saiu da estufa fica aguardando na sala de espera antes de ir para unloader (equalização) parametrizado </td><td align='center' class='target'>" + retornoArray.Max_time1 + "</td><td align='center' class='target'>" + retornoArray.Max_time2 + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> <b>Tempo por amostra</b> que o produto que saiu da estufa fica aguardando na sala de espera antes de ir para unloader (equalização) </td><td align='center' class='good'>" + retornoArray.Time_by_sample1 + "</td><td align='center' class='good'>" + retornoArray.Time_by_sample2 + "</td></tr>";
+
+                var tableCooking2 = "<table class='table table-hover table-striped'><tbody><tr><td scope='row' class='firstCol'> Foss used for pull moisture </td><td align='center' colspan='2'>" + retornoArray.Foss_used_for_pull + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Foss used for packing moisture </td><td align='center' colspan='2'>" + retornoArray.Foss_used_for_packing + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Cooking time Target </td><td colspan='2' align='center' class='target'>" + retornoArray.Cooking_time_target + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Cooking time average (hours:min) </td><td colspan='2' align='center' class='good'>" + retornoArray.Cooking_time_avg + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Standard pull moisture (max) </td><td colspan='2' align='center' class='target'>" + retornoArray.Standard_pull_moisture_max + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Standard pull moisture (min) </td><td align='center' colspan='2' class='target'>" + retornoArray.Standard_pull_moisture_min + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Pull moisture average </td><td align='center' colspan='2' class='good'>" + retornoArray.Pull_moisture_avg + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Staging room temperature (F) <b>Target 48F</b> </td><td align='center' class='bad' colspan='2'>" + retornoArray.Standing_room_temperature + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Packing Water Activity Target (max) </td><td align='center' colspan='2' class='target'>" + retornoArray.Packing_water_activity_max + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Packing Water Activity </td><td colspan='2' align='center' class='good'>" + retornoArray.Packing_water_activity + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Packing moisture average (min) </td><td colspan='2' align='center' class='target'>" + retornoArray.Packing_moisture_avg_min + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Packing moisture average (max) </td><td colspan='2' align='center' class='target'>" + retornoArray.Packing_moisture_avg_max + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Packing moisture average </td><td colspan='2' align='center' class='good'>" + retornoArray.Packing_moisture_avg + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Reanalysis (Foss 1 Posse) - bulk moisture <b>(28% to 30%)</b> </td><td colspan='2' align='center'>" + retornoArray.Reanalysis_foss_1 + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Reanalysis (Foss 2 Posse) - bulk moisture <b>(28% to 30%)</b> </td><td colspan='2' align='center'>" + retornoArray.Reanalysis_foss_2 + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Alpena's moisture </td><td colspan='2' align='center' class='good'>" + retornoArray.Alpenas_moisture + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Packing room temperature (Target 60F) MÁX </td><td colspan='2' align='center' class='target'>" + retornoArray.Packing_room_temperature_max + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Packing room temperature <b>(Target 60F)</b>> </td><td colspan='2' align='center' class='good'>" + retornoArray.Packing_room_temperature + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Yield - Target min </td><td colspan='2' align='center' class='target'>" + retornoArray.Yield_target_min + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Yield - Target </td><td colspan='2' align='center' class='target'>" + retornoArray.Yield_target + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Yield </td><td colspan='2' align='center' class='good'>" + retornoArray.Yield + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Wood chips Target <b>(7' +/- 1 inches per cooking)</b> </td><td colspan='2' align='center' class='good'>" + retornoArray.Wood_chips_target + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Wood chips (inches per cooking) </td><td colspan='2' align='center' class='good'>" + retornoArray.Wood_chips + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Espessura do produto final MÁX </td><td align='center' class='target'>" + retornoArray.Insides + "</td><td align='center'>" + retornoArray.Insides + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Espessura do produto final MÍN </td><td colspan='2' align='center' class='target'>" + retornoArray.Eyes + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Final product Thickness average (5 mm+/-0,79mm) </td><td colspan='2' align='center' class='good'>" + retornoArray.Tumbler_batch_size + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Thickness sample size </td><td colspan='2' align='center' class='good'>" + retornoArray.Thickness_sample_size + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Out of spec Target </td><td align='center' colspan='2' class='target'>" + retornoArray.Out_of_spec_target + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> % Out of spec </td><td align='center' colspan='2' class='bad'>" + retornoArray.Porc_out_spec + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> %<LSL </td><td colspan='2' align='center' class='good'>" + retornoArray.Porc_lsl + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> %>USL </td><td colspan='2' align='center' class='bad'>" + retornoArray.Porc_usl + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Filters on smokehouses exhaustion </td><td colspan='2' align='center' class='good'>" + retornoArray.Product_appearance + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Reprocessing target </td><td colspan='2' align='center' class='target'>" + retornoArray.Reprocessing_target + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Rework </td><td align='center' colspan='2' class='bad'>" + retornoArray.Rework + " %</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Flavor </td><td colspan='2' align='center'>" + retornoArray.Cooking_flavor + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Odor </td><td colspan='2' align='center'>" + retornoArray.Odor + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Texture </td><td colspan='2' align='center'>" + retornoArray.Texture + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Appearance </td><td align='center' colspan='2'>" + retornoArray.Appearance + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Observations: </td><td align='center' colspan='2'>" + retornoArray.Observations + "</td></tr>";
+
+                $("#rawSide").html(tableRawSide + tableCMeCD + tableBeL + tableFinalRawSide);
+                $("#cooking").html(tableCooking + tableCooking2);
+            }
+        };
+
+        function ShowRawSide() {
+            if ($("#rawSide").hide()) {
+                $("#rawSide").show();
+                $("#btnRawSide").addClass('btn-primary');
+                $("#btnCooking").removeClass('btn-primary');
+            }
+            $("#cooking").hide();
+        };
+
+        function ShowCooking() {
+            if ($("#cooking").hide()) {
+                $("#cooking").show();
+                $("#btnCooking").addClass('btn-primary');
+                $("#btnRawSide").removeClass('btn-primary');
+            }
+            $("#rawSide").hide();
+        };
+
+    $(document).mousemove(function(e) {
+        window.x = e.pageX;
+        window.y = e.pageY;
+    });
+
+    </script>
+
+}
