@@ -54,9 +54,10 @@ public class RelatorioDeResultadoSearaResultsSet
         var groupBy = "  GROUP BY C.NAME, C.Id  ";
         var groupBy2 = " GROUP BY C.ParCompany_Id, data ";
         var groupBy5 = "";
+        //var selectTotal = " SELECT A.UnidadeName, A.AV, A.C, A.C, B.TOTAL AS PORCC, A.DATA FROM #RR1 A INNER JOIN #RR2 B ON A.DATA = B.DATA1 ";
         var selectTotal = " SELECT A.UnidadeName, A.AV, A.C, A.C, B.TOTAL AS PORCC, A.DATA FROM #RR1 A INNER JOIN #RR2 B ON A.DATA = B.DATA1 ";
 
-        if(1==1)
+        if (1==1)
         {
             campos5 = " ,M.Name + '/' + CAST(DATEPART(YEAR, data1) AS VARCHAR) as data1 ";
             groupBy5 = "  , M.Name + '/' + CAST(DATEPART(YEAR, data1) AS VARCHAR) ";
@@ -129,7 +130,8 @@ public class RelatorioDeResultadoSearaResultsSet
 			   R3V.LimiteNC,
 			   PL2P.Equacao,
 			   PL2P.Peso,
-			   c2.evaluationNumber as Avaliacao
+			   c2.evaluationNumber as Avaliacao,
+			   pp.Name as SKU
 	           INTO #CUBOLEVEL3
         FROM CollectionLevel2 C2 WITH (NOLOCK)
         INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
@@ -144,6 +146,9 @@ public class RelatorioDeResultadoSearaResultsSet
         LEFT JOIN ParStructure S1 ON CS.ParStructure_Id = S1.Id
         LEFT JOIN ParStructure S2 ON S1.ParStructureParent_Id = S2.Id
         LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP on cfpp.CollectionLevel2_Id = c2.Id
+
+        LEFT JOIN ParProduto PP on pp.Id = cfpp.ParProduto_Id
+
         WHERE 1=1
           AND R3.IsNotEvaluate = 0
           AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
@@ -314,6 +319,7 @@ AVG(PESOTOTAL) AS PESOTOTAL
 ,Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
+,SKU
 ,data
 {campos5}
 
@@ -325,7 +331,7 @@ SELECT -- INDICADOR
 	--C.ParLevel1_Id,
 	SUM(C.PESO) AS [PESOTOTAL]
 	,SUM( (C.PESO / PM.PESO) * CASE WHEN C.PARLEVEL2_ID = 605 THEN RESPOSTA3 ELSE RESPOSTA2 END) TOTAL -- 0 98,125 0 100 97,5
-    ,DATA1, AVALIACAO
+    ,DATA1, AVALIACAO, SKU
    
 {campos2}
 	
@@ -335,6 +341,7 @@ SELECT -- INDICADOR
 			B.ParCompany_Id,
 			B.PARLEVEL1_ID,
 			B.PARLEVEL2_ID,
+            B.SKU,
             b.data,
 			avg(Peso) Peso,
 			COUNT(DISTINCT(B.PARLEVEL3_ID)) [NÚMERO DE TAREFAS],
@@ -364,6 +371,7 @@ SELECT -- INDICADOR
 					parlevel1_id,
 					parlevel2_id,
 					parlevel3_id,
+                    SKU,
                     data,
 					AV,
 					Defeitos,
@@ -388,7 +396,8 @@ SELECT -- INDICADOR
 					   CUBOL3.UnitId as parcompany_id,
 					   CUBOL3.parlevel1_id, 
 					   CUBOL3.parlevel2_id, 
-					   CUBOL3.parlevel3_id, 
+					   CUBOL3.parlevel3_id,
+                       CUBOL3.SKU,
 					   sum(CUBOL3.WeiEvaluation) AV, 
 					   sum(CUBOL3.WeiDefects) Defeitos,
 					   AVG(CUBOL3.LimiteNC) LimiteNC,
@@ -438,16 +447,16 @@ SELECT -- INDICADOR
                     
  {groupBy}
                 
-                    , CUBOL3.UnitId, CUBOL3.parlevel1_id, CUBOL3.parlevel2_id, CUBOL3.parlevel3_id, CUBOL3.Centro_De_Custo_Id, CUBOL3.Secao_Id, CUBOL3.Cargo_Id, CUBOL3.UnitId, CUBOL3.Equacao, CUBOL3.Avaliacao, CAST(CUBOL3.COLLECTIONDATE AS DATE)
+                    , CUBOL3.UnitId, CUBOL3.parlevel1_id, CUBOL3.parlevel2_id, CUBOL3.parlevel3_id, CUBOL3.SKU, CUBOL3.Centro_De_Custo_Id, CUBOL3.Secao_Id, CUBOL3.Cargo_Id, CUBOL3.UnitId, CUBOL3.Equacao, CUBOL3.Avaliacao, CAST(CUBOL3.COLLECTIONDATE AS DATE)
 				) a
 
 				) B
-				GROUP BY B.parcompany_id, B.PARLEVEL1_ID,  B.PARLEVEL2_ID, data, DATA1, AVALIACAO
+				GROUP BY B.parcompany_id, B.PARLEVEL1_ID,  B.PARLEVEL2_ID, data, DATA1, AVALIACAO, SKU
 
 		) C
 		INNER JOIN #PESOMONITORAMENTOINDICADOR PM ON PM.ParLevel1_Id = C.ParLevel1_Id
 		
- {groupBy2} , DATA1, AVALIACAO, C.PARLEVEL1_ID 
+ {groupBy2} , DATA1, AVALIACAO, C.PARLEVEL1_ID , C.SKU
 
 ) D
 
@@ -457,6 +466,7 @@ ON M.ID = DATEPART(MONTH, data1)
 GROUP BY Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
+,SKU
 ,data
 {groupBy5}
 		DROP TABLE #PESOMONITORAMENTOINDICADOR
@@ -562,7 +572,8 @@ GROUP BY Parcompany_id
 			   R3V.LimiteNC,
 			   PL2P.Equacao,
 			   PL2P.Peso,
-			   c2.evaluationNumber as Avaliacao
+			   c2.evaluationNumber as Avaliacao,
+			   pp.Name as SKU
 	           INTO #CUBOLEVEL3
         FROM CollectionLevel2 C2 WITH (NOLOCK)
         INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
@@ -578,6 +589,9 @@ GROUP BY Parcompany_id
         LEFT JOIN ParStructure S1 ON CS.ParStructure_Id = S1.Id
         LEFT JOIN ParStructure S2 ON S1.ParStructureParent_Id = S2.Id
         LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP on cfpp.CollectionLevel2_Id = c2.Id
+
+        LEFT JOIN ParProduto PP on pp.Id = cfpp.ParProduto_Id
+
         WHERE 1=1
           AND R3.IsNotEvaluate = 0
           AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
@@ -708,6 +722,7 @@ AVG(PESOTOTAL) AS PESOTOTAL
 ,Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
+,SKU
 ,data
 
 INTO #RR2 FROM (
@@ -718,7 +733,7 @@ SELECT -- INDICADOR
 	--C.ParLevel1_Id,
 	SUM(C.PESO) AS [PESOTOTAL]
 	,SUM( (C.PESO / PM.PESO) * CASE WHEN C.PARLEVEL2_ID = 605 THEN RESPOSTA3 ELSE RESPOSTA2 END) TOTAL -- 0 98,125 0 100 97,5
-, DATA1, AVALIACAO
+, DATA1, AVALIACAO, C.SKU
    
 {campos2}
 	
@@ -728,6 +743,7 @@ SELECT -- INDICADOR
 			B.ParCompany_Id,
 			B.PARLEVEL1_ID,
 			B.PARLEVEL2_ID,
+            B.SKU,
             b.data,
 			avg(Peso) Peso,
 			COUNT(DISTINCT(B.PARLEVEL3_ID)) [NÚMERO DE TAREFAS],
@@ -757,6 +773,7 @@ SELECT -- INDICADOR
 					parlevel1_id,
 					parlevel2_id,
 					parlevel3_id,
+                    SKU,
                     data,
 					AV,
 					Defeitos,
@@ -781,6 +798,7 @@ SELECT -- INDICADOR
 					   CUBOL3.parlevel1_id, 
 					   CUBOL3.parlevel2_id, 
 					   CUBOL3.parlevel3_id, 
+                       CUBOL3.SKU,
 					   sum(CUBOL3.WeiEvaluation) AV, 
 					   sum(CUBOL3.WeiDefects) Defeitos,
 					   AVG(CUBOL3.LimiteNC) LimiteNC,
@@ -830,22 +848,23 @@ SELECT -- INDICADOR
                     
  {groupBy}
                 
-                    , CUBOL3.UnitId, CUBOL3.parlevel1_id, CUBOL3.parlevel2_id, CUBOL3.parlevel3_id, CUBOL3.Centro_De_Custo_Id, CUBOL3.Secao_Id, CUBOL3.Cargo_Id, CUBOL3.UnitId, CUBOL3.Equacao, CUBOL3.Avaliacao, CAST(CUBOL3.COLLECTIONDATE AS DATE)
+                    , CUBOL3.UnitId, CUBOL3.parlevel1_id, CUBOL3.parlevel2_id, CUBOL3.parlevel3_id, CUBOL3.SKU, CUBOL3.Centro_De_Custo_Id, CUBOL3.Secao_Id, CUBOL3.Cargo_Id, CUBOL3.UnitId, CUBOL3.Equacao, CUBOL3.Avaliacao, CAST(CUBOL3.COLLECTIONDATE AS DATE)
 				) a
 
 				) B
-				GROUP BY B.parcompany_id, B.PARLEVEL1_ID,  B.PARLEVEL2_ID, data, DATA1, AVALIACAO
+				GROUP BY B.parcompany_id, B.PARLEVEL1_ID,  B.PARLEVEL2_ID, data, DATA1, AVALIACAO, B.SKU
 
 		) C
 		INNER JOIN #PESOMONITORAMENTOINDICADOR PM ON PM.ParLevel1_Id = C.ParLevel1_Id
 		
- {groupBy2} , DATA1, AVALIACAO, C.PARLEVEL1_ID
+ {groupBy2} , DATA1, AVALIACAO, C.PARLEVEL1_ID, C.SKU
 
 ) D
 
 GROUP BY Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
+,SKU
 ,data
 
 		DROP TABLE #PESOMONITORAMENTOINDICADOR
@@ -1395,11 +1414,20 @@ GROUP BY Parcompany_id
                     break;
 
                 case 5: //SKU
-                    selects = $@", ParProduto_Id";
-                    campos = $@" SP.NAME AS UnidadeName, C.Id as Unidade_Id , CSFP.ParProduto_Id ";
+                    //selects = $@", ParProduto_Id";
+                    //campos = $@" SP.NAME AS UnidadeName, C.Id as Unidade_Id , CSFP.ParProduto_Id ";
                    
-                    groupBy = $@" GROUP BY SP.Name, C.Id, CSFP.ParProduto_Id ";
+                    //groupBy = $@" GROUP BY SP.Name, C.Id, CSFP.ParProduto_Id ";
+                    //orderBy = "ORDER BY 4 DESC";
+
+                    campos = $@" SKU AS UnidadeName, CUBOL3.ParProduto_Id as Unidade_Id ";
+                    campos2 = $@" ,null as Parcompany_id, null as parlevel1_id, NULL as parlevel2_id , null as data  ";
+                    groupBy = $@" GROUP BY SKU, CUBOL3.ParProduto_Id ";
+                    groupBy2 = $@" GROUP BY SKU, data ";
                     orderBy = "ORDER BY 4 DESC";
+                    selectTotal = "  SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UnidadeName = B.SKU  ";
+
+
                     break;
 
                 default:
@@ -1476,7 +1504,8 @@ GROUP BY Parcompany_id
 			   R3V.LimiteNC,
 			   PL2P.Equacao,
 			   PL2P.Peso,
-			   c2.evaluationNumber as Avaliacao
+			   c2.evaluationNumber as Avaliacao,
+			   pp.Name as SKU
 	           INTO #CUBOLEVEL3
         FROM CollectionLevel2 C2 WITH (NOLOCK)
         INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
@@ -1490,6 +1519,9 @@ GROUP BY Parcompany_id
         LEFT JOIN ParStructure S1 ON CS.ParStructure_Id = S1.Id
         LEFT JOIN ParStructure S2 ON S1.ParStructureParent_Id = S2.Id
         LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP on cfpp.CollectionLevel2_Id = c2.Id
+        
+        LEFT JOIN ParProduto PP on pp.Id = cfpp.ParProduto_Id
+
         WHERE 1=1
           AND R3.IsNotEvaluate = 0
           AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
@@ -1608,6 +1640,7 @@ SELECT
 ,Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
+,SKU
 ,data
 
 INTO #RR2 FROM (
@@ -1618,7 +1651,7 @@ SELECT -- INDICADOR
 	--C.ParLevel1_Id,
 	SUM(C.PESO) AS [PESOTOTAL]
 	,SUM( (C.PESO / PM.PESO) * CASE WHEN C.PARLEVEL2_ID = 605 THEN RESPOSTA3 ELSE RESPOSTA2 END) TOTAL -- 0 98,125 0 100 97,5
- , DATA1, AVALIACAO
+ , DATA1, AVALIACAO, SKU
     {campos2}
 	
 	FROM (
@@ -1627,6 +1660,7 @@ SELECT -- INDICADOR
 			B.ParCompany_Id,
 			B.PARLEVEL1_ID,
 			B.PARLEVEL2_ID,
+            B.SKU,
             b.data,
 			avg(Peso) Peso,
 			COUNT(DISTINCT(B.PARLEVEL3_ID)) [NÚMERO DE TAREFAS],
@@ -1656,6 +1690,7 @@ SELECT -- INDICADOR
 					parlevel1_id,
 					parlevel2_id,
 					parlevel3_id,
+                    SKU,
                     data,
 					AV,
 					Defeitos,
@@ -1678,7 +1713,8 @@ SELECT -- INDICADOR
 					   CUBOL3.UnitId as parcompany_id,
 					   CUBOL3.parlevel1_id, 
 					   CUBOL3.parlevel2_id, 
-					   CUBOL3.parlevel3_id, 
+					   CUBOL3.parlevel3_id,
+                       CUBOL3.SKU,
 					   sum(CUBOL3.WeiEvaluation) AV, 
 					   sum(CUBOL3.WeiDefects) Defeitos,
 					   AVG(CUBOL3.LimiteNC) LimiteNC,
@@ -1726,21 +1762,22 @@ SELECT -- INDICADOR
                     {whereParLevel3}
                     {groupBy}
                 
-                    , CUBOL3.UnitId, CUBOL3.parlevel1_id, CUBOL3.parlevel2_id, CUBOL3.parlevel3_id, CUBOL3.Centro_De_Custo_Id, CUBOL3.Secao_Id, CUBOL3.Cargo_Id, CUBOL3.UnitId, CUBOL3.Equacao, CUBOL3.Avaliacao, CAST(CUBOL3.COLLECTIONDATE AS DATE)
+                    , CUBOL3.UnitId, CUBOL3.parlevel1_id, CUBOL3.parlevel2_id, CUBOL3.parlevel3_id, CUBOL3.SKU, CUBOL3.Centro_De_Custo_Id, CUBOL3.Secao_Id, CUBOL3.Cargo_Id, CUBOL3.UnitId, CUBOL3.Equacao, CUBOL3.Avaliacao, CAST(CUBOL3.COLLECTIONDATE AS DATE)
 				) a
 
 				) B
-				GROUP BY B.parcompany_id, B.PARLEVEL1_ID,  B.PARLEVEL2_ID, data, DATA1, AVALIACAO
+				GROUP BY B.parcompany_id, B.PARLEVEL1_ID,  B.PARLEVEL2_ID, data, DATA1, AVALIACAO, SKU
 
 		) C
 		INNER JOIN #PESOMONITORAMENTOINDICADOR PM ON PM.ParLevel1_Id = C.ParLevel1_Id
-		{groupBy2} , DATA1, AVALIACAO, C.PARLEVEL1_ID
+		{groupBy2} , DATA1, AVALIACAO, C.PARLEVEL1_ID, C.SKU
 
 ) D
 
 GROUP BY Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
+,SKU
 ,data
 
 		DROP TABLE #PESOMONITORAMENTOINDICADOR

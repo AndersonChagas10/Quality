@@ -157,6 +157,8 @@
                 Grafico1(data);
                 $btn.button('reset');
                 closeLoader();
+                $('#tabela').show();
+                
             })
             .fail(function (jqXHR, textStatus, msg) {
                 //console.log(msg);
@@ -199,6 +201,7 @@
             .done(function (data) {
                 GerarPorcCTotal(data);
                 closeLoader();
+                $('#divTable').show();
             })
             .fail(function (jqXHR, textStatus, msg) {
                 console.log(msg);
@@ -206,8 +209,8 @@
                 closeLoader();
             });
 
-            //$("#PivotTable").css("display", "none");
-            //$('#RGTarefasPivotTable').hide();
+            $("#PivotTable").css("display", "none");
+            $('#RGTarefasPivotTable').hide();
         };
 
 
