@@ -365,7 +365,7 @@ function getBinarioComTexto(level3) {
 
     var mensagemPadrao = level3.ParLevel3Value.DefaultMessageText !== null ? level3.ParLevel3Value.DefaultMessageText : "";
     var tamanhoPermitido = level3.ParLevel3Value.StringSizeAllowed !== null ? level3.ParLevel3Value.StringSizeAllowed : 100;
-    var input = input = '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao + '" data-required-text="' + level3.ParLevel3Value.IsNCTextRequired + '" data-texto/>'
+    var input = '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao + '" data-required-text="' + level3.ParLevel3Value.IsNCTextRequired + '" data-texto/>';
 
 
     html +=
@@ -374,7 +374,7 @@ function getBinarioComTexto(level3) {
         botao +
         '</div>' +
         '<div class="col-xs-5">' +
-        '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao + '" data-texto/>' +
+        input +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
