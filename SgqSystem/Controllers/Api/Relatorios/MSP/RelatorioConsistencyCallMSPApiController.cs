@@ -28,18 +28,12 @@ namespace SgqSystem.Controllers.Api.Relatorios
             var querySelectProduct = new RelatorioConsistencyCallMSPResultSet().SelectProduct(form);
             var querySelectBatch1 = new RelatorioConsistencyCallMSPResultSet().SelectBatch1(form);
             var querySelectBatch2 = new RelatorioConsistencyCallMSPResultSet().SelectBatch2(form);
-            var querySelectPorcWater1 = new RelatorioConsistencyCallMSPResultSet().SelectPorcWater1(form);
-            var querySelectPorcWater2 = new RelatorioConsistencyCallMSPResultSet().SelectPorcWater2(form);
-            var querySelectPorcWater3 = new RelatorioConsistencyCallMSPResultSet().SelectPorcWater3(form);
-            var querySelectPorcWater4 = new RelatorioConsistencyCallMSPResultSet().SelectPorcWater4(form);
+            var querySelectPorcWater = new RelatorioConsistencyCallMSPResultSet().SelectPorcWater(form);
             var querySelectMeatAgeAVG = new RelatorioConsistencyCallMSPResultSet().SelectMeatAgeAVG(form);
             var querySelectMeatAgeMin = new RelatorioConsistencyCallMSPResultSet().SelectMeatAgeMin(form);
             var querySelectMeatAgeMax = new RelatorioConsistencyCallMSPResultSet().SelectMeatAgeMax(form);
             var querySelectMeats = new RelatorioConsistencyCallMSPResultSet().SelectMeats(form);
-            var querySelectTumblerBatchSize1 = new RelatorioConsistencyCallMSPResultSet().SelectTumblerBatchSize1(form);
-            var querySelectTumblerBatchSize2 = new RelatorioConsistencyCallMSPResultSet().SelectTumblerBatchSize2(form);
-            var querySelectTumblerBatchSize3 = new RelatorioConsistencyCallMSPResultSet().SelectTumblerBatchSize3(form);
-            var querySelectTumblerBatchSize4 = new RelatorioConsistencyCallMSPResultSet().SelectTumblerBatchSize4(form);
+            var querySelectTumblerBatchSize = new RelatorioConsistencyCallMSPResultSet().SelectTumblerBatchSize(form);
             var querySelectProductAppearance = new RelatorioConsistencyCallMSPResultSet().SelectProductAppearance(form);
             var querySelectSeasoningDistribuition = new RelatorioConsistencyCallMSPResultSet().SelectSeasoningDistribuition(form);
             var querySelectMeatTemperature = new RelatorioConsistencyCallMSPResultSet().SelectMeatTemperature(form);
@@ -56,7 +50,10 @@ namespace SgqSystem.Controllers.Api.Relatorios
             var querySelectWoodChips = new RelatorioConsistencyCallMSPResultSet().SelectWoodChips(form);
             var querySelectFinalProductThicknessAVG = new RelatorioConsistencyCallMSPResultSet().SelectFinalProductThicknessAVG(form);
             var querySelectRework = new RelatorioConsistencyCallMSPResultSet().SelectRework(form);
-
+            var querySelectCookingFlavor = new RelatorioConsistencyCallMSPResultSet().SelectCookingFlavor(form);
+            var querySelectOdor = new RelatorioConsistencyCallMSPResultSet().SelectOdor(form);
+            var querySelectTexture = new RelatorioConsistencyCallMSPResultSet().SelectTexture(form);
+            var querySelectAppearance = new RelatorioConsistencyCallMSPResultSet().SelectAppearance(form);
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -76,14 +73,11 @@ namespace SgqSystem.Controllers.Api.Relatorios
                 if(batch2.Count > 0)
                     obj.Batch2 = Convert.ToDecimal(batch2[0].Batch);
 
-                var porcWater1 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectPorcWater1).ToList();
-                var porcWater2 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectPorcWater2).ToList();
-                var porcWater3 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectPorcWater3).ToList();
-                var porcWater4 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectPorcWater4).ToList();
-                if (porcWater4.Count > 0)
-                    obj.PorcWater1 = Convert.ToDecimal(porcWater1[0].PorcWater);
-                if (porcWater4.Count > 0)
-                    obj.PorcWater2 = Convert.ToDecimal(porcWater2[0].PorcWater);
+                var porcWater = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectPorcWater).ToList();
+                if (porcWater.Count > 0)
+                    obj.PorcWater1 = Convert.ToDecimal(porcWater[0].PorcWater);
+                if (porcWater.Count > 1)
+                    obj.PorcWater2 = Convert.ToDecimal(porcWater[1].PorcWater);
 
                 var meat_age_avg = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectMeatAgeAVG).ToList();
                 if (meat_age_avg.Count > 0)
@@ -111,11 +105,11 @@ namespace SgqSystem.Controllers.Api.Relatorios
                     }
                 }
 
-                var tumbler_batch_size1 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectTumblerBatchSize1).ToList();
-                var tumbler_batch_size2 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectTumblerBatchSize2).ToList();
-                var tumbler_batch_size3 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectTumblerBatchSize3).ToList();
-                var tumbler_batch_size4 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectTumblerBatchSize4).ToList();
-                //obj.Tumbler_batch_size = Convert.ToDecimal(tumbler_batch_size1);
+                var tumbler_batch_size = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectTumblerBatchSize).ToList();
+                if (tumbler_batch_size.Count > 0)
+                {
+                    obj.Tumbler_batch_size = Convert.ToDecimal(tumbler_batch_size[0].Kg) ;
+                }
 
                 var product_appearance = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectProductAppearance).ToList();
                 //obj.Product_appearance = product_appearance.ToString();
@@ -135,15 +129,66 @@ namespace SgqSystem.Controllers.Api.Relatorios
                     }
                 }
 
-                var thickness_avg = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectThickness).ToList();
-                //obj.Thickness_avg1_CDCM = Convert.ToDecimal(thickness_avg1_CDCM);
-                //obj.Thickness_avg2_CDCM = Convert.ToDecimal(thickness_avg2_CDCM);
-                //obj.Thickness_sample_size1_CDCM = Convert.ToDecimal(thickness_sample_size1_CDCM);
-                //obj.Thickness_sample_size2_CDCM = Convert.ToDecimal(thickness_sample_size2_CDCM);
+                var thickness = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectThickness).ToList();
+                if (thickness.Count > 0)
+                {
+                    var avg_CDCM1 = (decimal)0;
+                    var avg_CDCM2 = (decimal)0;
+                    var sample_CDCM1 = (decimal)0;
+                    var sample_CDCM2 = (decimal)0;
+                    var avg_BL1 = (decimal)0;
+                    var avg_BL2 = (decimal)0;
+                    var sample_BL1 = (decimal)0;
+                    var sample_BL2 = (decimal)0;
+                    foreach(var item in thickness)
+                    {
+                        if (item.Name == "Coxão Duro / Flats" || item.Name == "Coxão Mole / Insides")
+                        {
+                            avg_CDCM1 += Convert.ToDecimal(item.Espessura_T1);
+                            avg_CDCM2 += Convert.ToDecimal(item.Espessura_T2);
+                            sample_CDCM1 += Convert.ToDecimal(item.Av_T1);
+                            sample_CDCM2 += Convert.ToDecimal(item.Av_T2);
+                        }
+                        if (item.Name == "Borboleta / Flats" || item.Name == "Lagarto / Eyes")
+                        {
+                            avg_BL1 += Convert.ToDecimal(item.Espessura_T1);
+                            avg_BL2 += Convert.ToDecimal(item.Espessura_T2);
+                            sample_BL1 += Convert.ToDecimal(item.Av_T1);
+                            sample_BL2 += Convert.ToDecimal(item.Av_T2);
+                        }
+                    }
+                    obj.Thickness_avg1_CDCM = avg_CDCM1 / 2;
+                    obj.Thickness_avg2_CDCM = avg_CDCM2 / 2;
+                    obj.Thickness_sample_size1_CDCM = sample_CDCM1;
+                    obj.Thickness_sample_size2_CDCM = sample_CDCM2;
+                    obj.Thickness_avg1_BL = avg_BL1 / 2;
+                    obj.Thickness_avg2_BL = avg_BL2 / 2;
+                    obj.Thickness_sample_size1_BL = sample_BL1;
+                    obj.Thickness_sample_size2_BL = sample_BL2;
+                }
 
                 var meet_requirements = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectMeetCanadianRequirements).ToList();
-                //obj.Meet_requirements1 = meet_requirements1.ToString();
-                //obj.Meet_requirements2 = meet_requirements2.ToString();
+                if (meet_requirements.Count > 0)
+                {
+                    var conforme1 = (decimal)0;
+                    var conforme2 = (decimal)0;
+                    var avaliado1 = (decimal)0;
+                    var avaliado2 = (decimal)0;
+                    foreach(var item in meet_requirements)
+                    {
+                        avaliado1 += Convert.ToDecimal(item.Av_T1);
+                        avaliado2 += Convert.ToDecimal(item.Av_T2);
+                        if (item.Name == "C")
+                        {
+                            conforme1 += Convert.ToDecimal(item.Av_T1);
+                            conforme2 += Convert.ToDecimal(item.Av_T2);
+                        }
+                    }
+                    if (conforme1 > 0 && avaliado1 > 0)
+                        obj.Meet_requirements1 = (conforme1 / avaliado1) * 100;
+                    if (conforme2 > 0 && avaliado2 > 0)
+                        obj.Meet_requirements2 = (conforme2 / avaliado2) * 100;
+                }
 
                 var wait_time = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectWaitTime).ToList();
                 if (wait_time.Count > 0)
@@ -179,10 +224,12 @@ namespace SgqSystem.Controllers.Api.Relatorios
                     obj.Packing_moisture_avg = Convert.ToDecimal(packing_moisture_avg[0].AVG_Packing_Moisture);
 
                 var reanalysis_foss_1 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectReanalysisFoss1).ToList();
-                //obj.Reanalysis_foss_1 = Convert.ToDecimal(reanalysis_foss_1);
+                if (reanalysis_foss_1.Count > 0)
+                    obj.Reanalysis_foss_1 = Convert.ToDecimal(reanalysis_foss_1[0].Reanalysis);
 
                 var reanalysis_foss_2 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectReanalysisFoss2).ToList();
-                //obj.Reanalysis_foss_2 = Convert.ToDecimal(reanalysis_foss_2);
+                if (reanalysis_foss_2.Count > 0)
+                    obj.Reanalysis_foss_2 = Convert.ToDecimal(reanalysis_foss_2[0].Reanalysis);
 
                 var packing_room_temperature = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectPackingRoomTemperture).ToList();
                 if (packing_room_temperature.Count > 0)
@@ -202,13 +249,26 @@ namespace SgqSystem.Controllers.Api.Relatorios
                 if (final_product_thickness_avg.Count > 0)
                     obj.Final_product_thickness_avg = Convert.ToDecimal(final_product_thickness_avg[0].Espessura);
 
-                var rework1 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectRework).ToList();
+                var rework = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectRework).ToList();
                 //obj.Rework1 = Convert.ToDecimal(rework1);
                 //obj.Rework2 = Convert.ToDecimal(rework2);
-                //obj.Cooking_flavor = Convert.ToDecimal(cooking_flavor);
-                //obj.Odor = Convert.ToDecimal(odor);
-                //obj.Texture = Convert.ToDecimal(texture);
-                //obj.Appearance = Convert.ToDecimal(appearance);
+
+                var cooking_flavor = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectFlavor).ToList();
+                if (cooking_flavor.Count > 0)
+                    obj.Cooking_flavor = Convert.ToDecimal(cooking_flavor[0].Flavor);
+
+                var odor = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectOdor).ToList();
+                if (odor.Count > 0)
+                    obj.Odor = Convert.ToDecimal(odor[0].Odor);
+
+                var texture = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectTexture).ToList();
+                if (texture.Count > 0)
+                    obj.Texture = Convert.ToDecimal(texture[0].Texture);
+
+                var appearance = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectAppearance).ToList();
+                if (appearance.Count > 0)
+                    obj.Appearance = Convert.ToDecimal(appearance[0].Appearance);
+
             }
 
             // Itens que não tem query \/
@@ -222,63 +282,60 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
             obj.Thickness_avg_max_CDCM = (decimal)8.2; //dado correto
             obj.Thickness_avg_min_CDCM = (decimal)5.8; //dado correto
-            obj.Out_spec_target_CDCM = 7;
-            obj.Porc_out_spec1_CDCM = (decimal)2.6;
-            obj.Porc_out_spec2_CDCM = (decimal)4.2;
-            obj.Porc_LSL1_CDCM = (decimal)1.3;
-            obj.Porc_LSL2_CDCM = (decimal)2.0;
-            obj.Porc_USL1_CDCM = (decimal)1.2;
-            obj.Porc_USL2_CDCM = (decimal)2.2;
+            obj.Out_spec_target_CDCM = null;
+            obj.Porc_out_spec1_CDCM = null;
+            obj.Porc_out_spec2_CDCM = null;
+            obj.Porc_LSL1_CDCM = null;
+            obj.Porc_LSL2_CDCM = null;
+            obj.Porc_USL1_CDCM = null;
+            obj.Porc_USL2_CDCM = null;
 
             obj.Thickness_avg_max_BL = (decimal)7.3; //dado correto
             obj.Thickness_avg_min_BL = (decimal)4.9; //dado correto
-            obj.Thickness_avg1_BL = (decimal)6.99;
-            obj.Thickness_avg2_BL = (decimal)6.12;
-            obj.Thickness_sample_size1_BL = 1008;
-            obj.Thickness_sample_size2_BL = 672;
-            obj.Out_spec_target_BL = 7;
-            obj.Porc_out_spec1_BL = (decimal)2.6;
-            obj.Porc_out_spec2_BL = (decimal)4.2;
-            obj.Porc_LSL1_BL = (decimal)1.3;
-            obj.Porc_LSL2_BL = (decimal)2.0;
-            obj.Porc_USL1_BL = (decimal)1.2;
-            obj.Porc_USL2_BL = (decimal)2.2;
+            obj.Out_spec_target_BL = 7;//dado correto
+            obj.Porc_out_spec1_BL = null;
+            obj.Porc_out_spec2_BL = null;
+            obj.Porc_LSL1_BL = null;
+            obj.Porc_LSL2_BL = null;
+            obj.Porc_USL1_BL = null;
+            obj.Porc_USL2_BL = null;
 
             obj.Meat_weight_inside_smokehouse_target = 4000; //dado correto
-            obj.Meat_weight_inside_smokehouse = (decimal)5.64;
+            obj.Meat_weight_inside_smokehouse = null;
             obj.Porc_purge_target = 6; //dado correto
-            obj.Porc_purge = 4;
+            obj.Porc_purge = null;
 
             obj.Cooking = "March 29, 2019";
             obj.Marination_time_max = 96; //dado correto
             obj.Marination_time_min = 44; //dado correto
-            obj.Marination_time = 45;
-            obj.Time_by_sample1 = "5:38";
-            obj.Time_by_sample2 = "6:01";
+            obj.Marination_time = null;
+            obj.Time_by_sample1 = null;
+            obj.Time_by_sample2 = null;
 
             obj.Foss_used_for_pull = "Foss 1";
             obj.Foss_used_for_packing = "Foss 2";
             obj.Cooking_time_target = "4:15"; //dado correto
-            obj.Cooking_time_avg = "3.36";
+            obj.Cooking_time_avg = null;
             obj.Standard_pull_moisture_max = (decimal)32.0; //dado correto
             obj.Standard_pull_moisture_min = (decimal)31.0; //dado correto
             obj.Packing_water_activity_max = (decimal)0.850; //dado correto
             obj.Packing_moisture_avg_min = 26; //dado correto
             obj.Packing_moisture_avg_max = 30; //dado correto
-            obj.Alpenas_moisture = 10;
+            obj.Alpenas_moisture = null;
             obj.Yield_target = (decimal)54; //dado correto
             obj.Yield_target_min = (decimal)55.6; //dado correto
-            obj.Yield1 = (decimal)57.4;
-            obj.Yield2 = (decimal)57.4;
+            obj.Yield1 = null;
+            obj.Yield2 = null;
             obj.Wood_chips_target = (decimal)7.0; //dado correto
             obj.Final_product_thickness_max = (decimal)5.79; //dado correto
             obj.Final_product_thickness_min = (decimal)4.21; //dado correto
+            obj.Final_product_thickness_avg = null;
             obj.Out_of_spec_target = 39; //dado correto
             obj.Porc_lsl = 20; //dado correto
             obj.Porc_usl = 10; //dado correto
             obj.Filters_on_smokehouse_exhaustion = "All Smokehouses"; //dado correto
             obj.Reprocessing_target = 1; //dado correto
-            obj.Observations = "The increase in the % of water was no tested with insides during the visit (Jan 15th - 19th)";
+            obj.Observations = null;
 
             return obj;
         }

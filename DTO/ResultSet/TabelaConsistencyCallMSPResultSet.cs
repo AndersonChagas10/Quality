@@ -30,5 +30,15 @@ namespace DTO.ResultSet
         public string Temperatura_Media_F { get; set; }
         public string AVG_Chips { get; set; }
         public string Espessura { get; set; }
+        public string Flavor { get; set; }
+        public string Odor { get; set; }
+        public string Texture { get; set; }
+        public string Appearance { get; set; }
+        public string Reanalysis { get; set; }
+        public string Av_T1 { get; set; }
+        public string Av_T2 { get; set; }
+        public string Espessura_T1 { get; set; }
+        public string Espessura_T2 { get; set; }
+        public string Kg { get; set; }
     }
 }
