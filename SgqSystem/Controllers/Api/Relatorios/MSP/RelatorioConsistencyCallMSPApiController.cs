@@ -273,7 +273,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
             // Itens que não tem query \/
 
-            obj.Raw_side = "March 27, 2019";
+            obj.Raw_side = null;
             obj.Meat_age_target = 14; //dado correto
             obj.Meat_temperature_max1 = 7; //dado correto
             obj.Meat_temperature_max2 = (decimal)44.6; //dado correto
@@ -305,7 +305,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
             obj.Porc_purge_target = 6; //dado correto
             obj.Porc_purge = null;
 
-            obj.Cooking = "March 29, 2019";
+            obj.Cooking = null;
             obj.Marination_time_max = 96; //dado correto
             obj.Marination_time_min = 44; //dado correto
             obj.Marination_time = null;
