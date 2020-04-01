@@ -15,8 +15,10 @@ function hasAlert(level2Result) {
 
 }
 
-function getAlertKO(level2Result, mensagem){
+function getAlertKO(level2Result){
 
+    var alerta8 = {};
+    var mensagem = "";
     var haveAlertKO = false;
 
     //defeitos do tipo KO
@@ -33,15 +35,21 @@ function getAlertKO(level2Result, mensagem){
     });
 
     if (listaKo.length > 0) {
+        mensagem = getMensagemAlertaCritico();
         appendAlerta(level2Result);
         haveAlertKO = true;
     }
 
-    return haveAlertKO;
+    alerta8.haveAlert = haveAlertKO;
+    alerta8.mensagem = mensagem;
+
+    return alerta8;
 }
 
-function getAlertReincidencia(level2Result, mensagem) {
+function getAlertReincidencia(level2Result) {
 
+    var alerta8 = {};
+    var mensagem = "";
     var haveAlertReincidencia = false;
 
     //reincidencia -- mais de 2 defeitos para a mesma tarefa
@@ -69,17 +77,29 @@ function getAlertReincidencia(level2Result, mensagem) {
         }).length > 1;
 
         if (haveAlertReincidencia){
+            mensagem = getMensagemAlertaReincidencia();
             appendAlerta(level2Result);
             return;
         }
 
     });
 
-    return haveAlertReincidencia;
+    alerta8.haveAlert = haveAlertReincidencia;
+    alerta8.mensagem = mensagem;
+
+    return alerta8;
 }
 
-function getAlertPorcentageNC(level2Result, mensagem) {
+function getAlertPorcentageNC(level2Result) {
     
+    var haveAlertPorcentagemNC = false;   
+    var tipoConsolidacao = parseInt($(_level1).attr('parconsolidationtype_id'));
+    var IsRuleConformity = $(_level1).attr('isruleconformity') == 'true';
+    var qtdeNCToleravelAv = 0;
+    var quantidadeDefeitos = 0;
+    var alerta8 = {};
+    var mensagem = "";
+
     var listaDefeitos = $.grep(listaDeDefeitosAlerta8, function (obj) {
         return obj.ParLevel1_Id == level2Result.attr('level01id')
         && obj.ParLevel2_Id == level2Result.attr('level02id')
@@ -89,59 +109,64 @@ function getAlertPorcentageNC(level2Result, mensagem) {
         && obj.Evaluate == level2Result.attr('evaluate');
     });
     
-    var haveAlertPorcentagemNC = false;
-    
-    // var sampleNumber = parseInt($(_level2).attr('sample'));
-    // var level3Number = parseInt($('.level3:visible').length);
-    // var volumeTotalAvaliacao = (sampleNumber * level3Number);
-    // var totalLevel3WithDefects = listaDefeitos.length;
-    // var porcentagemNC = (totalLevel3WithDefects / volumeTotalAvaliacao) * 100;
-    // var alertaNivel2 = parseFloat($(_level1).attr('alertanivel2'));
-    
-    var tipoConsolidacao = parseInt($(_level1).attr('parconsolidationtype_id'));
-
-    var IsRuleConformity = false; //Anda não existe essa flag no _level1
-
-    var qtdeNCToleravelAv = 0;
-
-    //se for consolidação 1 e 2
     switch (tipoConsolidacao) {
-
+        //se for consolidação 1 e 2
         case 1:
         case 2:
 
-            var volumealertaindicador = parseFloat($(_level1).attr('volumealertaindicador'));
+            var volumeAlertaIndicador = parseFloat($(_level1).attr('volumealertaindicador'));
             var metaIndicador = parseFloat($(_level1).attr('metaindicador'));
-            var qtdeNCToleravelVolume = (metaIndicador / 100) * volumealertaindicador;
+            metaIndicador = IsRuleConformity ? (100 - metaIndicador) : metaIndicador;
+            var qtdeNCToleravelVolume = (metaIndicador / 100) * volumeAlertaIndicador;
             var alertaNivel2 = parseFloat($(_level1).attr('alertanivel2'));
             qtdeNCToleravelAv = Math.round((alertaNivel2 * qtdeNCToleravelVolume) / 100);
 
+            quantidadeDefeitos = listaDefeitos.length;
+
             break;
 
+        //se for consolidação 3
         case 3:
 
+            var volumeAlertaIndicador = parseFloat($(_level2).attr('evaluate')) * parseFloat($(_level2).attr('sample'));
+            var metaIndicador = parseFloat($(_level1).attr('metaindicador'));
+            metaIndicador = IsRuleConformity ? (100 - metaIndicador) : metaIndicador;
+            var qtdeNCToleravelVolume = (metaIndicador / 100) * volumeAlertaIndicador;
+            var alertaNivel2 = parseFloat($(_level1).attr('alertanivel2'));
+            qtdeNCToleravelAv = Math.round((alertaNivel2 * qtdeNCToleravelVolume) / 100);
+
+            var samples = $.map(listaDefeitos, function (obj) {
+                return obj.Sample;
+            });
+
+            samples = samples.sort();
+            samples = $.uniqueSort(samples);
+
+            quantidadeDefeitos = samples.length;
 
             break;
 
+        //se for consolidação 4, 5 ou 6 (não vai existir por enquanto)
         default:
 
+            quantidadeDefeitos = 0;
             break;
     }
 
+    if (quantidadeDefeitos > qtdeNCToleravelAv) {
 
-    //se for consolidacao 3 (4, 5 e 6 não vai ter esse tipo de alerta por enquanto)
+        var porcentagemDefeitosAvaliacao = ((qtdeNCToleravelAv * 100) / volumeAlertaIndicador);
 
-    // if (porcentagemNC > alertaNivel2){
-    //     haveAlertPorcentagemNC = true;
-    //     appendAlerta(level2Result);
-    // }
+        mensagem = getMensagemAlertaPorcentagemNC(porcentagemDefeitosAvaliacao, metaIndicador);
 
-    if (listaDefeitos.length > qtdeNCToleravelAv) {
         haveAlertPorcentagemNC = true;
         appendAlerta(level2Result);
     }
     
-    return haveAlertPorcentagemNC;
+    alerta8.haveAlert = haveAlertPorcentagemNC;
+    alerta8.mensagem = mensagem;
+
+    return alerta8;
 }
 
 function appendAlerta(level2Result){
@@ -158,13 +183,15 @@ function appendAlerta(level2Result){
 
 function getMensagemAlertaCritico(parLevel3_name) {
 
-    return "Tarefa: " + parLevel3_name + " de nível crítico ";
+    // return "A Tarefa: " + parLevel3_name + " de nível crítico <br>O Surpervisor da área será notificado e deverá tomar ações corretivas ";
+    return "A Tarefa de nível crítico <br>O Surpervisor da área será notificado e deverá tomar ações corretivas ";
 
 }
 
 function getMensagemAlertaReincidencia(parLevel3_name) {
 
-    return "Tarefa: " + parLevel3_name + " com NC disparada por recorência";
+    // return "Tarefa: " + parLevel3_name + " com NC disparada por recorência";
+    return "Tarefa: com NC disparada por recorência";
 
 }
 

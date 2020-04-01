@@ -1458,33 +1458,35 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
         //alert8.js
         if (tipoDeAlerta == "a8") {
 
-            debugger
             controleDeAlerta = false;
 
             if (!hasAlert(level2Result)) {
 
-                var haveAlert = getAlertKO(level2Result, mensagem);
-                if (haveAlert) {
+                var alerta8 = getAlertKO(level2Result);
+            
+                if (alerta8.haveAlert) {
                     controleDeAlerta = true;
 
                     getAlertMessage(tipoDeAlerta, alertaatual, ((defeitosLevel1 / (volumealertaindicador / 100 * metaIndicador)) * metaIndicador).toFixed(2), metaIndicador.toFixed(2));
 
                 } else {
 
-                    haveAlert = getAlertReincidencia(level2Result, mensagem);
-                    if (haveAlert) {
+                    alerta8 = getAlertReincidencia(level2Result);
+                    if (alerta8.haveAlert) {
                         controleDeAlerta = true;
 
                         getAlertMessage(tipoDeAlerta, alertaatual, ((defeitosLevel1 / (volumealertaindicador / 100 * metaIndicador)) * metaIndicador).toFixed(2), metaIndicador.toFixed(2));
 
                     } else {
 
-                        haveAlert = getAlertPorcentageNC(level2Result);
-                        if (haveAlert) {
+                        alerta8 = getAlertPorcentageNC(level2Result);
+                        if (alerta8.haveAlert) {
                             controleDeAlerta = true;
                         }
                     }
                 }
+
+                mensagem = alerta8.mensagem;
             }
         }
     }
@@ -1690,9 +1692,9 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
 
         }
         else if (tipoDeAlerta == "a8") {
-
+            debugger
             disparaalertas = true;
-
+            alertaatual = 0;
         }
     }
 

@@ -2988,4 +2988,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-498</CardNumber>
+    <Version>1.7.0</Version>
+    <Description>[GQ] Regra de alerta por monitoramento (NC Temperatura)</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>

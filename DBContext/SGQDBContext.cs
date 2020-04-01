@@ -48,6 +48,8 @@ namespace SGQDBContext
         
         public bool DisparaAlerta { get; set; }
 
+        public bool IsRuleConformity { get; set; }
+
         public ParLevel1()
         {
 
