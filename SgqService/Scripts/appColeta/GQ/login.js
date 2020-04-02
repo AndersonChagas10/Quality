@@ -223,6 +223,7 @@ function initialLogin() {
         updateReaudit(2);
         updateCorrectiveAction();
         setDateLastSync();
+        inicializaAlerta8();
     }, 500);
 
     getAPPLevelsVolume();

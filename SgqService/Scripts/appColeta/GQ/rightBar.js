@@ -316,4 +316,5 @@ function disableSyncButtons() {
 function limparVariaveisGlobais() {
     listaDeDefeitosAlerta8 = [];
     listaDeAlertasAlerta8 = [];
+    updateAlerta8("","");
 }

@@ -4,9 +4,6 @@ var defectsPerEvaluation = [];
 
 var listaDefeitos = [];
 
-var listaDeDefeitosAlerta8 = [];
-var listaDeAlertasAlerta8 = [];
-
 function adicionaNaListaDeDefeitos(obj) {
     if (listaDefeitos.length > 0) {
         if (!!listaDefeitos[0].datetime && !!obj.datetime && listaDefeitos[0].datetime.substring(0, 10) != obj.datetime.substring(0, 10)) {
@@ -1692,7 +1689,6 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
 
         }
         else if (tipoDeAlerta == "a8") {
-            debugger
             disparaalertas = true;
             alertaatual = 0;
         }

@@ -1,3 +1,6 @@
+var listaDeDefeitosAlerta8 = [];
+var listaDeAlertasAlerta8 = [];
+
 function hasAlert(level2Result) {
 
     var hasAlert = false;
@@ -37,6 +40,7 @@ function getAlertKO(level2Result){
     if (listaKo.length > 0) {
         mensagem = getMensagemAlertaCritico();
         appendAlerta(level2Result);
+        updateAlerta8(listaDeAlertasAlerta8,listaDeDefeitosAlerta8);
         haveAlertKO = true;
     }
 
@@ -79,6 +83,7 @@ function getAlertReincidencia(level2Result) {
         if (haveAlertReincidencia){
             mensagem = getMensagemAlertaReincidencia();
             appendAlerta(level2Result);
+            updateAlerta8(listaDeAlertasAlerta8,listaDeDefeitosAlerta8);
             return;
         }
 
@@ -161,6 +166,7 @@ function getAlertPorcentageNC(level2Result) {
 
         haveAlertPorcentagemNC = true;
         appendAlerta(level2Result);
+        updateAlerta8(listaDeAlertasAlerta8,listaDeDefeitosAlerta8);
     }
     
     alerta8.haveAlert = haveAlertPorcentagemNC;
@@ -199,4 +205,72 @@ function getMensagemAlertaPorcentagemNC(porcentagemNC, metaIndicador) {
 
     return "Foi execida a primeira meta tolerância* (" + porcentagemNC + "% NC de " + metaIndicador + " % meta indicador).";
 
+}
+
+function updateAlerta8(listaAlerta, listaDefeitos) {
+
+    _writeFile("alertas8.txt", JSON.stringify(listaAlerta), function () {
+        
+        _writeFile("defeitosAlerta8.txt", JSON.stringify(listaDefeitos), function () {
+
+            console.log("lista de defeitos alerta tipo 8 atualizada");
+            console.log("lista de alerta tipo 8 atualizada");
+            cleanAlertasTipo8();
+
+        });
+    });
+
+}
+
+function inicializaAlerta8() {
+
+    _readFile("defeitosAlerta8.txt", function (r) {
+        if (r)
+            try {
+                listaDeDefeitosAlerta8 = JSON.parse(r);
+                if (!listaDeDefeitosAlerta8)
+                    listaDeDefeitosAlerta8 = [];
+            } catch (error) {
+                listaDeDefeitosAlerta8 = [];
+            }
+
+        console.log("lista de alerta tipo 8 atualizada");
+
+    });
+
+    _readFile("alertas8.txt", function (r) {
+        if (r)
+            try {
+                listaDeAlertasAlerta8 = JSON.parse(r);
+                if (!listaDeAlertasAlerta8)
+                    listaDeAlertasAlerta8 = [];
+            } catch (error) {
+                listaDeAlertasAlerta8 = [];
+            }
+
+        console.log("lista de defeitos alerta tipo 8 atualizada");
+
+    });
+}
+
+//Preciso limpar os dois arrays
+//Como eu faço isso?
+//Pego o dia logado e deleto tudo que for menor que a data de hoje
+function cleanAlertasTipo8() {
+
+    //data do ultimo syncronistmo
+    var dataAtual = $('.App').attr('logintime').substr(0,10);
+
+    var alertasAtuais = $.grep(listaDeAlertasAlerta8, function (obj) {
+        return dataAtual  === obj.Date.substr(0,10);
+    });
+
+    var defeitosAtuais = $.grep(listaDeDefeitosAlerta8, function (obj) {
+        return dataAtual === obj.Date.substr(0,10);
+    });
+
+    listaDeAlertasAlerta8 = Array.isArray(alertasAtuais) ? alertasAtuais : [];
+    listaDeDefeitosAlerta8 = Array.isArray(defeitosAtuais) ? defeitosAtuais : [];
+
+    updateAlerta8(listaDeAlertasAlerta8, defeitosAtuais);
 }
