@@ -322,8 +322,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
             obj.Packing_moisture_avg_min = 26; //dado correto
             obj.Packing_moisture_avg_max = 30; //dado correto
             obj.Alpenas_moisture = null;
-            obj.Yield_target = (decimal)54; //dado correto
-            obj.Yield_target_min = (decimal)55.6; //dado correto
+            obj.Yield_target = (decimal)55.6; //dado correto
+            obj.Yield_target_min = (decimal)54; //dado correto
             obj.Yield1 = null;
             obj.Yield2 = null;
             obj.Wood_chips_target = (decimal)7.0; //dado correto
