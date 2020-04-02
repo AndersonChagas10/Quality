@@ -14,13 +14,13 @@
             <input type="hidden" name="IsActiveLevel3Value" value="true" data-notnull />
 
             @*<div class="form-group">
-                    <label for="ParCluster_Id">Nível do campo:</label>
-                    <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12 required" name="ParLevelDefinition_Id"></select>
-                </div>*@
+                <label for="ParCluster_Id">Nível do campo:</label>
+                <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12 required" name="ParLevelDefinition_Id"></select>
+            </div>*@
 
             @*</div>
 
-                <div class="col-sm-3">*@
+            <div class="col-sm-3">*@
 
             <div class="form-group">
                 <label for="ParCriticalLevel_Id">Tipo:</label>
@@ -36,6 +36,18 @@
                 <label for="EffectiveDate">Nome do campo:</label>
                 <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Nome que será exibido no cabeçalho selecionado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <input type="text" class="form-control required" id="NameHeaderField" name="NameHeaderField" autocomplete="off">
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+            <label for="IsAgendamento">Permite Clonagem?</label>
+            <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Possibilita habilitar a clonagem de um campo de cabeçalho" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+            <div class="form-group">
+
+                <label class="switch">
+                    <input id="Duplicate" type="checkbox" name="Duplicate" value=""><span class="slider round"></span>
+                </label>
             </div>
 
         </div>
@@ -57,17 +69,17 @@
                             </td>
                             <td class="td-erp " style="">
                                 @*<label for="Valor_da_puni__o">Valor da punição</label>
-                                    <div class="input-group">
-                                        <input class="form-control input-sm notAllowNegative text-box single-line required" id="objMultiplaEscolhaPunishmentValueDepartmentxHeader" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="ParL3Cabecalho.prepareToInsert(1);">
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                    <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
-                                        <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
-                                    </span>*@
+                                <div class="input-group">
+                                    <input class="form-control input-sm notAllowNegative text-box single-line required" id="objMultiplaEscolhaPunishmentValueDepartmentxHeader" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="ParL3Cabecalho.prepareToInsert(1);">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
+                                    <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
+                                </span>*@
                                 <div class="input-group" style="margin-top: 27px;">
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="ParL3Cabecalho.prepareToInsert(1);">
@@ -96,9 +108,9 @@
                                 <span id="punishmentNameCabecalho1Level3" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
                             </td>
                             @*<td>
-                                    <input type="number" id="objBinarioPunishmentValue1DepartmentxHeader" class="form-control input-sm required" value="0">
-                                    <span id="punishmentValueCabecalho1" style="Display:none" class="text-danger field-validation-errobjBinarioPunishmentName2DepartmentxHeaderor" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
-                                </td>*@
+                                <input type="number" id="objBinarioPunishmentValue1DepartmentxHeader" class="form-control input-sm required" value="0">
+                                <span id="punishmentValueCabecalho1" style="Display:none" class="text-danger field-validation-errobjBinarioPunishmentName2DepartmentxHeaderor" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
+                            </td>*@
                         </tr>
                         <tr class="row" id="negativo">
                             <td class="td-erp"><label for="Negativo">Negativo</label> </td>
@@ -107,9 +119,9 @@
                                 <span id="punishmentNameCabecalho2Level3" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Nome deve ser preechido para o Cabecalho.</span></span>
                             </td>
                             @*<td>
-                                    <input type="number" id="objBinarioPunishmentValue2DepartmentxHeader" class="form-control input-sm required" value="0">
-                                    <span id="punishmentValueCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
-                                </td>*@
+                                <input type="number" id="objBinarioPunishmentValue2DepartmentxHeader" class="form-control input-sm required" value="0">
+                                <span id="punishmentValueCabecalho2" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true"><span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabecalho.</span></span>
+                            </td>*@
                             <td>
                                 <button class="btn btn-primary btn-sm margin-button" type="button" onclick="ParL3Cabecalho.prepareToInsert(3);"><i class="fa fa-plus" aria-hidden="true"></i></button>
                             </td>
@@ -166,6 +178,9 @@
                             </th>
                             <th class="col-sm-2">
                                 Tipo
+                            </th>
+                            <th class="col-sm-2">
+                                Permite Clonagem
                             </th>
                             <th class="col-sm-2">
                                 Visualização
@@ -241,10 +256,13 @@
 
                 let isChecked = o.IsRequired ? "checked" : "";
 
+                let duplicate = o.Duplicate ? "checked" : "";
+
                 var html = '<tr>';
                 html += '<td>' + o.Id + '</td>';
                 html += '<td>' + o.Name + '</td>';
                 html += '<td>' + o.ParFieldType.Name + '</td>';
+                html += '<td><div class=""><label class="switch"><input type="checkbox" name="Duplicate"' + duplicate + ' ><span class="slider round"></span> </label></div></td>';
                 html += '<td>' + previewHeaderField + '</td>';
                 html += '<td><div class=""><label class="switch"><input type="checkbox" name="IsRequired"' + isChecked + ' ><span class="slider round"></span> </label></div></td>';
                 html += '<td>' + defaultSelected + '</input></td>';
@@ -266,6 +284,7 @@
                 obj = {};
 
             obj['Name'] = formdata.NameHeaderField;
+            obj['Duplicate'] = formdata.Duplicate;
             obj['Description'] = formdata.Description;
             obj['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
             obj['ParFieldType_Id'] = formdata.ParFieldType_Id;

@@ -14,14 +14,14 @@
             <input type="hidden" name="IsActive" value="true" data-notnull />
 
             @*<div class="form-group">
-                    <label for="ParCluster_Id">Nível do campo:</label>
-                    <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Onde será exibido o cabeçalho selecionado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
-                    <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12 required" name="ParLevelDefinition_Id"></select>
-                </div>*@
+                <label for="ParCluster_Id">Nível do campo:</label>
+                <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Onde será exibido o cabeçalho selecionado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+                <select id="selectL1ParLevelDefiniton" class="input input-lg col-sm-12 required" name="ParLevelDefinition_Id"></select>
+            </div>*@
 
             @*</div>
 
-                <div class="col-sm-3">*@
+            <div class="col-sm-3">*@
 
             <div class="form-group">
                 <label for="ParCriticalLevel_Id">Tipo:</label>
@@ -37,6 +37,18 @@
                 <label for="EffectiveDate">Nome do campo:</label>
                 <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Nome que será exibido no cabeçalho selecionado" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
                 <input type="text" class="form-control required" id="Name" name="Name" autocomplete="off">
+            </div>
+
+        </div>
+
+        <div class="col-sm-4">
+            <label for="IsAgendamento">Permite Clonagem?</label>
+            <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Possibilita habilitar a clonagem de um campo de cabeçalho" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+            <div class="form-group">
+
+                <label class="switch">
+                    <input id="Duplicate" type="checkbox" name="Duplicate" value=""><span class="slider round"></span>
+                </label>
             </div>
 
         </div>
@@ -58,17 +70,17 @@
                             </td>
                             <td class="">
                                 @*<label for="Valor_da_puni__o">Valor da punição</label>
-                                    <div class="input-group">
-                                        <input class="form-control input-sm notAllowNegative text-box single-line required" id="objMultiplaEscolhaPunishmentValue" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL1Cabecalho.prepareToInsert(1);">
-                                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                            </button>
-                                        </span>
-                                    </div>
-                                    <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
-                                        <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
-                                    </span>*@
+                                <div class="input-group">
+                                    <input class="form-control input-sm notAllowNegative text-box single-line required" id="objMultiplaEscolhaPunishmentValue" min="0" name="objMultiplaEscolhaPunishmentValue" style="max-width: 200px;" type="number" value="">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL1Cabecalho.prepareToInsert(1);">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <span id="multiplaEscolhaPunishmentValueCabecalho" style="Display:none" class="text-danger field-validation-error" data-valmsg-for="" data-valmsg-replace="true">
+                                    <span for="" class="">O campo Punição/Premiação deve ser selecionado para o Cabeçalho.</span>
+                                </span>*@
                                 <div class="input-group" style="margin-top: 27px;">
                                     <span class="input-group-btn">
                                         <button class="btn btn-primary btn-sm" type="button" id="includeTableToSave" onclick="parL1Cabecalho.prepareToInsert(1);">
@@ -166,6 +178,9 @@
                             Tipo
                         </th>
                         <th class="col-sm-2">
+                            Permite Clonagem
+                        </th>
+                        <th class="col-sm-2">
                             Visualização
                         </th>
                         <th class="col-sm-1">
@@ -215,10 +230,13 @@
                     defaultSelected = getDefaultSelected();
 
                 let isChecked = o.IsRequired ? "checked" : "";
+                
+                let duplicate = o.Duplicate ? "checked" : "";
 
                 var html = '<tr>';
                 html += '<td>' + o.Name + '</td>';
                 html += '<td>' + o.ParFieldType.Name + '</td>';
+                html += '<td><div class=""><label class="switch"><input type="checkbox" name="Duplicate"' + duplicate + ' ><span class="slider round"></span> </label></div></td>';
                 html += '<td>' + previewHeaderField + '</td>';
                 html += '<td><div class=""><label class="switch"><input type="checkbox" name="IsRequired"' + isChecked + ' ><span class="slider round"></span> </label></div></td>';
                 html += '<td>' + defaultSelected + '</input></td>';
@@ -240,6 +258,7 @@
                 obj = {};
 
             obj['Name'] = formdata.Name;
+            obj['Duplicate'] = formdata.Duplicate;
             obj['Description'] = formdata.Description;
             obj['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
             obj['ParFieldType_Id'] = formdata.ParFieldType_Id;
@@ -504,7 +523,7 @@
 
     //Salvar o campo editado ou cria um novo
     $('#' + parL1Cabecalho.id).on('click', '[data-edit],[data-add]', function (e) {
-
+        
         $('#ParL1Cabecalho #objMultiplaEscolha').hide();
         $('#ParL1Cabecalho #objBinario').hide();
 
