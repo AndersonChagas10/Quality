@@ -2997,7 +2997,7 @@
       IF NOT EXISTS (SELECT
       *
       FROM ParNotConformityRule
-      WHERE Id = 7)
+      WHERE Id = 8)
       BEGIN
       SET IDENTITY_INSERT ParNotConformityRule ON
       INSERT INTO ParNotConformityRule (Id, Name, AddDate, IsActive) VALUES (8, 'Reincidencia KO Amostras %', GETDATE(), 1)
