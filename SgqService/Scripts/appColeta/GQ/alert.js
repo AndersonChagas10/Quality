@@ -437,7 +437,7 @@ function setValoresLevel3Alertas(level3, level2Resultado) {
             , isKO: $('#' + level3.attr('level03id') + '.level3:visible').attr('isknockout')
         });
 
-        if ($(_level1).attr('alertanivel3') == "a8")
+        if ($(_level1).attr('alertanivel3') == "a8"){
 
             listaDeDefeitosAlerta8.push({
                 Date: datetime
@@ -450,6 +450,9 @@ function setValoresLevel3Alertas(level3, level2Resultado) {
                 , Sample: sample
                 , IsKO: isKO
             });
+    
+            cleanAlertasTipo8();
+        }
     }
 
     resultado.push(avaliacoesPonderadas, avaliacoes, defeitos, defeitosPonderados, level3Avaliado, level3ComDefeitos);

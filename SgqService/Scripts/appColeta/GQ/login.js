@@ -229,7 +229,6 @@ function initialLogin() {
     getAPPLevelsVolume();
     getCollectionKeys($('.App').attr('unidadeid'));
     loginVerificacaoKeys();
-
 }
 
 //GERA OS CLIQUES PARA CRIAR VARIAS PONTEIRO PARA CONTROLE DE ALERTAS

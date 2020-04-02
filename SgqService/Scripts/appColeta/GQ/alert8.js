@@ -40,7 +40,7 @@ function getAlertKO(level2Result){
     if (listaKo.length > 0) {
         mensagem = getMensagemAlertaCritico();
         appendAlerta(level2Result);
-        updateAlerta8(listaDeAlertasAlerta8,listaDeDefeitosAlerta8);
+        cleanAlertasTipo8();
         haveAlertKO = true;
     }
 
@@ -83,7 +83,7 @@ function getAlertReincidencia(level2Result) {
         if (haveAlertReincidencia){
             mensagem = getMensagemAlertaReincidencia();
             appendAlerta(level2Result);
-            updateAlerta8(listaDeAlertasAlerta8,listaDeDefeitosAlerta8);
+            cleanAlertasTipo8();
             return;
         }
 
@@ -166,7 +166,7 @@ function getAlertPorcentageNC(level2Result) {
 
         haveAlertPorcentagemNC = true;
         appendAlerta(level2Result);
-        updateAlerta8(listaDeAlertasAlerta8,listaDeDefeitosAlerta8);
+        cleanAlertasTipo8();
     }
     
     alerta8.haveAlert = haveAlertPorcentagemNC;
@@ -215,7 +215,6 @@ function updateAlerta8(listaAlerta, listaDefeitos) {
 
             console.log("lista de defeitos alerta tipo 8 atualizada");
             console.log("lista de alerta tipo 8 atualizada");
-            cleanAlertasTipo8();
 
         });
     });
@@ -272,5 +271,5 @@ function cleanAlertasTipo8() {
     listaDeAlertasAlerta8 = Array.isArray(alertasAtuais) ? alertasAtuais : [];
     listaDeDefeitosAlerta8 = Array.isArray(defeitosAtuais) ? defeitosAtuais : [];
 
-    updateAlerta8(listaDeAlertasAlerta8, defeitosAtuais);
+    updateAlerta8(listaDeAlertasAlerta8, listaDeDefeitosAlerta8);
 }
