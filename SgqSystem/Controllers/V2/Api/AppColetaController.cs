@@ -288,6 +288,8 @@ INSERT INTO [dbo].[Collection]
             {
                 db.Configuration.LazyLoadingEnabled = false;
 
+                db.Database.CommandTimeout = 180;
+
                 listaParVinculoPeso = db.ParVinculoPeso
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
