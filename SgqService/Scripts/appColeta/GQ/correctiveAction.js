@@ -528,9 +528,10 @@ $(document).on('click', '#btnSendCorrectiveAction', function (e) {
     //if (productDisposition == '') {
     //    message += 'A disposição do produto está vazia<br>';
     //}
-    //if (preventativeMeasure == '') {
-    //    message += 'A medida preventiva está vazia<br>';
-    //}
+    if (preventativeMeasure == '') {
+       message += getResource('fill_the_corrective_action') + '.<br>';
+    }
+
     if (message != '') {
         openMessageModal(getResource("some_problems_occur") + ': ', message);
         return;
