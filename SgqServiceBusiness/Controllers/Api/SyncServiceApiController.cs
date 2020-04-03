@@ -5152,7 +5152,7 @@ namespace SgqServiceBusiness.Api
             }
 
             string tags = $@"breadmainlevel=""{ CommonData.getResource("slaughter").Value.ToString() }""" +
-                          $@" culture=""{ culture }"" turningtime=""03:00"" serverdate =""{ DateTime.Now.AddDays(1).ToString("dd/MM/yyyy HH:mm") }""" +
+                          $@" culture=""{ culture }"" turningtime=""03:00"" serverdate=""{ DateTime.Now.AddDays(1).ToString("dd/MM/yyyy HH:mm") }""" +
                           $@" serverdateutc=""{ DateTime.UtcNow }"" local=""{ local }""";
 
             return html.div(
