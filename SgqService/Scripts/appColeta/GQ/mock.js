@@ -1,4 +1,4 @@
-﻿
+
 
 var countHeaderFieldGroup = 0;
 
@@ -13,77 +13,105 @@ function preenchePCC1b(){
 }
 
 $(document).on('click','#btnMessageOk', function(e){
-    preenchePCC1b(); 
+    preenchePCC1b();
 });
 
-function clonarHF(a){ 
+function clonarHF(a) {
+
     var headerFieldGroupVisiveis = $('[hfg]:visible').not('[data-vinculo]');
+
     countHeaderFieldGroup++;
-    headerFieldGroupVisiveis = $.grep(headerFieldGroupVisiveis, function(o, c){ return $(o).attr('hfg') == $(a).attr('hfg') }); 
-    $.each(headerFieldGroupVisiveis,function(i,o){
-        if(!$(o).parent().attr('data-vinculo')){
+
+    var hasNoGroup = ($(a).attr('hfg') === '-');
+
+    if (hasNoGroup) {
+
+        headerFieldGroupVisiveis = [];
+        headerFieldGroupVisiveis.push(a);
+
+    } else {
+
+        headerFieldGroupVisiveis = $.grep(headerFieldGroupVisiveis, function (o, c) {
+            return $(o).attr('hfg') == $(a).attr('hfg')
+        });
+    }
+
+    $.each(headerFieldGroupVisiveis, function (i, o) {
+        if (!$(o).parent().attr('data-vinculo')) {
             var elementoClonado = $(o).parent().clone(true, true);
-            elementoClonado.attr('data-vinculo',countHeaderFieldGroup);
+            elementoClonado.attr('data-vinculo', countHeaderFieldGroup);
             elementoClonado.insertAfter($(o).parent());
         }
     });
 }
 
-function removerHF(a){ 
+function removerHF(a){
     var headerFieldGroupVisiveis = $('[data-vinculo='+$(a).parent().attr('data-vinculo')+']:visible');
     $.each(headerFieldGroupVisiveis,function(i,o){
         $(o).remove();
     });
 }
 
-$(document).ready(function(){
-    $('body').on('input', 'input.interval:visible, input.likert:visible', function(){
+$(document).ready(function () {
+    $('body')
+        .off('input', 'input.interval:visible, input.likert:visible, input.texto[type="date"], input.texto[type="time"]')
+        .on('input', 'input.interval:visible, input.likert:visible, input.texto[type="date"], input.texto[type="time"]', function () {
 
-        var id = $(this).parents('li').attr('id');
-        $.each($('input[resultado]:visible'), function(i, o){
-            if ($(o).attr('resultado').indexOf('{' + id + '}') >= 0 || $(o).attr('resultado').indexOf('{' + id + '?}') >= 0){
-                var resultado = $(o).attr('resultado');
+            var id = $(this).parents('li').attr('id');
+            $.each($('input[resultado]:visible'), function(i, o){
+                if ($(o).attr('resultado').indexOf('{' + id + '}') >= 0 || $(o).attr('resultado').indexOf('{' + id + '?}') >= 0){
+                    var resultado = $(o).attr('resultado');
 
-                const regex = /{([^}]+)}/g;
-                var m;
+                    const regex = /{([^}]+)}/g;
+                    var m;
 
-                while ((m = regex.exec($(o).attr('resultado'))) !== null)
-                {
-                    // This is necessary to avoid infinite loops with zero-width matches
-                    if (m.index === regex.lastIndex)
+                    while ((m = regex.exec($(o).attr('resultado'))) !== null)
                     {
-                        regex.lastIndex++;
-                    }
+                        // This is necessary to avoid infinite loops with zero-width matches
+                        if (m.index === regex.lastIndex)
+                        {
+                            regex.lastIndex++;
+                        }
 
-                    var valor = $('li[id="' + m[1].replace('?','') + '"] input.interval').val();
-                    if(valor)
-                        resultado = resultado.replace(m[0],valor);
-                    else{
-                        var valor = $('li[id="' + m[1].replace('?','') + '"] input.likert').val();
+                        var valor = $('li[id="' + m[1].replace('?','') + '"] input.interval').val();
                         if(valor)
                             resultado = resultado.replace(m[0],valor);
                         else{
-                            if(m[1].indexOf('?') >= 0){
-                                resultado = resultado.replace(m[0],0);
+                            var valor = $('li[id="' + m[1].replace('?','') + '"] input.likert').val();
+                            if (valor)
+                                resultado = resultado.replace(m[0], valor);
+                            else {
+                                var valor = $('li[id="' + m[1].replace('?', '') + '"] input.texto[type="date"]').val();
+                                if (valor)
+                                    resultado = resultado.replace(m[0], valor);
+                                else {
+                                    var valor = $('li[id="' + m[1].replace('?', '') + '"] input.texto[type="time"]').val();
+                                    if (valor)
+                                        resultado = resultado.replace(m[0], valor);
+                                    else {
+                                        if (m[1].indexOf('?') >= 0) {
+                                            resultado = resultado.replace(m[0], 0);
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-                }
 
-                if (resultado.indexOf('{') != -1)
-                {
-                    resultado = "";
-                }
-                else
-                {
-                    resultado = eval(resultado);
-                }
-                $(o).val(resultado);
-                $(o).trigger('input');
+                    if (resultado.indexOf('{') != -1)
+                    {
+                        resultado = "";
+                    }
+                    else
+                    {
+                        resultado = eval(resultado);
+                    }
+                    $(o).val(resultado);
+                    $(o).trigger('input');
 
-            }
+                }
+            });
         });
-    });
 
     $('body').on('click','.level2',function(){
         var self = this;
@@ -134,7 +162,7 @@ function PesoHB(self){
         var cluster_level2 = id.split('98789');
         if(cluster_level2.length > 0)
             id = cluster_level2[1];
-		
+
         setTimeout(
             function(){
                 console.log('AQUI VC FAZ AS REGRAS DO HAMBURGUER');
@@ -144,7 +172,7 @@ function PesoHB(self){
                 var tara = parseFloat($('#'+getDicionario('IdCabecalhoTaraPesoHB')).val());
                 if (isNaN(tara))
                     tara = 0;
-					
+
                 $('.level3List .calculoPesoHB').remove();
                 var ultimoLevel3 = $('.level3List .level3:last').clone();
                 $(ultimoLevel3).addClass('calculoPesoHB');
@@ -157,12 +185,12 @@ function PesoHB(self){
 
                 $(ultimoLevel3).find('.col-xs-3.counters').addClass('medicaCalculoPesoHB').text('Média: ' + CalculoMediaPesoHB() + 'g');
                 $(ultimoLevel3).find('.col-xs-2').html('');
-					
+
                 $('.level3List').off('blur', '#'+getDicionario('IdCabecalhoTaraPesoHB'));
                 $('.level3List').on('blur', '#'+getDicionario('IdCabecalhoTaraPesoHB'), function(){
                     PesoHB(self);
                 });
-					
+
                 $('.level3List').off('change', '#'+getDicionario('IdCabecalhoQuantidadeAmostraPesoHB'));
                 $('.level3List').on('change', '#'+getDicionario('IdCabecalhoQuantidadeAmostraPesoHB'), function(){
                     var text = $(this).find(':selected').text();
@@ -171,18 +199,18 @@ function PesoHB(self){
                     $('span.sampleTotal:visible').text(text);
                     PesoHB(self);
                 });
-					
+
                 $('.level3List').append(ultimoLevel3);
                 ResetaCorMediaPesoHB(400);
             }
-        ,100);
-		
+            ,100);
+
     }
 }
 
 function validaNumeroEscalaLikert(evt, that)
 {
-    var e = event || evt; 
+    var e = event || evt;
     var charCode = e.which || e.keyCode;
 
     $(that).parents('li').css('background-color', '');
@@ -242,7 +270,7 @@ function calcularSensorial(list){
     var noOf3and7 = 0
     var noOf2and8 = 0
     var noOf1and9 = 0
-    var noOfElem = 0 
+    var noOfElem = 0
     var addPoint5_85 = 0
     var addPoint5_60 = 0
     var addPoint4and6 = 0
@@ -287,7 +315,7 @@ function calcularSensorial(list){
     }
     else {
         CategoryScore_calc = 100
-    } 
+    }
 
     //imprimir na tela
     return  Math.round( CategoryScore_calc)
@@ -295,9 +323,29 @@ function calcularSensorial(list){
 }
 
 function RetornaValor0SeUndefined(valor){
-    if(typeof(valor) == 'undefined' || valor == 'undefined'){
+    if(typeof(valor) == 'undefined' || valor == 'undefined') {
         return 0;
-    }else{
+    } else {
         return valor
     }
+}
+
+function datedif(data1, data2) {
+    var d1 = new Date(data1);
+    var d2 = new Date(data2);
+
+    var timeDifference = d2.getTime() - d1.getTime();
+    var DaysDifference = timeDifference / 86400000;
+
+    return DaysDifference;
+}
+
+function timedif(hora1, hora2) {
+    var shora1 = hora1.split(":");
+    var shora2 = hora2.split(":");
+
+    var min1 = (parseInt(shora1[0]) * 60) + parseInt(shora1[1]);
+    var min2 = (parseInt(shora2[0]) * 60) + parseInt(shora2[1]);
+
+    return min2 - min1;
 }
