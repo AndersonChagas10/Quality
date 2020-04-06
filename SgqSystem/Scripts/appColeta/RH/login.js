@@ -148,9 +148,6 @@ function loginOnline() {
         type: 'POST',
         success: function (data) {
 
-            currentBaixarGetResultadoAposEnviarOsDadosColetados = true;
-            enviarColeta();
-
             if (data && data.Retorno != null) {
                 //se for usuários diferentes ou unidade diferente, zera a parametrização
                 if (currentLogin){
@@ -178,6 +175,9 @@ function loginOnline() {
                 closeMensagem(1400);
                 openLogin();
             }
+
+            currentBaixarGetResultadoAposEnviarOsDadosColetados = true;
+            enviarColeta();
         },
         timeout: 600000,
         error: function () {
@@ -188,7 +188,12 @@ function loginOnline() {
 }
 
 function loginSuccess(data) {
-    currentParCompany_Id = data.ParCompany_Id;
+    if(parametrization != null && parametrization.currentParCompany_Id > 0)
+    {
+        currentParCompany_Id = parametrization.currentParCompany_Id;
+    }else{
+        currentParCompany_Id = data.ParCompany_Id;
+    }
     currentLogin = data;
     currentCollectDate = new Date();
     openLogado();

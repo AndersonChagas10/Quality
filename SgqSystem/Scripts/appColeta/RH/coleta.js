@@ -12,11 +12,13 @@ function openColeta(levels) {
 
         var hasLevel2 = false;
 
+        if(level1.ParLevel2 != undefined)
         level1.ParLevel2.forEach(function (level2) {
 
             var hasLevel3 = false;
             var striped = true;
 
+            if(level2.ParLevel3 != undefined)
             level2.ParLevel3.forEach(function (level3) {
 
                 var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
@@ -363,6 +365,8 @@ function getBinarioComTexto(level3) {
 
     var mensagemPadrao = level3.ParLevel3Value.DefaultMessageText !== null ? level3.ParLevel3Value.DefaultMessageText : "";
     var tamanhoPermitido = level3.ParLevel3Value.StringSizeAllowed !== null ? level3.ParLevel3Value.StringSizeAllowed : 100;
+    var input = input = '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao + '" data-required-text="' + level3.ParLevel3Value.IsNCTextRequired + '" data-texto/>'
+
 
     html +=
         '<div class="col-xs-6 no-gutters">' +
@@ -1237,10 +1241,25 @@ function getCollectionHeaderFields() {
 
 function ColetasIsValid() {
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
+    var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta] input');
     var errorCount = 0;
+    var inputVal;
     var data;
     for (var i = 0; i < linhasDaColeta.length; i++) {
         data = linhasDaColeta[i];
+        inputVal = inputsDaColeta[i];
+
+        if ($(inputVal).attr('data-required-text') == 'true') {
+
+            if ($(data).attr('data-conforme') == "0") {
+                if ($(inputVal).val() == null || $(inputVal).val() == undefined || $(inputVal).val() == "") {
+                    $(data).css("background-color", "#ffc1c1");
+                    errorCount++;
+                } else {
+                    $(data).css("background-color", "white");
+                }
+            }
+        }
 
         if ($(data).attr('data-conforme-na') != "") {
             if ($(data).attr('data-conforme') == ""

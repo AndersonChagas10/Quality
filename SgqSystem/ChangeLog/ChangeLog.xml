@@ -2918,6 +2918,18 @@
 
     </Script>
   </Card>
+  <Card>
+    <CardNumber>SGQ-491</CardNumber>
+    <Version>1.6.0</Version>
+    <Description>[SGQ-491] ParL3TipoDadoEntrada - Adição da flag "Texto N/C Obrigatório" no tipo de dado de entrada Binário com Texto.</Description>
+    <Script>
+      IF COL_LENGTH('ParLevel3Value','IsNCTextRequired') IS NULL
+      BEGIN
+      ALTER TABLE ParLevel3Value
+      ADD IsNCTextRequired bit null
+      END
+    </Script>
+  </Card>
 
 
   <Card>
@@ -2961,6 +2973,17 @@
 
 
   <Card>
+    <CardNumber>SGQ-483</CardNumber>
+    <Version>1.3.0</Version>
+    <Description> [GQ] Retorno dos pontos da tabela de edição.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-431</CardNumber>
+    <Version>1.5.0</Version>
+    <Description>[Relatório Resultado][Seara] Adição da tabela % Conforme das Unidades e adicionada a Pivot Table ao relatório</Description>
     <CardNumber>SGQ-469</CardNumber>
     <Version>1.7.0</Version>
     <Description>[5S / RH SESMT] [MARCOS] COLETA - Criar tipo de dado de entrada binário com múltipla escolha</Description>

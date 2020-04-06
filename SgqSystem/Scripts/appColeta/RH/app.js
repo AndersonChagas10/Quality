@@ -290,15 +290,11 @@ function validaParqualification(level1Id, level2Id, level3Id) {
     });
 
     if (listaParLevel3ValueFiltrada.length > 0) {
-
-        listaParQualificationxParLevel3Value = $.grep(parametrization.listaPargroupQualificationXParLevel3Value, function (element, index) {
-            if (listaParLevel3ValueFiltrada.length == 1) {
-                if (element.ParLevel3Value_Id == listaParLevel3ValueFiltrada[0].Id)
-                    return element;
-            } else {
-                if (element.ParLevel3Value_Id == listaParLevel3ValueFiltrada[index].Id)
-                    return element;
-            }
+        
+        listaParQualificationxParLevel3Value = 
+        $.grep(parametrization.listaPargroupQualificationXParLevel3Value, function (element, index) {
+            if (element.ParLevel3Value_Id == listaParLevel3ValueFiltrada[0].Id)
+                return element;
         });
     }
 

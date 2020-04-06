@@ -429,6 +429,7 @@ INSERT INTO [dbo].[Collection]
                         ParLevel3_Id = x.ParLevel3_Id,
                         ShowLevel3Limits = x.ShowLevel3Limits,
                         IsRequired = x.IsRequired,
+                        IsNCTextRequired = x.IsNCTextRequired,
                         IsDefaultAnswer = x.IsDefaultAnswer,
                         IsAtiveNA = x.IsAtiveNA,
                         DefaultMessageText = x.DefaultMessageText,
@@ -1091,6 +1092,7 @@ WHERE 1 = 1
                         ParLevel3_Id = x.ParLevel3_Id,
                         ShowLevel3Limits = x.ShowLevel3Limits,
                         IsRequired = x.IsRequired,
+                        IsNCTextRequired = x.IsNCTextRequired,
                         IsDefaultAnswer = x.IsDefaultAnswer,
                         LimiteNC = x.LimiteNC
                     })
