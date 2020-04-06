@@ -216,10 +216,10 @@
                     </tr>
                     <tr>
                         <td colspan="4" class="col-md-6">
-                            @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Id", "_FullNameConcatenado"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.Assinatura1, new SelectList(ViewBag.Quem, "Name", "_FullNameConcatenado"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
                         </td>
                         <td colspan="5" class="col-md-6">
-                            @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Id", "_FullNameConcatenado"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                            @Html.DropDownListFor(r => r.Assinatura2, new SelectList(ViewBag.Quem, "Name", "_FullNameConcatenado"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
                         </td>
                     </tr>
                     <tr style="display:none">
@@ -311,7 +311,7 @@
             $('#Assinatura2').off('change').on('change', function () {
                 user1.Status = false;
                 $('#passCheck').find('#name').val($('#Assinatura2 :selected').text());
-                $('#passCheck').find('#idUser').val($('#Assinatura1 :selected').val());
+                $('#passCheck').find('#idUser').val($('#Assinatura2 :selected').val());
                 $('#btnOk').off('click').on('click', function () { ValidaSenha(1); });
                 $('#modalPass').modal();
                 $('#passCheck').find('[name=pass]').val('')
@@ -382,6 +382,7 @@
         function ValidaSenha(user, ddl) {
 
             var check = $('#passCheck').serializeObject();
+            check.name = check.idUser;
 
             $.post('@Url.Action("CheckPass", "api/Pa_User")', check, function (r) {
 
