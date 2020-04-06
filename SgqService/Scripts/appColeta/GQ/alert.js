@@ -926,6 +926,44 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
                     level2.attr('reauditlevel', '0');
                 }
             }
+        } else if (parseInt(level2.attr('parnotconformityrule_id')) == 8) {
+
+            controleDeAlerta = false;
+            var mensagem = "";
+
+            if (!hasAlert(level2Result)) {
+
+                var alerta8 = getAlertKO(level2Result);
+            
+                if (alerta8.haveAlert) {
+                    controleDeAlerta = true;
+
+                } else {
+
+                    alerta8 = getAlertReincidencia(level2Result);
+                    if (alerta8.haveAlert) {
+                        controleDeAlerta = true;
+
+                    } else {
+
+                        alerta8 = getAlertPorcentageNC(level2Result);
+                        if (alerta8.haveAlert) {
+                            controleDeAlerta = true;
+                        }
+                    }
+                }
+
+                if (controleDeAlerta) {
+
+                    mensagemHtml = $('.message').html();
+
+                    mensagem = alerta8.mensagem;
+
+                    openMessageModal(getResource("warning") + getResource("fired"), mensagem, 'alerta');
+
+                }
+            }
+
         }
 
         var reauditnumber = 0;
@@ -1458,36 +1496,7 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
         //alert8.js
         if (tipoDeAlerta == "a8") {
 
-            controleDeAlerta = false;
 
-            if (!hasAlert(level2Result)) {
-
-                var alerta8 = getAlertKO(level2Result);
-            
-                if (alerta8.haveAlert) {
-                    controleDeAlerta = true;
-
-                    getAlertMessage(tipoDeAlerta, alertaatual, ((defeitosLevel1 / (volumealertaindicador / 100 * metaIndicador)) * metaIndicador).toFixed(2), metaIndicador.toFixed(2));
-
-                } else {
-
-                    alerta8 = getAlertReincidencia(level2Result);
-                    if (alerta8.haveAlert) {
-                        controleDeAlerta = true;
-
-                        getAlertMessage(tipoDeAlerta, alertaatual, ((defeitosLevel1 / (volumealertaindicador / 100 * metaIndicador)) * metaIndicador).toFixed(2), metaIndicador.toFixed(2));
-
-                    } else {
-
-                        alerta8 = getAlertPorcentageNC(level2Result);
-                        if (alerta8.haveAlert) {
-                            controleDeAlerta = true;
-                        }
-                    }
-                }
-
-                mensagem = alerta8.mensagem;
-            }
         }
     }
 
@@ -1691,10 +1700,10 @@ function setAlertaLevel1(level1, resultadoLevel2, level2Result, mensagemAlerta) 
             disparaalertas = true;
 
         }
-        else if (tipoDeAlerta == "a8") {
-            disparaalertas = true;
-            alertaatual = 0;
-        }
+        // else if (tipoDeAlerta == "a8") {
+        //     disparaalertas = true;
+        //     alertaatual = 0;
+        // }
     }
 
     var mensagemHtml = mensagemAlerta.mensagem;

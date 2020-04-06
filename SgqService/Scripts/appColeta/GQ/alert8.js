@@ -100,10 +100,19 @@ function getAlertPorcentageNC(level2Result) {
     var haveAlertPorcentagemNC = false;   
     var tipoConsolidacao = parseInt($(_level1).attr('parconsolidationtype_id'));
     var IsRuleConformity = $(_level1).attr('isruleconformity') == 'true';
+    var alertaNivel2 = parseFloat($(_level2).attr('parnotconformityrule_value'));
     var qtdeNCToleravelAv = 0;
     var quantidadeDefeitos = 0;
     var alerta8 = {};
     var mensagem = "";
+
+    if (alertaNivel2 === 0) {
+        
+        alerta8.haveAlert = haveAlertPorcentagemNC;
+        alerta8.mensagem = mensagem;
+
+        return alerta8;
+    }
 
     var listaDefeitos = $.grep(listaDeDefeitosAlerta8, function (obj) {
         return obj.ParLevel1_Id == level2Result.attr('level01id')
@@ -119,12 +128,12 @@ function getAlertPorcentageNC(level2Result) {
         case 1:
         case 2:
 
-            var volumeAlertaIndicador = parseFloat($(_level1).attr('volumealertaindicador'));
+            var volumeMonitoramento = parseFloat($(_level1).attr('volumealertaindicador'));
             var metaIndicador = parseFloat($(_level1).attr('metaindicador'));
             metaIndicador = IsRuleConformity ? (100 - metaIndicador) : metaIndicador;
-            var qtdeNCToleravelVolume = (metaIndicador / 100) * volumeAlertaIndicador;
-            var alertaNivel2 = parseFloat($(_level1).attr('alertanivel2'));
-            qtdeNCToleravelAv = Math.round((alertaNivel2 * qtdeNCToleravelVolume) / 100);
+            var qtdeNCToleravelVolume = (metaIndicador / 100) * volumeMonitoramento;
+            
+            qtdeNCToleravelAv = (alertaNivel2 * qtdeNCToleravelVolume) / 100;
 
             quantidadeDefeitos = listaDefeitos.length;
 
@@ -133,12 +142,11 @@ function getAlertPorcentageNC(level2Result) {
         //se for consolidação 3
         case 3:
 
-            var volumeAlertaIndicador = parseFloat($(_level2).attr('evaluate')) * parseFloat($(_level2).attr('sample'));
+            var volumeMonitoramento = parseFloat($(_level2).attr('evaluate')) * parseFloat($(_level2).attr('sample'));
             var metaIndicador = parseFloat($(_level1).attr('metaindicador'));
             metaIndicador = IsRuleConformity ? (100 - metaIndicador) : metaIndicador;
-            var qtdeNCToleravelVolume = (metaIndicador / 100) * volumeAlertaIndicador;
-            var alertaNivel2 = parseFloat($(_level1).attr('alertanivel2'));
-            qtdeNCToleravelAv = Math.round((alertaNivel2 * qtdeNCToleravelVolume) / 100);
+            var qtdeNCToleravelVolume = (metaIndicador / 100) * volumeMonitoramento;
+            qtdeNCToleravelAv = (alertaNivel2 * qtdeNCToleravelVolume) / 100;
 
             var samples = $.map(listaDefeitos, function (obj) {
                 return obj.Sample;
@@ -158,9 +166,9 @@ function getAlertPorcentageNC(level2Result) {
             break;
     }
 
-    if (quantidadeDefeitos > qtdeNCToleravelAv) {
+    if (quantidadeDefeitos > Math.round(qtdeNCToleravelAv)) {
 
-        var porcentagemDefeitosAvaliacao = ((qtdeNCToleravelAv * 100) / volumeAlertaIndicador);
+        var porcentagemDefeitosAvaliacao = ((listaDefeitos.length / (volumeMonitoramento / 100 * metaIndicador)) * metaIndicador).toFixed(2) //% de defeitos
 
         mensagem = getMensagemAlertaPorcentagemNC(porcentagemDefeitosAvaliacao, metaIndicador);
 
