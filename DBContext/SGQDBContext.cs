@@ -166,7 +166,7 @@ namespace SGQDBContext
                         	   ,AL.ParNotConformityRule_Id AS tipoAlerta
                         	   ,AL.[Value] AS valorAlerta
                         	   ,AL.IsReaudit AS IsReaudit
-                               ,AL.CorrectiveAction as DisparaAlerta                        	   
+                               ,AL.CorrectiveAction as DisparaAlerta                       	   
                                ,P1.HasCompleteEvaluation AS HasCompleteEvaluation
                         	   ,P1.HasGroupLevel2 AS HasGroupLevel2
                         	   ,P1.EditLevel2 AS EditLevel2

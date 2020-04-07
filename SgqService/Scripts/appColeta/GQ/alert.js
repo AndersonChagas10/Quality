@@ -955,15 +955,18 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
 
                 if (controleDeAlerta) {
 
-                    mensagemHtml = $('.message').html();
+                    if ($(_level1).attr('disparaalerta') == "True") { //Se tem Ação Corretiva (SIM, o nome está errado)
+                        level1.attr('havecorrectiveaction', 'true');
+                    }
 
                     mensagem = alerta8.mensagem;
 
-                    openMessageModal(getResource("warning") + getResource("fired"), mensagem, 'alerta');
+                    openMessageModal(getResource("warning") + " " + getResource("fired"), mensagem, 'alerta');
+
+                    mensagemHtml = $('.message').html();
 
                 }
             }
-
         }
 
         var reauditnumber = 0;
@@ -1005,10 +1008,6 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
         level2Resultado.attr('defects', totalDefeitosL2);
         level2Resultado.attr('totallevel3withdefects', totalLevel3ComDefeitosL2);
         level2Resultado.attr('totalLevel3evaluation', totalLevel3AvaliadosL2);
-
-
-        //level2Resultado.attr('evaluatedresult', resultadoAvaliadoL2);
-        //level2Resultado.attr('defectsresult', resultadoDefeitosL2);
 
         var totalAvaliadoLevel1 = level1.attr('totalavaliado') != undefined ? parseFloat(level1.attr('totalavaliado')) : 0;
         var totalAvaliadoL1L2 = 0;
@@ -1153,6 +1152,7 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
         //$('.level3Group:visible .level3:first').before(debug);
     }
 
+    debugger
     mensagemAlerta.mensagem = mensagemHtml;
 
     var resultados = [];
