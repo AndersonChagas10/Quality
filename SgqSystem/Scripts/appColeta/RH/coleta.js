@@ -789,7 +789,7 @@ function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
                     options += '<option value="' + obj.Id + '" data-qualification>' + obj.Name + '</option >';
                 });
 
-                retorno += ' <div class="col-xs-3 no-gutters pull-right" data-ParQualificationLevel3Value="' + o.Value + '">';
+                retorno += ' <div class="col-xs-3 no-gutters pull-right" data-ParQualificationLevel3Value="' + o.Value + '" data-qualification-required="' + o.IsRequired + '">';
                 retorno += ' <div class="col-xs-12"><small style="font-weight:550 !important">' + qualificationGroupName + '</small></div>';
                 retorno += ' <div class="col-xs-12">';
                 retorno += ' <select class="form-control input-sm ddl" data-qualificationSelect>';
@@ -1242,9 +1242,29 @@ function getCollectionHeaderFields() {
 function ColetasIsValid() {
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
     var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta] input');
+    var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value] div[data-qualification-required]');
+    var selectQualificationColeta = $('form[data-form-coleta] div[data-qualificationlevel3value] select[data-qualificationselect]');
+
     var errorCount = 0;
     var inputVal;
     var data;
+    var linhaQualification;
+    var selectQualification;
+
+    for (var i = 0; i < qualification.length; i++) {
+        linhaQualification = qualification[i];
+        selectQualification = selectQualificationColeta[i];
+
+        if ($(linhaQualification).attr('data-qualification-required') == 'true' && $(selectQualification).length > 0) {
+            if ($(selectQualification).val() == null || $(selectQualification).val() == undefined || $(selectQualification).val() == "") {
+                $(selectQualification).css("background-color", "#ffc1c1");
+                errorCount++;
+            } else {
+                $(selectQualification).css("background-color", "white");
+            }
+        }
+    }
+
     for (var i = 0; i < linhasDaColeta.length; i++) {
         data = linhasDaColeta[i];
         inputVal = inputsDaColeta[i];

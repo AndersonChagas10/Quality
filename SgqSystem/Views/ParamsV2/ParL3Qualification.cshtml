@@ -31,6 +31,19 @@
 
         </div>
 
+        <div class="col-sm-4">
+
+            <div class="form-group">
+                <label>Obrigatório:</label>
+                <br />
+                <label class="switch">
+                    <input type="checkbox" id="checkboxIsQualificationRequired" name="IsQualificationRequired">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+        </div>
+
         <div class="col-sm-12">
 
             <div class="form-group" data-action>
@@ -57,6 +70,9 @@
                         </th>
                         <th class="col-sm-3">
                             Valor
+                        </th>
+                        <th>
+                            Obrigatório
                         </th>
                         <th class="col-sm-3">
                             Ação
@@ -90,9 +106,11 @@
             $('table#table' + id + ' tbody').html('');
 
             $(list).each(function (i, o) {
+                let isChecked = o.IsRequired ? "checked" : "";
                 var html = '<tr>';
                 html += '<td>' + valorDoSelect('#ParL3Qualification select[name="PargroupQualification_Id"]', o.PargroupQualification_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Qualification select[name="Value"]', o.Value, 'Todos') + '</td>';
+                html += '<td><div class=""><label class="switch"><input type="checkbox" name="IsQualificationRequired"' + isChecked + '><span class="slider round"></span> </label></div></td>';
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
 
@@ -227,6 +245,8 @@
         $('#' + ParL3Qualification.id + ' [data-form] select[name="selectL3QualificationValue"]').val(obj.Value);
         $('#' + ParL3Qualification.id + ' [data-form] select[name="selectL3QualificationValue"]').trigger('change');
 
+        $('#' + ParL3Qualification.id + ' [data-form] input[name="IsQualificationRequired"]').attr('checked', obj.IsRequired);
+
         $('#' + ParL3Qualification.id + ' [data-form]').data('sgq', obj);
         $('#' + ParL3Qualification.id + ' [data-form]').addClass('alert alert-success');
         $('#' + ParL3Qualification.id + ' #divBtnCancelar').show();
@@ -277,6 +297,7 @@
 
         if (optionIsValid(obj, ParL3Qualification.id)) {
             openLoader(Resources("please_wait"));
+            obj.IsRequired = formdata.IsQualificationRequired;
             ParL3Qualification.Save(obj);
 
         } else {
