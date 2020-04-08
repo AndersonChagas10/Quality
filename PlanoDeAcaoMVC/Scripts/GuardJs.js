@@ -343,9 +343,8 @@ function matchCustom(params, data) {
         return null;
     }
 
-    if (data.text.toUpperCase().search(params.term.toUpperCase()) === 0) {
+    if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) > 0) {
         var modifiedData = $.extend({}, data, true);
-        //modifiedData.text += ' (matched)';
 
         return modifiedData;
     }
