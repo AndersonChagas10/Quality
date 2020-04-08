@@ -457,10 +457,10 @@
     <value>Tarefa</value>
   </data>
   <data name="tasks_manager" xml:space="preserve">
-    <value>Gerenciador de Tarefa</value>
+    <value>Gerenciador de Ações</value>
   </data>
   <data name="tasks_status" xml:space="preserve">
-    <value>Tarefas vs Status</value>
+    <value>Ações vs Status</value>
   </data>
   <data name="theme_subject" xml:space="preserve">
     <value>Tema / Assunto</value>
@@ -896,5 +896,8 @@
   </data>
   <data name="signature" xml:space="preserve">
     <value>Assinatura</value>
+  </data>
+  <data name="projects_manager" xml:space="preserve">
+    <value>Gerenciador de Projetos</value>
   </data>
 </root>

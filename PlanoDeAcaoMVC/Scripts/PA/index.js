@@ -373,7 +373,7 @@ function Novo(btn, encadeado) {
     //pegar se é true ou false
     if (isDiretriz && valorSelectSelecionado != "" && Objetivo_Id) {
 
-        $.post('@Url.Action("GetDiretriz", "api/Generics")/' + Objetivo_Id, function (o) {
+        $.post(urlGetDiretriz + '/' + Objetivo_Id, function (o) {
 
             isPriority = o.IsPriority;
 

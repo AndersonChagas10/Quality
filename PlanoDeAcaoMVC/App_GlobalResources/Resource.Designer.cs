@@ -1636,6 +1636,15 @@ namespace ResourcesPA {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Projects Manager.
+        /// </summary>
+        public static string projects_manager {
+            get {
+                return ResourceManager.GetString("projects_manager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quality.
         /// </summary>
         public static string quality {
@@ -2149,7 +2158,7 @@ namespace ResourcesPA {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tasks Manager.
+        ///   Looks up a localized string similar to Action Manager.
         /// </summary>
         public static string tasks_manager {
             get {
@@ -2158,7 +2167,7 @@ namespace ResourcesPA {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tasks vs Status.
+        ///   Looks up a localized string similar to Action vs Status.
         /// </summary>
         public static string tasks_status {
             get {

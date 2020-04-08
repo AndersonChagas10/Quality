@@ -474,17 +474,17 @@ LEFT JOIN Pa_Dimensao DIME
                 //$
                 if (i.UnidadeDeMedida_Id == 1)
                 {
-                    if (i.ValorDe > 0)
+                    //if (i.ValorDe > 0)
                         i._ValorDe = "R$ " + i.ValorDe.ToString("0.##");
-                    if (i.ValorPara > 0)
+                    //if (i.ValorPara > 0)
                         i._ValorPara = "R$ " + i.ValorPara.ToString("0.##");
                 }
                 //Percentual
                 if (i.UnidadeDeMedida_Id == 2)
                 {
-                    if (i.ValorDe > 0)
+                    //if (i.ValorDe > 0)
                         i._ValorDe = i.ValorDe.ToString("0.##") + " %";
-                    if (i.ValorPara > 0)
+                    //if (i.ValorPara > 0)
                         i._ValorPara = i.ValorPara.ToString("0.##") + " %";
                 }
                 //if(i.Estrategico_Id.GetValueOrDefault() >0)
@@ -581,24 +581,24 @@ LEFT JOIN Pa_Dimensao DIME
                 //$
                 if (i.UnidadeDeMedida_Id == 1)
                 {
-                    if (i.ValorDe > 0)
+                    //if (i.ValorDe > 0)
                         i._ValorDe = "R$ " + i.ValorDe.ToString("0.##");
-                    if (i.ValorPara > 0)
+                    //if (i.ValorPara > 0)
                         i._ValorPara = "R$ " + i.ValorPara.ToString("0.##");
                 }
                 else//Percentual
                 if (i.UnidadeDeMedida_Id == 2)
                 {
-                    if (i.ValorDe > 0)
+                    //if (i.ValorDe > 0)
                         i._ValorDe = i.ValorDe.ToString("0.##") + " %";
-                    if (i.ValorPara > 0)
+                    //if (i.ValorPara > 0)
                         i._ValorPara = i.ValorPara.ToString("0.##") + " %";
                 }
                 else
                 {
-                    if (i.ValorDe > 0)
+                    //if (i.ValorDe > 0)
                         i._ValorDe = i.ValorDe.ToString("0.##");
-                    if (i.ValorPara > 0)
+                    //if (i.ValorPara > 0)
                         i._ValorPara = i.ValorPara.ToString("0.##");
                 }
                 //if(i.Estrategico_Id.GetValueOrDefault() >0)
