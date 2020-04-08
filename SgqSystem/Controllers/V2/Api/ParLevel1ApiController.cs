@@ -231,6 +231,7 @@ namespace SgqSystem.Controllers.V2.Api
                     {
                         parLevel1Old.IsLimitedEvaluetionNumber = parLevel1.IsLimitedEvaluetionNumber;
                         parLevel1Old.HasTakePhoto = parLevel1.HasTakePhoto;
+                        parLevel1Old.RedistributeWeight = parLevel1.RedistributeWeight;
                     }
                     else
                     {
