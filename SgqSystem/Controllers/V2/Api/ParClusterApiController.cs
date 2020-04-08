@@ -18,6 +18,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("parCluster")]
         public IHttpActionResult GetParCluster(int parClusterGroupId, int parCompany_Id)
         {
+            InicioRequisicao();
             var listaCluster = new List<ParCluster>();
             db.Configuration.LazyLoadingEnabled = false;
 

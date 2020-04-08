@@ -19,6 +19,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("Get")]
         public IHttpActionResult GetParLevel1()
         {
+            InicioRequisicao();
             ParLevel1Selects parLevel1Selects = new ParLevel1Selects();
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
@@ -33,6 +34,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("GetSelectsL1")]
         public IHttpActionResult GetSelectsParLevel1()
         {
+            InicioRequisicao();
             ParLevel1Selects parLevel1Selects = new ParLevel1Selects();
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
@@ -75,7 +77,7 @@ namespace SgqSystem.Controllers.V2.Api
                 parLevel1Selects.ParFamiliaProdutos = db.ParFamiliaProduto.Where(x => x.IsActive).ToList();
 
                 //grupo qualificação
-                parLevel1Selects.PargroupQualification = db.PargroupQualification.Where(x => x.IsActive).ToList(); 
+                parLevel1Selects.PargroupQualification = db.PargroupQualification.Where(x => x.IsActive).ToList();
             }
 
             return Ok(parLevel1Selects);
@@ -85,6 +87,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("Get/{id}")]
         public IHttpActionResult GetParLevel1(int id)
         {
+            InicioRequisicao();
             ParLevel1Result parlevel1Result = new ParLevel1Result();
             ParLevel1 parLevel1 = new ParLevel1();
             List<ParMultipleValuesGeral> parMultipleValuesGeral = new List<ParMultipleValuesGeral>();
@@ -136,6 +139,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParLevel1")]
         public IHttpActionResult PostParLevel1(ParLevel1 parLevel1)
         {
+            InicioRequisicao();
             SaveOrUpdateParLevel1(parLevel1);
 
             return Ok(parLevel1.Id);
@@ -145,6 +149,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParLevel1Avancados")]
         public IHttpActionResult PostParLevel1Avancados(ParLevel1 parLevel1)
         {
+            InicioRequisicao();
             SaveOrUpdateParLevel1(parLevel1, true);
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -154,6 +159,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParLevel1Familia")]
         public IHttpActionResult PostParLevel1Familia(Dominio.Seara.ParLevel1XParFamiliaProduto parLevel1XParFamiliaProduto)
         {
+            InicioRequisicao();
             SaveOrUpdatParLevel1XParFamiliaProduto(parLevel1XParFamiliaProduto);
 
             return StatusCode(HttpStatusCode.NoContent);
@@ -163,6 +169,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParHeaderFieldGeral")]
         public IHttpActionResult PostParHeaderField(ParHeaderFieldGeral saveParHeaderFieldGeral)
         {
+            InicioRequisicao();
             SaveOrUpdateParHeaderField(saveParHeaderFieldGeral);
 
             SaveOrUpdateParMultipleValues(saveParHeaderFieldGeral);
@@ -174,6 +181,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParLevel1XCluster")]
         public IHttpActionResult PostParLevel1XCluster(ParLevel1XCluster parLevel1XCluster)
         {
+            InicioRequisicao();
             if (!SaveOrUpdateParLevel1XCluster(parLevel1XCluster))
             {
                 return StatusCode(HttpStatusCode.BadRequest);
@@ -186,6 +194,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("GetParCargoXDepartmentByUnit/{id}")]
         public IHttpActionResult GetDepartmentsByUnit(int id)
         {
+            InicioRequisicao();
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
@@ -423,7 +432,7 @@ namespace SgqSystem.Controllers.V2.Api
                 }
                 else //Update or delete
                 {
-                   
+
                     if (parLevel1XParFamiliaProduto.ParFamiliaProduto_Id == 0) //Delete
                         db.ParLevel1XParFamiliaProduto.Remove(parLevel1xParFamiliaProdutoOld);
 

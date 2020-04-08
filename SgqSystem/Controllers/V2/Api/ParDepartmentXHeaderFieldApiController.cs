@@ -17,6 +17,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParDepartmentxHeaderField")]
         public IHttpActionResult PostParDepartmentxHeaderField(ParHeaderFieldGeral saveParHeaderFieldGeral)
         {
+            InicioRequisicao();
 
             SaveOrUpdateParHeaderField(saveParHeaderFieldGeral);
 

@@ -18,6 +18,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("Get")]
         public IHttpActionResult GetParLevel2()
         {
+            InicioRequisicao();
             ParLevel2Selects parLevel2Selects = new ParLevel2Selects();
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
@@ -33,6 +34,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("Get/{id}")]
         public IHttpActionResult GetParLevel2(int id)
         {
+            InicioRequisicao();
             ParLevel2Result parLevel2Result = new ParLevel2Result();
             ParLevel2 parLevel2 = new ParLevel2();
             List<ParMultipleValuesGeral> parMultipleValuesGeral = new List<ParMultipleValuesGeral>();
@@ -79,6 +81,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("GetParLevel2Vinculados/{id}")]
         public IHttpActionResult GetParLevel2Vinculados(int id)
         {
+            InicioRequisicao();
             var select = new Select();
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
@@ -128,6 +131,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParHeaderFieldGeral")]
         public IHttpActionResult PostParHeaderField(ParHeaderFieldGeral saveParHeaderFieldGeral)
         {
+            InicioRequisicao();
             SaveOrUpdateParHeaderField(saveParHeaderFieldGeral);
 
             SaveOrUpdateParMultipleValues(saveParHeaderFieldGeral);
@@ -241,6 +245,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParLevel2")]
         public IHttpActionResult PostParLevel2(ParLevel2 parLevel2)
         {
+            InicioRequisicao();
             if (!SaveOrUpdateParLevel2(parLevel2))
             {
                 return StatusCode(HttpStatusCode.BadRequest);
@@ -290,6 +295,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParEvaluation")]
         public IHttpActionResult PostParEvaluation(ParEvaluation parEvaluation)
         {
+            InicioRequisicao();
             if (!SaveOrUpdateParEvaluation(parEvaluation))
             {
                 return StatusCode(HttpStatusCode.BadRequest);
@@ -341,6 +347,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParVinculoPesoParLevel2")]
         public IHttpActionResult PostParVinculoPesoParLevel2(Dominio.Seara.ParVinculoPesoParLevel2 parVinculoPesoParLevel2)
         {
+            InicioRequisicao();
 
             if (!SaveOrUpdateParVinculoPesoParLevel2(parVinculoPesoParLevel2))
             {

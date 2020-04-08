@@ -1,6 +1,7 @@
 ﻿using ADOFactory;
 using Dominio;
 using DTO.DTO;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 //using SGQDBContext;
 using SgqService.ViewModels;
@@ -28,6 +29,7 @@ namespace SgqService.Controllers.Api
 
     public class BaseApiController : ApiController
     {
+        private LogSystem.LogRequestBusiness LogRequestBusiness = new LogSystem.LogRequestBusiness();
         protected string token;
         // GET: BaseAPI
         protected override void Initialize(HttpControllerContext controllerContext)
@@ -37,7 +39,7 @@ namespace SgqService.Controllers.Api
 
             try
             {
-                token = Request.Headers.GetValues("token").FirstOrDefault().ToString();          
+                token = Request.Headers.GetValues("token").FirstOrDefault().ToString();
             }
             catch
             {
@@ -63,6 +65,22 @@ namespace SgqService.Controllers.Api
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            LogRequestBusiness.RegistrarFimRequisicao();
+            base.Dispose(disposing);
+        }
+
+        protected void InicioRequisicao(object userId = null)
+        {
+            LogRequestBusiness.RegistrarInicioRequisicao(
+                this.ControllerContext.Request.Method.Method,
+                this.ControllerContext.Request.RequestUri.LocalPath,
+                this.ActionContext.ActionArguments,
+                userId
+                );
+        }
+
         protected void VerifyIfIsAuthorized()
         {
             try
@@ -74,12 +92,18 @@ namespace SgqService.Controllers.Api
                         Username = token.Split('|')[0],
                         Senha = token.Split('|')[1]
                     };
-                    if (!db.UserSgq.Any(x => x.Name == user.Username && x.Password == user.Senha && x.IsActive == true))
+                    var userSgq = db.UserSgq.Where(x => x.Name == user.Username && x.Password == user.Senha && x.IsActive == true).FirstOrDefault();
+                    if (userSgq == null)
                     {
                         throw new UnauthorizedAccessException("Acesso negado!");
                     }
+                    else
+                    {
+                        InicioRequisicao(userSgq.Id);
+                    }
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new UnauthorizedAccessException("Acesso negado!");
             }

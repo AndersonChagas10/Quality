@@ -263,6 +263,7 @@ INSERT INTO [dbo].[Collection]
         [Route("GetAppParametrization")]
         public IHttpActionResult GetAppParametrization(PlanejamentoColetaViewModel appParametrization)
         {
+            InicioRequisicao();
             List<ParVinculoPesoAppViewModel> listaParVinculoPeso;
             List<ParLevel1AppViewModel> listaParLevel1;
             List<ParLevel2AppViewModel> listaParLevel2;
@@ -747,6 +748,7 @@ INSERT INTO [dbo].[Collection]
         [Route("GetResults")]
         public IHttpActionResult GetResults(GetResultsData data)
         {
+            InicioRequisicao();
             var coletaAgrupada = new List<ColetaAgrupadaViewModel>();
 
             var sql = $@"
@@ -844,7 +846,6 @@ WHERE 1 = 1
         [Route("SetCollect123")]
         public IHttpActionResult SetCollect123(List<Collection> listSimpleCollect)
         {
-
             using (var db = new SgqDbDevEntities())
             {
                 //Adiciona os arquivos na Collection
@@ -909,6 +910,7 @@ WHERE 1 = 1
         [Route("GetAppParametrization123")]
         public IHttpActionResult GetAppParametrization123(PlanejamentoColetaViewModel appParametrization)
         {
+            InicioRequisicao();
             List<ParVinculoPesoAppViewModel> listaParVinculoPeso;
             List<ParLevel1AppViewModel> listaParLevel1;
             List<ParLevel2AppViewModel> listaParLevel2;
@@ -1266,6 +1268,7 @@ WHERE 1 = 1
         [Route("GetResults123")]
         public IHttpActionResult GetResults123(GetResultsData data)
         {
+            InicioRequisicao();
             var coletaAgrupada = new List<ColetaAgrupadaViewModel>();
             data.ParFrequency_Id = 3;//mock diario
 

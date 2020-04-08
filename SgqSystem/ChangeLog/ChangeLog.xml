@@ -3019,4 +3019,21 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-481</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[SS] Criação do Log de requisição. (Adicionado nos BaseControllers, poucas situações não são rastreadas)</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='LogRequest' AND xtype='U')
+      create table LogRequest (
+      Id int not null primary key identity,
+      [DateStart] datetime NOT NULL ,
+      [DateEnd] datetime NOT NULL,
+      [Params] text NULL,
+      [Path] varchar(100) not null,
+      [Request] varchar(20) NOT NULL,
+      [UserId] int null)
+    </Script>
+  </Card>
+
 </Cards>

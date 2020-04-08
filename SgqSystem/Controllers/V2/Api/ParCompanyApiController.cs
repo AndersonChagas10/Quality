@@ -18,6 +18,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("parCompany")]
         public IHttpActionResult GetParCompany(int userSgq_Id)
         {
+            InicioRequisicao();
             using (db)
             {
                 db.Configuration.LazyLoadingEnabled = false;

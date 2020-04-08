@@ -29,6 +29,7 @@ namespace SgqSystem.Controllers.Api
 
     public class BaseApiController : ApiController
     {
+        private LogSystem.LogRequestBusiness LogRequestBusiness = new LogSystem.LogRequestBusiness();
         protected string token;
         // GET: BaseAPI
         protected override void Initialize(HttpControllerContext controllerContext)
@@ -68,6 +69,22 @@ namespace SgqSystem.Controllers.Api
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            LogRequestBusiness.RegistrarFimRequisicao();
+            base.Dispose(disposing);
+        }
+
+        protected void InicioRequisicao(object userId = null)
+        {
+            LogRequestBusiness.RegistrarInicioRequisicao(
+                this.ControllerContext.Request.Method.Method,
+                this.ControllerContext.Request.RequestUri.LocalPath,
+                this.ActionContext.ActionArguments,
+                userId
+                );
+        }
+
         protected void VerifyIfIsAuthorized()
         {
             try
@@ -79,9 +96,14 @@ namespace SgqSystem.Controllers.Api
                         Username = token.Split('|')[0],
                         Senha = token.Split('|')[1]
                     };
-                    if (!db.UserSgq.Any(x => x.Name == user.Username && x.Password == user.Senha && x.IsActive == true))
+                    var userSgq = db.UserSgq.Where(x => x.Name == user.Username && x.Password == user.Senha && x.IsActive == true).FirstOrDefault();
+                    if (userSgq == null)
                     {
                         throw new UnauthorizedAccessException("Acesso negado!");
+                    }
+                    else
+                    {
+                        InicioRequisicao(userSgq.Id);
                     }
                 }
             }

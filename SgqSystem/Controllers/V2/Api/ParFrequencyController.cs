@@ -23,6 +23,7 @@ namespace SgqSystem.Controllers.V2.Api
         [HttpPost]
         public IHttpActionResult GetParFrequency(PlanejamentoColetaViewModel appParametrization)
         {
+            InicioRequisicao();
             db.Configuration.LazyLoadingEnabled = false;
 
             var listaParFrequencyVinculada_Id = db.ParEvaluationXDepartmentXCargo

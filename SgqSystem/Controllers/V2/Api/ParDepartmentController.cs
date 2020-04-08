@@ -29,6 +29,7 @@ namespace SgqSystem.Controllers.V2.Api
         [ResponseType(typeof(ParDepartment))]
         public async Task<IHttpActionResult> GetParDepartment(int id)
         {
+            InicioRequisicao();
             ParDepartment ParDepartment = await db.ParDepartment.FindAsync(id);
             if (ParDepartment == null)
             {
@@ -42,6 +43,7 @@ namespace SgqSystem.Controllers.V2.Api
         [ResponseType(typeof(void))]
         public async Task<IHttpActionResult> PutParDepartment(int id, ParDepartment ParDepartment)
         {
+            InicioRequisicao();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -77,6 +79,7 @@ namespace SgqSystem.Controllers.V2.Api
         [ResponseType(typeof(ParDepartment))]
         public async Task<IHttpActionResult> PostParDepartment(ParDepartment ParDepartment)
         {
+            InicioRequisicao();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -92,6 +95,7 @@ namespace SgqSystem.Controllers.V2.Api
         [ResponseType(typeof(ParDepartment))]
         public async Task<IHttpActionResult> DeleteParDepartment(int id)
         {
+            InicioRequisicao();
             ParDepartment ParDepartment = await db.ParDepartment.FindAsync(id);
             if (ParDepartment == null)
             {

@@ -20,6 +20,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("Get")]
         public IHttpActionResult GetParLevel3()
         {
+            InicioRequisicao();
             ParLevel3Selects parLevel3Selects = new ParLevel3Selects();
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
@@ -35,6 +36,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParHeaderFieldXMultipleValues")]
         public IHttpActionResult PostParHeaderFieldXMultipleValues(ParHeaderFieldGeral saveParHeaderFieldGeral)
         {
+            InicioRequisicao();
 
             SaveOrUpdateParHeaderField(saveParHeaderFieldGeral);
 
@@ -135,6 +137,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("GetParLevel3Value/{id}")]
         public IHttpActionResult GetParLevel3Value(int id)
         {
+            InicioRequisicao();
             ParLevel3Result parlevel3Result = new ParLevel3Result();
            // ParLevel3Value parLevel3Value = new ParLevel3Value();
            // ParLevel3 parLevel3 = new ParLevel3();
@@ -196,6 +199,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("Get/{id}")]
         public IHttpActionResult GetParLevel1(int id)
         {
+            InicioRequisicao();
             ParLevel3Result parlevel3Result = new ParLevel3Result();
             ParLevel3 parLevel3 = new ParLevel3();
 
@@ -251,6 +255,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("GetPargroupQualificationXParLevel3Value/{level3Value_id}")]
         public IHttpActionResult GetPargroupQualificationXParLevel3Value(int level3Value_id)
         {
+            InicioRequisicao();
 
             var lista = new List<PargroupQualificationXParLevel3Value>();
 
@@ -276,6 +281,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("GetParLevel3Vinculados/{ParLevel1_Id}/{ParLevel2_Id}")]
         public IHttpActionResult GetParLevel3Vinculados(int ParLevel1_Id, int ParLevel2_Id)
         {
+            InicioRequisicao();
             var select = new Select();
 
             using (SgqDbDevEntities db = new SgqDbDevEntities())
@@ -349,6 +355,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParLevel3")]
         public IHttpActionResult PostParLevel3(ParLevel3 parLevel3)
         {
+            InicioRequisicao();
             if (!SaveOrUpdateParLevel3(parLevel3))
             {
                 return StatusCode(HttpStatusCode.BadRequest);
@@ -397,6 +404,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParEvaluationSample")]
         public IHttpActionResult PostParEvaluation(ParLevel3EvaluationSample parLevel3EvaluationSample)
         {
+            InicioRequisicao();
             if (!SaveOrUpdateParLevel3EvaluationSample(parLevel3EvaluationSample))
             {
                 return StatusCode(HttpStatusCode.BadRequest);
@@ -449,6 +457,7 @@ namespace SgqSystem.Controllers.V2.Api
         public IHttpActionResult PostParVinculoPeso(ParVinculoPeso parVinculoPeso)
         {
 
+            InicioRequisicao();
             if (!SaveOrUpdateParVinculoPeso(parVinculoPeso))
             {
                 return StatusCode(HttpStatusCode.BadRequest);
@@ -507,6 +516,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostPargroupQualificationXParLevel3Value")]
         public IHttpActionResult PostPargroupQualificationXParLevel3Value(PargroupQualificationXParLevel3Value form)
         {
+            InicioRequisicao();
             using (SgqDbDevEntities db = new SgqDbDevEntities())
             {
                 try
@@ -591,6 +601,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParTipoDado")]
         public IHttpActionResult PostParTipoDado(ParLevel3Value parLevel3Value)
         {
+            InicioRequisicao();
             if (!SaveOrUpdateParLevel3Value(parLevel3Value))
             {
                 return StatusCode(HttpStatusCode.BadRequest);
@@ -693,6 +704,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParLevel3XHelp")]
         public IHttpActionResult PostParLevel3XHelp(ParLevel3XHelp parLevel3XHelp)
         {
+            InicioRequisicao();
             if (!SaveOrUpdateParLevel3XHelp(parLevel3XHelp))
             {
                 return StatusCode(HttpStatusCode.BadRequest);

@@ -97,6 +97,7 @@
     <Compile Include="ItemMenu.cs" />
     <Compile Include="LeftControlRole.cs" />
     <Compile Include="LogAlteracoes.cs" />
+    <Compile Include="LogRequest.cs" />
     <Compile Include="LogError.cs" />
     <Compile Include="LogJson.cs" />
     <Compile Include="LogTrack.cs" />

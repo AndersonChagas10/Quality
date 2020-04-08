@@ -16,6 +16,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostRotinaIntegracao")]
         public IHttpActionResult PostRotinaIntegracao(ParDepartmentXRotinaIntegracao parDepartmentXRotinaIntegracao)
         {
+            InicioRequisicao();
             if (parDepartmentXRotinaIntegracao.Id > 0)//Alter
             {
                 using (SgqDbDevEntities db = new SgqDbDevEntities())

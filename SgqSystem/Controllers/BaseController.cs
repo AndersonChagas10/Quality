@@ -13,13 +13,14 @@ using System.Collections;
 using AutoMapper;
 using DTO.DTO.Params;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace SgqSystem.Controllers
 {
     [HandleController]
     public class BaseController : Controller
     {
-
+        private LogSystem.LogRequestBusiness LogRequestBusiness = new LogSystem.LogRequestBusiness();
         public static int VariavelEstatica = 1;
 
         public BaseController()
@@ -45,7 +46,6 @@ namespace SgqSystem.Controllers
 
         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
         {
-
             HttpCookie languageCookie = System.Web.HttpContext.Current.Request.Cookies["Language"];
 
             if (languageCookie != null)
@@ -96,6 +96,13 @@ namespace SgqSystem.Controllers
 
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
+            LogRequestBusiness.RegistrarInicioRequisicao(
+                filterContext.HttpContext.Request.HttpMethod,
+                filterContext.HttpContext.Request.Path,
+                filterContext.ActionParameters,
+                System.Web.HttpContext.Current.Request.Cookies["webControlCookie"]?.Values["userId"]
+                );
+
             var webControlCookie = System.Web.HttpContext.Current.Request.Cookies["webControlCookie"];
 
             using (var db = new SgqDbDevEntities())
@@ -125,6 +132,7 @@ namespace SgqSystem.Controllers
 
         protected override void EndExecute(IAsyncResult asyncResult)
         {
+            LogRequestBusiness.RegistrarFimRequisicao();
             base.EndExecute(asyncResult);
         }
 

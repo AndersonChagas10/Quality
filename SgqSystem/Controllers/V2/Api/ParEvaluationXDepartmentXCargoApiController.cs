@@ -28,6 +28,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("Get/{id}")]
         public IHttpActionResult GetParDepartment(int id)
         {
+            InicioRequisicao();
             ParEvaluationXDepartmentXCargoResult parEvaluationXDepartmentXCargoResult = new ParEvaluationXDepartmentXCargoResult();
             ParDepartment parEvaluationXDepartmentXCargo = new ParDepartment();
             List<ParMultipleValuesGeral> parMultipleValuesGeral = new List<ParMultipleValuesGeral>();
@@ -100,6 +101,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("PostParEvaluationXDepartmentXCargo")]
         public IHttpActionResult PostParEvaluationXDepartmentXCargo(ParEvaluationXDepartmentXCargo parEvaluationXDepartmentXCargo)
         {
+            InicioRequisicao();
             if (!SaveOrUpdateParEvaluationXDepartmentXCargo(parEvaluationXDepartmentXCargo))
             {
                 return StatusCode(HttpStatusCode.BadRequest);
