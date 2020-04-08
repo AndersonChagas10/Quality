@@ -31,6 +31,8 @@ namespace Dominio
 
         public bool IsActive { get; set; }
 
+        public bool IsParcialCollection { get; set; }
+
         [ForeignKey("ParCargo_Id")]
         public virtual ParCargo ParCargo { get; set; }
 

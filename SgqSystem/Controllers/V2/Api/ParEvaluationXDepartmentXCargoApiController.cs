@@ -131,6 +131,7 @@ namespace SgqSystem.Controllers.V2.Api
                         parEvaluationXDepartmentXCargoOld.IsActive = parEvaluationXDepartmentXCargo.IsActive;
                         parEvaluationXDepartmentXCargoOld.ParFrequencyId = parEvaluationXDepartmentXCargo.ParFrequencyId;
                         parEvaluationXDepartmentXCargoOld.ParCluster_Id = parEvaluationXDepartmentXCargo.ParCluster_Id;
+                        parEvaluationXDepartmentXCargoOld.IsParcialCollection = parEvaluationXDepartmentXCargo.IsParcialCollection;
 
                         if (parEvaluationXDepartmentXCargo.IsAgendamento)
                         {

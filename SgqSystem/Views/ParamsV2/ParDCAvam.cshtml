@@ -86,6 +86,16 @@
 
         </div>
 
+        <div class="col-sm-6">
+            <label for="IsParcialCollection"> Coleta Parcial: </label>
+            <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Permitir coletar por etapas" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+            <div class="form-group">
+
+                <label class="switch">
+                    <input id="IsParcialCollection" type="checkbox" name="IsParcialCollection" checked=""><span class="slider round"></span>
+                </label>
+            </div>
+        </div>
 
         <div id="allObjAVAgendamento" class="col-sm-12">
 
@@ -620,6 +630,7 @@
                         $('#selectDCDepartment').trigger('change');
                         $("#IsAgendamento").prop('disabled', false);
                         $("#IsAgendamento ").prop('checked', false);
+                        $("#IsParcialCollection").prop('checked', false);
                         $('[data-column="inpIntervalo"]').val('');
                         $('[data-column="slAgendamento"]').val('');
                         closeLoader();
@@ -671,6 +682,8 @@
                     $('#' + id + ' [data-form] input[name="IsAgendamento"]').prop('checked', true);
                 else
                     $('#' + id + ' [data-form] input[name="IsAgendamento"]').prop('checked', false);
+
+                $('#' + id + ' [data-form] input[name="IsParcialCollection"]').prop('checked', obj.IsParcialCollection);
 
                 $('#' + id + ' [data-form]').data('sgq', obj);
                 $('#' + id + ' [data-form]').addClass('alert alert-success');
@@ -836,6 +849,7 @@
             obj['IsActive'] = true;
             obj['ParFrequencyId'] = parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val());
             obj['IsAgendamento'] = $("#ParDCAvam #IsAgendamento").is(':checked');
+            obj['IsParcialCollection'] = $("#ParDCAvam #IsParcialCollection").is(':checked');
             return obj;
         },
 
