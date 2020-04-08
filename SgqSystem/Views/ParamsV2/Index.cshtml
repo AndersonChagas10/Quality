@@ -817,7 +817,8 @@
         $(`#${div_id} select`).val(0);
         $(`#${div_id} select`).trigger('change');
         $(`#${div_id} textarea`).html('');
-        $(`#${div_id} input[type='checkbox']`).removeAttr('checked');
+        $(`#${div_id} input[type='checkbox']:not([ignorar])`).prop('checked', false);
+        $(`#${div_id} input[type='checkbox']:not([ignorar])`).removeAttr('checked');
         $(`#${div_id} [data-name]`).text('');
         $(`#${div_id} [data-form]`).removeClass('alert alert-success');
         $(`#${div_id} [data-form]`).find('[data-cancel]').remove();

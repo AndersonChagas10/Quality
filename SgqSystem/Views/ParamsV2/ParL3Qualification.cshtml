@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="col-sm-5">
+        <div class="col-sm-4">
 
             <div class="form-group">
                 <label>Valor Padrão</label>
@@ -31,7 +31,7 @@
 
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-3">
 
             <div class="form-group">
                 <label>Obrigatório:</label>
@@ -106,11 +106,11 @@
             $('table#table' + id + ' tbody').html('');
 
             $(list).each(function (i, o) {
-                let isChecked = o.IsRequired ? "checked" : "";
+                let isChecked = o.IsRequired ? "Sim" : "Não";
                 var html = '<tr>';
                 html += '<td>' + valorDoSelect('#ParL3Qualification select[name="PargroupQualification_Id"]', o.PargroupQualification_Id, 'Todos') + '</td>';
                 html += '<td>' + valorDoSelect('#ParL3Qualification select[name="Value"]', o.Value, 'Todos') + '</td>';
-                html += '<td><div class=""><label class="switch"><input type="checkbox" name="IsQualificationRequired"' + isChecked + '><span class="slider round"></span> </label></div></td>';
+                html += '<td><div class="">' + isChecked + '</div></td>';
                 html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button></td>';
                 html += '</tr>';
 
@@ -161,7 +161,7 @@
             else
                 $('#selectL1ParFieldTypeDepartment').prop("disabled", false);
 
-            this.showTableParMultipleValues();
+            //this.showTableParMultipleValues();
         },
 
         reloadTable: function () {
@@ -245,7 +245,7 @@
         $('#' + ParL3Qualification.id + ' [data-form] select[name="selectL3QualificationValue"]').val(obj.Value);
         $('#' + ParL3Qualification.id + ' [data-form] select[name="selectL3QualificationValue"]').trigger('change');
 
-        $('#' + ParL3Qualification.id + ' [data-form] input[name="IsQualificationRequired"]').attr('checked', obj.IsRequired);
+        $('#' + ParL3Qualification.id + ' [data-form] input[name="IsQualificationRequired"]').prop('checked', obj.IsRequired);
 
         $('#' + ParL3Qualification.id + ' [data-form]').data('sgq', obj);
         $('#' + ParL3Qualification.id + ' [data-form]').addClass('alert alert-success');

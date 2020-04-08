@@ -3022,7 +3022,7 @@
   <Card>
     <CardNumber>SGQ-569</CardNumber>
     <Version>1.8.0</Version>
-    <Description>[RH 5S] Parametrização - Permitir tornar a qualificação obrigatória</Description>
+    <Description>[RH 5S] Parametrização/Coleta - Permitir tornar a qualificação obrigatória</Description>
     <Script>
       IF COL_LENGTH('PargroupQualificationXParLevel3Value','IsRequired') IS NULL
       BEGIN
