@@ -319,7 +319,7 @@ AVG(PESOTOTAL) AS PESOTOTAL
 ,Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
-,SKU
+-- ,SKU
 ,data
 {campos5}
 
@@ -456,7 +456,7 @@ SELECT -- INDICADOR
 		) C
 		INNER JOIN #PESOMONITORAMENTOINDICADOR PM ON PM.ParLevel1_Id = C.ParLevel1_Id
 		
- {groupBy2} , DATA1, AVALIACAO, C.PARLEVEL1_ID , C.SKU
+ {groupBy2} , DATA1, AVALIACAO, C.PARLEVEL1_ID, C.SKU
 
 ) D
 
@@ -466,7 +466,7 @@ ON M.ID = DATEPART(MONTH, data1)
 GROUP BY Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
-,SKU
+--,SKU
 ,data
 {groupBy5}
 		DROP TABLE #PESOMONITORAMENTOINDICADOR
@@ -722,7 +722,7 @@ AVG(PESOTOTAL) AS PESOTOTAL
 ,Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
-,SKU
+--,SKU
 ,data
 
 INTO #RR2 FROM (
@@ -864,7 +864,7 @@ SELECT -- INDICADOR
 GROUP BY Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
-,SKU
+--,SKU
 ,data
 
 		DROP TABLE #PESOMONITORAMENTOINDICADOR
@@ -1326,6 +1326,7 @@ GROUP BY Parcompany_id
         var selects = "";
         var selectTotal = "";
         var campos4 = "AVG(PESOTOTAL) AS PESOTOTAL, AVG(TOTAL) AS TOTAL";
+        var groupBy3 = "";
 
         if (form.ShowModeloGrafico_Id[0] == 2)
         {
@@ -1426,7 +1427,9 @@ GROUP BY Parcompany_id
                     groupBy2 = $@" GROUP BY SKU, data ";
                     orderBy = "ORDER BY 4 DESC";
                     selectTotal = "  SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UnidadeName = B.SKU  ";
-
+                    campos4 = "SKU, AVG(PESOTOTAL) AS PESOTOTAL, AVG(TOTAL) AS TOTAL";
+                    groupBy3 = ", SKU";
+               
 
                     break;
 
@@ -1640,7 +1643,7 @@ SELECT
 ,Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
-,SKU
+--,SKU
 ,data
 
 INTO #RR2 FROM (
@@ -1777,8 +1780,9 @@ SELECT -- INDICADOR
 GROUP BY Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
-,SKU
+--,SKU
 ,data
+{groupBy3}
 
 		DROP TABLE #PESOMONITORAMENTOINDICADOR
 		DROP TABLE #CUBOLEVEL3  

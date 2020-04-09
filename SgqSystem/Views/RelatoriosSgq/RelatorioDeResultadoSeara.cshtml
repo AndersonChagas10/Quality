@@ -42,6 +42,11 @@
         <hr />
         <div class="container" id="grafico1" style="height: auto; margin: 0 auto"></div>
         <hr />
+        <div class="container" id="grafico1" style="height: auto; margin: 0 auto">
+            <table id="tableGrafico1"></table>
+        </div>
+        <hr />
+        
         <div id="divApontamentos">
             <button type="button" class="btn btn-primary pull-left"
                     id="tabela" style="display:none">
@@ -155,6 +160,7 @@
             .done(function (data) {
                 //console.log(data);
                 Grafico1(data);
+                Tabela1(data);
                 $btn.button('reset');
                 closeLoader();
                 $('#tabela').show();
@@ -223,6 +229,47 @@
             GuardJs.esconderMensagem();
 
             return true;
+        }
+
+        //------------------------- Tabela -----------------------------------
+
+        function Tabela1(data) {
+
+            var arrDeObjetos = data;
+
+            var table = datatableGRT.Inicializar({
+                idTabela: "tableGrafico1", //Id da table no HTML
+                listaDeDados: arrDeObjetos, //seu Arr de objetos que vem da API
+                colunaDosDados: [
+                    { title: "Dimensão", mData: "UnidadeName" },
+                    { title: "Avaliações", mData: "Av" },
+                    { title: "Conformidades", mData: "C" },
+                    { title: "Percentual de Conformidade", mData: "PorcC" },
+                    { title: "Não conformidades", mData: "Nc" },
+                    { title: "Percentual de Não Conformidades", mData: "PorcNc" },
+                    { title: "Nota final", mData: "TOTAL" },
+                ],
+                numeroLinhasNaTabela: 25,
+                aplicarResponsividade: true,
+                tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                initComplete: function () { //Função que dispara quando a tabela termina de carregar
+                    $('#loading').hide(); //Se tiver load, ele esconde o mesmo
+
+                    setTimeout(function (e) { //função para a tabela ser ajustada
+                        var oTable = $('#idTabela').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 100);
+
+                },
+                createdRow: function (row, data, index) {
+                }
+            });
+
         }
 
         //------------------------- Gráficos ---------------------------------
