@@ -44,6 +44,7 @@ var Select3 = {
     },
 
     render: function (element, name, url) {
+        debugger
         $('#filtroSelect3').remove();
 
         if (!this.objFiltroSelect3['_' + name]) {

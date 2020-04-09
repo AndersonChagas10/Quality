@@ -1,0 +1,72 @@
+﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
+@using DTO
+@{
+    Layout = "~\\Views\\Relatorios\\GQ\\Laboratorio\\_FilterReportsLaboratorio.cshtml";
+    ViewBag.Title = "Laboratorio";
+
+    var url = Url.Action("Index", "Home");
+
+}
+
+@section Content {
+
+    <style>
+        .panel-info {
+            border-color: #999;
+        }
+
+            .panel-info > .panel-heading {
+                background-color: #ccc;
+                border-color: #999;
+                color: #333;
+            }
+
+        .chart-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #CustomPopover {
+            z-index: 1040;
+            border-width: 2px;
+            padding: 8px;
+            border-radius: 2px !important;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            position: absolute;
+            background: white;
+        }
+
+            #CustomPopover .btn {
+                margin-left: 1px;
+                margin-right: 1px;
+            }
+
+        .geral-note {
+            padding: 2px;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            background-color: #ebe9e8;
+            text-align: center;
+            width: 60%;
+            margin: auto;
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <div class="page-content-wrapper">
+        <div class="page-content">
+            
+        </div>
+    </div>
+
+}
+
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+    </script>
+
+}

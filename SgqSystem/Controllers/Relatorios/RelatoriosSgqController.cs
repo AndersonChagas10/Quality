@@ -323,6 +323,12 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult RelatorioLaboratorio()
+        {
+            return View("~/Views/RelatoriosSgq/RelatorioLaboratorio.cshtml", form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult NaoConformidadeRH()
         {
             return View("~/Views/Relatorios/RH/NaoConformidadeRH.cshtml", form);

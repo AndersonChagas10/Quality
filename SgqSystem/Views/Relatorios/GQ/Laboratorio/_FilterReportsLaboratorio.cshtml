@@ -1,0 +1,533 @@
+﻿@using DTO
+@{
+    Layout = "~/Views/Shared/_LayoutReports.cshtml";
+}
+
+<style>
+    .daterangepicker .input-mini {
+        width: 100% !important;
+    }
+</style>
+
+<div class="page-content-wrapper">
+    <div class="page-content" style="padding:2px;">
+        <div class="col-sm-2" id="divFilterReports" style="overflow-y:scroll; padding-top:0px">
+            <form id="filterReports">
+                <div>
+                    <div class="row">
+                        <div>
+                            <div class="col-sm-12" style="background-color:#eee;margin-bottom:10px;">
+                                <h4><strong>Filtros</strong></h4>
+                                <input type="hidden" name="startDate" />
+                                <input type="hidden" name="endDate" />
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>
+                                        <strong>
+                                            dColetaAmostra
+                                        </strong>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                           name="dColetaAmostra" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>
+                                        <strong>
+                                            dProducao
+                                        </strong>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                           name="dProducao" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>
+                                        <strong>
+                                            dMovimento
+                                        </strong>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                           name="dMovimento" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>
+                                        <strong>
+                                            dAnaliseCritica
+                                        </strong>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                           name="dAnaliseCritica" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>
+                                        <strong>
+                                            dAnaliseInicial
+                                        </strong>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                           name="dAnaliseInicial" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>
+                                        <strong>
+                                            dAnaliseFinal
+                                        </strong>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                           name="dAnaliseFinal" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>
+                                        <strong>
+                                            dPrevisaoFinalAnalise
+                                        </strong>
+                                    </label>
+                                    <input type="text" class="form-control"
+                                           name="dPrevisaoFinalAnalise" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><strong>cNmSetor</strong></label>
+                                    <button type="button" data-filtroselect3-btn
+                                            data-filtroselect3-select="select[name=cNmSetor]"
+                                            data-filtroselect3-url="@Url.Action("GetFilteredcNmSetor", "api/FormularioLaboratorio")">
+                                        Abrir
+                                    </button>
+                                    <select class="form-control" name="cNmSetor"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><strong>cNmAnalise</strong></label>
+                                    <button type="button" data-filtroselect3-btn
+                                            data-filtroselect3-select="select[name=cNmAnalise]"
+                                            data-filtroselect3-url="@Url.Action("GetFilteredcNmAnalise", "api/FormularioLaboratorio")">
+                                        Abrir
+                                    </button>
+                                    <select class="form-control" name="cNmAnalise"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><strong>cNmTpColeta</strong></label>
+                                    <button type="button" data-filtroselect3-btn
+                                            data-filtroselect3-select="select[name=cNmTpColeta]"
+                                            data-filtroselect3-url="@Url.Action("GetFilteredcNmTpColeta", "api/FormularioLaboratorio")">
+                                        Abrir
+                                    </button>
+                                    <select class="form-control" name="cNmTpColeta"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><strong>cSgUnidadeMedidaLaboratorio</strong></label>
+                                    <button type="button" data-filtroselect3-btn
+                                            data-filtroselect3-select="select[name=cSgUnidadeMedidaLaboratorio]"
+                                            data-filtroselect3-url="@Url.Action("GetFilteredcSgUnidadeMedidaLaboratorio", "api/FormularioLaboratorio")">
+                                        Abrir
+                                    </button>
+                                    <select class="form-control" name="cSgUnidadeMedidaLaboratorio"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><strong>cNmPontoColeta</strong></label>
+                                    <button type="button" data-filtroselect3-btn
+                                            data-filtroselect3-select="select[name=cNmPontoColeta]"
+                                            data-filtroselect3-url="@Url.Action("GetFilteredcNmPontoColeta", "api/FormularioLaboratorio")">
+                                        Abrir
+                                    </button>
+                                    <select class="form-control" name="cNmPontoColeta"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><strong>cNmDetalhePontoColeta</strong></label>
+                                    <button type="button" data-filtroselect3-btn
+                                            data-filtroselect3-select="select[name=cNmDetalhePontoColeta]"
+                                            data-filtroselect3-url="@Url.Action("GetFilteredcNmDetalhePontoColeta", "api/FormularioLaboratorio")">
+                                        Abrir
+                                    </button>
+                                    <select class="form-control" name="cNmDetalhePontoColeta"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><strong>cNmLaboratorio</strong></label>
+                                    <button type="button" data-filtroselect3-btn
+                                            data-filtroselect3-select="select[name=cNmLaboratorio]"
+                                            data-filtroselect3-url="@Url.Action("GetFilteredcNmLaboratorio", "api/FormularioLaboratorio")">
+                                        Abrir
+                                    </button>
+                                    <select class="form-control" name="cNmLaboratorio"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><strong>cCdBarraAmostra</strong></label>
+                                    <button type="button" data-filtroselect3-btn
+                                            data-filtroselect3-select="select[name=cCdBarraAmostra]"
+                                            data-filtroselect3-url="@Url.Action("GetFilteredcCdBarraAmostra", "api/FormularioLaboratorio")">
+                                        Abrir
+                                    </button>
+                                    <select class="form-control" name="cCdBarraAmostra"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><strong>cNmMatriz</strong></label>
+                                    <button type="button" data-filtroselect3-btn
+                                            data-filtroselect3-select="select[name=cNmMatriz]"
+                                            data-filtroselect3-url="@Url.Action("GetFilteredcNmMatriz", "api/FormularioLaboratorio")">
+                                        Abrir
+                                    </button>
+                                    <select class="form-control" name="cNmMatriz"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><strong>cNmGrupoAnalise</strong></label>
+                                    <button type="button" data-filtroselect3-btn
+                                            data-filtroselect3-select="select[name=cNmGrupoAnalise]"
+                                            data-filtroselect3-url="@Url.Action("GetFilteredcNmGrupoAnalise", "api/FormularioLaboratorio")">
+                                        Abrir
+                                    </button>
+                                    <select class="form-control" name="cNmGrupoAnalise"></select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label><strong>cNmMetodologia</strong></label>
+                                    <button type="button" data-filtroselect3-btn
+                                            data-filtroselect3-select="select[name=cNmMetodologia]"
+                                            data-filtroselect3-url="@Url.Action("GetFilteredcNmMetodologia", "api/FormularioLaboratorio")">
+                                        Abrir
+                                    </button>
+                                    <select class="form-control" name="cNmMetodologia"></select>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+                        </div>
+                        <div class="col-sm-12">
+                            <button type="button" class="btn btn-primary pull-right btn-block"
+                                    id="btnSend" onclick="enviarFiltro();">
+                                @Resources.Resource.send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        @RenderSection("Content", required: true)
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Select3/select3.js"></script>
+    <script>
+
+        function toggleDivFilterReports() {
+            if ($('#divFilterReports').hasClass("hide")) {
+                $('#divFilterReports').removeClass('hide');
+                $('#divReportContent').attr('class', 'col-sm-10');
+                $('#btnToggleDivFilterReports').text('< Esconder Filtros');
+
+            } else {
+                $('#divFilterReports').addClass('hide');
+                $('#divReportContent').attr('class', 'col-sm-12');
+                $('#btnToggleDivFilterReports').text('> Mostrar Filtros');
+            }
+        }
+
+        $('#filterReports select').on('change', function () {
+            preencheFiltrosAjax();
+        });
+
+        var dataFiltro = [];
+        var objFiltro = {
+            Param: {}
+        };
+
+        function atualizaObjFiltro() {
+            var objFiltroParam = objFiltro.Param;
+            objFiltro = $('#filterReports').serializeObject();
+            $(Object.keys(objFiltro)).each(function (i, o) {
+                if (o.indexOf("Date") < 0) {
+                    objFiltro[o] = Array.isArray(objFiltro[o]) ? objFiltro[o] : [objFiltro[o]];
+                }
+            });
+            objFiltro.Param = objFiltroParam;
+            objFiltro.ShowUserCompanies = @Html.Raw(Json.Encode(ViewBag.ShowUserCompanies));
+            objFiltro.ShowLinkedFilters = @Html.Raw(Json.Encode(ViewBag.ShowLinkedFilters));
+        }
+
+        function preencheFiltrosAjax() {
+
+            atualizaObjFiltro();
+            return;
+            openLoader('Carregando Filtros...');
+            $.ajax({
+                url: "@Html.Raw(Url.Action("GetForm", "api/Formulario"))",
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                    $("#resultado").html("ENVIANDO...");
+                }
+            })
+            .done(function (data) {
+                preencheFiltros(data);
+                inicializaSelect2();
+                closeLoader();
+            })
+            .fail(function (jqXHR, textStatus, msg) {
+                console.log(msg);
+                closeLoader();
+            });
+        }
+
+        function inicializaSelect2() {
+
+            $('select[name="cNmSetor"]').select2();
+            $('select[name="cNmAnalise"]').select2();
+            $('select[name="cNmTpColeta"]').select2();
+            $('select[name="cSgUnidadeMedidaLaboratorio"]').select2();
+            $('select[name="cNmPontoColeta"]').select2();
+            $('select[name="cNmDetalhePontoColeta"]').select2();
+            $('select[name="cNmLaboratorio"]').select2();
+            $('select[name="cCdBarraAmostra"]').select2();
+            $('select[name="cNmMatriz"]').select2();
+            $('select[name="cNmGrupoAnalise"]').select2();
+        }
+
+        inicializaSelect2();
+        preencheFiltrosAjax();
+
+        function preencheFiltros(data) {
+
+            dataFiltro = data;
+
+            $('#filterReports select').off('change');
+
+            $('select[name="cNmSetor"]').trigger('change');
+            $('select[name="cNmAnalise"]').trigger('change');
+            $('select[name="cNmTpColeta"]').trigger('change');
+            $('select[name="cSgUnidadeMedidaLaboratorio"]').trigger('change');
+            $('select[name="cNmPontoColeta"]').trigger('change');
+            $('select[name="cNmDetalhePontoColeta"]').trigger('change');
+            $('select[name="cNmLaboratorio"]').trigger('change');
+            $('select[name="cCdBarraAmostra"]').trigger('change');
+            $('select[name="cNmMatriz"]').trigger('change');
+            $('select[name="cNmGrupoAnalise"]').trigger('change');
+
+
+            $('#filterReports select').on('change', function () {
+                preencheFiltrosAjax();
+            });
+        }
+
+        function retornaOptionsPeloArray(lista, value, text, listaSelecionada, defaultText) {
+
+            var html = "";
+
+            if (typeof (defaultText) != 'undefined') {
+                html += '<option value="">' + defaultText + '</option>';
+            }
+
+            $(lista).each(function (i, o) {
+
+                var selecionado = listaSelecionada != null ?
+                    $.grep(Array.isArray(listaSelecionada) ? listaSelecionada : [listaSelecionada],
+                        function (obj) { return obj == o[value] }) : [];
+
+                var selected = "";
+
+                if (selecionado.length > 0)
+                    selected = "selected";
+
+                html += '<option value="' + o[value] + '" ' + selected + '>' + o[text] + '</option>';
+
+            });
+
+            return html;
+        }
+
+        /*DATE RANGE PICKER*/
+
+        var rangesEUA = {
+            '⊲ Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '⊲ Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            '⊲ Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            '⊲ Last 365 Days': [moment().subtract(12, 'month'), moment()],
+            '⬚ This Month': [moment().startOf('month'), moment().endOf('month')],
+            '⬚ Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            '⬚ This Year': [moment().startOf('year'), moment().endOf('year')],
+            '⬚ Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+        }
+
+        var rangesBR = {
+            '⊲ Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '⊲ Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+            '⊲ Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+            '⊲ Últimos 365 Dias': [moment().subtract(12, 'month'), moment()],
+            '⬚ Este Mês': [moment().startOf('month'), moment().endOf('month')],
+            '⬚ Último Mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            '⬚ Este Ano': [moment().startOf('year'), moment().endOf('year')],
+            '⬚ Último Ano': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+        }
+
+        var configLayout = @Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));
+        var rangesCalendar;
+
+        /*Configura date range picker para PT-BR*/
+        if (configLayout) {
+
+            moment.locale("Pt-Br");
+            moment.defaultFormat = "DD/MM/YYYY";
+
+            $.fn.daterangepicker('locale', {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "fromLabel": "de",
+                "toLabel": "até",
+                "customRangeLabel": "Customizado",
+                "weekLabel": "W",
+                "daysOfWeek": [
+                    "Dom",
+                    "Seg",
+                    "Ter",
+                    "Qua",
+                    "Qui",
+                    "Sex",
+                    "Sab"
+                ],
+                "monthNames": [
+                    "Janeiro",
+                    "Fevereiro",
+                    "Março",
+                    "Abril",
+                    "Maio",
+                    "Junho",
+                    "Julho",
+                    "Agosto",
+                    "Setembro",
+                    "Outubro",
+                    "Novembro",
+                    "Dezembro"
+                ],
+            });
+
+            rangesCalendar = rangesBR;
+
+        } else {
+
+            moment.defaultFormat = "MM/DD/YYYY";
+
+            $.fn.daterangepicker('locale', {
+                "format": "MM/DD/YYYY",
+                "separator": " - ",
+            });
+
+            rangesCalendar = rangesEUA;
+
+        }
+
+        $.fn.daterangepicker('ranges', rangesCalendar);
+
+        var start = moment();
+        var end = moment();
+
+        function callbackDateRange(start, end) {
+            $('input[name=startDate]').val(start.format("YYYY-MM-DD"));
+            $('input[name=endDate]').val(end.format("YYYY-MM-DD"));
+            atualizaObjFiltro();
+        }
+
+        var configCallendar = {};
+        moment.locale('pt-BR');
+        $('input[name=dColetaAmostra], input[name=dProducao], input[name=dMovimento], input[name=dAnaliseCritica], input[name=dAnaliseInicial], input[name=dAnaliseFinal], input[name=dPrevisaoFinalAnalise]').daterangepicker({
+            startDate: start,
+            endDate: end,
+            locale: {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "customRangeLabel": "Seleção",
+            },
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            linkedCalendars: false,
+            ranges: rangesCalendar
+        }, callbackDateRange);
+
+        /*SIMPLE DATE PICKER*/
+        $('input[name="currentDate"]').daterangepicker({
+            singleDatePicker: true,
+            startDate: start,
+            endDate: end,
+            locale: {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "customRangeLabel": "Seleção",
+            },
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            linkedCalendars: false
+        }, callbackDateRange);
+
+        setTimeout(function () {
+            callbackDateRange(start, end);
+        }, 500);
+
+        Select3.initialize(function () { return objFiltro });
+
+    </script>
+
+}
+@RenderSection("Scripts", required: true)
