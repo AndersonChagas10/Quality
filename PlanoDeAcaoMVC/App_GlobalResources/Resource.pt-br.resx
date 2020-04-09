@@ -850,7 +850,7 @@
     <value>Editar Planejamento</value>
   </data>
   <data name="from" xml:space="preserve">
-    <value>apartir de</value>
+    <value>a partir de</value>
   </data>
   <data name="log_off" xml:space="preserve">
     <value>Sair</value>
