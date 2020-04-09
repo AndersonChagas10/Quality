@@ -338,6 +338,7 @@
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
     <Compile Include="Controllers\Api\DefectApiController.cs" />
     <Compile Include="Controllers\Api\Formulario\FormularioApiController.cs" />
+    <Compile Include="Controllers\Api\Formulario\FormularioLaboratorioApiController.cs" />
     <Compile Include="Controllers\Api\Integracao\IntegracaoApiController.cs" />
     <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
     <Compile Include="Controllers\Api\ImportacaoExcelApiController.cs" />
@@ -2210,6 +2211,8 @@
     <Content Include="Views\RelatoriosSgq\RelatorioDeResultadoSeara.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioConsistencyCallMSP.cshtml" />
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaPrototipe.cshtml" />
+    <Content Include="Views\Relatorios\GQ\Laboratorio\_FilterReportsLaboratorio.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioLaboratorio.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
