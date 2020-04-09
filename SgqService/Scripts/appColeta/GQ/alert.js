@@ -437,7 +437,7 @@ function setValoresLevel3Alertas(level3, level2Resultado) {
             , isKO: $('#' + level3.attr('level03id') + '.level3:visible').attr('isknockout')
         });
 
-        if ($(_level1).attr('alertanivel3') == "a8"){
+        if (parseInt($(_level2).attr('parnotconformityrule_id')) === 8){
 
             listaDeDefeitosAlerta8.push({
                 Date: datetime
