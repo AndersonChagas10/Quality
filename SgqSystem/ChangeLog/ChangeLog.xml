@@ -3024,10 +3024,10 @@
     <Version>1.8.0</Version>
     <Description>[RH SESMT] Parametrização - Permitir redistribuir peso</Description>
     <Script>
-      IF COL_LENGTH('parlevel1','RedistributeWeight') IS NULL
+      IF COL_LENGTH('ParEvaluationXDepartmentXCargo','RedistributeWeight') IS NULL
       BEGIN
-      ALTER TABLE parlevel1
-      ADD RedistributeWeight bit null
+      alter table ParEvaluationXDepartmentXCargo
+      add RedistributeWeight bit null
       END
     </Script>
   </Card>
