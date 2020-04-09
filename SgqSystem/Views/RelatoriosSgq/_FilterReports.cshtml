@@ -73,7 +73,7 @@
                             {
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label><strong>Modelo Gráfico</strong></label>                                       
+                                        <label><strong>Modelo Gráfico</strong></label>
                                         <select class="form-control" name="ShowModeloGrafico_Id" id="modeloGrafico">
                                             <option value="1">Comparativo</option>
                                             <option value="2">Evolutivo Mensal</option>
@@ -83,7 +83,7 @@
                                     </div>
                                 </div>
                             }
-                           
+
                             @if (ViewBag.ShowParModule == true)
                             {
                                 <div class="col-sm-12">
@@ -96,6 +96,22 @@
                                             Abrir
                                         </button>
                                         <select class="form-control" name="parModule_Ids"></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParModuleMultiple == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Módulo</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parModule_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParModule", "api/Formulario")"
+                                                data-filtroselect3-default-select="@ViewBag.ShowParModuleDefault">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parModule_Ids" multiple></select>
                                     </div>
                                 </div>
                             }

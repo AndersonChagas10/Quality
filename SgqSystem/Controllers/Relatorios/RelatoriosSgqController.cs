@@ -353,6 +353,12 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult VisaoGeralDaAreaPrototipe()
+        {
+            return View("~/Views/RelatoriosSgq/VisaoGeralDaAreaPrototipe.cshtml", form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult NaoConformidadePorCabecalho()
         {
             return View(form);

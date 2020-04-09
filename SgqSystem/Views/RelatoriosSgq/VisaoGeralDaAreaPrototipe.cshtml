@@ -1,0 +1,315 @@
+﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
+@using DTO
+@{
+    Layout = "~\\Views\\RelatoriosSgq\\_FilterReports.cshtml";
+    ViewBag.Title = "VGA Prototipo"; //"Não Conformidades";
+
+
+    ViewBag.UnitIdArr = true;
+
+    ViewBag.ShowCurrentDate = false;
+    ViewBag.ShowRangeDate = true;
+    ViewBag.ShowParCompany = false;
+    ViewBag.ShowShift = false;
+    ViewBag.ShowParDepartment = false;
+    ViewBag.ShowParSecao = false;
+    ViewBag.ShowParCargo = false;
+    //ViewBag.ShowParCriticalLevel = true; //No momento não existe no sistema RH (27/01/2020)
+    ViewBag.ShowParLevel1 = false;
+    ViewBag.ShowParLevel2 = false;
+    ViewBag.ShowParLevel3 = false;
+    ViewBag.ShowParCluster = false;
+    ViewBag.ShowParClusterGroup = false;
+    ViewBag.ShowParStructure2 = false; //Grupo de empresa
+    ViewBag.ShowParStructure3 = false; //Regional
+    ViewBag.ShowParLevel1 = false;
+    ViewBag.ShowParLevel2 = false;
+    ViewBag.ShowParLevel3 = false;
+    ViewBag.ShowParStructureGroup = false;
+    ViewBag.ShowParModuleMultiple = true;
+    ViewBag.ShowUserCompanies = false; //Exibe somente as unidades do usuário no filtro
+}
+
+@section Content {
+
+    <style>
+
+        .panel-info {
+            border-color: #999;
+        }
+
+            .panel-info > .panel-heading {
+                background-color: #ccc;
+                border-color: #999;
+                color: #333;
+            }
+
+        .chart-inner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #CustomPopover {
+            z-index: 1040;
+            border-width: 2px;
+            padding: 8px;
+            border-radius: 2px !important;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            position: absolute;
+            background: white;
+        }
+
+            #CustomPopover .btn {
+                margin-left: 1px;
+                margin-right: 1px;
+            }
+
+        .geral-note {
+            padding: 2px;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            background-color: #ebe9e8;
+            text-align: center;
+            width: 60%;
+            margin: auto;
+            margin-bottom: 10px;
+        }
+    </style>
+
+    <div class="page-content-wrapper">
+        <div id="pagina" class="page-content">
+
+            <input id="teste" class="hidden" value="@ViewBag.RoleUSerSgq" />
+
+            <div id="formBodyContent">
+                @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
+                <div id="VGAGraficoLinha" class="hidden">
+                    <div id="containerLine" class="container" style="max-width: 1127.16px; min-width: 1127.16px;"></div>
+                </div>
+
+                <div id="VGAGraficoBarra" class="hidden">
+                    <div id="containerBar" class="container" style="max-width: 1127.16px; min-width: 1127.16px;"></div>
+                </div>
+
+                <div id="VGAMatriz" class="hidden">
+                    <div id="placeholder" class="container">
+                    </div>
+                </div>
+
+                <div id="loading"></div>
+            </div>
+        </div>
+    </div>
+
+
+}
+
+
+@section Scripts {
+
+    <script src="~/Scripts/heatmap.js"></script>
+
+    <script type="text/javascript">
+
+        function enviarFiltro() {
+            $("#VGAGraficoLinha").removeClass("hidden");
+            $("#VGAGraficoBarra").removeClass("hidden");
+            $("#VGAMatriz").removeClass("hidden");
+
+            $('.body-content').css('height', '3350px');
+        }
+
+        Highcharts.chart('containerLine', {
+
+            title: {
+                text: 'Solar Employment Growth by Sector, 2010-2016'
+            },
+
+            subtitle: {
+                text: 'Source: thesolarfoundation.com'
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Number of Employees'
+                }
+            },
+
+            xAxis: {
+                accessibility: {
+                    rangeDescription: 'Range: 2010 to 2017'
+                }
+            },
+
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+
+            plotOptions: {
+                series: {
+                    label: {
+                        connectorAllowed: false
+                    },
+                    pointStart: 2010
+                }
+            },
+
+            series: [{
+                name: 'Installation',
+                data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+            }, {
+                name: 'Manufacturing',
+                data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+            }, {
+                name: 'Sales & Distribution',
+                data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+            }, {
+                name: 'Project Development',
+                data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+            }, {
+                name: 'Other',
+                data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+            }],
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+        });
+
+        Highcharts.chart('containerBar', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Historic World Population by Region'
+            },
+            subtitle: {
+                text: 'Source: <a href="https://en.wikipedia.org/wiki/World_population">Wikipedia.org</a>'
+            },
+            xAxis: {
+                categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Population (millions)',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            tooltip: {
+                valueSuffix: ' millions'
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: '#FFFFFF',
+                shadow: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: 'Year 1800',
+                data: [107, 31, 635, 203, 2]
+            }, {
+                name: 'Year 1900',
+                data: [133, 156, 947, 408, 6]
+            }, {
+                name: 'Year 2000',
+                data: [814, 841, 3714, 727, 31]
+            }, {
+                name: 'Year 2016',
+                data: [1216, 1001, 4436, 738, 40]
+            }]
+        });
+
+        var jsonData = [];
+
+        for (var i = 0; i <= 300; i++) {
+            jsonData.push(
+                {
+                    "Cabecalho": "Unidade " + Math.round(Math.random() * 15),
+                    "Indicador": "Função " + Math.round(Math.random() * 2),
+                    "Valor_1": Math.round(Math.random() * 1500),
+                    "Valor_2": 50 + Math.round(Math.random() * 50)
+                }
+            );
+        }
+
+        var w = $('body #pagina').innerWidth();
+        config = {
+            maxWidth: w * .98,
+            widthColumn1: (w * .1) + "px",
+            widthColumn2: (w * .65) + "px",
+            widthColumn3: (w * .2) + "px",
+            colorMin: "ff0000",
+            colorMid: "fef104",
+            colorMax: "00e600",
+            isGradient: true,
+            colorMain: "dddddd",
+            colorEmptyTd: "f9f9f9",
+            jsonName: "Data",
+            valorVazio: "-",
+        };
+
+        var tituloDesdobramento = "Titulo do Mapa de Calor";
+
+        config.tituloDesdobramento = tituloDesdobramento;
+        config.Cabecalho = "<a class='cabecalho' data-titulo='{Cabecalho}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{Cabecalho}</a>";
+        config.Indicador = "<a class='indicador' data-titulo='{Indicador}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{Indicador}</a>";
+        config.tituloIndicador = "Teste";
+        config.json = jsonData;
+        config.idPlaceholder = "#placeholder";
+        config.cellWidth = "66";
+        config.heatmapType = "line";
+        config.Valores = [
+            { "title": "Valor_1", "render": function () { return '<span>{Valor_1}</span>'; }, "heatmap": true, "groupFunction": "AVG" },
+            //{ "title": "Valor_2", "render": function () { return '<span>{Valor_2}</span>'; }, "heatmap": true },
+            //{ "title": "%", "groupFunction": "AVG", "Exp": "({Valor_1}/{Valor_2})*100", "heatmap": true }
+        ];
+
+        HeatMap.Inicializar(
+            config
+        );
+
+        $('#placeholder').on("click", "#listaValores td a[data-bla]", function () {
+            alert($(this).attr('data-bla') + "= " + $(this).attr('data-bla'));
+        });
+
+    </script>
+
+}
