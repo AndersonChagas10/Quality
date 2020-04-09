@@ -435,9 +435,7 @@ function SalvarNovo() {
                 $(tempInput).find("option[value= " + r.Id + "]").prop('selected', true);
                 $(tempInput).select2('destroy');
                 $(tempInput).val(r.Id).trigger('change');
-                $(tempInput).select2({
-                    matcher: matchCustom
-                });
+                $(tempInput).select2(configSelect2);
 
             } else {
                 $(tempInput).find('option:first').prop('selected', true);

@@ -230,25 +230,6 @@ function FiltraColunas(array, arrFiltro) {
     return novoArr;
 }
 
-//Função para buscas nos Select2
-//function matchStart(params, data) {
-
-//    if ($.trim(params.term) === '') {
-//        return data;
-//    }
-
-//    if (data.text.indexOf(params.term) > 0) {
-//        return data;
-//    } else {
-//        return null;
-//    }
-
-//}
-
-//$("#campo1Filtro").select2({
-//    matcher: matchStart
-//});
-
 $(function () {
 
     var rangesBR = {

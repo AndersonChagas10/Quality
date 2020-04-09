@@ -18,15 +18,11 @@ var addButton = (function () {
         setTimeout(function () {
             header.find("select.select2-hidden-accessible").next('.select2').remove();
             header.find("select.select2-hidden-accessible").removeClass('select2-hidden-accessible');
-            header.find("select:visible").select2({
-                matcher: matchCustom
-            });
+             header.find("select:visible").select2(configSelect2);
             $('.UnidadeMedida').change();
 
             $('[name="TipoIndicador"]').each(function () {
-                $(this).select2({
-                    matcher: matchCustom
-                });
+                 $(this).select2(configSelect2);
             });
 
         }, 1);
@@ -256,15 +252,11 @@ function myfunction() {
             form.find('.IndicadorOutros').show();
             form.find('.ProbDesv').hide();
             form.find('.ProbDesv').val("");
-            form.find('.IndicadorOutros select').select2({
-                matcher: matchCustom
-            });
+            form.find('.IndicadorOutros select').select2(configSelect2);
         } else if (valor == 2) {
             form.find('.IndicadorSgq').show();
             form.find('.ProbDesv').show();
-            form.find('.IndicadorSgq select').select2({
-                matcher: matchCustom
-            });
+            form.find('.IndicadorSgq select').select2(configSelect2);
         }
     });
 
@@ -274,23 +266,17 @@ function myfunction() {
         if (valor) {
             $.get(GETGrupoCausa, { id: valor }, function (r) {
                 form.find('#GrupoCausa').empty().html(r);
-                $('.showAsEstrategy select').select2({
-                    matcher: matchCustom
-                });
+                 $('.showAsEstrategy select').select2(configSelect2);
             });
             $.get(GETContramedidaGenerica, { id: valor }, function (rr) {
                 form.find('#ContramedidaGenerica').empty().html(rr);
-                $('.showAsEstrategy select').select2({
-                    matcher: matchCustom
-                });
+                 $('.showAsEstrategy select').select2(configSelect2);
             });
         }
         else {
             form.find('#GrupoCausa_Id').empty().attr('disabled', true);
             form.find('#ContramedidaGenerica_Id').empty().attr('disabled', true);
-            $('.showAsEstrategy select').select2({
-                matcher: matchCustom
-            });
+             $('.showAsEstrategy select').select2(configSelect2);
         }
     });
 }
@@ -493,9 +479,7 @@ function getAcao(data) {
 
         setTimeout(function () {
             $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
-            $('.content3 select').select2({
-                matcher: matchCustom
-            });
+             $('.content3 select').select2(configSelect2);
             $('.UnidadeMedida').change();
 
             InitDatePiker();
@@ -569,12 +553,8 @@ function getAcompanhamento(acaoCorrentId) {
         });
 
         setTimeout(function () {
-            $('#MailTo').select2({
-                matcher: matchCustom
-            });
-            $('#Status_Id').select2({
-                matcher: matchCustom
-            });
+             $('#MailTo').select2(configSelect2);
+             $('#Status_Id').select2(configSelect2);
         }, 4500);
     })
 }

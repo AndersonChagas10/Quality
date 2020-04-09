@@ -209,17 +209,17 @@ function graficoEstoque() {
 
     makeChart('panel4', categoriesArr, serieArrFinal, 'column', '', {});
 
-    $('select:not(#valor1Filtro)').select2({
+    $('.defaultDivInternal select:not(#valor1Filtro)').select2({
         dropdownAutoWidth: true,
         width: '140px',
         matcher: matchCustom
-    })
+    });
 
-    $('select#valor1Filtro').select2({
+    $('.defaultDivInternal select#valor1Filtro').select2({
         dropdownAutoWidth: true,
         width: '250px',
         matcher: matchCustom
-    })
+    });
 
 }
 

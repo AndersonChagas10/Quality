@@ -87,6 +87,11 @@ function NovoPlanejamento() {//Pos Modal2
             $('#Planejamento > table > tbody > tr:nth-child(21)').hide();
 
             DdlChangeEstrategico();
+
+            setTimeout(function(){
+                $('#Planejamento select').select2(configSelect2)
+            }, 500);
+            
         }
 
         InitDatePiker();
@@ -264,6 +269,7 @@ function EditarPlanejamento(model) {
         $('#UnidadeDeMedida_Id').trigger('change');
 
     });
+
     /*Botões*/
 
     $('#modalLindo').find('.modal-footer button').hide()
@@ -287,18 +293,23 @@ function DdlChangeEstrategico(v1, v2, v3, edit) {
     let Objetivo_Id = $('#Objetivo_Id')
 
     var rdy = true;
+
     Dimensao_Id.off('change').on('change', function () {
+
         var valor = $(this).val();
         var form = $(this).parents('form');
+
         rdy = false;
+
         if (valor) {
+
             $.get(GETObjetivo, { id: valor }, function (r) {
                 $('#Objetivo_Id').empty().html(r).attr('disabled', false);
                 $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', false);
                 rdy = true;
             })
-        }
-        else {
+        } else {
+
             $('#Objetivo_Id').val("").change().attr('disabled', true);
             $('#Objetivo_Id').parent().parent().find('.novoItem').attr('disabled', true);
             $('#IndicadoresDiretriz_Id').val("").change().attr('disabled', true);
@@ -307,6 +318,7 @@ function DdlChangeEstrategico(v1, v2, v3, edit) {
     });
 
     Objetivo_Id.off('change').on('change', function () {
+
         var valor = $(this).val();
         var form = $(this).parents('form');
 
@@ -365,9 +377,7 @@ function DdlChangeTatico(model) {
                     } catch (e) {
                     }
                     finally {
-                        $('#modalLindo select').select2({
-                            matcher: matchCustom
-                        });
+                         $('#modalLindo select').select2(configSelect2);
                     }
 
                 });
@@ -393,9 +403,7 @@ function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, 
             let childrenEl = $(idChildren)
             childrenEl.parent().html('').append(response);
             childrenEl.remove();
-            $(idChildren).select2({
-                matcher: matchCustom
-            });
+             $(idChildren).select2(configSelect2);
 
             if (masterCB)
                 masterCB()
@@ -460,9 +468,7 @@ function changeIniciativa() {
 
             $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
 
-            $('#formEditTatico #IndicadoresDeProjeto_Id').select2({
-                matcher: matchCustom
-            });
+            // $('#formEditTatico #IndicadoresDeProjeto_Id').select2(configSelect2);
 
             $('#formEditTatico #IndicadoresDeProjeto_Id').change();
         });
@@ -483,9 +489,7 @@ function changeIndicadoresProjetos() {
 
             $('#formEditTatico #ObjetivoGerencial_Id').addClass('tatico');
 
-            $('#formEditTatico #ObjetivoGerencial_Id').select2({
-                matcher: matchCustom
-            });
+            // $('#formEditTatico #ObjetivoGerencial_Id').select2(configSelect2);
         });
     });
 }
@@ -578,6 +582,10 @@ function TesteRenan(r, tipo, model) {
     });
 
     DisabilitaBotaoGerenciar();
+
+    setTimeout(function(){
+        $('#modalLindo select').select2(configSelect2);
+    }, 500)
 }
 
 function changePlanejamento(tipo, form) {

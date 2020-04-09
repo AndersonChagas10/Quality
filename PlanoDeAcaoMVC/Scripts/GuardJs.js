@@ -106,9 +106,7 @@ function InitiMasksDefaults() {
 
     /*Select 2*/
     $('.select2ddl').each(function (index) {
-        $(this).select2({
-            matcher: matchCustom
-        });
+        $(this).select2(configSelect2);
     });
 
     /*FIM Select 2*/
@@ -350,6 +348,11 @@ function matchCustom(params, data) {
     }
 
     return null;
+}
+
+let configSelect2 = {
+    matcher: matchCustom,
+    width: 'resolve'
 }
 
 //Auxiliares para abas de bootstrap e divs em geral.

@@ -295,9 +295,7 @@
                 $scope.items.push($scope.count);
 
                 setTimeout(function () {
-                    $('select').select2({
-                        matcher: matchCustom
-                    });
+                    $('select').select2(configSelect2);
                 }, 500);
 
             };
@@ -504,9 +502,7 @@
 
             InitDatePiker();
             HabilitaBotaoSalvar();
-            $('select').select2({
-                matcher: matchCustom
-            });
+            $('select').select2(configSelect2);
 
         });
 

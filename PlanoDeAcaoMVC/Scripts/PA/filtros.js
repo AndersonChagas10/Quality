@@ -757,9 +757,9 @@ function logArrayElements(element, index, array) {
 }
 
 function atualizarTopFilters() {
-    $('.dropdown-toggle').css('font-size', 'xx-small');
-    $('.select2').css('width', '50px');
-    $('.select2').css('font-size', 'xx-small');
+    $('.defaultDivInternal .dropdown-toggle').css('font-size', 'xx-small');
+    $('.defaultDivInternal .select2').css('width', '50px');
+    $('.defaultDivInternal .select2').css('font-size', 'xx-small');
 }
 
 $(document).ready(function () {
