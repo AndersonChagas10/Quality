@@ -253,6 +253,7 @@
                     IsReaudit: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked"),
                     IsReauditShowTable: $('#' + RegraNcL2.level + ' #paramsDto_parLevel1Dto_parNotConformityRuleXLevelDto_IsReaudit').is(":checked") ? "@Resources.Resource.yes" : "@Resources.Resource.no",
                     IsActive: true,
+                    CorrectiveAction: true,
                     //btn: crudNxN.btnRemove + crudNxN.btnEdit,
                 }
 
@@ -281,6 +282,7 @@
                 dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].IsReauditShowTable"] = o.IsReauditShowTable;
                 dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].IsActive"] = o.IsActive;
                 dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].ParLevel1_Id"] = parseInt($('#paramsDto_parLevel1Dto_Id').val());
+                dados["paramsDto.parLevel2Dto.listParNotConformityRuleXLevelDto[" + c + "].CorrectiveAction"] = o.CorrectiveAction;
 
             });
 
