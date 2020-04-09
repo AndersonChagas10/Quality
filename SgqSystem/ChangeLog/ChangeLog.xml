@@ -3091,7 +3091,7 @@
       IF COL_LENGTH('PargroupQualificationXParLevel3Value','IsRequired') IS NULL
       BEGIN
       alter table PargroupQualificationXParLevel3Value
-      add IsRequired bit null
+      add IsRequired bit not null default 0
       END
     </Script>
   </Card>
