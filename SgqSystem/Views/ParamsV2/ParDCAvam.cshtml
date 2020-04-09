@@ -688,7 +688,7 @@
                 else
                     $('#' + id + ' [data-form] input[name="IsAgendamento"]').prop('checked', false);
 
-                $('#' + id + ' [data-form] input[name="IsParcialCollection"]').prop('checked', obj.IsParcialCollection);
+                $('#' + id + ' [data-form] input[name="IsParcialCollection"]').prop('checked', obj.IsParcialCollection == true ? true : false);
 
                 $('#' + id + ' [data-form]').data('sgq', obj);
                 $('#' + id + ' [data-form]').addClass('alert alert-success');
