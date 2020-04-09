@@ -421,7 +421,7 @@ namespace ResourcesPA {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Completed Tasks.
+        ///   Looks up a localized string similar to Completed Actions.
         /// </summary>
         public static string completed_tasks {
             get {
@@ -538,7 +538,7 @@ namespace ResourcesPA {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delayed Tasks.
+        ///   Looks up a localized string similar to Delayed Actions.
         /// </summary>
         public static string delayed_tasks {
             get {
@@ -1276,7 +1276,7 @@ namespace ResourcesPA {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next Tasks.
+        ///   Looks up a localized string similar to Next Actions.
         /// </summary>
         public static string next_tasks {
             get {
@@ -1402,7 +1402,7 @@ namespace ResourcesPA {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ongoing Tasks.
+        ///   Looks up a localized string similar to Ongoing Actions.
         /// </summary>
         public static string ongoing_tasks {
             get {

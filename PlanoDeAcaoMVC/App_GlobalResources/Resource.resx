@@ -178,7 +178,7 @@
     <value>Comparative</value>
   </data>
   <data name="completed_tasks" xml:space="preserve">
-    <value>Completed Tasks</value>
+    <value>Completed Actions</value>
   </data>
   <data name="coordination" xml:space="preserve">
     <value>Coordination</value>
@@ -196,7 +196,7 @@
     <value>Dec</value>
   </data>
   <data name="delayed_tasks" xml:space="preserve">
-    <value>Delayed Tasks</value>
+    <value>Delayed Actions</value>
   </data>
   <data name="dimension" xml:space="preserve">
     <value>Dimension</value>
@@ -307,7 +307,7 @@
     <value>Next</value>
   </data>
   <data name="next_tasks" xml:space="preserve">
-    <value>Next Tasks</value>
+    <value>Next Actions</value>
   </data>
   <data name="nov" xml:space="preserve">
     <value>Nov</value>
@@ -325,7 +325,7 @@
     <value>Oct</value>
   </data>
   <data name="ongoing_tasks" xml:space="preserve">
-    <value>Ongoing Tasks</value>
+    <value>Ongoing Actions</value>
   </data>
   <data name="open" xml:space="preserve">
     <value>Open</value>
