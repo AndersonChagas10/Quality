@@ -3019,4 +3019,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-575</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] [MARCOS] NOVO VGA - Criar view e filtros.</Description>
+    <Script>
+    </Script>
+  </Card>
+  
 </Cards>
