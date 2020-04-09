@@ -3125,4 +3125,17 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-572</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[RH SESMT] Parametrização - Permitir coleta parcial</Description>
+    <Script>
+      IF COL_LENGTH('ParEvaluationXDepartmentXCargo','IsPartialCollection') IS NULL
+      BEGIN
+      ALTER TABLE ParEvaluationXDepartmentXCargo
+      ADD IsPartialCollection bit null
+      END
+    </Script>
+  </Card>
+
 </Cards>

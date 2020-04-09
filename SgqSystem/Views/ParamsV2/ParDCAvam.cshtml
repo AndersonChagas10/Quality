@@ -97,7 +97,16 @@
             </div>
 
         </div>
+        <div class="col-sm-6">
+            <label for="IsPartialCollection"> Coleta Parcial: </label>
+            <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Permitir coletar por etapas" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+            <div class="form-group">
 
+                <label class="switch">
+                    <input id="IsPartialCollection" type="checkbox" name="IsPartialCollection" checked=""><span class="slider round"></span>
+                </label>
+            </div>
+        </div>
 
         <div id="allObjAVAgendamento" class="col-sm-12">
 
@@ -213,6 +222,9 @@
                         </th>
                         <th class="col-sm-2">
                             Redistribuir peso
+                        </th>
+                        <th class="col-sm-2">
+                            Coleta Parcial
                         </th>
                         <th class="col-sm-1">
 
@@ -603,6 +615,7 @@
 
             $(list).each(function (i, o) {
                 var redistributeWeight = o.RedistributeWeight == true ? "Sim" : "Não";
+                var isPartial = o.IsPartialCollection == true ? "Sim" : "Não";
 
                 var html = '<tr>';
                 html += '<td>' + valorDoSelect('#ParDCAvam select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
@@ -614,6 +627,7 @@
                 html += '<td class="hide">' + o.Id + '</td>';
                 html += '<td>' + o.Sample + '</td>';
                 html += '<td>' + redistributeWeight + '</td>';
+                html += '<td>' + isPartial + '</td>';
                html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button> </td>';
                 html += '</tr>';
 
@@ -638,6 +652,7 @@
                         $("#IsAgendamento").prop('disabled', false);
                         $("#IsAgendamento ").prop('checked', false);
                         $("#RedistributeWeight").prop('checked', false);
+                        $("#IsPartialCollection").prop('checked', false);
                         $('[data-column="inpIntervalo"]').val('');
                         $('[data-column="slAgendamento"]').val('');
                         closeLoader();
@@ -692,6 +707,8 @@
 
                 $('#' + id + ' [data-form] input[name="RedistributeWeight"]').prop('checked', obj.RedistributeWeight == true ? true : false);
                 
+                $('#' + id + ' [data-form] input[name="IsPartialCollection"]').prop('checked', obj.IsPartialCollection == true ? true : false);
+
                 $('#' + id + ' [data-form]').data('sgq', obj);
                 $('#' + id + ' [data-form]').addClass('alert alert-success');
                 $('#' + id + ' [data-form] [data-action] [data-add]').addClass('hide');
@@ -855,6 +872,7 @@
             obj['IsActive'] = true;
             obj['ParFrequencyId'] = parseInt($("#ParDCAvam #selectParFrequencyAV :selected").val());
             obj['IsAgendamento'] = $("#ParDCAvam #IsAgendamento").is(':checked');
+            obj['IsPartialCollection'] = $("#ParDCAvam #IsPartialCollection").is(':checked');
             obj['RedistributeWeight'] = $("#ParDCAvam #RedistributeWeight").is(':checked');
             return obj;
         },
