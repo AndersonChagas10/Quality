@@ -29,6 +29,8 @@ namespace Dominio
         [NotMapped]
         public bool IsAgendamento { get; set; }
 
+        public bool? RedistributeWeight { get; set; }
+
         public bool IsActive { get; set; }
 
         [ForeignKey("ParCargo_Id")]

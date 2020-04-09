@@ -3112,4 +3112,17 @@
     </Script>
   </Card>
   
+  <Card>
+    <CardNumber>SGQ-571</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[RH SESMT] Parametrização - Permitir redistribuir peso</Description>
+    <Script>
+      IF COL_LENGTH('ParEvaluationXDepartmentXCargo','RedistributeWeight') IS NULL
+      BEGIN
+      alter table ParEvaluationXDepartmentXCargo
+      add RedistributeWeight bit null
+      END
+    </Script>
+  </Card>
+
 </Cards>
