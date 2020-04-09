@@ -209,6 +209,9 @@
                         <th class="col-sm-1">
                             Amostra
                         </th>
+                        <th class="col-sm-2">
+                            Coleta Parcial
+                        </th>
                         <th class="col-sm-1">
 
                         </th>
@@ -597,6 +600,7 @@
             $('#tableParDCAvam [data-table-delete]').prop('disabled', false);
 
             $(list).each(function (i, o) {
+                var isParcial = o.IsParcialCollection == true ? "Sim" : "Não";
 
                 var html = '<tr>';
                 html += '<td>' + valorDoSelect('#ParDCAvam select[name="ParCompany_Id"]', o.ParCompany_Id, 'Todos') + '</td>';
@@ -607,6 +611,7 @@
                 html += '<td>' + o.Evaluation + '</td>';
                 html += '<td class="hide">' + o.Id + '</td>';
                 html += '<td>' + o.Sample + '</td>';
+                html += '<td>' + isParcial + '</td>';
                html += '<td><button class="btn btn-sm btn-success" data-table-edit><i class="fa fa-pencil" alt="Editar"></i></button><button class="btn btn-sm btn-danger" data-table-delete alt="Excluir"><i class="fa fa-trash-o"></i></button> </td>';
                 html += '</tr>';
 
