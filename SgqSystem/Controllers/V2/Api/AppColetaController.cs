@@ -651,7 +651,8 @@ INSERT INTO [dbo].[Collection]
                          PargroupQualification_Id = x.PargroupQualification_Id,
                          ParLevel3Value_Id = x.ParLevel3Value_Id,
                          Value = x.Value,
-                         IsActive = x.IsActive
+                         IsActive = x.IsActive,
+                         IsRequired = x.IsRequired
                      })
                     .Where(x => x.IsActive)
                     .ToList();

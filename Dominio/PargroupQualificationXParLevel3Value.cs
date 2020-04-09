@@ -18,6 +18,7 @@ namespace Dominio
         public string Value { get; set; }
 
         public bool IsActive { get; set; }
+        public bool IsRequired { get; set; }
 
         [ForeignKey("PargroupQualification_Id")]
         public virtual PargroupQualification PargroupQualification { get; set; }

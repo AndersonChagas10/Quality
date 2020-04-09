@@ -553,7 +553,7 @@ namespace SgqSystem.Controllers.V2.Api
                             pargroupQualificationXParLevel3ValueOld.ParLevel3Value_Id = form.ParLevel3Value_Id;
                             pargroupQualificationXParLevel3ValueOld.Value = form.Value;
                             pargroupQualificationXParLevel3ValueOld.IsActive = form.IsActive;
-
+                            pargroupQualificationXParLevel3ValueOld.IsRequired = form.IsRequired;
                         }
                         else
                         {
