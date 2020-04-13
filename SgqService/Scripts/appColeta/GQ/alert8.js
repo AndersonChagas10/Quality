@@ -152,7 +152,6 @@ function getAlertPorcentageNC(level2Result) {
             var metaIndicador = parseFloat($(_level1).attr('metaindicador'));
             metaIndicador = IsRuleConformity ? (100 - metaIndicador) : metaIndicador;
 
-
             var qtdeNCToleravelVolume = (metaIndicador / 100) * volumeMonitoramento;
             qtdeNCToleravelAv = (alertaNivel2 * qtdeNCToleravelVolume) / 100; 
 
@@ -164,6 +163,7 @@ function getAlertPorcentageNC(level2Result) {
             samples = $.uniqueSort(samples);
 
             quantidadeDefeitos = samples.length;
+            porcentagemDefeitos = (quantidadeDefeitos / volumeMonitoramento) * 100;
             porcentagemNCToleravel = (qtdeNCToleravelAv / volumeMonitoramento) * 100;
 
             break;
@@ -177,7 +177,7 @@ function getAlertPorcentageNC(level2Result) {
 
     if (porcentagemDefeitos > porcentagemNCToleravel) {
 
-        mensagem = getMensagemAlertaPorcentagemNC(porcentagemDefeitos, metaIndicador);
+        mensagem = getMensagemAlertaPorcentagemNC(porcentagemDefeitos.toFixed(2), metaIndicador);
 
         haveAlertPorcentagemNC = true;
         appendAlerta(level2Result);
