@@ -103,8 +103,10 @@ function getAlertPorcentageNC(level2Result) {
     var alertaNivel2 = parseFloat($(_level2).attr('parnotconformityrule_value'));
     var qtdeNCToleravelAv = 0;
     var quantidadeDefeitos = 0;
+    var porcentagemDefeitos = 0;
     var alerta8 = {};
     var mensagem = "";
+    var porcentagemNCToleravel = 0;
 
     if (alertaNivel2 === 0) {
         
@@ -128,14 +130,18 @@ function getAlertPorcentageNC(level2Result) {
         case 1:
         case 2:
 
-            var volumeMonitoramento = parseFloat($(_level1).attr('volumealertaindicador'));
+            var volumeMonitoramento = parseInt($(_level2).attr('evaluate')) * parseInt($(_level2).attr('sample')) * getSumLevel3ComPeso();
             var metaIndicador = parseFloat($(_level1).attr('metaindicador'));
+
             metaIndicador = IsRuleConformity ? (100 - metaIndicador) : metaIndicador;
-            var qtdeNCToleravelVolume = (metaIndicador / 100) * volumeMonitoramento;
+
+            var qtdeNCToleravelVolume = (metaIndicador / 100) * volumeMonitoramento; //Quantidade de NC permitidas no Indicador
             
-            qtdeNCToleravelAv = (alertaNivel2 * qtdeNCToleravelVolume) / 100;
+            qtdeNCToleravelAv = (alertaNivel2 * qtdeNCToleravelVolume) / 100; //Quantidade de NC toleravel Monitoramento
 
             quantidadeDefeitos = listaDefeitos.length;
+            porcentagemDefeitos = (quantidadeDefeitos / volumeMonitoramento) * 100;
+            porcentagemNCToleravel = (qtdeNCToleravelAv / volumeMonitoramento) * 100;
 
             break;
 
@@ -145,8 +151,10 @@ function getAlertPorcentageNC(level2Result) {
             var volumeMonitoramento = parseFloat($(_level2).attr('evaluate')) * parseFloat($(_level2).attr('sample'));
             var metaIndicador = parseFloat($(_level1).attr('metaindicador'));
             metaIndicador = IsRuleConformity ? (100 - metaIndicador) : metaIndicador;
+
+
             var qtdeNCToleravelVolume = (metaIndicador / 100) * volumeMonitoramento;
-            qtdeNCToleravelAv = (alertaNivel2 * qtdeNCToleravelVolume) / 100;
+            qtdeNCToleravelAv = (alertaNivel2 * qtdeNCToleravelVolume) / 100; 
 
             var samples = $.map(listaDefeitos, function (obj) {
                 return obj.Sample;
@@ -156,6 +164,7 @@ function getAlertPorcentageNC(level2Result) {
             samples = $.uniqueSort(samples);
 
             quantidadeDefeitos = samples.length;
+            porcentagemNCToleravel = (qtdeNCToleravelAv / volumeMonitoramento) * 100;
 
             break;
 
@@ -166,11 +175,9 @@ function getAlertPorcentageNC(level2Result) {
             break;
     }
 
-    if (quantidadeDefeitos > Math.round(qtdeNCToleravelAv)) {
+    if (porcentagemDefeitos > porcentagemNCToleravel) {
 
-        var porcentagemDefeitosAvaliacao = ((listaDefeitos.length / (volumeMonitoramento / 100 * metaIndicador)) * metaIndicador).toFixed(2) //% de defeitos
-
-        mensagem = getMensagemAlertaPorcentagemNC(porcentagemDefeitosAvaliacao, metaIndicador);
+        mensagem = getMensagemAlertaPorcentagemNC(porcentagemDefeitos, metaIndicador);
 
         haveAlertPorcentagemNC = true;
         appendAlerta(level2Result);
@@ -280,4 +287,18 @@ function cleanAlertasTipo8() {
     listaDeDefeitosAlerta8 = Array.isArray(defeitosAtuais) ? defeitosAtuais : [];
 
     updateAlerta8(listaDeAlertasAlerta8, listaDeDefeitosAlerta8);
+}
+
+function getSumLevel3ComPeso(){
+
+    var level3compeso = 0;
+
+    var leveis3 = $(_level2).parents('.level2List').next('.level3List').find('.level3Group').find('.level3');
+
+    $(leveis3).each(function (i, o) {
+        level3compeso += parseFloat($(o).attr('weight'));
+    });
+
+    return level3compeso;
+
 }
