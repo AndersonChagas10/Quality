@@ -29,11 +29,11 @@ namespace Dominio
         [NotMapped]
         public bool IsAgendamento { get; set; }
 
-        public bool? RedistributeWeight { get; set; }
+        public bool RedistributeWeight { get; set; }
 
         public bool IsActive { get; set; }
 
-        public bool? IsPartialCollection { get; set; }
+        public bool IsPartialCollection { get; set; }
 
         [ForeignKey("ParCargo_Id")]
         public virtual ParCargo ParCargo { get; set; }

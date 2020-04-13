@@ -3120,7 +3120,7 @@
       IF COL_LENGTH('ParEvaluationXDepartmentXCargo','RedistributeWeight') IS NULL
       BEGIN
       alter table ParEvaluationXDepartmentXCargo
-      add RedistributeWeight bit null
+      add RedistributeWeight bit not null default 0
       END
     </Script>
   </Card>
@@ -3133,7 +3133,7 @@
       IF COL_LENGTH('ParEvaluationXDepartmentXCargo','IsPartialCollection') IS NULL
       BEGIN
       ALTER TABLE ParEvaluationXDepartmentXCargo
-      ADD IsPartialCollection bit null
+      ADD IsPartialCollection bit not null default 0
       END
     </Script>
   </Card>
