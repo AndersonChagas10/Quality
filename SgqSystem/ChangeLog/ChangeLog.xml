@@ -3138,4 +3138,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-587</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] Apontamentos Diários - Inserir Pivot Table</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
