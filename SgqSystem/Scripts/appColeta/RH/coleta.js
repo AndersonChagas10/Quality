@@ -763,6 +763,63 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
 
 });
 
+$('body').off('click', '[data-duplicate-click-remove]').on('click', '[data-duplicate-click-remove]', function () {
+        $(this).parents()[0].remove();
+});
+
+$('body').off('click', '[data-duplicate-click-add]').on('click', '[data-duplicate-click-add]', function () {
+        var cabecalhos = "";
+
+        parLevel1_Id = $(this).parents('#headerFieldLevel1').attr('parlevel1id');
+
+        parHeaderField_Id = $(this).attr('data-duplicate-click-add');
+
+        if (parLevel1_Id != null || parLevel1_Id != undefined) {
+            cabecalhos = montarHeaderFieldsPorId(1, parHeaderField_Id, "");
+            $(this).parents('#headerFieldLevel1').append(cabecalhos);
+        }
+
+        parLevel2_Id = $(this).parents('#headerFieldLevel2').attr('parlevel2id');
+
+        if (parLevel2_Id != null || parLevel2_Id != undefined) {
+            cabecalhos = montarHeaderFieldsPorId(2, parHeaderField_Id, "");
+            $(this).parents('#headerFieldLevel2').append(cabecalhos);
+        }
+
+        parLevel3_Id = $(this).parents('#headerFieldLevel3').attr('parlevel3id');
+
+        if (parLevel3_Id != null || parLevel3_Id != undefined) {
+            cabecalhos = montarHeaderFieldsPorId(4, parHeaderField_Id, "pull-right");
+            $(this).parents('#headerFieldLevel3').append(cabecalhos);
+        }
+
+        parSecao_Id = $(this).parents('#headerFieldDepartment');
+
+        if (parSecao_Id != null || parSecao_Id != undefined) {
+            cabecalhos = montarHeaderFieldsPorId(3, parHeaderField_Id, "");
+            $(this).parents('#headerFieldDepartment').append(cabecalhos);
+        }
+});
+
+function montarHeaderFieldsPorId(parLevelHeaderField_Id, parHeaderField_Id, flagPullRight) {
+    var html = "";
+
+    var headerFields = $.grep(parametrization.listaParHeaderFieldGeral, function (headerFieldGeral) {
+
+        return headerFieldGeral.ParLevelHeaderField_Id == parLevelHeaderField_Id
+            && headerFieldGeral.Id == parHeaderField_Id;
+
+    });
+
+    if (headerFields && headerFields.length)
+        headerFields.forEach(function (headerField) {
+            html += getInputOrSelect(headerField, flagPullRight);
+        });
+
+    return html;
+
+}
+
 function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
 
     var retorno = '';
