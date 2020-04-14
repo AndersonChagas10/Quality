@@ -1152,7 +1152,6 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
         //$('.level3Group:visible .level3:first').before(debug);
     }
 
-    debugger
     mensagemAlerta.mensagem = mensagemHtml;
 
     var resultados = [];
