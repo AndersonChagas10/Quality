@@ -264,6 +264,20 @@
             </form>
         </div>
         <div class="col-sm-10" id="divReportContent">
+            <div class="row" style="padding-bottom:10px;padding-top:5px">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-warning pull-left"
+                            id="btnToggleDivFilterReports"
+                            onclick="toggleDivFilterReports();">
+                        < Esconder Filtros
+                    </button>
+                    <button type="button" class="btn btn-primary pull-right"
+                            id="btnSend" onclick="enviarFiltro();">
+                        @Resources.Resource.refresh
+                    </button>
+                    <h4 class="text-center"><strong>@ViewBag.Title</strong></h4>
+                </div>
+            </div>
             @RenderSection("Content", required: true)
         </div>
         <div class="clearfix"></div>
