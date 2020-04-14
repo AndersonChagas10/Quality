@@ -3138,4 +3138,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-586</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] Relatório Laboratório - Adicionado gráfico de linha mockado e não obrigatoriedade dos ranges de data (exceto data de coleta)</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
