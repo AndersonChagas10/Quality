@@ -74,12 +74,18 @@ namespace PlanoDeAcaoMVC
             {
                 foreach (var item in usersPA)
                 {
-                    if (GlobalConfig.SESMT)
-                        item.UserSgq_Id = userSgq.Where(x => x.FullName == item.Name).FirstOrDefault().Id;
-                    else
-                        item.UserSgq_Id = userSgq.Where(x => x.Name == item.Name).FirstOrDefault().Id;
+                    try
+                    {
+                        if (GlobalConfig.SESMT)
+                            item.UserSgq_Id = userSgq.Where(x => x.FullName == item.Name).FirstOrDefault().Id;
+                        else
+                            item.UserSgq_Id = userSgq.Where(x => x.Name == item.Name).FirstOrDefault().Id;
 
-                    Pa_BaseObject.SalvarGenerico(item);
+                        Pa_BaseObject.SalvarGenerico(item);
+                    }
+                    catch (System.Exception ex)
+                    {
+                    }
                 }
 
             }
