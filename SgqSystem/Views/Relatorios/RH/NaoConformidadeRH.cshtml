@@ -429,6 +429,35 @@
             objFiltro.Param.departmentPai_Id = department_Id;
 
             $.ajax({
+                url: urlGraficoDepartamentosPai,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            })
+                .done(function (data) {
+                    //console.log(data);
+                    GraficoDepartamentoPai(data);
+                    closeLoader();
+                })
+                .fail(function (jqXHR, textStatus, msg) {
+                    //console.log(msg);
+                    //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                    closeLoader();
+                });
+
+            $('#RGTarefasPivotTable').hide();
+        }
+
+        function GetGraficoDepartamento(department, department_Id) {
+            $("#PanelFull0").hide();
+            $("RGDepartamentosShiftGrafico").empty();
+            objFiltro.Param.departmentPaiName = department;
+            objFiltro.Param.departmentPai_Id = department_Id;
+
+            $.ajax({
                 url: urlGraficoDepartamentos,
                 type: 'post',
                 data: JSON.stringify(objFiltro),
@@ -565,6 +594,16 @@
                     break;
                 case "Cargo":
                     
+                    GetGraficoCargo(Aux, Aux2);
+
+                    break;
+                case "DepartamentoPai":
+
+                    GetGraficoDepartamentoPai(Aux, Aux2);
+
+                    break;
+                case "Cargo":
+
                     GetGraficoCargo(Aux, Aux2);
 
                     break;
@@ -830,7 +869,16 @@
             var Av = MapeiaValorParaHC(data, "Av");
             var Proc = MapeiaValorParaHC(data, "Proc");
 
-            $('#RGHoldingGrafico').empty();
+            $("#RGOperacoesGrafico").empty();
+            $('#RGDepartamentosGrafico').empty();
+            $('#RGDepartamentosPaiGrafico').empty();
+            $('#RGDepartamentosShiftGrafico').empty();
+            $('#RGCargoGrafico').empty();
+            $('#RGOperacoesShiftGrafico').empty();
+            $("#RGUnidadesGrafico").empty();
+            $("#RGHoldingGrafico").empty();
+            $("#RGNegocioGrafico").empty();
+            $("#RGRegionalGrafico").empty();
 
             Highcharts.chart('RGHoldingGrafico', {
                 credits: Chart.Credits(),
@@ -877,7 +925,15 @@
             var Av = MapeiaValorParaHC(data, "Av");
             var Proc = MapeiaValorParaHC(data, "Proc");
 
-            $('#RGNegocioGrafico').empty();
+            $("#RGOperacoesGrafico").empty();
+            $('#RGDepartamentosGrafico').empty();
+            $('#RGDepartamentosPaiGrafico').empty();
+            $('#RGDepartamentosShiftGrafico').empty();
+            $('#RGCargoGrafico').empty();
+            $('#RGOperacoesShiftGrafico').empty();
+            $("#RGUnidadesGrafico").empty();
+            $("#RGNegocioGrafico").empty();
+            $("#RGRegionalGrafico").empty();
 
             Highcharts.chart('RGNegocioGrafico', {
                 credits: Chart.Credits(),
@@ -923,7 +979,14 @@
             var Av = MapeiaValorParaHC(data, "Av");
             var Proc = MapeiaValorParaHC(data, "Proc");
 
-            $('#RGRegionalGrafico').empty();
+            $("#RGOperacoesGrafico").empty();
+            $('#RGDepartamentosGrafico').empty();
+            $('#RGDepartamentosPaiGrafico').empty();
+            $('#RGDepartamentosShiftGrafico').empty();
+            $('#RGCargoGrafico').empty();
+            $('#RGOperacoesShiftGrafico').empty();
+            $("#RGUnidadesGrafico").empty();
+            $("#RGRegionalGrafico").empty();
 
             Highcharts.chart('RGRegionalGrafico', {
                 credits: Chart.Credits(),
@@ -970,7 +1033,13 @@
             var Av = MapeiaValorParaHC(data, "Av");
             var Proc = MapeiaValorParaHC(data, "Proc");
 
-            $('#RGUnidadesGrafico').empty();
+            $("#RGOperacoesGrafico").empty();
+            $('#RGDepartamentosGrafico').empty();
+            $('#RGDepartamentosPaiGrafico').empty();
+            $('#RGDepartamentosShiftGrafico').empty();
+            $('#RGCargoGrafico').empty();
+            $('#RGOperacoesShiftGrafico').empty();
+            $("#RGUnidadesGrafico").empty();
 
             Highcharts.chart('RGUnidadesGrafico', {
                 credits: Chart.Credits(),
@@ -1003,6 +1072,106 @@
 
             $('.body-content').css('height', '3350px');
 
+        }
+
+        function GraficoCargo(data) {
+            pathDirect = 1;
+
+            var dataX = MapeiaValorParaHC(data, "CargoName");
+            var dataXId = MapeiaValorParaHC(data, "Cargo_Id");
+            var Nc = MapeiaValorParaHC(data, "Nc");
+            var Av = MapeiaValorParaHC(data, "Av");
+            var Proc = MapeiaValorParaHC(data, "Proc");
+            var selector = "RGCargoGrafico";
+            $('#' + selector).empty();
+
+            $("#RGOperacoesGrafico").empty();
+            $('#RGDepartamentosShiftGrafico').empty();
+            $('#RGCargoGrafico').empty();
+            $('#RGOperacoesShiftGrafico').empty();
+
+            //$('#' + selector).empty().highcharts({
+            Highcharts.chart(selector, {
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo('Cargo'),
+                subtitle: Chart.Subtitulo(Resources("unit"), objFiltro.Param.unitName),
+                xAxis: Chart.Xaxis(dataX),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    //Chart.ProcNc(Proc, GetGraficoIndicadorDepartamento),
+                    //Chart.NC(Nc, GetGraficoIndicadorDepartamento),
+                    //Chart.Av(Av, GetGraficoIndicadorDepartamento),
+                    Chart.ProcNc(Proc, GetPopover, null, "DepartamentoShift", dataX, null, dataXId),
+                    Chart.NC(Nc, GetPopover, null, null, null, "DepartamentoShift", dataX, null, dataXId),
+                    Chart.Av(Av, GetPopover, null, null, null, "DepartamentoShift", dataX, null, dataXId),
+                ]
+            }, function () {
+                $('#' + selector).append(GeralNote);
+            });
+        }
+
+
+        function GraficoDepartamentoPai(data) {
+            pathDirect = 1;
+            var dataX = MapeiaValorParaHC(data, "DepartamentoPaiName");
+            var dataXId = MapeiaValorParaHC(data, "DepartamentoPai_Id");
+            var Nc = MapeiaValorParaHC(data, "Nc");
+            var Av = MapeiaValorParaHC(data, "Av");
+            var Proc = MapeiaValorParaHC(data, "Proc");
+            var selector = "RGDepartamentosPaiGrafico";
+            $('#' + selector).empty();
+
+            $("#RGOperacoesGrafico").empty();
+            $('#RGDepartamentosGrafico').empty();
+            $('#RGDepartamentosPaiGrafico').empty();
+            $('#RGDepartamentosShiftGrafico').empty();
+            $('#RGCargoGrafico').empty();
+            $('#RGOperacoesShiftGrafico').empty();
+            //$('#' + selector).empty().highcharts({
+
+            Highcharts.chart(selector, {
+                credits: Chart.Credits(),
+                chart: Chart.Chart('column', 'xy'),
+                title: Chart.Titulo(Resources("costcenter")),
+                subtitle: Chart.Subtitulo(Resources("unit"), objFiltro.Param.unitName),
+                xAxis: Chart.Xaxis(dataX),
+                yAxis: Chart.yAxisPadraoRelNc(),
+                legend: {
+                    shadow: false
+                },
+                tooltip: {
+                    shared: true
+                },
+                plotOptions: {
+                    column: {
+                        shadow: false,
+                        borderWidth: 0
+                    }
+                },
+                series: [
+                    //Chart.ProcNc(Proc, GetGraficoIndicadorDepartamento),
+                    //Chart.NC(Nc, GetGraficoIndicadorDepartamento),
+                    //Chart.Av(Av, GetGraficoIndicadorDepartamento),
+                    Chart.ProcNc(Proc, GetPopover, null, "Departamento", dataX, null, dataXId),
+                    Chart.NC(Nc, GetPopover, null, null, null, "Departamento", dataX, null, dataXId),
+                    Chart.Av(Av, GetPopover, null, null, null, "Departamento", dataX, null, dataXId),
+                ]
+            }, function () {
+                $('#' + selector).append(GeralNote);
+            });
         }
         
         function GraficoCargo(data) {
@@ -1104,6 +1273,11 @@
             var selector = "RGDepartamentosGrafico";
             $('#' + selector).empty();
 
+            $("#RGOperacoesGrafico").empty();
+            $('#RGDepartamentosGrafico').empty();
+            $('#RGDepartamentosShiftGrafico').empty();
+            $('#RGCargoGrafico').empty();
+            $('#RGOperacoesShiftGrafico').empty();
             //$('#' + selector).empty().highcharts({
 
             Highcharts.chart(selector, {
@@ -1705,6 +1879,7 @@
 
         function setNameTitulos(NomeGrafico){
 
+            return NomeGrafico;
             if (parseInt(enviar.departmentId) > 0) {
                 return NomeGrafico + " | " + Department + ": " + $('#departmentId option:selected').text();
             }else if (objFiltro.Param['departmentName'] != "" && objFiltro.Param['departmentName'] != undefined && objFiltro.Param['departmentName'] != null) {
