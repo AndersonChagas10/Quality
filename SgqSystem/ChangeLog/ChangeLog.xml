@@ -3138,4 +3138,11 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-589</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[RH SESMT] COLETA - Permitir clonar cabeçalho</Description>
+    <Script>
+    </Script>
+  </Card>
 </Cards>
