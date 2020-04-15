@@ -37,6 +37,9 @@ namespace PlanoDeAcaoMVC.Controllers
             if (ViewBag.Quem == null)
                 ViewBag.Quem = Pa_Quem.Listar().OrderBy(r => r.Name);
 
+            if (ViewBag.QuemFTA == null)
+                ViewBag.QuemFTA = Pa_Quem.ListarFTA().OrderBy(r => r._FullNameConcatenado);
+
             ViewBag.Departamento = Pa_Departamento.Listar();
             ViewBag.CausaGenerica = Pa_CausaGenerica.Listar();
             ViewBag.GrupoCausa = Pa_GrupoCausa.Listar();
@@ -70,7 +73,7 @@ namespace PlanoDeAcaoMVC.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            //ViewBag.Panejamento = Pa_Planejamento
+
             return PartialView();
         }
 
@@ -159,12 +162,7 @@ namespace PlanoDeAcaoMVC.Controllers
             Pa_Acao model;
             using (var dbADO = ConexaoADO())
             {
-                //dynamic obj2 = dbADO.QueryNinjaADO("select * from pa_acao where id = " + id).FirstOrDefault();
 
-                //int quemId = obj2.Quem_Id;
-                //var obj = db.Pa_Acao.FirstOrDefault(r => r.Id == id);
-                //model = Mapper.Map<Pa_Acao>(obj);
-                //model.Quem_Id = obj2.Quem_Id;
 
                 model = Pa_Acao.Get(id);
 
@@ -175,8 +173,7 @@ namespace PlanoDeAcaoMVC.Controllers
                 }
 
             }
-            //var obj = db.Pa_Acao.FirstOrDefault(r => r.Id == id);
-            //var model = Mapper.Map<Pa_Acao>(obj);
+
 
             return PartialView("Acompanhamento", model);
         }
@@ -228,9 +225,7 @@ namespace PlanoDeAcaoMVC.Controllers
             Guard.CheckStringFullSimple(fta._DataInicioFTA, "_DataInicioFTA");
             Guard.CheckStringFullSimple(fta._DataFimFTA, "_DataFimFTA");
             Guard.ForValidId(fta.Supervisor_Id, "NovoFtaModelParaSgq");
-            //fta._DataInicioFTA = Guard.ParseDateToSqlV2(fta._DataInicioFTA).ToShortDateString();
-            //fta._DataFimFTA = Guard.ParseDateToSqlV2(fta._DataFimFTA).ToShortDateString();
-
+          
             using (var dbFActory = new ADOFactory.Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
             {
 
@@ -324,14 +319,10 @@ namespace PlanoDeAcaoMVC.Controllers
                 fta._DataFimFTA = fta.DataFimFTA.ToString("dd/MM/yyyy");
 
 
-            //Guard.CheckStringFullSimple(fta._Level1, "_Level1");
-            //Guard.CheckStringFullSimple(fta._Level2, "_Level2");
-            //Guard.CheckStringFullSimple(fta._Level3, "_Level3");
             Guard.CheckStringFullSimple(fta._DataInicioFTA, "_DataInicioFTA");
             Guard.CheckStringFullSimple(fta._DataFimFTA, "_DataFimFTA");
             Guard.ForValidId(fta.Supervisor_Id, "NovoFtaModelParaSgq");
-            //fta._DataInicioFTA = Guard.ParseDateToSqlV2(fta._DataInicioFTA).ToShortDateString();
-            //fta._DataFimFTA = Guard.ParseDateToSqlV2(fta._DataFimFTA).ToShortDateString();
+
 
             var level1 = new ParLevel1DTO();
             var level2 = new ParLevel2DTO();
@@ -440,8 +431,7 @@ namespace PlanoDeAcaoMVC.Controllers
 
                 }
 
-                //fta.PercentualNCFTA = level2.Name + " > " + level3.Name + ": " + PercentualNCFTA2f + " %";
-                //fta.ReincidenciaDesvioFTA = level2.Name + " > " + level3.Name + ": " + fta.ReincidenciaDesvioFTA;
+
                 fta._Supervisor = usersgq.FullName + " - " + usersgq.Name.Substring(0,3);
 
                 if (metaQuery != "")
@@ -473,7 +463,6 @@ namespace PlanoDeAcaoMVC.Controllers
                     //ultimo departamento é a seção
                     var secao = departamentos.Last();
 
-                    //departamentos.RemoveAt(departamentos.Count - 1);
 
                     fta.ParDepartmentsName += string.Join(" | ", departamentos.Select(x => x.Name).ToList());
                     fta.SecaoName = secao.Name;

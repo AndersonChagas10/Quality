@@ -3094,4 +3094,17 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-590</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[PA] Fullname no PA_Quem</Description>
+    <Script>
+      IF COL_LENGTH('Pa_Quem','UserSgq_Id') IS NULL
+      BEGIN
+      alter table Pa_Quem add UserSgq_Id int null
+      END
+      GO
+    </Script>
+  </Card>
+
 </Cards>

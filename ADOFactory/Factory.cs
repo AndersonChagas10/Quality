@@ -24,15 +24,14 @@ namespace ADOFactory
         /// <param name="user">User.</param>
         public Factory(string dataSource, string catalog, string password, string user)
         {
-            //var teste = System.Configuration.ConfigurationManager.AppSettings["SgqDbDev"];
             connectionString = new SqlConnectionStringBuilder();
-            connectionString.DataSource = dataSource;//@"SERVERGRT\MSSQLSERVER2014";
-            connectionString.InitialCatalog = catalog;//"SgqDbDev";
+            connectionString.DataSource = dataSource;
+            connectionString.InitialCatalog = catalog;
 
             if (!string.IsNullOrEmpty(password))
             {
-                connectionString.Password = password;//"1qazmko0";
-                connectionString.UserID = user;// "sa";
+                connectionString.Password = password;
+                connectionString.UserID = user;
             }
             else
             {
@@ -280,12 +279,11 @@ namespace ADOFactory
             SqlCommand cmd = GetQuery(obj);
             cmd.CommandTimeout = connectionTimeout; //3 minutos
 
-
             cmd.CommandType = CommandType.Text;
             cmd.Connection = connection;
             try
             {
-                if (obj.GetType().GetProperty("Id") != null)
+                if (obj.GetType().GetProperty("Id") != null) 
                 {
                     var id = (int)obj.GetType().GetProperty("Id").GetValue(obj, null);
                     if (id > 0)
@@ -337,14 +335,9 @@ namespace ADOFactory
 
             foreach (var item in obj.GetType().GetProperties())
             {
-                if (/*item != null &&*/ item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate" && !item.Name.StartsWith("_"))
+                if (item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate" && !item.Name.StartsWith("_"))
                 {
-                    //if (obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
-                    //    continue;
 
-                    //if (item.PropertyType.Name == "String")
-                    //    if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
-                    //        continue;
 
                     if (item.PropertyType.IsClass && item.PropertyType.Name != "String")
                         continue;
@@ -358,14 +351,9 @@ namespace ADOFactory
 
             foreach (var item in obj.GetType().GetProperties())
             {
-                if (/*item != null &&*/ item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate" && !item.Name.StartsWith("_"))
+                if (item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate" && !item.Name.StartsWith("_"))
                 {
-                    //if (obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
-                    //    continue;
 
-                    //if (item.PropertyType.Name == "String")
-                    //    if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
-                    //        continue;
 
                     if (item.PropertyType.IsClass && item.PropertyType.Name != "String")
                         continue;
@@ -388,7 +376,7 @@ namespace ADOFactory
             var pqp = string.Empty;
             foreach (var item in obj.GetType().GetProperties())
             {
-                if (/*item != null &&*/ item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate")
+                if (item.Name != "Id" && item.Name != "AddDate" && item.Name != "AlterDate")
                 {
                     if (item.PropertyType.Name == "String")
                         if (string.IsNullOrEmpty(obj.GetType().GetProperty(item.Name).GetValue(obj) as string))
@@ -399,7 +387,6 @@ namespace ADOFactory
 
                     if (obj.GetType().GetProperty(item.Name).GetValue(obj) == null)
                     {
-                        //if(item.PropertyType.Name ==)
                         cmd.Parameters.AddWithValue("@" + item.Name, obj.GetType().GetProperty(item.Name).GetValue(obj));
                         pqp += "@" + item.Name + " = " + obj.GetType().GetProperty(item.Name).GetValue(obj);
                         continue;
@@ -504,10 +491,8 @@ namespace ADOFactory
 
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    // iterate through results, printing each to console
                     while (reader.Read())
                     {
-                        //var columns = Enumerable.Range(0, reader.FieldCount).Select(reader.GetName).ToList();
                         object instance = Activator.CreateInstance(typeof(T));
 
                         for (int i = 0; i < reader.FieldCount; i++)
@@ -541,7 +526,6 @@ namespace ADOFactory
         public void Dispose()
         {
             closeConnection(true);
-            //Dispose();
         }
 
 

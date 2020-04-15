@@ -163,16 +163,11 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             if (planejamento.IsTatico)
             {
-                newPlanejamento.Tatico_Id = newPlanejamento.Id;
-                //Pa_BaseObject.SalvarGenerico(planejamento);
-
                 db.Pa_Planejamento.Attach(newPlanejamento);
                 var entry = db.Entry(newPlanejamento);
                 entry.State = System.Data.Entity.EntityState.Modified;
-                //entry.Property(e => e.Email).IsModified = true;
-                // other changed properties
-                db.SaveChanges();
 
+                db.SaveChanges();
             }
 
             #endregion
@@ -180,18 +175,11 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return planejamento;
         }
 
-        //[HttpPost]
-        //[Route("GetPlanejamentosFTA")]
-        //public List<PlanoAcaoEF.Pa_Planejamento> GetPlanejamentosFTA()
-        //{
-        //    return db.Pa_Planejamento.Where(r => r.IsFta == true).ToList();
-        //}
+
 
 
         public Pa_Planejamento CreateGenericEstrategicoTatico()
         {
-            //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico) values (1, 0)");
-            //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico, Estrategico_Id) values (1, 1, (select Top 1 Id from pa_planejamento))");
 
             var estrategico = new Dominio.Pa_Planejamento() { IsTatico = false };
             estrategico.Tatico_Id = null;
@@ -206,11 +194,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             var tatico = new Dominio.Pa_Planejamento() { IsTatico = true, Estrategico_Id = estrategico.Id };
             SavePlanejamentoInDb(tatico);
-            tatico.Tatico_Id = tatico.Id;
             SavePlanejamentoInDb(tatico);
-
-            //var cuelho = db.Pa_Planejamento.OrderByDescending(r => r.Id).FirstOrDefault();
-            //var cuelho = db.Pa_Planejamento.FirstOrDefault(r => r.Estrategico_Id != null);
 
             return Mapper.Map<Pa_Planejamento>(tatico);
         }
@@ -218,8 +202,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         public Pa_Planejamento CreateGenericEstrategicoTaticoFta()
         {
-            //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico) values (1, 0)");
-            //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico, Estrategico_Id) values (1, 1, (select Top 1 Id from pa_planejamento))");
 
             var estrategico = new Dominio.Pa_Planejamento() { IsTatico = false };
             estrategico.Tatico_Id = null;
@@ -238,9 +220,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             tatico.IsFta = true;
             SavePlanejamentoInDb(tatico);
 
-            //var cuelho = db.Pa_Planejamento.OrderByDescending(r => r.Id).FirstOrDefault();
-            //var cuelho = db.Pa_Planejamento.FirstOrDefault(r => r.Estrategico_Id != null);
-
             return Mapper.Map<Pa_Planejamento>(tatico);
         }
 
@@ -252,8 +231,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 db.Pa_Planejamento.Attach(a);
                 var entry = db.Entry(a);
                 entry.State = System.Data.Entity.EntityState.Modified;
-                //entry.Property(e => e.Email).IsModified = true;
-                // other changed properties
+
             }
             else
             {
@@ -341,7 +319,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             db.Database.ExecuteSqlCommand(query);
 
-            return true;//QueryNinjaDataTable(db, query);
+            return true;
         }
 
     }

@@ -148,7 +148,7 @@ namespace Helper
                         filterContext.Controller.ViewBag.LinkedCompanyIds = cookie.Values["LinkedCompanyIds"].ToString();
                     }
 
-                    Manutencao(filterContext);
+                    //Manutencao(filterContext);
 
                     //}
 
