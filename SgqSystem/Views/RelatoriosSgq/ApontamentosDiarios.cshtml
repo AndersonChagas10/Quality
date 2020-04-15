@@ -48,6 +48,7 @@
         font-size: 10px;
         color: blue;
     }
+
 </style>
 
 <div class="modal fade bd-example-modal-lg" id="modalHeaderField" role="dialog">
@@ -94,12 +95,29 @@
             @Html.Partial("~/Views/RelatoriosSgq/_LogTrackHistory.cshtml")
 
             <div id="load"></div>
+
+            <div class="row" style="padding-bottom:10px;padding-top:5px">
+                <div class="col-12" id="tabelaAnaliticoButtons" hidden>
+                    <button type="button" class="btn btn-primary pull-left"
+                            id="tabela" style="margin-right:10px; margin-bottom:10px;">
+                        Tabela
+                    </button>
+                    <button type="button" class="btn btn-primary pull-left"
+                            id="pivot-table" style="margin-right:10px; margin-bottom:10px;">
+                        Analítico
+                    </button>
+                </div>
+            </div>
+
             <div id="divTable">
                 <table id="resultsApontamentos" class="table table-striped"></table>
+                <div id="PivotTable" class="display" style="display:none"></div>
             </div>
         </div>
     </div>
 </div>
+
+@Html.Partial("~/Views/RelatoriosSgq/_PivotTable.cshtml")
 
 @section Scripts {
 
@@ -128,6 +146,7 @@
             closeLeftSidebar();
 
             $("#btnSend").click(function (e) {
+                 $('#tabelaAnaliticoButtons').hide();
                 $('#unitId').change();
                 Send(true);
             });
@@ -156,7 +175,7 @@
             }
 
             else {
-
+                $('#tabelaAnaliticoButtons').show();
                 //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
                 var regraEdit = false;
 
@@ -984,6 +1003,26 @@
 
             $(a).val('');
         }
+
+        function makeArrayData(arr) {
+            var arrayData = [];
+            $(arr).each(function () {
+                arrayData.push(this);
+            });
+            return arrayData;
+        }
+
+        $("#tabela").on('click', function () {
+                $("#PivotTable").css("display", "none");
+                $("#resultsApontamentos_wrapper").css("display","block");
+         });
+
+        $("#pivot-table").on('click', function () {
+            var arrayData = makeArrayData($('#resultsApontamentos').DataTable().rows({ search: 'applied', page: 'all' }).data());
+            $("#resultsApontamentos_wrapper").css("display", "none");
+            CarregaPivotTable(arrayData, "PivotTable");
+            $("#PivotTable").css("display", "block");
+        });
 
     </script>
 
