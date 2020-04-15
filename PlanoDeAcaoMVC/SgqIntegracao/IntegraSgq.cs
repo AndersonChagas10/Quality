@@ -4,6 +4,7 @@ using DTO.DTO;
 using DTO.DTO.Params;
 using PlanoAcaoCore;
 using PlanoDeAcaoMVC.SgqIntegracao;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -41,6 +42,10 @@ namespace PlanoDeAcaoMVC
             }
 
             InserirUnidades(parCompanies);
+
+            if (GlobalConfig.SESMT)
+                UpdateName(usersSGQ);
+
             UpdateSgqId(usersSGQ);
             InserirNovosUsuarios(usersSGQ);
 
@@ -68,7 +73,7 @@ namespace PlanoDeAcaoMVC
         //Insere os Ids do UserSgq na tabela Pa_Quem - provavelmente só irá rodar uma unica vez
         private void UpdateSgqId(List<UserDTO> userSgq)
         {
-            var usersPA = Pa_Quem.Listar().Where(x => x.UserSgq_Id == null).ToList();
+            var usersPA = Pa_Quem.Listar().Where(x => x.UserSgq_Id == null || x.UserSgq_Id == 0).ToList();
 
             if (usersPA.Count > 0)
             {
@@ -91,33 +96,27 @@ namespace PlanoDeAcaoMVC
             }
         }
 
-        //private void updateName(List<UserDTO> userSgq)
-        //{
-        //    var usersPA = Pa_Quem.Listar();
+        //Somente para o Sesmt (troca o name para fullname)
+        private void UpdateName(List<UserDTO> userSgq)
+        {
+            var usersPA = Pa_Quem.Listar();
 
-        //    var usersToUpdate = new List<Pa_Quem>();
+            var usersToUpdate = new List<Pa_Quem>();
 
-        //    foreach (var item in usersPA)
-        //    {
+            foreach (var userPA in usersPA)
+            {
+                var userToChange = userSgq.Where(x => x.Name == userPA.Name).FirstOrDefault();
 
-        //        var userToChange = userSgq.Where(x => x.Id == item.UserSGQ_Id).FirstOrDefault();
+                if (userToChange != null)
+                {
+                    userPA.Name = userToChange.FullName;
+                    userPA.UserSgq_Id = userPA.UserSgq_Id == null ? 0 : userPA.UserSgq_Id;
+                    userPA.AlterDate = DateTime.Now;
+                }
 
-        //        if (userToChange != null)
-        //        {
-        //            if (GlobalConfig.SESMT && userToChange.FullName != item.Name)
-        //                item.Name = userToChange.FullName;
-
-        //            else if (userToChange.Name != item.Name)
-        //                item.Name = userToChange.Name;
-
-        //            usersToUpdate.Add(item);
-        //        }
-        //    }
-
-        //    if (usersToUpdate.Count > 0)
-        //        Pa_BaseObject.SalvarGenerico(usersToUpdate);
-
-        //}
+                Pa_BaseObject.SalvarGenerico(userPA);
+            }
+        }
 
         private void InserirNovosUsuarios(List<UserDTO> usersSgq)
         {
@@ -134,7 +133,7 @@ namespace PlanoDeAcaoMVC
                 else
                     nameToInsert = userSgq.Name;
 
-                var userInsert = new PlanoAcaoCore.Pa_Quem() { Name = nameToInsert, UserSgq_Id = userSgq.Id };
+                var userInsert = new Pa_Quem() { Name = nameToInsert, UserSgq_Id = userSgq.Id, AddDate = DateTime.Now };
 
                 Pa_BaseObject.SalvarGenerico(userInsert);
             }
