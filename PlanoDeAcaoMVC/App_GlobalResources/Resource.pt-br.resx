@@ -178,7 +178,7 @@
     <value>Comparativo</value>
   </data>
   <data name="completed_tasks" xml:space="preserve">
-    <value>Tarefas Concluídas</value>
+    <value>Ações Concluídas</value>
   </data>
   <data name="coordination" xml:space="preserve">
     <value>Coordenação</value>
@@ -196,7 +196,7 @@
     <value>Dez</value>
   </data>
   <data name="delayed_tasks" xml:space="preserve">
-    <value>Tarefas Atrasadas</value>
+    <value>Ações Atrasadas</value>
   </data>
   <data name="dimension" xml:space="preserve">
     <value>Dimensão</value>
@@ -307,7 +307,7 @@
     <value>Próximo</value>
   </data>
   <data name="next_tasks" xml:space="preserve">
-    <value>Próximas Tarefas</value>
+    <value>Próximas Ações</value>
   </data>
   <data name="nov" xml:space="preserve">
     <value>Nov</value>
@@ -325,7 +325,7 @@
     <value>Out</value>
   </data>
   <data name="ongoing_tasks" xml:space="preserve">
-    <value>Taferas em Andamento</value>
+    <value>Ações em Andamento</value>
   </data>
   <data name="open" xml:space="preserve">
     <value>Abertas</value>
@@ -457,10 +457,10 @@
     <value>Tarefa</value>
   </data>
   <data name="tasks_manager" xml:space="preserve">
-    <value>Gerenciador de Tarefa</value>
+    <value>Gerenciador de Ações</value>
   </data>
   <data name="tasks_status" xml:space="preserve">
-    <value>Tarefas vs Status</value>
+    <value>Ações vs Status</value>
   </data>
   <data name="theme_subject" xml:space="preserve">
     <value>Tema / Assunto</value>
@@ -850,7 +850,7 @@
     <value>Editar Planejamento</value>
   </data>
   <data name="from" xml:space="preserve">
-    <value>apartir de</value>
+    <value>a partir de</value>
   </data>
   <data name="log_off" xml:space="preserve">
     <value>Sair</value>
@@ -896,5 +896,8 @@
   </data>
   <data name="signature" xml:space="preserve">
     <value>Assinatura</value>
+  </data>
+  <data name="projects_manager" xml:space="preserve">
+    <value>Gerenciador de Projetos</value>
   </data>
 </root>
