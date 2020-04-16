@@ -3138,4 +3138,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-588</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[RH SESMT] AppColeta - Permitir redistribuir peso.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
