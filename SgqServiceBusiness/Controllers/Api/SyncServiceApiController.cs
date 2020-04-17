@@ -5325,7 +5325,7 @@ namespace SgqServiceBusiness.Api
 	                                    <textarea id='PreventativeMeasure' class='form-control custom-control' rows='3' style='resize:none'></textarea>
                                    </div>
                                    <div id='divSelectSupervisor' class='form-group'>
-                                         <label>Supervisor<span style=""color: red""> *</span></label>
+                                         <label>Supervisor<span style=""color: red; display:none !important""> *</span></label>
                                          <select id='TechinicalSignature' class='form-control custom-control'>
 		                                    {htmlSelect}
 	                                    </select>  
