@@ -37,7 +37,7 @@
     }
 
     if ($('.App').attr('local') == "brasil") {
-        $("#btnSendCorrectiveAction").prop("disabled", true);
+        //$("#btnSendCorrectiveAction").prop("disabled", true);
     }
 
     /*
@@ -482,9 +482,9 @@ $(document).on('click', '#correctiveAction', function (e) {
 $(document).on('change', '#TechinicalSignature', function (e) {
     if ($('.App').attr('local') == "brasil") {
         if ($("#TechinicalSignature").val() == 0) {
-            $("#btnSendCorrectiveAction").prop("disabled", true);
+            //$("#btnSendCorrectiveAction").prop("disabled", true);
         } else {
-            $("#btnSendCorrectiveAction").prop("disabled", false);
+            //$("#btnSendCorrectiveAction").prop("disabled", false);
         }
     }
 }).change();
@@ -528,9 +528,10 @@ $(document).on('click', '#btnSendCorrectiveAction', function (e) {
     //if (productDisposition == '') {
     //    message += 'A disposição do produto está vazia<br>';
     //}
-    //if (preventativeMeasure == '') {
-    //    message += 'A medida preventiva está vazia<br>';
-    //}
+    if (preventativeMeasure == '') {
+       message += getResource('fill_the_corrective_action') + '.<br>';
+    }
+
     if (message != '') {
         openMessageModal(getResource("some_problems_occur") + ': ', message);
         return;
