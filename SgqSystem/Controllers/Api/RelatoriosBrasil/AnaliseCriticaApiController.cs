@@ -699,7 +699,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         FROM CorrectiveAction CA
                         INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.Id = CA.CollectionLevel02Id
                         INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON C2.ParLevel1_Id = PL1.Id
-            			INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
+            			LEFT JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
                         INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
                         INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
                         --INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
@@ -990,7 +990,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			FROM ConsolidationLevel1 CL1 
             			INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
             			INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON CL1.ParLevel1_Id = PL1.Id
-            			INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
+            			LEFT JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
             			INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
             			INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
             			INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
@@ -1170,7 +1170,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                         FROM CorrectiveAction CA
                         INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.Id = CA.CollectionLevel02Id
                         INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON C2.ParLevel1_Id = PL1.Id
-            			INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
+            			LEFT JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
                         INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
                         INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
                         --INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON R3.CollectionLevel2_Id = C2.Id
@@ -1466,7 +1466,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             			FROM ConsolidationLevel1 CL1 
             			INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
             			INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON CL1.ParLevel1_Id = PL1.Id
-            			INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
+            			LEFT JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
             			INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
             			INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
             			INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
@@ -1781,7 +1781,7 @@ FROM (SELECT
 				FROM ConsolidationLevel1 CL1
 				INNER JOIN ConsolidationLevel2 CL2 WITH (NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
 				INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON CL1.ParLevel1_Id = PL1.Id
-            			INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
+                LEFT JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
 				INNER JOIN CollectionLevel2 C2 WITH (NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
 				INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON C2.ParLevel2_Id = PL2.Id
 				INNER JOIN ParCompany PC WITH (NOLOCK) ON C2.UnitId = PC.Id
@@ -2101,7 +2101,7 @@ FROM (SELECT
             FROM ConsolidationLevel1 CL1
             INNER JOIN ConsolidationLevel2 CL2 WITH(NOLOCK) ON CL2.ConsolidationLevel1_Id = CL1.Id
             INNER JOIN ParLevel1 PL1 WITH(NOLOCK) ON CL1.ParLevel1_Id = PL1.Id
-            INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
+            LEFT JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
             INNER JOIN CollectionLevel2 C2 WITH(NOLOCK) ON C2.ConsolidationLevel2_Id = CL2.Id
             INNER JOIN ParLevel2 PL2 WITH(NOLOCK) ON C2.ParLevel2_Id = PL2.Id
             INNER JOIN ParCompany PC WITH(NOLOCK) ON C2.UnitId = PC.Id
@@ -2291,7 +2291,7 @@ LEFT JOIN Pa_CausaGenerica CG ON Acao.CausaGenerica_Id = CG.Id
 LEFT JOIN Pa_ContramedidaGenerica CMG ON Acao.ContramedidaGenerica_Id = CMG.Id
 LEFT JOIN Pa_Status [Status] WITH (NOLOCK) ON [Status].Id = Acao.Status 
 LEFT JOIN ParLevel1 PL1 WITH (NOLOCK) ON Acao.Level1Id = PL1.Id
-INNER JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
+LEFT JOIN ParGroupParLevel1XParLevel1 PGPL1 WITH (NOLOCK) ON PGPL1.ParLevel1_Id = PL1.Id
 LEFT JOIN ParLevel2 PL2 WITH (NOLOCK) ON Acao.Level2Id = PL2.Id
 LEFT JOIN ParLevel3 PL3 WITH (NOLOCK) ON Acao.Level3Id = PL3.Id
 LEFT JOIN ParCompany PC WITH (NOLOCK) ON Acao.Unidade_Id = PC.Id
