@@ -376,8 +376,8 @@ namespace SgqSystem.Controllers.Api
 
                 var user = new CredenciaisSgq()
                 {
-                    Username = token.Split('|')[0],
-                    Senha = token.Split('|')[1]
+                    Username = tokenFiltros.Split('|')[0],
+                    Senha = tokenFiltros.Split('|')[1]
                 };
 
                 var usuarioLogado = db.UserSgq.Where(x => x.Name == user.Username).FirstOrDefault();
