@@ -18,6 +18,8 @@ using SgqSystem.Helpers;
 using SgqSystem.ViewModels;
 using SgqSystem.Jobs;
 using System.Data.SqlClient;
+using SgqServiceBusiness.Controllers.RH;
+using ServiceModel;
 
 namespace SgqSystem.Controllers.V2.Api
 {
@@ -261,7 +263,7 @@ INSERT INTO [dbo].[Collection]
 
         [HttpPost]
         [Route("GetAppParametrization")]
-        public IHttpActionResult GetAppParametrization(PlanejamentoColetaViewModel appParametrization)
+        public IHttpActionResult GetAppParametrization(PlanejamentoColeta appParametrization)
         {
             InicioRequisicao();
             List<ParVinculoPesoAppViewModel> listaParVinculoPeso;
@@ -295,48 +297,28 @@ INSERT INTO [dbo].[Collection]
             List<PargroupQualificationXParLevel3ValueViewModel> listaPargroupQualificationXParLevel3Value;
             List<PargroupQualificationViewModel> listaPargroupQualification;
 
+            GetAppParametrizationBusiness business = new GetAppParametrizationBusiness(appParametrization);
 
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
 
-                listaParVinculoPeso = db.ParVinculoPeso
-                    .AsNoTracking()
-                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
-                    .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id)
-                    .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id || x.ParCluster_Id == null)
-                    .Where(x => x.IsActive)
-                    .OrderByDescending(x => x.ParCompany_Id)
-                    .Select(x => new ParVinculoPesoAppViewModel()
-                    {
-                        Id = x.Id,
-                        ParLevel1_Id = x.ParLevel1_Id,
-                        ParLevel2_Id = x.ParLevel2_Id,
-                        ParLevel3_Id = x.ParLevel3_Id,
-                        ParCompany_Id = x.ParCompany_Id,
-                        ParDepartment_Id = x.ParDepartment_Id,
-                        ParGroupParLevel1_Id = x.ParGroupParLevel1_Id,
-                        Peso = x.Peso,
-                        ParCargo_Id = x.ParCargo_Id,
-                        ParFrequency_Id = x.ParFrequencyId,
-                        Evaluation = x.Evaluation,
-                        Sample = x.Sample,
-                        ParCluster_Id = x.ParCluster_Id
+                listaParVinculoPeso = business.GetListaParVinculoPeso();
 
-                    }).ToList();
+                listaParLevel1 = business.GetListaParLevel1(listaParVinculoPeso);
 
-                listaParLevel1 = db.ParLevel1
-                    .AsNoTracking()
-                    .Where(x => x.IsActive)
-                    .Select(x => new ParLevel1AppViewModel()
-                    {
-                        Id = x.Id,
-                        HasTakePhoto = x.HasTakePhoto,
-                        Name = x.Name
-                    })
-                    .ToList()
-                    .Where(x => listaParVinculoPeso.Any(y => y.ParLevel1_Id == x.Id))
-                    .ToList();
+                 //listaParLevel1 = db.ParLevel1
+                 //   .AsNoTracking()
+                 //   .Where(x => x.IsActive)
+                 //   .Select(x => new ParLevel1AppViewModel()
+                 //   {
+                 //       Id = x.Id,
+                 //       HasTakePhoto = x.HasTakePhoto,
+                 //       Name = x.Name
+                 //   })
+                 //   .ToList()
+                 //   .Where(x => listaParVinculoPeso.Any(y => y.ParLevel1_Id == x.Id))
+                 //   .ToList();
 
                 listaParLevel2 = db.ParLevel2
                     .AsNoTracking()
