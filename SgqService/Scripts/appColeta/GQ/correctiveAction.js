@@ -39,7 +39,7 @@
     }
 
     if ($('.App').attr('local') == "brasil") {
-        $("#btnSendCorrectiveAction").prop("disabled", true);
+        //$("#btnSendCorrectiveAction").prop("disabled", true);
     }
 
     /*
@@ -484,9 +484,9 @@ $(document).on('click', '#correctiveAction', function (e) {
 $(document).on('change', '#TechinicalSignature', function (e) {
     if ($('.App').attr('local') == "brasil") {
         if ($("#TechinicalSignature").val() == 0) {
-            $("#btnSendCorrectiveAction").prop("disabled", true);
+            //$("#btnSendCorrectiveAction").prop("disabled", true);
         } else {
-            $("#btnSendCorrectiveAction").prop("disabled", false);
+            //$("#btnSendCorrectiveAction").prop("disabled", false);
         }
     }
 }).change();
