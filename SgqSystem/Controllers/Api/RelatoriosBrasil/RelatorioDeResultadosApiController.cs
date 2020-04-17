@@ -1376,7 +1376,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"  AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"  AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE 1 = 1 AND P1XC.IsActive = 1 AND P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             if (form.unitIdArr.Count() > 0 && form.unitIdArr[0] > 0)
@@ -1481,7 +1481,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"  AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"  AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE 1 = 1 AND P1XC.IsActive = 1 AND P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             if (form.unitIdArr.Count() > 0 && form.unitIdArr[0] > 0)
@@ -4942,7 +4942,7 @@ FROM (SELECT
 
             if (form.criticalLevelId > 0)
             {
-                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
+                whereCriticalLevel = $@"AND IND.Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE 1 = 1 AND P1XC.IsActive = 1 AND P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
             if (form.groupParLevel1IdArr.Length > 0)
