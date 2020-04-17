@@ -1,6 +1,7 @@
 ﻿var tablePlanejamento;
 var dadosPlanejamento = [];
-
+var selecionado;
+var filtrosDeColunasTablePlanejamento = [];
 
 function GetDataTablePlanejamento(json) {
 
@@ -27,7 +28,7 @@ function GetDataTablePlanejamento(json) {
             if (oo.Acao.Id > 0) { return oo };
         });
 
-        Tatico = $.extend({},Planejamentos[0]);
+        Tatico = $.extend({}, Planejamentos[0]);
 
         Tatico["QtdeAcao"] = PlanejamentosComAcoes.length;
 
@@ -104,7 +105,7 @@ function MountDataTablePlanejamento(json) {
 
                 }
             },
-            { "mData": "Responsavel_Projeto_Quem.Name" }, 
+            { "mData": "Responsavel_Projeto_Quem.Name" },
             { "mData": "IndicadoresDeProjeto" }, // VER INDICADOR OPERACIONAL*
             { "mData": "QtdeAcao" },
             {
@@ -368,15 +369,16 @@ $('#divPlanejamento table > tbody').on('click', '.btnEditarPlanejamento', functi
 
 });
 
-var filtrosDeColunasTablePlanejamento = [];
-
 function GetFiltrosDeColunasTablePlanejamento() {
 
     filtrosDeColunasTablePlanejamento = [];
 
     $('#TablePlanejamento_wrapper > div.DTFC_ScrollWrapper > div.dataTables_scroll > div.dataTables_scrollHead > div > table > thead > tr th input[type="text"]').each(function (a) {
         if ($(this).val() != "") {
-            filtrosDeColunasTablePlanejamento.push({ Key: $(this).parent().text(), Val: $(this).val() });
+            filtrosDeColunasTablePlanejamento.push({
+                Key: $(this).parent().text(),
+                Val: $(this).val()
+            });
         }
     });
 }
@@ -396,4 +398,12 @@ function SetFiltrosDeColunasTablePlanejamento() {
             });
         });
     }
+}
+
+function tablePlanejamentoRedrown() {
+
+    setTimeout(function () {
+        tablePlanejamento.draw();
+    }, 500);
+
 }

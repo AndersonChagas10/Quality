@@ -12,42 +12,42 @@ function openColeta(levels) {
 
         var hasLevel2 = false;
 
-        if(level1.ParLevel2 != undefined)
-        level1.ParLevel2.forEach(function (level2) {
+        if (level1.ParLevel2 != undefined)
+            level1.ParLevel2.forEach(function (level2) {
 
-            var hasLevel3 = false;
-            var striped = true;
+                var hasLevel3 = false;
+                var striped = true;
 
-            if(level2.ParLevel3 != undefined)
-            level2.ParLevel3.forEach(function (level3) {
+                if (level2.ParLevel3 != undefined)
+                    level2.ParLevel3.forEach(function (level3) {
 
-                var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
+                        var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
 
-                if (inputLevel3.length > 0) {
+                        if (inputLevel3.length > 0) {
 
-                    if (hasLevel3 == false) {
+                            if (hasLevel3 == false) {
 
-                        if (hasLevel2 == false) {
-                            coleta += getLevel1(level1);
-                            coleta += getParHeaderFieldLevel1(level1);
-                            hasLevel2 = true;
+                                if (hasLevel2 == false) {
+                                    coleta += getLevel1(level1);
+                                    coleta += getParHeaderFieldLevel1(level1);
+                                    hasLevel2 = true;
+                                }
+
+                                coleta += getLevel2(level2, level1);
+                                coleta += getParHeaderFieldLevel2(level1, level2);
+                                hasLevel3 = true;
+                            }
+
+                            coleta += inputLevel3;
+
+                            if (inputLevel3)
+                                if (striped)
+                                    striped = false;
+                                else
+                                    striped = true;
                         }
-
-                        coleta += getLevel2(level2, level1);
-                        coleta += getParHeaderFieldLevel2(level1, level2);
-                        hasLevel3 = true;
-                    }
-
-                    coleta += inputLevel3;
-
-                    if (inputLevel3)
-                        if (striped)
-                            striped = false;
-                        else
-                            striped = true;
-                }
+                    });
             });
-        });
     });
 
     html = getHeader() +
@@ -763,6 +763,67 @@ $('body').off('click', '[data-binario]').on('click', '[data-binario]', function 
 
 });
 
+$('body').off('click', '[data-duplicate-click-remove]').on('click', '[data-duplicate-click-remove]', function () {
+    $(this).parents()[0].remove();
+});
+
+$('body').off('click', '[data-duplicate-click-add]').on('click', '[data-duplicate-click-add]', function () {
+    var cabecalhos = "";
+
+    var parHeaderField_Id = $(this).attr('data-duplicate-click-add');
+
+    var parLevel1Cabecalhos = $(this).parents('#headerFieldLevel1');
+
+    if (parLevel1Cabecalhos.length > 0) {
+        cabecalhos = montarHeaderFieldsPorId(1, parHeaderField_Id, "");
+        parLevel1Cabecalhos.append(cabecalhos);
+        return;
+    }
+
+    var parLevel2Cabecalhos = $(this).parents('#headerFieldLevel2');
+
+    if (parLevel2Cabecalhos.length > 0) {
+        cabecalhos = montarHeaderFieldsPorId(2, parHeaderField_Id, "");
+        parLevel2Cabecalhos.append(cabecalhos);
+        return;
+    }
+
+    var parLevel3Cabecalhos = $(this).parents('#headerFieldLevel3');
+
+    if (parLevel3Cabecalhos.length > 0) {
+        cabecalhos = montarHeaderFieldsPorId(4, parHeaderField_Id, "pull-right");
+        parLevel3Cabecalhos.append(cabecalhos);
+        return;
+    }
+
+    var parSecaoCabecalhos = $(this).parents('#headerFieldDepartment');
+
+    if (parSecaoCabecalhos.length > 0) {
+        cabecalhos = montarHeaderFieldsPorId(3, parHeaderField_Id, "");
+        parSecaoCabecalhos.append(cabecalhos);
+        return;
+    }
+});
+
+function montarHeaderFieldsPorId(parLevelHeaderField_Id, parHeaderField_Id, flagPullRight) {
+    var html = "";
+
+    var headerFields = $.grep(parametrization.listaParHeaderFieldGeral, function (headerFieldGeral) {
+
+        return headerFieldGeral.ParLevelHeaderField_Id == parLevelHeaderField_Id
+            && headerFieldGeral.Id == parHeaderField_Id;
+
+    });
+
+    if (headerFields && headerFields.length)
+        headerFields.forEach(function (headerField) {
+            html += getInputOrSelect(headerField, flagPullRight);
+        });
+
+    return html;
+
+}
+
 function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
 
     var retorno = '';
@@ -796,7 +857,7 @@ function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
                 retorno += ' <option value="">Selecione...</option>';
                 retorno += options;
                 retorno += ' </select>';
-                retorno += ' </div>';                
+                retorno += ' </div>';
                 retorno += ' </div>';
 
             }
@@ -892,7 +953,7 @@ function resetarLinha(linha) {
 }
 
 $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
-    
+
     e.preventDefault();
 
     if (!HeaderFieldsIsValid()) {

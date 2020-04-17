@@ -35,74 +35,80 @@
                             </div>
 
                             <div class="col-sm-12">
-                                <div class="form-group">
+                                <div class="form-group dateInputs">
                                     <label>
+                                        <input type="checkbox" for="dProducao" />
                                         <strong>
                                             dProducao
                                         </strong>
                                     </label>
                                     <input type="text" class="form-control"
-                                           name="dProducao" />
+                                           name="dProducao" disabled/>
                                 </div>
                             </div>
 
                             <div class="col-sm-12">
-                                <div class="form-group">
+                                <div class="form-group dateInputs">
                                     <label>
+                                        <input type="checkbox" for="dMovimento" />
                                         <strong>
                                             dMovimento
                                         </strong>
                                     </label>
                                     <input type="text" class="form-control"
-                                           name="dMovimento" />
+                                           name="dMovimento" disabled/>
                                 </div>
                             </div>
 
                             <div class="col-sm-12">
-                                <div class="form-group">
+                                <div class="form-group dateInputs">
                                     <label>
+                                        <input type="checkbox" for="dAnaliseCritica" />
                                         <strong>
                                             dAnaliseCritica
                                         </strong>
                                     </label>
                                     <input type="text" class="form-control"
-                                           name="dAnaliseCritica" />
+                                           name="dAnaliseCritica" disabled/>
                                 </div>
                             </div>
 
                             <div class="col-sm-12">
-                                <div class="form-group">
+                                <div class="form-group dateInputs">
                                     <label>
+                                        <input type="checkbox" for="dAnaliseInicial" />
                                         <strong>
                                             dAnaliseInicial
                                         </strong>
                                     </label>
                                     <input type="text" class="form-control"
-                                           name="dAnaliseInicial" />
+                                           name="dAnaliseInicial" disabled/>
                                 </div>
                             </div>
 
                             <div class="col-sm-12">
-                                <div class="form-group">
+                                <div class="form-group dateInputs">
                                     <label>
+                                        <input type="checkbox" for="dAnaliseFinal" />
                                         <strong>
                                             dAnaliseFinal
                                         </strong>
                                     </label>
                                     <input type="text" class="form-control"
-                                           name="dAnaliseFinal" />
+                                           name="dAnaliseFinal" disabled/>
                                 </div>
                             </div>
 
                             <div class="col-sm-12">
-                                <div class="form-group">
+                                <div class="form-group dateInputs">
                                     <label>
+                                        <input type="checkbox" for="dPrevisaoFinalAnalise" />
                                         <strong>
                                             dPrevisaoFinalAnalise
                                         </strong>
                                     </label>
                                     <input type="text" class="form-control"
-                                           name="dPrevisaoFinalAnalise" />
+                                           name="dPrevisaoFinalAnalise" disabled/>
                                 </div>
                             </div>
 
@@ -257,7 +263,23 @@
                 </div>
             </form>
         </div>
-        @RenderSection("Content", required: true)
+        <div class="col-sm-10" id="divReportContent">
+            <div class="row" style="padding-bottom:10px;padding-top:5px">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-warning pull-left"
+                            id="btnToggleDivFilterReports"
+                            onclick="toggleDivFilterReports();">
+                        < Esconder Filtros
+                    </button>
+                    <button type="button" class="btn btn-primary pull-right"
+                            id="btnSend" onclick="enviarFiltro();">
+                        @Resources.Resource.refresh
+                    </button>
+                    <h4 class="text-center"><strong>@ViewBag.Title</strong></h4>
+                </div>
+            </div>
+            @RenderSection("Content", required: true)
+        </div>
         <div class="clearfix"></div>
     </div>
 </div>
@@ -265,6 +287,10 @@
 @section Scripts {
     <script src="~/Scripts/Select3/select3.js"></script>
     <script>
+
+        $(document).ready(function () {
+            updateDateInputs();
+        })
 
         function toggleDivFilterReports() {
             if ($('#divFilterReports').hasClass("hide")) {
@@ -486,23 +512,49 @@
             atualizaObjFiltro();
         }
 
+        var dateInputs = 'input[name=dColetaAmostra]';
+
+        $(".dateInputs input[type=checkbox]").click(function () {
+
+            for (var i = 0; i < $(".dateInputs").length; i++) {
+
+                var input = $(".dateInputs input[type=checkbox]")[i];
+                var newInput = 'input[name=' + $(input).attr('for') + ']';
+
+                if ($(input).is(":checked")) {
+                    if (!dateInputs.includes(newInput)) {
+                        dateInputs += ', ' + newInput;
+                        $(newInput).prop('disabled', false);
+                        updateDateInputs();
+                    }
+                } else {
+                    dateInputs = dateInputs.replace(', ' + newInput, '');
+                    $(newInput).val('').prop('disabled', true);
+                    updateDateInputs();
+                }
+            }
+        });
+
         var configCallendar = {};
         moment.locale('pt-BR');
-        $('input[name=dColetaAmostra], input[name=dProducao], input[name=dMovimento], input[name=dAnaliseCritica], input[name=dAnaliseInicial], input[name=dAnaliseFinal], input[name=dPrevisaoFinalAnalise]').daterangepicker({
-            startDate: start,
-            endDate: end,
-            locale: {
-                "format": "DD/MM/YYYY",
-                "separator": " - ",
-                "applyLabel": "Aplicar",
-                "cancelLabel": "Cancelar",
-                "customRangeLabel": "Seleção",
-            },
-            alwaysShowCalendars: true,
-            showDropdowns: true,
-            linkedCalendars: false,
-            ranges: rangesCalendar
-        }, callbackDateRange);
+
+        function updateDateInputs() {
+            $(dateInputs).daterangepicker({
+                startDate: start,
+                endDate: end,
+                locale: {
+                    "format": "DD/MM/YYYY",
+                    "separator": " - ",
+                    "applyLabel": "Aplicar",
+                    "cancelLabel": "Cancelar",
+                    "customRangeLabel": "Seleção",
+                },
+                alwaysShowCalendars: true,
+                showDropdowns: true,
+                linkedCalendars: false,
+                ranges: rangesCalendar
+            }, callbackDateRange);
+        }
 
         /*SIMPLE DATE PICKER*/
         $('input[name="currentDate"]').daterangepicker({

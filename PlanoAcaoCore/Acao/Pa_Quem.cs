@@ -6,7 +6,8 @@ namespace PlanoAcaoCore
     public class Pa_Quem : Pa_BaseObject
     {
         public string Name { get; set; }
-        public string FullName { get; set; }
+
+        public string _FullName { get; set; }
 
         public string _FullNameConcatenado
         {
@@ -14,7 +15,7 @@ namespace PlanoAcaoCore
             {
                 try
                 {
-                    return FullName + " - " + Name.Substring(0, 3);
+                    return _FullName + " - " + Name.Substring(0, 3);
                 }
                 catch
                 {
@@ -22,18 +23,26 @@ namespace PlanoAcaoCore
                 }
             }
         }
+
+        public int? UserSgq_Id { get; set; }
+
         public static List<Pa_Quem> Listar()
         {
-            var query = $@"select min(paq.Id) as Id
-                            ,paq.Name
-                            ,usgq.FullName
-                            FROM UserSgq  usgq
-                            inner join Pa_Quem paq  
-                            on paq.Name = usgq.Name
-                            where  usgq.isactive = 1
-                            group by 
-                            paq.Name
-                            ,usgq.FullName";
+            var query = $@"SELECT * FROM Pa_Quem";
+
+            return ListarGenerico<Pa_Quem>(query);
+        }
+
+        public static List<Pa_Quem> ListarFTA()
+        {
+            var query = $@"SELECT
+                        	paq.Id
+                           ,usgq.Name
+                           ,usgq.FullName as _FullName
+                           ,paq.UserSgq_Id
+                        FROM Pa_Quem paq
+                        LEFT JOIN UserSgq usgq ON usgq.Id = paq.UserSgq_Id";
+
             return ListarGenerico<Pa_Quem>(query);
         }
 

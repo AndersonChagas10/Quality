@@ -18,9 +18,7 @@ namespace PlanoDeAcaoMVC.Controllers
 
             Jobs.UpdateStatus();
 
-            //select* from Pa_Dimensao
-            //select* from[Pa_Objetivo]
-            //select* from Pa_IndicadoresDiretriz
+
             ViewBag.Dimensao = Pa_Dimensao.Listar();
             ViewBag.Objetivo = Pa_Objetivo.Listar();
             ViewBag.IndicadoresDiretriz = Pa_IndicadoresDiretriz.Listar();
@@ -30,7 +28,6 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Coordenacao = Pa_Coordenacao.Listar();
             ViewBag.Missao = Pa_Missao.Listar();
             ViewBag.Visao = Pa_Visao.Listar();
-            //ViewBag.Quem = Pa_Quem.Listar();
             ViewBag.TemaAssunto = Pa_TemaAssunto.Listar();
             ViewBag.IndicadoresDeProjeto = Pa_IndicadoresDeProjeto.Listar();
             ViewBag.Iniciativa = Pa_Iniciativas.Listar();
@@ -51,8 +48,8 @@ namespace PlanoDeAcaoMVC.Controllers
             ViewBag.Coordenacao = new List<Pa_Coordenacao>();
             var model = new Pa_Planejamento();
 
-            if(id.GetValueOrDefault() > 0)
-               model = Pa_Planejamento.Get(id.GetValueOrDefault());
+            if (id.GetValueOrDefault() > 0)
+                model = Pa_Planejamento.Get(id.GetValueOrDefault());
 
             return PartialView("Index", model);
         }
@@ -80,7 +77,7 @@ namespace PlanoDeAcaoMVC.Controllers
         public ActionResult Filtrar(Pa_Planejamento filtro)
         {
             var lista = Pa_Planejamento.Listar();
-            
+
 
             if (filtro.Diretoria_Id > 0)
                 lista = lista.Where(r => r.Diretoria_Id == filtro.Diretoria_Id).ToList();
@@ -114,11 +111,11 @@ namespace PlanoDeAcaoMVC.Controllers
         }
 
         [HttpGet]
-        public ActionResult Editar(int id, bool? isTatico )
+        public ActionResult Editar(int id, bool? isTatico)
         {
-            //var model = Pa_Planejamento.Listar().FirstOrDefault();
             var model = new Pa_Planejamento();
-            if(isTatico == true)
+
+            if (isTatico == true)
             {
                 model = Pa_Planejamento.GetTatico(id);
             }
@@ -126,9 +123,9 @@ namespace PlanoDeAcaoMVC.Controllers
             {
                 model = Pa_Planejamento.Get(id);
             }
-                
 
-            if(model.DataInicio != null)
+
+            if (model.DataInicio != null)
                 model._DataInicio = model.DataInicio.GetValueOrDefault().ToString("dd/MM/yyyy");
             if (model.DataFim != null)
                 model._DataFim = model.DataFim.GetValueOrDefault().ToString("dd/MM/yyyy");
@@ -136,8 +133,8 @@ namespace PlanoDeAcaoMVC.Controllers
                 model._ValorDe = model.ValorDe.ToString("G29");
             if (model.ValorPara > 0)
                 model._ValorPara = model.ValorPara.ToString("G29");
-            if(model.Gerencia_Id > 0)
-                ViewBag.Coordenacao = Pa_Coordenacao.Listar().Where(r=> r.GERENCIA_ID == model.Gerencia_Id);
+            if (model.Gerencia_Id > 0)
+                ViewBag.Coordenacao = Pa_Coordenacao.Listar().Where(r => r.GERENCIA_ID == model.Gerencia_Id);
             if (model.Iniciativa_Id > 0)
                 ViewBag.IndicadoresDeProjeto = Pa_IndicadoresDeProjeto.Listar().Where(r => r.Pa_Iniciativa_Id == model.Iniciativa_Id);
             if (model.IndicadoresDeProjeto_Id > 0)

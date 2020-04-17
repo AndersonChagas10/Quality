@@ -60,14 +60,14 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public IEnumerable<Pa_Planejamento> GetPlanejamentoAcao()
         {
             var retorno = Pa_Planejamento.GetPlanejamentoAcao();
-            foreach (var i in retorno)
-            {
+            //foreach (var i in retorno)
+            //{
 
-                if (i.Estrategico_Id.GetValueOrDefault() > 0)
-                {
-                    //i.Tatico_Id = Pa_BaseObject.ListarGenerico<Pa_Planejamento>("Select * from Pa_Planejamento where Estrategico_Id = " + i.Tatico_Id.GetValueOrDefault()).FirstOrDefault().Id;
-                }
-            }
+            //    if (i.Estrategico_Id.GetValueOrDefault() > 0)
+            //    {
+            //        //i.Tatico_Id = Pa_BaseObject.ListarGenerico<Pa_Planejamento>("Select * from Pa_Planejamento where Estrategico_Id = " + i.Tatico_Id.GetValueOrDefault()).FirstOrDefault().Id;
+            //    }
+            //}
             return retorno;
         }
 
@@ -92,9 +92,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                     {
                         planejamento.ValorDe = decimal.Parse(planejamento._ValorDe.Replace(".", ","));
                     }
-                    
+
                 }
-                    
+
                 if (!string.IsNullOrEmpty(planejamento._ValorPara))
                 {
                     if (planejamento.UnidadeDeMedida_Id == 1)
@@ -105,9 +105,9 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                     {
                         planejamento.ValorPara = decimal.Parse(planejamento._ValorPara.Replace(".", ","));
                     }
-                    
+
                 }
-                    
+
                 planejamento.DataInicio = Guard.ParseDateToSqlV2(planejamento._DataInicio, Guard.CultureCurrent.BR);
                 planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim, Guard.CultureCurrent.BR);
             }
@@ -130,52 +130,44 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 planejamento.Id = planejamento.Tatico_Id.GetValueOrDefault();
             }
 
-            //Pa_BaseObject.SalvarGenerico(planejamento);
-            var a = Mapper.Map<Dominio.Pa_Planejamento>(planejamento);
+            var newPlanejamento = Mapper.Map<Dominio.Pa_Planejamento>(planejamento);
 
-            if (a.Id > 0)
+            try
             {
-                a.AlterDate = DateTime.Now;
-                db.Pa_Planejamento.Attach(a);
-                var entry = db.Entry(a);
-                entry.State = System.Data.Entity.EntityState.Modified;
-                //entry.Property(e => e.Email).IsModified = true;
-                // other changed properties
-                db.SaveChanges();
-            }
-            else
-            {
-                try
+                if (newPlanejamento.Id > 0)
                 {
-                    a.AddDate = DateTime.Now;
-                    if (a.IsFta == null)
-                        a.IsFta = false;
-                    db.Pa_Planejamento.Add(a);
+                    newPlanejamento.IsFta = false;
+                    newPlanejamento.AlterDate = DateTime.Now;
+                    db.Pa_Planejamento.Attach(newPlanejamento);
+                    var entry = db.Entry(newPlanejamento);
+                    entry.State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+                else
+                {
+
+                    newPlanejamento.AddDate = DateTime.Now;
+                    if (newPlanejamento.IsFta == null)
+                        newPlanejamento.IsFta = false;
+                    db.Pa_Planejamento.Add(newPlanejamento);
                     db.SaveChanges();
 
                 }
-
-                catch (Exception ex)
-                {
-                    //int insertLog = insertLogJson(objObjResultJSonPuro, ex.Message, deviceId, versaoApp, "InsertJson");
-                    throw ex;
-                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
 
             #region GAMBIARRA FDP
 
             if (planejamento.IsTatico)
             {
-                a.Tatico_Id = a.Id;
-                //Pa_BaseObject.SalvarGenerico(planejamento);
-
-                db.Pa_Planejamento.Attach(a);
-                var entry = db.Entry(a);
+                db.Pa_Planejamento.Attach(newPlanejamento);
+                var entry = db.Entry(newPlanejamento);
                 entry.State = System.Data.Entity.EntityState.Modified;
-                //entry.Property(e => e.Email).IsModified = true;
-                // other changed properties
-                db.SaveChanges();
 
+                db.SaveChanges();
             }
 
             #endregion
@@ -183,18 +175,11 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             return planejamento;
         }
 
-        //[HttpPost]
-        //[Route("GetPlanejamentosFTA")]
-        //public List<PlanoAcaoEF.Pa_Planejamento> GetPlanejamentosFTA()
-        //{
-        //    return db.Pa_Planejamento.Where(r => r.IsFta == true).ToList();
-        //}
+
 
 
         public Pa_Planejamento CreateGenericEstrategicoTatico()
         {
-            //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico) values (1, 0)");
-            //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico, Estrategico_Id) values (1, 1, (select Top 1 Id from pa_planejamento))");
 
             var estrategico = new Dominio.Pa_Planejamento() { IsTatico = false };
             estrategico.Tatico_Id = null;
@@ -209,11 +194,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             var tatico = new Dominio.Pa_Planejamento() { IsTatico = true, Estrategico_Id = estrategico.Id };
             SavePlanejamentoInDb(tatico);
-            tatico.Tatico_Id = tatico.Id;
             SavePlanejamentoInDb(tatico);
-
-            //var cuelho = db.Pa_Planejamento.OrderByDescending(r => r.Id).FirstOrDefault();
-            //var cuelho = db.Pa_Planejamento.FirstOrDefault(r => r.Estrategico_Id != null);
 
             return Mapper.Map<Pa_Planejamento>(tatico);
         }
@@ -221,8 +202,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
         public Pa_Planejamento CreateGenericEstrategicoTaticoFta()
         {
-            //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico) values (1, 0)");
-            //db.Database.ExecuteSqlCommand("Insert into pa_planejamento (IsFta, IsTatico, Estrategico_Id) values (1, 1, (select Top 1 Id from pa_planejamento))");
 
             var estrategico = new Dominio.Pa_Planejamento() { IsTatico = false };
             estrategico.Tatico_Id = null;
@@ -241,9 +220,6 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             tatico.IsFta = true;
             SavePlanejamentoInDb(tatico);
 
-            //var cuelho = db.Pa_Planejamento.OrderByDescending(r => r.Id).FirstOrDefault();
-            //var cuelho = db.Pa_Planejamento.FirstOrDefault(r => r.Estrategico_Id != null);
-
             return Mapper.Map<Pa_Planejamento>(tatico);
         }
 
@@ -255,8 +231,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 db.Pa_Planejamento.Attach(a);
                 var entry = db.Entry(a);
                 entry.State = System.Data.Entity.EntityState.Modified;
-                //entry.Property(e => e.Email).IsModified = true;
-                // other changed properties
+
             }
             else
             {
@@ -294,7 +269,8 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                     	ON IND.Id = P.IndicadoresDiretriz_Id
                     WHERE P.ESTRATEGICO_ID IS NULL";
 
-            }else if(tipo == "acao")
+            }
+            else if (tipo == "acao")
             {
                 query = @"SELECT
                         P.Id
@@ -336,14 +312,14 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             {
                 query = $"UPDATE PA_PLANEJAMENTO SET ESTRATEGICO_ID = {idParaMudar} WHERE ID = {id}";
             }
-            else if(tipo == "acao")
+            else if (tipo == "acao")
             {
                 query = $"UPDATE PA_ACAO SET PANEJAMENTO_ID = {idParaMudar} WHERE ID = {id}";
             }
 
             db.Database.ExecuteSqlCommand(query);
 
-            return true;//QueryNinjaDataTable(db, query);
+            return true;
         }
 
     }

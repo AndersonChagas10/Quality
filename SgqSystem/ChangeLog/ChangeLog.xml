@@ -3096,7 +3096,7 @@
       IF COL_LENGTH('PargroupQualificationXParLevel3Value','IsRequired') IS NULL
       BEGIN
       alter table PargroupQualificationXParLevel3Value
-      add IsRequired bit null
+      add IsRequired bit not null default 0
       END
     </Script>
   </Card>
@@ -3125,7 +3125,7 @@
       IF COL_LENGTH('ParEvaluationXDepartmentXCargo','RedistributeWeight') IS NULL
       BEGIN
       alter table ParEvaluationXDepartmentXCargo
-      add RedistributeWeight bit null
+      add RedistributeWeight bit not null default 0
       END
     </Script>
   </Card>
@@ -3138,8 +3138,119 @@
       IF COL_LENGTH('ParEvaluationXDepartmentXCargo','IsPartialCollection') IS NULL
       BEGIN
       ALTER TABLE ParEvaluationXDepartmentXCargo
-      ADD IsPartialCollection bit null
+      ADD IsPartialCollection bit not null default 0
       END
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-587</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] Apontamentos Diários - Inserir Pivot Table</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-586</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] Relatório Laboratório - Adicionado gráfico de linha mockado e não obrigatoriedade dos ranges de data (exceto data de coleta)</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-589</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[RH SESMT] COLETA - Permitir clonar cabeçalho</Description>
+    <Script>
+    </Script>
+  </Card>
+  <Card>
+    <CardNumber>SGQ-568</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[PA] Correções</Description>
+    <Script>
+      BEGIN
+      IF (SELECT COLUMNPROPERTY(OBJECT_ID('Pa_Planejamento', 'U'), 'IsFta', 'AllowsNull')) = 0
+      BEGIN
+      ALTER TABLE Pa_Planejamento ALTER COLUMN IsFTA bit NULL
+      END
+      END
+      GO
+
+      BEGIN
+      IF NOT EXISTS (SELECT * FROM Pa_UnidadeMedida WHERE Id = 1)
+      BEGIN
+      SET IDENTITY_INSERT Pa_UnidadeMedida ON
+      INSERT INTO Pa_UnidadeMedida (Id, AddDate, Name, Description, [Order]) VALUES(1, GETDATE(),'Monetário', NULL, 0)
+      SET IDENTITY_INSERT Pa_UnidadeMedida OFF
+      END
+      END
+      GO
+
+      BEGIN
+      IF NOT EXISTS (SELECT * FROM Pa_UnidadeMedida WHERE Id = 2)
+      BEGIN
+      SET IDENTITY_INSERT Pa_UnidadeMedida ON
+      INSERT INTO Pa_UnidadeMedida (Id, AddDate, Name, Description, [Order]) VALUES(2, GETDATE(),'Percentual', NULL, 0)
+      SET IDENTITY_INSERT Pa_UnidadeMedida OFF
+      END
+      END
+      GO
+
+      BEGIN
+      IF NOT EXISTS (SELECT * FROM Pa_UnidadeMedida WHERE Id = 3)
+      BEGIN
+      SET IDENTITY_INSERT Pa_UnidadeMedida ON
+      INSERT INTO Pa_UnidadeMedida (Id, AddDate, Name, Description, [Order]) VALUES(3, GETDATE(),'Absoluto', NULL, 0)
+      SET IDENTITY_INSERT Pa_UnidadeMedida OFF
+      END
+      END
+      GO
+
+      BEGIN
+      IF NOT EXISTS (SELECT * FROM Pa_TipoProjeto WHERE Id = 1)
+      BEGIN
+      SET IDENTITY_INSERT Pa_TipoProjeto ON
+      INSERT INTO Pa_TipoProjeto (Id, AddDate, Name, Description, [Order], IsActive) VALUES(1,	getdate(),	'Manutenção',	NULL, 0, 1)
+      SET IDENTITY_INSERT Pa_TipoProjeto OFF
+      END
+      END
+      GO
+
+      BEGIN
+      IF NOT EXISTS (SELECT * FROM Pa_TipoProjeto WHERE Id = 2)
+      BEGIN
+      SET IDENTITY_INSERT Pa_TipoProjeto ON
+      INSERT INTO Pa_TipoProjeto (Id, AddDate, Name, Description, [Order], IsActive) VALUES(2,	getdate(),	'Melhoria',	NULL, 0	, 1)
+      SET IDENTITY_INSERT Pa_TipoProjeto OFF
+      END
+      END
+      GO
+
+      BEGIN
+      IF NOT EXISTS (SELECT * FROM Pa_TipoProjeto WHERE Id = 3)
+      BEGIN
+      SET IDENTITY_INSERT Pa_TipoProjeto ON
+      INSERT INTO Pa_TipoProjeto (Id, AddDate, Name, Description, [Order], IsActive) VALUES(3,	getdate(),	'Implantação',	NULL,	0,	1)
+      SET IDENTITY_INSERT Pa_TipoProjeto OFF
+      END
+      END
+      GO
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-590</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[PA] Fullname no PA_Quem</Description>
+    <Script>
+      IF COL_LENGTH('Pa_Quem','UserSgq_Id') IS NULL
+      BEGIN
+      alter table Pa_Quem add UserSgq_Id int null
+      END
+      GO
     </Script>
   </Card>
 

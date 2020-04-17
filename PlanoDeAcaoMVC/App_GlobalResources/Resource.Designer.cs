@@ -421,7 +421,7 @@ namespace ResourcesPA {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Completed Tasks.
+        ///   Looks up a localized string similar to Completed Actions.
         /// </summary>
         public static string completed_tasks {
             get {
@@ -538,7 +538,7 @@ namespace ResourcesPA {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delayed Tasks.
+        ///   Looks up a localized string similar to Delayed Actions.
         /// </summary>
         public static string delayed_tasks {
             get {
@@ -1276,7 +1276,7 @@ namespace ResourcesPA {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next Tasks.
+        ///   Looks up a localized string similar to Next Actions.
         /// </summary>
         public static string next_tasks {
             get {
@@ -1402,7 +1402,7 @@ namespace ResourcesPA {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ongoing Tasks.
+        ///   Looks up a localized string similar to Ongoing Actions.
         /// </summary>
         public static string ongoing_tasks {
             get {
@@ -1632,6 +1632,15 @@ namespace ResourcesPA {
         public static string project_theme {
             get {
                 return ResourceManager.GetString("project_theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Projects Manager.
+        /// </summary>
+        public static string projects_manager {
+            get {
+                return ResourceManager.GetString("projects_manager", resourceCulture);
             }
         }
         
@@ -2149,7 +2158,7 @@ namespace ResourcesPA {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tasks Manager.
+        ///   Looks up a localized string similar to Action Manager.
         /// </summary>
         public static string tasks_manager {
             get {
@@ -2158,7 +2167,7 @@ namespace ResourcesPA {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tasks vs Status.
+        ///   Looks up a localized string similar to Action vs Status.
         /// </summary>
         public static string tasks_status {
             get {

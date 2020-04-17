@@ -776,9 +776,7 @@
                             } catch(e){
                             }
                             finally {
-                                $('#modalLindo select').select2({
-                                    matcher: matchCustom
-                                });
+                                $('#modalLindo select').select2(configSelect2);
                             }
 
                         });
@@ -1134,7 +1132,7 @@
 
             selectPredecessor = encadeado;
 
-            $('#body').find('select').select2({ matcher: matchCustom })
+            $('#body').find('select').select2(configSelect2);
             $('#body').find('select').select2('destroy')
 
             //Remove select caso exista
@@ -1162,16 +1160,12 @@
             if (encadeado != undefined) {
                 $('#labelPredecessora').children().remove()
                 $('#labelPredecessora').append($('#' + encadeado).clone().removeClass('select2-hidden-accessible'));
-                $('#modalNovo select').select2({
-                    matcher: matchCustom
-                });
+                $('#modalNovo select').select2(configSelect2);
                 $('#modalNovo select').select2('destroy');
-                $('#modalNovo select').select2({
-                    matcher: matchCustom
-                });
+                $('#modalNovo select').select2(configSelect2);
                 $('#labelPredecessora').find('select').val($('#' + encadeado + ' option:selected').val()).change();
             }
-            $('#body').find('select').select2({ matcher: matchCustom });
+            $('#body').find('select').select2(configSelect2);
         }
 
         function SalvarNovo() {
@@ -2139,9 +2133,7 @@
                                                  } catch(e){
                                                  }
                                                  finally {
-                                                     $('#formEditTatico #modalLindo select').select2({
-                                                         matcher: matchCustom
-                                                     });
+                                                     $('#formEditTatico #modalLindo select').select2(configSelect2);
                                                  }
 
                                              });
@@ -2220,9 +2212,9 @@
             counter--;
 
             setTimeout(function () {
-                $('select:visible').select2({ matcher: matchCustom });
+                $('select:visible').select2(configSelect2);
                 $('select:visible').select2('destroy')
-                $('select:visible').select2({ matcher: matchCustom });
+                $('select:visible').select2(configSelect2);
             }, 500)
 
             HideForOperacional();

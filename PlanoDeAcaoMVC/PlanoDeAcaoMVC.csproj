@@ -209,6 +209,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Scripts\PivotJS\" />
+    <Folder Include="Views\Gerenciar\" />
     <Folder Include="Views\PANovo\" />
     <Folder Include="Views\Shared\DisplayTemplate\" />
     <Folder Include="Views\UserAuthentication\" />
@@ -638,6 +639,16 @@
     <Content Include="Scripts\PANovo\js\treemap.js" />
     <Content Include="Scripts\PANovo\js\underscore-min.js" />
     <Content Include="Scripts\PANovo\js\vfs_fonts.js" />
+    <Content Include="Scripts\PA\colvis.js" />
+    <Content Include="Scripts\PA\graficos.js" />
+    <Content Include="Scripts\PA\index.js" />
+    <Content Include="Scripts\PA\planejamentoAcao.js" />
+    <Content Include="Scripts\PA\planejamentoEstrategico.js" />
+    <Content Include="Scripts\PA\planejamentoTatico.js" />
+    <Content Include="Scripts\PA\tabelaAcoes.js" />
+    <Content Include="Scripts\PA\tabelaProjetos.js" />
+    <Content Include="Scripts\PA\utils.js" />
+    <Content Include="Scripts\PA\visaoGeralProjetos.js" />
     <Content Include="Scripts\pivottable-master\.gitignore" />
     <Content Include="Scripts\pivottable-master\dist\c3_renderers.js" />
     <Content Include="Scripts\pivottable-master\dist\c3_renderers.min.js" />
@@ -908,6 +919,7 @@
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
     <Content Include="Scripts\home2.js" />
+    <Content Include="Scripts\PA\filtros.js" />
     <Content Include="Views\Pa_Acao\Edit.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -1000,8 +1012,6 @@
     <Content Include="Views\Shared\_AcessoSgq.cshtml" />
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
-    <Content Include="Views\Gerenciar\Index.cshtml" />
-    <Content Include="Views\Home2\Index.cshtml" />
     <Content Include="Views\Shared\_Calendar.cshtml" />
     <Content Include="Views\Home2\Index2.cshtml" />
     <Content Include="Views\Centauro\Index.cshtml" />
@@ -1049,6 +1059,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.pt-br1.designer.cs</LastGenOutput>
       <CustomToolNamespace>ResourcesPA</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

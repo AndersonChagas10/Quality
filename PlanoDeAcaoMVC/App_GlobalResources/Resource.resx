@@ -178,7 +178,7 @@
     <value>Comparative</value>
   </data>
   <data name="completed_tasks" xml:space="preserve">
-    <value>Completed Tasks</value>
+    <value>Completed Actions</value>
   </data>
   <data name="coordination" xml:space="preserve">
     <value>Coordination</value>
@@ -196,7 +196,7 @@
     <value>Dec</value>
   </data>
   <data name="delayed_tasks" xml:space="preserve">
-    <value>Delayed Tasks</value>
+    <value>Delayed Actions</value>
   </data>
   <data name="dimension" xml:space="preserve">
     <value>Dimension</value>
@@ -307,7 +307,7 @@
     <value>Next</value>
   </data>
   <data name="next_tasks" xml:space="preserve">
-    <value>Next Tasks</value>
+    <value>Next Actions</value>
   </data>
   <data name="nov" xml:space="preserve">
     <value>Nov</value>
@@ -325,7 +325,7 @@
     <value>Oct</value>
   </data>
   <data name="ongoing_tasks" xml:space="preserve">
-    <value>Ongoing Tasks</value>
+    <value>Ongoing Actions</value>
   </data>
   <data name="open" xml:space="preserve">
     <value>Open</value>
@@ -457,10 +457,10 @@
     <value>Task</value>
   </data>
   <data name="tasks_manager" xml:space="preserve">
-    <value>Tasks Manager</value>
+    <value>Action Manager</value>
   </data>
   <data name="tasks_status" xml:space="preserve">
-    <value>Tasks vs Status</value>
+    <value>Action vs Status</value>
   </data>
   <data name="theme_subject" xml:space="preserve">
     <value>Theme / Subject</value>
@@ -896,5 +896,8 @@
   </data>
   <data name="signature" xml:space="preserve">
     <value>Signature</value>
+  </data>
+  <data name="projects_manager" xml:space="preserve">
+    <value>Projects Manager</value>
   </data>
 </root>
