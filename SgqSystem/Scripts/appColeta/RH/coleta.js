@@ -896,10 +896,6 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 
     e.preventDefault();
 
-    if (parametrization.listaParEvaluationXDepartmentXCargoAppViewModel[0].RedistributeWeight == true) {
-        RedistributeWeight();
-    }
-
     if (!HeaderFieldsIsValid()) {
         return false;
     }
@@ -928,6 +924,10 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         };
     }
 
+    if (currentRedistributeWeight == true) {
+        RedistributeWeight();
+    }
+
     //Insere valores da coleta
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
         var data = $(o);
@@ -950,7 +950,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 IsNotEvaluate: isNA,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
-                Weigth: $(data).attr('data-peso'),
+                Weigth: $(data).attr('data-peso-parametrizado'),
                 WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
                 Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,
                 WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
@@ -1355,122 +1355,6 @@ function HeaderFieldsIsValid() {
 
     return retorno;
 }
-
-function RedistributeWeight() {
-
-    var matriz = {};
-    var posicaoMatriz = 0;
-    var somaPesoNA = 0;
-    var qtdTarefas = 0;
-    var qtdNA = 0;
-    var somaPesoAv = 0;
-
-    function zerarValores() {
-        qtdTarefas = 0;
-        qtdNA = 0;
-        somaPesoNA = 0;
-        somaPesoAv = 0;
-        return;
-    }
-
-    $('form[data-form-coleta] div[data-linha-coleta]').each(function (i, o) {
-        var data = $(o);
-        var isNA = $(data).attr('data-conforme-na') == "";
-        var peso = $(data).attr('data-peso');
-        var indicador = $(data).attr('data-level1');
-        var monitoramento = $(data).attr('data-level2');
-        
-        if ((posicaoMatriz > 0 && matriz[posicaoMatriz].monitoramento != monitoramento)
-            || (posicaoMatriz == 0 && $(matriz[0]).length == 1 && matriz[0].monitoramento != monitoramento)) {
-            posicaoMatriz++;
-            zerarValores();
-        }
-
-        qtdTarefas++;
-        if (isNA) {
-            qtdNA++;
-            somaPesoNA += parseFloat(peso);
-        } else {
-            somaPesoAv += parseFloat(peso);
-        }
-        matriz[posicaoMatriz] = { indicador, monitoramento, qtdTarefas, qtdNA, somaPesoNA, somaPesoAv };
-    });
-
-    var redistribuirIndicador = {};
-    var posicaoIndicador = 0;
-    zerarValores()
-    for (var i in matriz) {
-        somaPesoAv += matriz[i].somaPesoAv;
-        var indicador;
-        if (matriz[i].qtdNA == matriz[i].qtdTarefas) {
-            indicador = matriz[i].indicador;
-            if (($(posicaoIndicador == 0 && redistribuirIndicador[posicaoIndicador]).length == 1 && redistribuirIndicador[posicaoIndicador].indicador != indicador)
-                || (posicaoIndicador > 0 && redistribuirIndicador[posicaoIndicador].indicador != indicador)) {
-                posicaoIndicador++;
-                zerarValores()
-            }
-            qtdTarefas += matriz[i].qtdTarefas;
-            qtdNA += matriz[i].qtdNA;
-            somaPesoNA += matriz[i].somaPesoNA;
-            redistribuirIndicador[posicaoIndicador] = { indicador, qtdTarefas, qtdNA, somaPesoNA, somaPesoAv };
-        }
-        if ($(redistribuirIndicador[posicaoIndicador]).length > 0) {
-            redistribuirIndicador[posicaoIndicador].somaPesoAv = somaPesoAv;
-        }
-    }
-
-    var redistribuirCC = {};
-    zerarValores()
-    for (var i in redistribuirIndicador) {
-        if ($(redistribuirIndicador[i]).length > 0) {
-            var redistribuirTudo = false;
-            if (redistribuirIndicador[i].qtdNA == redistribuirIndicador[i].qtdTarefas) {
-                redistribuirTudo = true;
-                somaPesoNA += redistribuirIndicador[i].somaPesoNA;
-            }
-            somaPesoAv += redistribuirIndicador[i].somaPesoAv;
-            redistribuirCC[0] = { indicador, somaPesoNA, somaPesoAv, redistribuirTudo };
-        }
-    }
-
-    function redistribuir(retorno) {
-        var level;
-        for (var i in retorno) {
-            if (retorno == matriz) {
-                level = '[data-level2=' + matriz[i].monitoramento + ']';
-            }
-            else if (retorno == redistribuirIndicador) {
-                if ($(redistribuirIndicador[i]).length > 0) {
-                    level = '[data-level1=' + redistribuirIndicador[i].indicador + ']';
-                } else {
-                    break;
-                }
-            }
-            else if (retorno == redistribuirCC) {
-                if ($(redistribuirCC[0]).length > 0 && redistribuirCC[0].redistribuirTudo == true) {
-                    level = 'form[data-form-coleta] div[data-linha-coleta]';
-                } else {
-                    break;
-                }
-            }
-            for (var x in level) {
-                var data = $(level)[x];
-                var isNA = $(data).attr('data-conforme-na') == "";
-                var peso = parseFloat($(data).attr('data-peso'));
-                var pesoParametrizado = parseFloat($(data).attr('data-peso-parametrizado'));
-                if (!isNA && retorno[i].somaPesoNA > 0) {
-                    peso += (pesoParametrizado * retorno[i].somaPesoNA) / retorno[i].somaPesoAv;
-                    $(data).attr('data-peso', peso);
-                }
-            }
-        }
-    }
-
-    redistribuir(matriz);
-    redistribuir(redistribuirIndicador);
-    redistribuir(redistribuirCC);
-}
-
 
 
 //$('body').off('click', '.panel-body button, .panel-body input, .panel-body select')

@@ -145,7 +145,10 @@ namespace SgqSystem.Jobs
                                     {
                                         foreach (var item in listaQualificacaoSerializada["Qualification_Value"])
                                         {
-                                            listaQualificacao.Add(item as string);
+                                            if (!string.IsNullOrEmpty(item))
+                                            {
+                                                listaQualificacao.Add(item as string);
+                                            }
                                         }
                                     }
 
