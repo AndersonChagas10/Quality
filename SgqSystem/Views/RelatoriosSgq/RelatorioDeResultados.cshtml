@@ -3431,7 +3431,7 @@
 
                 var totalNC = dadosNC.reduce(function (a, b) { return a + b; }, 0);
                 var porcentagemAcumuladaNC = 0;
-                var data = []
+                var data = [];
                 dadosNC.forEach(function (a) {
                     porcentagemAcumuladaNC += a / totalNC * 100;
                     data.push(Math.round(porcentagemAcumuladaNC, 2));
@@ -3461,7 +3461,6 @@
                 var sufix = suffix == undefined ? '' : suffix
                 var padding1 = 0.3;
                 var padding2 = -0.2;
-
 
                 return {
                     type: serieType,
@@ -3566,9 +3565,12 @@
                             color: Highcharts.getOptions().colors[1]
                         }
                     },
-                }, {
+                },
+                {
                     allowDecimals: false,
-                    tickInterval: 50,
+                    min: 0,
+                    max: 100,
+                    //tickInterval: 50,
                     labels: {
                         format: '{value} %',
                         style: {
@@ -3610,14 +3612,16 @@
                 }
             },
             ProcNc: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2) {
+
                 $.each(data, function (a, b) {
                     data[a] = parseFloat(b) > 100 ? 100 : b;
                 });
+
                 return {
                     name: '% ' + Resources('nonconformity'),
                     color: Chart.CorTotalProcNc(),
                     data: data,
-                    yAxis: 0,
+                    yAxis: 1,
                     tooltip: {
                         valueSuffix: ' %'
                     },
@@ -3631,10 +3635,9 @@
                     },
                     tooltip: {
                         valueDecimals: 2,
-                        valueSuffix: ' % (' + Resources('nonconformity') + ' * ' + Resources('weight')
-                    }
+                        valueSuffix: ' % (' + Resources('nonconformity') + ' * ' + Resources('weight') + ')'
+                    },
                 };
-
             },
             Meta: function (data, func, nome, id, funcParaAcumuladas) {
                 return {

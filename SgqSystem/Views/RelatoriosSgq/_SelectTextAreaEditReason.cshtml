@@ -2,9 +2,12 @@
     <div class="form-group">
         <label for="inputParReasonEdit" class="pull-left">Motivo:</label>
         <select name="selectParReasonEdit" id="inputParReasonEdit" class="form-control">
-            @foreach (var item in (List<Dominio.ParReason>)ViewBag.ParReasonEdit)
+            @if (ViewBag.ParReasonEdit != null)
             {
-                <option value="@item.Id">@item.Motivo</option>
+                foreach (var item in (List<Dominio.ParReason>)ViewBag.ParReasonEdit)
+                {
+                    <option value="@item.Id">@item.Motivo</option>
+                }
             }
         </select>
     </div>

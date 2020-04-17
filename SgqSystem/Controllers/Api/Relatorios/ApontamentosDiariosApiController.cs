@@ -215,8 +215,8 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("Save/{userSgq_Id}/{parReason_Id}/{motivo}")]
-        public Result_Level3DTO SaveResultLevel3([FromUri] int userSgq_Id, int parReason_Id, string motivo, [FromBody] Result_Level3DTO resultLevel3)
+        [Route("Save/{userSgq_Id}/{parReason_Id}")]
+        public Result_Level3DTO SaveResultLevel3([FromUri] int userSgq_Id, int parReason_Id, [FromBody] Result_Level3DTO resultLevel3)
         {
             var parLevel3Value = new ParLevel3Value();
             using (var databaseSgq = new SgqDbDevEntities())
@@ -240,7 +240,7 @@ namespace SgqSystem.Controllers.Api
                 db.Database.ExecuteSqlCommand(query);
                 var level3Result = db.Result_Level3.FirstOrDefault(r => r.Id == resultLevel3.Id);
 
-                LogSystem.LogTrackBusiness.Register(level3Result, level3Result.Id, "Result_Level3", userSgq_Id, parReason_Id, motivo);
+                LogSystem.LogTrackBusiness.Register(level3Result, level3Result.Id, "Result_Level3", userSgq_Id, parReason_Id, resultLevel3.Motivo);
 
                 ConsolidacaoEdicao(resultLevel3.Id);
                 return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
