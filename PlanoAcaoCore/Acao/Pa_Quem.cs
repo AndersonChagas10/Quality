@@ -19,18 +19,21 @@ namespace PlanoAcaoCore
                 catch
                 {
                     return null;
-                } 
-            } 
+                }
+            }
         }
         public static List<Pa_Quem> Listar()
         {
-            var query = $@"select paq.Id 
-                         ,paq.Name
-                         ,usgq.FullName
-                         FROM Pa_Quem paq  
-                         inner join UserSgq usgq
-                         on paq.Name = usgq.Name 
-                         where paq.Id = usgq.Id";
+            var query = $@"select min(paq.Id) as Id
+                            ,paq.Name
+                            ,usgq.FullName
+                            FROM UserSgq  usgq
+                            inner join Pa_Quem paq  
+                            on paq.Name = usgq.Name
+                            where  usgq.isactive = 1
+                            group by 
+                            paq.Name
+                            ,usgq.FullName";
             return ListarGenerico<Pa_Quem>(query);
         }
 
@@ -46,6 +49,6 @@ namespace PlanoAcaoCore
             return ListarGenerico<Pa_Quem>(query);
         }
 
-       
+
     }
 }
