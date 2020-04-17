@@ -6158,7 +6158,8 @@ namespace SgqServiceBusiness.Api
                                             HasTakePhoto: parlevel2.HasTakePhoto,
                                             FrequenciaValor: frequencia,
                                             FrequenciaMensagemInativo: "",
-                                            Departamento: parlevel2.Departamento);
+                                            Departamento: parlevel2.Departamento,
+                                            disparaCorrectiveAction: parlevel2.DisparaCorrectiveAction);
 
                 var listLineCounter = ParCounterDB.GetParLevelXParCounterList(null, parlevel2, 2);
 

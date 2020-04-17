@@ -955,7 +955,7 @@ function setValoresLevel2Alertas(level1, level2, level2Result, mensagemAlerta) {
 
                 if (controleDeAlerta) {
 
-                    if ($(_level1).attr('disparaalerta') == "True") { //Se tem Ação Corretiva (SIM, o nome está errado)
+                    if ($(_level2).attr('disparacorrectiveaction') == "true") { 
                         level1.attr('havecorrectiveaction', 'true');
                     }
 

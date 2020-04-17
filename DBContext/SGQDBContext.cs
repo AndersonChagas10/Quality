@@ -541,6 +541,8 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
         public decimal Value { get; set; }
 
+        public bool DisparaCorrectiveAction { get; set; }
+
         public bool IsReaudit { get; set; }
 
         private SqlConnection db { get; set; }
@@ -621,7 +623,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
 
             if (parLevel1.IsFixedEvaluetionNumber)
             {
-                string sql = "   SELECT '" + parLevel1.ParCluster_Id + quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit, PL2.ParFrequency_id, D.name as Departamento " +
+                string sql = "   SELECT '" + parLevel1.ParCluster_Id + quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.CorrectiveAction as DisparaCorrectiveAction, AL.IsReaudit, PL2.ParFrequency_id, D.name as Departamento " +
                              "\n FROM ParLevel3Level2 P32   (nolock)                                                                                                                             " +
                              "\n INNER JOIN ParLevel3Level2Level1 P321  (nolock)                                                                                                                 " +
                              "\n ON P321.ParLevel3Level2_Id = P32.Id and p321.active = 1                                                                                                                  " +
@@ -643,7 +645,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                              "\n AND PL2.IsActive = 1     " +
                              "\n AND (Familia.ParCompany_Id = " + ParCompany_Id + "  or Familia.ParCompany_Id IS NULL)                                                               " +
                              "\n and Familia.IsActive = 1 " +
-                             "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto, PL2.ParFrequency_id, D.name              ";
+                             "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, AL.CorrectiveAction, PL2.ParFrequency_id, PL2.HasTakePhoto, PL2.ParFrequency_id, D.name              ";
 
                 List<ParLevel2> parLevel2List = new List<ParLevel2>();
 
@@ -658,7 +660,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
             else
             {
 
-                string sql = "\n SELECT '" + parLevel1.ParCluster_Id + quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.IsReaudit,PL2.ParFrequency_id, D.name as Departamento  " +
+                string sql = "\n SELECT '" + parLevel1.ParCluster_Id + quebraProcesso + @"' + CAST(PL2.Id AS VARCHAR)  AS Id, PL2.Id as ParLevel2_Id, PL2.Name AS Name, PL2.HasSampleTotal, PL2.HasTakePhoto, PL2.IsEmptyLevel3, AL.ParNotConformityRule_id, AL.Value, AL.CorrectiveAction as DisparaCorrectiveAction, AL.IsReaudit,PL2.ParFrequency_id, D.name as Departamento  " +
                          "\n FROM ParLevel3Level2 P32                                      " +
                          "\n INNER JOIN ParLevel3Level2Level1 P321                         " +
                          "\n ON P321.ParLevel3Level2_Id = P32.Id and p321.active = 1                           " +
@@ -679,7 +681,7 @@ HAVING SUM(VolumeAlerta) IS NOT NULL ";
                          "\n ( " +
                          "\n select number as a  from ParSample  (nolock) where IsActive = 1 and ParLevel2_id = PL2.Id and (ParCompany_Id = " + ParCompany_Id + " or ParCompany_Id is Null) and ParLevel1_Id = " + parLevel1.ParLevel1_Id + " and ParCluster_Id = " + parLevel1.ParCluster_Id + " " +
                          "\n ) " +
-                         "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, PL2.ParFrequency_id, PL2.HasTakePhoto , PL2.ParFrequency_id, D.name                 " +
+                         "\n GROUP BY PL2.Id, PL2.Name, PL2.HasSampleTotal, PL2.IsEmptyLevel3, AL.ParNotConformityRule_Id, AL.IsReaudit, AL.Value, AL.CorrectiveAction, PL2.ParFrequency_id, PL2.HasTakePhoto , PL2.ParFrequency_id, D.name                 " +
                          "\n ";
 
                 List<ParLevel2> parLevel2List = new List<ParLevel2>();
