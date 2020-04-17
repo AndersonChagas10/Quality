@@ -31,6 +31,7 @@ namespace SgqSystem.Controllers.Api
     {
         private LogSystem.LogRequestBusiness LogRequestBusiness = new LogSystem.LogRequestBusiness();
         protected string token;
+        protected string tokenFiltros;
         // GET: BaseAPI
         protected override void Initialize(HttpControllerContext controllerContext)
         {
@@ -39,15 +40,20 @@ namespace SgqSystem.Controllers.Api
 
             try
             {
-                //userlogado.attr('userlogin') +"|"+ userlogado.attr('userpass')
-                //token = Request.Headers.GetValues("Cookie").FirstOrDefault().ToString();
-                token = Request.Headers.GetValues("Cookie").FirstOrDefault().ToString().Split('&').ElementAt(1).Split('=')[1];
-                token += "|00000";
+                token = Request.Headers.GetValues("token").FirstOrDefault().ToString();
 
             }
             catch
             {
+            }
 
+            try
+            {
+                tokenFiltros = Request.Headers.GetValues("Cookie").FirstOrDefault().ToString().Split('&').ElementAt(1).Split('=')[1];
+                tokenFiltros += "|00000";
+            }
+            catch
+            {
             }
 
             string language = "";
@@ -351,8 +357,8 @@ namespace SgqSystem.Controllers.Api
                 {
                     var user = new CredenciaisSgq()
                     {
-                        Username = token.Split('|')[0],
-                        Senha = token.Split('|')[1]
+                        Username = tokenFiltros.Split('|')[0],
+                        Senha = tokenFiltros.Split('|')[1]
                     };
 
                     var usuarioLogado = db.UserSgq.Where(x => x.Name == user.Username).FirstOrDefault();
@@ -392,8 +398,8 @@ namespace SgqSystem.Controllers.Api
 
                 var user = new CredenciaisSgq()
                 {
-                    Username = token.Split('|')[0],
-                    Senha = token.Split('|')[1]
+                    Username = tokenFiltros.Split('|')[0],
+                    Senha = tokenFiltros.Split('|')[1]
                 };
 
                 var usuarioLogado = db.UserSgq.Where(x => x.Name == user.Username).FirstOrDefault();
