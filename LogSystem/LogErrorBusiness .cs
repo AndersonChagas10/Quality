@@ -26,9 +26,10 @@ namespace LogSystem
             error.AddDate = DateTime.Now;
             error.Line = line ?? 0;
             error.Method = frame?.GetMethod().Name;
-            error.Controller = frame?.GetMethod().DeclaringType.Name;
+            error.Controller = frame?.GetMethod().DeclaringType?.Name;
             error.Object = obj?.GetType() != typeof(string) ? LogErrorBusiness.ToJson(obj).ToString() : "";
             error.StackTrace = ex.ToClient();
+            error.StackTrace = error.StackTrace.Substring(0, error.StackTrace.Length > 900 ? 900 : error.StackTrace.Length);
 
             using (var db = new Dominio.SgqDbDevEntities())
             {
