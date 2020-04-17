@@ -424,6 +424,8 @@ namespace DTO.DTO.Params
         public ParLevel3DTO ParLevel3 { get; set; }
         public CollectionLevel2 CollectionLevel2 { get; set; }
 
+        public string Motivo { get; set; }
+
         public int? unit { get; set; }
 
         public string mountHtmlIntervalos()
