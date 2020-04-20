@@ -1,7 +1,7 @@
 ﻿function RedistributeWeight() {
 
-    var matriz = {};
-    var posicaoMatriz = 0;
+    var nivelMonitoramento = {};
+    var posicaoMonitoramento = 0;
     var somaPesoNA = 0;
     var qtdTarefas = 0;
     var qtdNA = 0;
@@ -16,15 +16,15 @@
     }
 
     $('form[data-form-coleta] div[data-linha-coleta]').each(function (i, o) {
-        var data = $(o);
-        var isNA = $(data).attr('data-conforme-na') == "";
-        var peso = $(data).attr('data-peso');
-        var indicador = $(data).attr('data-level1');
-        var monitoramento = $(data).attr('data-level2');
+        var linha = $(o);
+        var isNA = $(linha).attr('data-conforme-na') == "";
+        var peso = $(linha).attr('data-peso');
+        var indicador = $(linha).attr('data-level1');
+        var monitoramento = $(linha).attr('data-level2');
 
-        if ((posicaoMatriz > 0 && (matriz[posicaoMatriz].indicador != indicador || matriz[posicaoMatriz].monitoramento != monitoramento))
-            || (posicaoMatriz == 0 && $(matriz[0]).length == 1 && (matriz[0].indicador != indicador || matriz[0].monitoramento != monitoramento))) {
-            posicaoMatriz++;
+        if ((posicaoMonitoramento > 0 && (nivelMonitoramento[posicaoMonitoramento].indicador != indicador || nivelMonitoramento[posicaoMonitoramento].monitoramento != monitoramento))
+            || (posicaoMonitoramento == 0 && $(nivelMonitoramento[0]).length == 1 && (nivelMonitoramento[0].indicador != indicador || nivelMonitoramento[0].monitoramento != monitoramento))) {
+            posicaoMonitoramento++;
             zerarValores();
         }
 
@@ -35,102 +35,106 @@
         } else {
             somaPesoAv += parseFloat(peso);
         }
-        matriz[posicaoMatriz] = { indicador, monitoramento, qtdTarefas, qtdNA, somaPesoNA, somaPesoAv };
+        nivelMonitoramento[posicaoMonitoramento] = { indicador, monitoramento, qtdTarefas, qtdNA, somaPesoNA, somaPesoAv };
     });
 
-    var redistribuirIndicador = {};
+    var nivelIndicador = {};
     var posicaoIndicador = 0;
+    var redistribuirNivelIndicador = false;
     zerarValores()
-    for (var i in matriz) {
-        somaPesoAv += matriz[i].somaPesoAv;
-        var indicador = matriz[i].indicador;
-        var redistribuirNivelIndicador = false;
-        if (matriz[i].qtdNA == matriz[i].qtdTarefas) {
-            redistribuirNivelIndicador = true;
-        }
-        if (($(posicaoIndicador == 0 && redistribuirIndicador[posicaoIndicador]).length == 1 && redistribuirIndicador[posicaoIndicador].indicador != indicador)
-            || (posicaoIndicador > 0 && redistribuirIndicador[posicaoIndicador].indicador != indicador)) {
+    for (var i in nivelMonitoramento) {
+
+        somaPesoAv += nivelMonitoramento[i].somaPesoAv;
+        var indicador = nivelMonitoramento[i].indicador;
+
+        if (($(posicaoIndicador == 0 && nivelIndicador[posicaoIndicador]).length == 1 && nivelIndicador[posicaoIndicador].indicador != indicador)
+            || (posicaoIndicador > 0 && nivelIndicador[posicaoIndicador].indicador != indicador)) {
             posicaoIndicador++;
+            redistribuirNivelIndicador = false;
             zerarValores()
         }
-        qtdTarefas += matriz[i].qtdTarefas;
-        qtdNA += matriz[i].qtdNA;
-        somaPesoNA += matriz[i].somaPesoNA;
-        redistribuirIndicador[posicaoIndicador] = { indicador, qtdTarefas, qtdNA, somaPesoNA, somaPesoAv };
+        if (nivelMonitoramento[i].qtdNA == nivelMonitoramento[i].qtdTarefas) {
+            redistribuirNivelIndicador = true;
+            somaPesoNA += nivelMonitoramento[i].somaPesoNA;
+        }
 
-        if ($(redistribuirIndicador[posicaoIndicador]).length > 0) {
-            redistribuirIndicador[posicaoIndicador].somaPesoAv = somaPesoAv;
-            redistribuirIndicador[posicaoIndicador].redistribuirNivelIndicador = redistribuirNivelIndicador;
+        qtdTarefas += nivelMonitoramento[i].qtdTarefas;
+        qtdNA += nivelMonitoramento[i].qtdNA;
+        nivelIndicador[posicaoIndicador] = { indicador, qtdTarefas, qtdNA, somaPesoNA, somaPesoAv };
+
+        if ($(nivelIndicador[posicaoIndicador]).length > 0) {
+            nivelIndicador[posicaoIndicador].somaPesoAv = somaPesoAv;
+            nivelIndicador[posicaoIndicador].redistribuirNivelIndicador = redistribuirNivelIndicador;
         }
     }
 
-    var redistribuirCC = {};
+    var nivelSecao = {};
+    var redistribuirTudo = false;
     zerarValores()
-    for (var i in redistribuirIndicador) {
-        if ($(redistribuirIndicador[i]).length > 0) {
-            var redistribuirTudo = false;
-            if (redistribuirIndicador[i].qtdNA == redistribuirIndicador[i].qtdTarefas) {
+    for (var i in nivelIndicador) {
+        if ($(nivelIndicador[i]).length > 0) {
+            if (nivelIndicador[i].qtdNA == nivelIndicador[i].qtdTarefas) {
                 redistribuirTudo = true;
-                somaPesoNA += redistribuirIndicador[i].somaPesoNA;
+                somaPesoNA += nivelIndicador[i].somaPesoNA;
             }
-            somaPesoAv += redistribuirIndicador[i].somaPesoAv;
-            redistribuirCC[0] = { somaPesoNA, somaPesoAv, redistribuirTudo };
+            somaPesoAv += nivelIndicador[i].somaPesoAv;
+            nivelSecao[0] = { somaPesoNA, somaPesoAv, redistribuirTudo };
         }
     }
 
-    var pesoTotal = 0;
+    var pesoTotalSecao = 0;
     var pesoTotalIndicador = {};
-    for (var i in matriz) {
-        pesoTotal += matriz[i].somaPesoAv + matriz[i].somaPesoNA;
-        if (pesoTotalIndicador[matriz[i].indicador] > 0) {
-            pesoTotalIndicador[matriz[i].indicador] += matriz[i].somaPesoAv + matriz[i].somaPesoNA;
+    for (var i in nivelMonitoramento) {
+        pesoTotalSecao += nivelMonitoramento[i].somaPesoAv + nivelMonitoramento[i].somaPesoNA;
+        if (pesoTotalIndicador[nivelMonitoramento[i].indicador] > 0) {
+            pesoTotalIndicador[nivelMonitoramento[i].indicador] += nivelMonitoramento[i].somaPesoAv + nivelMonitoramento[i].somaPesoNA;
         } else {
-            pesoTotalIndicador[matriz[i].indicador] = matriz[i].somaPesoAv + matriz[i].somaPesoNA;
+            pesoTotalIndicador[nivelMonitoramento[i].indicador] = nivelMonitoramento[i].somaPesoAv + nivelMonitoramento[i].somaPesoNA;
         }
     }
 
-    function redistribuir(retorno) {
-        var level;
-        for (var i in retorno) {
-            if (retorno == matriz) {
-                level = '[data-level2=' + matriz[i].monitoramento + ']';
+    function redistribuir(nivel) {
+        var nivelSelecionado;
+        for (var i in nivel) {
+            if (nivel == nivelMonitoramento) {
+                nivelSelecionado = '[data-level2=' + nivelMonitoramento[i].monitoramento + ']';
             }
-            else if (retorno == redistribuirIndicador) {
-                if ($(redistribuirIndicador[i]).length > 0 && redistribuirIndicador[i].redistribuirNivelIndicador == true) {
-                    level = '[data-level1=' + redistribuirIndicador[i].indicador + ']';
+            else if (nivel == nivelIndicador) {
+                if ($(nivelIndicador[i]).length > 0 && nivelIndicador[i].redistribuirNivelIndicador == true) {
+                    nivelSelecionado = '[data-level1=' + nivelIndicador[i].indicador + ']';
+                }
+            }
+            else if (nivel == nivelSecao) {
+                if ($(nivelSecao[0]).length > 0 && nivelSecao[0].redistribuirTudo == true) {
+                    nivelSelecionado = 'form[data-form-coleta] div[data-linha-coleta]';
                 } else {
                     break;
                 }
             }
-            else if (retorno == redistribuirCC) {
-                if ($(redistribuirCC[0]).length > 0 && redistribuirCC[0].redistribuirTudo == true) {
-                    level = 'form[data-form-coleta] div[data-linha-coleta]';
-                } else {
-                    break;
-                }
-            }
-            for (var x in level) {
-                var data = $(level)[x];
-                var isNA = $(data).attr('data-conforme-na') == "";
-                var peso = parseFloat($(data).attr('data-peso'));
-                if (!isNA && retorno[i].somaPesoNA > 0) {
-                    if (retorno == matriz) {
-                        peso += (peso * retorno[i].somaPesoNA) / retorno[i].somaPesoAv;
+            for (var x in nivelSelecionado) {
+
+                var linha = $(nivelSelecionado)[x];
+                var isNA = $(linha).attr('data-conforme-na') == "";
+                var peso = parseFloat($(linha).attr('data-peso'));
+
+                if (!isNA && nivel[i].somaPesoNA > 0) {
+                    if (nivel == nivelMonitoramento && nivel[i].indicador == $(linha).attr('data-level1')) {
+                        peso += (peso * nivel[i].somaPesoNA) / nivel[i].somaPesoAv;
                     }
-                    else if (retorno == redistribuirIndicador) {
-                        peso += (peso * retorno[i].somaPesoNA) / (pesoTotalIndicador[retorno[i].indicador] - retorno[i].somaPesoNA);
+                    else if (nivel == nivelIndicador) {
+                        peso += (peso * nivel[i].somaPesoNA) / (pesoTotalIndicador[nivel[i].indicador] - nivel[i].somaPesoNA);
                     }
-                    else if (retorno == redistribuirCC) {
-                        peso += (peso * retorno[i].somaPesoNA) / (pesoTotal - retorno[i].somaPesoNA);
+                    else if (nivel == nivelSecao) {
+                        peso += (peso * nivel[i].somaPesoNA) / (pesoTotalSecao - nivel[i].somaPesoNA);
                     }
 
-                    $(data).attr('data-peso', peso);
+                    $(linha).attr('data-peso', peso);
                 }
             }
         }
     }
 
-    redistribuir(matriz);
-    redistribuir(redistribuirIndicador);
-    redistribuir(redistribuirCC);
+    redistribuir(nivelMonitoramento);
+    redistribuir(nivelIndicador);
+    redistribuir(nivelSecao);
 }
