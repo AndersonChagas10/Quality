@@ -20,8 +20,8 @@ namespace PlanoAcaoCore
                 catch
                 {
                     return null;
-                } 
-            } 
+                }
+            }
         }
 
         public int? UserSgq_Id { get; set; }
@@ -58,6 +58,6 @@ namespace PlanoAcaoCore
             return ListarGenerico<Pa_Quem>(query);
         }
 
-       
+
     }
 }

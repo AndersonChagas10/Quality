@@ -799,6 +799,7 @@ public class ApontamentosDiariosResultSet
 		var sqlParStructure2 = "";
 		var sqlParStructure3 = "";
 		var sqlAuditor = "";
+		var sqlCluster = "";
 
 
 		if (form.Shift_Ids.Length > 0)
@@ -865,8 +866,10 @@ public class ApontamentosDiariosResultSet
             formatDate = "CONVERT(varchar, CONVERT(DATE, CL2HF2.value, 111), 103)";
         }
 
+        if (form.ParCluster_Ids.Length > 0)
+            sqlCluster = $" AND PC.Id IN({string.Join(",", form.ParCluster_Ids)}) --Cluster";
 
-		if (form.ParClusterGroup_Ids.Length > 0)
+        if (form.ParClusterGroup_Ids.Length > 0)
 			sqlClusterGroup = $" AND PC.ParClusterGroup_Id IN({string.Join(",", form.ParClusterGroup_Ids)}) --Grupo de Cluster";
 
 		if (form.ParStructure2_Ids.Length > 0)
@@ -1208,6 +1211,7 @@ public class ApontamentosDiariosResultSet
 					{ sqlCargo }
 					{ sqlLevel3 }
 					{ sqlClusterGroup}    
+					{ sqlCluster}    
 					{ sqlParStructure2}	  
 					{ sqlParStructure3}	  
 					{ sqlAuditor}	

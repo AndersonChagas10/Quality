@@ -311,7 +311,7 @@
             $('#Assinatura2').off('change').on('change', function () {
                 user1.Status = false;
                 $('#passCheck').find('#name').val($('#Assinatura2 :selected').text());
-                $('#passCheck').find('#idUser').val($('#Assinatura1 :selected').val());
+                $('#passCheck').find('#idUser').val($('#Assinatura2 :selected').val());
                 $('#btnOk').off('click').on('click', function () { ValidaSenha(1); });
                 $('#modalPass').modal();
                 $('#passCheck').find('[name=pass]').val('')
@@ -382,6 +382,7 @@
         function ValidaSenha(user, ddl) {
 
             var check = $('#passCheck').serializeObject();
+            check.name = check.idUser;
 
             $.post('@Url.Action("CheckPass", "api/Pa_User")', check, function (r) {
 
