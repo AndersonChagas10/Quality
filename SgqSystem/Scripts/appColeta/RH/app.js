@@ -22,6 +22,7 @@ var currentPlanejamento = [];
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
+var currentRedistributeWeight = false;
 var currentBaixarGetResultadoAposEnviarOsDadosColetados = false;
 
 //Script para exibir erros no Mobile

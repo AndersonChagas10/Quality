@@ -236,6 +236,7 @@ function getInputLevel3(level3, level2, level1, striped) {
         retorno += ' data-level2="' + level2.Id + '"';
         retorno += ' data-level3="' + level3.Id + '"';
         retorno += ' data-peso="' + level3.Peso + '"';
+        retorno += ' data-peso-parametrizado="' + level3.Peso + '"';
         retorno += ' style="padding-left:10px;' + colorStriped + '">';
 
         switch (level3.ParLevel3InputType.Id) {
@@ -984,6 +985,10 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         };
     }
 
+    if (currentRedistributeWeight == true) {
+        RedistributeWeight();
+    }
+
     //Insere valores da coleta
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
         var data = $(o);
@@ -1006,7 +1011,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 IsNotEvaluate: isNA,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
-                Weigth: $(data).attr('data-peso'),
+                Weigth: $(data).attr('data-peso-parametrizado'),
                 WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
                 Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,
                 WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
@@ -1411,7 +1416,6 @@ function HeaderFieldsIsValid() {
 
     return retorno;
 }
-
 
 
 //$('body').off('click', '.panel-body button, .panel-body input, .panel-body select')

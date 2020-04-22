@@ -16,7 +16,8 @@ namespace Dominio.AppViewModel
 
         public int Evaluation { get; set; }
         public int Sample { get; set; }
-        
+        public bool RedistributeWeight { get; set; }
+
         public virtual List<ParEvaluationScheduleAppViewModel> ParEvaluationScheduleAppViewModel { get; set; }
     }
 }

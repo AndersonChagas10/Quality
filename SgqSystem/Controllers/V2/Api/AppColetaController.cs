@@ -373,7 +373,7 @@ INSERT INTO [dbo].[Collection]
                     .OrderByDescending(x => x.ParCompany_Id)
                     .ToList();
 
-                listaParEvaluationXDepartmentXCargoAppViewModel = db.ParEvaluationXDepartmentXCargo
+                    listaParEvaluationXDepartmentXCargoAppViewModel = db.ParEvaluationXDepartmentXCargo
                     .AsNoTracking()
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id)
@@ -388,9 +388,10 @@ INSERT INTO [dbo].[Collection]
                         ParCargo_Id = x.ParCargo_Id,
                         Sample = x.Sample,
                         Evaluation = x.Evaluation,
-                        ParCluster_Id = x.ParCluster_Id
+                        ParCluster_Id = x.ParCluster_Id,
+                        RedistributeWeight = x.RedistributeWeight
                     })
-                    .ToList();
+                    .ToList();          
 
                 var listaEvaluations = db.ParEvaluationSchedule
                         .Where(y => y.IsActive);
