@@ -44,10 +44,9 @@ namespace SgqServiceBusiness.Controllers.RH
                         Sample
                         ParCluster_Id
                         From ParVinculoPeso
-                        where 
-                        ParCompany_Id = @ParCompany_Id or ParCompany_Id is Null
-                        and ParFrequencyId = @ParFrequencyId
+                        where ParFrequencyId = @ParFrequencyId
                         and ParCluster_Id = @ParCluster_Id or ParCluster_Id is null
+                        and (ParCompany_Id = @ParCompany_Id or ParCompany_Id is null)
                         and IsActive = 1
                         order by ParCompany_Id desc";
 

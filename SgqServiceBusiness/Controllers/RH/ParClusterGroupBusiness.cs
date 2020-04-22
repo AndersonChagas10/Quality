@@ -14,25 +14,10 @@ namespace SgqServiceBusiness.Controllers.RH
         public List<ParClusterGroup> GetListaParClusterGroup(int parCompany_Id)
         {
             var listaClusterGroup = new List<ParClusterGroup>();
-            var listaCluster = new List<ParCluster>();
-            var listaParVinculoPesoClusterIds = new List<ParVinculoPeso>();
 
             try
             {
-                using (var factory = new Factory("DefaultConnection"))
-                {
-                    listaParVinculoPesoClusterIds = GetListaParVinculoPesoClusterIds(parCompany_Id);
-
-                    if (listaParVinculoPesoClusterIds.Count > 0)
-                    {
-                        listaCluster = GetListaParCluster(listaParVinculoPesoClusterIds);
-
-                        if (listaCluster.Count > 0)
-                        {
-                            listaClusterGroup = GetListaParClusterGroup(listaCluster);
-                        }
-                    }
-                }
+                listaClusterGroup = GetListaParVinculoPesoClusterIds(parCompany_Id);
             }
             catch (Exception e)
             {
@@ -41,64 +26,30 @@ namespace SgqServiceBusiness.Controllers.RH
             return listaClusterGroup;
         }
 
-        private List<ParClusterGroup> GetListaParClusterGroup(List<ParCluster> listaCluster)
+        private List<ParClusterGroup> GetListaParVinculoPesoClusterIds(int parCompany_Id)
         {
+
             var listaClusterGroup = new List<ParClusterGroup>();
 
-            var querylistaClustersGroup = $@"
-                               select * from ParClusterGroup where Id in({ string.Join(",", listaCluster.Select(x => x.ParClusterGroup_Id).ToArray()) })
-                            ";
+            var query = $@"	
+                            DECLARE @ParCompany_Id int = @ParamParCompany_Id;
+	                        select * from ParClusterGroup where Id in(
+		                        select PC.ParClusterGroup_Id from ParCluster PC where Id in(
+		                         select Distinct(PVP.ParCluster_Id) from ParVinculoPeso PVP
+			                        INNER join ParCompanyCluster PCxC on PVP.ParCluster_Id = PCxC.ParCluster_Id and PCxC.Active = 1
+			                        where ((PVP.ParCompany_Id = @ParCompany_Id OR PVP.ParCompany_Id is null) and PCxC.ParCompany_Id = @ParCompany_Id) and PVP.IsActive = 1 ))";
+
             using (var factory = new Factory("DefaultConnection"))
             {
-                using (SqlCommand cmd = new SqlCommand(querylistaClustersGroup, factory.connection))
+                using (SqlCommand cmd = new SqlCommand(query, factory.connection))
                 {
                     cmd.CommandType = CommandType.Text;
+                    UtilSqlCommand.AddParameterNullable(cmd, "@ParamParCompany_Id", parCompany_Id);
 
                     listaClusterGroup = factory.SearchQuery<ParClusterGroup>(cmd).ToList();
                 }
             }
             return listaClusterGroup;
-        }
-
-        private List<ParCluster> GetListaParCluster(List<ParVinculoPeso> listaParVinculoPesoClusterIds)
-        {
-            var listaCluster = new List<ParCluster>();
-
-            var querylistaClusters = $@"
-                                select * from ParCluster where Id in ({ string.Join(",", listaParVinculoPesoClusterIds.Select(x => x.ParCluster_Id).ToArray()) })
-                            ";
-            using (var factory = new Factory("DefaultConnection"))
-            {
-                using (SqlCommand cmd = new SqlCommand(querylistaClusters, factory.connection))
-                {
-                    cmd.CommandType = CommandType.Text;
-
-                    listaCluster = factory.SearchQuery<ParCluster>(cmd).ToList();
-                }
-            }
-            return listaCluster;
-        }
-
-        private List<ParVinculoPeso> GetListaParVinculoPesoClusterIds(int parCompany_Id)
-        {
-            var listaParVinculoPesoClusterIds = new List<ParVinculoPeso>();
-            var querylistaParVinculoPeso = $@"
-                            DECLARE @ParCompany_Id int = @ParamParCompany_Id;
-                            select Distinct(PVP.ParCluster_Id) from ParVinculoPeso PVP
-	                        INNER join ParCompanyCluster PCxC on PVP.ParCluster_Id = PCxC.ParCluster_Id
-	                        where (PVP.ParCompany_Id = @ParCompany_Id or PVP.ParCompany_Id is Null) and PVP.IsActive = 1 and PCxC.Active = 1
-                            ";
-            using (var factory = new Factory("DefaultConnection"))
-            {
-                using (SqlCommand cmd = new SqlCommand(querylistaParVinculoPeso, factory.connection))
-                {
-                    cmd.CommandType = CommandType.Text;
-                    UtilSqlCommand.AddParameterNullable(cmd, "@ParamParCompany_Id", parCompany_Id);
-
-                    listaParVinculoPesoClusterIds = factory.SearchQuery<ParVinculoPeso>(cmd).ToList();
-                }
-            }
-            return listaParVinculoPesoClusterIds;
         }
     }
 }
