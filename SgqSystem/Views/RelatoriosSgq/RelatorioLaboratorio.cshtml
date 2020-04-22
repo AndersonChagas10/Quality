@@ -52,10 +52,16 @@
             margin: auto;
             margin-bottom: 10px;
         }
+
+        .loader{
+            visibility:hidden;
+        }
+
     </style>
 
     <div class="page-content-wrapper">
         <div class="page-content">
+            <div class="loader"></div>
             <div id="container">
 
             </div>
@@ -69,12 +75,47 @@
 
     <script type="text/javascript">
 
+        var urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
+
         $("#btnSend").click(function () {
-            gerarGrafico();
-            topFunction();
+
+            buscarDados();
+
         });
 
+        function buscarDados() {
+
+            debugger
+
+            $.ajax({
+                data: JSON.stringify(objFiltro.Param),
+                url: urlBuscaDados,
+                type: 'POST',
+                contentType: "application/json",
+                success: retornoAjax,
+                timeout: 600000,
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                error: function (a,b,c) {
+                    console.log(a);
+                    console.log(b);
+                    console.log(c);
+                }
+            });
+        }
+
+        function enviarFiltro() {
+
+        }
+
+        function retornoAjax(data) {
+
+            console.log(data);
+            gerarGrafico();
+
+        }
+
         function gerarGrafico() {
+
             Highcharts.chart('container', {
             chart: {
                 type: 'line'
@@ -130,6 +171,18 @@
                 data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 15]
             }]
         });
+        }
+
+        function gerarMapaCalor() {
+
+        }
+
+        function exibirLoader() {
+
+        }
+
+        function esconderLoader() {
+
         }
 
     </script>
