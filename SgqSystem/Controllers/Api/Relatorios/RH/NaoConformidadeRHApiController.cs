@@ -132,7 +132,13 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                         AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
                 LEFT JOIN ParCluster PC WITH (NOLOCK) ON CuboL3.ParCluster_Id = PC.Id
                 LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id
-                LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) WHERE ParStructureGroup_Id = 1) Holding ON CuboL3.Holding = Holding.Id
+				LEFT JOIN (SELECT 
+	                            S1.ID,S1.NAME
+	                        FROM ParStructureGroup S1	
+	                        INNER JOIN ParStructureGroup S2
+		                        ON S1.ID = S2.ParStructureGroupParent_Id
+	                        INNER JOIN ParStructureGroup S3
+		                        ON S2.ID = S3.ParStructureGroupParent_Id) Holding on CuboL3.Holding = Holding.Id
                 WHERE 1 = 1
                 AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 				
@@ -283,8 +289,20 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                         AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 				    LEFT JOIN ParCluster PC WITH (NOLOCK) ON CuboL3.ParCluster_Id = PC.Id
 		            LEFT JOIN ParClusterGroup PCG WITH (NOLOCK) ON PC.ParClusterGroup_Id = PCG.Id
-					LEft Join (select * from ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
-					LEft Join (select * from ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+					LEFT JOIN (SELECT 
+	                             S1.ID,S1.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Holding on CuboL3.Holding = Holding.Id
+					LEFT JOIN (SELECT 
+	                             S2.ID,S2.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 
@@ -443,9 +461,27 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                         AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 				    LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		            LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
-					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
-					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
-					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
+					LEFT JOIN (SELECT 
+	                             S1.ID,S1.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Holding on CuboL3.Holding = Holding.Id
+					LEFT JOIN (SELECT 
+	                             S2.ID,S2.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+					LEFT JOIN (SELECT 
+	                            S3.ID,S3.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Regional on CuboL3.Regional = Regional.Id
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 
@@ -622,9 +658,27 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                         AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 				    LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		            LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
-	                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
-					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
-					LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
+					LEFT JOIN (SELECT 
+	                             S1.ID,S1.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Holding on CuboL3.Holding = Holding.Id
+					LEFT JOIN (SELECT 
+	                             S2.ID,S2.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+					LEFT JOIN (SELECT 
+	                            S3.ID,S3.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Regional on CuboL3.Regional = Regional.Id
 	                WHERE 1=1
 	                AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
                     {whereStructure2}
@@ -756,9 +810,27 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 				INNER JOIN ParCargo CG ON CuboL3.Cargo_Id = CG.ID
 				LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
-                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
+					LEFT JOIN (SELECT 
+	                             S1.ID,S1.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Holding on CuboL3.Holding = Holding.Id
+					LEFT JOIN (SELECT 
+	                             S2.ID,S2.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+					LEFT JOIN (SELECT 
+	                            S3.ID,S3.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Regional on CuboL3.Regional = Regional.Id
 	            WHERE 1=1
                 AND CuboL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
                 AND C.Name  = '{ form.Param["unitName"] }'
@@ -887,9 +959,27 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 				INNER JOIN ParCargo CG ON CuboL3.Cargo_Id = CG.ID
 				LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
-                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
+					LEFT JOIN (SELECT 
+	                             S1.ID,S1.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Holding on CuboL3.Holding = Holding.Id
+					LEFT JOIN (SELECT 
+	                             S2.ID,S2.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+					LEFT JOIN (SELECT 
+	                            S3.ID,S3.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Regional on CuboL3.Regional = Regional.Id
 	            WHERE 1=1
                 AND CuboL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
                 AND D1.Id  = '{ form.Param["department_Id"] }'
@@ -1048,9 +1138,27 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 				INNER JOIN ParCargo CG ON CuboL3.Cargo_Id = CG.ID
 				LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
-                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
+					LEFT JOIN (SELECT 
+	                             S1.ID,S1.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Holding on CuboL3.Holding = Holding.Id
+					LEFT JOIN (SELECT 
+	                             S2.ID,S2.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+					LEFT JOIN (SELECT 
+	                            S3.ID,S3.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Regional on CuboL3.Regional = Regional.Id
 	            WHERE 1=1
                 AND CuboL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
                 AND D.Name  = '{ form.Param["departmentPaiName"] }'
@@ -1724,9 +1832,27 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                         AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 				LEFT JOIN ParCluster PC  ON CuboL3.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
-                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
+					LEFT JOIN (SELECT 
+	                             S1.ID,S1.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Holding on CuboL3.Holding = Holding.Id
+					LEFT JOIN (SELECT 
+	                             S2.ID,S2.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+					LEFT JOIN (SELECT 
+	                            S3.ID,S3.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Regional on CuboL3.Regional = Regional.Id
 	            WHERE 1=1
 	            AND CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		        AND D.Id = '{form.Param["department_Id"] }'
@@ -2166,9 +2292,27 @@ DROP TABLE #AMOSTRATIPO4 ";
                         AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 				LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
-                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
+					LEFT JOIN (SELECT 
+	                             S1.ID,S1.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Holding on CuboL3.Holding = Holding.Id
+					LEFT JOIN (SELECT 
+	                             S2.ID,S2.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+					LEFT JOIN (SELECT 
+	                            S3.ID,S3.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Regional on CuboL3.Regional = Regional.Id
 	            WHERE 1=1
                 AND CuboL3.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
                 AND C.Id = '{form.Param["unit_Id"] }' 
@@ -2303,9 +2447,27 @@ DROP TABLE #AMOSTRATIPO4 ";
 	            INNER JOIN ParDepartment D WITH (NOLOCK) ON CuboL3.Secao_Id = D.ID
 				LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
-                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
+					LEFT JOIN (SELECT 
+	                             S1.ID,S1.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Holding on CuboL3.Holding = Holding.Id
+					LEFT JOIN (SELECT 
+	                             S2.ID,S2.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+					LEFT JOIN (SELECT 
+	                            S3.ID,S3.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Regional on CuboL3.Regional = Regional.Id
 	            WHERE 1=1
                 -- AND L.Name IN ('{ form.Param["level1Name"] }') 
                 -- AND C.Name = '{ form.Param["unitName"] }'
@@ -2463,9 +2625,27 @@ DROP TABLE #AMOSTRATIPO4 ";
                         AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
 				LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
-                LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 1) Holding on CuboL3.Holding = Holding.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 2) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
-				LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = 3) Regional on CuboL3.Regional = Regional.Id
+					LEFT JOIN (SELECT 
+	                             S1.ID,S1.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Holding on CuboL3.Holding = Holding.Id
+					LEFT JOIN (SELECT 
+	                             S2.ID,S2.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) GrupoDeEmpresa on CuboL3.GrupoDeEmpresa = GrupoDeEmpresa.Id
+					LEFT JOIN (SELECT 
+	                            S3.ID,S3.NAME
+	                            FROM ParStructureGroup S1	
+	                            INNER JOIN ParStructureGroup S2
+		                            ON S1.ID = S2.ParStructureGroupParent_Id
+	                            INNER JOIN ParStructureGroup S3
+		                            ON S2.ID = S3.ParStructureGroupParent_Id) Regional on CuboL3.Regional = Regional.Id
 	            WHERE 1=1
                 AND L.Id = '{form.Param["level1_Id"]}' 
                 AND M.Id = '{form.Param["level2_Id"]}'
