@@ -101,6 +101,7 @@
     <Compile Include="Controllers\RH\GetAppParametrizationBusiness.cs" />
     <Compile Include="Controllers\RH\ParClusterBusiness.cs" />
     <Compile Include="Controllers\RH\ParClusterGroupBusiness.cs" />
+    <Compile Include="Controllers\RH\ParCompanyBusiness.cs" />
     <Compile Include="Helpers\CommonData.cs" />
     <Compile Include="Helpers\CommonDate.cs" />
     <Compile Include="Helpers\CommonLog.cs" />
