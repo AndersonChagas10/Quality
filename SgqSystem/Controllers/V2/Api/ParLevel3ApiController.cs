@@ -644,7 +644,7 @@ namespace SgqSystem.Controllers.V2.Api
                         parVinculoPesoOld.DefaultMessageText = parLevel3Value.DefaultMessageText;
                         parVinculoPesoOld.StringSizeAllowed = parLevel3Value.StringSizeAllowed;
                         parVinculoPesoOld.LimiteNC = parLevel3Value.LimiteNC;
-
+                        parVinculoPesoOld.IsNCTextRequired = parLevel3Value.IsNCTextRequired;
 
                         foreach (var item in parLevel3Value.ParInputTypeValues)
                         {
