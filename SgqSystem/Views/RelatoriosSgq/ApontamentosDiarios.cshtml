@@ -798,6 +798,8 @@
 
             var selectParReasonEdit = $('select[name="selectParReasonEdit"]:visible').val();
             var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
+            dadosResultLevel3["Motivo"] = textareaParReasonEdit;
+            
             //$('select[name="selectParReasonEdit"]:visible').attr('style','border:0px;');
             $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
                 $('.alertParReasonEditIsRequired').addClass('hide');
@@ -809,7 +811,7 @@
                 return;
             }
 
-            $.post(urlSave + "/" + @Html.Raw(ViewBag.UserId) + "/" + selectParReasonEdit + "/" + textareaParReasonEdit, dadosResultLevel3, function (r, x, e) {
+            $.post(urlSave + "/" + @Html.Raw(ViewBag.UserId) + "/" + selectParReasonEdit, dadosResultLevel3, function (r, x, e) {
 
                 $('textarea[name="textareaParReasonEdit"]:visible').val('');
                 $("#myModal").modal('hide');
