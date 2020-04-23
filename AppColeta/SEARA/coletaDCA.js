@@ -62,6 +62,7 @@ function openColetaDCA(levels) {
                         getParHeaderFieldDeparment() +
         '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
                             coleta +
+        '					<button class="btn btn-success pull-right" data-salvar-tarefas style="margin:10px 25px">Salvar todas as tarefas</button>       ' +
         '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar-dca style="margin-top:10px" disabled>Salvar</button>       ' +
         '				</form>                                                                                                                    ' +
         '			  </div>                                                                                                                       ' +
@@ -1292,6 +1293,25 @@ function verificaSalvar(){
         habilitaBotaoSalvar();
 
 }
+
+
+$('body').off('click', '[data-salvar-tarefas]').on('click', '[data-salvar-tarefas]', function (e) {
+    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
+
+    for (var i = 0; i < linhasDaColeta.length; i++) {
+        var data = linhasDaColeta[i];
+        var isNa = $(data).attr('data-conforme-na') == "";
+        var input = $('form[data-form-coleta] div[data-linha-coleta] [data-valor]')[i];
+        var btnSalvarTarefa = $('form[data-form-coleta] div[data-linha-coleta] [data-coleta-dca]')[i];
+
+        if (!isNa) {
+            if ($(input).val() == "" || $(input).val() == null || $(input).val() == "undefined") {
+                $(input).val(0);
+            }
+            $(btnSalvarTarefa).trigger('click');
+        }
+    }
+});
 
 $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', function (e) {
 
