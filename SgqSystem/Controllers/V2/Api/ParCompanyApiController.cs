@@ -25,7 +25,7 @@ namespace SgqSystem.Controllers.V2.Api
                 var listaUnidadesVinculadasUsuario = db.ParCompanyXUserSgq
                     .Where(x => x.UserSgq_Id == userSgq_Id)
                     .Join(db.ParCompany, x => x.ParCompany_Id, pc => pc.Id, (x, pc) => new { ParCompanyXUserSgq = x, ParCompany = pc })
-                    .Where(x => x.ParCompanyXUserSgq.ParCompany_Id == x.ParCompany.Id)
+                    .Where(x => x.ParCompanyXUserSgq.ParCompany_Id == x.ParCompany.Id && x.ParCompany.IsActive == true)
                     .ToList();
 
                 return Ok(listaUnidadesVinculadasUsuario);

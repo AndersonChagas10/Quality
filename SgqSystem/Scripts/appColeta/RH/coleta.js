@@ -948,7 +948,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 Weigth: $(data).attr('data-peso'),
                 WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
                 Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,
-                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
+                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseFloat($(data).attr('data-peso')),
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
                 ParCluster_Id: currentParCluster_Id,
                 Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')) })
