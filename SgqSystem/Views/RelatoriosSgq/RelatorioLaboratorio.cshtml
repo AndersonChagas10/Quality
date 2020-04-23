@@ -53,15 +53,11 @@
             margin-bottom: 10px;
         }
 
-        .loader{
-            visibility:hidden;
-        }
-
     </style>
 
     <div class="page-content-wrapper">
         <div class="page-content">
-            <div class="loader"></div>
+            <div class="loader" hidden></div>
             <div id="container">
 
             </div>
@@ -85,7 +81,7 @@
 
         function buscarDados() {
 
-            debugger
+            exibirLoader();
 
             $.ajax({
                 data: JSON.stringify(objFiltro.Param),
@@ -99,8 +95,10 @@
                     console.log(a);
                     console.log(b);
                     console.log(c);
+                    esconderLoader();
                 }
             });
+
         }
 
         function enviarFiltro() {
@@ -109,68 +107,45 @@
 
         function retornoAjax(data) {
 
-            console.log(data);
-            gerarGrafico();
+            esconderLoader();
+            gerarGrafico(data);
+            gerarMapaCalor();
 
         }
 
-        function gerarGrafico() {
+        function gerarGrafico(data) {
+
+            const categories = getCategories(data, "dColetaAmostra");
+            const series = getSeriesByCategories(data, categories);
 
             Highcharts.chart('container', {
-            chart: {
-                type: 'line'
-            },
-            title: {
-                text: '% DE NC ANÁLISES MICROBIOLÓGICAS POR TIPO DE VEÍCULO'
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                categories: ['Nov', 'Dez', 'Jan', 'Fev', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov']
-            },
-            yAxis: {
+                chart: {
+                    type: 'line'
+                },
                 title: {
+                    text: '% DE NC ANÁLISES MICROBIOLÓGICAS POR TIPO DE VEÍCULO'
+                },
+                subtitle: {
                     text: ''
-                }
-            },
-            plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true
-                    },
-                    enableMouseTracking: false
-                }
-            },
-            series: [{
-                name: 'Água',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3]
-            }, {
-                name: 'Alimentos Preparados',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 16, 4, 10]
-            }, {
-                name: 'Destrutiva',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 15]
-            }, {
-                name: 'Exposição de Placa',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 10]
-            }, {
-                name: 'In Natura',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3]
-            }, {
-                name: 'Não Destrutivo',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 79, 79]
-            }, {
-                name: 'Subprodutos',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 18]
-            }, {
-                name: 'Swab Operacional',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 10]
-            }, {
-                name: 'Swab Pré-operacional',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 15]
-            }]
-        });
+                },
+                xAxis: {
+                    categories: categories
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
+                    }
+                },
+                series: series
+            });
         }
 
         function gerarMapaCalor() {
@@ -178,10 +153,75 @@
         }
 
         function exibirLoader() {
-
+            $('.loader').show();
         }
 
         function esconderLoader() {
+            $('.loader').hide();
+        }
+
+        function getPorcentagem(amostragem, quantidade) {
+
+            amostragem = parseFloat(amostragem);
+            quantidade = parseFloat(quantidade);
+
+            return (quantidade * 100) / amostragem;
+
+        }
+
+        function getCategories(data, categoriesColumDataName) {
+
+            if (!data)
+                return [];
+
+            //retornar mes e ano
+            const categoriesArr = [... new Set(data.map(x => convertDateToYearMouth(x[categoriesColumDataName])))]
+
+            return categoriesArr;
+        }
+
+        function getSeriesByCategories(data, categories) {
+
+            const series = [];
+
+            seriesName = [... new Set(data.map(x => x["cNmTpColeta"]))];
+
+            seriesName.forEach((serieName) => { //seriesName
+
+                const obj = {};
+                obj.name = serieName;
+                obj.data = [];
+
+                categories.forEach((o) => { //datas
+
+                    var arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmTpColeta"] == serieName);
+
+                    if (arrFiltrado.length == 0) {
+
+                        obj.data.push(null);
+
+                    } else {
+
+                        arrFiltrado = arrFiltrado.map(x => x.NC);
+
+                        var qtdNC = arrFiltrado.reduce((accumulator, currentValue) => accumulator + currentValue)
+
+                        obj.data.push(getPorcentagem(arrFiltrado.length, qtdNC));
+                    }
+
+                });
+
+                series.push(obj);
+
+            });
+
+            return series;
+
+        }
+
+        function convertDateToYearMouth(date) {
+
+            return new Date(date).getFullYear().toString() + "-" + new Date(date).getMonth().toString()
 
         }
 

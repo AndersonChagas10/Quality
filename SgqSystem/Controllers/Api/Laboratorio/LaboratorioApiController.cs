@@ -15,86 +15,81 @@ namespace SgqSystem.Controllers.Api
 
         [HttpPost]
         [Route("Get")]
-        public List<Object> Get([FromBody] DataCarrierFormularioLaboratorio form)
+        public List<RelatorioLaboratorioReultSet> Get([FromBody] DataCarrierFormularioLaboratorio form)
         {
+
+            string whereDate = $"AND dColetaAmostra BETWEEN '{ form.dColetaAmostra }' AND '{ form.dColetaAmostra }' ";
+
             string sqlQuery = $@"
 
-SELECT DISTINCT top 10
-C.nCdEmpresa
-,C.cNmEmpresa
-,C.cSgEmpresa
-,dColetaAmostra
---,YEAR(dColetaAmostra) ""dColetaAmostra - ANO""
---,MONTH(dColetaAmostra) ""dColetaAmostra - MES""
---,DAY(dColetaAmostra) ""dColetaAmostra - DIA""
-,dProducao
-,nCdProduto
-,nCdAnalise
-,cNmAnalise
-,cGrupoColeta
-,nCdSetor
-,cNmSetor
-,nCdTpColeta
-,cNmTpColeta
-,cSgUnidadeMedidaLaboratorio
-,dMovimento
-,iLote
-,nCdPontoColeta
-,cNmPontoColeta
-,cNmDetalhePontoColeta
-,nCdRequisicaoAnalise
-,nCdRequisicaoFilial
-,nCdLaboratorio
-,cNmLaboratorio
-,iAmostra
-,cCdBarraAmostra
-,nCdMatriz
-,cNmMatriz
-,nCdGrupoAnalise
-,cNmGrupoAnalise
-,nCdMetodologia
-,cCdMetodologia
-,cNmMetodologia
-,dAnaliseCritica
-,dAnaliseInicial
-,dAnaliseFinal
-,dPrevisaoFinalAnalise
-,nCdValorPadrao
-,nResultadoAnalise
-,cSinal1
-,nValor1
-,cOperadorPadrao
-,cSinal2
-,nValor2
-,cRastreabilidadeLaudo
-,Key_Integ
-,CASE
-    WHEN cResultadoAnalise = '2' THEN 'C'
+SELECT DISTINCT TOP 10000
+	C.nCdEmpresa
+   ,C.cNmEmpresa
+   ,C.cSgEmpresa
+   ,dColetaAmostra
+   ,YEAR(dColetaAmostra) ""dColetaAmostra - ANO""
+   ,MONTH(dColetaAmostra) ""dColetaAmostra - MES""
+   ,DAY(dColetaAmostra) ""dColetaAmostra - DIA""
+   ,dProducao
+   ,nCdProduto
+   ,nCdAnalise
+   ,cNmAnalise
+   ,cGrupoColeta
+   ,nCdSetor
+   ,cNmSetor
+   ,nCdTpColeta
+   ,cNmTpColeta
+   ,cSgUnidadeMedidaLaboratorio
+   ,dMovimento
+   ,iLote
+   ,nCdPontoColeta
+   ,cNmPontoColeta
+   ,cNmDetalhePontoColeta
+   ,nCdRequisicaoAnalise
+   ,nCdRequisicaoFilial
+   ,nCdLaboratorio
+   ,cNmLaboratorio
+   ,iAmostra
+   ,cCdBarraAmostra
+   ,nCdMatriz
+   ,cNmMatriz
+   ,nCdGrupoAnalise
+   ,cNmGrupoAnalise
+   ,nCdMetodologia
+   ,cCdMetodologia
+   ,cNmMetodologia
+   ,dAnaliseCritica
+   ,dAnaliseInicial
+   ,dAnaliseFinal
+   ,dPrevisaoFinalAnalise
+   ,nCdValorPadrao
+   ,nResultadoAnalise
+   ,cSinal1
+   ,nValor1
+   ,cOperadorPadrao
+   ,cSinal2
+   ,nValor2
+   ,cRastreabilidadeLaudo
+   ,Key_Integ
+   ,CASE
+        WHEN cResultadoAnalise = '2' THEN 'C'
 
-    WHEN cResultadoAnalise = '3' THEN 'NC'
-END Conformidade
-,1 AS AV
-, CASE
+        WHEN cResultadoAnalise = '3' THEN 'NC'
 
-    WHEN cResultadoAnalise = '2' THEN 0
+    END Conformidade
+   ,1 AS AV
+   , CASE
+        WHEN cResultadoAnalise = '2' THEN 0
+        WHEN cResultadoAnalise = '3' THEN 1
+    END NC
+FROM INTEG.CollectionAnaliseLaboratorial INTEG
+LEFT JOIN Empresa C ON INTEG.nCdEmpresa = C.nCdEmpresa ";
 
-    WHEN cResultadoAnalise = '3' THEN 1
-END NC
-
-        FROM INTEG.CollectionAnaliseLaboratorial INTEG
-
-        LEFT JOIN Empresa C
-
-            ON INTEG.nCdEmpresa = C.nCdEmpresa
-
-
-            ";
-
-            var retorno = new List<Object>();
+            var retorno = new List<RelatorioLaboratorioReultSet>();
 
             using (var db = new Factory("DefaultConnection"))
             {
-                retorno = db.SearchQuery<Object>(sqlQuery).ToList();
+                retorno = db.SearchQuery<RelatorioLaboratorioReultSet>(sqlQuery).ToList();
             }
 
             return retorno;
@@ -149,5 +144,8 @@ END NC
         public string Key_Integ { get; set; }
         public DateTime AddDate { get; set; }
         public decimal cResultadoAnalise { get; set; }
+        public string Conformidade { get; set; }
+        public int AV { get; set; }
+        public int NC { get; set; }
     }
 }

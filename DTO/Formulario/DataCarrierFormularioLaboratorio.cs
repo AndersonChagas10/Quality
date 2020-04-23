@@ -11,5 +11,8 @@ namespace DTO.Formulario
         public int[] nCdProduto { get; set; }
 
         public DateTime dColetaAmostra { get; set; }
+
+        public string endDate { get; set; }
+        public string startDate { get; set; }
     }
 }
