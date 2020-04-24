@@ -208,7 +208,7 @@ function getInputLevel3(level3, level2, level1, striped) {
 
     var retorno = "";
 
-    var htmlLinhaHeaderFieldGeral = getParHeaderFieldGeralLevel3(level1, level2, level3);
+    var htmlLinhaHeaderFieldGeral = getParHeaderFieldGeralLevel3(level1, level2, level3, striped);
 
     var htmlLinhaParQualification = getParQualification(level1, level2, level3);
 
@@ -557,13 +557,12 @@ function getResultado(level3) {
 
     var html = '';
 
+    var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+
     if (level3.ParLevel3XHelp)
         html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
-
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
-
-    //var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' '+ level3LimitLabel +'</small></div>';
 
     html +=
         '<div class="col-xs-6 no-gutters">' +
