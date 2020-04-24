@@ -49,8 +49,8 @@ function listarParCompany(isVoltar) {
 
         $(data).each(function (i, o) {
 
-            htmlParCompany += '<button type="button" class="list-group-item col-xs-12" data-par-company-id="' + o.ParCompany.Id + '" ' //+
-                + '>' + o.ParCompany.Name +
+            htmlParCompany += '<button type="button" class="list-group-item col-xs-12" data-par-company-id="' + o.Id + '" ' //+
+                + '>' + o.Name +
                 '</button>';
         });
 
