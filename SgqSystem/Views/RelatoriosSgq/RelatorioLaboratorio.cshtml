@@ -52,13 +52,19 @@
             margin: auto;
             margin-bottom: 10px;
         }
+
+        #tituloDesdobramento{
+            text-align: center;
+            font-size: 20px;
+        }
+
     </style>
 
     <div class="page-content-wrapper">
         <div class="page-content">
-            <div id="container">
-
-            </div>
+            <div class="loader" hidden></div>
+            <div id="container"></div>
+            <div id="placeholder"></div>
         </div>
     </div>
 
@@ -67,71 +73,211 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+    @Scripts.Render("~/Scripts/heatmap.js")
+
+<script type="text/javascript">
+
+        let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
 
         $("#btnSend").click(function () {
-            gerarGrafico();
-            topFunction();
+
+            buscarDados();
+
         });
 
-        function gerarGrafico() {
-            Highcharts.chart('container', {
-            chart: {
-                type: 'line'
-            },
-            title: {
-                text: '% DE NC ANÁLISES MICROBIOLÓGICAS POR TIPO DE VEÍCULO'
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                categories: ['Nov', 'Dez', 'Jan', 'Fev', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov']
-            },
-            yAxis: {
-                title: {
-                    text: ''
+        function buscarDados() {
+
+            exibirLoader();
+
+            $.ajax({
+                data: JSON.stringify(objFiltro.Param),
+                url: urlBuscaDados,
+                type: 'POST',
+                contentType: "application/json",
+                success: retornoAjax,
+                timeout: 600000,
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                error: function (a,b,c) {
+                    console.log(a);
+                    console.log(b);
+                    console.log(c);
+                    esconderLoader();
                 }
-            },
-            plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true
-                    },
-                    enableMouseTracking: false
-                }
-            },
-            series: [{
-                name: 'Água',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3]
-            }, {
-                name: 'Alimentos Preparados',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 16, 4, 10]
-            }, {
-                name: 'Destrutiva',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 15]
-            }, {
-                name: 'Exposição de Placa',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 10]
-            }, {
-                name: 'In Natura',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3]
-            }, {
-                name: 'Não Destrutivo',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 79, 79]
-            }, {
-                name: 'Subprodutos',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 18]
-            }, {
-                name: 'Swab Operacional',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 10]
-            }, {
-                name: 'Swab Pré-operacional',
-                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 15]
-            }]
-        });
+            });
+
         }
 
-    </script>
+        function retornoAjax(data) {
+
+            esconderLoader();
+            gerarGrafico(data);
+            gerarMapaCalor(data);
+
+        }
+
+        function gerarGrafico(data) {
+
+            const categories = getCategories(data, "dColetaAmostra");
+            const series = getSeriesByCategories(data, categories);
+
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'line'
+                },
+                title: {
+                    text: '% DE NC ANÁLISES MICROBIOLÓGICAS POR TIPO DE VEÍCULO'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    categories: categories
+                },
+                yAxis: {
+                    title: {
+                        text: ''
+                    }
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true
+                        },
+                        enableMouseTracking: false
+                    }
+                },
+                series: series
+            });
+        }
+
+        function gerarMapaCalor(data) {
+
+            var w = $('#container').innerWidth();
+
+            config = {
+                maxWidth: w * .98,
+                widthColumn1: (w * .1) + "px",
+                widthColumn2: (w * .65) + "px",
+                widthColumn3: (w * .2) + "px",
+                colorMin: "00e600",
+                colorMid: "fef104",
+                colorMax: "ff0000",
+                isGradient: true,
+                colorMain: "dddddd",
+                colorEmptyTd: "f9f9f9",
+                jsonName: "Data",
+                valorVazio: "-",
+            };
+
+            var tituloDesdobramento = "Mapa de Calor";
+
+            config.tituloDesdobramento = tituloDesdobramento;
+            config.Cabecalho = "<a class='cabecalho' data-titulo='{cSgEmpresa}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{cSgEmpresa}</a>";
+            config.Indicador = "<a class='indicador' data-titulo='{cNmTpColeta}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{cNmTpColeta}</a>";
+            config.tituloIndicador = "Funções";
+            config.tituloCabecalho = "Unidades";
+            config.json = data;
+            config.idPlaceholder = "#placeholder";
+            config.cellWidth = "66";
+            config.heatmapType = "line";
+            config.Valores = [
+                { "title": "% NC", "render": function () { return '<span>{nValor1}</span>'; }, "heatmap": true, "groupFunction": "AVG" },
+                //{ "title": "Valor_2", "render": function () { return '<span>{Valor_2}</span>'; }, "heatmap": true },
+                //{ "title": "%", "groupFunction": "AVG", "Exp": "({Valor_1}/{Valor_2})*100", "heatmap": true }
+            ];
+
+            HeatMap.Inicializar(config);
+
+            $('#placeholder').on("click", "#listaValores td a[data-bla]", function () {
+                alert($(this).attr('data-bla') + "= " + $(this).attr('data-bla'));
+            });
+        }
+
+        function exibirLoader() {
+            $('.loader').show();
+        }
+
+        function esconderLoader() {
+            $('.loader').hide();
+        }
+
+        function getPorcentagem(amostragem, quantidade) {
+
+            amostragem = parseFloat(amostragem);
+            quantidade = parseFloat(quantidade);
+
+            return (quantidade * 100) / amostragem;
+
+        }
+
+        function getCategories(data, categoriesColumDataName) {
+
+            if (!data)
+                return [];
+
+            //retornar mes e ano
+            const categoriesArr = [... new Set(data.map(x => convertDateToYearMouth(x[categoriesColumDataName])))]
+
+            categoriesArr.sort();
+
+            return categoriesArr;
+        }
+
+        function getSeriesByCategories(data, categories) {
+
+            const series = [];
+
+            seriesName = [... new Set(data.map(x => x["cNmTpColeta"]))];
+
+            seriesName.forEach((serieName) => { //seriesName
+
+                const obj = {};
+                obj.name = serieName;
+                obj.data = [];
+
+                categories.forEach((o) => { //datas
+
+                    let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmTpColeta"] == serieName);
+
+                    if (arrFiltrado.length == 0) {
+
+                        obj.data.push(null);
+
+                    } else {
+
+                        arrFiltrado = arrFiltrado.map(x => x.nValor1);
+
+                        let qtdNC = arrFiltrado.reduce((accumulator, currentValue) => accumulator + currentValue)
+
+                        obj.data.push(getPorcentagem(data.length, qtdNC));
+                    }
+
+                });
+
+                series.push(obj);
+
+            });
+
+            return series;
+
+        }
+
+        function convertDateToYearMouth(date) {
+
+            let mes = new Date(date).getMonth().toString();
+            let ano = new Date(date).getFullYear().toString();
+
+            if (mes.length == 1)
+                mes = "0" + mes;
+
+            return ano + "-" + mes;
+
+        }
+
+        function enviarFiltro() {
+
+        }
+
+</script>
 
 }
