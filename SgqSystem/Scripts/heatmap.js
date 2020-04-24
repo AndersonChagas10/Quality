@@ -55,6 +55,9 @@ var HeatMap = {
 
         if (config.isGradient != undefined)
             this.isGradient = config.isGradient;
+        if (config.heatmapType != undefined)
+            this.heatmapType = config.heatmapType;
+
         if (config.colorMin != undefined)
             this.colorMin = config.colorMin;
         if (config.colorMax != undefined)
@@ -119,6 +122,7 @@ var HeatMap = {
     callback: function () { },
 
     isGradient: true,
+    heatmapType: "all",
 
     colorMin: "",
     percentageMid: 0.51,
@@ -155,6 +159,23 @@ function SetaMinimoMaximo(valor) {
         HeatMap.max = valor;
     if (HeatMap.max < valor)
         HeatMap.max = valor;
+}
+
+function SetaMinimoMaximoPorIndicador(indicador, valor) {
+    if (HeatMap.minMaxPorIndicador == undefined)
+        HeatMap.minMaxPorIndicador = [];
+
+    if (HeatMap.minMaxPorIndicador[indicador] == undefined) {
+        HeatMap.minMaxPorIndicador[indicador] = { min: valor, max: valor };
+    } else {
+        if (HeatMap.minMaxPorIndicador[indicador].min > valor) {
+            HeatMap.minMaxPorIndicador[indicador].min = valor;
+        }
+
+        if (HeatMap.minMaxPorIndicador[indicador].max < valor) {
+            HeatMap.minMaxPorIndicador[indicador].max = valor;
+        }
+    }
 }
 
 function SetaMinimoMaximoMedia(valor) {
@@ -329,8 +350,8 @@ function MontaMedia() {
             $(identificadorValores).each(function (i, o) {
                 var valor = ValorNumerico($(o).text());
                 if (HeatMap.Valores[z]["heatmap"] == true && $(o).text() != HeatMap.valorVazio) {
+                    SetaMinimoMaximoPorIndicador(indicadorY, valor);
                     SetaMinimoMaximo(valor);
-                    SetaMinimoMaximoMedia(valor);
                 }
                 valorDaCelula += valor;
             });
@@ -344,6 +365,7 @@ function MontaMedia() {
             } else {
                 $(identificador).html(valorDaCelula.toFixed(2));
             }
+            SetaMinimoMaximoMedia(parseFloat($(identificador).html()));
         }
     }
 
@@ -374,9 +396,6 @@ function MontaRodape() {
             var valorDaCelula = 0;
             $(identificadorValores).each(function (i, o) {
                 var valor = ValorNumerico($(o).text());
-                if (HeatMap.Valores[z]["heatmap"] == true && $(o).text() != HeatMap.valorVazio) {
-                    SetaMinimoMaximoRodape(valor);
-                }
                 valorDaCelula += valor;
             });
             var count = $.grep($(identificadorValores), function (n, i) { return $(n).text() != HeatMap.valorVazio }).length;
@@ -389,6 +408,7 @@ function MontaRodape() {
             } else {
                 $(identificador).html(valorDaCelula.toFixed(2));
             }
+            SetaMinimoMaximoRodape(parseFloat($(identificador).html()));
         }
     }
 
@@ -522,24 +542,47 @@ function GetColor(ratio) {
 
 function PreencheCalorNasCelulasValores() {
 
-    for (var j = 0; j < HeatMap.Indicadores.length; j++) {
-        for (var z = 0; z < HeatMap.Valores.length; z++) {
-            if (HeatMap.Valores[z]["heatmap"] == true) {
-                var indicadorY = j;
-                var valorCabecalho = RetornaTituloValor(z);
-                var identificadorValores = HeatMap.idValores + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
-                $(identificadorValores + " :last-child").each(function (i, o) {
-                    var valor = ValorNumerico($(o).text());
-                    if ($(o).text() != HeatMap.valorVazio) {
-                        var ratio = (valor - HeatMap.min) / ((HeatMap.max - HeatMap.min) / 100);
-                        if (isNaN(ratio)) {
-                            ratio = 100 / 100;
-                        } else if (ratio != 0) {
-                            ratio /= 100;
+    if (HeatMap.heatmapType == "all") {
+        for (var j = 0; j < HeatMap.Indicadores.length; j++) {
+            for (var z = 0; z < HeatMap.Valores.length; z++) {
+                if (HeatMap.Valores[z]["heatmap"] == true) {
+                    var indicadorY = j;
+                    var valorCabecalho = RetornaTituloValor(z);
+                    var identificadorValores = HeatMap.idValores + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
+                    $(identificadorValores + " :last-child").each(function (i, o) {
+                        var valor = ValorNumerico($(o).text());
+                        if ($(o).text() != HeatMap.valorVazio) {
+                            var ratio = (valor - HeatMap.min) / ((HeatMap.max - HeatMap.min) / 100);
+                            if (isNaN(ratio)) {
+                                ratio = 100 / 100;
+                            } else if (ratio != 0) {
+                                ratio /= 100;
+                            }
+                            $(o).parent("td").attr("style", PreencheFundo(GetColor(ratio)));
                         }
-                        $(o).parent("td").attr("style", PreencheFundo(GetColor(ratio)));
-                    }
-                });
+                    });
+                }
+            }
+        }
+    } else if (HeatMap.heatmapType == "line") {
+        for (var j = 0; j < HeatMap.Indicadores.length; j++) {
+            for (var z = 0; z < HeatMap.Valores.length; z++) {
+                if (HeatMap.Valores[z]["heatmap"] == true) {
+                    var indicadorY = j;
+                    var identificadorValores = HeatMap.idValores + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"]';
+                    $(identificadorValores + " :last-child").each(function (i, o) {
+                        var valor = ValorNumerico($(o).text());
+                        if ($(o).text() != HeatMap.valorVazio) {
+                            var ratio = (valor - HeatMap.minMaxPorIndicador[indicadorY].min) / ((HeatMap.minMaxPorIndicador[indicadorY].max - HeatMap.minMaxPorIndicador[indicadorY].min) / 100);
+                            if (isNaN(ratio)) {
+                                ratio = 100 / 100;
+                            } else if (ratio != 0) {
+                                ratio /= 100;
+                            }
+                            $(o).parent("td").attr("style", PreencheFundo(GetColor(ratio)));
+                        }
+                    });
+                }
             }
         }
     }

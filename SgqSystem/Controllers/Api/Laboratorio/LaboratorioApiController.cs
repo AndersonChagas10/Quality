@@ -22,7 +22,7 @@ namespace SgqSystem.Controllers.Api
 
             string sqlQuery = $@"
 
-SELECT DISTINCT TOP 10000
+SELECT DISTINCT TOP 1000
 	C.nCdEmpresa
    ,C.cNmEmpresa
    ,C.cSgEmpresa
@@ -73,9 +73,7 @@ SELECT DISTINCT TOP 10000
    ,Key_Integ
    ,CASE
         WHEN cResultadoAnalise = '2' THEN 'C'
-
         WHEN cResultadoAnalise = '3' THEN 'NC'
-
     END Conformidade
    ,1 AS AV
    , CASE
@@ -147,5 +145,7 @@ LEFT JOIN Empresa C ON INTEG.nCdEmpresa = C.nCdEmpresa ";
         public string Conformidade { get; set; }
         public int AV { get; set; }
         public int NC { get; set; }
+        public string cNmEmpresa { get; set; }
+        public string cSgEmpresa { get; set; }
     }
 }

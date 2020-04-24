@@ -53,14 +53,18 @@
             margin-bottom: 10px;
         }
 
+        #tituloDesdobramento{
+            text-align: center;
+            font-size: 20px;
+        }
+
     </style>
 
     <div class="page-content-wrapper">
         <div class="page-content">
             <div class="loader" hidden></div>
-            <div id="container">
-
-            </div>
+            <div id="container"></div>
+            <div id="placeholder"></div>
         </div>
     </div>
 
@@ -69,9 +73,11 @@
 
 @section Scripts {
 
-    <script type="text/javascript">
+    @Scripts.Render("~/Scripts/heatmap.js")
 
-        var urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
+<script type="text/javascript">
+
+        let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
 
         $("#btnSend").click(function () {
 
@@ -101,15 +107,11 @@
 
         }
 
-        function enviarFiltro() {
-
-        }
-
         function retornoAjax(data) {
 
             esconderLoader();
             gerarGrafico(data);
-            gerarMapaCalor();
+            gerarMapaCalor(data);
 
         }
 
@@ -148,8 +150,47 @@
             });
         }
 
-        function gerarMapaCalor() {
+        function gerarMapaCalor(data) {
 
+            var w = $('#container').innerWidth();
+
+            config = {
+                maxWidth: w * .98,
+                widthColumn1: (w * .1) + "px",
+                widthColumn2: (w * .65) + "px",
+                widthColumn3: (w * .2) + "px",
+                colorMin: "00e600",
+                colorMid: "fef104",
+                colorMax: "ff0000",
+                isGradient: true,
+                colorMain: "dddddd",
+                colorEmptyTd: "f9f9f9",
+                jsonName: "Data",
+                valorVazio: "-",
+            };
+
+            var tituloDesdobramento = "Mapa de Calor";
+
+            config.tituloDesdobramento = tituloDesdobramento;
+            config.Cabecalho = "<a class='cabecalho' data-titulo='{cSgEmpresa}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{cSgEmpresa}</a>";
+            config.Indicador = "<a class='indicador' data-titulo='{cNmTpColeta}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{cNmTpColeta}</a>";
+            config.tituloIndicador = "Funções";
+            config.tituloCabecalho = "Unidades";
+            config.json = data;
+            config.idPlaceholder = "#placeholder";
+            config.cellWidth = "66";
+            config.heatmapType = "line";
+            config.Valores = [
+                { "title": "% NC", "render": function () { return '<span>{nValor1}</span>'; }, "heatmap": true, "groupFunction": "AVG" },
+                //{ "title": "Valor_2", "render": function () { return '<span>{Valor_2}</span>'; }, "heatmap": true },
+                //{ "title": "%", "groupFunction": "AVG", "Exp": "({Valor_1}/{Valor_2})*100", "heatmap": true }
+            ];
+
+            HeatMap.Inicializar(config);
+
+            $('#placeholder').on("click", "#listaValores td a[data-bla]", function () {
+                alert($(this).attr('data-bla') + "= " + $(this).attr('data-bla'));
+            });
         }
 
         function exibirLoader() {
@@ -177,6 +218,8 @@
             //retornar mes e ano
             const categoriesArr = [... new Set(data.map(x => convertDateToYearMouth(x[categoriesColumDataName])))]
 
+            categoriesArr.sort();
+
             return categoriesArr;
         }
 
@@ -194,7 +237,7 @@
 
                 categories.forEach((o) => { //datas
 
-                    var arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmTpColeta"] == serieName);
+                    let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmTpColeta"] == serieName);
 
                     if (arrFiltrado.length == 0) {
 
@@ -202,11 +245,11 @@
 
                     } else {
 
-                        arrFiltrado = arrFiltrado.map(x => x.NC);
+                        arrFiltrado = arrFiltrado.map(x => x.nValor1);
 
-                        var qtdNC = arrFiltrado.reduce((accumulator, currentValue) => accumulator + currentValue)
+                        let qtdNC = arrFiltrado.reduce((accumulator, currentValue) => accumulator + currentValue)
 
-                        obj.data.push(getPorcentagem(arrFiltrado.length, qtdNC));
+                        obj.data.push(getPorcentagem(data.length, qtdNC));
                     }
 
                 });
@@ -221,10 +264,20 @@
 
         function convertDateToYearMouth(date) {
 
-            return new Date(date).getFullYear().toString() + "-" + new Date(date).getMonth().toString()
+            let mes = new Date(date).getMonth().toString();
+            let ano = new Date(date).getFullYear().toString();
+
+            if (mes.length == 1)
+                mes = "0" + mes;
+
+            return ano + "-" + mes;
 
         }
 
-    </script>
+        function enviarFiltro() {
+
+        }
+
+</script>
 
 }
