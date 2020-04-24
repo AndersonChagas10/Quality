@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using SgqServiceBusiness.Controllers.RH;
 using SgqSystem.Controllers.Api;
 using System;
 using System.Collections.Generic;
@@ -19,18 +20,14 @@ namespace SgqSystem.Controllers.V2.Api
         public IHttpActionResult GetParCompany(int userSgq_Id)
         {
             InicioRequisicao();
-            using (db)
-            {
-                db.Configuration.LazyLoadingEnabled = false;
 
-                var listaUnidadesVinculadasUsuario = db.ParCompanyXUserSgq
-                    .Where(x => x.UserSgq_Id == userSgq_Id)
-                    .Join(db.ParCompany, x => x.ParCompany_Id, pc => pc.Id, (x, pc) => new { ParCompanyXUserSgq = x, ParCompany = pc })
-                    .Where(x => x.ParCompanyXUserSgq.ParCompany_Id == x.ParCompany.Id)
-                    .ToList();
+            List<ParCompany> listaUnidadesVinculadasUsuario = new List<ParCompany>();
 
-                return Ok(listaUnidadesVinculadasUsuario);
-            }
+            ParCompanyBusiness business = new ParCompanyBusiness();
+            listaUnidadesVinculadasUsuario = business.GetListaParCompany(userSgq_Id);
+
+            return Ok(listaUnidadesVinculadasUsuario);
+            
         }
 
         protected override void Dispose(bool disposing)

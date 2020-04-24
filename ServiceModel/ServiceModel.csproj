@@ -45,6 +45,7 @@
     <Compile Include="CollectionHeaderField.cs" />
     <Compile Include="ParMultipleValuesXParCompany.cs" />
     <Compile Include="PCC1B.cs" />
+    <Compile Include="PlanejamentoColeta.cs" />
     <Compile Include="Produto.cs" />
     <Compile Include="Header.cs" />
     <Compile Include="RetrocessoReturn.cs" />

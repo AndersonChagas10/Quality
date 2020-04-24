@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using SgqServiceBusiness.Controllers.RH;
 using SgqSystem.Controllers.Api;
 using System;
 using System.Collections.Generic;
@@ -22,19 +23,8 @@ namespace SgqSystem.Controllers.V2.Api
             var listaCluster = new List<ParCluster>();
             db.Configuration.LazyLoadingEnabled = false;
 
-            var listaParVinculoPesoClusterIds = db.ParVinculoPeso.Where(x => x.ParCompany_Id == parCompany_Id || x.ParCompany_Id == null && x.IsActive == true).Select(y => y.ParCluster_Id).Distinct().ToList();
-
-            foreach (var item in listaParVinculoPesoClusterIds)
-            {
-                var clusterFiltrado = new ParCluster();
-                if (item != null)
-                {
-                    clusterFiltrado = db.ParCluster.Where(x => x.Id == item.Value && x.ParClusterGroup_Id == parClusterGroupId).FirstOrDefault();
-                    if (clusterFiltrado != null)
-                        listaCluster.Add(clusterFiltrado);
-                }
-            }
-
+            ParClusterBusiness business = new ParClusterBusiness();
+            listaCluster = business.GetListaParCluster(parCompany_Id, parClusterGroupId);
             return Ok(listaCluster);
         }
 

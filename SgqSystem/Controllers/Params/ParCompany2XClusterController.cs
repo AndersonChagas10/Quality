@@ -41,8 +41,8 @@ namespace SgqSystem.Controllers
         public ActionResult Create(int parCompanyId)
         {
             ViewBag.ParCompanyId = parCompanyId;
-            var listlinkedCompany = db.ParCompanyCluster.Where(m=> m.ParCompany_Id == parCompanyId).Select(m=>m.ParCluster_Id).ToList();
-            ViewBag.ParCluster_Id = new SelectList(db.ParCluster.Where(m=> !listlinkedCompany.Contains(m.Id) && m.Id != parCompanyId).Select(m=>m).ToList(), "Id", "Name");
+            var listlinkedCompany = db.ParCompanyCluster.Where(m => m.ParCompany_Id == parCompanyId && m.Active == true).Select(m=>m.ParCluster_Id).ToList();
+            ViewBag.ParCluster_Id = new SelectList(db.ParCluster.Where(m => !listlinkedCompany.Contains(m.Id) && m.Id != parCompanyId ).Select(m=>m).ToList(), "Id", "Name");
             return View(new ParCompanyCluster() { ParCompany_Id = parCompanyId });
         }
 
