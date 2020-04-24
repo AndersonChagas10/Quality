@@ -59,7 +59,7 @@ function getParQualification(parLevel1, parLevel2, parLevel3) {
     return retorno;
 }
 
-function getParHeaderFieldGeralLevel3(parLevel1, parLevel2, parLevel3) {
+function getParHeaderFieldGeralLevel3(parLevel1, parLevel2, parLevel3, striped) {
     //buscar os campos de cabeçalho no nivel da tarefa
     var lista = [];
     parametrization.listaParHeaderFieldGeral.forEach(function (o, i) {
@@ -69,10 +69,14 @@ function getParHeaderFieldGeralLevel3(parLevel1, parLevel2, parLevel3) {
         }
     });
 
+    colorStriped = "";
+    if (striped)
+        colorStriped = "background-color: #e9ecef;";
+
     if (lista.length > 0) {
         var retorno = '';
         var flagPullRight = 'pull-right';
-        retorno += ' <div class="col-xs-12 clearfix" id="headerFieldLevel3" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + ' data-level3 style="padding-left:10px;background-color: #e9ecef; padding-bottom: 5px;">';
+        retorno += ' <div class="col-xs-12 clearfix" id="headerFieldLevel3" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + ' data-level3 style="padding-left:10px;' + colorStriped + ' padding-bottom: 5px;">';
         lista.forEach(function (o, i) {
             retorno += getInputOrSelect(o, flagPullRight, "disabled");
         });

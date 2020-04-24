@@ -208,7 +208,7 @@ function getInputLevel3(level3, level2, level1, striped) {
 
     var retorno = "";
 
-    var htmlLinhaHeaderFieldGeral = getParHeaderFieldGeralLevel3(level1, level2, level3);
+    var htmlLinhaHeaderFieldGeral = getParHeaderFieldGeralLevel3(level1, level2, level3, striped);
 
     var htmlLinhaParQualification = getParQualification(level1, level2, level3);
 
@@ -558,13 +558,12 @@ function getResultado(level3) {
 
     var html = '';
 
+    var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+
     if (level3.ParLevel3XHelp)
         html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
-
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
-
-    //var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' '+ level3LimitLabel +'</small></div>';
 
     html +=
         '<div class="col-xs-6 no-gutters">' +
@@ -1014,7 +1013,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 Weigth: $(data).attr('data-peso-parametrizado'),
                 WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
                 Defects: isNA ? 0 : $(data).attr('data-conforme') == "1" ? 0 : 1,
-                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(data).attr('data-peso')),
+                WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseFloat($(data).attr('data-peso')),
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
                 ParCluster_Id: currentParCluster_Id,
                 Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')) })
