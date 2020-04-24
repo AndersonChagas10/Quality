@@ -1296,6 +1296,7 @@ function verificaSalvar(){
 
 
 $('body').off('click', '[data-salvar-tarefas]').on('click', '[data-salvar-tarefas]', function (e) {
+    e.preventDefault();
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
 
     for (var i = 0; i < linhasDaColeta.length; i++) {
@@ -1304,12 +1305,12 @@ $('body').off('click', '[data-salvar-tarefas]').on('click', '[data-salvar-tarefa
         var input = $('form[data-form-coleta] div[data-linha-coleta] [data-valor]')[i];
         var btnSalvarTarefa = $('form[data-form-coleta] div[data-linha-coleta] [data-coleta-dca]')[i];
 
-        if (!isNa) {
-            if ($(input).val() == "" || $(input).val() == null || $(input).val() == "undefined") {
+        if ($(input).val() == "" || $(input).val() == null || $(input).val() == "undefined") {
+            if (!isNa) {
                 $(input).val(0);
             }
-            $(btnSalvarTarefa).trigger('click');
         }
+        $(btnSalvarTarefa).trigger('click');
     }
 });
 
