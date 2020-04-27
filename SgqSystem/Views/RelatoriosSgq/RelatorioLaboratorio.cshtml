@@ -264,7 +264,7 @@
 
         function convertDateToYearMouth(date) {
 
-            let mes = new Date(date).getMonth().toString();
+            let mes = new Date(date).getMonth().toString() + 1;
             let ano = new Date(date).getFullYear().toString();
 
             if (mes.length == 1)
