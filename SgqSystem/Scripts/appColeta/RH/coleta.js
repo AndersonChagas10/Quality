@@ -560,7 +560,7 @@ function getResultado(level3) {
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' ' + level3LimitLabel +' (Clique aqui)</small></div></a>';
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' '+ level3LimitLabel +'</small></div>';
 
