@@ -3262,4 +3262,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-628</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] AppColeta - Permitir redistribuir peso.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>

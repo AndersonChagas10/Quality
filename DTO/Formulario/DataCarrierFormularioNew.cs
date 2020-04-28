@@ -84,6 +84,8 @@ namespace DTO
 
         public int[] NcComPeso { get; set; } = new int[] { };
 
+        public int[] DesdobramentoPorDepartamento { get; set; } = new int[] { };
+
         public int DimensaoData { get; set; }
 
         public bool ShowLinkedFilters { get; set; } = true;
