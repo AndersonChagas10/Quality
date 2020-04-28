@@ -76,7 +76,7 @@
 
     @Scripts.Render("~/Scripts/heatmap.js")
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
     let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
 
@@ -89,6 +89,8 @@
     });
 
     function buscarDados() {
+
+        arrObjDados = [];
 
         exibirLoader();
 
@@ -112,9 +114,12 @@
 
     function retornoAjax(data) {
 
+        let linha = "cNmTpColeta";
+        let coluna = "cSgEmpresa";
+
         esconderLoader();
         gerarGrafico(data);
-        gerarMapaCalor(data, 0);
+        gerarMapaCalor(data, 0, linha, coluna);
 
     }
 
@@ -155,10 +160,10 @@
     }
 
     //Matriz de calor
-    function gerarMapaCalor(data, numeroDesdobramento) {
+    function gerarMapaCalor(data, numeroDesdobramento, linha, coluna) {
 
         removeDivs(numeroDesdobramento);
-        appendDiv(numeroDesdobramento);
+        appendDiv(numeroDesdobramento, Object.keys(data[0]));
         appendDataArr(data, numeroDesdobramento);
 
         let w = $('#container').innerWidth();
@@ -182,8 +187,8 @@
         let tituloDesdobramento = "Mapa de Calor";
 
         config.tituloDesdobramento = tituloDesdobramento;
-        config.Cabecalho = "<a class='cabecalho' data-titulo='{cSgEmpresa}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{cSgEmpresa}</a>";
-        config.Indicador = "<a class='indicador' data-titulo='{cNmTpColeta}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{cNmTpColeta}</a>";
+        config.Cabecalho = "<a class='cabecalho' data-titulo='{" + coluna + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + coluna +"}</a>";
+        config.Indicador = "<a class='indicador' data-key='" + linha +"' data-titulo='{" + linha + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + linha +"}</a>";
         config.tituloIndicador = "Funções";
         config.tituloCabecalho = "Unidades";
         config.json = data;
@@ -191,16 +196,26 @@
         config.cellWidth = "66";
         config.heatmapType = "line";
         config.Valores = [
-            { "title": "% NC", "render": function () { return '<span>{nValor1}</span>'; }, "heatmap": true, "groupFunction": "AVG" },
-            //{ "title": "Valor_2", "render": function () { return '<span>{Valor_2}</span>'; }, "heatmap": true },
-            //{ "title": "%", "groupFunction": "AVG", "Exp": "({Valor_1}/{Valor_2})*100", "heatmap": true }
+            { "title": "% NC", "render": function () { return '<span>{nValor1}</span>'; }, "heatmap": true, "groupFunction": "AVG" }
         ];
 
         HeatMap.Inicializar(config);
 
-        $(idMatriz).on("click", "td a[data-bla]", function () {
-            //alert($(this).attr('data-bla') + "= " + $(this).attr('data-bla'));
-            console.log(data);
+        $(idMatriz).off("click", "th.esquerda .indicador").on("click", "th.esquerda .indicador", function () {
+
+            let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
+
+            let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
+            let coluna = $('#select2_' + numeroDesdobramento + ' :selected').val();
+
+            let property = $(this).attr('data-key');
+            let value = $(this).attr('data-titulo');
+
+            let newData = arrObjDados[numeroDesdobramento].filter(x => x[property] == value);
+
+            numeroDesdobramento = numeroDesdobramento + 1;
+
+            desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
         });
     }
 
@@ -286,9 +301,30 @@
 
     }
 
-    function appendDiv(numeroDesdobramento) {
+    function appendDiv(numeroDesdobramento, keys) {
 
-        let htmlDiv = '<div class="matriz" id="placeholder_' + numeroDesdobramento + ' data-numer-div="' + numeroDesdobramento + '"></div>';
+        let options = keys.reduce((accumulator, currentValue) => accumulator += `<option value="${currentValue}">${currentValue}</option>`)
+
+        let htmlDiv = `
+        <div class="row" select-filter id-desdobramento="${numeroDesdobramento}">
+            <form class="form-inline">
+              <div class="form-group">
+                <label for="coluna">Linha</label>
+                <select class="form-control" id="select1_${numeroDesdobramento}">
+                ${options}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="coluna">Coluna</label>
+                <select class="form-control" id="select2_${numeroDesdobramento}">
+                ${options}
+                </select>
+              </div>
+        </form>
+        </div>
+        <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento }">
+
+        </div > `;
 
         $('#placeholder').append(htmlDiv);
     }
@@ -297,17 +333,27 @@
 
         $('#placeholder').find('.matriz').each(function (index) {
 
-            if (index >= numeroDesdobramento)
+            let numeroDiv = parseInt($(this).attr('data-numer-div'));
+
+            if (numeroDiv >= numeroDesdobramento) {
                 $(this).remove();
+                $("[id-desdobramento=" + numeroDiv + "]").remove();
+            }
 
         });
     }
 
     function appendDataArr(data, numeroDesdobramento) {
 
-        fruits.splice(numeroDesdobramento, appendDataArr.length);
+        arrObjDados.splice(numeroDesdobramento, arrObjDados.length);
 
-        appendDataArr[numeroDesdobramento] = data;
+        arrObjDados[numeroDesdobramento] = data;
+
+    }
+
+    function desdobraMatriz(newData, numeroDesdobramento, linha, coluna) {
+
+        gerarMapaCalor(newData, numeroDesdobramento, linha, coluna);
 
     }
 
@@ -315,6 +361,6 @@
 
     }
 
-</script>
+    </script>
 
 }
