@@ -3262,4 +3262,22 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-630</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] Laboratórios - Criar funcionalidade de alerda de e-mail HEP.</Description>
+    <Script>
+      IF COL_LENGTH('IntegracaoSistemica','LastExecution') IS NULL
+      BEGIN
+      alter table IntegracaoSistemica add LastExecution datetime null
+      END
+      GO
+      IF COL_LENGTH('IntegracaoSistemica','ExecutionTime') IS NULL
+      BEGIN
+      alter table IntegracaoSistemica add ExecutionTime varchar(10) null
+      END
+      GO
+    </Script>
+  </Card>
+
 </Cards>

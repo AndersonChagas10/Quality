@@ -46,7 +46,7 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Configuration,Script,TableName,Intervalo,IsActive,AddDate,AlterDate")] IntegracaoSistemica integracaoSistemica)
+        public ActionResult Create([Bind(Include = "Id,Name,Configuration,Script,TableName,Intervalo,ExecutionTime,IsActive,AddDate,AlterDate")] IntegracaoSistemica integracaoSistemica)
         {
             ValidaCamposObrigatorios(integracaoSistemica);
             if (ModelState.IsValid)
@@ -73,8 +73,11 @@ namespace SgqSystem.Controllers
             if (integracaoSistemica.TableName == null)
                 ModelState.AddModelError("TableName", Resources.Resource.required_field + " " + Resources.Resource.table_name);
 
-            if (integracaoSistemica.Intervalo <= 0)
-                ModelState.AddModelError("Intervalo", Resources.Resource.required_field + " " + Resources.Resource.interval);
+            if (integracaoSistemica.Intervalo <= 0 && integracaoSistemica.ExecutionTime == null)
+            {
+                ModelState.AddModelError("Intervalo", Resources.Resource.one_required_field + " " + Resources.Resource.interval + " ou " + Resources.Resource.executionTime);
+                ModelState.AddModelError("ExecutionTime", Resources.Resource.one_required_field + " " + Resources.Resource.interval + " ou " + Resources.Resource.executionTime);
+            }
         }
 
         // GET: IntegracaoSistemicas/Edit/5
@@ -97,7 +100,7 @@ namespace SgqSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Configuration,Script,TableName,Intervalo,IsActive,AddDate,AlterDate")] IntegracaoSistemica integracaoSistemica)
+        public ActionResult Edit([Bind(Include = "Id,Name,Configuration,Script,TableName,Intervalo,ExecutionTime,IsActive,AddDate,AlterDate")] IntegracaoSistemica integracaoSistemica)
         {
             ValidaCamposObrigatorios(integracaoSistemica);
             if (ModelState.IsValid)

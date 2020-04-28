@@ -1006,6 +1006,8 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "seara_Produto", Value = "Seara Produto" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "new_update_the_app_will_be_update", Value = "Nova atualização disponível. A aplicação será atualizada!" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "Qualification_Group", Value = "Grupo de Qualificação" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "executionTime", Value = "Horário de Execução" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "one_required_field", Value = "É obrigatório preencher um dos campos:" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 

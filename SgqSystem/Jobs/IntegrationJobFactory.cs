@@ -47,13 +47,17 @@ namespace Jobs
                     {
                         var key = "IntegrationJobFactory" + item.Name;
                         var hasKey = GlobalConfig.UltimaExecucaoDoJob.Any(x => x.Key == key);
-                        if (!hasKey || (hasKey &&
-                            GlobalConfig.UltimaExecucaoDoJob[key].AddSeconds(item.Intervalo) <= DateTime.Now))
-                        {
+                        var timeParts = item.ExecutionTime.Split(':');
+                        var currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, int.Parse(timeParts[0]), int.Parse(timeParts[1]), 00);
 
+                        if ((item.Intervalo > 0 && (!hasKey || (hasKey && GlobalConfig.UltimaExecucaoDoJob[key].AddSeconds(item.Intervalo) <= DateTime.Now)))
+                            || (item.ExecutionTime != null && ((!hasKey && currentDate <= DateTime.Now) || hasKey && GlobalConfig.UltimaExecucaoDoJob[key].AddDays(1) <= DateTime.Now)))
+                        {
                             Task.Run(() => IntegrationJobFactory.RunIntegrationOneValue(item));
                             GlobalConfig.UltimaExecucaoDoJob[key] = DateTime.Now;
-
+                            item.LastExecution = DateTime.Now;
+                            db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
                         }
                     }
                 }
