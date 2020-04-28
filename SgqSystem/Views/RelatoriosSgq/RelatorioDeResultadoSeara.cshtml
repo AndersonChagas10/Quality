@@ -553,6 +553,7 @@
             },
             NC: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2, arr3) {
                 return {
+                    visible: $(dimensaoGrafico).val() == 3 ? true : false,
                     name: Resources('nonconformity'),
                     color: Chart.CorTotalNc(),//'rgba(77,143,189,1)',
                     data: data,
@@ -583,6 +584,7 @@
                     data[a] = parseFloat(b) > 100 ? 100 : b;
                 });
                 return {
+                    visible: false,
                     name: '% ' + Resources('nonconformity'),
                     color: Chart.CorTotalPorcNc(),//'rgba(240,124,0,1)',
                     data: data,
@@ -613,6 +615,7 @@
             },
             C: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2, arr3) {
                 return {
+                    visible: false,
                     name: Resources('conform'),
                     color: Chart.CorTotalC(),//'rgba(77,143,189,1)',
                     data: data,
@@ -643,6 +646,7 @@
                     data[a] = parseFloat(b) > 100 ? 100 : b;
                 });
                 return {
+                    visible: false,
                     name: '% ' + Resources('conform'),
                     color: Chart.CorTotalPorcC(),//'rgba(240,124,0,1)',
                     data: data,
@@ -676,6 +680,7 @@
                     data[a] = parseFloat(b) > 100 ? 100 : b;
                 });
                 return {
+                    visible: $(dimensaoGrafico).val() == 3 ? false : true,
                     name: '% SEARA',
                     color: Chart.CorTotalTotal(),//'rgba(240,124,0,1)',
                     data: data,
@@ -843,8 +848,8 @@
                         config.idPlaceholder = "#resultsUnidades";
                         config.cellWidth = "66";
                         config.Valores = [
-                            { "title": "Conforme", "render": function () { return '{C}'; } },
-                            { "title": "Avaliado", "render": function () { return '{Av}'; } },
+                            //{ "title": "Conforme", "render": function () { return '{C}'; } },
+                            //{ "title": "Avaliado", "render": function () { return '{Av}'; } },
                             { "title": "% C", "render": function () { return '<a style="color:#000 !important;font-weight:bold;" class="valores" data-titulo="{Cabecalho} | {Indicador}" data-tituloDesdobramento="' + config.tituloDesdobramento + '" data-serviceProviderId="{ServiceProviderId}">{PorcC}</a>'; },  "groupFunction": "AVG", "Exp": "({Conforme}/{Avaliado})*100" }
                             ];
                         if (retornoArray.length > 0) {

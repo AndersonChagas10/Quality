@@ -191,9 +191,9 @@ public class RelatorioDeResultadoSearaResultsSet
 
                     SELECT
 	                    PC.Name AS UnidadeName
-                       ,SUM(CUBOL3.WeiEvaluation) AS AV
-                       ,SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects) AS C
-                       ,((SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects)) / SUM(CUBOL3.WeiEvaluation)) * 100 AS PORCC
+                       ,CAST(SUM(CUBOL3.WeiEvaluation) AS DECIMAL(20,2)) AS AV
+                       ,CAST(SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects) AS DECIMAL(20,2)) AS C
+                       ,CAST(((SUM(CUBOL3.WeiEvaluation) - SUM(CUBOL3.WeiDefects)) / SUM(CUBOL3.WeiEvaluation)) * 100 AS DECIMAL(20,2)) AS PORCC
                        ,M.Name + '/' + CAST(DATEPART(YEAR, CUBOL3.CollectionDate) AS VARCHAR) AS Data
 
                     INTO #RR1
@@ -314,8 +314,8 @@ SELECT -- MONITORAMENTO
 
 
 SELECT 
-AVG(PESOTOTAL) AS PESOTOTAL
-,AVG(TOTAL) AS TOTAL
+CAST(AVG(PESOTOTAL) AS DECIMAL(20,2)) AS PESOTOTAL
+,CAST(AVG(TOTAL) AS DECIMAL(20,2)) AS TOTAL
 ,Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
@@ -601,7 +601,7 @@ GROUP BY Parcompany_id
                  
 
                 SELECT
-		(SUM(c) / SUM(av)) * 100 AS PORCC
+		CAST((SUM(c) / SUM(av)) * 100 AS DECIMAL(20,2)) AS PORCC
 
     into #RR1
 	FROM (SELECT
@@ -717,8 +717,8 @@ SELECT -- MONITORAMENTO
 				GROUP BY B.PARLEVEL1_ID
 
 SELECT 
-AVG(PESOTOTAL) AS PESOTOTAL
-,AVG(TOTAL) AS TOTAL
+CAST(AVG(PESOTOTAL) AS DECIMAL(20,2)) AS PESOTOTAL
+,CAST(AVG(TOTAL) AS DECIMAL(20,2)) AS TOTAL
 ,Parcompany_id 
 ,parlevel1_id 
 ,parlevel2_id
@@ -1325,7 +1325,7 @@ GROUP BY Parcompany_id
         var orderBy = "";
         var selects = "";
         var selectTotal = "";
-        var campos4 = "AVG(PESOTOTAL) AS PESOTOTAL, AVG(TOTAL) AS TOTAL";
+        var campos4 = "CAST(AVG(PESOTOTAL) AS DECIMAL(20,2)) AS PESOTOTAL, CAST(AVG(TOTAL) AS DECIMAL(20,2)) AS TOTAL";
         var groupBy3 = "";
 
         if (form.ShowModeloGrafico_Id[0] == 2)
@@ -1534,11 +1534,11 @@ GROUP BY Parcompany_id
                 SELECT
 					UnidadeName
 					,Unidade_Id
-					,AV
-					,(NC)
-					,C
-					,(C / AV) * 100 AS PORCC
-					,(NC / AV) * 100 AS PORCNC
+					,CAST(AV AS DECIMAL(20,2)) AS AV
+					,CAST((NC) AS DECIMAL(20,2)) AS NC
+					,CAST(C AS DECIMAL(20,2)) AS C
+					,CAST((C / AV) * 100 AS DECIMAL(20,2)) AS PORCC
+					,CAST((NC / AV) * 100 AS DECIMAL(20,2)) AS PORCNC
                     {selects}
 				INTO #RR1 FROM (SELECT 
 	                {campos}
