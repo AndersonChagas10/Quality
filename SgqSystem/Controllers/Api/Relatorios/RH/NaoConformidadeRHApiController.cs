@@ -87,7 +87,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             //    whereModulo = ""; //Esperando (PO) passar o documento de prioridades do ParLevel3XModule (27/01/2020)
             //}
 
-            if (form.ParStructureGroup_Ids.Length > 0)
+            if (form.ParStructure2_Ids.Length > 0)
             {
                 whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({ string.Join(",", form.ParStructure2_Ids)}) --Grupo De Empresa";
             }
@@ -239,7 +239,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             //    whereModulo = ""; //Esperando (PO) passar o documento de prioridades do ParLevel3XModule (27/01/2020)
             //}
 
-            if (form.ParStructureGroup_Ids.Length > 0)
+            if (form.ParStructure2_Ids.Length > 0)
             {
                 whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({ string.Join(",", form.ParStructure2_Ids)}) --Grupo De Empresa";
             }
@@ -393,7 +393,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             //    whereModulo = ""; //Esperando (PO) passar o documento de prioridades do ParLevel3XModule (27/01/2020)
             //}
 
-            if (form.ParStructureGroup_Ids.Length > 0)
+            if (form.ParStructure2_Ids.Length > 0)
             {
                 whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({ string.Join(",", form.ParStructure2_Ids)}) --Grupo De Empresa";
             }
@@ -573,7 +573,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             //    whereModulo = ""; //Esperando (PO) passar o documento de prioridades do ParLevel3XModule (27/01/2020)
             //}
 
-            if (form.ParStructureGroup_Ids.Length > 0)
+            if (form.ParStructure2_Ids.Length > 0)
             {
                 whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({ string.Join(",", form.ParStructure2_Ids)}) --Grupo De Empresa";
             }
@@ -712,7 +712,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereStructure3 = $@"AND CuboL3.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
             }
 
-            if (form.ParStructureGroup_Ids.Length > 0)
+            if (form.ParStructure2_Ids.Length > 0)
             {
                 whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({ string.Join(",", form.ParStructure2_Ids)}) --Grupo De Empresa";
             }
@@ -842,7 +842,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereStructure3 = $@"AND CuboL3.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
             }
 
-            if (form.ParStructureGroup_Ids.Length > 0)
+            if (form.ParStructure2_Ids.Length > 0)
             {
                 whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({ string.Join(",", form.ParStructure2_Ids)}) --Grupo De Empresa";
             }
@@ -998,7 +998,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             //    whereModulo = ""; //Esperando (PO) passar o documento de prioridades do ParLevel3XModule (27/01/2020)
             //}
 
-            if (form.ParStructureGroup_Ids.Length > 0)
+            if (form.ParStructure2_Ids.Length > 0)
             {
                 whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({ string.Join(",", form.ParStructure2_Ids)}) --Grupo De Empresa";
             }
@@ -1676,7 +1676,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
             //    whereModulo = ""; //Esperando (PO) passar o documento de prioridades do ParLevel3XModule (27/01/2020)
             //}
 
-            if (form.ParStructureGroup_Ids.Length > 0)
+            if (form.ParStructure2_Ids.Length > 0)
             {
                 whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({ string.Join(",", form.ParStructure2_Ids)}) --Grupo De Empresa";
             }
@@ -2131,10 +2131,17 @@ DROP TABLE #AMOSTRATIPO4 ";
                 whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
             }
 
+            if (form.ParStructure2_Ids.Length > 0)
+            {
+                whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({string.Join(",", form.ParStructure2_Ids)})";
+            }
+
             if (form.ParStructure3_Ids.Length > 0)
             {
                 whereStructure3 = $@"AND CuboL3.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
             }
+
+            
 
             //if (form.ParCriticalLevel_Ids.Length > 0)
             //{
@@ -2272,6 +2279,11 @@ DROP TABLE #AMOSTRATIPO4 ";
             if (form.ParCluster_Ids.Length > 0)
             {
                 whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
+            }
+
+            if (form.ParStructure2_Ids.Length > 0)
+            {
+                whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({string.Join(",", form.ParStructure2_Ids)})";
             }
 
             if (form.ParStructure3_Ids.Length > 0)
@@ -2427,6 +2439,11 @@ DROP TABLE #AMOSTRATIPO4 ";
             if (form.ParCluster_Ids.Length > 0)
             {
                 whereCluster = $@"AND PC.Id in (" + string.Join(",", form.ParCluster_Ids) + ")";
+            }
+
+            if (form.ParStructure2_Ids.Length > 0)
+            {
+                whereStructure2 = $@"AND CuboL3.GrupoDeEmpresa in ({string.Join(",", form.ParStructure2_Ids)})";
             }
 
             if (form.ParStructure3_Ids.Length > 0)

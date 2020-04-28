@@ -39,9 +39,9 @@ namespace SgqServiceBusiness.Controllers.RH
                         ParGroupParLevel1_Id,
                         Peso,
                         ParCargo_Id,
-                        ParFrequencyId,
+                        ParFrequencyId as ParFrequency_Id,
                         Evaluation,
-                        Sample
+                        Sample,
                         ParCluster_Id
                         From ParVinculoPeso
                         where ParFrequencyId = @ParFrequencyId
