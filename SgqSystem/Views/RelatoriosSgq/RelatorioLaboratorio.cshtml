@@ -62,7 +62,10 @@
     <div class="page-content-wrapper">
         <div class="page-content">
             <div class="loader" hidden></div>
+            @*Grafico*@
             <div id="container"></div>
+
+            @* Matriz *@
             <div id="placeholder">
 
             </div>
@@ -162,8 +165,10 @@
     //Matriz de calor
     function gerarMapaCalor(data, numeroDesdobramento, linha, coluna) {
 
+        let tituloDesdobramento = "Mapa de Calor " + linha + " por " + coluna;
+
         removeDivs(numeroDesdobramento);
-        appendDiv(numeroDesdobramento, Object.keys(data[0]));
+        appendDiv(numeroDesdobramento, Object.keys(data[0]), tituloDesdobramento);
         appendDataArr(data, numeroDesdobramento);
 
         let w = $('#container').innerWidth();
@@ -184,13 +189,11 @@
             valorVazio: "-",
         };
 
-        let tituloDesdobramento = "Mapa de Calor";
-
-        config.tituloDesdobramento = tituloDesdobramento;
+        config.tituloDesdobramento = "";
         config.Cabecalho = "<a class='cabecalho' data-titulo='{" + coluna + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + coluna +"}</a>";
         config.Indicador = "<a class='indicador' data-key='" + linha +"' data-titulo='{" + linha + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + linha +"}</a>";
         config.tituloIndicador = "Funções";
-        config.tituloCabecalho = "Unidades";
+        //config.tituloCabecalho = "Unidades";
         config.json = data;
         config.idPlaceholder = idMatriz;
         config.cellWidth = "66";
@@ -200,6 +203,8 @@
         ];
 
         HeatMap.Inicializar(config);
+
+
 
         $(idMatriz).off("click", "th.esquerda .indicador").on("click", "th.esquerda .indicador", function () {
 
@@ -301,30 +306,35 @@
 
     }
 
-    function appendDiv(numeroDesdobramento, keys) {
+    function appendDiv(numeroDesdobramento, keys, titulo = "") {
 
         let options = keys.reduce((accumulator, currentValue) => accumulator += `<option value="${currentValue}">${currentValue}</option>`)
 
-        let htmlDiv = `
-        <div class="row" select-filter id-desdobramento="${numeroDesdobramento}">
-            <form class="form-inline">
-              <div class="form-group">
-                <label for="coluna">Linha</label>
-                <select class="form-control" id="select1_${numeroDesdobramento}">
-                ${options}
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="coluna">Coluna</label>
-                <select class="form-control" id="select2_${numeroDesdobramento}">
-                ${options}
-                </select>
-              </div>
-        </form>
-        </div>
-        <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento }">
+        let htmlDiv = `        
+        <div class="panel panel-primary" id-desdobramento="${numeroDesdobramento}">
+            <div class="panel-heading">${titulo}g</div>
+            <div class="panel-body">
+                <div class="row-fluid" select-filter>
+                    <form class="form-inline">
+                      <div class="form-group">
+                        <label for="coluna">Linha</label>
+                        <select class="form-control" id="select1_${numeroDesdobramento}">
+                        ${options}
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="coluna">Coluna</label>
+                        <select class="form-control" id="select2_${numeroDesdobramento}">
+                        ${options}
+                        </select>
+                      </div>
+                </form>
+                </div>
+                <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento }">
 
-        </div > `;
+                </div>
+            </div>
+        </div>`;
 
         $('#placeholder').append(htmlDiv);
     }
@@ -352,6 +362,13 @@
     }
 
     function desdobraMatriz(newData, numeroDesdobramento, linha, coluna) {
+
+        let matrizAnterior = JSON.stringify(arrObjDados[numeroDesdobramento - 1]);
+        let matrizAtual = JSON.stringify(newData);
+
+        if (matrizAnterior === matrizAtual) {
+            return;
+        }
 
         gerarMapaCalor(newData, numeroDesdobramento, linha, coluna);
 
