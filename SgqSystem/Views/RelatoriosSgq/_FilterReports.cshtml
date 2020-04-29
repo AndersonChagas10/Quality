@@ -561,6 +561,19 @@
                                 </div>
                             }
 
+                            @if (ViewBag.ShowDesdobramentoPorDepartamento == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Exibe desdobramento por departamento</strong></label>
+                                        <select class="form-control" name="desdobramentoPorDepartamento">
+                                            <option value="1">Não</option>
+                                            <option value="2">Sim</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+
                             @if (ViewBag.ShowUserSgqSurpervisor == true)
                             {
                                 <div class="col-sm-12">
@@ -817,6 +830,7 @@
             $('select[name="periodo"]').select2();
             $('select[name="parModule_Ids"]').select2();
             $('select[name="ncComPeso"]').select2();
+            $('select[name="desdobramentoPorDepartamento"]').select2();
             $('select[name="peso"]').select2();
             $('select[name="desdobramento"]').select2();
             $('select[name="userSgqSurpervisor_Ids"]').select2();
@@ -894,6 +908,7 @@
             $('select[name="periodo"]').trigger('change');
             $('select[name="parModule_Ids"]').trigger('change');
             $('select[name="ncComPeso"]').trigger('change');
+            $('select[name="desdobramentoPorDepartamento"]').trigger('change');
             $('select[name="peso"]').trigger('change');
             $('select[name="desdobramento"]').trigger('change');
             $('select[name="userSgqSurpervisor_Ids"]').trigger('change');

@@ -128,12 +128,18 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     //Trazer os Monitorametnos com Departamento
                     //Pegar todos os Departamentos
                     //Foreach no departamento e trazer por cada um e inserir na lista
-                    var monitoramentosDepartamentos = GetMonitoramentosDepartamento(form, parLevel1_Id);
-
-                    //analiseCriticaResultSet.MonitoramentosDepartamentos
-                    var departamentos_Ids = monitoramentosDepartamentos.Select(x => x.ParDepartment_Id).Distinct().ToList();
-
+                    var departamentos_Ids = new List<int>();
+                    var monitoramentosDepartamentos = new List<GraficoNC>();
                     analiseCriticaResultSet.MonitoramentosDepartamentos = new List<GraficoTabela>();
+
+                    if (form.DesdobramentoPorDepartamento[0] == 2)
+                    {
+                        monitoramentosDepartamentos = GetMonitoramentosDepartamento(form, parLevel1_Id);
+
+                        //analiseCriticaResultSet.MonitoramentosDepartamentos
+                        departamentos_Ids = monitoramentosDepartamentos.Select(x => x.ParDepartment_Id).Distinct().ToList();
+
+                    }
 
                     foreach (var departamento_Id in departamentos_Ids)
                     {
