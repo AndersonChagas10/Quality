@@ -212,6 +212,7 @@ $(document).on('click', '#btnClearDatabase', function (e) {
                 _writeFile("database.txt", "");
                 $('.Results').empty();
                 $('.messageConfirm, .overlay').fadeOut("fast");
+                limparVariaveisGlobais();
             } else {
                 $('.messageConfirm, .overlay').children('.body').children('.txtMessage').html('Wrong password.');
             }
@@ -310,4 +311,10 @@ var isDisabledSyncButton = false;
 function disableSyncButtons() {
     isDisabledSyncButton = true;
     setTimeout(function () { isDisabledSyncButton = false; }, 15000);
+}
+
+function limparVariaveisGlobais() {
+    listaDeDefeitosAlerta8 = [];
+    listaDeAlertasAlerta8 = [];
+    updateAlerta8([],[]);
 }

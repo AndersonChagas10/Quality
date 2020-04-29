@@ -223,12 +223,12 @@ function initialLogin() {
         updateReaudit(2);
         updateCorrectiveAction();
         setDateLastSync();
+        inicializaAlerta8();
     }, 500);
 
     getAPPLevelsVolume();
     getCollectionKeys($('.App').attr('unidadeid'));
     loginVerificacaoKeys();
-
 }
 
 //GERA OS CLIQUES PARA CRIAR VARIAS PONTEIRO PARA CONTROLE DE ALERTAS
