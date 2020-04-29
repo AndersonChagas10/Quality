@@ -354,7 +354,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 whereCargo = $@" AND CuboL3.Cargo_Id in ({string.Join(",", form.ParCargo_Ids)}) ";
             }
 
-             if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
+            if (form.ParCompany_Ids.Length > 0 && form.ParCompany_Ids[0] > 0)
             {
                 whereUnit = $@"AND CuboL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
             }
