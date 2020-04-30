@@ -729,6 +729,156 @@
     <Content Include="..\AppColeta\SEARA\zoom.js">
       <Link>Scripts\appColeta\SEARA\zoom.js</Link>
     </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\alert.js">
+      <Link>Scripts\appColeta\GQ\alert.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\alert_new.js">
+      <Link>Scripts\appColeta\GQ\alert_new.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\breadCrumb.js">
+      <Link>Scripts\appColeta\GQ\breadCrumb.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\componente.js">
+      <Link>Scripts\appColeta\GQ\componente.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\config.js">
+      <Link>Scripts\appColeta\GQ\config.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\consolidation.js">
+      <Link>Scripts\appColeta\GQ\consolidation.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\controleDeAlerta.js">
+      <Link>Scripts\appColeta\GQ\controleDeAlerta.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\correctiveAction.js">
+      <Link>Scripts\appColeta\GQ\correctiveAction.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\counter.js">
+      <Link>Scripts\appColeta\GQ\counter.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\counterLevel1.js">
+      <Link>Scripts\appColeta\GQ\counterLevel1.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\crypto.js">
+      <Link>Scripts\appColeta\GQ\crypto.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\date.js">
+      <Link>Scripts\appColeta\GQ\date.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\defect.js">
+      <Link>Scripts\appColeta\GQ\defect.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\defectEvaluation.js">
+      <Link>Scripts\appColeta\GQ\defectEvaluation.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\email.js">
+      <Link>Scripts\appColeta\GQ\email.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\eua.js">
+      <Link>Scripts\appColeta\GQ\eua.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\footer.js">
+      <Link>Scripts\appColeta\GQ\footer.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\geolocation.js">
+      <Link>Scripts\appColeta\GQ\geolocation.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\guard.js">
+      <Link>Scripts\appColeta\GQ\guard.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\header.js">
+      <Link>Scripts\appColeta\GQ\header.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\index.css">
+      <Link>Scripts\appColeta\GQ\index.css</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\index2.js">
+      <Link>Scripts\appColeta\GQ\index2.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\keys.js">
+      <Link>Scripts\appColeta\GQ\keys.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\lastSync.js">
+      <Link>Scripts\appColeta\GQ\lastSync.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\level1.js">
+      <Link>Scripts\appColeta\GQ\level1.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\level2.js">
+      <Link>Scripts\appColeta\GQ\level2.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\level3.js">
+      <Link>Scripts\appColeta\GQ\level3.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\login.js">
+      <Link>Scripts\appColeta\GQ\login.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\message.js">
+      <Link>Scripts\appColeta\GQ\message.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\mock.js">
+      <Link>Scripts\appColeta\GQ\mock.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\mock_modulos.js">
+      <Link>Scripts\appColeta\GQ\mock_modulos.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\modal.js">
+      <Link>Scripts\appColeta\GQ\modal.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\module.js">
+      <Link>Scripts\appColeta\GQ\module.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\navBar.js">
+      <Link>Scripts\appColeta\GQ\navBar.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\overlay.js">
+      <Link>Scripts\appColeta\GQ\overlay.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\pcc1b.js">
+      <Link>Scripts\appColeta\GQ\pcc1b.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\phase.js">
+      <Link>Scripts\appColeta\GQ\phase.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\photo.js">
+      <Link>Scripts\appColeta\GQ\photo.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\reaudit.js">
+      <Link>Scripts\appColeta\GQ\reaudit.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\reauditByHeader.js">
+      <Link>Scripts\appColeta\GQ\reauditByHeader.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\reprocesso.js">
+      <Link>Scripts\appColeta\GQ\reprocesso.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\resource.js">
+      <Link>Scripts\appColeta\GQ\resource.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\rightBar.js">
+      <Link>Scripts\appColeta\GQ\rightBar.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\role.js">
+      <Link>Scripts\appColeta\GQ\role.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\rotinaHeaderField.js">
+      <Link>Scripts\appColeta\GQ\rotinaHeaderField.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\scriptfile.js">
+      <Link>Scripts\appColeta\GQ\scriptfile.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\sync.js">
+      <Link>Scripts\appColeta\GQ\sync.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\tempSave.js">
+      <Link>Scripts\appColeta\GQ\tempSave.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\verificacaoTipificacao.js">
+      <Link>Scripts\appColeta\GQ\verificacaoTipificacao.js</Link>
+    </Content>
+    <Content Include="..\SgqService\Scripts\appColeta\GQ\version.js">
+      <Link>Scripts\appColeta\GQ\version.js</Link>
+    </Content>
     <Content Include="admin-lte\css\AdminLTE.css" />
     <Content Include="admin-lte\css\AdminLTE.min.css" />
     <Content Include="admin-lte\css\skins\skin-black-light.css" />
@@ -2222,7 +2372,6 @@
     <Folder Include="App_Data\Uploads\" />
     <Folder Include="Arquivos\uploads\" />
     <Folder Include="obj\" />
-    <Folder Include="Scripts\appColeta\GQ\" />
     <Folder Include="Scripts\BootStrapRecravacao\" />
     <Folder Include="Scripts\i18n\" />
     <Folder Include="Views\WebService\" />

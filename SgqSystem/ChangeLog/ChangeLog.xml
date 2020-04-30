@@ -3278,4 +3278,24 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-498</CardNumber>
+    <Version>1.7.0</Version>
+    <Description>[GQ] Regra de alerta por monitoramento (NC Temperatura)</Description>
+    <Script>
+      BEGIN
+      IF NOT EXISTS (SELECT
+      *
+      FROM ParNotConformityRule
+      WHERE Id = 8)
+      BEGIN
+      SET IDENTITY_INSERT ParNotConformityRule ON
+      INSERT INTO ParNotConformityRule (Id, Name, AddDate, IsActive) VALUES (8, 'NC recorrente, Tarefa Crítica e % de NC', GETDATE(), 1)
+      SET IDENTITY_INSERT ParNotConformityRule OFF
+      END
+      END
+      GO
+    </Script>
+  </Card>
+
 </Cards>

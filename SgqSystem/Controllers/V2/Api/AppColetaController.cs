@@ -93,12 +93,13 @@ namespace SgqSystem.Controllers.V2.Api
                     item.GUIID = guiid.ToString();
 
                     LogSystem.LogErrorBusiness.TryRegister(ex, new { GUIID = guiid.ToString() });
+
                 }
             }
 
             var listaDeColetasComErro = listSimpleCollect.Where(x => x.HasError == true).ToList();
             var listaDeColetasSemErro = listSimpleCollect
-                .Where(x => x.HasError != true && !listaSimpleCollectDuplicadas.Any(y => y.Id == x.Id))
+                .Where(x => x.HasError != true)
                 .ToList();
             var listaDeColetasDuplicadas = listSimpleCollect
                 .Where(x => x.HasError != true && listaSimpleCollectDuplicadas.Any(y => y.Id == x.Id))
@@ -128,7 +129,8 @@ namespace SgqSystem.Controllers.V2.Api
                 .Where(x => x.ParHeaderField_Id == null
                 && x.ParHeaderField_Value == null
                 && x.Evaluation != null
-                && x.Sample != null)
+                && x.Sample != null
+                && !listaSimpleCollectDuplicadas.Any(y => y.Id == x.Id))
                 .Select(x => new CollectionLevel2()
                 {
                     EvaluationNumber = (int)x.Evaluation,

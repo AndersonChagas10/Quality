@@ -94,7 +94,7 @@ namespace SgqServiceBusiness.Controllers.RH
                 AND c.Sample = @Sample
                 AND c.Parfrequency_Id = @Parfrequency_Id
                 AND ((@ParHeaderField_Id IS NOT NULL AND c.ParHeaderField_Id = @ParHeaderField_Id) OR (@ParHeaderField_Id IS NULL AND c.ParHeaderField_Id IS NULL))
-                AND ((@ParHeaderField_Value IS NOT NULL AND c.ParHeaderField_Id = @ParHeaderField_Value) OR (@ParHeaderField_Value IS NULL AND c.ParHeaderField_Id IS NULL))
+                AND ((@ParHeaderField_Value IS NOT NULL AND c.ParHeaderField_Value = @ParHeaderField_Value) OR (@ParHeaderField_Value IS NULL AND c.ParHeaderField_Value IS NULL))
                                     ";
 
                 using (Factory factory = new Factory("DefaultConnection"))
