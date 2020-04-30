@@ -26,6 +26,10 @@ namespace Dominio
 
         public int Intervalo { get; set; }
 
+        public DateTime? LastExecution { get; set; }
+
+        public string ExecutionTime { get; set; }
+
         public bool IsActive { get; set; } = true;
     }
 }

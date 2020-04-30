@@ -47,13 +47,28 @@ namespace Jobs
                     {
                         var key = "IntegrationJobFactory" + item.Name;
                         var hasKey = GlobalConfig.UltimaExecucaoDoJob.Any(x => x.Key == key);
-                        if (!hasKey || (hasKey &&
-                            GlobalConfig.UltimaExecucaoDoJob[key].AddSeconds(item.Intervalo) <= DateTime.Now))
-                        {
+                        string[] timeParts = { "00", "00" };
 
+                        if (item.ExecutionTime != null)
+                            timeParts = item.ExecutionTime.Split(':');
+
+                        var executionTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, int.Parse(timeParts[0]), int.Parse(timeParts[1]), 00);
+                        var executionDateTime = executionTime;
+
+                        if (item.LastExecution != null)
+                        {
+                            var lasExecutionDate = item.LastExecution.ToString().Split(' ', '/');
+                            executionDateTime = new DateTime(int.Parse(lasExecutionDate[2]), int.Parse(lasExecutionDate[1]), int.Parse(lasExecutionDate[0]), int.Parse(timeParts[0]), int.Parse(timeParts[1]), 00).AddDays(1);
+                        }
+
+                        if (((item.Intervalo > 0 && item.ExecutionTime == null) && (!hasKey || (hasKey && GlobalConfig.UltimaExecucaoDoJob[key].AddSeconds(item.Intervalo) <= DateTime.Now)))
+                            || (item.ExecutionTime != null && (executionDateTime <= DateTime.Now && executionTime <= DateTime.Now)))
+                        {
                             Task.Run(() => IntegrationJobFactory.RunIntegrationOneValue(item));
                             GlobalConfig.UltimaExecucaoDoJob[key] = DateTime.Now;
-
+                            item.LastExecution = DateTime.Now;
+                            db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
                         }
                     }
                 }

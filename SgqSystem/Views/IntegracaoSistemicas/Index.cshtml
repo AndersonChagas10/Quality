@@ -45,13 +45,19 @@
                                                 @Resources.Resource.config
                                             </th>
                                             <th>
-                                                Script
-                                            </th>
-                                            <th>
                                                 @Resources.Resource.table_name
                                             </th>
                                             <th>
+                                                Script
+                                            </th>
+                                            <th>
                                                 @Resources.Resource.interval
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.executionTime
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.lastExecution
                                             </th>
                                             <th>
                                                 @Resources.Resource.active
@@ -62,31 +68,37 @@
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
-                                            <tr>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Configuration)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Script)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.TableName)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Intervalo)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.IsActive)
-                                                </td>
-                                                <td>
-                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                    @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Configuration)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.TableName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Script)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Intervalo)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.ExecutionTime)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.LastExecution)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.IsActive)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                @*@Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.Id })*@
+                                            </td>
+                                        </tr>
                                         }
                                     </tbody>
                                 </table>
@@ -109,6 +121,8 @@
         closeLeftSidebar();
 
         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
             null,
             null,
             null,

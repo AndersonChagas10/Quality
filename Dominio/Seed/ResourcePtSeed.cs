@@ -1008,6 +1008,9 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "is_knockout", Value = "É Crítico" });
 
                 ResourcesInserir.Add(new ResourcePT() { Key = "Qualification_Group", Value = "Grupo de Qualificação" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "executionTime", Value = "Horário de Execução" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "lastExecution", Value = "Última Execução" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "one_required_field", Value = "É obrigatório preencher um dos campos:" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
