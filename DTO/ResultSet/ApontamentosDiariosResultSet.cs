@@ -1160,7 +1160,7 @@ public class ApontamentosDiariosResultSet
 					INNER JOIN ParCompany UN with (NOLOCK)
 						ON UN.Id = C2.UnitId
 					left join ParCompanyXStructure PCXS with (NOLOCK)
-						on pcxs.ParCompany_Id = un.Id
+						on pcxs.ParCompany_Id = un.Id and pcxs.Active = 1
 					left join ParStructure pg with (NOLOCK)
 						on pg.Id = pcxs.ParStructure_Id
 					left join ParStructure psg with (NOLOCK)
