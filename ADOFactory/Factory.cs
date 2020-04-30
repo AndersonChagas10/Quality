@@ -216,7 +216,7 @@ namespace ADOFactory
                             }
                             catch (Exception e)
                             {
-                                throw e;
+                                throw;
                             }
                         }
                         listReturn.Add((T)instance);
@@ -227,7 +227,7 @@ namespace ADOFactory
             catch (Exception e)
             {
                 closeConnection();
-                throw e;
+                throw;
             }
 
         }

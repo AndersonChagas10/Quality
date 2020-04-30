@@ -138,14 +138,16 @@ namespace SgqSystem.Jobs
 
                                     JavaScriptSerializer serializer = new JavaScriptSerializer();
 
-                                    dynamic listaQualificacaoSerializada = serializer.Deserialize<object>(resultLevel3.Outros);
-
-
-                                    if (listaQualificacaoSerializada != null && listaQualificacaoSerializada["Qualification_Value"] != null)
+                                    if (!string.IsNullOrEmpty(resultLevel3.Outros))
                                     {
-                                        foreach (var item in listaQualificacaoSerializada["Qualification_Value"])
+                                        dynamic listaQualificacaoSerializada = serializer.Deserialize<object>(resultLevel3.Outros);
+
+                                        if (listaQualificacaoSerializada != null && listaQualificacaoSerializada["Qualification_Value"] != null)
                                         {
-                                            listaQualificacao.Add(item as string);
+                                            foreach (var item in listaQualificacaoSerializada["Qualification_Value"])
+                                            {
+                                                listaQualificacao.Add(item as string);
+                                            }
                                         }
                                     }
 
@@ -174,6 +176,8 @@ namespace SgqSystem.Jobs
                             catch (Exception ex)
                             {
                                 collectionsProcessWithError_Id.Add(collectionId);
+
+                                LogSystem.LogErrorBusiness.TryRegister(ex);
                             }
                         }
 

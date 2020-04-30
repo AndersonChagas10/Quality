@@ -147,7 +147,7 @@ AND c.Evaluation = @Evaluation
 AND c.Sample = @Sample
 AND c.Parfrequency_Id = @Parfrequency_Id
 AND ((@ParHeaderField_Id IS NOT NULL AND c.ParHeaderField_Id = @ParHeaderField_Id) OR (@ParHeaderField_Id IS NULL AND c.ParHeaderField_Id IS NULL))
-AND ((@ParHeaderField_Value IS NOT NULL AND c.ParHeaderField_Id = @ParHeaderField_Value) OR (@ParHeaderField_Value IS NULL AND c.ParHeaderField_Id IS NULL))
+AND ((@ParHeaderField_Value IS NOT NULL AND c.ParHeaderField_Value = @ParHeaderField_Value) OR (@ParHeaderField_Value IS NULL AND c.ParHeaderField_Value IS NULL))
                     ";
 
                     using (Factory factory = new Factory("DefaultConnection"))
@@ -311,12 +311,13 @@ INSERT INTO [dbo].[Collection]
                     item.GUIID = guiid.ToString();
 
                     LogSystem.LogErrorBusiness.TryRegister(ex, new { GUIID = guiid.ToString() });
+
                 }
             }
 
             var listaDeColetasComErro = listSimpleCollect.Where(x => x.HasError == true).ToList();
             var listaDeColetasSemErro = listSimpleCollect
-                .Where(x => x.HasError != true && !listaSimpleCollectDuplicadas.Any(y => y.Id == x.Id))
+                .Where(x => x.HasError != true)
                 .ToList();
             var listaDeColetasDuplicadas = listSimpleCollect
                 .Where(x => x.HasError != true && listaSimpleCollectDuplicadas.Any(y => y.Id == x.Id))
@@ -346,7 +347,8 @@ INSERT INTO [dbo].[Collection]
                 .Where(x => x.ParHeaderField_Id == null
                 && x.ParHeaderField_Value == null
                 && x.Evaluation != null
-                && x.Sample != null)
+                && x.Sample != null
+                && !listaSimpleCollectDuplicadas.Any(y => y.Id == x.Id))
                 .Select(x => new CollectionLevel2()
                 {
                     EvaluationNumber = (int)x.Evaluation,
