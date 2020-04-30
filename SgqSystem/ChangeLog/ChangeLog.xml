@@ -3270,4 +3270,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-629</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] LABORATÓRIOS - Desdobramento da matriz do painel de laboratórios.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>

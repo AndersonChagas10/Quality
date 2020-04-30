@@ -53,18 +53,28 @@
             margin-bottom: 10px;
         }
 
-        #tituloDesdobramento{
+        #tituloDesdobramento {
             text-align: center;
             font-size: 20px;
         }
-
     </style>
 
     <div class="page-content-wrapper">
         <div class="page-content">
             <div class="loader" hidden></div>
+
+            @*Grafico*@
             <div id="container"></div>
-            <div id="placeholder"></div>
+
+            @* Matriz *@
+            <div id="placeholder">
+
+            </div>
+
+            @*Alerta de fim de desdobramento*@
+            <div class="alert alert-info" role="alert" id="divAlertFim" hidden>
+                Fim do desdobramento.
+            </div>
         </div>
     </div>
 
@@ -77,206 +87,327 @@
 
 <script type="text/javascript">
 
-        let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
+    let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
 
-        $("#btnSend").click(function () {
+    let arrObjDados = [];
 
-            buscarDados();
+    function buscarDados() {
+
+        arrObjDados = [];
+
+        exibirLoader();
+
+        window.scrollTo(0, 0);
+
+        if (!$("#divFilterReports").is(":hidden"))
+            toggleDivFilterReports();
+
+        $.ajax({
+            data: JSON.stringify(objFiltro.Param),
+            url: urlBuscaDados,
+            type: 'POST',
+            contentType: "application/json",
+            success: retornoAjax,
+            timeout: 600000,
+            contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+            error: function (a, b, c) {
+                console.log(a);
+                console.log(b);
+                console.log(c);
+                esconderLoader();
+            }
+        });
+
+    }
+
+    function retornoAjax(data) {
+
+        let linha = "cNmTpColeta";
+        let coluna = "cSgEmpresa";
+
+        esconderLoader();
+        gerarGrafico(data);
+        gerarMapaCalor(data, 0, linha, coluna);
+        hideMensagemFimDesdobramento();
+
+    }
+
+    //Gráfico
+    function gerarGrafico(data) {
+
+        const categories = getCategories(data, "dColetaAmostra");
+        const series = getSeriesByCategories(data, categories);
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: '% DE NC ANÁLISES MICROBIOLÓGICAS POR TIPO DE VEÍCULO'
+            },
+            subtitle: {
+                text: ''
+            },
+            xAxis: {
+                categories: categories
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true
+                    },
+                    enableMouseTracking: false
+                }
+            },
+            series: series
+        });
+    }
+
+    //Matriz de calor
+    function gerarMapaCalor(data, numeroDesdobramento, linha, coluna) {
+
+        let tituloDesdobramento = "Mapa de Calor " + linha + " por " + coluna;
+
+        removeDivs(numeroDesdobramento);
+        appendDiv(numeroDesdobramento, Object.keys(data[0]), tituloDesdobramento);
+        appendDataArr(data, numeroDesdobramento);
+
+        let w = $('#container').innerWidth();
+        let idMatriz = "#placeholder_" + numeroDesdobramento;
+
+        let config = {
+            maxWidth: w * .98,
+            widthColumn1: (w * .1) + "px",
+            widthColumn2: (w * .65) + "px",
+            widthColumn3: (w * .2) + "px",
+            colorMin: "00e600",
+            colorMid: "fef104",
+            colorMax: "ff0000",
+            isGradient: true,
+            colorMain: "dddddd",
+            colorEmptyTd: "f9f9f9",
+            jsonName: "Data",
+            valorVazio: "-",
+        };
+
+        config.tituloDesdobramento = "";
+        config.Cabecalho = "<a class='cabecalho' data-titulo='{" + coluna + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + coluna +"}</a>";
+        config.Indicador = "<a class='indicador' data-key='" + linha +"' data-titulo='{" + linha + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + linha +"}</a>";
+        config.tituloIndicador = linha;
+        config.tituloColuna = coluna;
+        config.json = data;
+        config.idPlaceholder = idMatriz;
+        config.cellWidth = "66";
+        config.heatmapType = "line";
+        config.Valores = [
+            { "title": "% NC", "render": function () { return '<span>{nValor1}</span>'; }, "heatmap": true, "groupFunction": "AVG" }
+        ];
+
+        HeatMap.Inicializar(config);
+
+        if (numeroDesdobramento > 0)
+            goScroll(idMatriz);
+
+        $(idMatriz).off("click", "th.esquerda .indicador").on("click", "th.esquerda .indicador", function () {
+
+            let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
+
+            let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
+            let coluna = $('#select2_' + numeroDesdobramento + ' :selected').val();
+
+            let property = $(this).attr('data-key');
+            let value = $(this).attr('data-titulo');
+
+            let newData = arrObjDados[numeroDesdobramento].filter(x => x[property] == value);
+
+            numeroDesdobramento = numeroDesdobramento + 1;
+
+            desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
+        });
+    }
+
+    //Ultis
+    function exibirLoader() {
+        $('.loader').show();
+    }
+
+    function esconderLoader() {
+        $('.loader').hide();
+    }
+
+    function getPorcentagem(amostragem, quantidade) {
+
+        amostragem = parseFloat(amostragem);
+        quantidade = parseFloat(quantidade);
+
+        return (quantidade * 100) / amostragem;
+
+    }
+
+    function getCategories(data, categoriesColumDataName) {
+
+        if (!data)
+            return [];
+
+        //retornar mes e ano
+        const categoriesArr = [... new Set(data.map(x => convertDateToYearMouth(x[categoriesColumDataName])))]
+
+        categoriesArr.sort();
+
+        return categoriesArr;
+    }
+
+    function getSeriesByCategories(data, categories) {
+
+        const series = [];
+
+        seriesName = [... new Set(data.map(x => x["cNmTpColeta"]))];
+
+        seriesName.forEach((serieName) => { //seriesName
+
+            const obj = {};
+            obj.name = serieName;
+            obj.data = [];
+
+            categories.forEach((o) => { //datas
+
+                let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmTpColeta"] == serieName);
+
+                if (arrFiltrado.length == 0) {
+
+                    obj.data.push(null);
+
+                } else {
+
+                    arrFiltrado = arrFiltrado.map(x => x.nValor1);
+
+                    let qtdNC = arrFiltrado.reduce((accumulator, currentValue) => accumulator + currentValue)
+
+                    obj.data.push(getPorcentagem(data.length, qtdNC));
+                }
+
+            });
+
+            series.push(obj);
 
         });
 
-        function buscarDados() {
+        return series;
 
-            exibirLoader();
+    }
 
-            $.ajax({
-                data: JSON.stringify(objFiltro.Param),
-                url: urlBuscaDados,
-                type: 'POST',
-                contentType: "application/json",
-                success: retornoAjax,
-                timeout: 600000,
-                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
-                error: function (a,b,c) {
-                    console.log(a);
-                    console.log(b);
-                    console.log(c);
-                    esconderLoader();
-                }
-            });
+    function convertDateToYearMouth(date) {
 
+        let mes = new Date(date).getMonth().toString() + 1;
+        let ano = new Date(date).getFullYear().toString();
+
+        if (mes.length == 1)
+            mes = "0" + mes;
+
+        return ano + "-" + mes;
+
+    }
+
+    function appendDiv(numeroDesdobramento, keys, titulo = "") {
+
+        let options = keys.reduce((accumulator, currentValue) => accumulator += `<option value="${currentValue}">${currentValue}</option>`)
+
+        let htmlDiv = `
+        <div class="panel panel-primary" id-desdobramento="${numeroDesdobramento}">
+            <div class="panel-heading">${titulo}g</div>
+            <div class="panel-body">
+                <div class="row" select-filter>
+                    <div class="col-sm-12">
+                        <form class="form-inline">
+                          <strong>A próxima matriz exibirá: </strong>
+                          <div class="form-group">
+                            <label for="coluna">Linha</label>
+                            <select class="form-control" id="select1_${numeroDesdobramento}">
+                            ${options}
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="coluna">Coluna</label>
+                            <select class="form-control" id="select2_${numeroDesdobramento}">
+                            ${options}
+                            </select>
+                          </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento }">
+
+                </div>
+            </div>
+        </div>`;
+
+        $('#placeholder').append(htmlDiv);
+    }
+
+    function removeDivs(numeroDesdobramento) {
+
+        $('#placeholder').find('.matriz').each(function (index) {
+
+            let numeroDiv = parseInt($(this).attr('data-numer-div'));
+
+            if (numeroDiv >= numeroDesdobramento) {
+                $(this).remove();
+                $("[id-desdobramento=" + numeroDiv + "]").remove();
+            }
+
+        });
+    }
+
+    function appendDataArr(data, numeroDesdobramento) {
+
+        arrObjDados.splice(numeroDesdobramento, arrObjDados.length);
+
+        arrObjDados[numeroDesdobramento] = data;
+
+    }
+
+    function desdobraMatriz(newData, numeroDesdobramento, linha, coluna) {
+
+        let matrizAnterior = JSON.stringify(arrObjDados[numeroDesdobramento - 1]);
+        let matrizAtual = JSON.stringify(newData);
+
+        hideMensagemFimDesdobramento();
+
+        if (matrizAnterior === matrizAtual) {
+            showMensagemFimDesdobramento();
+            return;
         }
 
-        function retornoAjax(data) {
+        gerarMapaCalor(newData, numeroDesdobramento, linha, coluna);
 
-            esconderLoader();
-            gerarGrafico(data);
-            gerarMapaCalor(data);
+    }
 
-        }
+    function showMensagemFimDesdobramento() {
 
-        function gerarGrafico(data) {
+        $("#divAlertFim").show();
 
-            const categories = getCategories(data, "dColetaAmostra");
-            const series = getSeriesByCategories(data, categories);
+    }
 
-            Highcharts.chart('container', {
-                chart: {
-                    type: 'line'
-                },
-                title: {
-                    text: '% DE NC ANÁLISES MICROBIOLÓGICAS POR TIPO DE VEÍCULO'
-                },
-                subtitle: {
-                    text: ''
-                },
-                xAxis: {
-                    categories: categories
-                },
-                yAxis: {
-                    title: {
-                        text: ''
-                    }
-                },
-                plotOptions: {
-                    line: {
-                        dataLabels: {
-                            enabled: true
-                        },
-                        enableMouseTracking: false
-                    }
-                },
-                series: series
-            });
-        }
+    function hideMensagemFimDesdobramento() {
 
-        function gerarMapaCalor(data) {
+        $("#divAlertFim").hide();
 
-            var w = $('#container').innerWidth();
+    }
 
-            config = {
-                maxWidth: w * .98,
-                widthColumn1: (w * .1) + "px",
-                widthColumn2: (w * .65) + "px",
-                widthColumn3: (w * .2) + "px",
-                colorMin: "00e600",
-                colorMid: "fef104",
-                colorMax: "ff0000",
-                isGradient: true,
-                colorMain: "dddddd",
-                colorEmptyTd: "f9f9f9",
-                jsonName: "Data",
-                valorVazio: "-",
-            };
+    function goScroll(elemId) {
 
-            var tituloDesdobramento = "Mapa de Calor";
+        document.querySelector(elemId).scrollIntoView({ behavior: 'smooth' });
+    }
 
-            config.tituloDesdobramento = tituloDesdobramento;
-            config.Cabecalho = "<a class='cabecalho' data-titulo='{cSgEmpresa}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{cSgEmpresa}</a>";
-            config.Indicador = "<a class='indicador' data-titulo='{cNmTpColeta}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{cNmTpColeta}</a>";
-            config.tituloIndicador = "Funções";
-            config.tituloCabecalho = "Unidades";
-            config.json = data;
-            config.idPlaceholder = "#placeholder";
-            config.cellWidth = "66";
-            config.heatmapType = "line";
-            config.Valores = [
-                { "title": "% NC", "render": function () { return '<span>{nValor1}</span>'; }, "heatmap": true, "groupFunction": "AVG" },
-                //{ "title": "Valor_2", "render": function () { return '<span>{Valor_2}</span>'; }, "heatmap": true },
-                //{ "title": "%", "groupFunction": "AVG", "Exp": "({Valor_1}/{Valor_2})*100", "heatmap": true }
-            ];
 
-            HeatMap.Inicializar(config);
-
-            $('#placeholder').on("click", "#listaValores td a[data-bla]", function () {
-                alert($(this).attr('data-bla') + "= " + $(this).attr('data-bla'));
-            });
-        }
-
-        function exibirLoader() {
-            $('.loader').show();
-        }
-
-        function esconderLoader() {
-            $('.loader').hide();
-        }
-
-        function getPorcentagem(amostragem, quantidade) {
-
-            amostragem = parseFloat(amostragem);
-            quantidade = parseFloat(quantidade);
-
-            return (quantidade * 100) / amostragem;
-
-        }
-
-        function getCategories(data, categoriesColumDataName) {
-
-            if (!data)
-                return [];
-
-            //retornar mes e ano
-            const categoriesArr = [... new Set(data.map(x => convertDateToYearMouth(x[categoriesColumDataName])))]
-
-            categoriesArr.sort();
-
-            return categoriesArr;
-        }
-
-        function getSeriesByCategories(data, categories) {
-
-            const series = [];
-
-            seriesName = [... new Set(data.map(x => x["cNmTpColeta"]))];
-
-            seriesName.forEach((serieName) => { //seriesName
-
-                const obj = {};
-                obj.name = serieName;
-                obj.data = [];
-
-                categories.forEach((o) => { //datas
-
-                    let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmTpColeta"] == serieName);
-
-                    if (arrFiltrado.length == 0) {
-
-                        obj.data.push(null);
-
-                    } else {
-
-                        arrFiltrado = arrFiltrado.map(x => x.nValor1);
-
-                        let qtdNC = arrFiltrado.reduce((accumulator, currentValue) => accumulator + currentValue)
-
-                        obj.data.push(getPorcentagem(data.length, qtdNC));
-                    }
-
-                });
-
-                series.push(obj);
-
-            });
-
-            return series;
-
-        }
-
-        function convertDateToYearMouth(date) {
-
-            let mes = new Date(date).getMonth().toString() + 1;
-            let ano = new Date(date).getFullYear().toString();
-
-            if (mes.length == 1)
-                mes = "0" + mes;
-
-            return ano + "-" + mes;
-
-        }
-
-        function enviarFiltro() {
-
-        }
+    function enviarFiltro() {
+        buscarDados();
+    }
 
 </script>
 
