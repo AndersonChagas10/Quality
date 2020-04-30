@@ -129,7 +129,7 @@
                     $($(e).parents('tr').find('td')[0]).html(editado.ParNotConformityRule_Name);
                     $($(e).parents('tr').find('td')[1]).html(editado.Value);
                     $($(e).parents('tr').find('td')[2]).html(editado.IsReauditShowTable);
-                    $($(e).parents('tr').find('td')[3]).html(editado.CorrectiveActionShowTable);
+                    //$($(e).parents('tr').find('td')[3]).html(editado.CorrectiveActionShowTable);
                     $('#crudNxNEdit').modal('hide');
 
                 });
@@ -208,14 +208,14 @@
                 $('#crudNxNEdit > div > div > div.modal-footer > button.btn.btn-primary').on('click', function () {
                     if (PesoL3.veifyAdd('crudNxNEdit')) {
                         var editado = PesoL3.getObjAdd('crudNxNEdit', obj);
+                        editado.IsKnockout == "@Resources.Resource.yes" ? true : false;
                         $(e).parents('tr').removeData();
                         $(e).parents('tr').data(editado);
-                        $($(e).parents('tr').find('td')[0]).html(editado.companyName)//
-                        $($(e).parents('tr').find('td')[1]).html(editado.Weight)//
-                        $($(e).parents('tr').find('td')[2]).html(editado.IsKnockout)//
-                        $($(e).parents('tr').find('td')[3]).html(editado.groupName)//
+                        $($(e).parents('tr').find('td')[0]).html(editado.companyName)
+                        $($(e).parents('tr').find('td')[1]).html(editado.Weight)
+                        $($(e).parents('tr').find('td')[2]).html(editado.IsKnockout)
+                        $($(e).parents('tr').find('td')[3]).html(editado.groupName)
                         $('#crudNxNEdit').modal('hide');
-                        //$('#crudNxNEdit #percentVal').inputmask('remove');
                     }
 
                 });
@@ -556,6 +556,7 @@
 
             $('#crudNxNEdit > div > div > div.modal-body').append(divDeEdicao)/*append*/
 
+            obj.IsKnockout = obj.IsKnockout == "@Resources.Resource.yes" ? true : false;
 
             $("#crudNxNEdit #paramsDto_parLevel3Level2_IsKnockout.check-box").bootstrapSwitch('state', obj.IsKnockout);
 
