@@ -38,6 +38,8 @@ var HeatMap = {
             this.TituloIndicador = config.tituloIndicador;
         if (config.tituloDesdobramento != undefined)
             this.TituloDesdobramento = config.tituloDesdobramento;
+        if (config.tituloColuna != undefined)
+            this.TituloColuna = config.tituloColuna;
 
         if (config.jsonName != undefined)
             this.jsonName = config.jsonName;
@@ -103,6 +105,7 @@ var HeatMap = {
 
     jsonName: "Data",
     TituloIndicador: "",
+    TituloColuna: "INDICADOR",
     TituloDesdobramento: "",
     CabecalhoX: "CabecalhoX",
     IndicadorY: "IndicadorY",
@@ -836,7 +839,7 @@ function MontaEstrutura() {
         '		</div>                                     ' +
         '		<div class="row row1 linha">                                     ' +
         '			<div class="column1 removeMargin titleHeatMap">       ' +
-        '				<table class="esquerda"><tr><th>INDICADOR</th></tr><tr><th>' + HeatMap.TituloIndicador + '</th></tr></table>                                          ' +
+        '				<table class="esquerda"><tr><th>' + HeatMap.TituloColuna + '</th></tr><tr><th>' + HeatMap.TituloIndicador + '</th></tr></table>                                          ' +
         '			</div>                                                 ' +
         '			<div class="column2 removeMargin">                    ' +
         '				<div class="horizontal">                           ' +

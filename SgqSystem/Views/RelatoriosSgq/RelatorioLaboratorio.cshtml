@@ -62,12 +62,18 @@
     <div class="page-content-wrapper">
         <div class="page-content">
             <div class="loader" hidden></div>
+
             @*Grafico*@
             <div id="container"></div>
 
             @* Matriz *@
             <div id="placeholder">
 
+            </div>
+
+            @*Alerta de fim de desdobramento*@
+            <div class="alert alert-info" role="alert" id="divAlertFim" hidden>
+                Fim do desdobramento.
             </div>
         </div>
     </div>
@@ -79,23 +85,22 @@
 
     @Scripts.Render("~/Scripts/heatmap.js")
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
 
     let arrObjDados = [];
-
-    $("#btnSend").click(function () {
-
-        buscarDados();
-
-    });
 
     function buscarDados() {
 
         arrObjDados = [];
 
         exibirLoader();
+
+        window.scrollTo(0, 0);
+
+        if (!$("#divFilterReports").is(":hidden"))
+            toggleDivFilterReports();
 
         $.ajax({
             data: JSON.stringify(objFiltro.Param),
@@ -123,6 +128,7 @@
         esconderLoader();
         gerarGrafico(data);
         gerarMapaCalor(data, 0, linha, coluna);
+        hideMensagemFimDesdobramento();
 
     }
 
@@ -192,8 +198,8 @@
         config.tituloDesdobramento = "";
         config.Cabecalho = "<a class='cabecalho' data-titulo='{" + coluna + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + coluna +"}</a>";
         config.Indicador = "<a class='indicador' data-key='" + linha +"' data-titulo='{" + linha + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + linha +"}</a>";
-        config.tituloIndicador = "Funções";
-        //config.tituloCabecalho = "Unidades";
+        config.tituloIndicador = linha;
+        config.tituloColuna = coluna;
         config.json = data;
         config.idPlaceholder = idMatriz;
         config.cellWidth = "66";
@@ -204,7 +210,8 @@
 
         HeatMap.Inicializar(config);
 
-
+        if (numeroDesdobramento > 0)
+            goScroll(idMatriz);
 
         $(idMatriz).off("click", "th.esquerda .indicador").on("click", "th.esquerda .indicador", function () {
 
@@ -310,25 +317,28 @@
 
         let options = keys.reduce((accumulator, currentValue) => accumulator += `<option value="${currentValue}">${currentValue}</option>`)
 
-        let htmlDiv = `        
+        let htmlDiv = `
         <div class="panel panel-primary" id-desdobramento="${numeroDesdobramento}">
             <div class="panel-heading">${titulo}g</div>
             <div class="panel-body">
-                <div class="row-fluid" select-filter>
-                    <form class="form-inline">
-                      <div class="form-group">
-                        <label for="coluna">Linha</label>
-                        <select class="form-control" id="select1_${numeroDesdobramento}">
-                        ${options}
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="coluna">Coluna</label>
-                        <select class="form-control" id="select2_${numeroDesdobramento}">
-                        ${options}
-                        </select>
-                      </div>
-                </form>
+                <div class="row" select-filter>
+                    <div class="col-sm-12">
+                        <form class="form-inline">
+                          <strong>A próxima matriz exibirá: </strong>
+                          <div class="form-group">
+                            <label for="coluna">Linha</label>
+                            <select class="form-control" id="select1_${numeroDesdobramento}">
+                            ${options}
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="coluna">Coluna</label>
+                            <select class="form-control" id="select2_${numeroDesdobramento}">
+                            ${options}
+                            </select>
+                          </div>
+                        </form>
+                    </div>
                 </div>
                 <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento }">
 
@@ -366,7 +376,10 @@
         let matrizAnterior = JSON.stringify(arrObjDados[numeroDesdobramento - 1]);
         let matrizAtual = JSON.stringify(newData);
 
+        hideMensagemFimDesdobramento();
+
         if (matrizAnterior === matrizAtual) {
+            showMensagemFimDesdobramento();
             return;
         }
 
@@ -374,10 +387,28 @@
 
     }
 
-    function enviarFiltro() {
+    function showMensagemFimDesdobramento() {
+
+        $("#divAlertFim").show();
 
     }
 
-    </script>
+    function hideMensagemFimDesdobramento() {
+
+        $("#divAlertFim").hide();
+
+    }
+
+    function goScroll(elemId) {
+
+        document.querySelector(elemId).scrollIntoView({ behavior: 'smooth' });
+    }
+
+
+    function enviarFiltro() {
+        buscarDados();
+    }
+
+</script>
 
 }
