@@ -634,14 +634,14 @@ INSERT INTO [dbo].[Collection]
                 listaParClusterGroup = db.ParClusterGroup
                     .Where(x => x.IsActive && x.Id == appParametrization.ParClusterGroup_Id).ToList();
 
-                var listaParLevel3_Ids = new List<int>();
+                var listaParLevel3Value_Ids = new List<int>();
                 foreach (var item in listaParLevel3Value)
                 {
-                    listaParLevel3_Ids.Add(item.Id);
+                    listaParLevel3Value_Ids.Add(item.Id);
                 }
 
 
-                listaPargroupQualificationXParLevel3Value = business.GetListaPargroupQualificationXParLevel3Value(listaParLevel3_Ids);
+                listaPargroupQualificationXParLevel3Value = business.GetListaPargroupQualificationXParLevel3Value(listaParLevel3Value_Ids);
                 //listaPargroupQualificationXParLevel3Value = db.PargroupQualificationXParLevel3Value
                 //     .Where(x => listaParLevel3_Ids.Any(y => y == x.ParLevel3Value_Id))
                 //     .Select(x => new PargroupQualificationXParLevel3ValueViewModel()

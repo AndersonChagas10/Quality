@@ -46,9 +46,9 @@ namespace SgqServiceBusiness.Controllers.RH
                         ParCluster_Id
                         From ParVinculoPeso
                         where 
-                        ParCompany_Id = @ParCompany_Id or ParCompany_Id is Null
+                        (ParCompany_Id = @ParCompany_Id or ParCompany_Id is Null)
                         and ParFrequencyId = @ParFrequencyId
-                        and ParCluster_Id = @ParCluster_Id or ParCluster_Id is null
+                        and (ParCluster_Id = @ParCluster_Id or ParCluster_Id is null)
                         and IsActive = 1
                         order by ParCompany_Id desc";
 
@@ -184,7 +184,7 @@ namespace SgqServiceBusiness.Controllers.RH
                         UtilSqlCommand.AddParameterNullable(cmd, "@ParamParCompany_Id", appParametrization.ParCompany_Id);
                         UtilSqlCommand.AddParameterNullable(cmd, "@ParamParFrequencyId", appParametrization.ParFrequency_Id);
 
-                        listaParEvaluation = factory.SearchQuery<ParEvaluation>(query).ToList();
+                        listaParEvaluation = factory.SearchQuery<ParEvaluation>(cmd).ToList();
                     }
                 }
 
@@ -233,7 +233,7 @@ namespace SgqServiceBusiness.Controllers.RH
                         UtilSqlCommand.AddParameterNullable(cmd, "@ParamParFrequencyId", appParametrization.ParFrequency_Id);
                         UtilSqlCommand.AddParameterNullable(cmd, "@ParamParCluster_Id", appParametrization.ParCluster_Id);
 
-                        listaParEvaluationXDepartmentXCargoAppViewModel = factory.SearchQuery<ParEvaluationXDepartmentXCargoAppViewModel>(query).ToList();
+                        listaParEvaluationXDepartmentXCargoAppViewModel = factory.SearchQuery<ParEvaluationXDepartmentXCargoAppViewModel>(cmd).ToList();
                     }
                 }
 
@@ -321,7 +321,7 @@ namespace SgqServiceBusiness.Controllers.RH
                         cmd.CommandType = CommandType.Text;
                         UtilSqlCommand.AddParameterNullable(cmd, "@ParamParCompany_Id", appParametrization.ParCompany_Id);
 
-                        listaParLevel3Value = factory.SearchQuery<ParLevel3ValueAppViewModel>(query).ToList();
+                        listaParLevel3Value = factory.SearchQuery<ParLevel3ValueAppViewModel>(cmd).ToList();
                     }
                 }
 
@@ -602,7 +602,7 @@ namespace SgqServiceBusiness.Controllers.RH
 
         }
 
-        public List<PargroupQualificationXParLevel3Value> GetListaPargroupQualificationXParLevel3Value(List<int> listaParLevel3_Ids)
+        public List<PargroupQualificationXParLevel3Value> GetListaPargroupQualificationXParLevel3Value(List<int> listaParLevel3Value_Ids)
         {
             List<PargroupQualificationXParLevel3Value> listaPargroupQualificationXParLevel3Value = new List<PargroupQualificationXParLevel3Value>();
             try
@@ -617,7 +617,7 @@ namespace SgqServiceBusiness.Controllers.RH
                             IsRequired 
                             from PargroupQualificationXParLevel3Value
                             where IsActive = 1
-                            and ParLevel3Value_Id in ({ string.Join(",", listaParLevel3_Ids.Select(x => x).ToArray()) })";
+                            and ParLevel3Value_Id in ({ string.Join(",", listaParLevel3Value_Ids.Select(x => x).ToArray()) })";
 
                 using (var factory = new Factory("DefaultConnection"))
                 {
@@ -639,10 +639,13 @@ namespace SgqServiceBusiness.Controllers.RH
             List<PargroupQualificationXParQualification> listaPargroupQualificationXParQualification = new List<PargroupQualificationXParQualification>();
             try
             {
+                if (listaPargroupQualificationXParLevel3Value_Ids.Count == 0)
+                    return listaPargroupQualificationXParQualification;
+
                 var query = $@" 
                             select
                             Id ,
-                            PargroupQualification_Id 
+                            PargroupQualification_Id ,
                             ParQualification_Id ,
                             IsActive 
                             from PargroupQualificationXParQualification
@@ -667,6 +670,8 @@ namespace SgqServiceBusiness.Controllers.RH
         public List<ParQualification> GetListaParQualification(List<int?> listaPargroupQualificationXParQualification_Ids)
         {
             List<ParQualification> listaParQualification = new List<ParQualification>();
+            if (listaPargroupQualificationXParQualification_Ids.Count() == 0)
+                return listaParQualification;
             try
             {
                 var query = $@" 
@@ -696,6 +701,8 @@ namespace SgqServiceBusiness.Controllers.RH
         public List<PargroupQualification> GetListaPargroupQualification(List<int?> listaPargroupQualification_Ids)
         {
             List<PargroupQualification> listaPargroupQualification = new List<PargroupQualification>();
+            if (listaPargroupQualification_Ids.Count() == 0)
+                return listaPargroupQualification;
             try
             {
                 var query = $@" 
