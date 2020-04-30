@@ -185,9 +185,9 @@
             widthColumn1: (w * .1) + "px",
             widthColumn2: (w * .65) + "px",
             widthColumn3: (w * .2) + "px",
-            colorMin: "00e600",
+            colorMin: "ff0000", 
             colorMid: "fef104",
-            colorMax: "ff0000",
+            colorMax: "00e600", 
             isGradient: true,
             colorMain: "dddddd",
             colorEmptyTd: "f9f9f9",
@@ -205,7 +205,7 @@
         config.cellWidth = "66";
         config.heatmapType = "line";
         config.Valores = [
-            { "title": "% NC", "render": function () { return '<span>{nValor1}</span>'; }, "heatmap": true, "groupFunction": "AVG" }
+            { "title": "% NC", "render": function () { return '<span>{NC}</span>'; }, "heatmap": true, "groupFunction": "AVG" }
         ];
 
         HeatMap.Inicializar(config);
@@ -284,7 +284,7 @@
 
                 } else {
 
-                    arrFiltrado = arrFiltrado.map(x => x.nValor1);
+                    arrFiltrado = arrFiltrado.map(x => x.NC);
 
                     let qtdNC = arrFiltrado.reduce((accumulator, currentValue) => accumulator + currentValue)
 
@@ -303,8 +303,8 @@
 
     function convertDateToYearMouth(date) {
 
-        let mes = new Date(date).getMonth().toString() + 1;
-        let ano = new Date(date).getFullYear().toString();
+        let mes = (parseInt(new Date(date).getMonth().toString()) + 1).toString();
+        let ano = parseInt(new Date(date).getFullYear().toString());
 
         if (mes.length == 1)
             mes = "0" + mes;
@@ -340,9 +340,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento }">
-
-                </div>
+                <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento }"></div>
             </div>
         </div>`;
 
