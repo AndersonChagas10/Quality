@@ -61,20 +61,18 @@
 
     <div class="page-content-wrapper">
         <div class="page-content">
+
             <div class="loader" hidden></div>
 
             @*Grafico*@
             <div id="container"></div>
 
             @* Matriz *@
-            <div id="placeholder">
-
-            </div>
+            <div id="placeholder"></div>
 
             @*Alerta de fim de desdobramento*@
-            <div class="alert alert-info" role="alert" id="divAlertFim" hidden>
-                Fim do desdobramento.
-            </div>
+            <div class="alert alert-info" role="alert" id="divAlertFim" hidden></div>
+
         </div>
     </div>
 
@@ -95,6 +93,7 @@
 
         arrObjDados = [];
 
+        hideMessage();
         exibirLoader();
 
         window.scrollTo(0, 0);
@@ -103,10 +102,10 @@
             toggleDivFilterReports();
 
         $.ajax({
-            data: JSON.stringify(objFiltro.Param),
-            url: urlBuscaDados,
+            data: JSON.stringify(objFiltro),
+            url:  urlBuscaDados,
             type: 'POST',
-            contentType: "application/json",
+            dataType: "JSON",
             success: retornoAjax,
             timeout: 600000,
             contentType: "APPLICATION/JSON; CHARSET=UTF-8",
@@ -126,10 +125,13 @@
         let coluna = "cSgEmpresa";
 
         esconderLoader();
-        gerarGrafico(data);
-        gerarMapaCalor(data, 0, linha, coluna);
-        hideMensagemFimDesdobramento();
 
+        if (!data.length) {
+            showMessage("Sem dados.");
+        } else {
+            gerarGrafico(data);
+            gerarMapaCalor(data, 0, linha, coluna);
+        }
     }
 
     //Gráfico
@@ -242,10 +244,10 @@
             let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
             let coluna = $('#select2_' + numeroDesdobramento + ' :selected').val();
 
-            let propertyLinha = $("#listaInidicador > tr:nth-child(" + indicadorNumero + ") > th > a").attr('data-key');
-            let valueLinha = $("#listaInidicador > tr:nth-child(" + indicadorNumero + ") > th > a").attr('data-titulo');
-            let propertyColuna = $("#listaCabecalho > th:nth-child(" + cabecalhoNumero + ") > a").attr('data-key');
-            let valueColuna = $("#listaCabecalho > th:nth-child(" + cabecalhoNumero + ") > a").attr('data-titulo');
+            let propertyLinha = $("#placeholder_" + numeroDesdobramento + " #listaInidicador > tr:nth-child(" + indicadorNumero + ") > th > a").attr('data-key');
+            let valueLinha = $("#placeholder_" + numeroDesdobramento + " #listaInidicador > tr:nth-child(" + indicadorNumero + ") > th > a").attr('data-titulo');
+            let propertyColuna = $("#placeholder_" + numeroDesdobramento + " #listaCabecalho > th:nth-child(" + cabecalhoNumero + ") > a").attr('data-key');
+            let valueColuna = $("#placeholder_" + numeroDesdobramento + " #listaCabecalho > th:nth-child(" + cabecalhoNumero + ") > a").attr('data-titulo');
 
             let newData = arrObjDados[numeroDesdobramento].filter(x => x[propertyLinha] == valueLinha && x[propertyColuna] == valueColuna);
 
@@ -398,10 +400,10 @@
         let matrizAnterior = JSON.stringify(arrObjDados[numeroDesdobramento - 1]);
         let matrizAtual = JSON.stringify(newData);
 
-        hideMensagemFimDesdobramento();
+        hideMessage();
 
-        if (matrizAnterior === matrizAtual) {
-            showMensagemFimDesdobramento();
+        if (matrizAnterior === matrizAtual || newData.length === 0) {
+            showMessage("Fim do desdobramento.")
             return;
         }
 
@@ -409,16 +411,13 @@
 
     }
 
-    function showMensagemFimDesdobramento() {
-
-        $("#divAlertFim").show();
-
+    function showMessage(mensagem) {
+        $("#divAlertFim").html(mensagem);
+        $("#divAlertFim").show()
     }
 
-    function hideMensagemFimDesdobramento() {
-
+    function hideMessage() {
         $("#divAlertFim").hide();
-
     }
 
     function goScroll(elemId) {

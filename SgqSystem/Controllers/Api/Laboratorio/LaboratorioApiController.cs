@@ -18,11 +18,11 @@ namespace SgqSystem.Controllers.Api
         public List<RelatorioLaboratorioReultSet> Get([FromBody] DataCarrierFormularioLaboratorio form)
         {
 
-            string whereDate = $"AND dColetaAmostra BETWEEN '{ form.dColetaAmostra }' AND '{ form.dColetaAmostra }' ";
+            string whereDate = $"AND cast(dColetaAmostra as date) BETWEEN '{ form.startDate }' AND '{ form.endDate }' ";
 
             string sqlQuery = $@"
 
-SELECT DISTINCT TOP 1000
+SELECT DISTINCT TOP 100
 	C.nCdEmpresa
    ,C.cNmEmpresa
    ,C.cSgEmpresa
@@ -80,8 +80,10 @@ SELECT DISTINCT TOP 1000
         WHEN cResultadoAnalise = '2' THEN 0
         WHEN cResultadoAnalise = '3' THEN 1
     END NC
-FROM INTEG.CollectionAnaliseLaboratorial INTEG
-LEFT JOIN Empresa C ON INTEG.nCdEmpresa = C.nCdEmpresa ";
+FROM INTEG.CollectionAnaliseLaboratorial INTEG with (NOLOCK)
+LEFT JOIN Empresa C with (NOLOCK) ON INTEG.nCdEmpresa = C.nCdEmpresa 
+WHERE 1 = 1 
+{ whereDate }";
 
             var retorno = new List<RelatorioLaboratorioReultSet>();
 
