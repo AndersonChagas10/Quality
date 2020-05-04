@@ -1778,7 +1778,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON PL1.Id = PVP.ParLevel1_Id --Fixo
                             INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON PL2.Id = PVP.ParLevel2_Id --Fixo
                             INNER JOIN ParLevel3 PL3 WITH (NOLOCK) ON PL3.Id = PVP.ParLevel3_Id --Fixo
-                            INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = PC.Id
+                            INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = PC.Id  and PCXS.Active = 1
                             INNER JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
                             INNER JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.Id
                             INNER JOIN ParStructureGroup PSG WITH (NOLOCK) ON PSG.Id = PS.ParStructureGroup_Id
@@ -1875,7 +1875,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             	ON PL1.Id = PVP.ParLevel1_Id --Fixo
                             INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON PL2.Id = PVP.ParLevel2_Id --Fixo
                             INNER JOIN ParLevel3 PL3 WITH (NOLOCK) ON PL3.Id = PVP.ParLevel3_Id --Fixo
-                            INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = PC.Id
+                            INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = PC.Id and PCXS.Active = 1
                             INNER JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
                             INNER JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.Id
                             INNER JOIN ParStructureGroup PSG WITH (NOLOCK)
@@ -1973,7 +1973,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON PL1.Id = PVP.ParLevel1_Id --Fixo
                             INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON PL2.Id = PVP.ParLevel2_Id --Fixo
                             INNER JOIN ParLevel3 PL3 WITH (NOLOCK) ON PL3.Id = PVP.ParLevel3_Id --Fixo
-                            INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = PC.Id
+                            INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = PC.Id and PCXS.Active = 1
                             INNER JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
                             LEFT JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.Id
                             INNER JOIN ParStructureGroup PSG WITH (NOLOCK) ON PSG.Id = PS.ParStructureGroup_Id

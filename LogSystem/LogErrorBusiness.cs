@@ -44,7 +44,7 @@ namespace LogSystem
                 error.Method = frame?.GetMethod().Name;
                 error.Controller = frame?.GetMethod().DeclaringType?.Name;
                 var objeto = obj?.GetType() != typeof(string) ? LogErrorBusiness.ToJson(obj).ToString() : "";
-                error.Object = objeto.Substring(0, teste.Length > 900 ? 900 : objeto.Length);
+                error.Object = objeto.Substring(0, objeto.Length > 900 ? 900 : objeto.Length);
                 error.StackTrace = ex.ToClient();
                 error.StackTrace = error.StackTrace.Substring(0, error.StackTrace.Length > 900 ? 900 : error.StackTrace.Length);
 
