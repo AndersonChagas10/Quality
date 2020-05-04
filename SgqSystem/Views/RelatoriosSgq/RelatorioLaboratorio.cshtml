@@ -185,9 +185,9 @@
             widthColumn1: (w * .1) + "px",
             widthColumn2: (w * .65) + "px",
             widthColumn3: (w * .2) + "px",
-            colorMin: "ff0000", 
+            colorMin: "ff0000",
             colorMid: "fef104",
-            colorMax: "00e600", 
+            colorMax: "00e600",
             isGradient: true,
             colorMain: "dddddd",
             colorEmptyTd: "f9f9f9",
@@ -196,7 +196,7 @@
         };
 
         config.tituloDesdobramento = "";
-        config.Cabecalho = "<a class='cabecalho' data-titulo='{" + coluna + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + coluna +"}</a>";
+        config.Cabecalho = "<a class='cabecalho' data-key='" + coluna +"' data-titulo='{" + coluna + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + coluna +"}</a>";
         config.Indicador = "<a class='indicador' data-key='" + linha +"' data-titulo='{" + linha + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + linha +"}</a>";
         config.tituloIndicador = linha;
         config.tituloColuna = coluna;
@@ -213,6 +213,7 @@
         if (numeroDesdobramento > 0)
             goScroll(idMatriz);
 
+        //Clique no cabeçalho da Linha
         $(idMatriz).off("click", "th.esquerda .indicador").on("click", "th.esquerda .indicador", function () {
 
             let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
@@ -226,8 +227,31 @@
             let newData = arrObjDados[numeroDesdobramento].filter(x => x[property] == value);
 
             numeroDesdobramento = numeroDesdobramento + 1;
-
             desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
+
+        });
+
+        //Clique no meio da matriz
+        $(idMatriz).off("click", "#listaValores td").on("click", "#listaValores td", function () {
+
+            let indicadorNumero = parseInt($(this).attr("data-indicador")) + 1;
+            let cabecalhoNumero = parseInt($(this).attr("data-cabecalho")) + 1;
+
+            let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
+
+            let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
+            let coluna = $('#select2_' + numeroDesdobramento + ' :selected').val();
+
+            let propertyLinha = $("#listaInidicador > tr:nth-child(" + indicadorNumero + ") > th > a").attr('data-key');
+            let valueLinha = $("#listaInidicador > tr:nth-child(" + indicadorNumero + ") > th > a").attr('data-titulo');
+            let propertyColuna = $("#listaCabecalho > th:nth-child(" + cabecalhoNumero + ") > a").attr('data-key');
+            let valueColuna = $("#listaCabecalho > th:nth-child(" + cabecalhoNumero + ") > a").attr('data-titulo');
+
+            let newData = arrObjDados[numeroDesdobramento].filter(x => x[propertyLinha] == valueLinha && x[propertyColuna] == valueColuna);
+
+            numeroDesdobramento = numeroDesdobramento + 1;
+            desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
+
         });
     }
 
