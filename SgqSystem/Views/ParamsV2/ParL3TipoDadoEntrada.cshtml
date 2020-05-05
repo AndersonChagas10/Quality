@@ -670,7 +670,7 @@
 
             //Salvar o campo editado ou cria um novo
             $('#' + id).on('click', '[data-edit],[data-add]', function (e) {
-
+                debugger
                 ParL3TipoDado.prepareToInsert();
 
                 var obj = $('#' + id + ' [data-form]').data('sgq');
@@ -781,6 +781,8 @@
                         showInput('IntervalMin');
                         showInput('IntervalMax');
                         showInput('DynamicValue');
+                        showInput('selectL3TipoDadoParMeasurementUnit');
+                        $("#ParL3TipoDado  #selectL3TipoDadoParMeasurementUnit").removeClass('required');
                         showInput('ShowLevel3Limits');
 
                         break;
@@ -868,6 +870,8 @@
             if (typeof (obj['DefaultMessageText']) == 'undefined')
                 obj['DefaultMessageText'] = '';
 
+            if (typeof (obj['ParMeasurementUnit_Id']) == 'undefined')
+                obj['ParMeasurementUnit_Id'] = '';
 
             if (typeof (obj['StringSizeAllowed']) == 'undefined')
                 obj['StringSizeAllowed'] = '';
