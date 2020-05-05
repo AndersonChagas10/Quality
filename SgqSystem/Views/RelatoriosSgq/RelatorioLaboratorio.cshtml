@@ -218,6 +218,26 @@
             goScroll(idMatriz);
 
         //Clique no cabeçalho da Linha
+        $(idMatriz).off("click", ".horizontal th .cabecalho").on("click", ".horizontal th .cabecalho", function () {
+
+            let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
+
+            let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
+            let coluna = $('#select2_' + numeroDesdobramento + ' :selected').val();
+
+            let property = $(this).attr('data-key');
+            let value = $(this).attr('data-titulo');
+
+            let newData = arrObjDados[numeroDesdobramento].filter(x => x[property] == value);
+
+            setTituloArr(property + ": " + value, numeroDesdobramento);
+
+            numeroDesdobramento = numeroDesdobramento + 1;
+            desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
+
+        });
+
+        //Clique no lista da Linha
         $(idMatriz).off("click", "th.esquerda .indicador").on("click", "th.esquerda .indicador", function () {
 
             let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
