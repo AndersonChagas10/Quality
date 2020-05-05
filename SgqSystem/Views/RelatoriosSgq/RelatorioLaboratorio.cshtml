@@ -88,10 +88,12 @@
     let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
 
     let arrObjDados = [];
+    let arrTitulo = [];
 
     function buscarDados() {
 
         arrObjDados = [];
+        arrTitulo = [];
 
         hideMessage();
         exibirLoader();
@@ -173,7 +175,7 @@
     //Matriz de calor
     function gerarMapaCalor(data, numeroDesdobramento, linha, coluna) {
 
-        let tituloDesdobramento = "Mapa de Calor " + linha + " por " + coluna;
+        let tituloDesdobramento = "Mapa de Calor " + linha + " por " + coluna + "</br>" + arrTitulo.join(" | ");
 
         removeDivs(numeroDesdobramento);
         appendDiv(numeroDesdobramento, Object.keys(data[0]), tituloDesdobramento);
@@ -228,6 +230,8 @@
 
             let newData = arrObjDados[numeroDesdobramento].filter(x => x[property] == value);
 
+            setTituloArr(property + ": " + value, numeroDesdobramento);
+
             numeroDesdobramento = numeroDesdobramento + 1;
             desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
 
@@ -250,6 +254,8 @@
             let valueColuna = $("#placeholder_" + numeroDesdobramento + " #listaCabecalho > th:nth-child(" + cabecalhoNumero + ") > a").attr('data-titulo');
 
             let newData = arrObjDados[numeroDesdobramento].filter(x => x[propertyLinha] == valueLinha && x[propertyColuna] == valueColuna);
+
+            setTituloArr(propertyLinha + ": " + valueLinha + " | " + propertyColuna + ": " + valueColuna, numeroDesdobramento);
 
             numeroDesdobramento = numeroDesdobramento + 1;
             desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
@@ -345,7 +351,7 @@
 
         let htmlDiv = `
         <div class="panel panel-primary" id-desdobramento="${numeroDesdobramento}">
-            <div class="panel-heading">${titulo}g</div>
+            <div class="panel-heading">${titulo}</div>
             <div class="panel-body">
                 <div class="row" select-filter>
                     <div class="col-sm-12">
@@ -428,6 +434,17 @@
 
     function enviarFiltro() {
         buscarDados();
+    }
+
+    function setTituloArr(titulo, numeroDesdobramento) {
+
+        //debugger
+
+        //if (numeroDesdobramento != arrTitulo.length)
+            arrTitulo.splice(numeroDesdobramento, arrTitulo.length);
+
+        arrTitulo.push(titulo);
+
     }
 
 </script>
