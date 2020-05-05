@@ -26,9 +26,13 @@ namespace PlanoAcaoCore
 
         public int? UserSgq_Id { get; set; }
 
-        public static List<Pa_Quem> Listar()
+        public static List<Pa_Quem> Listar(string where = null)
         {
-            var query = $@"SELECT * FROM Pa_Quem";
+            var query = $@"SELECT * FROM Pa_Quem ";
+            if (!string.IsNullOrEmpty(where))
+            {
+                query += where;
+            }
 
             return ListarGenerico<Pa_Quem>(query);
         }

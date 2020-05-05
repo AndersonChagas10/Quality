@@ -7,6 +7,7 @@ using PlanoDeAcaoMVC.SgqIntegracao;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace PlanoDeAcaoMVC
@@ -44,18 +45,21 @@ namespace PlanoDeAcaoMVC
 
             if (quandoExecutou == null || (quandoExecutou != null && quandoExecutou?.AddDays(1) > DateTime.Now))
             {
-                InserirUnidades(parCompanies);
-
-                if (GlobalConfig.SESMT)
-                    UpdateName(usersSGQ);
-
-                UpdateSgqId(usersSGQ);
-                InserirNovosUsuarios(usersSGQ);
                 quandoExecutou = DateTime.Now;
+                Task.Run(() =>
+                {
+                    InserirUnidades(parCompanies);
+
+                    if (GlobalConfig.SESMT)
+                        UpdateName(usersSGQ);
+
+                    UpdateSgqId(usersSGQ);
+                    InserirNovosUsuarios(usersSGQ);
+                });
             }
 
             filterContext.Controller.ViewBag.Unidade = PlanoAcaoCore.Pa_Unidade.Listar().OrderBy(r => r.Name);
-            filterContext.Controller.ViewBag.Quem = PlanoAcaoCore.Pa_Quem.Listar().OrderBy(r => r.Name);
+            filterContext.Controller.ViewBag.Quem = PlanoAcaoCore.Pa_Quem.Listar("where usersgq_id is not null").OrderBy(r => r.Name);
 
         }
 
@@ -82,16 +86,21 @@ namespace PlanoDeAcaoMVC
 
             if (usersPA.Count > 0)
             {
-                foreach (var item in usersPA)
+                foreach (var item in userSgq)
                 {
                     try
                     {
+                        Pa_Quem pa_quem = null;
                         if (GlobalConfig.SESMT)
-                            item.UserSgq_Id = userSgq.Where(x => x.FullName == item.Name).FirstOrDefault().Id;
+                            pa_quem = usersPA.Where(x => x.Name == item.FullName).FirstOrDefault();
                         else
-                            item.UserSgq_Id = userSgq.Where(x => x.Name == item.Name).FirstOrDefault().Id;
+                            pa_quem = usersPA.Where(x => x.Name == item.Name).FirstOrDefault();
 
-                        Pa_BaseObject.SalvarGenerico(item);
+                        if (pa_quem != null && pa_quem.UserSgq_Id != item.Id)
+                        {
+                            pa_quem.UserSgq_Id = item.Id;
+                            Pa_BaseObject.SalvarGenerico(item);
+                        }
                     }
                     catch (System.Exception ex)
                     {
@@ -102,24 +111,24 @@ namespace PlanoDeAcaoMVC
         }
 
         //Somente para o Sesmt (troca o name para fullname)
-        private void UpdateName(List<UserDTO> userSgq)
+        private void UpdateName(List<UserDTO> usersSgq)
         {
             var usersPA = Pa_Quem.Listar();
 
             var usersToUpdate = new List<Pa_Quem>();
 
-            foreach (var userPA in usersPA)
+            foreach (var userSgq in usersSgq)
             {
-                var userToChange = userSgq.Where(x => x.Name == userPA.Name).FirstOrDefault();
+                var userToChange = usersPA.Where(x => x.Name == userSgq.Name).FirstOrDefault();
 
-                if (userToChange != null)
+                if (userToChange != null && userToChange.Name != userSgq.FullName && userToChange.UserSgq_Id != null)
                 {
-                    userPA.Name = userToChange.FullName;
-                    userPA.UserSgq_Id = userPA.UserSgq_Id == null ? 0 : userPA.UserSgq_Id;
-                    userPA.AlterDate = DateTime.Now;
+                    userToChange.Name = userSgq.FullName;
+                    userToChange.UserSgq_Id = userToChange.UserSgq_Id == null || userToChange.UserSgq_Id == 0 ? userSgq.Id : userToChange.UserSgq_Id;
+                    userToChange.AlterDate = DateTime.Now;
+                    Pa_BaseObject.SalvarGenerico(userToChange);
                 }
 
-                Pa_BaseObject.SalvarGenerico(userPA);
             }
         }
 
