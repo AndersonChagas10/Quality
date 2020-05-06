@@ -22,68 +22,97 @@ namespace SgqSystem.Controllers.Api
 
             string sqlQuery = $@"
 
-SELECT DISTINCT TOP 100
-	C.nCdEmpresa
-   ,C.cNmEmpresa
-   ,C.cSgEmpresa
-   ,dColetaAmostra
-   ,YEAR(dColetaAmostra) ""dColetaAmostra - ANO""
-   ,MONTH(dColetaAmostra) ""dColetaAmostra - MES""
-   ,DAY(dColetaAmostra) ""dColetaAmostra - DIA""
-   ,dProducao
-   ,nCdProduto
-   ,nCdAnalise
-   ,cNmAnalise
-   ,cGrupoColeta
-   ,nCdSetor
-   ,cNmSetor
-   ,nCdTpColeta
-   ,cNmTpColeta
-   ,cSgUnidadeMedidaLaboratorio
-   ,dMovimento
-   ,iLote
-   ,nCdPontoColeta
-   ,cNmPontoColeta
-   ,cNmDetalhePontoColeta
-   ,nCdRequisicaoAnalise
-   ,nCdRequisicaoFilial
-   ,nCdLaboratorio
-   ,cNmLaboratorio
-   ,iAmostra
-   ,cCdBarraAmostra
-   ,nCdMatriz
-   ,cNmMatriz
-   ,nCdGrupoAnalise
-   ,cNmGrupoAnalise
-   ,nCdMetodologia
-   ,cCdMetodologia
-   ,cNmMetodologia
-   ,dAnaliseCritica
-   ,dAnaliseInicial
-   ,dAnaliseFinal
-   ,dPrevisaoFinalAnalise
-   ,nCdValorPadrao
-   ,nResultadoAnalise
-   ,cSinal1
-   ,nValor1
-   ,cOperadorPadrao
-   ,cSinal2
-   ,nValor2
-   ,cRastreabilidadeLaudo
-   ,Key_Integ
-   ,CASE
-        WHEN cResultadoAnalise = '2' THEN 'C'
-        WHEN cResultadoAnalise = '3' THEN 'NC'
-    END Conformidade
-   ,1 AS AV
-   , CASE
-        WHEN cResultadoAnalise = '2' THEN 0
-        WHEN cResultadoAnalise = '3' THEN 1
-    END NC
-FROM INTEG.CollectionAnaliseLaboratorial INTEG with (NOLOCK)
-LEFT JOIN Empresa C with (NOLOCK) ON INTEG.nCdEmpresa = C.nCdEmpresa 
-WHERE 1 = 1 
-{ whereDate }";
+SELECT DISTINCT 
+	UPPER(S3.Name) AS cNmHolding,
+	UPPER(S2.Name) AS cNmRegional,
+	UPPER(S1.Name) AS cNmSubRegional,
+	E.nCdEmpresa,
+	E.cNmEmpresa,
+	E.cSgEmpresa,
+	CASE
+		WHEN cNmTpColeta = 'Água' 
+			THEN 'ÁGUA'
+		WHEN cNmTpColeta IN ('Swab Pré-operacional','Swab Operacional') 
+			THEN 'AMBIENTE'
+		WHEN cNmTpColeta IN ('In natura','Subprodutos','Alimentos Preparados') 
+			THEN 'PRODUTO'
+	END AS cNmVeiculos,
+	CUBO.dColetaAmostra,
+	CUBO.dProducao,
+	CUBO.nCdProduto,
+	P.cNmProduto,
+	CUBO.nCdAnalise,
+	CUBO.cNmAnalise,
+	CUBO.cGrupoColeta,
+	CUBO.nCdSetor,
+	CUBO.cNmSetor,
+	CUBO.nCdTpColeta,
+	CUBO.cNmTpColeta,
+	CUBO.nResultadoAnalise,
+	CUBO.cSgUnidadeMedidaLaboratorio,
+	CUBO.dMovimento,
+	CUBO.iLote,
+	CUBO.nCdPontoColeta,
+	CUBO.cNmPontoColeta,
+	CUBO.cNmDetalhePontoColeta,
+	CUBO.nCdRequisicaoAnalise,
+	CUBO.nCdRequisicaoFilial,
+	CUBO.nCdLaboratorio,
+	CUBO.cNmLaboratorio,
+	CUBO.iAmostra,
+	CUBO.cCdBarraAmostra,
+	CUBO.nCdMatriz,
+	CUBO.cNmMatriz,
+	CUBO.nCdGrupoAnalise,
+	CUBO.cNmGrupoAnalise,
+	CUBO.nCdMetodologia,
+	CUBO.cCdMetodologia,
+	CUBO.cNmMetodologia,
+	CUBO.dAnaliseCritica,
+	CUBO.dAnaliseInicial,
+	CUBO.dAnaliseFinal,
+	CUBO.dPrevisaoFinalAnalise,
+	CUBO.nCdValorPadrao,
+	CUBO.cSinal1,
+	CUBO.nValor1,
+	CUBO.cOperadorPadrao,
+	CUBO.cSinal2,
+	CUBO.nValor2,
+	CUBO.cRastreabilidadeLaudo,
+	CUBO.Key_Integ,
+	CUBO.cResultadoAnalise,
+	CASE
+		WHEN cResultadoAnalise = '3' THEN 'NC'
+		ELSE 'C'
+	END Conformidade,
+	1 AS AV,
+	CASE
+		WHEN cResultadoAnalise = '3' THEN 1
+		ELSE 0
+	END NC
+	FROM INTEG.CollectionAnaliseLaboratorial CUBO WITH (NOLOCK)
+	LEFT JOIN Empresa E WITH (NOLOCK)
+		ON CUBO.nCdEmpresa = E.nCdEmpresa
+	LEFT JOIN ParCompany C WITH (NOLOCK)
+		ON E.nCdEmpresa = C.CompanyNumber
+	LEFT JOIN ParCompanyXStructure CS WITH (NOLOCK)
+		ON C.ID = CS.ParCompany_Id
+	LEFT JOIN ParStructure S1 WITH (NOLOCK)
+		ON CS.ParStructure_Id = S1.Id
+	LEFT JOIN ParStructure S2 WITH (NOLOCK)
+		ON S1.ParStructureParent_Id = S2.Id
+	LEFT JOIN ParStructure S3 WITH (NOLOCK)
+		ON S2.ParStructureParent_Id = S3.Id
+	LEFT JOIN Produto P WITH (NOLOCK)
+		ON CUBO.nCdProduto = P.nCdProduto
+	WHERE 1=1
+	AND cNmTpColeta NOT IN ('Não Destrutivo','Destrutiva')
+	AND C.IsActive = 1
+	AND CS.Active = 1
+	AND S1.Active = 1
+	AND S2.Active = 1
+	AND S3.Active = 1
+	{ whereDate }";
 
             var retorno = new List<RelatorioLaboratorioReultSet>();
 
@@ -99,16 +128,23 @@ WHERE 1 = 1
 
     public class RelatorioLaboratorioReultSet
     {
-        public decimal nCdEmpresa { get; set; }
+        public string cNmHolding { get; set; }
+        public string cNmRegional { get; set; }
+        public string cNmSubRegional { get; set; }
+        public int nCdEmpresa { get; set; }
+        public string cNmEmpresa { get; set; }
+        public string cSgEmpresa { get; set; }
+        public string cNmVeiculos { get; set; }
         public DateTime dColetaAmostra { get; set; }
         public DateTime dProducao { get; set; }
-        public decimal nCdProduto { get; set; }
-        public decimal nCdAnalise { get; set; }
+        public int nCdProduto { get; set; }
+        public string cNmProduto { get; set; }
+        public int nCdAnalise { get; set; }
         public string cNmAnalise { get; set; }
-        public string cGrupoColeta { get; set; }
-        public decimal nCdSetor { get; set; }
+        public int cGrupoColeta { get; set; }
+        public int nCdSetor { get; set; }
         public string cNmSetor { get; set; }
-        public decimal nCdTpColeta { get; set; }
+        public int nCdTpColeta { get; set; }
         public string cNmTpColeta { get; set; }
         public decimal nResultadoAnalise { get; set; }
         public string cSgUnidadeMedidaLaboratorio { get; set; }
@@ -142,12 +178,9 @@ WHERE 1 = 1
         public decimal nValor2 { get; set; }
         public string cRastreabilidadeLaudo { get; set; }
         public string Key_Integ { get; set; }
-        public DateTime AddDate { get; set; }
         public decimal cResultadoAnalise { get; set; }
         public string Conformidade { get; set; }
-        public int AV { get; set; }
+        public string AV { get; set; }
         public int NC { get; set; }
-        public string cNmEmpresa { get; set; }
-        public string cSgEmpresa { get; set; }
     }
 }

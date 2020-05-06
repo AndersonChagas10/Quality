@@ -95,6 +95,9 @@
         arrObjDados = [];
         arrTitulo = [];
 
+        $('#container').html("");
+        $('#placeholder').html("");
+
         hideMessage();
         exibirLoader();
 
@@ -123,8 +126,8 @@
 
     function retornoAjax(data) {
 
-        let linha = "cNmTpColeta";
-        let coluna = "cSgEmpresa";
+        let linha = "cNmVeiculos";
+        let coluna = "cNmRegional";
 
         esconderLoader();
 
@@ -145,6 +148,9 @@
         Highcharts.chart('container', {
             chart: {
                 type: 'line'
+            },
+            credits: {
+                enabled: false
             },
             title: {
                 text: '% DE NC ANÁLISES MICROBIOLÓGICAS POR TIPO DE VEÍCULO'
@@ -429,7 +435,8 @@
         hideMessage();
 
         if (matrizAnterior === matrizAtual || newData.length === 0) {
-            showMessage("Fim do desdobramento.")
+            showMessage("Fim do desdobramento.");
+            removeDivs(numeroDesdobramento);
             return;
         }
 
@@ -458,10 +465,7 @@
 
     function setTituloArr(titulo, numeroDesdobramento) {
 
-        //debugger
-
-        //if (numeroDesdobramento != arrTitulo.length)
-            arrTitulo.splice(numeroDesdobramento, arrTitulo.length);
+        arrTitulo.splice(numeroDesdobramento, arrTitulo.length);
 
         arrTitulo.push(titulo);
 
