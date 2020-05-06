@@ -59,8 +59,20 @@ namespace SgqSystem.Controllers.Api.Relatorios
             {
                 var flavor = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectFlavor).ToList();
                 if (flavor.Count > 0)
-                    obj.Flavor = flavor[0].Name;
-
+                {
+                    foreach (var item in flavor)
+                    {
+                        if (obj.Flavor == null)
+                        {
+                            obj.Flavor += item.Name;
+                        }
+                        else
+                        {
+                            obj.Flavor += "/ " + item.Name;
+                        }
+                    }
+                }
+                    
                 var product = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectProduct).ToList();
                 if (product.Count > 0)
                     obj.Product = product[0].Name;
@@ -94,15 +106,24 @@ namespace SgqSystem.Controllers.Api.Relatorios
                 var meats = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectMeats).ToList();
                 if (meats.Count > 0)
                 {
+                    decimal flats = 0;
+                    decimal insides = 0;
+                    decimal eyes = 0;
+                    decimal totalAmostras = 0;
+
                     foreach(var item in meats)
                     {
+                        totalAmostras += Convert.ToDecimal(item.Avaliacao);
                         if(item.Meat == "Flats")
-                            obj.Flats = Convert.ToDecimal(item.PorcMeat);
-                        if(item.Meat == "Wedges")
-                            obj.Insides = Convert.ToDecimal(item.PorcMeat);
+                            flats += Convert.ToDecimal(item.Avaliacao);
+                        if(item.Meat == "Wedges" || item.Meat == "Insides")
+                            insides += Convert.ToDecimal(item.Avaliacao);
                         if(item.Meat == "Eyes")
-                            obj.Eyes = Convert.ToDecimal(item.PorcMeat);
+                            eyes += Convert.ToDecimal(item.Avaliacao);
                     }
+                    obj.Flats = (flats / totalAmostras) * 100;
+                    obj.Insides = (insides / totalAmostras) * 100;
+                    obj.Eyes = (eyes / totalAmostras) * 100;
                 }
 
                 var tumbler_batch_size = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectTumblerBatchSize).ToList();
@@ -134,10 +155,14 @@ namespace SgqSystem.Controllers.Api.Relatorios
                 {
                     var avg_CDCM1 = (decimal)0;
                     var avg_CDCM2 = (decimal)0;
+                    var divisor_CDCM1 = 0;
+                    var divisor_CDCM2 = 0;
                     var sample_CDCM1 = (decimal)0;
                     var sample_CDCM2 = (decimal)0;
                     var avg_BL1 = (decimal)0;
                     var avg_BL2 = (decimal)0;
+                    var divisor_BL1 = 0;
+                    var divisor_BL2 = 0;
                     var sample_BL1 = (decimal)0;
                     var sample_BL2 = (decimal)0;
                     foreach(var item in thickness)
@@ -148,6 +173,10 @@ namespace SgqSystem.Controllers.Api.Relatorios
                             avg_CDCM2 += Convert.ToDecimal(item.Espessura_T2);
                             sample_CDCM1 += Convert.ToDecimal(item.Av_T1);
                             sample_CDCM2 += Convert.ToDecimal(item.Av_T2);
+                            if (Convert.ToDecimal(item.Espessura_T1) > 0)
+                                divisor_CDCM1++;
+                            if (Convert.ToDecimal(item.Espessura_T2) > 0)
+                                divisor_CDCM2++;
                         }
                         if (item.Name == "Borboleta / Flats" || item.Name == "Lagarto / Eyes")
                         {
@@ -155,14 +184,22 @@ namespace SgqSystem.Controllers.Api.Relatorios
                             avg_BL2 += Convert.ToDecimal(item.Espessura_T2);
                             sample_BL1 += Convert.ToDecimal(item.Av_T1);
                             sample_BL2 += Convert.ToDecimal(item.Av_T2);
+                            if (Convert.ToDecimal(item.Espessura_T1) > 0)
+                                divisor_BL1++;
+                            if (Convert.ToDecimal(item.Espessura_T2) > 0)
+                                divisor_BL2++;
                         }
                     }
-                    obj.Thickness_avg1_CDCM = avg_CDCM1 / 2;
-                    obj.Thickness_avg2_CDCM = avg_CDCM2 / 2;
+                    if (avg_CDCM1 > 0)
+                        obj.Thickness_avg1_CDCM = avg_CDCM1 / divisor_CDCM1;
+                    if (avg_CDCM2 > 0)
+                        obj.Thickness_avg2_CDCM = avg_CDCM2 / divisor_CDCM2;
                     obj.Thickness_sample_size1_CDCM = sample_CDCM1;
                     obj.Thickness_sample_size2_CDCM = sample_CDCM2;
-                    obj.Thickness_avg1_BL = avg_BL1 / 2;
-                    obj.Thickness_avg2_BL = avg_BL2 / 2;
+                    if (avg_BL1 > 0)
+                        obj.Thickness_avg1_BL = avg_BL1 / divisor_BL1;
+                    if (avg_BL2 > 0)
+                        obj.Thickness_avg2_BL = avg_BL2 / divisor_BL2;
                     obj.Thickness_sample_size1_BL = sample_BL1;
                     obj.Thickness_sample_size2_BL = sample_BL2;
                 }
@@ -195,8 +232,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
                 {
                     obj.Wait_time_avg1 = Convert.ToDecimal(wait_time[0].TempoMedio1);
                     obj.Wait_time_avg2 = Convert.ToDecimal(wait_time[0].TempoMedio2);
-                    obj.Max_time1 = wait_time[0].TempoMaximo1;
-                    obj.Max_time2 = wait_time[0].TempoMaximo2;
+                    obj.Max_time1 = Convert.ToDecimal(wait_time[0].TempoMaximo1);
+                    obj.Max_time2 = Convert.ToDecimal(wait_time[0].TempoMaximo2);
                 }
 
                 var pull_moisture_avg = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectPullMoistureAVG).ToList();
@@ -247,13 +284,16 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
                 var final_product_thickness_avg = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectFinalProductThicknessAVG).ToList();
                 if (final_product_thickness_avg.Count > 0)
+                {
                     obj.Final_product_thickness_avg = Convert.ToDecimal(final_product_thickness_avg[0].Espessura);
+                    obj.Thickness_sample_size = Convert.ToDecimal(final_product_thickness_avg[0].Amostras);
+                }
 
                 var rework = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectRework).ToList();
                 //obj.Rework1 = Convert.ToDecimal(rework1);
                 //obj.Rework2 = Convert.ToDecimal(rework2);
 
-                var cooking_flavor = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectFlavor).ToList();
+                var cooking_flavor = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectCookingFlavor).ToList();
                 if (cooking_flavor.Count > 0)
                     obj.Cooking_flavor = Convert.ToDecimal(cooking_flavor[0].Flavor);
 
@@ -273,7 +313,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
             // Itens que não tem query \/
 
-            obj.Raw_side = null;
+            obj.Raw_side = form.startDate.ToString("dd/MM/yyyy");
             obj.Meat_age_target = 14; //dado correto
             obj.Meat_temperature_max1 = 7; //dado correto
             obj.Meat_temperature_max2 = (decimal)44.6; //dado correto
@@ -282,7 +322,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
             obj.Thickness_avg_max_CDCM = (decimal)8.2; //dado correto
             obj.Thickness_avg_min_CDCM = (decimal)5.8; //dado correto
-            obj.Out_spec_target_CDCM = null;
+            obj.Out_spec_target_CDCM = 7; //dado correto
             obj.Porc_out_spec1_CDCM = null;
             obj.Porc_out_spec2_CDCM = null;
             obj.Porc_LSL1_CDCM = null;
@@ -312,8 +352,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
             obj.Time_by_sample1 = null;
             obj.Time_by_sample2 = null;
 
-            obj.Foss_used_for_pull = "Foss 1";
-            obj.Foss_used_for_packing = "Foss 2";
+            obj.Foss_used_for_pull = null;
+            obj.Foss_used_for_packing = null;
             obj.Cooking_time_target = "4:15"; //dado correto
             obj.Cooking_time_avg = null;
             obj.Standard_pull_moisture_max = (decimal)32.0; //dado correto
@@ -327,15 +367,14 @@ namespace SgqSystem.Controllers.Api.Relatorios
             obj.Yield1 = null;
             obj.Yield2 = null;
             obj.Wood_chips_target = (decimal)7.0; //dado correto
-            obj.Final_product_thickness_max = (decimal)5.79; //dado correto
-            obj.Final_product_thickness_min = (decimal)4.21; //dado correto
-            obj.Final_product_thickness_avg = null;
+            obj.Final_product_thickness_max = (decimal)5.78; //dado correto
+            obj.Final_product_thickness_min = (decimal)4.20; //dado correto
             obj.Out_of_spec_target = 39; //dado correto
             obj.Porc_lsl = 20; //dado correto
             obj.Porc_usl = 10; //dado correto
             obj.Filters_on_smokehouse_exhaustion = "All Smokehouses"; //dado correto
             obj.Reprocessing_target = 1; //dado correto
-            obj.Observations = null;
+            //obj.Observations = null;
 
             return obj;
         }
