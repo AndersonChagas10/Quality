@@ -83,7 +83,7 @@
 
     @Scripts.Render("~/Scripts/heatmap.js")
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
     let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
 
@@ -163,15 +163,25 @@
             },
             yAxis: {
                 title: {
-                    text: ''
+                    text: '% NC'
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value + '%'
+                    }
                 }
+            },
+            tooltip: {
+                crosshairs: true,
+                shared: true
             },
             plotOptions: {
                 line: {
                     dataLabels: {
-                        enabled: true
+                        enabled: true,
+                        format: '{y} %'
                     },
-                    enableMouseTracking: false
+                    enableMouseTracking: true
                 }
             },
             series: series
@@ -195,9 +205,9 @@
             widthColumn1: (w * .1) + "px",
             widthColumn2: (w * .65) + "px",
             widthColumn3: (w * .2) + "px",
-            colorMin: "ff0000",
+            colorMin: "00e600",
             colorMid: "fef104",
-            colorMax: "00e600",
+            colorMax: "ff0000",
             isGradient: true,
             colorMain: "dddddd",
             colorEmptyTd: "f9f9f9",
@@ -206,13 +216,13 @@
         };
 
         config.tituloDesdobramento = "";
-        config.Cabecalho = "<a class='cabecalho' data-key='" + coluna +"' data-titulo='{" + coluna + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + coluna +"}</a>";
-        config.Indicador = "<a class='indicador' data-key='" + linha +"' data-titulo='{" + linha + "}' data-tituloDesdobramento='" + config.tituloDesdobramento + "'>{" + linha +"}</a>";
+        config.Cabecalho = `<a class="cabecalho" data-key="${coluna}" data-titulo="{${coluna}}" data-tituloDesdobramento="${config.tituloDesdobramento}">{${ coluna }}</a>`;
+        config.Indicador = `<a class="indicador" data-key="${linha}" data-titulo="{${linha}}" data-tituloDesdobramento="${config.tituloDesdobramento}">{${ linha }}</a>`;
         config.tituloIndicador = linha;
         config.tituloColuna = coluna;
-        config.json = data;
+        config.json = aplicarDistinctNaLista(data, [linha, coluna], ["NC", "AV"]);
         config.idPlaceholder = idMatriz;
-        config.cellWidth = "66";
+        config.cellWidth = "150";
         config.heatmapType = "line";
         config.Valores = [
             { "title": "% NC", "render": function () { return '<span>{NC}</span>'; }, "heatmap": true, "groupFunction": "AVG" }
@@ -225,7 +235,7 @@
 
         //Clique no cabeçalho da Linha
         $(idMatriz).off("click", ".horizontal th .cabecalho").on("click", ".horizontal th .cabecalho", function () {
-
+            debugger
             let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
 
             let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
@@ -303,7 +313,11 @@
         amostragem = parseFloat(amostragem);
         quantidade = parseFloat(quantidade);
 
-        return (quantidade * 100) / amostragem;
+        let porcentagemNC = (quantidade * 100) / amostragem;
+
+        porcentagemNC = parseFloat((porcentagemNC).toFixed(2));
+
+        return porcentagemNC
 
     }
 
@@ -342,11 +356,12 @@
 
                 } else {
 
-                    arrFiltrado = arrFiltrado.map(x => x.NC);
+                    let arrAv = arrFiltrado.map(x => x.AV);
+                    let amostragem = arrAv.reduce((accumulator, currentValue) => accumulator + currentValue);
+                    let arrNc = arrFiltrado.map(x => x.NC);
+                    let qtdNC = arrNc.reduce((accumulator, currentValue) => accumulator + currentValue)
 
-                    let qtdNC = arrFiltrado.reduce((accumulator, currentValue) => accumulator + currentValue)
-
-                    obj.data.push(getPorcentagem(data.length, qtdNC));
+                    obj.data.push(getPorcentagem(amostragem, qtdNC));
                 }
 
             });
@@ -428,7 +443,7 @@
     }
 
     function desdobraMatriz(newData, numeroDesdobramento, linha, coluna) {
-
+        
         let matrizAnterior = JSON.stringify(arrObjDados[numeroDesdobramento - 1]);
         let matrizAtual = JSON.stringify(newData);
 
@@ -458,7 +473,6 @@
         document.querySelector(elemId).scrollIntoView({ behavior: 'smooth' });
     }
 
-
     function enviarFiltro() {
         buscarDados();
     }
@@ -471,6 +485,80 @@
 
     }
 
-</script>
+    function aplicarDistinctNaLista(lista, listaDePropriedades, listaDeValores) {
+
+        //debugger
+
+        //var listaDistinct = []
+
+        //for (var i = 0; i < lista.length; i++) {
+
+        //    var obj = lista[i];
+        //    var match = false;
+
+        //    for (var j = 0; j < listaDistinct.length; j++) {
+
+        //        match = true;
+
+        //        var objDistinct = listaDistinct[j];
+
+        //        for (var z = 0; z < listaDePropriedades.length; z++) {
+        //            if (obj[listaDePropriedades[z]] != objDistinct[listaDePropriedades[z]]) {
+        //                match = false;
+        //            }
+        //        }
+
+        //        if (match == true) {
+        //            for (var z = 0; z < listaDeValores.length; z++) {
+        //                objDistinct[listaDeValores[z]] = parseFloat(obj[listaDeValores[z]]) + parseFloat(objDistinct[listaDeValores[z]]);
+        //            }
+        //            break;
+        //        }
+        //    }
+
+        //    if (match == false) {
+        //        listaDistinct.push(obj);
+        //    }
+        //}
+
+        //for (var i = 0; i < listaDistinct.length; i++) {
+        //    var obj = listaDistinct[i];
+        //    obj["NC"] = parseFloat(((obj["NC"] / obj["AV"]) * 100).toFixed(2));
+        //}
+
+        let listaDistinct = [];
+
+        let arrColuna = [... new Set(lista.map(x => x[listaDePropriedades[1]]))];
+        let arrLinha = [... new Set(lista.map(x => x[listaDePropriedades[0]]))];
+
+        arrColuna.sort();
+        arrLinha.sort();
+
+        arrColuna.forEach((coluna) => {
+
+            arrLinha.forEach((linha) => {
+
+                let arrFiltrados = lista.filter(x => x[listaDePropriedades[1]] == coluna && x[listaDePropriedades[0]] == linha);
+
+                let NC = null;
+                let AV = null;
+                let percNC = null
+
+                if (arrFiltrados.length > 0) {
+                    NC = arrFiltrados.map(x => x.NC).reduce((accumulator, currentValue) => accumulator += currentValue);
+                    AV = arrFiltrados.map(x => x.AV).reduce((accumulator, currentValue) => accumulator += currentValue);
+                    percNC = parseFloat(((NC / AV) * 100).toFixed(2));
+                }
+
+                listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, NC: percNC });
+
+            });
+
+        });
+
+        return listaDistinct;
+    }
+
+    </script>
 
 }
