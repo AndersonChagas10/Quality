@@ -3316,4 +3316,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-651</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[RH SESMT] MELHORIA - Tipo de dado de entrada Resultado.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
