@@ -562,7 +562,7 @@ namespace DTO.ResultSet
             return query;
         }
 
-        public string SelectThickness(DataCarrierFormularioNew form)
+        public string SelectThicknessCDCM(DataCarrierFormularioNew form)
         {
             var dtInit = form.startDate.ToString("yyyyMMdd");
             var dtF = form.endDate.ToString("yyyyMMdd");
@@ -593,6 +593,42 @@ namespace DTO.ResultSet
               AND CONVERT(DATE, C.CollectionDate) = '{dtInit}'
             AND ParLevel1_Id = 180
               AND ParLevel3_Id in (1848)
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+              GROUP BY PMV_P.NAME
+                        ";
+
+            return query;
+        }
+
+        public string SelectThicknessBL(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+            SELECT
+              PMV_P.NAME Name,
+               MIN(CAST(R.Value AS DECIMAL(38, 8))) AS Espessura_Minima, --
+               MAX(CAST(R.Value AS DECIMAL(38, 8))) AS Espessura_Maxima,  --
+               AVG(IIF(Shift = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Espessura_T1,  --
+               AVG(IIF(Shift = 2, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Espessura_T2,  --
+               SUM(IIF(Shift = 1, R.Evaluation, 0)) AS Av_T1,
+               SUM(IIF(Shift = 2, R.Evaluation, 0)) AS Av_T2
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate) = '{dtInit}'
+            AND ParLevel1_Id = 180
+              AND ParLevel3_Id in (1849, 1850)
               AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
               GROUP BY PMV_P.NAME
                         ";

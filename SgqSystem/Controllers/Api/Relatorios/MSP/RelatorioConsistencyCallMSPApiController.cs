@@ -37,7 +37,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
             var querySelectProductAppearance = new RelatorioConsistencyCallMSPResultSet().SelectProductAppearance(form);
             var querySelectSeasoningDistribuition = new RelatorioConsistencyCallMSPResultSet().SelectSeasoningDistribuition(form);
             var querySelectMeatTemperature = new RelatorioConsistencyCallMSPResultSet().SelectMeatTemperature(form);
-            var querySelectThickness = new RelatorioConsistencyCallMSPResultSet().SelectThickness(form);
+            var querySelectThicknessCDCM = new RelatorioConsistencyCallMSPResultSet().SelectThicknessCDCM(form);
+            var querySelectThicknessBL = new RelatorioConsistencyCallMSPResultSet().SelectThicknessBL(form);
             var querySelectMeetCanadianRequirements = new RelatorioConsistencyCallMSPResultSet().SelectMeetCanadianRequirements(form);
             var querySelectWaitTime = new RelatorioConsistencyCallMSPResultSet().SelectWaitTime(form);
             var querySelectPullMoistureAVG = new RelatorioConsistencyCallMSPResultSet().SelectPullMoistureAVG(form);
@@ -75,7 +76,19 @@ namespace SgqSystem.Controllers.Api.Relatorios
                     
                 var product = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectProduct).ToList();
                 if (product.Count > 0)
-                    obj.Product = product[0].Name;
+                {
+                    foreach (var item in product)
+                    {
+                        if (obj.Product == null)
+                        {
+                            obj.Product += item.Name;
+                        }
+                        else
+                        {
+                            obj.Product += "/ " + item.Name;
+                        }
+                    }
+                }
 
                 var batch1 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectBatch1).ToList();
                 if (batch1.Count > 0)
@@ -150,8 +163,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
                     }
                 }
 
-                var thickness = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectThickness).ToList();
-                if (thickness.Count > 0)
+                var thicknessCDCM = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectThicknessCDCM).ToList();
+                if (thicknessCDCM.Count > 0)
                 {
                     var avg_CDCM1 = (decimal)0;
                     var avg_CDCM2 = (decimal)0;
@@ -159,36 +172,16 @@ namespace SgqSystem.Controllers.Api.Relatorios
                     var divisor_CDCM2 = 0;
                     var sample_CDCM1 = (decimal)0;
                     var sample_CDCM2 = (decimal)0;
-                    var avg_BL1 = (decimal)0;
-                    var avg_BL2 = (decimal)0;
-                    var divisor_BL1 = 0;
-                    var divisor_BL2 = 0;
-                    var sample_BL1 = (decimal)0;
-                    var sample_BL2 = (decimal)0;
-                    foreach(var item in thickness)
+                    foreach(var item in thicknessCDCM)
                     {
-                        if (item.Name == "Coxão Duro / Flats" || item.Name == "Coxão Mole / Insides")
-                        {
-                            avg_CDCM1 += Convert.ToDecimal(item.Espessura_T1);
-                            avg_CDCM2 += Convert.ToDecimal(item.Espessura_T2);
-                            sample_CDCM1 += Convert.ToDecimal(item.Av_T1);
-                            sample_CDCM2 += Convert.ToDecimal(item.Av_T2);
-                            if (Convert.ToDecimal(item.Espessura_T1) > 0)
-                                divisor_CDCM1++;
-                            if (Convert.ToDecimal(item.Espessura_T2) > 0)
-                                divisor_CDCM2++;
-                        }
-                        if (item.Name == "Borboleta / Flats" || item.Name == "Lagarto / Eyes")
-                        {
-                            avg_BL1 += Convert.ToDecimal(item.Espessura_T1);
-                            avg_BL2 += Convert.ToDecimal(item.Espessura_T2);
-                            sample_BL1 += Convert.ToDecimal(item.Av_T1);
-                            sample_BL2 += Convert.ToDecimal(item.Av_T2);
-                            if (Convert.ToDecimal(item.Espessura_T1) > 0)
-                                divisor_BL1++;
-                            if (Convert.ToDecimal(item.Espessura_T2) > 0)
-                                divisor_BL2++;
-                        }
+                        avg_CDCM1 += Convert.ToDecimal(item.Espessura_T1);
+                        avg_CDCM2 += Convert.ToDecimal(item.Espessura_T2);
+                        sample_CDCM1 += Convert.ToDecimal(item.Av_T1);
+                        sample_CDCM2 += Convert.ToDecimal(item.Av_T2);
+                        if (Convert.ToDecimal(item.Espessura_T1) > 0)
+                            divisor_CDCM1++;
+                        if (Convert.ToDecimal(item.Espessura_T2) > 0)
+                            divisor_CDCM2++;
                     }
                     if (avg_CDCM1 > 0)
                         obj.Thickness_avg1_CDCM = avg_CDCM1 / divisor_CDCM1;
@@ -196,6 +189,28 @@ namespace SgqSystem.Controllers.Api.Relatorios
                         obj.Thickness_avg2_CDCM = avg_CDCM2 / divisor_CDCM2;
                     obj.Thickness_sample_size1_CDCM = sample_CDCM1;
                     obj.Thickness_sample_size2_CDCM = sample_CDCM2;
+                }
+
+                var thicknessBL = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectThicknessBL).ToList();
+                if (thicknessBL.Count > 0)
+                {
+                    var avg_BL1 = (decimal)0;
+                    var avg_BL2 = (decimal)0;
+                    var divisor_BL1 = 0;
+                    var divisor_BL2 = 0;
+                    var sample_BL1 = (decimal)0;
+                    var sample_BL2 = (decimal)0;
+                    foreach (var item in thicknessBL)
+                    {
+                        avg_BL1 += Convert.ToDecimal(item.Espessura_T1);
+                        avg_BL2 += Convert.ToDecimal(item.Espessura_T2);
+                        sample_BL1 += Convert.ToDecimal(item.Av_T1);
+                        sample_BL2 += Convert.ToDecimal(item.Av_T2);
+                        if (Convert.ToDecimal(item.Espessura_T1) > 0)
+                            divisor_BL1++;
+                        if (Convert.ToDecimal(item.Espessura_T2) > 0)
+                            divisor_BL2++;
+                    }
                     if (avg_BL1 > 0)
                         obj.Thickness_avg1_BL = avg_BL1 / divisor_BL1;
                     if (avg_BL2 > 0)
