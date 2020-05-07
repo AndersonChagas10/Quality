@@ -17,14 +17,16 @@
         <tbody>
             <tr>
                 <td style="width: 24%;">
-                    @Html.LabelFor(model => model.Diretoria_Id, ResourcesPA.Resource.directorship ,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.Diretoria_Id, ResourcesPA.Resource.directorship, htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td style="min-width: 60%;">
                     @Html.DropDownList("Diretoria_Id", new SelectList(ViewBag.Diretoria, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm required estrategico col-xs-12" })
                     @Html.ValidationMessageFor(model => model.Diretoria_Id, "", new { @class = "text-danger" })
                 </td>
-                <td style="width: 16%;"></td>
+                <td style="width: 16%;">
+                    <button type="button" title="Gerenciar Diretoria" class="novoItem btn btn-default novoTatico" onclick="Novo(this)">@ResourcesPA.Resource.manage</button>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -61,7 +63,9 @@
                     @Html.DropDownList("Missao_Id", new SelectList(ViewBag.Missao, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm  required estrategico" })
                     @Html.ValidationMessageFor(model => model.Missao_Id, "", new { @class = "text-danger" })
                 </td>
-                <td></td>
+                <td>
+                    <button type="button" title="Gerenciar Missão" class="novoItem btn btn-default novoTatico" onclick="Novo(this)">@ResourcesPA.Resource.manage</button>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -72,7 +76,9 @@
                     @Html.DropDownList("Visao_Id", new SelectList(ViewBag.Visao, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm  required estrategico" })
                     @Html.ValidationMessageFor(model => model.Visao_Id, "", new { @class = "text-danger" })
                 </td>
-                <td></td>
+                <td>
+                    <button type="button" title="Gerenciar Visão" class="novoItem btn btn-default novoTatico" onclick="Novo(this)">@ResourcesPA.Resource.manage</button>
+                </td>
             </tr>
             <tr>
                 <td>
@@ -142,7 +148,9 @@
                     @Html.DropDownList("TipoProjeto_Id", new SelectList(ViewBag.TipoProjeto, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm required tatico" })
                     @Html.ValidationMessageFor(model => model.TipoProjeto_Id, "", new { @class = "text-danger" })
                 </td>
-                <td></td>
+                <td>
+                    <button type="button" title="Gerenciar Tipo de Projeto" class="btn btn-default" onclick="Novo(this)">@ResourcesPA.Resource.manage</button>
+                </td>
             </tr>
             <tr>
                 <td>

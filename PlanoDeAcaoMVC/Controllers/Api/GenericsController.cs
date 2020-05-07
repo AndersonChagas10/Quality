@@ -144,6 +144,18 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 case "TemaProjeto":
                     table = "Pa_TemaProjeto";
                     break;
+                case "Diretoria":
+                    table = "Pa_Diretoria";
+                    break;
+                case "Missao":
+                    table = "Pa_Missao";
+                    break;
+                case "Visao":
+                    table = "Pa_Visao";
+                    break;
+                case "TipoProjeto":
+                    table = "Pa_TipoProjeto";
+                    break;
                 default:
                     break;
             }
