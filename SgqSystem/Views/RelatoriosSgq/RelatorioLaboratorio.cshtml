@@ -62,6 +62,9 @@
             min-width: auto !important;
         }
 
+        #container {
+            max-width: 100%;
+        }
     </style>
 
     <div class="page-content-wrapper">
@@ -88,12 +91,14 @@
 
     @Scripts.Render("~/Scripts/heatmap.js")
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
 
     let arrObjDados = [];
     let arrTitulo = [];
+
+    let chart = null;
 
     function buscarDados() {
 
@@ -150,7 +155,7 @@
         const categories = getCategories(data, "dColetaAmostra");
         const series = getSeriesByCategories(data, categories);
 
-        Highcharts.chart('container', {
+        chart = Highcharts.chart('container', {
             chart: {
                 type: 'line'
             },
@@ -206,10 +211,10 @@
         let idMatriz = "#placeholder_" + numeroDesdobramento;
 
         let config = {
-            maxWidth: w * .98,
-            widthColumn1: (w * .1) + "px",
-            widthColumn2: (w * .65) + "px",
-            widthColumn3: (w * .2) + "px",
+            maxWidth: "98%",
+            widthColumn1: "18%",
+            widthColumn2: "60%",
+            widthColumn3: "20%",
             colorMin: "00e600",
             colorMid: "fef104",
             colorMax: "ff0000",
@@ -565,6 +570,14 @@
 
         return listaDistinct;
     }
+
+    $('#btnToggleDivFilterReports').on('click', function () {
+
+        if (chart) {
+            chart.reflow();
+            chart.redraw();
+        }
+    });
 
     </script>
 
