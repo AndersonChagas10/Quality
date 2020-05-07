@@ -73,8 +73,8 @@ namespace DTO.ResultSet
         public decimal? Marination_time { get; set; }
         public decimal? Wait_time_avg1 { get; set; }
         public decimal? Wait_time_avg2 { get; set; }
-        public string Max_time1 { get; set; }
-        public string Max_time2 { get; set; }
+        public decimal? Max_time1 { get; set; }
+        public decimal? Max_time2 { get; set; }
         public string Time_by_sample1 { get; set; }
         public string Time_by_sample2 { get; set; }
         public string Foss_used_for_pull { get; set; }
@@ -379,60 +379,22 @@ namespace DTO.ResultSet
 
             var query = $@"
 
-            -- % AGUA Por Produtos Agrupados
-             -- No Documento diz que Coxão Mole é Diferente de Lagarto, ao contrário do Parametrizado, que diz que são iguais(Eyes)
-
-            SELECT
-	            Meat,
-	            ((Turno_1_PCcarne+Turno_1_PCcarne)/2) as PorcMeat
-	            FROM (
-            SELECT
-              AGRUP.Meat
-             ,ISNULL(NULLIF(AGRUP.Amostras_S1,0) /
-              NULLIF(TOTAIS.Amostras_S1_,0),1) * 100 AS Turno_1_PCcarne
-             ,ISNULL(NULLIF(AGRUP.Amostras_S2,0) /
-              NULLIF(TOTAIS.Amostras_S2_,0),1) * 100 AS Turno_2_PCcarne
-             FROM (
-             SELECT
-              SUBSTRING(PMV_P.NAME,CHARINDEX('/',PMV_P.NAME)+2,LEN(PMV_P.NAME))  AS Meat
-              ,SUM(IIF(1=1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 1,CAST(R.Value AS DECIMAL(38,8)),0)) AS Amostras_S1 -- Agua_Utilizada
-              ,SUM(IIF(1=1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 2,CAST(R.Value AS DECIMAL(38,8)),0)) AS Amostras_S2 -- Agua_Utilizada
-              FROM CollectionLevel2 C
-              INNER JOIN CollectionLevel2XParHeaderField CHF
-               ON C.id = CHF.CollectionLevel2_Id
-              LEFT JOIN ParMultipleValues PMV_P
-               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
-               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
-              INNER JOIN Result_Level3 R
-               ON C.ID = R.CollectionLevel2_Id
-              INNER JOIN Shift S
-               ON C.Shift = S.ID
-              WHERE 1=1
-              AND CONVERT(DATE,C.CollectionDate) =  '{dtInit}'
-              AND ParLevel1_Id = 181
-              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
-              GROUP BY
-               SUBSTRING(PMV_P.NAME,CHARINDEX('/',PMV_P.NAME)+2,LEN(PMV_P.NAME))
-             )AGRUP,(
-              SELECT
-               SUM(IIF(1=1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 1,CAST(R.Value AS DECIMAL(38,8)),0)) AS Amostras_S1_ -- Agua_Utilizada
-              ,SUM(IIF(1=1 AND ParLevel2_Id = 664 AND ParLevel3_id = 1868 AND Shift = 2,CAST(R.Value AS DECIMAL(38,8)),0)) AS Amostras_S2_ -- Agua_Utilizada
-              FROM CollectionLevel2 C
-              INNER JOIN CollectionLevel2XParHeaderField CHF
-               ON C.id = CHF.CollectionLevel2_Id
-              LEFT JOIN ParMultipleValues PMV_P
-               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
-               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
-              INNER JOIN Result_Level3 R
-               ON C.ID = R.CollectionLevel2_Id
-              INNER JOIN Shift S
-               ON C.Shift = S.ID
-              WHERE 1=1
-              AND CONVERT(DATE,C.CollectionDate) =  '{dtInit}'
-              AND ParLevel1_Id = 181
-              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
-             ) AS TOTAIS)
-             AS PORCENTAGEM_TOTAL
+                        SELECT
+                        SUBSTRING(PMV_P.NAME,CHARINDEX('/',PMV_P.NAME)+2,LEN(PMV_P.NAME))  AS Meat
+                        ,SUM(IIF(1=1 AND ParLevel2_Id = 653 AND ParLevel3_id = 2009 ,CAST(r.Evaluation AS DECIMAL(38,8)),0)) AS Avaliacao
+                        FROM CollectionLevel2 c
+                        INNER JOIN Result_Level3 r
+                        ON r.CollectionLevel2_Id = c.Id
+                        INNER JOIN CollectionLevel2XParHeaderField CHF
+                        ON C.id = CHF.CollectionLevel2_Id
+                        LEFT JOIN ParMultipleValues PMV_P
+                        ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+                        AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+                        WHERE 1=1
+                        AND ParLevel1_Id = 180
+                        AND CONVERT(DATE,C.CollectionDate) =  '{dtInit}'
+                        AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+                        GROUP BY PMV_P.Name
                         ";
 
             return query;
@@ -600,7 +562,7 @@ namespace DTO.ResultSet
             return query;
         }
 
-        public string SelectThickness(DataCarrierFormularioNew form)
+        public string SelectThicknessCDCM(DataCarrierFormularioNew form)
         {
             var dtInit = form.startDate.ToString("yyyyMMdd");
             var dtF = form.endDate.ToString("yyyyMMdd");
@@ -638,6 +600,42 @@ namespace DTO.ResultSet
             return query;
         }
 
+        public string SelectThicknessBL(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+            SELECT
+              PMV_P.NAME Name,
+               MIN(CAST(R.Value AS DECIMAL(38, 8))) AS Espessura_Minima, --
+               MAX(CAST(R.Value AS DECIMAL(38, 8))) AS Espessura_Maxima,  --
+               AVG(IIF(Shift = 1, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Espessura_T1,  --
+               AVG(IIF(Shift = 2, CAST(R.Value AS DECIMAL(38, 8)), 0)) AS Espessura_T2,  --
+               SUM(IIF(Shift = 1, R.Evaluation, 0)) AS Av_T1,
+               SUM(IIF(Shift = 2, R.Evaluation, 0)) AS Av_T2
+              FROM CollectionLevel2 C
+              INNER JOIN CollectionLevel2XParHeaderField CHF
+               ON C.id = CHF.CollectionLevel2_Id
+              LEFT JOIN ParMultipleValues PMV_P
+               ON CAST(CHF.Value AS VARCHAR(30)) = CAST(PMV_P.ID AS VARCHAR(30))
+               AND CHF.ParHeaderField_Id = PMV_P.ParHeaderField_Id
+              INNER JOIN Result_Level3 R
+               ON C.ID = R.CollectionLevel2_Id
+              INNER JOIN Shift S
+               ON C.Shift = S.ID
+              WHERE 1 = 1
+              AND CONVERT(DATE, C.CollectionDate) = '{dtInit}'
+            AND ParLevel1_Id = 180
+              AND ParLevel3_Id in (1849, 1850)
+              AND CHF.ParHeaderField_Name = 'MATÉRIA-PRIMA/ RAW MATERIAL'
+              GROUP BY PMV_P.NAME
+                        ";
+
+            return query;
+        }
+
         public string SelectMeetCanadianRequirements(DataCarrierFormularioNew form)
         {
             var dtInit = form.startDate.ToString("yyyyMMdd");
@@ -648,8 +646,8 @@ namespace DTO.ResultSet
                  -- Meet Canadian Requirements: 71°C 60 min (YES/NO/NA)
 
                   SELECT 'C' AS Name,
-                   SUM(IIF(Shift = 1,R.WeiEvaluation,0)) AS Av_T1,
-                   SUM(IIF(Shift = 2,R.WeiEvaluation,0)) AS Av_T2
+                   SUM(IIF(Shift = 1,R.WeiEvaluation,0)) - sum(IIF(Shift = 1,R.WeiDefects,0)) AS Av_T1,
+                   SUM(IIF(Shift = 2,R.WeiEvaluation,0)) - SUM(IIF(Shift = 2,R.WeiDefects,0))AS Av_T2
                   FROM CollectionLevel2 C
                   INNER JOIN CollectionLevel2XParHeaderField CHF
                    ON C.id = CHF.CollectionLevel2_Id
@@ -1017,7 +1015,7 @@ namespace DTO.ResultSet
 
                     SELECT
                       AVG(CAST(R.Value AS DECIMAL(38, 8))) AS Espessura,
-                      COUNT (DISTINCT c.Id) AS AMOSTRAS
+                      COUNT (DISTINCT c.Id) AS Amostras
                      FROM CollectionLevel2 C
                      INNER JOIN Result_Level3 R
                       ON C.Id = R.CollectionLevel2_Id

@@ -2661,4 +2661,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-649</CardNumber>
+    <Version>1.4.0</Version>
+    <Description> [MSP] Relatório Consistency Call - Ajustes de nomenclatura, retirada de itens, alterações nas queries e correções de lógica.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
