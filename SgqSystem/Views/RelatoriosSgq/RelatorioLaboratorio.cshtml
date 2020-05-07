@@ -355,7 +355,7 @@
 
             categories.forEach((o) => { //datas
 
-                let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmVeiculos"] == serieName);
+                let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmTpColeta"] == serieName);
 
                 if (arrFiltrado.length == 0) {
 
