@@ -247,7 +247,7 @@
 
         //Clique no cabeçalho da Linha
         $(idMatriz).off("click", ".horizontal th .cabecalho").on("click", ".horizontal th .cabecalho", function () {
-            
+
             let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
 
             let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
@@ -255,6 +255,8 @@
 
             let property = $(this).attr('data-key');
             let value = $(this).attr('data-titulo');
+
+            value = value == "-" ? null : value;
 
             let newData = arrObjDados[numeroDesdobramento].filter(x => x[property] == value);
 
@@ -275,6 +277,8 @@
 
             let property = $(this).attr('data-key');
             let value = $(this).attr('data-titulo');
+
+            value = value == "-" ? null : value;
 
             let newData = arrObjDados[numeroDesdobramento].filter(x => x[property] == value);
 
@@ -350,7 +354,7 @@
 
         const series = [];
 
-        seriesName = [... new Set(data.map(x => x["cNmTpColeta"]))];
+        seriesName = [... new Set(data.map(x => x["cNmVeiculos"]))];
 
         seriesName.forEach((serieName) => { //seriesName
 
@@ -360,7 +364,7 @@
 
             categories.forEach((o) => { //datas
 
-                let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmTpColeta"] == serieName);
+                let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmVeiculos"] == serieName);
 
                 if (arrFiltrado.length == 0) {
 
@@ -455,7 +459,7 @@
     }
 
     function desdobraMatriz(newData, numeroDesdobramento, linha, coluna) {
-        
+
         let matrizAnterior = JSON.stringify(arrObjDados[numeroDesdobramento - 1]);
         let matrizAtual = JSON.stringify(newData);
 
@@ -499,45 +503,6 @@
 
     function aplicarDistinctNaLista(lista, listaDePropriedades, listaDeValores) {
 
-        //debugger
-
-        //var listaDistinct = []
-
-        //for (var i = 0; i < lista.length; i++) {
-
-        //    var obj = lista[i];
-        //    var match = false;
-
-        //    for (var j = 0; j < listaDistinct.length; j++) {
-
-        //        match = true;
-
-        //        var objDistinct = listaDistinct[j];
-
-        //        for (var z = 0; z < listaDePropriedades.length; z++) {
-        //            if (obj[listaDePropriedades[z]] != objDistinct[listaDePropriedades[z]]) {
-        //                match = false;
-        //            }
-        //        }
-
-        //        if (match == true) {
-        //            for (var z = 0; z < listaDeValores.length; z++) {
-        //                objDistinct[listaDeValores[z]] = parseFloat(obj[listaDeValores[z]]) + parseFloat(objDistinct[listaDeValores[z]]);
-        //            }
-        //            break;
-        //        }
-        //    }
-
-        //    if (match == false) {
-        //        listaDistinct.push(obj);
-        //    }
-        //}
-
-        //for (var i = 0; i < listaDistinct.length; i++) {
-        //    var obj = listaDistinct[i];
-        //    obj["NC"] = parseFloat(((obj["NC"] / obj["AV"]) * 100).toFixed(2));
-        //}
-
         let listaDistinct = [];
 
         let arrColuna = [... new Set(lista.map(x => x[listaDePropriedades[1]]))];
@@ -579,6 +544,6 @@
         }
     });
 
-    </script>
+</script>
 
 }

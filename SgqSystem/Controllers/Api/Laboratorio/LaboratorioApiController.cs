@@ -22,7 +22,9 @@ namespace SgqSystem.Controllers.Api
 
             string sqlQuery = $@"
 
-SELECT DISTINCT 
+SET LANGUAGE 'Portuguese';
+
+SELECT 
 	UPPER(S3.Name) AS cNmHolding,
 	UPPER(S2.Name) AS cNmRegional,
 	UPPER(S1.Name) AS cNmSubRegional,
@@ -38,6 +40,12 @@ SELECT DISTINCT
 			THEN 'PRODUTO'
 	END AS cNmVeiculos,
 	CUBO.dColetaAmostra,
+	YEAR(dColetaAmostra) AS dColetaAmostra_ANO,
+	MONTH(dColetaAmostra) AS dColetaAmostra_MES,
+	DATENAME(MONTH, dColetaAmostra) AS dColetaAmostra_MES_NOME,
+	LEFT(DATENAME(MONTH, dColetaAmostra), 3) AS dColetaAmostra_MES_SIGLA,
+	DAY(dColetaAmostra) AS dColetaAmostra_DIA,
+	DATENAME(WEEKDAY, dColetaAmostra) AS dColetaAmostra_DIA_SEMANA,
 	CUBO.dProducao,
 	CUBO.nCdProduto,
 	P.cNmProduto,
@@ -81,32 +89,21 @@ SELECT DISTINCT
 	CUBO.cRastreabilidadeLaudo,
 	CUBO.Key_Integ,
 	CUBO.cResultadoAnalise,
-	CASE
-		WHEN cResultadoAnalise = '3' THEN 'NC'
-		ELSE 'C'
+	CASE WHEN cResultadoAnalise = '3' THEN 'NC' ELSE 'C'
 	END Conformidade,
 	1 AS AV,
-	CASE
-		WHEN cResultadoAnalise = '3' THEN 1
-		ELSE 0
+	CASE WHEN cResultadoAnalise = '3' THEN 1 ELSE 0
 	END NC
-	FROM INTEG.CollectionAnaliseLaboratorial CUBO WITH (NOLOCK)
-	LEFT JOIN Empresa E WITH (NOLOCK)
-		ON CUBO.nCdEmpresa = E.nCdEmpresa
-	LEFT JOIN ParCompany C WITH (NOLOCK)
-		ON E.nCdEmpresa = C.CompanyNumber
-	LEFT JOIN ParCompanyXStructure CS WITH (NOLOCK)
-		ON C.ID = CS.ParCompany_Id
-	LEFT JOIN ParStructure S1 WITH (NOLOCK)
-		ON CS.ParStructure_Id = S1.Id
-	LEFT JOIN ParStructure S2 WITH (NOLOCK)
-		ON S1.ParStructureParent_Id = S2.Id
-	LEFT JOIN ParStructure S3 WITH (NOLOCK)
-		ON S2.ParStructureParent_Id = S3.Id
-	LEFT JOIN Produto P WITH (NOLOCK)
-		ON CUBO.nCdProduto = P.nCdProduto
-	WHERE 1=1
-	AND cNmTpColeta NOT IN ('Não Destrutivo','Destrutiva')
+	FROM INTEG.CollectionAnaliseLaboratorial CUBO WITH(NOLOCK)
+	LEFT JOIN Empresa E WITH(NOLOCK) ON CUBO.nCdEmpresa = E.nCdEmpresa
+	LEFT JOIN ParCompany C WITH(NOLOCK) ON E.nCdEmpresa = C.CompanyNumber
+	LEFT JOIN ParCompanyXStructure CS WITH(NOLOCK) ON C.ID = CS.ParCompany_Id
+	LEFT JOIN ParStructure S1 WITH(NOLOCK) ON CS.ParStructure_Id = S1.Id
+	LEFT JOIN ParStructure S2 WITH(NOLOCK) ON S1.ParStructureParent_Id = S2.Id
+	LEFT JOIN ParStructure S3 WITH(NOLOCK) ON S2.ParStructureParent_Id = S3.Id
+	LEFT JOIN Produto P WITH(NOLOCK) ON CUBO.nCdProduto = P.nCdProduto
+	WHERE 1 = 1
+	AND cNmTpColeta NOT IN('Não Destrutivo', 'Destrutiva', 'Exposição de placa')
 	AND C.IsActive = 1
 	AND CS.Active = 1
 	AND S1.Active = 1
@@ -136,6 +133,12 @@ SELECT DISTINCT
         public string cSgEmpresa { get; set; }
         public string cNmVeiculos { get; set; }
         public DateTime dColetaAmostra { get; set; }
+        public string dColetaAmostra_ANO { get; set; }
+        public string dColetaAmostra_MES { get; set; }
+        public string dColetaAmostra_MES_NOME { get; set; }
+        public string dColetaAmostra_MES_SIGLA { get; set; }
+        public string dColetaAmostra_DIA { get; set; }
+        public string dColetaAmostra_DIA_SEMANA { get; set; }
         public DateTime dProducao { get; set; }
         public int nCdProduto { get; set; }
         public string cNmProduto { get; set; }

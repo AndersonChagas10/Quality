@@ -626,7 +626,13 @@ function PreencheCalorNasCelulasValores() {
                 if (HeatMap.Valores[z]["heatmap"] == true) {
                     var indicadorY = j;
                     var identificadorValores = HeatMap.idValores + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"]';
-                    $(identificadorValores + " :last-child").each(function (i, o) {
+
+                    let divsValores = $(identificadorValores + " :last-child");
+
+                    if (divsValores.length === 1)
+                        return;
+
+                    $(divsValores).each(function (i, o) {
                         var valor = ValorNumerico($(o).text());
                         if ($(o).text() != HeatMap.valorVazio) {
                             var ratio = (valor - HeatMap.minMaxPorIndicador[indicadorY].min) / ((HeatMap.minMaxPorIndicador[indicadorY].max - HeatMap.minMaxPorIndicador[indicadorY].min) / 100);
@@ -651,6 +657,9 @@ function PreencheCalorMedia() {
                 var indicadorY = j;
                 var valorCabecalho = RetornaTituloValor(z);
                 var identificador = HeatMap.idMedia + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
+
+                if (HeatMap.Indicadores.length === 1)
+                    return;
 
                 $(identificador).each(function (i, o) {
                     var valor = ValorNumerico($(o).text());
@@ -677,6 +686,9 @@ function PreencheCalorRodape() {
                 var valorCabecalho = RetornaTituloValor(z);
                 var identificador = HeatMap.idRodape + ' td[' + HeatMap.dataCabecalho + '="' + cabecalhoX + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
 
+                if (HeatMap.Cabecalhos.length === 1)
+                    return;
+
                 $(identificador).each(function (i, o) {
                     var valor = ValorNumerico($(o).text());
                     if ($(o).text() != HeatMap.valorVazio) {
@@ -686,7 +698,7 @@ function PreencheCalorRodape() {
                         } else if (ratio != 0) {
                             ratio /= 100;
                         }
-                        $(o).attr("style", PreencheFundo(GetColor(ratio)));
+                            $(o).attr("style", PreencheFundo(GetColor(ratio)));
                     }
                 });
             }
