@@ -57,6 +57,11 @@
             text-align: center;
             font-size: 20px;
         }
+
+        .matriz {
+            min-width: auto !important;
+        }
+
     </style>
 
     <div class="page-content-wrapper">
@@ -220,22 +225,24 @@
         config.Indicador = `<a class="indicador" data-key="${linha}" data-titulo="{${linha}}" data-tituloDesdobramento="${config.tituloDesdobramento}">{${ linha }}</a>`;
         config.tituloIndicador = linha;
         config.tituloColuna = coluna;
-        config.json = aplicarDistinctNaLista(data, [linha, coluna], ["NC", "AV"]);
+        config.json = aplicarDistinctNaLista(data, [linha, coluna]);
         config.idPlaceholder = idMatriz;
         config.cellWidth = "150";
         config.heatmapType = "line";
         config.Valores = [
-            { "title": "% NC", "render": function () { return '<span>{NC}</span>'; }, "heatmap": true, "groupFunction": "AVG" }
+            { "title": "% NC", "render": function () { return '<span>{PercNC}</span>'; }, "heatmap": true /*, "groupFunction": "AVG"*/ }
         ];
 
         HeatMap.Inicializar(config);
+
+        HeatMap.GambiarraDoRenan();
 
         if (numeroDesdobramento > 0)
             goScroll(idMatriz);
 
         //Clique no cabeçalho da Linha
         $(idMatriz).off("click", ".horizontal th .cabecalho").on("click", ".horizontal th .cabecalho", function () {
-            debugger
+            
             let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
 
             let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
@@ -348,7 +355,7 @@
 
             categories.forEach((o) => { //datas
 
-                let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmTpColeta"] == serieName);
+                let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmVeiculos"] == serieName);
 
                 if (arrFiltrado.length == 0) {
 
@@ -540,17 +547,17 @@
 
                 let arrFiltrados = lista.filter(x => x[listaDePropriedades[1]] == coluna && x[listaDePropriedades[0]] == linha);
 
-                let NC = null;
-                let AV = null;
+                let qtdeNC = null;
+                let amostragem = null;
                 let percNC = null
 
                 if (arrFiltrados.length > 0) {
-                    NC = arrFiltrados.map(x => x.NC).reduce((accumulator, currentValue) => accumulator += currentValue);
-                    AV = arrFiltrados.map(x => x.AV).reduce((accumulator, currentValue) => accumulator += currentValue);
-                    percNC = parseFloat(((NC / AV) * 100).toFixed(2));
+                    qtdeNC = arrFiltrados.map(x => x.NC).reduce((accumulator, currentValue) => accumulator += currentValue);
+                    amostragem = arrFiltrados.map(x => x.AV).reduce((accumulator, currentValue) => accumulator += currentValue);
+                    percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
                 }
 
-                listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, NC: percNC });
+                listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
 
             });
 

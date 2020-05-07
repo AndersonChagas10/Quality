@@ -133,6 +133,59 @@ var HeatMap = {
     percentageMax: 0.95,
     colorMax: "",
 
+    GambiarraDoRenan: function () {
+
+        //#DesculpaLeo
+        //Recalcula totais para matriz com porcentagem de NC
+
+        for (var j = 0; j < HeatMap.Indicadores.length; j++) {
+            for (var z = 0; z < HeatMap.Valores.length; z++) {
+
+                let indicadorY = j;
+                let valorCabecalho = RetornaTituloValor(z);
+                let identificador = HeatMap.idMedia + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
+
+                let amostragem = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.Amostragem).reduce((acumulador, valoratual) => acumulador += valoratual);
+                let qtdeNC = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.QtdeNC).reduce((acumulador, valoratual) => acumulador += valoratual);
+
+                let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+
+                $(identificador).html(porcentagemNCTotal.toFixed(2));
+
+            }
+        }
+
+        for (var i = 0; i < HeatMap.Cabecalhos.length; i++) {
+            for (var z = 0; z < HeatMap.Valores.length; z++) {
+
+                let cabecalhoX = i;
+                let valorCabecalho = RetornaTituloValor(z);
+                let identificador = HeatMap.idRodape + ' td[' + HeatMap.dataCabecalho + '="' + cabecalhoX + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
+
+                let amostragem = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.Amostragem).reduce((acumulador, valoratual) => acumulador += valoratual);
+                let qtdeNC = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.QtdeNC).reduce((acumulador, valoratual) => acumulador += valoratual);
+
+                let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+
+                $(identificador).html(porcentagemNCTotal.toFixed(2));
+            }
+        }
+
+        for (var z = 0; z < HeatMap.Valores.length; z++) {
+
+            let valorCabecalho = RetornaTituloValor(z);
+
+            let identificador = HeatMap.idTotalMedia + ' td[' + HeatMap.dataValor + '="' + valorCabecalho + '"]'
+
+            let amostragem = this.jsonObject.map(x => x.Amostragem).reduce((acumulador, valoratual) => acumulador += valoratual);
+            let qtdeNC = this.jsonObject.map(x => x.QtdeNC).reduce((acumulador, valoratual) => acumulador += valoratual);
+
+            let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+
+            $(identificador).html(porcentagemNCTotal.toFixed(2));
+        }
+    }
+
 }
 
 function PosicaoNaLista(lista, valor) {
