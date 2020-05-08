@@ -225,7 +225,6 @@ function getInputLevel3(level3, level2, level1, striped) {
         else
             conforme = level3.ParLevel3Value.IsDefaultAnswerInt;
 
-
         retorno += '<div class="col-xs-12" data-linha-coleta ';
         retorno += ' data-collapse-target="' + level1.Id + '-' + level2.Id + '"';
         retorno += ' data-conforme="' + conforme + '"';
@@ -556,20 +555,37 @@ function getResultado(level3) {
         btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
     }
 
+    var unidadeMedida = '';
+    var htmlInputLevel3Resultado = "";
+
+    if (level3.ParLevel3Value.ParMeasurementUnit_Id != null) {
+        unidadeMedida = $.map(parametrization.listaParMeasurementUnit, function (val, i) {
+
+            if (val.Id == level3.ParLevel3Value.ParMeasurementUnit_Id) {
+                return val.Name;
+            }
+        });
+
+        htmlInputLevel3Resultado = '<input type="text" class="col-xs-8 input input-sm" data-tarefa data-valor data-equacao="' + level3.ParLevel3Value.DynamicValue + '" style=" text-align: center;" readonly/>' +
+            '<input type="text" class="col-xs-2 input input-sm" value="' + unidadeMedida + '"  style=" text-align: center;" disabled />';
+    } else {
+        htmlInputLevel3Resultado = '<input type="text" class="col-xs-10 input input-sm" data-tarefa data-valor data-equacao="' + level3.ParLevel3Value.DynamicValue + '" style=" text-align: center;" readonly/>'
+    }
+
     var html = '';
 
     var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' ' + level3LimitLabel +' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' ' + level3LimitLabel + ' (Clique aqui)</small></div></a>';
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' '+ level3LimitLabel +'</small></div>';
+        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' ' + level3LimitLabel + '</small></div>';
 
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '   <div class="col-xs-12 no-gutters">' +
-        '       <div class="col-xs-10" style="padding: 0;">' +
-        '	        <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor data-equacao="' + level3.ParLevel3Value.DynamicValue + '" style=" text-align: center;" readonly/>' +
+        '       <div class="col-xs-12" style="padding: 0;">' +
+                    htmlInputLevel3Resultado +
         '       </div>' +
         '   </div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +

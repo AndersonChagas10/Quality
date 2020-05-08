@@ -26,7 +26,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>true</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -363,6 +364,7 @@
     <Compile Include="Controllers\Api\Company\CompanyApiController.cs" />
     <Compile Include="Controllers\Api\GlobalConfigApiController.cs" />
     <Compile Include="Controllers\Api\LanguageController.cs" />
+    <Compile Include="Controllers\Api\Relatorios\FormulariosApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\MSP\RelatorioConsistencyCallMSPApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\MSP\RelatorioMSPApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RelatorioEdicaoApiController.cs" />
@@ -1172,6 +1174,7 @@
     <Content Include="Imagens\C.png" />
     <Content Include="Imagens\D.png" />
     <Content Include="Imagens\MatrizVGA.PNG" />
+    <Content Include="Imagens\novoLogoFriboi.PNG" />
     <Content Include="Imagens\P.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
     <Content Include="images\sort_asc.png" />
@@ -2364,6 +2367,7 @@
     <Content Include="Views\RelatoriosSgq\VisaoGeralDaAreaPrototipe.cshtml" />
     <Content Include="Views\Relatorios\GQ\Laboratorio\_FilterReportsLaboratorio.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioLaboratorio.cshtml" />
+    <Content Include="Views\RelatoriosSgq\RelatorioFormulario.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2458,7 +2462,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:57506/</IISUrl>
+          <IISUrl>http://localhost/SgqSystem</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

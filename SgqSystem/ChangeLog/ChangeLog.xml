@@ -3315,5 +3315,53 @@
       GO
     </Script>
   </Card>
+  
+  <Card>
+    <CardNumber>SGQ-646</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] Relatório Análise Laboratóriais - Ajustes na Matriz</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-652</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[PA] Criação de cruds para Diretoria, Missão, Visão e Tipo de Projeto.</Description>
+    <Script>
+      IF COL_LENGTH('Pa_Diretoria','IsActive') IS NULL
+      BEGIN
+      alter table Pa_Diretoria add IsActive int not null default 1
+      END
+      GO
+      IF COL_LENGTH('Pa_Missao','IsActive') IS NULL
+      BEGIN
+      alter table Pa_Missao add IsActive int not null default 1
+      END
+      GO
+      IF COL_LENGTH('Pa_Visao','IsActive') IS NULL
+      BEGIN
+      alter table Pa_Visao add IsActive int not null default 1
+      END
+      GO
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-651</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[RH SESMT] MELHORIA - Tipo de dado de entrada Resultado.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-647</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] FORMULÁRIOS - Juntar cabeçalho com resultado e assinaturas e trazer no SGQ</Description>
+    <Script>
+
+    </Script>
+  </Card>
 
 </Cards>
