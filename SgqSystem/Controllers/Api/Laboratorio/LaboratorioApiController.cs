@@ -52,6 +52,11 @@ SELECT
 	CUBO.nCdAnalise,
 	CUBO.cNmAnalise,
 	CUBO.cGrupoColeta,
+	CASE
+		WHEN cGrupoColeta = 2 THEN 'Requisição de carcaça'
+		WHEN cGrupoColeta = 3 THEN 'Requisição de produto'
+		WHEN cGrupoColeta = 4 THEN 'Requisição ambiente'
+	END AS cNmGrupoColeta,
 	CUBO.nCdSetor,
 	CUBO.cNmSetor,
 	CUBO.nCdTpColeta,
@@ -145,7 +150,8 @@ SELECT
         public int nCdAnalise { get; set; }
         public string cNmAnalise { get; set; }
         public int cGrupoColeta { get; set; }
-        public int nCdSetor { get; set; }
+		public string cNmGrupoColeta { get; set; }
+		public int nCdSetor { get; set; }
         public string cNmSetor { get; set; }
         public int nCdTpColeta { get; set; }
         public string cNmTpColeta { get; set; }
