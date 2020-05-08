@@ -1,6 +1,4 @@
 ﻿
-@model SgqService.ViewModels.FormularioParaRelatorioViewModel
-@using DTO
 @{
 
     Layout = "~\\Views\\RelatoriosSgq\\_FilterReports.cshtml";
@@ -13,6 +11,12 @@
 
 @section Content {
     <style>
+
+        footer {
+            font-size: 12px;
+            color: black;
+        }
+
         .panel-info {
             border-color: #999;
         }
@@ -39,10 +43,10 @@
             background: white;
         }
 
-            #CustomPopover .btn {
-                margin-left: 1px;
-                margin-right: 1px;
-            }
+        #CustomPopover .btn {
+            margin-left: 1px;
+            margin-right: 1px;
+        }
 
         .geral-note {
             padding: 2px;
@@ -59,13 +63,81 @@
             text-align: center;
             font-size: 20px;
         }
-    </style>
 
+        img {
+            border-radius: 4px;
+            padding: 7px;
+            width: 150px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #cabecalho td {
+            border: 3px solid #ddd;
+            padding: 2px;
+            height: 15px !important;
+        }
+
+    </style>
 
     <div class="page-content-wrapper">
         <div class="page-content">
-            <div id="pivot-table" style="max-width:21cm;">
-               
+
+            <div class="loader" hidden></div>
+            <div class="alert alert-info" role="alert" id="mensagemSemDados" hidden> Sem dados. </div>
+
+            <div class="container-fluid">
+                <div id="cabecalhoDiv" class="row" hidden>
+                    <table id="cabecalho" class="table table-bordered">
+                        <tr>
+                            <td rowspan="3" class="col-xs-2">
+                                <img height="90" class="img-responsive" src="~/Imagens/JBS_logo.jpg" />
+                            </td>
+
+                            <td style="text-align:center; font-weight:bold;">Verificação MER</td>
+
+                            <td rowspan="3" class="col-xs-2">
+                                <img height="90" width="120" src="~/Imagens/novoLogoFriboi.PNG" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Elaborador: Lisha Stephanie Calil Czar/ GQU - AMS </td>
+                        </tr>
+                        <tr>
+                            <td>Aprovador: Andréia Fernanda do Nascimento Scalon / GQU - AMS</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="row">
+                    <div id="pivot-table">
+
+                    </div>
+                </div>
+
+                <footer id="rodape" hidden>
+                    <div class="row">
+                        <div class="col-xs-4" style="text-align:center">
+                            _________________________________
+                            <br />
+                            Monitor da GQ
+                        </div>
+
+                        <div class="col-xs-4" style="text-align:center">
+                            _________________________________
+                            <br />
+                            Supervisor do Setor
+                        </div>
+
+                        <div class="col-xs-4" style="text-align:center">
+                            _________________________________
+                            <br />
+                            Supervisor da GQ
+                        </div>
+                    </div>
+
+                </footer>
             </div>
         </div>
     </div>
@@ -75,347 +147,339 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 
     <script>
-        var cabecalhos = [
-            "AV",
-            //"Unidade",
-        ];
-        var linhas = [
-            "Indicador",
-            "Monitoramento",
-            "Tarefa",
-        ];
+        let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Formularios"))';
 
-        var valores = [
-            "AVComPeso",
-            "NCComPeso",
-            "HoraColeta",
-            "NC",
-            "Monitor",
-        ]
+        $('button').button({ loadingText: '@Resources.Resource.loading...' });
+        var $btn = $('#btnSend');
 
-        var obj = [];
-        var qtdMockColuna = 1;
-        var qtdMockLinha = 2;
-        for (var i = 0; i <= 200; i++) {
-            obj.push(
-                {
-                    "cotoco": "Cotoco " + Math.round(Math.random() * qtdMockColuna),
-                    cabecalho2: "Monitoramento " + Math.round(Math.random() * qtdMockColuna),
-                    cabecalho3: "Unidade " + Math.round(Math.random() * qtdMockColuna),
-                    cabecalho4: "Turno " + Math.round(Math.random() * qtdMockColuna),
-                    cabecalho5: "Av " + Math.round(Math.random() * qtdMockColuna),
-                    linha1: "Cluster " + Math.round(Math.random() * qtdMockLinha),
-                    linha2: "Função " + Math.round(Math.random() * qtdMockLinha),
-                    linha3: "Amostra " + Math.round(Math.random() * qtdMockLinha),
-                    linha4: "Cabecalho " + Math.round(Math.random() * qtdMockLinha),
-                    'Valor X': Math.round(Math.random() * 50),
-                    'Valor Y': Math.round(Math.random() * 50),
-                    'Valor Z': Math.round(Math.random() * 50),
-                    'Nao Conforme': Math.round(Math.random() * 1) == 0 ? 'C' : 'NC'
+        function enviarFiltro() {
+
+            window.scrollTo(0, 0);
+
+            if (!$("#divFilterReports").is(":hidden"))
+                toggleDivFilterReports();
+
+            $btn.button('loading');
+            $(".loader").show();
+           
+
+            $("#rodape").hide();
+            $("#cabecalhoDiv").hide();
+
+            $.ajax({
+                data: JSON.stringify(objFiltro.Param),
+                url: urlBuscaDados,
+                type: 'POST',
+                contentType: "application/json",
+                success: function (data) {
+                    $btn.button('reset');
+                    $(".loader").hide();
+
+                    if (data.length > 0) {
+                        $("#rodape").show();
+                        $("#cabecalhoDiv").show();
+                        montaTabelaDinamica(data);
+                    } else {
+                        $("#mensagemSemDados").show();
+                    }
+                    
+                },
+                timeout: 600000,
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                error: function (a, b, c) {
+                    $(".loader").hide();
+                    console.log(a);
+                    console.log(b);
+                    console.log(c);
                 }
-            );
+            });
+
         }
+        function montaTabelaDinamica(data) {
+            var cabecalhos = [
+                "AV",
+                //"Unidade",
+            ];
+            var linhas = [
+                "Indicador",
+                "Setor",
+            ];
 
-        obj = [{ "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Identificação do colaborador ( local, equipamentos, utensílios e tanques coletores)", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Limpeza de resíduos", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Dianteiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Traseiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Extravasamento do cérebro (se aplicável)", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Secção da medula", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Remoção dos olhos", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Remoção do cérebro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Retirada da amígdala -Tonsílas linguais", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Serragem da carcaça", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Iluminação", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Remoção dos olhos - Iluminação", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Remoção do cérebro - Iluminação", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Retirada da amígdala - Iluminação", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Retirada da amígdala -Tonsílas palatinas", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Dianteiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Traseiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Retirada da amígdala -Tonsílas palatinas", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Dianteiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Traseiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Retirada da amígdala -Tonsílas palatinas", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Dianteiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Traseiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Retirada da amígdala -Tonsílas palatinas", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Dianteiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Traseiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Retirada da amígdala -Tonsílas palatinas", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Dianteiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Traseiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Retirada da amígdala -Tonsílas palatinas", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Dianteiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Traseiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Retirada da amígdala -Tonsílas palatinas", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Dianteiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Traseiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Retirada da amígdala -Tonsílas palatinas", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Dianteiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Traseiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Retirada da amígdala -Tonsílas palatinas", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Dianteiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Medula e dura máter - Traseiro", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Abate", "Tarefa": "Retirada da amígdala -Tonsílas palatinas", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Corte/Desossa", "Tarefa": "Identificação deficiente dos equipamentos", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Corte/Desossa", "Tarefa": "Limpeza de resíduos", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "DIF", "Tarefa": "Identificação do colaborador ( local, equipamentos, utensílios e tanques coletores)", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Câmaras e Túneis", "Tarefa": "Identificação do colaborador ( local, equipamentos, utensílios e tanques coletores)", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Câmaras e Túneis", "Tarefa": "Limpeza de resíduos", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Descartes de MER", "Tarefa": "Pesagem e descarte dos MER's", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Descartes de MER", "Tarefa": "Incineração", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Triparia", "Tarefa": "Identificação do colaborador ( local, equipamentos, utensílios e tanques coletores)", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Triparia", "Tarefa": "Limpeza de resíduos", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Triparia", "Tarefa": "Remoção do íleo distal", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Triparia", "Tarefa": "Remoção do íleo distal - Iluminação", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Miúdos", "Tarefa": "Identificação do colaborador ( local, equipamentos, utensílios e tanques coletores)", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Miúdos", "Tarefa": "Limpeza de resíduos", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Miúdos", "Tarefa": "Retirada da amígdala -Tonsílas linguais", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Miúdos", "Tarefa": "Retirada da amígdala - Iluminação", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "1.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "NC" }
-            , { "Monitor": "gabrielnunes-mtz", "HoraColeta": "17:30", "Indicador": "Monitoramento - MER", "Monitoramento": "Miúdos - Estocagem", "Tarefa": "Estocagem dos Produtos - MER", "Meta": "0.00", "AVComPeso": "1.00", "NCComPeso": "0.00", "Unidade": "Mozarlândia", "AV": "Avaliação 1.00", "NC": "C" }]
+            var valores = [
+                "Itens Verificados",
+                "AV com Peso",
+                "NC com Peso",
+                "Hora",
+                "NC",
+                "Visto",
+            ]
 
-        var element = document.getElementById('pivot-table');
+            var obj = [];
+            var qtdMockColuna = 1;
+            var qtdMockLinha = 2;
+            for (var i = 0; i <= 200; i++) {
+                obj.push(
+                    {
+                        "cotoco": "Cotoco " + Math.round(Math.random() * qtdMockColuna),
+                        cabecalho2: "Monitoramento " + Math.round(Math.random() * qtdMockColuna),
+                        cabecalho3: "Unidade " + Math.round(Math.random() * qtdMockColuna),
+                        cabecalho4: "Turno " + Math.round(Math.random() * qtdMockColuna),
+                        cabecalho5: "Av " + Math.round(Math.random() * qtdMockColuna),
+                        linha1: "Cluster " + Math.round(Math.random() * qtdMockLinha),
+                        linha2: "Função " + Math.round(Math.random() * qtdMockLinha),
+                        linha3: "Amostra " + Math.round(Math.random() * qtdMockLinha),
+                        linha4: "Cabecalho " + Math.round(Math.random() * qtdMockLinha),
+                        'Valor X': Math.round(Math.random() * 50),
+                        'Valor Y': Math.round(Math.random() * 50),
+                        'Valor Z': Math.round(Math.random() * 50),
+                        'Nao Conforme': Math.round(Math.random() * 1) == 0 ? 'C' : 'NC'
+                    }
+                );
+            }
+            obj = data;
 
-        var matrizColunas = { lista: [] };
-        var matrizLinhas = { lista: [] };
-        for (var i = 0; i < obj.length; i++) {
-            montarArvoreDeDados(obj[i], matrizColunas, cabecalhos, 0, cabecalhos.length - 1);
-            montarArvoreDeDados(obj[i], matrizLinhas, linhas, 0, linhas.length - 1);
-        }
+            var element = document.getElementById('pivot-table');
 
-        function montarArvoreDeDados(objeto, matriz, lista, indexAtual, indexMaximo) {
-            var nomeDoNivel = lista[indexAtual];
-            var valorCabecalho = objeto[nomeDoNivel];
+            var matrizColunas = { lista: [] };
+            var matrizLinhas = { lista: [] };
+            for (var i = 0; i < obj.length; i++) {
+                montarArvoreDeDados(obj[i], matrizColunas, cabecalhos, 0, cabecalhos.length - 1);
+                montarArvoreDeDados(obj[i], matrizLinhas, linhas, 0, linhas.length - 1);
+            }
 
-            var itemAtual = {};
-            itemAtual.nivel = nomeDoNivel;
-            itemAtual.titulo = valorCabecalho;
-            itemAtual.lista = [];
+            function montarArvoreDeDados(objeto, matriz, lista, indexAtual, indexMaximo) {
+                var nomeDoNivel = lista[indexAtual];
+                var valorCabecalho = objeto[nomeDoNivel];
 
-            if (matriz.lista) {
-                itemDaLista = matriz.lista.filter((item) => item.titulo == valorCabecalho)
-                if (itemDaLista.length == 0) {
-                    matriz.lista.push(itemAtual); //Adicionado como filho
+                var itemAtual = {};
+                itemAtual.nivel = nomeDoNivel;
+                itemAtual.titulo = valorCabecalho;
+                itemAtual.lista = [];
+
+                if (matriz.lista) {
+                    itemDaLista = matriz.lista.filter((item) => item.titulo == valorCabecalho)
+                    if (itemDaLista.length == 0) {
+                        matriz.lista.push(itemAtual); //Adicionado como filho
+                    } else {
+                        itemAtual = itemDaLista[0]; //Já existe na lista de filhos
+                    }
+                    //}else if(){
+                    //	matriz[valorCabecalho] = itemAtual; //Vai ser criado
                 } else {
-                    itemAtual = itemDaLista[0]; //Já existe na lista de filhos
+                    itemAtual = matriz[valorCabecalho]; //Já existe na lista
                 }
-                //}else if(){
-                //	matriz[valorCabecalho] = itemAtual; //Vai ser criado
-            } else {
-                itemAtual = matriz[valorCabecalho]; //Já existe na lista
-            }
 
-            if (indexAtual < indexMaximo) {
-                var resultado = montarArvoreDeDados(objeto, itemAtual, lista, ++indexAtual, indexMaximo);
-            }
-            return matriz;
-        }
-
-        //console.log(matrizColunas);
-        //console.table(matrizColunas);
-        //console.log(matrizLinhas);
-        //console.table(matrizLinhas);
-
-        function montaQuantidadeDeSpan(itemMatriz) {
-            if (!itemMatriz.filhos) {
-                itemMatriz.span = itemMatriz.lista.length;
-            }
-
-            for (var i = 0; i < itemMatriz.lista.length; i++) {
-                var item = itemMatriz.lista[i];
-                var span = montaQuantidadeDeSpan(item);
-                if (span > 1) {
-                    itemMatriz.span += span - 1;
+                if (indexAtual < indexMaximo) {
+                    var resultado = montarArvoreDeDados(objeto, itemAtual, lista, ++indexAtual, indexMaximo);
                 }
+                return matriz;
             }
 
-            return itemMatriz.span;
+            //console.log(matrizColunas);
+            //console.table(matrizColunas);
+            //console.log(matrizLinhas);
+            //console.table(matrizLinhas);
 
-        }
+            function montaQuantidadeDeSpan(itemMatriz) {
+                if (!itemMatriz.filhos) {
+                    itemMatriz.span = itemMatriz.lista.length;
+                }
 
-        var colspanTotal = 0;
-        for (var i = 0; i < matrizColunas.lista.length; i++) {
-            var item = matrizColunas.lista[i];
-            montaQuantidadeDeSpan(item);
-            if (item.span == 0) {
-                item.span = 1;
-            }
-            colspanTotal += item.span;
-        }
-        console.log(matrizColunas);
-        console.log(colspanTotal);
+                for (var i = 0; i < itemMatriz.lista.length; i++) {
+                    var item = itemMatriz.lista[i];
+                    var span = montaQuantidadeDeSpan(item);
+                    if (span > 1) {
+                        itemMatriz.span += span - 1;
+                    }
+                }
 
-        var rowspanTotal = 0;
-        for (var i = 0; i < matrizLinhas.lista.length; i++) {
-            var item = matrizLinhas.lista[i];
-            montaQuantidadeDeSpan(item);
-            rowspanTotal += item.span;
-        }
-        console.log(matrizLinhas);
-        console.log(rowspanTotal);
+                return itemMatriz.span;
 
-        var htmlTable = "";
-        htmlTable += "<table class='table table-bordered table-striped'>";
-
-        /***INICIO: MONTA COLUNAS HTML **********************************************/
-        var matrizHtmlColunas = [];
-        function montaColunas(itemMatriz, indexAtual, indexMaximo, atributos) {
-            var html;
-
-            if (!atributos) {
-                atributos = "";
-            }
-            atributos += " " + itemMatriz.nivel + "='" + itemMatriz.titulo + "'";
-
-            if (indexAtual == indexMaximo) {
-                html = '<th ' + atributos + ' colspan="' + valores.length + '">';
-            } else {
-                html = '<th colspan="' + (itemMatriz.span * valores.length) + '">';
-            }
-            html += itemMatriz.titulo + '</th>';
-
-            if (!matrizHtmlColunas[indexAtual]) {
-                matrizHtmlColunas.push(html);
-            } else {
-                matrizHtmlColunas[indexAtual] += html;
             }
 
-            ++indexAtual;
-            for (var i = 0; i < itemMatriz.lista.length; i++) {
-                var item = itemMatriz.lista[i];
-                montaColunas(item, indexAtual, indexMaximo, atributos);
+            var colspanTotal = 0;
+            for (var i = 0; i < matrizColunas.lista.length; i++) {
+                var item = matrizColunas.lista[i];
+                montaQuantidadeDeSpan(item);
+                if (item.span == 0) {
+                    item.span = 1;
+                }
+                colspanTotal += item.span;
             }
-        }
+            console.log(matrizColunas);
+            console.log(colspanTotal);
 
-        for (var i = 0; i < matrizColunas.lista.length; i++) {
-            var item = matrizColunas.lista[i];
-            montaColunas(item, 0, cabecalhos.length - 1);
-        }
-        console.log(matrizColunas);
-
-        for (var i = 0; i < matrizHtmlColunas.length; i++) {
-            htmlTable += "<tr>";
-            if (i == 0) {
-                htmlTable += "<th colspan='" + linhas.length + "' rowspan='" + (cabecalhos.length + 1) + "'></th>";
+            var rowspanTotal = 0;
+            for (var i = 0; i < matrizLinhas.lista.length; i++) {
+                var item = matrizLinhas.lista[i];
+                montaQuantidadeDeSpan(item);
+                rowspanTotal += item.span;
             }
-            htmlTable += matrizHtmlColunas[i];
-            htmlTable += "</tr>";
-        }
-        /***FIM: MONTA COLUNAS HTML **********************************************/
+            console.log(matrizLinhas);
+            console.log(rowspanTotal);
 
-        htmlTable += "<tr>";
-        for (var i = 0; i < colspanTotal; i++) {
-            for (var j = 0; j < valores.length; j++) {
-                htmlTable += "<th>" + valores[j] + "</th>";
-            }
-        }
-        htmlTable += "</tr>";
+            var htmlTable = "";
+            htmlTable += "<table class='table table-bordered table-striped'>";
 
-        /***INICIO: MONTA LINHAS HTML **********************************************/
-        var matrizHtmlLinhas = [];
-        function montaLinhas(itemMatriz, numeroLinha, indexAtual, indexMaximo, atributos) {
-            var html;
+            /***INICIO: MONTA COLUNAS HTML **********************************************/
+            var matrizHtmlColunas = [];
+            function montaColunas(itemMatriz, indexAtual, indexMaximo, atributos) {
+                var html;
 
-            if (!atributos) {
-                atributos = "";
-            }
-            atributos += " " + itemMatriz.nivel + "='" + itemMatriz.titulo + "'";
+                if (!atributos) {
+                    atributos = "";
+                }
+                atributos += " " + itemMatriz.nivel + "='" + itemMatriz.titulo + "'";
 
-            if (indexAtual == indexMaximo) {
-                html = '<th ' + atributos + '>';
-            } else if (itemMatriz.span > 1) {
-                html = '<th rowspan="' + itemMatriz.span + '">';
-            } else {
-                html = '<th>';
-            }
-            html += itemMatriz.titulo + '</th>';
+                if (indexAtual == indexMaximo) {
+                    html = '<th ' + atributos + ' colspan="' + valores.length + '">';
+                } else {
+                    html = '<th colspan="' + (itemMatriz.span * valores.length) + '">';
+                }
+                html += itemMatriz.titulo + '</th>';
 
-            if (!matrizHtmlLinhas[numeroLinha]) {
-                matrizHtmlLinhas.push(html);
-            } else {
-                matrizHtmlLinhas[numeroLinha] += html;
-            }
+                if (!matrizHtmlColunas[indexAtual]) {
+                    matrizHtmlColunas.push(html);
+                } else {
+                    matrizHtmlColunas[indexAtual] += html;
+                }
 
-            if (indexAtual == indexMaximo) {
-                numeroLinha++;
-            } else {
                 ++indexAtual;
                 for (var i = 0; i < itemMatriz.lista.length; i++) {
                     var item = itemMatriz.lista[i];
-                    numeroLinha = montaLinhas(item, numeroLinha, indexAtual, indexMaximo, atributos);
+                    montaColunas(item, indexAtual, indexMaximo, atributos);
                 }
             }
-            return numeroLinha;
 
-        }
+            for (var i = 0; i < matrizColunas.lista.length; i++) {
+                var item = matrizColunas.lista[i];
+                montaColunas(item, 0, cabecalhos.length - 1);
+            }
+            console.log(matrizColunas);
 
-        var numeroLinha = 0;
-        for (var i = 0; i < matrizLinhas.lista.length; i++) {
-            var item = matrizLinhas.lista[i];
-            numeroLinha = montaLinhas(item, numeroLinha, 0, linhas.length - 1);
-        }
+            for (var i = 0; i < matrizHtmlColunas.length; i++) {
+                htmlTable += "<tr>";
+                if (i == 0) {
+                    htmlTable += "<th colspan='" + linhas.length + "' rowspan='" + (cabecalhos.length + 1) + "'></th>";
+                }
+                htmlTable += matrizHtmlColunas[i];
+                htmlTable += "</tr>";
+            }
+            /***FIM: MONTA COLUNAS HTML **********************************************/
 
-        for (var i = 0; i < matrizHtmlLinhas.length; i++) {
             htmlTable += "<tr>";
-            htmlTable += matrizHtmlLinhas[i];
-            for (var j = 0; j < colspanTotal; j++) {
-                for (var z = 0; z < valores.length; z++) {
-                    htmlTable += "<td data-value='" + valores[z] + "'></td>";
+            for (var i = 0; i < colspanTotal; i++) {
+                for (var j = 0; j < valores.length; j++) {
+                    htmlTable += "<th>" + valores[j] + "</th>";
                 }
             }
             htmlTable += "</tr>";
-        }
-        /***FIM: MONTA LINHAS HTML **********************************************/
 
-        htmlTable += "</table>";
-        document.querySelector('#pivot-table').innerHTML = htmlTable;
-        
+            /***INICIO: MONTA LINHAS HTML **********************************************/
+            var matrizHtmlLinhas = [];
+            function montaLinhas(itemMatriz, numeroLinha, indexAtual, indexMaximo, atributos) {
+                var html;
 
-        /***INICIO: MONTA VALORES HTML **********************************************/
-        var listaTds = document.querySelector('#pivot-table > table').getElementsByTagName('td');
+                if (!atributos) {
+                    atributos = "";
+                }
+                atributos += " " + itemMatriz.nivel + "='" + itemMatriz.titulo + "'";
 
-        var listaObj = [...obj];
-        var ultimoObjeto = undefined;
-        for (var i = 0; i < listaTds.length; i++) {
-            var td = listaTds[i];
-            var cellIndex = td.cellIndex;
-            var rowIndex = td.parentNode.rowIndex;
+                if (indexAtual == indexMaximo) {
+                    html = '<th ' + atributos + '>';
+                } else if (itemMatriz.span > 1) {
+                    html = '<th rowspan="' + itemMatriz.span + '">';
+                } else {
+                    html = '<th>';
+                }
+                html += itemMatriz.titulo + '</th>';
 
-            var numeroObjeto = (cellIndex - td.parentNode.getElementsByTagName('th').length);
-            var atributos = {};
-            var attrColuna = document.querySelector("#pivot-table > table > tbody > tr:nth-child(" + cabecalhos.length + ") > th:nth-child(" + (1 + Math.floor(numeroObjeto / valores.length)) + ")").attributes;
-            for (var j = 0; j < attrColuna.length; j++) {
-                atributos[attrColuna[j].name] = attrColuna[j].value;
+                if (!matrizHtmlLinhas[numeroLinha]) {
+                    matrizHtmlLinhas.push(html);
+                } else {
+                    matrizHtmlLinhas[numeroLinha] += html;
+                }
+
+                if (indexAtual == indexMaximo) {
+                    numeroLinha++;
+                } else {
+                    ++indexAtual;
+                    for (var i = 0; i < itemMatriz.lista.length; i++) {
+                        var item = itemMatriz.lista[i];
+                        numeroLinha = montaLinhas(item, numeroLinha, indexAtual, indexMaximo, atributos);
+                    }
+                }
+                return numeroLinha;
+
             }
-            var linha = document.querySelector("#pivot-table > table > tbody > tr:nth-child(" + (rowIndex + 1) + ")").getElementsByTagName('th');
-            var attrLinha = linha[linha.length - 1].attributes;
-            for (var j = 0; j < attrLinha.length; j++) {
-                atributos[attrLinha[j].name] = attrLinha[j].value;
+
+            var numeroLinha = 0;
+            for (var i = 0; i < matrizLinhas.lista.length; i++) {
+                var item = matrizLinhas.lista[i];
+                numeroLinha = montaLinhas(item, numeroLinha, 0, linhas.length - 1);
             }
 
-            var objAtributos = Object.keys(atributos);
-            for (var j = 0; j < listaObj.length; j++) {
-                var deuMatch = true;
-                if (!ultimoObjeto) {
-                    for (var z = 0; z < objAtributos.length; z++) {
-                        if (listaObj[j][objAtributos[z]] && atributos[objAtributos[z]] != listaObj[j][objAtributos[z]]) {
-                            deuMatch = false;
-                            break;
+            for (var i = 0; i < matrizHtmlLinhas.length; i++) {
+                htmlTable += "<tr>";
+                htmlTable += matrizHtmlLinhas[i];
+                for (var j = 0; j < colspanTotal; j++) {
+                    for (var z = 0; z < valores.length; z++) {
+                        htmlTable += "<td data-value='" + valores[z] + "'></td>";
+                    }
+                }
+                htmlTable += "</tr>";
+            }
+            /***FIM: MONTA LINHAS HTML **********************************************/
+
+            htmlTable += "</table>";
+            document.querySelector('#pivot-table').innerHTML = htmlTable;
+
+
+            /***INICIO: MONTA VALORES HTML **********************************************/
+            var listaTds = document.querySelector('#pivot-table > table').getElementsByTagName('td');
+
+            var listaObj = [...obj];
+            var ultimoObjeto = undefined;
+            for (var i = 0; i < listaTds.length; i++) {
+                var td = listaTds[i];
+                var cellIndex = td.cellIndex;
+                var rowIndex = td.parentNode.rowIndex;
+
+                var numeroObjeto = (cellIndex - td.parentNode.getElementsByTagName('th').length);
+                var atributos = {};
+                var attrColuna = document.querySelector("#pivot-table > table > tbody > tr:nth-child(" + cabecalhos.length + ") > th:nth-child(" + (1 + Math.floor(numeroObjeto / valores.length)) + ")").attributes;
+                for (var j = 0; j < attrColuna.length; j++) {
+                    atributos[attrColuna[j].name] = attrColuna[j].value;
+                }
+                var linha = document.querySelector("#pivot-table > table > tbody > tr:nth-child(" + (rowIndex + 1) + ")").getElementsByTagName('th');
+                var attrLinha = linha[linha.length - 1].attributes;
+                for (var j = 0; j < attrLinha.length; j++) {
+                    atributos[attrLinha[j].name] = attrLinha[j].value;
+                }
+
+                var objAtributos = Object.keys(atributos);
+                for (var j = 0; j < listaObj.length; j++) {
+                    var deuMatch = true;
+                    if (!ultimoObjeto) {
+                        for (var z = 0; z < objAtributos.length; z++) {
+                            if (listaObj[j][objAtributos[z]] && atributos[objAtributos[z]] != listaObj[j][objAtributos[z]]) {
+                                deuMatch = false;
+                                break;
+                            }
                         }
                     }
-                }
-                if (deuMatch) {
-                    ultimoObjeto = listaObj[j];
-                    td.innerHTML = ultimoObjeto[td.getAttribute("data-value")];
-                    if (((1 + numeroObjeto) % valores.length) == 0) {
-                        ultimoObjeto = undefined;
-                        listaObj.splice(j, 1);
+                    if (deuMatch) {
+                        ultimoObjeto = listaObj[j];
+                        td.innerHTML = ultimoObjeto[td.getAttribute("data-value")];
+                        if (((1 + numeroObjeto) % valores.length) == 0) {
+                            ultimoObjeto = undefined;
+                            listaObj.splice(j, 1);
+                        }
+                        break;
                     }
-                    break;
                 }
             }
         }
-                                                /***FIM: MONTA VALORES HTML **********************************************/
+        /***FIM: MONTA VALORES HTML **********************************************/
     </script>
 }
