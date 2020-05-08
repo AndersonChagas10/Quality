@@ -3315,5 +3315,13 @@
       GO
     </Script>
   </Card>
+  
+  <Card>
+    <CardNumber>SGQ-646</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] Relatório Análise Laboratóriais - Ajustes na Matriz</Description>
+    <Script>
+    </Script>
+  </Card>
 
 </Cards>
