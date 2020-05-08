@@ -133,6 +133,59 @@ var HeatMap = {
     percentageMax: 0.95,
     colorMax: "",
 
+    GambiarraDoRenan: function () {
+
+        //#DesculpaLeo
+        //Recalcula totais para matriz com porcentagem de NC
+
+        for (var j = 0; j < HeatMap.Indicadores.length; j++) {
+            for (var z = 0; z < HeatMap.Valores.length; z++) {
+
+                let indicadorY = j;
+                let valorCabecalho = RetornaTituloValor(z);
+                let identificador = HeatMap.idMedia + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
+
+                let amostragem = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.Amostragem).reduce((acumulador, valoratual) => acumulador += valoratual);
+                let qtdeNC = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.QtdeNC).reduce((acumulador, valoratual) => acumulador += valoratual);
+
+                let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+
+                $(identificador).html(porcentagemNCTotal.toFixed(2));
+
+            }
+        }
+
+        for (var i = 0; i < HeatMap.Cabecalhos.length; i++) {
+            for (var z = 0; z < HeatMap.Valores.length; z++) {
+
+                let cabecalhoX = i;
+                let valorCabecalho = RetornaTituloValor(z);
+                let identificador = HeatMap.idRodape + ' td[' + HeatMap.dataCabecalho + '="' + cabecalhoX + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
+
+                let amostragem = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.Amostragem).reduce((acumulador, valoratual) => acumulador += valoratual);
+                let qtdeNC = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.QtdeNC).reduce((acumulador, valoratual) => acumulador += valoratual);
+
+                let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+
+                $(identificador).html(porcentagemNCTotal.toFixed(2));
+            }
+        }
+
+        for (var z = 0; z < HeatMap.Valores.length; z++) {
+
+            let valorCabecalho = RetornaTituloValor(z);
+
+            let identificador = HeatMap.idTotalMedia + ' td[' + HeatMap.dataValor + '="' + valorCabecalho + '"]'
+
+            let amostragem = this.jsonObject.map(x => x.Amostragem).reduce((acumulador, valoratual) => acumulador += valoratual);
+            let qtdeNC = this.jsonObject.map(x => x.QtdeNC).reduce((acumulador, valoratual) => acumulador += valoratual);
+
+            let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+
+            $(identificador).html(porcentagemNCTotal.toFixed(2));
+        }
+    }
+
 }
 
 function PosicaoNaLista(lista, valor) {
@@ -573,7 +626,13 @@ function PreencheCalorNasCelulasValores() {
                 if (HeatMap.Valores[z]["heatmap"] == true) {
                     var indicadorY = j;
                     var identificadorValores = HeatMap.idValores + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"]';
-                    $(identificadorValores + " :last-child").each(function (i, o) {
+
+                    let divsValores = $(identificadorValores + " :last-child");
+
+                    if (divsValores.length === 1)
+                        return;
+
+                    $(divsValores).each(function (i, o) {
                         var valor = ValorNumerico($(o).text());
                         if ($(o).text() != HeatMap.valorVazio) {
                             var ratio = (valor - HeatMap.minMaxPorIndicador[indicadorY].min) / ((HeatMap.minMaxPorIndicador[indicadorY].max - HeatMap.minMaxPorIndicador[indicadorY].min) / 100);
@@ -598,6 +657,9 @@ function PreencheCalorMedia() {
                 var indicadorY = j;
                 var valorCabecalho = RetornaTituloValor(z);
                 var identificador = HeatMap.idMedia + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
+
+                if (HeatMap.Indicadores.length === 1)
+                    return;
 
                 $(identificador).each(function (i, o) {
                     var valor = ValorNumerico($(o).text());
@@ -624,6 +686,9 @@ function PreencheCalorRodape() {
                 var valorCabecalho = RetornaTituloValor(z);
                 var identificador = HeatMap.idRodape + ' td[' + HeatMap.dataCabecalho + '="' + cabecalhoX + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
 
+                if (HeatMap.Cabecalhos.length === 1)
+                    return;
+
                 $(identificador).each(function (i, o) {
                     var valor = ValorNumerico($(o).text());
                     if ($(o).text() != HeatMap.valorVazio) {
@@ -633,7 +698,7 @@ function PreencheCalorRodape() {
                         } else if (ratio != 0) {
                             ratio /= 100;
                         }
-                        $(o).attr("style", PreencheFundo(GetColor(ratio)));
+                            $(o).attr("style", PreencheFundo(GetColor(ratio)));
                     }
                 });
             }
