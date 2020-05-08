@@ -165,6 +165,7 @@
 
             $("#rodape").hide();
             $("#cabecalhoDiv").hide();
+            $("#pivot-table").hide();
 
             $.ajax({
                 data: JSON.stringify(objFiltro.Param),
@@ -178,6 +179,7 @@
                     if (data.length > 0) {
                         $("#rodape").show();
                         $("#cabecalhoDiv").show();
+                        $("#pivot-table").show();
                         montaTabelaDinamica(data);
                     } else {
                         $("#mensagemSemDados").show();

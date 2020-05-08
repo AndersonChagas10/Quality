@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Dominio;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.Relatorios
 {
@@ -13,10 +16,10 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
             var query = $@"	
 ---------------------------------------------------------------------------------------------------------------------------------	
-INPUTS					
+				
 -------------------------------------------------------------------------------------------------------------------------
 
-DECLARE @DATEINI DATETIME = '2020-03-20 00:00:00' DECLARE @DATEFIM DATETIME = '2020-04-29 23:59:59';
+         DECLARE @DATEINI DATETIME = '2020-03-20 00:00:00' DECLARE @DATEFIM DATETIME = '2020-04-29 23:59:59';
 		 DECLARE @UNITID VARCHAR(10) = '31', @PARLEVEL1_ID VARCHAR(10) = '112',@PARLEVEL2_ID VARCHAR(10) = '0';
 
 		 -------------------------------------------------------------------------------------------------------------------------
