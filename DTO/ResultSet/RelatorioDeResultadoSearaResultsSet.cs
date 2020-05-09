@@ -1433,7 +1433,24 @@ GROUP BY Parcompany_id
 
                     break;
 
-                default:
+				case 6: //GRUPO DE TAREFAS
+						//campos = $@" PL3.NAME AS UnidadeName, PL3.Id as Unidade_Id ";
+
+					//groupBy = $@" GROUP BY PL3.NAME, PL3.Id ";
+
+					//orderBy = "ORDER BY 4 DESC";
+
+					campos = $@" CUBOL3.GRUPOTAREFA AS UnidadeName, CUBOL3.GRUPOTAREFA as Unidade_Id ";
+					campos2 = $@" ,null as Parcompany_id, null as parlevel1_id, C.parlevel2_id as parlevel2_id , null as data  ";
+					groupBy = $@" GROUP BY CUBOL3.GRUPOTAREFA, CUBOL3.GRUPOTAREFA ";
+					groupBy2 = $@" GROUP BY C.ParLevel2_id, data ";
+					orderBy = "ORDER BY 4 DESC";
+					selectTotal = " SELECT *, NULL AS PESOTOTAL, NULL AS TOTAL FROM #RR1 A  ";
+
+
+					break;
+
+				default:
                     break;
             }
 
@@ -1508,7 +1525,8 @@ GROUP BY Parcompany_id
 			   PL2P.Equacao,
 			   PL2P.Peso,
 			   c2.evaluationNumber as Avaliacao,
-			   pp.Name as SKU
+			   pp.Name as SKU,
+			   PGL1.Name as GRUPOTAREFA
 	           INTO #CUBOLEVEL3
         FROM CollectionLevel2 C2 WITH (NOLOCK)
         INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
@@ -1524,6 +1542,14 @@ GROUP BY Parcompany_id
         LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP on cfpp.CollectionLevel2_Id = c2.Id
         
         LEFT JOIN ParProduto PP on pp.Id = cfpp.ParProduto_Id
+
+		LEFT JOIN ParVinculoPeso PVP 
+		ON PVP.ParLevel1_Id = C2.ParLevel1_Id
+		AND PVP.ParLevel2_Id = C2.ParLevel2_Id
+		AND PVP.ParLevel3_Id = r3.ParLevel3_Id
+		AND PVP.IsActive = 1
+		LEFT JOIN ParGroupParLevel1 PGL1
+		ON PGL1.Id = PVP.ParGroupParLevel1_Id
 
         WHERE 1=1
           AND R3.IsNotEvaluate = 0
