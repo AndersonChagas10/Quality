@@ -73,6 +73,11 @@
         .column3 {
             float: left !important;
         }
+
+        .margin-left-6px {
+            margin-left: 6px !important;
+        }
+        
     </style>
 
     <div class="page-content-wrapper">
@@ -249,6 +254,8 @@
         HeatMap.Inicializar(config);
 
         HeatMap.GambiarraDoRenan();
+
+        ajustaMatriz(idMatriz);
 
         if (numeroDesdobramento > 0)
             goScroll(idMatriz);
@@ -553,6 +560,26 @@
             chart.redraw();
         }
     });
+
+    function ajustaMatriz(idMatriz) {
+
+        debugger
+
+        const height = $(idMatriz).find("#listaCabecalho > th:nth-child(1)").css("height");
+        const hasOverflow = $(idMatriz).find("#listaInidicador > tr").length > 5;
+
+        $(idMatriz).find(" > div > div.row.row1.linha > div.column1.removeMargin.titleHeatMap > table > tbody > tr:nth-child(1)").css("height", height);
+
+        $(idMatriz).find("#cabecalhoTotal > tbody > tr:nth-child(1) > th").css("height", height);
+        
+        if (hasOverflow) {
+
+            $(idMatriz).find(".column3.removeMargin.titleHeatMap").each(function () {
+                $(this).removeClass("removeMargin");
+                $(this).addClass("margin-left-6px");
+            });
+        }
+    }
 
 </script>
 
