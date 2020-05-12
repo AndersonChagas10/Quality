@@ -103,18 +103,18 @@ $('body')
         }
     });
 
-$('body')
-    .off('change', '[data-level3] select:visible')
-    .on('change', '[data-level3] select:visible', function () {
+//$('body')
+//    .off('change', '[data-level3] select:visible')
+//    .on('change', '[data-level3] select:visible', function () {
 
-        var qualificationLevel3Value_Value = $(this).parents('[data-level3]').attr('data-ParQualificationLevel3Value');
+//        var qualificationLevel3Value_Value = $(this).parents('[data-level3]').attr('data-ParQualificationLevel3Value');
 
-        if (qualificationLevel3Value_Value != null || qualificationLevel3Value_Value != "") {
-            var qualification_Id = $("[data-qualificationSelect] :selected").val();
-        }
+//        if (qualificationLevel3Value_Value != null || qualificationLevel3Value_Value != "") {
+//            var qualification_Id = $("[data-qualificationSelect] :selected").val();
+//        }
 
-        $("input[data-valor]").trigger('change');
-    });
+//        $("input[data-valor]").trigger('change');
+//    });
 
 
 $('body')
@@ -245,6 +245,9 @@ function getInputLevel3(level3, level2, level1, striped) {
                 break;
             case 2: //Numerodedefeitos
                 retorno += getNumerodeDefeitos(level3);
+                break;
+            case 15: //NumerodedefeitosComTexto
+                retorno += getNumerodeDefeitosComTexto(level3);
                 break;
             case 6: //BinárioComTexto
                 retorno += getBinarioComTexto(level3);
@@ -657,6 +660,45 @@ function getNumerodeDefeitos(level3) {
     return html;
 }
 
+function getNumerodeDefeitosComTexto(level3) {
+
+    var btnNA = "";
+
+    if (level3.ParLevel3Value.IsAtiveNA == true) {
+        btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
+    }
+
+    var html = '';
+
+    if (level3.ParLevel3XHelp)
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+
+    else
+        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+    if (level3.ParLevel3Value.IsRequiredInt) {
+        botao = '<input type="number" class="col-xs-12 input-sm" data-tarefa data-valor data-required-answer="1">';
+    } else {
+        botao = '<input type="number" class="col-xs-12 input-sm" data-tarefa data-valor data-required-answer="0">';
+    }
+    var mensagemPadrao = level3.ParLevel3Value.DefaultMessageText !== null ? level3.ParLevel3Value.DefaultMessageText : "";
+    var tamanhoPermitido = level3.ParLevel3Value.StringSizeAllowed !== null ? level3.ParLevel3Value.StringSizeAllowed : 100;
+    var input = '<input type="text" class="col-xs-12 input-sm" style="text-align: center;" maxlength="' + tamanhoPermitido + '" placeholder="' + mensagemPadrao + '" data-required-text="' + level3.ParLevel3Value.IsNCTextRequired + '" data-texto/>';
+
+    html +=
+        '<div class="col-xs-6 no-gutters">' +
+        '<div class="col-xs-5">' +
+        botao +
+        '</div>' +
+        '<div class="col-xs-5">' +
+        input +
+        '</div>' +
+        '<div class="col-xs-2">' + btnNA + '</div>' +
+        '</div>' +
+        '<div class="clearfix"></div>';
+
+    return html;
+}
+
 function getLikert(level3) {
 
     var btnNA = "";
@@ -919,8 +961,10 @@ function setFieldColorWhite(campo) {
 $('body').off('change', 'input[data-valor]').on('change', 'input[data-valor]', function (e) {
     var linha = $(this).parents('[data-conforme]');
 
-    if (parseFloat($(this).val()) >= parseFloat($(linha).attr('data-min'))
-        && parseFloat($(this).val()) <= parseFloat($(linha).attr('data-max'))) {
+    if ((parseFloat($(this).val()) >= parseFloat($(linha).attr('data-min'))
+        && parseFloat($(this).val()) <= parseFloat($(linha).attr('data-max')))
+        || ($(linha).attr('data-min') == "null" && parseFloat($(this).val()) <= parseFloat($(linha).attr('data-max')))
+        || ($(this).val() == "")) {
         resetarLinha(linha);
         linha.attr('data-conforme', '1');
     } else {
@@ -928,6 +972,7 @@ $('body').off('change', 'input[data-valor]').on('change', 'input[data-valor]', f
         linha.addClass('alert-secundary');
         linha.attr('data-conforme', '0');
     }
+    validateShowQualification(linha);
 });
 
 $('body').off('click', '[data-info]').on('click', '[data-info]', function (e) {
@@ -1322,7 +1367,7 @@ function getCollectionHeaderFields() {
 
 function ColetasIsValid() {
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
-    var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta] input');
+    var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta] input[data-texto]');
     var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value] div[data-qualification-required]');
     var selectQualificationColeta = $('form[data-form-coleta] div[data-qualificationlevel3value] select[data-qualificationselect]');
 
@@ -1354,12 +1399,15 @@ function ColetasIsValid() {
 
             if ($(data).attr('data-conforme') == "0") {
                 if ($(inputVal).val() == null || $(inputVal).val() == undefined || $(inputVal).val() == "") {
-                    $(data).css("background-color", "#ffc1c1");
+                    $(inputVal).css("background-color", "#ffc1c1");
                     errorCount++;
                 } else {
-                    $(data).css("background-color", "white");
+                    $(inputVal).css("background-color", "white");
                 }
+            } else {
+                $(inputVal).css("background-color", "white");
             }
+
         }
 
         if ($(data).attr('data-conforme-na') != "") {
