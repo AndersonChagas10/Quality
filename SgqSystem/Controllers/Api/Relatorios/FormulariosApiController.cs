@@ -370,7 +370,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 --AVComPeso as ''AV com Peso'',
                 --nCComPeso as ''NC com Peso'',
                 UnidadeName as Unidade,
-                AV as AV,
+                Cast(AV as int) as AV,
                 iif(NC = 1, ''C'' , ''NC'') as ''Resultado'',
                 ''Gabrielnunes-mtz'' as Visto,
                 ''13:40'' as Hora 
