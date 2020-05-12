@@ -367,11 +367,11 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 TarefaName as ''Itens Verificados'',
                 H.*,
                 Meta as Meta,
-                AVComPeso as ''AV com Peso'',
-                nCComPeso as ''NC com Peso'',
+                --AVComPeso as ''AV com Peso'',
+                --nCComPeso as ''NC com Peso'',
                 UnidadeName as Unidade,
                 AV as AV,
-                NC as NC,
+                iif(NC = 1, ''C'' , ''NC'') as ''Resultado'',
                 ''Gabrielnunes-mtz'' as Visto,
                 ''13:40'' as Hora 
 			INTO #CUBO_ACERTO

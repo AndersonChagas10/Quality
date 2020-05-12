@@ -43,10 +43,10 @@
             background: white;
         }
 
-        #CustomPopover .btn {
-            margin-left: 1px;
-            margin-right: 1px;
-        }
+            #CustomPopover .btn {
+                margin-left: 1px;
+                margin-right: 1px;
+            }
 
         .geral-note {
             padding: 2px;
@@ -78,7 +78,6 @@
             padding: 2px;
             height: 15px !important;
         }
-
     </style>
 
     <div class="page-content-wrapper">
@@ -108,6 +107,9 @@
                             <td><strong>Aprovador:</strong> Andréia Fernanda do Nascimento Scalon / GQU - AMS</td>
                         </tr>
                     </table>
+                    <div>
+                        Data: ____/____/____
+                    </div>
                 </div>
 
                 <div class="row">
@@ -115,7 +117,7 @@
 
                     </div>
                 </div>
-
+                <br /><br /><br />
                 <footer id="rodape" hidden>
                     <div class="row">
                         <div class="col-xs-4" style="text-align:center">
@@ -161,7 +163,7 @@
 
             $btn.button('loading');
             $(".loader").show();
-           
+
 
             $("#rodape").hide();
             $("#cabecalhoDiv").hide();
@@ -184,7 +186,7 @@
                     } else {
                         $("#mensagemSemDados").show();
                     }
-                    
+
                 },
                 timeout: 600000,
                 contentType: "APPLICATION/JSON; CHARSET=UTF-8",
@@ -204,15 +206,15 @@
             ];
             var linhas = [
                 "Indicador",
-                "Setor",
             ];
 
             var valores = [
+                "Setor",
                 "Itens Verificados",
-                "AV com Peso",
-                "NC com Peso",
+                //"AV com Peso",
+                //"NC com Peso",
                 "Hora",
-                "NC",
+                "Resultado",
                 "Visto",
             ]
 
