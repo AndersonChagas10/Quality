@@ -65,6 +65,14 @@
         #container {
             max-width: 100%;
         }
+
+        .select-filter {
+            padding-top: 15px;
+        }
+
+        .column3 {
+            float: left !important;
+        }
     </style>
 
     <div class="page-content-wrapper">
@@ -245,6 +253,8 @@
         if (numeroDesdobramento > 0)
             goScroll(idMatriz);
 
+        $(".select-filter select").select2();
+
         //Clique no cabeçalho da Linha
         $(idMatriz).off("click", ".horizontal th .cabecalho").on("click", ".horizontal th .cabecalho", function () {
 
@@ -410,7 +420,8 @@
         <div class="panel panel-primary" id-desdobramento="${numeroDesdobramento}">
             <div class="panel-heading">${titulo}</div>
             <div class="panel-body">
-                <div class="row" select-filter>
+                <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento }"></div>
+                <div class="row select-filter" select-filter>
                     <div class="col-sm-12">
                         <form class="form-inline">
                           <strong>A próxima matriz exibirá: </strong>
@@ -429,7 +440,6 @@
                         </form>
                     </div>
                 </div>
-                <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento }"></div>
             </div>
         </div>`;
 
