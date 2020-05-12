@@ -563,17 +563,15 @@
 
     function ajustaMatriz(idMatriz) {
 
-        debugger
-
         const height = $(idMatriz).find("#listaCabecalho > th:nth-child(1)").css("height");
         const hasOverflow = $(idMatriz).find("#listaInidicador > tr").length > 5;
+        const hasoverflowx = $(idMatriz).find("#listaCabecalho > th").length > 6;
 
         $(idMatriz).find(" > div > div.row.row1.linha > div.column1.removeMargin.titleHeatMap > table > tbody > tr:nth-child(1)").css("height", height);
 
         $(idMatriz).find("#cabecalhoTotal > tbody > tr:nth-child(1) > th").css("height", height);
         
-        if (hasOverflow) {
-
+        if (hasOverflow && !hasoverflowx) {
             $(idMatriz).find(".column3.removeMargin.titleHeatMap").each(function () {
                 $(this).removeClass("removeMargin");
                 $(this).addClass("margin-left-6px");
