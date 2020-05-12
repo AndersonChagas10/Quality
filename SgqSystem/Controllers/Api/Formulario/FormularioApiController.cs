@@ -2009,7 +2009,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             	WHERE US.Id = {usuarioLogado.Id})";
 
             var whereFiltroUnidades = "";
-            if(form.ParCompany_Ids.Length > 0)
+            if (form.ParCompany_Ids.Length > 0)
             {
                 whereFiltroUnidades += $"AND PC.ID in ({string.Join(",", form.ParCompany_Ids)})";
             }
@@ -2022,7 +2022,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             	CentroCusto.Id
                                ,CentroCusto.Name
                             FROM ParDepartment CentroCusto
-                            INNER JOIN ParDepartment Secao ON Secao.Parent_Id = CentroCusto.Id AND Secao.Active = 1
+                            INNER JOIN ParDepartment Secao ON Secao.Parent_Id IS NULL AND Secao.Active = 1
                             INNER JOIN ParCompany PC on CentroCusto.ParCompany_Id = PC.Id
                             WHERE 1 = 1
                             AND CentroCusto.Active = 1
