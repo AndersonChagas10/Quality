@@ -202,15 +202,14 @@
         function montaTabelaDinamica(data) {
             var cabecalhos = [
                 "AV",
-                //"Unidade",
             ];
             var linhas = [
                 "Indicador",
+                "Setor",
+                "Itens Verificados",
             ];
 
             var valores = [
-                "Setor",
-                "Itens Verificados",
                 //"AV com Peso",
                 //"NC com Peso",
                 "Hora",
@@ -225,7 +224,7 @@
                 obj.push(
                     {
                         "cotoco": "Cotoco " + Math.round(Math.random() * qtdMockColuna),
-                        cabecalho2: "Monitoramento " + Math.round(Math.random() * qtdMockColuna),
+                        cabecalho2: "Setor " + Math.round(Math.random() * qtdMockColuna),
                         cabecalho3: "Unidade " + Math.round(Math.random() * qtdMockColuna),
                         cabecalho4: "Turno " + Math.round(Math.random() * qtdMockColuna),
                         cabecalho5: "Av " + Math.round(Math.random() * qtdMockColuna),
@@ -364,14 +363,18 @@
             for (var i = 0; i < matrizHtmlColunas.length; i++) {
                 htmlTable += "<tr>";
                 if (i == 0) {
-                    htmlTable += "<th colspan='" + linhas.length + "' rowspan='" + (cabecalhos.length + 1) + "'></th>";
+                    htmlTable += "<th colspan='" + linhas.length + "' rowspan='" + (cabecalhos.length) + "'></th>";
                 }
                 htmlTable += matrizHtmlColunas[i];
                 htmlTable += "</tr>";
             }
             /***FIM: MONTA COLUNAS HTML **********************************************/
-
             htmlTable += "<tr>";
+            for (var i = 0; i < colspanTotal; i++) {
+                for (var j = 0; j < linhas.length; j++) {
+                    htmlTable += "<th>" + linhas[j] + "</th>";
+                }
+            }
             for (var i = 0; i < colspanTotal; i++) {
                 for (var j = 0; j < valores.length; j++) {
                     htmlTable += "<th>" + valores[j] + "</th>";
