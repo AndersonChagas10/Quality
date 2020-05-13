@@ -2790,4 +2790,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-682</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Apontamentos Diários - Adicionada lógica na edição do relatório para funcionar corretamente para Seara.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
