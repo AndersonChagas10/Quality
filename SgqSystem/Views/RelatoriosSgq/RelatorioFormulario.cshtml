@@ -5,6 +5,8 @@
 
     ViewBag.Title = "Formulário";
 
+    ViewBag.ShowIndicadorMER = true;
+
     //var url = Url.Action("Index", "Home");
 
 }
@@ -200,7 +202,7 @@
             $("#pivot-table").hide();
 
             $.ajax({
-                data: JSON.stringify(objFiltro.Param),
+                data: JSON.stringify(objFiltro),
                 url: urlBuscaDados,
                 type: 'POST',
                 contentType: "application/json",

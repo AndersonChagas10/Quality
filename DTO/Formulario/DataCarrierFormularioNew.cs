@@ -28,6 +28,8 @@ namespace DTO
 
         public bool ShowUserCompanies { get; set; } = false;
 
+        public int[] ShowIndicador_Id { get; set; } = new int[] { };
+
         public int[] ParCompany_Ids { get; set; } = new int[] { };
 
         public int[] Shift_Ids { get; set; } = new int[] { };

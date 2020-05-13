@@ -37,6 +37,19 @@
                                 </div>
                             }
 
+                            @if (ViewBag.ShowIndicadorMER == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Indicador</strong></label>
+                                        <select class="form-control" name="ShowIndicador_Id" id="ShowIndicador_Id">
+                                            <option value="112">Monitoramento - MER</option>
+                                            <option value="127">Verificação - Identificação, remoção, segregação e destinação do material especificado de risco (MER)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+
                             @if (ViewBag.ShowRangeDate == true)
                             {
                                 <div class="col-sm-12">
@@ -839,6 +852,7 @@
             $('select[name="tipoEdicao"]').select2();
             $('select[name="userSgqAuditor_Ids"]').select2();
             $('select[name="ParFrequency_Ids"').select2();
+            $('select[name="ShowIndicador_Id"').select2();
         }
 
         inicializaSelect2();
@@ -886,6 +900,8 @@
                 retornaOptionsPeloArray(dataFiltro.Desdobramentos, "Id", "Name", objFiltro["desdobramento"]));
             $('select[name="userSgqSurpervisor_Ids"]').html(
                 retornaOptionsPeloArray(dataFiltro.UserSgqSurpervisores, "Id", "Name", objFiltro["userSgqSurpervisor_Ids"]));
+            $('select[name="showIndicadorMER"]').html(
+                retornaOptionsPeloArray(dataFiltro.showIndicadorMER, "Id", "Name", objFiltro["showIndicadorMER"]));
             
             $('select[name="parStructure_Ids"]').trigger('change');
             $('select[name="parCompany_Ids"]').trigger('change');
@@ -912,6 +928,7 @@
             $('select[name="peso"]').trigger('change');
             $('select[name="desdobramento"]').trigger('change');
             $('select[name="userSgqSurpervisor_Ids"]').trigger('change');
+            $('select[name="showIndicadorMER"]').trigger('change');
             
             $('#filterReports select').on('change', function () {
                 preencheFiltrosAjax();
