@@ -10,17 +10,22 @@ namespace SgqSystem.Controllers.Api.Relatorios
     {
         [Route("Get")]
         [HttpPost]
-        public IHttpActionResult GetJsonFormulario()
+        public IHttpActionResult GetJsonFormulario([FromBody] DTO.DataCarrierFormularioNew form)
         {
             List<JObject> resultado = new List<JObject>();
+
+            var indicador_Id = "0";
+
+            if (form.ShowIndicador_Id.Length > 0)
+                 indicador_Id = form.ShowIndicador_Id[0].ToString();
 
             var query = $@"	
 ---------------------------------------------------------------------------------------------------------------------------------	
 				
 -------------------------------------------------------------------------------------------------------------------------
 
-         DECLARE @DATEINI DATETIME = '2020-03-20 00:00:00' DECLARE @DATEFIM DATETIME = '2020-04-29 23:59:59';
-		 DECLARE @UNITID VARCHAR(10) = '31', @PARLEVEL1_ID VARCHAR(10) = '112',@PARLEVEL2_ID VARCHAR(10) = '0';
+         DECLARE @DATEINI DATETIME = '2020-03-20 00:00:00' DECLARE @DATEFIM DATETIME = '2020-05-12 23:59:59';
+		 DECLARE @UNITID VARCHAR(10) = '31', @PARLEVEL1_ID VARCHAR(10) = '{indicador_Id}',@PARLEVEL2_ID VARCHAR(10) = '0';
 
 		 -------------------------------------------------------------------------------------------------------------------------
 		 -------------------------------------------------------------------------------------------------------------------------		 
@@ -367,11 +372,11 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 TarefaName as ''Itens Verificados'',
                 H.*,
                 Meta as Meta,
-                AVComPeso as ''AV com Peso'',
-                nCComPeso as ''NC com Peso'',
+                --AVComPeso as ''AV com Peso'',
+                --nCComPeso as ''NC com Peso'',
                 UnidadeName as Unidade,
-                AV as AV,
-                NC as NC,
+                Cast(AV as int) as AV,
+                iif(NC = 1, ''C'' , ''NC'') as ''Resultado'',
                 ''Gabrielnunes-mtz'' as Visto,
                 ''13:40'' as Hora 
 			INTO #CUBO_ACERTO
