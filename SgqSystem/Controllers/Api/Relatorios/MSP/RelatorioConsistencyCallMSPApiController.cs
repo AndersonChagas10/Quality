@@ -40,7 +40,10 @@ namespace SgqSystem.Controllers.Api.Relatorios
             var querySelectThicknessCDCM = new RelatorioConsistencyCallMSPResultSet().SelectThicknessCDCM(form);
             var querySelectThicknessBL = new RelatorioConsistencyCallMSPResultSet().SelectThicknessBL(form);
             var querySelectMeetCanadianRequirements = new RelatorioConsistencyCallMSPResultSet().SelectMeetCanadianRequirements(form);
+            var querySelectMarinationTime = new RelatorioConsistencyCallMSPResultSet().SelectMarinationTime(form);
             var querySelectWaitTime = new RelatorioConsistencyCallMSPResultSet().SelectWaitTime(form);
+            var querySelectFoss1 = new RelatorioConsistencyCallMSPResultSet().SelectFoss1(form);
+            var querySelectFoss2 = new RelatorioConsistencyCallMSPResultSet().SelectFoss2(form);
             var querySelectPullMoistureAVG = new RelatorioConsistencyCallMSPResultSet().SelectPullMoistureAVG(form);
             var querySelectStagingRoomTemperature = new RelatorioConsistencyCallMSPResultSet().SelectStagingRoomTemperature(form);
             var querySelectPackingWaterActivity = new RelatorioConsistencyCallMSPResultSet().SelectPackingWaterActivity(form);
@@ -242,6 +245,12 @@ namespace SgqSystem.Controllers.Api.Relatorios
                         obj.Meet_requirements2 = (conforme2 / avaliado2) * 100;
                 }
 
+                var marination_time = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectMarinationTime).ToList();
+                if (marination_time.Count > 0)
+                {
+                    obj.Marination_time = Convert.ToDecimal(marination_time[0].Marination_time);
+                }
+
                 var wait_time = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectWaitTime).ToList();
                 if (wait_time.Count > 0)
                 {
@@ -250,6 +259,14 @@ namespace SgqSystem.Controllers.Api.Relatorios
                     obj.Max_time1 = Convert.ToDecimal(wait_time[0].TempoMaximo1);
                     obj.Max_time2 = Convert.ToDecimal(wait_time[0].TempoMaximo2);
                 }
+
+                var Foss1 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectFoss1).ToList();
+                if (Foss1.Count > 0)
+                    obj.Foss_used_for_pull = Convert.ToDecimal(Foss1[0].PorcC);
+
+                var Foss2 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectFoss2).ToList();
+                if (Foss2.Count > 0)
+                    obj.Foss_used_for_packing = Convert.ToDecimal(Foss2[0].PorcC);
 
                 var pull_moisture_avg = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectPullMoistureAVG).ToList();
                 if (pull_moisture_avg.Count > 0)
@@ -360,15 +377,12 @@ namespace SgqSystem.Controllers.Api.Relatorios
             obj.Porc_purge_target = 6; //dado correto
             obj.Porc_purge = null;
 
-            obj.Cooking = null;
+            obj.Cooking = form.startDate.ToString("dd/MM/yyyy");
             obj.Marination_time_max = 96; //dado correto
             obj.Marination_time_min = 44; //dado correto
-            obj.Marination_time = null;
             obj.Time_by_sample1 = null;
             obj.Time_by_sample2 = null;
 
-            obj.Foss_used_for_pull = null;
-            obj.Foss_used_for_packing = null;
             obj.Cooking_time_target = "4:15"; //dado correto
             obj.Cooking_time_avg = null;
             obj.Standard_pull_moisture_max = (decimal)32.0; //dado correto
@@ -385,8 +399,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
             obj.Final_product_thickness_max = (decimal)5.78; //dado correto
             obj.Final_product_thickness_min = (decimal)4.20; //dado correto
             obj.Out_of_spec_target = 39; //dado correto
-            obj.Porc_lsl = 20; //dado correto
-            obj.Porc_usl = 10; //dado correto
+            obj.Porc_lsl = null;  //************* TARGET 20% *************
+            obj.Porc_usl = null;  //************* TARGET 10% *************
             obj.Filters_on_smokehouse_exhaustion = "All Smokehouses"; //dado correto
             obj.Reprocessing_target = 1; //dado correto
             //obj.Observations = null;
