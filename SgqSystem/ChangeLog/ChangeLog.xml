@@ -2782,4 +2782,20 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-683</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Relatório de Resultado Seara - Adição da opção de download do gráfico como imagem.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-682</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Apontamentos Diários - Adicionada lógica na edição do relatório para funcionar corretamente para Seara.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>

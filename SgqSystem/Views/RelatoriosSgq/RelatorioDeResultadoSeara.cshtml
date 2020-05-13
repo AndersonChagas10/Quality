@@ -46,7 +46,7 @@
             <table id="tableGrafico1"></table>
         </div>
         <hr />
-        
+
         <div id="divApontamentos">
             <button type="button" class="btn btn-primary pull-left"
                     id="tabela" style="display:none">
@@ -164,7 +164,7 @@
                 $btn.button('reset');
                 closeLoader();
                 $('#tabela').show();
-                
+
             })
             .fail(function (jqXHR, textStatus, msg) {
                 //console.log(msg);
@@ -298,6 +298,17 @@
             Highcharts.chart('grafico1', {
                 credits: Chart.Credits(),
                 chart: Chart.Chart('column', 'xy'),
+                exporting: {
+                    chartOptions: {
+                        plotOptions: {
+                            series: {
+                                dataLabels: {
+                                    enabled: true
+                                }
+                            }
+                        }
+                    },
+                },
                 title: Chart.Titulo(tituloGrafico),
                 subtitle: Chart.Subtitulo("Por " + subtituloGrafico),
                 reflow: true,
@@ -850,7 +861,7 @@
                         config.Valores = [
                             //{ "title": "Conforme", "render": function () { return '{C}'; } },
                             //{ "title": "Avaliado", "render": function () { return '{Av}'; } },
-                            { "title": "% C", "render": function () { return '<a style="color:#000 !important;font-weight:bold;" class="valores" data-titulo="{Cabecalho} | {Indicador}" data-tituloDesdobramento="' + config.tituloDesdobramento + '" data-serviceProviderId="{ServiceProviderId}">{PorcC}</a>'; },  "groupFunction": "AVG", "Exp": "({Conforme}/{Avaliado})*100" }
+                            { "title": "% C", "render": function () { return '<a style="color:#000 !important;font-weight:bold;" class="valores" data-titulo="{Cabecalho} | {Indicador}" data-tituloDesdobramento="' + config.tituloDesdobramento + '" data-serviceProviderId="{ServiceProviderId}">{PorcC}</a>'; },  "groupFunction": "AVG" }
                             ];
                         if (retornoArray.length > 0) {
                             HeatMap.Inicializar(
