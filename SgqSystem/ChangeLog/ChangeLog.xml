@@ -3382,4 +3382,54 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-683</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Relatório de Resultado Seara - Adição da opção de download do gráfico como imagem.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-682</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Apontamentos Diários - Adicionada lógica na edição do relatório para funcionar corretamente para Seara.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-685</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] AppColeta DCA - Criação do tipo de dado de entrada "Número de Defeitos com Texto".</Description>
+    <Script>
+      BEGIN
+      IF NOT EXISTS (SELECT
+      *
+      FROM ParLevel3InputType
+      WHERE Id = 15)
+      BEGIN
+      INSERT INTO ParLevel3InputType (Id, Name, Description, AddDate, IsActive) VALUES (15, 'Número de Defeitos com Texto', 'Número de Defeitos com Texto', GETDATE(), 1)
+      END
+      END
+      GO
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-649</CardNumber>
+    <Version>1.4.0</Version>
+    <Description> [MSP] Relatório Consistency Call - Ajustes de nomenclatura, retirada de itens, alterações nas queries e correções de lógica.</Description>
+    <Script>
+    </Script>
+  </Card>
+  
+  <Card>
+    <CardNumber>SGQ-674</CardNumber>
+    <Version>1.4.0</Version>
+    <Description> [MSP] Relatório Consistency Call - Adição de queries para os campos "Marination time", "Foss 1" e "Foss 2".</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>

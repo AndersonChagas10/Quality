@@ -54,8 +54,10 @@ namespace Dominio
 
         public bool IsAtiveNA { get; set; }
 
+        [NotMapped]
         public string DefaultMessageText { get; set; }
 
+        [NotMapped]
         public int? StringSizeAllowed { get; set; }
 
         [ForeignKey("ParCluster_Id")]

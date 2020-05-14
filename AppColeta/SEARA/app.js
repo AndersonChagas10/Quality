@@ -140,6 +140,7 @@ function changeDate(that) {
     openMensagem("Alterando data...", "blue", "White");
 
     _writeFile("appParametrization.txt", '', function () {
+        GetAppParametrization123()
     });
 
     var horas = "00:00:00";
