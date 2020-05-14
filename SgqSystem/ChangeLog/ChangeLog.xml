@@ -2815,6 +2815,21 @@
       GO
     </Script>
   </Card>
+
+  <Card>
+    <CardNumber>SGQ-649</CardNumber>
+    <Version>1.4.0</Version>
+    <Description> [MSP] Relatório Consistency Call - Ajustes de nomenclatura, retirada de itens, alterações nas queries e correções de lógica.</Description>
+    <Script>
+    </Script>
+  </Card>
   
+  <Card>
+    <CardNumber>SGQ-674</CardNumber>
+    <Version>1.4.0</Version>
+    <Description> [MSP] Relatório Consistency Call - Adição de queries para os campos "Marination time", "Foss 1" e "Foss 2".</Description>
+    <Script>
+    </Script>
+  </Card>
 
 </Cards>
