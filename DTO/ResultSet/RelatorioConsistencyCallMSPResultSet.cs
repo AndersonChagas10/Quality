@@ -77,8 +77,8 @@ namespace DTO.ResultSet
         public decimal? Max_time2 { get; set; }
         public string Time_by_sample1 { get; set; }
         public string Time_by_sample2 { get; set; }
-        public string Foss_used_for_pull { get; set; }
-        public string Foss_used_for_packing { get; set; }
+        public decimal? Foss_used_for_pull { get; set; }
+        public decimal? Foss_used_for_packing { get; set; }
         public string Cooking_time_target { get; set; }
         public string Cooking_time_avg { get; set; }
         public decimal? Standard_pull_moisture_max { get; set; }
@@ -1242,6 +1242,67 @@ namespace DTO.ResultSet
                      AND c.ParLevel1_Id = 205 
                      AND c.ParLevel2_Id = 729
                      AND r.parlevel3_id = 2005";
+
+            return query;
+        }
+
+        public string SelectMarinationTime(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                    --Marination Time
+                    SELECT
+                    AVG(CAST(R.Value AS DECIMAL(38,8))) AS Marination_time
+                    FROM CollectionLevel2 C
+                    INNER JOIN Result_Level3 R
+                    ON C.ID = R.CollectionLevel2_Id
+                    WHERE 1=1
+                    AND CONVERT(DATE,C.CollectionDate) = '{dtInit}'
+                    AND ParLevel3_Id in (1908)
+                    GROUP BY r.ParLevel3_Name";
+
+            return query;
+        }
+
+        public string SelectFoss1(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                    --Foss1
+                    SELECT
+	                    ((SUM(R.WeiEvaluation) - SUM(R.WeiDefects)) / SUM(R.WeiEvaluation)) * 100 PorcC
+                    FROM CollectionLevel2 C
+                    INNER JOIN Result_Level3 R
+	                    ON C.Id = R.CollectionLevel2_Id
+                    WHERE 1 = 1
+                    AND CONVERT(DATE, C.CollectionDate) = '{dtInit}'
+                    AND ParLevel3_Id = 1999";
+
+            return query;
+        }
+
+        public string SelectFoss2(DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+            var dtF = form.endDate.ToString("yyyyMMdd");
+
+            var query = $@"
+
+                    --Foss2
+                    SELECT
+	                    ((SUM(R.WeiEvaluation) - SUM(R.WeiDefects)) / SUM(R.WeiEvaluation)) * 100 PorcC
+                    FROM CollectionLevel2 C
+                    INNER JOIN Result_Level3 R
+	                    ON C.Id = R.CollectionLevel2_Id
+                    WHERE 1 = 1
+                    AND CONVERT(DATE, C.CollectionDate) = '{dtInit}'
+                    AND ParLevel3_Id = 2000";
 
             return query;
         }

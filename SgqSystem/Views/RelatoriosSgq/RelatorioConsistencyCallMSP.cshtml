@@ -178,8 +178,10 @@
         };
 
         function MontaTabelaConsistencyCall(retornoArray) {
-            if(retornoArray.length == 0){
+            if(retornoArray.Product == null){
                 GuardJs.exibirMensagemAlerta(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
+                $("#divFlavor").hide();
+                $("#TabelaConsistencyCall").hide();
             }
 
             else {
@@ -193,7 +195,9 @@
                     montaLinha3Cols("Water % <b>(According to the marination time and flavor)</b>", retornoArray.PorcWater1, retornoArray.PorcWater2, "good", "good", "%", "%") +
                     montaLinha2Cols("Meat Age - Target (max)", retornoArray.Meat_age_target, "target", "") +
                     montaLinha2Cols("Meat Age (average in days)", retornoArray.Meat_age_avg , retornoArray.Meat_age_avg <= retornoArray.Meat_age_target ? "good" : "bad", "") +
-                    montaLinha3Cols("Meat Age (minimum and maximum)", retornoArray.Meat_age_min_max1, retornoArray.Meat_age_min_max2, "good", "bad", "", "") +
+                    montaLinha3Cols("Meat Age (minimum and maximum)", retornoArray.Meat_age_min_max1, retornoArray.Meat_age_min_max2,
+                        retornoArray.Meat_age_min_max1 <= retornoArray.Meat_age_target ? "good" : "bad", 
+                        retornoArray.Meat_age_min_max2 <= retornoArray.Meat_age_target ? "good" : "bad", "", "") +
                     montaLinha2Cols("Flats", retornoArray.Flats, "good", "%") +
                     montaLinha2Cols("Insides", retornoArray.Insides, "good", "%") +
                     montaLinha2Cols("Eyes", retornoArray.Eyes, "good", "%") +
@@ -259,8 +263,8 @@
 
                 var classPackingWaterActivity = retornoArray.Packing_water_activity <= retornoArray.Packing_water_activity_max ? "good" : "bad";
                 var tableCooking2 = "<table class='table table-hover table-striped'><tbody>" +
-                montaLinha3Cols("Foss used for pull moisture","Foss 1", retornoArray.Foss_used_for_pull, "", "", "", "%") +
-                montaLinha3Cols("Foss used for packing moisture", "Foss 2", retornoArray.Foss_used_for_packing, "", "", "", "%") +
+                montaLinha3Cols("Foss used for pull moisture","Foss 1", retornoArray.Foss_used_for_pull, "", "good", "", "%") +
+                montaLinha3Cols("Foss used for packing moisture", "Foss 2", retornoArray.Foss_used_for_packing, "", "good", "", "%") +
                 montaLinha2Cols("Cooking time Target", retornoArray.Cooking_time_target, "target", "") +
                 montaLinha2Cols("Cooking time average (hours:min)", retornoArray.Cooking_time_avg, "good", "") +
                 montaLinha2Cols("Standard pull moisture (max)", retornoArray.Standard_pull_moisture_max, "target", "%") +
@@ -268,7 +272,7 @@
                 montaLinha2Cols("Pull moisture average", retornoArray.Pull_moisture_avg,
                         retornoArray.Pull_moisture_avg >= retornoArray.Standard_pull_moisture_min && retornoArray.Pull_moisture_avg <= retornoArray.Standard_pull_moisture_max ? "good" : "bad", "%") +
                 montaLinha3Cols("Staging room temperature (F) <b>Target 48F</b>", retornoArray.Staging_room_temperature1, retornoArray.Staging_room_temperature2,
-                        retornoArray.Staging_room_temperature1 <= 48 ? "good" : "bad",
+                        retornoArray.Staging_room_temperature1 <= 8.88889 ? "good" : "bad",
                     retornoArray.Staging_room_temperature2 <= 48 ? "good" : "bad", "°C", "°F") +
                     "<tr><td scope='row' class='firstCol'> Packing Water Activity Target (max) </td><td colspan='2' align='center' class='target'>" + retornoArray.Packing_water_activity_max.toFixed(3) + "</td></tr>" +
                     "<tr><td scope='row' class='firstCol'> Packing Water Activity </td><td colspan='2' align='center' class='"+ classPackingWaterActivity +"'>" + retornoArray.Packing_water_activity.toFixed(3) + "</td></tr>" +
