@@ -686,10 +686,10 @@ function getNumerodeDefeitosComTexto(level3) {
 
     html +=
         '<div class="col-xs-6 no-gutters">' +
-        '<div class="col-xs-5">' +
+        '<div class="col-xs-2">' +
         botao +
         '</div>' +
-        '<div class="col-xs-5">' +
+        '<div class="col-xs-8">' +
         input +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
