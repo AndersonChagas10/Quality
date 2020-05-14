@@ -62,6 +62,7 @@ function openColetaDCA(levels) {
                         getParHeaderFieldDeparment() +
         '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
                             coleta +
+        '					<button class="btn btn-success pull-right" data-salvar-tarefas style="margin:10px 25px">Salvar todas as tarefas</button>       ' +
         '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar-dca style="margin-top:10px" disabled>Salvar</button>       ' +
         '				</form>                                                                                                                    ' +
         '			  </div>                                                                                                                       ' +
@@ -152,6 +153,9 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
                 break;
             case 2: //Numerodedefeitos
                 retorno += getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC);
+                break;
+            case 15: //NumerodedefeitosComTexto
+                retorno += getNumerodeDefeitosComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC);
                 break;
             case 6: //BinárioComTexto
                 retorno += getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC);
@@ -552,6 +556,36 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     return html;
 }
 
+function getNumerodeDefeitosComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
+    var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
+    var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
+    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
+
+    var html = '';
+
+    html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info-limitenc><div class="col-xs-4"><small style="font-weight:550 !important">' + level3.Name + '</small></div></a>';
+
+    var htmlAmostra = '<div class="col-xs-2">Amostras: <spam class="amostra hide">' + (amostraAtual > amostraTotal ? amostraTotal : amostraAtual) + '</spam>' + amostraTotal + '</div>';
+    var htmlAmostraNC = '<div class="col-xs-2 amostras-nc">Amostras NC: <spam class="amostraNC">' + amostraNC + '</spam></div>';
+
+    html +=
+        htmlAmostra +
+        htmlAmostraNC +
+        '<div class="col-xs-4 no-gutters">' +
+        '<div class="col-xs-4" style="padding:0 2px 0 2px !important">' +
+        '	<input type="number" class="col-xs-12 input-sm" data-valor/>' +
+        '</div>' +
+        '<div class="col-xs-4" style="padding:0 2px 0 2px !important">' +
+        '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
+        '</div>' +
+        '<div class="col-xs-2" >' + btnNA + '</div>' +
+        '<div class="col-xs-2" >' + btnColeta + '</div>' +
+        '</div>' +
+        '<div class="clearfix"></div>';
+
+    return html;
+}
+
 function getLikertDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
@@ -786,7 +820,7 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
     var parParLevel3InputType_Id =  linhaTarefa.attr('data-parlevel3inputtype');
     var numeroProximaAmostra = currentSample;
 
-    if(parParLevel3InputType_Id == 2){
+    if (parParLevel3InputType_Id == 2 || parParLevel3InputType_Id == 15){
 
         var quantidadeDeDefeitos = linhaTarefa.find('input[type="number"]').val();
         
@@ -1292,6 +1326,20 @@ function verificaSalvar(){
         habilitaBotaoSalvar();
 
 }
+
+
+$('body').off('click', '[data-salvar-tarefas]').on('click', '[data-salvar-tarefas]', function (e) {
+    e.preventDefault();
+    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
+    for (var i = 0; i < linhasDaColeta.length; i++) {
+        var data = linhasDaColeta[i];
+        var btnSalvarTarefa = $('form[data-form-coleta] div[data-linha-coleta] [data-coleta-dca]')[i];
+        var amostraCompleta = $(data).attr('data-amostra-completa');
+        if (amostraCompleta != '1') {
+            $(btnSalvarTarefa).trigger('click');
+        }
+    }
+});
 
 $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', function (e) {
 

@@ -40,5 +40,9 @@ namespace DTO.ResultSet
         public string Espessura_T1 { get; set; }
         public string Espessura_T2 { get; set; }
         public string Kg { get; set; }
+        public string Amostras { get; set; }
+        public string Avaliacao { get; set; }
+        public string Marination_time { get; set; }
+        public string PorcC { get; set; }
     }
 }
