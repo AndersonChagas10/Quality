@@ -257,7 +257,8 @@ namespace DTO.DTO.Params
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//BINARIO
+                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
+                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//BINARIO
                     {
                         return IsConform.GetValueOrDefault() ? "1" : "0";
                     }
@@ -519,6 +520,26 @@ namespace DTO.DTO.Params
                           </div>";
         }
 
+        public bool IndicadorVinculadoAFamiliaDeProduto { get; set; } = false;
+
+        private bool MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(ParLevel3ValueDTO parLevel3ValueDTO)
+        {
+            if(parLevel3ValueDTO == null)
+            {
+                return false;
+            }
+
+            using (var databaseSgq = new SgqDbDevEntities())
+            {
+                databaseSgq.Configuration.LazyLoadingEnabled = false;
+                this.IndicadorVinculadoAFamiliaDeProduto = databaseSgq.ParLevel1XParFamiliaProduto
+                    .Any(x => x.IsActive == true && x.ParLevel1_Id == this.CollectionLevel2.ParLevel1_Id);
+            }
+            if (parLevel3ValueDTO.ParLevel3InputType_Id == 2 && IndicadorVinculadoAFamiliaDeProduto)
+                return true;
+            return false;
+        }
+
         public string showGeneric
         {
             get
@@ -534,7 +555,8 @@ namespace DTO.DTO.Params
                             .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                             .ToList();
 
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull())
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull()
+                            || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))
                             return mountHtmlConform();
                         else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2).IsNotNull())
                             return mountHtmlNumeroDefeitos();

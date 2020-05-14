@@ -437,7 +437,7 @@ namespace Data.Repositories
             //paramNotConformityRuleXLevel.ParLevel3_Id = ParLevel3_Id;
 
             //MOCK
-            paramNotConformityRuleXLevel.ParCompany_Id = 1;
+            paramNotConformityRuleXLevel.ParCompany_Id = null;
             if (paramNotConformityRuleXLevel.Id == 0)
             {
                 db.ParNotConformityRuleXLevel.Add(paramNotConformityRuleXLevel);
