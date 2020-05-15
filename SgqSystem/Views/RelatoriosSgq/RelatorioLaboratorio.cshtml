@@ -83,7 +83,6 @@
             display: table;
             height: 100%;
         }
-        
     </style>
 
     <div class="page-content-wrapper">
@@ -137,7 +136,7 @@
 
         $.ajax({
             data: JSON.stringify(objFiltro),
-            url:  urlBuscaDados,
+            url: urlBuscaDados,
             type: 'POST',
             dataType: "JSON",
             success: retornoAjax,
@@ -354,7 +353,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento }"></div>
+                <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento}"></div>
                 <div class="row select-filter" select-filter>
                     <div class="col-sm-12">
                         <form class="form-inline">
@@ -447,37 +446,51 @@
 
     function aplicarDistinctNaLista(lista, listaDePropriedades, listaDeValores) {
 
-        let listaDistinct = [];
+        return new Promise(async resolve => {
 
-        let arrColuna = [... new Set(lista.map(x => x[listaDePropriedades[1]]))];
-        let arrLinha = [... new Set(lista.map(x => x[listaDePropriedades[0]]))];
+            let listaDistinct = [];
 
-        arrColuna.sort();
-        arrLinha.sort();
+            let arrColuna = await new Promise(resolve => {
 
-        arrColuna.forEach((coluna) => {
+                let arrColuna = [... new Set(lista.map(x => x[listaDePropriedades[1]]))];
+                arrColuna.sort();
 
-            arrLinha.forEach((linha) => {
-
-                let arrFiltrados = lista.filter(x => x[listaDePropriedades[1]] == coluna && x[listaDePropriedades[0]] == linha);
-
-                let qtdeNC = null;
-                let amostragem = null;
-                let percNC = null
-
-                if (arrFiltrados.length > 0) {
-                    qtdeNC = arrFiltrados.map(x => x.NC).reduce((accumulator, currentValue) => accumulator += currentValue);
-                    amostragem = arrFiltrados.map(x => x.AV).reduce((accumulator, currentValue) => accumulator += currentValue);
-                    percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
-                }
-
-                listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
+                resolve(arrColuna);
 
             });
 
-        });
+            let arrLinha = await new Promise(resolve => {
 
-        return listaDistinct;
+                let arrLinha = [... new Set(lista.map(x => x[listaDePropriedades[0]]))];
+                arrLinha.sort();
+                resolve(arrLinha);
+            });
+
+            for (const [index, coluna] of arrColuna.entries()) {
+
+                for (const [index, linha] of arrLinha.entries()) {
+
+                    let arrFiltrados = lista.filter(x => x[listaDePropriedades[1]] == coluna && x[listaDePropriedades[0]] == linha);
+
+                    let qtdeNC = null;
+                    let amostragem = null;
+                    let percNC = null
+
+                    if (arrFiltrados.length > 0) {
+                        qtdeNC = arrFiltrados.map(x => x.NC).reduce((accumulator, currentValue) => accumulator += currentValue);
+                        amostragem = arrFiltrados.map(x => x.AV).reduce((accumulator, currentValue) => accumulator += currentValue);
+                        percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
+                    }
+
+                    listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
+
+                }
+
+            }
+
+            resolve(listaDistinct);
+
+        });
     }
 
     $('#btnToggleDivFilterReports').on('click', () => {
@@ -537,7 +550,9 @@
         }
     }
 
-    function gerarMatriz(data, numeroDesdobramento, linha, coluna) {
+    async function gerarMatriz(data, numeroDesdobramento, linha, coluna) {
+
+        let dados = await aplicarDistinctNaLista(data, [linha, coluna]);
 
         let w = $('#container').innerWidth();
         let idMatriz = "#placeholder_" + numeroDesdobramento;
@@ -562,7 +577,7 @@
         config.Indicador = `<a class="indicador" data-key="${linha}" data-titulo="{${linha}}" data-tituloDesdobramento="${config.tituloDesdobramento}">{${linha}}</a>`;
         config.tituloIndicador = linha;
         config.tituloColuna = coluna;
-        config.json = aplicarDistinctNaLista(data, [linha, coluna]);
+        config.json = dados;
         config.idPlaceholder = idMatriz;
         config.cellWidth = "150";
         config.heatmapType = "line";
@@ -666,7 +681,7 @@
 
     let elementLoading = null;
 
-    function setLoading(elem) {
+    async function setLoading(elem) {
 
         elementLoading = $(elem);
 
@@ -674,9 +689,10 @@
 
     }
 
-    function removeLoading() {
+    async function removeLoading() {
         if (elementLoading)
             $(elementLoading).button('reset');
+
     }
 
 </script>
