@@ -576,7 +576,7 @@ function getNumerodeDefeitosComTextoDCA(level3, amostraAtual, amostraTotal, amos
         '	<input type="number" class="col-xs-12 input-sm" data-valor/>' +
         '</div>' +
         '<div class="col-xs-4" style="padding:0 2px 0 2px !important">' +
-        '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
+        '	<input type="text" class="col-xs-12 input-sm" data-texto placeholder="Observações"/>' +
         '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
         '<div class="col-xs-2" >' + btnColeta + '</div>' +
