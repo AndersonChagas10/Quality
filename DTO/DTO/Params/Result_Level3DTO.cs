@@ -187,7 +187,7 @@ namespace DTO.DTO.Params
 
                     try
                     {
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 2)) != null)
                             return "0";
                     }
                     catch (Exception e)
@@ -196,15 +196,15 @@ namespace DTO.DTO.Params
                         throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 1", e);
                     }
 
-                    try
-                    {
-                        if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2) != null)//NUMERO DEFEITOS
-                            return Value.ToString();
-                    }
-                    catch (Exception e)
-                    {
-                        throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 2", e);
-                    }
+                    //try
+                    //{
+                    //    if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2) != null)//NUMERO DEFEITOS
+                    //        return Value.ToString();
+                    //}
+                    //catch (Exception e)
+                    //{
+                    //    throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 2", e);
+                    //}
 
                     try
                     {
@@ -534,7 +534,7 @@ namespace DTO.DTO.Params
                             .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                             .ToList();
 
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull())
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6 || r.ParLevel3InputType_Id == 2)).IsNotNull())
                             return mountHtmlConform();
                         else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2).IsNotNull())
                             return mountHtmlNumeroDefeitos();

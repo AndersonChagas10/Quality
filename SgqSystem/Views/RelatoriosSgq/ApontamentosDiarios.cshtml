@@ -804,12 +804,12 @@
             $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
                 $('.alertParReasonEditIsRequired').addClass('hide');
 
-            if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 1) {
-                $('.alertParReasonEditIsRequired').removeClass('hide');
-                //$('select[name="selectParReasonEdit"]:visible').attr('style','border:1px solid red;');
-                $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');
-                return;
-            }
+            //if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 1) {
+            //    $('.alertParReasonEditIsRequired').removeClass('hide');
+            //    //$('select[name="selectParReasonEdit"]:visible').attr('style','border:1px solid red;');
+            //    $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');
+            //    return;
+            //}
 
             $.post(urlSave + "/" + @Html.Raw(ViewBag.UserId) + "/" + selectParReasonEdit, dadosResultLevel3, function (r, x, e) {
 
