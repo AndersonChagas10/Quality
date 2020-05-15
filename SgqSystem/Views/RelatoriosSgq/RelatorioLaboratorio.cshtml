@@ -83,6 +83,14 @@
             display: table;
             height: 100%;
         }
+
+        #btnShowFilterChart {
+            float: right;
+        }
+
+        #divChangeFilterChart {
+            float: left;
+        }
     </style>
 
     <div class="page-content-wrapper">
@@ -704,22 +712,36 @@
 
         let options = keys.reduce((accumulator, currentValue) => accumulator += `<option value="${currentValue}" ${currentValue == preSelected ? "selected" : ""} >${currentValue}</option>`);
 
-        let html = `<select id="select-filter-chart">
-                    ${options}
-                    <select id="select-filter-chart">
-                    `;
+        let html = `<div id="divChangeFilterChart" hidden>
+                        <select id="select-filter-chart">
+                        ${options}
+                        <select id="select-filter-chart">
+                        <button type="button" onclick="changeFilterChart(this);" class="btn btn-primary" id="btnChangeFilterChart" title="Trocar Serie">Trocar</button>
+                    </div>
+                    <button type="button" onclick="showFilterChart();" class="btn-sm btn-default" id="btnShowFilterChart" title="Avançado"><i class="fa fa-cog"></i></button>`;
 
-        $("#filtroGrafico").html(html)
+        $("#filtroGrafico").html(html);
 
-        $('#select-filter-chart').off().on("change", function () {
+    }
 
-            //filtar dados do array
-            let dados = arrObjDados[0];
-            let serie = $(this).find('option:selected').val();
+    function changeFilterChart(thiss) {
 
-            gerarGrafico(dados, serie);
+        let dados = arrObjDados[0];
+        let serie = $(thiss).parent().find('#select-filter-chart option:selected').val();
 
-        });
+        gerarGrafico(dados, serie);
+        
+    }
+
+    function showFilterChart() {
+
+        if ($("#divChangeFilterChart").is(":hidden")) {
+            $("#divChangeFilterChart").show();
+
+        } else {
+            $("#divChangeFilterChart").hide();
+
+        }
     }
 
 </script>
