@@ -334,6 +334,7 @@
               <div class="row select-filter" select-filter-eixos="${numeroDesdobramento}" hidden>
                     <div class="col-sm-12">
                         <form class="form-inline">
+                          <strong>A matriz atual exibirá: </strong>
                           <div class="form-group">
                             <label for="coluna">Linha</label>
                             <select class="form-control" id="selectLinha_${numeroDesdobramento}">
@@ -347,7 +348,6 @@
                             </select>
                           </div>
                           <div class="form-group">
-                            <label for="coluna">Coluna</label>
                             ${botaoTrocarEixos}
                           </div>
                         </form>
@@ -411,6 +411,7 @@
         if (matrizAnterior === matrizAtual || newData.length === 0) {
             showMessage("Fim do desdobramento.");
             removeDivs(numeroDesdobramento);
+            removeLoading();
             return;
         }
 
