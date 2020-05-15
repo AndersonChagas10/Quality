@@ -3364,4 +3364,11 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-676</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] Relatório laboratório - Ajustes na matriz - Inserido filtro da matriz atual</Description>
+    <Script></Script>
+  </Card>
+
 </Cards>
