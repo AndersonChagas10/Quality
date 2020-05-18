@@ -1930,7 +1930,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereCriticalLevel +
                 whereParCompany +
             @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                 AND C.IsActive = 1        
             GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
         
@@ -1956,7 +1956,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereCriticalLevel +
                 whereParCompany +
             @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                 AND C.IsActive = 1
             GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
         
@@ -2073,7 +2073,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          whereCriticalLevel +
                          whereParCompany +
                       @"
-                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                         AND C.IsActive = 1
                       GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -2094,7 +2094,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          whereCriticalLevel +
                          whereParCompany +
                       @"
-                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                         AND C.IsActive = 1  
                       GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -2117,7 +2117,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          whereCriticalLevel +
                          whereParCompany +
                       @"
-                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                         AND C.IsActive = 1  
                       GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
