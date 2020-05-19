@@ -7753,6 +7753,15 @@ namespace SgqServiceBusiness.Api
 
                 input = html.campoHora(id: parLevel3.Id.ToString());
             }
+            else if (parLevel3.ParLevel3InputType_Id == 15)
+            {
+                classInput = " defects";
+                labels = html.campoTextoNumeroDefeitos(id: parLevel3.Id.ToString());
+                input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
+                                                intervalMin: parLevel3.IntervalMin,
+                                                intervalMax: parLevel3.IntervalMax,
+                                                unitName: parLevel3.ParMeasurementUnit_Name);
+            }
             else
             {
                 ///Campo interval está repetindo , falta o campo defeitos
