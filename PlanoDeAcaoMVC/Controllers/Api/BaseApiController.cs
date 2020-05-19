@@ -15,6 +15,7 @@ using DTO.Helpers;
 using PlanoDeAcaoMVC.PaMail;
 using System.Dynamic;
 using DTO;
+using System.Web;
 
 namespace PlanoDeAcaoMVC.Controllers.Api
 {
@@ -209,10 +210,12 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
                         var todoConteudo = string.Empty;
 
+                        string selfRoot = "http://localhost/" + VirtualPathUtility.ToAbsolute("~/");
+
                         if (!isAcompanhamento.GetValueOrDefault())
                         {
-                            var conteudoPlanejamento = GetExternalResponse(Conn.selfRoot + "/Pa_Planejamento/Details?id=" + idPlanejamento);
-                            var conteudoAcao = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Details?id=" + idAcao);
+                            var conteudoPlanejamento = GetExternalResponse(selfRoot + "/Pa_Planejamento/Details?id=" + idPlanejamento);
+                            var conteudoAcao = GetExternalResponse(selfRoot + "/Pa_Acao/Details?id=" + idAcao);
                             if (Conn.visaoOperacional)
                                 todoConteudo = conteudoAcao.Result;
                             else
@@ -220,7 +223,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                         }
                         else
                         {
-                            var conteudoAcompanhamento = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Acompanhamento?id=" + idAcao);
+                            var conteudoAcompanhamento = GetExternalResponse(selfRoot + "/Pa_Acao/Acompanhamento?id=" + idAcao);
                             todoConteudo = conteudoAcompanhamento.Result;
                         }
                         if (string.IsNullOrEmpty(emailTo))
