@@ -194,36 +194,43 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 using (var dbSgq = ConexaoSgq())
                 {
                     var paUser = Pa_Quem.Get(idQuem.GetValueOrDefault());
-                    dynamic enviarPara = dbSgq.QueryNinjaADO("SELECT * FROM UserSgq WHERE Name  = '" + paUser.Name + "'").FirstOrDefault();
-                    string emailTo = "";
-                    if (enviarPara != null)
-                    {
-                        emailTo = enviarPara.Email;
-                    }
 
-                    var todoConteudo = string.Empty;
-
-                    if (!isAcompanhamento.GetValueOrDefault())
+                    if (paUser.UserSgq_Id.IsNotNull())
                     {
-                        var conteudoPlanejamento = GetExternalResponse(Conn.selfRoot + "/Pa_Planejamento/Details?id=" + idPlanejamento);
-                        var conteudoAcao = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Details?id=" + idAcao);
-                        if (Conn.visaoOperacional)
-                            todoConteudo = conteudoAcao.Result;
+
+                        dynamic enviarPara = dbSgq.QueryNinjaADO($@"SELECT * FROM UserSgq WHERE Id = { paUser.UserSgq_Id }").FirstOrDefault();
+
+                        string emailTo = "";
+
+                        if (enviarPara != null)
+                        {
+                            emailTo = enviarPara.Email;
+                        }
+
+                        var todoConteudo = string.Empty;
+
+                        if (!isAcompanhamento.GetValueOrDefault())
+                        {
+                            var conteudoPlanejamento = GetExternalResponse(Conn.selfRoot + "/Pa_Planejamento/Details?id=" + idPlanejamento);
+                            var conteudoAcao = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Details?id=" + idAcao);
+                            if (Conn.visaoOperacional)
+                                todoConteudo = conteudoAcao.Result;
+                            else
+                                todoConteudo = conteudoPlanejamento.Result + conteudoAcao.Result;
+                        }
                         else
-                            todoConteudo = conteudoPlanejamento.Result + conteudoAcao.Result;
+                        {
+                            var conteudoAcompanhamento = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Acompanhamento?id=" + idAcao);
+                            todoConteudo = conteudoAcompanhamento.Result;
+                        }
+                        if (string.IsNullOrEmpty(emailTo))
+                        {
+                            emailTo = "gabriel@grtsolucoes.com.br";
+                            title += " (Destinatário sem Email)" + paUser.Name;
+                        }
+
+                        CreateMail(idPlanejamento, idAcao, emailTo, title, todoConteudo);
                     }
-                    else
-                    {
-                        var conteudoAcompanhamento = GetExternalResponse(Conn.selfRoot + "/Pa_Acao/Acompanhamento?id=" + idAcao);
-                        todoConteudo = conteudoAcompanhamento.Result;
-                    }
-                    if (string.IsNullOrEmpty(emailTo))
-                    {
-                        emailTo = "gabriel@grtsolucoes.com.br";
-                        title += " (Destinatário sem Email)" + paUser.Name;
-                    }
-                    //emailTo = "renan.santini@grtsolucoes.com.br";
-                    CreateMail(idPlanejamento, idAcao, emailTo, title, todoConteudo);
                 }
         }
 
