@@ -24,7 +24,7 @@ namespace SgqSystem.Controllers.Api
 
 SET LANGUAGE 'Portuguese';
 
-SELECT 
+SELECT --TOP 100
 	UPPER(S3.Name) AS cNmHolding,
 	UPPER(S2.Name) AS cNmRegional,
 	UPPER(S1.Name) AS cNmSubRegional,
@@ -34,21 +34,43 @@ SELECT
 	CASE
 		WHEN cNmTpColeta = 'Água' 
 			THEN 'ÁGUA'
-		WHEN cNmTpColeta IN ('Swab Pré-operacional','Swab Operacional') 
+		WHEN cNmTpColeta IN ('Swab Pré-operacional','Swab Operacional','Exposição de placa'/*ambiente*/) 
 			THEN 'AMBIENTE'
-		WHEN cNmTpColeta IN ('In natura','Subprodutos','Alimentos Preparados') 
+		WHEN cNmTpColeta IN ('In natura','Subprodutos','Alimentos Preparados','Não Destrutivo'/*cc*/,'Destrutiva'/*cc*/) --cc,Cortes, MP,charque
 			THEN 'PRODUTO'
+			--Carcaca
+			----dColetaAmostra vs dMovimento para Fria ou Quente em CC
+
 	END AS cNmVeiculos,
 	CUBO.dColetaAmostra,
-	YEAR(dColetaAmostra) AS dColetaAmostra_ANO,
-	MONTH(dColetaAmostra) AS dColetaAmostra_MES,
-	DATENAME(MONTH, dColetaAmostra) AS dColetaAmostra_MES_NOME,
-	LEFT(DATENAME(MONTH, dColetaAmostra), 3) AS dColetaAmostra_MES_SIGLA,
-	DAY(dColetaAmostra) AS dColetaAmostra_DIA,
-	DATENAME(WEEKDAY, dColetaAmostra) AS dColetaAmostra_DIA_SEMANA,
+	YEAR(dColetaAmostra) AS 'dColetaAmostra_ANO',
+	MONTH(dColetaAmostra) AS 'dColetaAmostra_MES',
+	CONCAT(RIGHT(CONCAT('0', MONTH(dColetaAmostra)), 2), '-', DATENAME(MONTH, dColetaAmostra)) AS 'dColetaAmostra_MES_NOME',
+	CONCAT(RIGHT(CONCAT('0', MONTH(dColetaAmostra)), 2), '-', LEFT(DATENAME(MONTH, dColetaAmostra), 3)) AS 'dColetaAmostra_MES_SIGLA',
+	DAY(dColetaAmostra) AS 'dColetaAmostra_DIA',
+	DATEPART(WEEKDAY, dColetaAmostra) AS 'dColetaAmostra_DIA_SEMANA_NUM',
+	CONCAT(RIGHT(CONCAT('0', DATEPART(WEEKDAY, dColetaAmostra)), 2), '-', DATENAME(WEEKDAY, dColetaAmostra)) AS 'dColetaAmostra_DIA_SEMANA',
 	CUBO.dProducao,
 	CUBO.nCdProduto,
-	P.cNmProduto,
+	CASE
+		WHEN CUBO.cNmTpColeta IN('Não Destrutivo'/*cc*/,'Destrutiva'/*cc*/)
+		THEN 'CARCARÇA'
+	ELSE P.cNmProduto
+	END cNmProduto,
+	CASE
+		WHEN CUBO.cNmTpColeta IN('Não Destrutivo'/*cc*/,'Destrutiva'/*cc*/)
+		THEN 'CARCARÇA'
+	ELSE P.cNmTipoProdutoAL
+	END cNmTipoProdutoAL,
+	CASE
+		WHEN CUBO.cNmTpColeta IN('Não Destrutivo'/*cc*/,'Destrutiva'/*cc*/)
+		THEN CASE
+				WHEN CAST(dColetaAmostra as date) = CAST(dMovimento AS DATE)
+				THEN 'FRIA'
+			 ELSE 'QUENTE'
+		END
+	ELSE P.cNmFamiliaSubGrupo
+	END cNmFamiliaSubGrupo,
 	CUBO.nCdAnalise,
 	CUBO.cNmAnalise,
 	CUBO.cGrupoColeta,
@@ -60,7 +82,11 @@ SELECT
 	CUBO.nCdSetor,
 	CUBO.cNmSetor,
 	CUBO.nCdTpColeta,
-	CUBO.cNmTpColeta,
+	CASE
+		WHEN CUBO.cNmTpColeta IN('Não Destrutivo'/*cc*/,'Destrutiva'/*cc*/)
+		THEN 'In natura'
+	ELSE CUBO.cNmTpColeta
+	END cNmTpColeta,
 	CUBO.nResultadoAnalise,
 	CUBO.cSgUnidadeMedidaLaboratorio,
 	CUBO.dMovimento,
@@ -94,10 +120,14 @@ SELECT
 	CUBO.cRastreabilidadeLaudo,
 	CUBO.Key_Integ,
 	CUBO.cResultadoAnalise,
-	CASE WHEN cResultadoAnalise = '3' THEN 'NC' ELSE 'C'
+	CASE
+		WHEN cResultadoAnalise = '3' THEN 'NC'
+		ELSE 'C'
 	END Conformidade,
 	1 AS AV,
-	CASE WHEN cResultadoAnalise = '3' THEN 1 ELSE 0
+	CASE
+		WHEN cResultadoAnalise = '3' THEN 1
+		ELSE 0
 	END NC
 	FROM INTEG.CollectionAnaliseLaboratorial CUBO WITH(NOLOCK)
 	LEFT JOIN Empresa E WITH(NOLOCK) ON CUBO.nCdEmpresa = E.nCdEmpresa
@@ -106,9 +136,11 @@ SELECT
 	LEFT JOIN ParStructure S1 WITH(NOLOCK) ON CS.ParStructure_Id = S1.Id
 	LEFT JOIN ParStructure S2 WITH(NOLOCK) ON S1.ParStructureParent_Id = S2.Id
 	LEFT JOIN ParStructure S3 WITH(NOLOCK) ON S2.ParStructureParent_Id = S3.Id
-	LEFT JOIN Produto P WITH(NOLOCK) ON CUBO.nCdProduto = P.nCdProduto
+	LEFT JOIN dbPlanejamentoGestao.dbo.DMProduto P WITH(NOLOCK) ON CUBO.nCdProduto = P.nCdProduto
+
 	WHERE 1 = 1
-	AND cNmTpColeta NOT IN('Não Destrutivo', 'Destrutiva', 'Exposição de placa')
+	--AND cNmTpColeta NOT IN('Não Destrutivo'/*cc*/,'Destrutiva'/*cc*/,'Exposição de placa'/*ambiente*/)
+	--AND cNmTpColeta = 'Exposição de placa'
 	AND C.IsActive = 1
 	AND CS.Active = 1
 	AND S1.Active = 1
