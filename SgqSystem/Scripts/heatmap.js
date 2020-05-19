@@ -133,11 +133,16 @@ var HeatMap = {
     percentageMax: 0.95,
     colorMax: "",
 
-    GambiarraDoRenan: function () {
+    RecalculaMatrizPorcentagem: function () {
 
-        //#DesculpaLeo
         //Recalcula totais para matriz com porcentagem de NC
+        HeatMap.minMaxPorIndicador = [];
+        HeatMap.minMedia = undefined;
+        HeatMap.minRodape = undefined;
+        HeatMap.maxMedia = undefined;
+        HeatMap.maxRodape = undefined;
 
+        //Total direita
         for (var j = 0; j < HeatMap.Indicadores.length; j++) {
             for (var z = 0; z < HeatMap.Valores.length; z++) {
 
@@ -150,12 +155,23 @@ var HeatMap = {
 
                 let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
 
+                let identificadorValores = HeatMap.idValores + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
+
+                $(identificadorValores).each(function (i, o) {
+                    var valor = ValorNumerico($(o).text());
+                    if (HeatMap.Valores[z]["heatmap"] == true && $(o).text() != HeatMap.valorVazio) {
+                        SetaMinimoMaximoPorIndicador(indicadorY, valor);
+                        SetaMinimoMaximo(valor);
+                    }
+                });
+
                 $(identificador).html(porcentagemNCTotal.toFixed(2));
 
                 SetaMinimoMaximoMedia(parseFloat($(identificador).html()));
             }
         }
 
+        //Total Rodapé
         for (var i = 0; i < HeatMap.Cabecalhos.length; i++) {
             for (var z = 0; z < HeatMap.Valores.length; z++) {
 
@@ -169,9 +185,12 @@ var HeatMap = {
                 let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
 
                 $(identificador).html(porcentagemNCTotal.toFixed(2));
+
+                SetaMinimoMaximoRodape(parseFloat($(identificador).html()));
             }
         }
 
+        //Total total
         for (var z = 0; z < HeatMap.Valores.length; z++) {
 
             let valorCabecalho = RetornaTituloValor(z);
@@ -184,7 +203,12 @@ var HeatMap = {
             let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
 
             $(identificador).html(porcentagemNCTotal.toFixed(2));
+            
         }
+
+        PreencheCalorNasCelulasValores();
+        PreencheCalorMedia();
+        PreencheCalorRodape();
     }
 
 }
