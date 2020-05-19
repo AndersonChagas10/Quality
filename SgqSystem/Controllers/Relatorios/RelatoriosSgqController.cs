@@ -1466,7 +1466,7 @@ namespace SgqSystem.Controllers
                              //       " " + whereCluster +
                              //       " " + whereStructure +
                              //       " " + whereCriticalLevel +
-                             //      "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null ";
+                             //      "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null ";
 
                              @" SELECT RegName as name,
                                  4 coolspan
@@ -1482,7 +1482,7 @@ namespace SgqSystem.Controllers
                                whereParCompany +
 
                              @"
-                                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                                 AND C.IsActive = 1
                 
                                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -1520,7 +1520,7 @@ namespace SgqSystem.Controllers
                 //          "\n LEFT JOIN #SCORE S  with (nolock)" +
                 //          "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
                 //          "\n  WHERE 1 = 1 " +
-                //          "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3 and PP1.Name is not null" +
+                //          "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6 and PP1.Name is not null" +
                 //           " " + whereClusterGroup +
                 //           " " + whereCluster +
                 //           " " + whereStructure +
@@ -1546,7 +1546,7 @@ namespace SgqSystem.Controllers
                    whereParCompany +
 
                  @"
-                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                     AND C.IsActive = 1
     
                     GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -1586,7 +1586,7 @@ namespace SgqSystem.Controllers
                              //       LEFT JOIN #SCORE S 
                              //        on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id
                              //       WHERE 1 = 1 -- AND S.Cluster IN(SELECT ID FROM ParCluster WHERE ParClusterGroup_Id = 8 AND IsActive = 1)
-                             //        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3   and PP1.Name is not null 
+                             //        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6   and PP1.Name is not null 
                              //          " + whereClusterGroup +
                              //          " " + whereCluster +
                              //          " " + whereStructure +
@@ -1611,7 +1611,7 @@ namespace SgqSystem.Controllers
                                whereParCompany +
 
                              @"
-                                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                                 AND C.IsActive = 1
                 
                                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -1642,7 +1642,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                 AND C.IsActive = 1
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -1673,7 +1673,7 @@ namespace SgqSystem.Controllers
                 //    "\n LEFT JOIN #SCORE S  with (nolock)" +
                 //    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
                 //    "\n  WHERE 1 = 1 " +
-                //    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3 and PP1.Name is not null " +
+                //    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6 and PP1.Name is not null " +
                 //     " " + whereClusterGroup +
                 //     " " + whereCluster +
                 //     " " + whereStructure +
@@ -1696,7 +1696,7 @@ namespace SgqSystem.Controllers
                    whereParCompany +
 
                  @"
-                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                     AND C.IsActive = 1
     
                     GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -1736,7 +1736,7 @@ namespace SgqSystem.Controllers
              //    "\n LEFT JOIN #SCORE S  with (nolock)" +
              //    "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
              //    "\n  WHERE 1 = 1 " +
-             //    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null " +
+             //    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null " +
              //     " " + whereClusterGroup +
              //     " " + whereCluster +
              //     " " + whereStructure +
@@ -2080,7 +2080,7 @@ namespace SgqSystem.Controllers
                              // " " + whereUnit +
                              ////"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                              //
-                             //"\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null  AND C.IsActive = 1 " +
+                             //"\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null  AND C.IsActive = 1 " +
                              //
                              //"\n ORDER BY 1";
 
@@ -2099,7 +2099,7 @@ namespace SgqSystem.Controllers
                                whereParCompany +
 
                              @"
-                                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                                 AND C.IsActive = 1
                 
                                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -2143,7 +2143,7 @@ namespace SgqSystem.Controllers
             //       " " + whereUnit +
             //      //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
             //
-            //      "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null  AND C.IsActive = 1" +
+            //      "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null  AND C.IsActive = 1" +
             //
             //    "\n GROUP BY PP1.Name " +
             //    "\n --ORDER BY 1";
@@ -2165,7 +2165,7 @@ namespace SgqSystem.Controllers
                whereParCompany +
 
              @"
-                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                     AND C.IsActive = 1
                     AND Reg.Name = '" + form.ParametroTableCol[0] + $@"'
                     GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -2213,7 +2213,7 @@ namespace SgqSystem.Controllers
              //                                 " " + whereUnit +
              //                                //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
              //
-             //                                "  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null   AND C.IsActive = 1" +
+             //                                "  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null   AND C.IsActive = 1" +
              //
              //                              " GROUP BY PP1.Name, C.Initials " +
              //             @") TOTALPOREMPRESA GROUP BY MACROPROCESSO";
@@ -2234,7 +2234,7 @@ namespace SgqSystem.Controllers
                whereParCompany +
 
              @"
-                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                     AND C.IsActive = 1
                     AND Reg.Name = '" + form.ParametroTableCol[0] + $@"'
                     GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -2278,7 +2278,7 @@ namespace SgqSystem.Controllers
             //         " " + whereUnit +
             //        //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
             //
-            //        "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null   AND C.IsActive = 1" +
+            //        "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null   AND C.IsActive = 1" +
             //
             //      "\n";
 
@@ -2333,7 +2333,7 @@ namespace SgqSystem.Controllers
                  //         " " + whereUnit +
                  //        //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                  //
-                 //        "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null   AND C.IsActive = 1" +
+                 //        "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null   AND C.IsActive = 1" +
                  //        "\n GROUP BY PP1.Name";
 
                  @" SELECT 6 AS QUERY,  PP1.Name as CLASSIFIC_NEGOCIO, NULL as MACROPROCESSO,
@@ -2354,7 +2354,7 @@ namespace SgqSystem.Controllers
 
                  @"
                     AND Reg.Active = 1 
-                    AND Reg.ParStructureGroup_Id = 3
+                    AND Reg.ParStructureGroup_Id = 6
                     AND C.IsActive = 1
                     AND Reg.Name = '" + form.ParametroTableCol[0] + $@"'
                     GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -2401,7 +2401,7 @@ namespace SgqSystem.Controllers
             //           " " + whereUnit +
             //          //"\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
             //
-            //          "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null  AND C.IsActive = 1" +
+            //          "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null  AND C.IsActive = 1" +
             //
             //        "\n GROUP BY PP1.Name, C.Initials " +
             //        "\n --ORDER BY 1, 2";
@@ -2735,7 +2735,7 @@ namespace SgqSystem.Controllers
                                whereParCompany +
 
                              @"
-                                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                                 AND C.IsActive = 1
                 
                                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -2774,7 +2774,7 @@ namespace SgqSystem.Controllers
                whereParCompany +
 
              @"
-                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                     AND C.IsActive = 1
                     GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
     
@@ -2811,7 +2811,7 @@ namespace SgqSystem.Controllers
                whereParCompany +
 
              @"
-                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                     AND C.IsActive = 1
                     GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
     
@@ -2850,7 +2850,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                 AND C.IsActive = 1
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -2882,7 +2882,7 @@ namespace SgqSystem.Controllers
 
                  @"
                     AND Reg.Active = 1 
-                    AND Reg.ParStructureGroup_Id = 3
+                    AND Reg.ParStructureGroup_Id = 6
                     AND C.IsActive = 1
                     GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
     
@@ -3230,7 +3230,7 @@ namespace SgqSystem.Controllers
                     whereParCompany +
 
                     $@"
-                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                     AND C.IsActive = 1
                 
                     GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -3282,7 +3282,7 @@ namespace SgqSystem.Controllers
               //         " " + whereCriticalLevel +
               //         " " + whereUnit +
               //         //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
-              //         "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null  AND C.IsActive = 1" +
+              //         "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null  AND C.IsActive = 1" +
               //         "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
               //       "\n GROUP BY P1.Name " +
               //       "\n --ORDER BY 1";
@@ -3352,7 +3352,7 @@ namespace SgqSystem.Controllers
                 //                     " " + whereCriticalLevel +
                 //                     " " + whereUnit +
                 //                     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
-                //                     "  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null   AND C.IsActive = 1" +
+                //                     "  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null   AND C.IsActive = 1" +
                 //                   " GROUP BY P1.Name,Reg.Name, C.Initials " +
                 // @") TOTALPOREMPRESA GROUP BY MACROPROCESSO";
 
@@ -3373,7 +3373,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               $@"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                 AND C.IsActive = 1
 
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -3422,7 +3422,7 @@ namespace SgqSystem.Controllers
                                //     " " + whereUnit +
                                //     //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                                // 
-                               //     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null   AND C.IsActive = 1" +
+                               //     "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null   AND C.IsActive = 1" +
                                //     "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                                //   "\n";
 
@@ -3486,7 +3486,7 @@ namespace SgqSystem.Controllers
                //  " " + whereUnit +
                //  //"\n WHERE Reg.Name = '" + form.ParametroTableCol[0] + "'" +
                //
-               //  "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null   AND C.IsActive = 1" +
+               //  "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null   AND C.IsActive = 1" +
                //  "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
                //  "\n GROUP BY P1.Name";
 
@@ -3554,7 +3554,7 @@ namespace SgqSystem.Controllers
             //      " " + whereStructure +
             //      " " + whereCriticalLevel +
             //      " " + whereUnit +
-            //      "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null  AND C.IsActive = 1" +
+            //      "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null  AND C.IsActive = 1" +
             //      "\n AND PP1.Name = '" + form.ParametroTableRow[0] + "'" +
             //    "\n GROUP BY P1.Name, Reg.Name " +
             //    "\n --ORDER BY 1, 2";
@@ -3886,7 +3886,7 @@ namespace SgqSystem.Controllers
                     whereParCompany +
 
                     $@"
-                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                    AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                     AND C.IsActive = 1
                 
                     GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -3964,7 +3964,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               $@"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                 AND C.IsActive = 1
 
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -4002,7 +4002,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                 AND C.IsActive = 1
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -4376,7 +4376,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                 AND C.IsActive = 1
 
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -4439,7 +4439,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                 AND C.IsActive = 1
 
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -4469,7 +4469,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               @"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                   AND C.IsActive = 1
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -4499,7 +4499,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
                 @"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                   AND C.IsActive = 1
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -4842,7 +4842,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               $@"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                 AND C.IsActive = 1
                     { whereCol }
                     { whereLin }    
@@ -4909,7 +4909,7 @@ namespace SgqSystem.Controllers
 
               $@"
                 AND Reg.Active = 1 
-                AND Reg.ParStructureGroup_Id = 3
+                AND Reg.ParStructureGroup_Id = 6
                 AND C.IsActive = 1
                     { whereCol }
                     { whereLin }    
@@ -4940,7 +4940,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               $@"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                   AND C.IsActive = 1
                     { whereCol }
                     { whereLin }    
@@ -4972,7 +4972,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
                 $@"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                   AND C.IsActive = 1
                     { whereCol }
                     { whereLin }    
@@ -5316,7 +5316,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               $@"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                 AND C.IsActive = 1
                     { whereCol }
                     { whereLin }    
@@ -5381,7 +5381,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
              $@"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                 AND C.IsActive = 1
                     { whereCol }
                     { whereLin }    
@@ -5414,7 +5414,7 @@ namespace SgqSystem.Controllers
               $@"
                     { whereCol } 
                     { whereLin }  
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                   AND C.IsActive = 1
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
             
@@ -5447,7 +5447,7 @@ namespace SgqSystem.Controllers
                 $@"
                     { whereCol }
                     { whereLin }    
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                   AND C.IsActive = 1
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
             
@@ -5786,7 +5786,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                 AND C.IsActive = 1
 
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -5854,7 +5854,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
              @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                 AND C.IsActive = 1
 
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -5887,7 +5887,7 @@ namespace SgqSystem.Controllers
 
 
               @"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                   AND C.IsActive = 1
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -5916,7 +5916,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
                 @"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                   AND C.IsActive = 1
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -5949,7 +5949,7 @@ namespace SgqSystem.Controllers
                whereParCompany +
 
                $@"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                   AND C.IsActive = 1
                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
             
@@ -6254,7 +6254,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               $@"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                 AND C.IsActive = 1
 
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -6332,7 +6332,7 @@ namespace SgqSystem.Controllers
             whereParCompany +
 
           $@"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6
                 AND C.IsActive = 1
 
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
@@ -6371,7 +6371,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
               $@"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                   AND C.IsActive = 1
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -6409,7 +6409,7 @@ namespace SgqSystem.Controllers
                 whereParCompany +
 
                 $@"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                   AND C.IsActive = 1
                 GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -6447,7 +6447,7 @@ namespace SgqSystem.Controllers
                whereParCompany +
 
                $@"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3        
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
                   AND C.IsActive = 1
                GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
             
@@ -6759,7 +6759,7 @@ namespace SgqSystem.Controllers
                      " " + whereStructure +
                      " " + whereCriticalLevel +
                      " " + whereUnit +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null ";
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null ";
 
 
             //Dados das colunas do corpo da tabela de dados central
@@ -6789,7 +6789,7 @@ namespace SgqSystem.Controllers
                      " " + whereStructure +
                      " " + whereCriticalLevel +
                      " " + whereUnit +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null " +
 
                   "\n GROUP BY Reg.Name, P1.Name" +
                   "\n --ORDER BY 1, 2";
@@ -6824,7 +6824,7 @@ namespace SgqSystem.Controllers
                      " " + whereStructure +
                      " " + whereCriticalLevel +
                      " " + whereUnit +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3 and PP1.Name is not null" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6 and PP1.Name is not null" +
 
                   "\n GROUP BY P1.Name " +
                   "\n --ORDER BY 1";
@@ -6858,7 +6858,7 @@ namespace SgqSystem.Controllers
                                  " " + whereStructure +
                                  " " + whereCriticalLevel +
                                  " " + whereUnit +
-                                "  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null " +
+                                "  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null " +
 
                               " GROUP BY Reg.Name, P1.Name " +
             @") TOTALPOREMPRESA GROUP BY MACROPROCESSO";
@@ -6894,7 +6894,7 @@ namespace SgqSystem.Controllers
                      " " + whereStructure +
                      " " + whereCriticalLevel +
                      " " + whereUnit +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null " +
 
                   "\n";
 
@@ -6922,7 +6922,7 @@ namespace SgqSystem.Controllers
                      " " + whereStructure +
                      " " + whereCriticalLevel +
                      " " + whereUnit +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3 and PP1.Name is not null " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6 and PP1.Name is not null " +
                     "\n GROUP BY P1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";
@@ -7217,7 +7217,7 @@ namespace SgqSystem.Controllers
                      " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null  AND C.IsActive = 1 " +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null  AND C.IsActive = 1 " +
 
                     "\n ORDER BY 1";
 
@@ -7251,7 +7251,7 @@ namespace SgqSystem.Controllers
                      " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null  AND C.IsActive = 1" +
 
                   "\n GROUP BY P1.Name, C.Initials " +
                   "\n --ORDER BY 1, 2";
@@ -7287,7 +7287,7 @@ namespace SgqSystem.Controllers
                      " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null  AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null  AND C.IsActive = 1" +
 
                   "\n GROUP BY P1.Name " +
                   "\n --ORDER BY 1";
@@ -7324,7 +7324,7 @@ namespace SgqSystem.Controllers
                             whereUnit +
                             " AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                            " AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null   AND C.IsActive = 1" +
+                            " AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null   AND C.IsActive = 1" +
 
                           " GROUP BY P1.Name, C.Initials " +
         @") TOTALPOREMPRESA GROUP BY MACROPROCESSO ";
@@ -7362,7 +7362,7 @@ namespace SgqSystem.Controllers
                     whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null   AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null   AND C.IsActive = 1" +
 
                   "\n";
 
@@ -7392,7 +7392,7 @@ namespace SgqSystem.Controllers
                      " " + whereUnit +
                     "\n AND P1.Name = '" + form.ParametroTableRow[0] + "'" +
 
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 3  and PP1.Name is not null   AND C.IsActive = 1" +
+                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null   AND C.IsActive = 1" +
                     "\n GROUP BY P1.Name";
 
             var orderby = "\n ORDER BY 1, 2, 3";

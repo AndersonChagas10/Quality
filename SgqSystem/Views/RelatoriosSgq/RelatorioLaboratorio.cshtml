@@ -83,6 +83,14 @@
             display: table;
             height: 100%;
         }
+
+        #btnShowFilterChart {
+            float: right;
+        }
+
+        #divChangeFilterChart {
+            float: left;
+        }
     </style>
 
     <div class="page-content-wrapper">
@@ -91,6 +99,7 @@
             <div class="loader" hidden></div>
 
             @*Grafico*@
+            <div id="filtroGrafico" class="select-filter"></div>
             <div id="container"></div>
 
             @* Matriz *@
@@ -125,6 +134,7 @@
 
         $('#container').html("");
         $('#placeholder').html("");
+        $('#filtroGrafico').html("");
 
         hideMessage();
         exibirLoader();
@@ -162,16 +172,18 @@
         if (!data.length) {
             showMessage("Sem dados.");
         } else {
-            gerarGrafico(data);
+            
+            appendChartFilter(Object.keys(data[0]), "cNmVeiculos");
+            gerarGrafico(data, "cNmVeiculos");
             gerarMapaCalor(data, 0, linha, coluna, false);
         }
     }
 
     //Gráfico
-    function gerarGrafico(data) {
+    function gerarGrafico(data, serie) {
 
         const categories = getCategories(data, "dColetaAmostra");
-        const series = getSeriesByCategories(data, categories);
+        const series = getSeriesByCategories(data, categories, serie);
 
         chart = Highcharts.chart('container', {
             chart: {
@@ -268,11 +280,11 @@
         return categoriesArr;
     }
 
-    function getSeriesByCategories(data, categories) {
+    function getSeriesByCategories(data, categories, serie) {
 
         const series = [];
 
-        seriesName = [... new Set(data.map(x => x["cNmVeiculos"]))];
+        seriesName = [... new Set(data.map(x => x[serie]))];
 
         seriesName.forEach((serieName) => { //seriesName
 
@@ -282,7 +294,7 @@
 
             categories.forEach((o) => { //datas
 
-                let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x["cNmVeiculos"] == serieName);
+                let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x[serie] == serieName);
 
                 if (arrFiltrado.length == 0) {
 
@@ -694,6 +706,42 @@
         if (elementLoading)
             $(elementLoading).button('reset');
 
+    }
+
+    function appendChartFilter(keys, preSelected) {
+
+        let options = keys.reduce((accumulator, currentValue) => accumulator += `<option value="${currentValue}" ${currentValue == preSelected ? "selected" : ""} >${currentValue}</option>`);
+
+        let html = `<div id="divChangeFilterChart" hidden>
+                        <select id="select-filter-chart">
+                        ${options}
+                        <select id="select-filter-chart">
+                        <button type="button" onclick="changeFilterChart(this);" class="btn btn-primary" id="btnChangeFilterChart" title="Trocar Serie">Trocar</button>
+                    </div>
+                    <button type="button" onclick="showFilterChart();" class="btn-sm btn-default" id="btnShowFilterChart" title="Avançado"><i class="fa fa-cog"></i></button>`;
+
+        $("#filtroGrafico").html(html);
+
+    }
+
+    function changeFilterChart(thiss) {
+
+        let dados = arrObjDados[0];
+        let serie = $(thiss).parent().find('#select-filter-chart option:selected').val();
+
+        gerarGrafico(dados, serie);
+        
+    }
+
+    function showFilterChart() {
+
+        if ($("#divChangeFilterChart").is(":hidden")) {
+            $("#divChangeFilterChart").show();
+
+        } else {
+            $("#divChangeFilterChart").hide();
+
+        }
     }
 
 </script>
