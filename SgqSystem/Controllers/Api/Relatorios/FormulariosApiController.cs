@@ -1,10 +1,21 @@
 ﻿using Dominio;
+using DTO;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.Relatorios
 {
+    public class Data
+    {
+        public List<JObject> Resultado { get; set; }
+
+       public Object Aprovador { get; set; }
+       public Object Elaborador { get; set; }
+       public Object RelatorioName { get; set; }
+    }
+
     [RoutePrefix("api/Formularios")]
     public class FormulariosApiController : BaseApiController
     {
@@ -12,19 +23,32 @@ namespace SgqSystem.Controllers.Api.Relatorios
         [HttpPost]
         public IHttpActionResult GetJsonFormulario([FromBody] DTO.DataCarrierFormularioNew form)
         {
-            List<JObject> resultado = new List<JObject>();
+            // List<JObject> resultado = new List<JObject>();
+
+            Data retorno = new Data();
 
             var indicador_Id = "0";
 
             if (form.ShowIndicador_Id.Length > 0)
                  indicador_Id = form.ShowIndicador_Id[0].ToString();
 
-            var query = $@"	
+      
+
+            using (var db = new SgqDbDevEntities())
+            {
+                retorno.Aprovador = getAprovadorName(form, db);
+
+                retorno.Elaborador = getElaboradorName(form, db);
+
+                retorno.RelatorioName = getRelatorioName(form, db);
+            }
+
+                var query = $@"	
 ---------------------------------------------------------------------------------------------------------------------------------	
 				
 -------------------------------------------------------------------------------------------------------------------------
 
-         DECLARE @DATEINI DATETIME = '2020-03-20 00:00:00' DECLARE @DATEFIM DATETIME = '2020-05-12 23:59:59';
+         DECLARE @DATEINI DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}' DECLARE @DATEFIM DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}';
 		 DECLARE @UNITID VARCHAR(10) = '31', @PARLEVEL1_ID VARCHAR(10) = '{indicador_Id}',@PARLEVEL2_ID VARCHAR(10) = '0';
 
 		 -------------------------------------------------------------------------------------------------------------------------
@@ -377,7 +401,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 UnidadeName as Unidade,
                 Cast(AV as int) as AV,
                 iif(NC = 1, ''C'' , ''NC'') as ''Resultado'',
-                ''Gabrielnunes-mtz'' as Visto,
+                ''{retorno.Aprovador}'' as Visto,
                 ''13:40'' as Hora 
 			INTO #CUBO_ACERTO
             FROM #CUBO C
@@ -403,13 +427,86 @@ DROP TABLE #CollectionLevel2
 
             ";
 
+            var query2 = $@"
+SELECT 
+                'IndicadorName' as Indicador,
+                'MonitoramentoName' as Setor,
+                'TarefaName' as 'Itens Verificados',
+                'Meta' as Meta,
+                --AVComPeso as ''AV com Peso'',
+                --nCComPeso as ''NC com Peso'',
+                'UnidadeName' as Unidade,
+                '1'as AV,
+                'NC'as 'Resultado',
+                '{retorno.Aprovador.ToString()}' as Visto,
+                '13:40' as Hora";
+
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
-                resultado = QueryNinja(dbSgq, query);
+                retorno.Resultado = QueryNinja(dbSgq, query2);
             }
 
-            return Ok(resultado);
+            //resultado[0].Property("nova").Values("oi");
+
+            //return Ok(resultado);
+            return Ok(retorno);
         }
 
+        private object getElaboradorName(DataCarrierFormularioNew form, SgqDbDevEntities db)
+        {
+            var whereCompany = "";
+            if(form.ParCompany_Ids.Length > 0)
+            {
+                whereCompany = $"AND RXU.Parcompany_Id = { form.ParCompany_Ids[0]}";
+            }
+
+            var SQL = $@"SELECT top 1
+                    Elaborador
+                    FROM ReportXUserSgq RXU      
+                    WHERE RXU.ParLevel1_Id = {form.ShowIndicador_Id[0]}
+                    {whereCompany} 
+                    OR RXU.Parcompany_Id IS NULL
+                    Order by RXU.Parcompany_Id desc";
+
+            return QueryNinja(db, SQL);
+        }
+
+        private object getRelatorioName(DataCarrierFormularioNew form, SgqDbDevEntities db)
+        {
+            var whereCompany = "";
+            if (form.ParCompany_Ids.Length > 0)
+            {
+                whereCompany = $"AND RXU.Parcompany_Id = { form.ParCompany_Ids[0]}";
+            }
+
+            var SQL = $@"SELECT top 1
+                    NomeRelatorio
+                    FROM ReportXUserSgq RXU      
+                    WHERE RXU.ParLevel1_Id = {form.ShowIndicador_Id[0]}
+                    {whereCompany} 
+                    OR RXU.Parcompany_Id IS NULL
+                    Order by RXU.Parcompany_Id desc";
+
+
+            return QueryNinja(db, SQL);
+        }
+
+        private object getAprovadorName(DataCarrierFormularioNew form, SgqDbDevEntities db)
+        {
+            var whereCompany = "";
+            if (form.ParCompany_Ids.Length > 0)
+            {
+                whereCompany = $"AND RXU.Parcompany_Id = { form.ParCompany_Ids[0]}";
+            }
+            var SQL = $@"SELECT top 1
+                    Aprovador
+                    FROM ReportXUserSgq RXU      
+                    WHERE RXU.ParLevel1_Id = {form.ShowIndicador_Id[0]}
+                    {whereCompany} 
+                    OR RXU.Parcompany_Id IS NULL
+                    Order by RXU.Parcompany_Id desc";
+
+            return QueryNinja(db, SQL)[0]["Aprovador"];
+        }
     }
 }

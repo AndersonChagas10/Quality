@@ -6,6 +6,8 @@
     ViewBag.Title = "Formulário";
 
     ViewBag.ShowIndicadorMER = true;
+    ViewBag.ShowRangeDate = true;
+    ViewBag.ShowParCompany = true;
 
     //var url = Url.Action("Index", "Home");
 
@@ -115,17 +117,17 @@
                                 <img height="90" class="img-responsive" src="~/Imagens/JBS_logo.jpg" />
                             </td>
 
-                            <td style="text-align:center; font-weight:bold;">Verificação MER</td>
+                            <td style="text-align:center; font-weight:bold;"><text id="tdNomeRelatorio"></text></td>
 
                             <td rowspan="3" class="col-xs-2">
                                 <img height="90" width="120" src="~/Imagens/novoLogoFriboi.PNG" />
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Elaborador:</strong> Lisha Stephanie Calil Czar/ GQU - AMS </td>
+                            <td><strong>Elaborador:</strong> <text id="tdElaborador"></text></td>
                         </tr>
                         <tr>
-                            <td><strong>Aprovador:</strong> Andréia Fernanda do Nascimento Scalon / GQU - AMS</td>
+                            <td><strong>Aprovador:</strong> <text id="tdAprovador"></text></td>
                         </tr>
                     </table>
                     <div>
@@ -179,9 +181,6 @@
             $('#printTitulo').html("Relatório Verificação MER");
             $("#printElaborador").html("Thais");
             $("#printAprovador").html("Camila");
-            //$("#printCodigoRodape").html(codigoRodape);
-            //$("#printImagemCabecalhoLeft").attr('src', imagemCabecalhoLeft);
-           // $("#printImagemCabecalhoRight").attr('src', imagemCabecalhoRight);
 
             printGRT.Inicializar({
 
@@ -222,14 +221,18 @@
                 type: 'POST',
                 contentType: "application/json",
                 success: function (data) {
+                    debugger
                     $btn.button('reset');
                     $(".loader").hide();
 
-                    if (data.length > 0) {
+                    if (data.Resultado.length > 0) {
                         $("#rodape").show();
                         $("#cabecalhoDiv").show();
+                        $("#tdElaborador").text(data.Elaborador[0]["Elaborador"]);
+                        $("#tdAprovador").text(data.Aprovador);
+                        $("#tdNomeRelatorio").text(data.RelatorioName[0]["NomeRelatorio"]);
                         $("#pivot-table").show();
-                        montaTabelaDinamica(data);
+                        montaTabelaDinamica(data.Resultado);
                     } else {
                         $("#mensagemSemDados").show();
                     }

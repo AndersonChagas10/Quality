@@ -2,6 +2,7 @@
 using DTO.DTO;
 using DTO.DTO.Params;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SgqService.ViewModels
 {
