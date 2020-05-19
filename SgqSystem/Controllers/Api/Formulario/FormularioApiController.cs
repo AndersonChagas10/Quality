@@ -1463,11 +1463,11 @@ namespace SgqSystem.Controllers.Api.Formulario
                 //Grupo de Cluster
                 if (form.ParClusterGroup_Ids.Length > 0)
                 {
-                    whereClusterGroup = $" AND PCG.Id IN ({ string.Join(",", form.ParClusterGroup_Ids) })";
+                    whereClusterGroup = $" AND PCG.Id IN ( { string.Join(",", form.ParClusterGroup_Ids) })";
                 }
 
                 //Cluster
-                if (form.ParClusterGroup_Ids.Length > 0)
+                if (form.ParCluster_Ids.Length > 0)
                     whereCluster = $" AND PCL.Id IN ({ string.Join(",", form.ParCluster_Ids) })";
 
                 if (form.ParCompany_Ids.Length > 0)
@@ -1479,7 +1479,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                     whereCentroCusto = $@"AND CentroCusto.Id IN ({string.Join(",", form.ParDepartment_Ids)})";
 
 
-                if (form.ParDepartment_Ids.Length > 0)
+                if (form.ParSecao_Ids.Length > 0)
                     whereSecao = $@"AND Secao.Id IN ({string.Join(",", form.ParSecao_Ids)})";
 
             }
