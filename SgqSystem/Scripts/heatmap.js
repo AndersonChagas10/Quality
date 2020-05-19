@@ -152,6 +152,7 @@ var HeatMap = {
 
                 $(identificador).html(porcentagemNCTotal.toFixed(2));
 
+                SetaMinimoMaximoMedia(parseFloat($(identificador).html()));
             }
         }
 
