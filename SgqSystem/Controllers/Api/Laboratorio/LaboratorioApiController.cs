@@ -218,7 +218,8 @@ SELECT --TOP 100
         public string cSinal2 { get; set; }
         public decimal nValor2 { get; set; }
         public string cRastreabilidadeLaudo { get; set; }
-        public string Key_Integ { get; set; }
+		public string cNmTipoProdutoAL { get; set; }
+		public string Key_Integ { get; set; }
         public decimal cResultadoAnalise { get; set; }
         public string Conformidade { get; set; }
         public int AV { get; set; }
