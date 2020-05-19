@@ -221,7 +221,8 @@ SELECT --TOP 100
 		public string cNmTipoProdutoAL { get; set; }
 		public string Key_Integ { get; set; }
         public decimal cResultadoAnalise { get; set; }
-        public string Conformidade { get; set; }
+		public string cNmFamiliaSubGrupo { get; set; }
+		public string Conformidade { get; set; }
         public int AV { get; set; }
         public int NC { get; set; }
     }
