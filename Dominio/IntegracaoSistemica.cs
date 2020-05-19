@@ -26,8 +26,10 @@ namespace Dominio
 
         public int Intervalo { get; set; }
 
+        [NotMapped]
         public DateTime? LastExecution { get; set; }
 
+        [NotMapped]
         public string ExecutionTime { get; set; }
 
         public bool IsActive { get; set; } = true;
