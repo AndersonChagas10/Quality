@@ -86,6 +86,27 @@ function openColeta(levels) {
     setBreadcrumbs();
 }
 
+function getBotaoBuscar() {
+    var botaoBuscar = '<div class="pull-right">                     ' +
+        '                  <label style="padding-right:5px">Buscar</label> ' +
+        '                  <input type="text" onkeyup="buscarItemNaLista(this)"/>' +
+        '              </div>';
+    return botaoBuscar
+}
+
+function buscarItemNaLista(input) {
+    $('body').off('keyup', input).on('keyup', input, function () {
+        $('button.list-group-item').each(function (i, o) {
+            var mostrarItem = $(o).html().toLowerCase().includes($(input).val().toLowerCase())
+            if (mostrarItem) {
+                $(o).show();
+            } else {
+                $(o).hide();
+            }
+        })
+    });
+}
+
 $('body')
     .off('click', '[data-collapse-targeter]')
     .on('click', '[data-collapse-targeter]', function () {
