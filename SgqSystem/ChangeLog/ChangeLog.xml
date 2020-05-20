@@ -3446,4 +3446,11 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-708</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[GQ] Relatório laboratório - Ajustes e melhorias na matriz - cursor pointer, mapa de calor e pre-seleção </Description>
+    <Script></Script>
+  </Card>
+
 </Cards>
