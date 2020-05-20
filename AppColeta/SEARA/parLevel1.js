@@ -33,10 +33,7 @@ function listarParLevel1(isVoltar) {
         '				    <h3 class="panel-title">' + voltar + ' Selecione o Indicador</h3>' +
         '                 </div >                                          ' +
         '                 <div class="col-xs-3">                           ' +
-        '                     <div class="pull-right">                     ' +
-        '                        <label style="padding-right:5px">Buscar</label> ' +
-        '                        <input id="buscarIndicador" type="text" />' +
-        '                     </div>                                       ' +
+        getBotaoBuscar()                                                     +
         '                 </div>                                           ' +
         '               </div>                                             ' +
 		'			  </div>                                               ' +

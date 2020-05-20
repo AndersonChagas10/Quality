@@ -2835,7 +2835,7 @@
   <Card>
     <CardNumber>SGQ-713</CardNumber>
     <Version>1.5.0</Version>
-    <Description> [SEARA] AppColeta - Criação de um campo de busca para os Indicadores.</Description>
+    <Description> [SEARA] AppColeta - Criação de um campo de busca nas listas do App.</Description>
     <Script>
     </Script>
   </Card>
