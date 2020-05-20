@@ -97,6 +97,8 @@ namespace Dominio.Seed
 
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "ParLevel1DCA", Value = "140", ControllerName = "", Descricao = "Id do indicador DCA da SEARA" });
 
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "desdobrarAutomatico", Value = "false", ControllerName = "", Descricao = "Desdobramento automático no AppColeta de Gestão" });
+
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys).ToList();
 
                 if (add.Count > 0)
