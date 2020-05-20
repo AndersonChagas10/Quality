@@ -91,6 +91,18 @@
         #divChangeFilterChart {
             float: left;
         }
+
+        #listaValores td {
+            cursor: pointer;
+        }
+
+        #listaInidicador td {
+            cursor: pointer;
+        }
+
+        #listaCabecalho th a {
+            cursor: pointer;
+        }
     </style>
 
     <div class="page-content-wrapper">
@@ -118,7 +130,7 @@
 
     @Scripts.Render("~/Scripts/heatmap.js")
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
     let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
 
@@ -172,7 +184,7 @@
         if (!data.length) {
             showMessage("Sem dados.");
         } else {
-            
+
             appendChartFilter(Object.keys(data[0]), "cNmVeiculos");
             gerarGrafico(data, "cNmVeiculos");
             gerarMapaCalor(data, 0, linha, coluna, false);
@@ -241,6 +253,9 @@
 
         $(`#selectLinha_${numeroDesdobramento}`).val(linha);
         $(`#selectColuna_${numeroDesdobramento}`).val(coluna);
+
+        $(`#select1_${ numeroDesdobramento }`).val(linha);
+        $(`#select2_${numeroDesdobramento}`).val(coluna);
 
         $(".select-filter select").select2({ width: '245px' });
     }
@@ -600,7 +615,7 @@
 
         HeatMap.Inicializar(config);
 
-        HeatMap.GambiarraDoRenan();
+        HeatMap.RecalculaMatrizPorcentagem();
 
         ajustaMatriz(idMatriz);
 
@@ -730,7 +745,7 @@
         let serie = $(thiss).parent().find('#select-filter-chart option:selected').val();
 
         gerarGrafico(dados, serie);
-        
+
     }
 
     function showFilterChart() {
@@ -744,6 +759,6 @@
         }
     }
 
-</script>
+    </script>
 
 }
