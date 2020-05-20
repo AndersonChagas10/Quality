@@ -55,6 +55,9 @@ namespace PlanoAcaoCore
                 if (o.Length >= 3)
                 {
                     var obj = o.Split('=');
+
+                    obj[1] = obj[0] == "emailPass" ? obj[1] += "==" : obj[1];
+
                     dict.Add(obj[0], obj[1]);
                 }
             }
