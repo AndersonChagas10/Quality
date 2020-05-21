@@ -6,7 +6,7 @@
     ViewBag.Title = "Formulário";
 
     ViewBag.ShowIndicadorMER = true;
-    ViewBag.ShowRangeDate = true;
+    ViewBag.ShowCurrentDate = true;
     ViewBag.ShowParCompany = true;
 
     //var url = Url.Action("Index", "Home");
@@ -104,10 +104,9 @@
         <br />
         <div class="page-content">
 
-
-
             <div class="loader" hidden></div>
             <div class="alert alert-info" role="alert" id="mensagemSemDados" hidden> Sem dados. </div>
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
             <div class="container-fluid">
                 <div id="cabecalhoDiv" class="row" hidden>
@@ -131,7 +130,7 @@
                         </tr>
                     </table>
                     <div>
-                        Data: ____/____/____
+                        Data: <text id="dataColeta"></text>
                     </div>
                 </div>
 
@@ -177,6 +176,8 @@
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
         var $btn = $('#btnSend');
 
+        $('[name="parCompany_Ids"]').parent().find('label strong').append('<span style="color:red;font-size:20px"> *</span>');
+
         $('body').on('click', '#btnPrint', function () {
             $('#printTitulo').html("Relatório Verificação MER");
             $("#printElaborador").html("Thais");
@@ -207,6 +208,12 @@
             if (!$("#divFilterReports").is(":hidden"))
                 toggleDivFilterReports();
 
+            if (!objFiltro.parCompany_Ids || objFiltro.parCompany_Ids.length < 0) {
+                GuardJs.exibirMensagemAlerta("Selecione uma Unidade.");
+                $("#mensagemSemDados").hide();
+                return false;
+            }
+
             $btn.button('loading');
             $(".loader").show();
 
@@ -215,26 +222,34 @@
             $("#cabecalhoDiv").hide();
             $("#pivot-table").hide();
 
+           
+
             $.ajax({
                 data: JSON.stringify(objFiltro),
                 url: urlBuscaDados,
                 type: 'POST',
                 contentType: "application/json",
                 success: function (data) {
-                    debugger
+                
                     $btn.button('reset');
                     $(".loader").hide();
-
                     if (data.Resultado.length > 0) {
+
+                        $("#mensagemSemDados").hide();
+                        $("#pivot-table").show();
+                        GuardJs.esconderMensagem();
                         $("#rodape").show();
                         $("#cabecalhoDiv").show();
+
                         $("#tdElaborador").text(data.Elaborador[0]["Elaborador"]);
                         $("#tdAprovador").text(data.Aprovador);
                         $("#tdNomeRelatorio").text(data.RelatorioName[0]["NomeRelatorio"]);
-                        $("#pivot-table").show();
+                        $("#dataColeta").text(data.Resultado[0]["Data da Coleta"]);
+                        
                         montaTabelaDinamica(data.Resultado);
                     } else {
                         $("#mensagemSemDados").show();
+                        GuardJs.esconderMensagem();
                     }
 
                 },
@@ -263,6 +278,7 @@
             var valores = [
                 //"AV com Peso",
                 //"NC com Peso",
+                "Data da Coleta",
                 "Hora",
                 "Resultado",
                 "Visto",
@@ -428,6 +444,7 @@
             }
             for (var i = 0; i < colspanTotal; i++) {
                 for (var j = 0; j < valores.length; j++) {
+                    console.log(valores[j]);
                     htmlTable += "<th>" + valores[j] + "</th>";
                 }
             }
@@ -514,7 +531,7 @@
                 for (var j = 0; j < attrLinha.length; j++) {
                     atributos[attrLinha[j].name] = attrLinha[j].value;
                 }
-
+                
                 var objAtributos = Object.keys(atributos);
                 for (var j = 0; j < listaObj.length; j++) {
                     var deuMatch = true;
@@ -527,8 +544,17 @@
                         }
                     }
                     if (deuMatch) {
+                        
                         ultimoObjeto = listaObj[j];
                         td.innerHTML = ultimoObjeto[td.getAttribute("data-value")];
+
+                        if (td.getAttribute("data-value") == "Resultado"
+                            && parseFloat(ultimoObjeto["NC"]) > 0) {
+                            td.style.backgroundColor = "black";
+                            td.style.color = "white";
+                            td.style.fontWeight = "bold";
+                        }
+
                         if (((1 + numeroObjeto) % valores.length) == 0) {
                             ultimoObjeto = undefined;
                             listaObj.splice(j, 1);

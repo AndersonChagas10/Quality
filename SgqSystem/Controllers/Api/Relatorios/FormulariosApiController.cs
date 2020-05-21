@@ -42,14 +42,15 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
                 retorno.RelatorioName = getRelatorioName(form, db);
             }
-
-                var query = $@"	
+            var query = $@"
+            	
 ---------------------------------------------------------------------------------------------------------------------------------	
 				
 -------------------------------------------------------------------------------------------------------------------------
 
-         DECLARE @DATEINI DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}' DECLARE @DATEFIM DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}';
-		 DECLARE @UNITID VARCHAR(10) = '31', @PARLEVEL1_ID VARCHAR(10) = '{indicador_Id}',@PARLEVEL2_ID VARCHAR(10) = '0';
+          DECLARE @DATEINI DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}' DECLARE @DATEFIM DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}';
+		 DECLARE @UNITID VARCHAR(10) = '{ form.ParCompany_Ids[0]}', @PARLEVEL1_ID VARCHAR(10) = '{indicador_Id}',@PARLEVEL2_ID VARCHAR(10) = '0';
+
 
 		 -------------------------------------------------------------------------------------------------------------------------
 		 -------------------------------------------------------------------------------------------------------------------------		 
@@ -228,6 +229,9 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         	CL2.id,
         	CL2.CollectionDate  AS ConsolidationDate,
         	CL2.UnitId,
+        	CL2.AuditorId,
+			CL2.EvaluationNumber,
+			CL2.Sample,
         	CL2.ParLevel1_Id,
         	CL2.ParLevel2_Id,
         	R3.ParLevel3_Id,
@@ -253,6 +257,10 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 
         SELECT 
         	 C1.ID
+			,C1.AuditorId
+			,U.Name AS AuditorName
+			,C1.EvaluationNumber
+			,C1.Sample
 			,CL.id						AS ParCluster_ID
         	,CL.Name					AS ParCluster_Name
         	,CS.ParStructure_id			AS ParStructure_id
@@ -366,6 +374,8 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         	LEFT JOIN ParCriticalLevel CRL WITH (NOLOCK)
         		ON L1C.ParCriticalLevel_id = CRL.id 
         		AND CRL.IsActive = 1
+			LEFT JOIN UserSGQ U
+				ON C1.AuditorId = U.ID
         
         GROUP BY
         	 CL.id						
@@ -387,6 +397,10 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         	,CRL.Name
         	,L1.IsRuleConformity
 			,C1.ID
+			,C1.AuditorId
+			,U.Name
+			,C1.EvaluationNumber
+			,C1.Sample
         
             update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta)) 
 
@@ -394,15 +408,22 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 IndicadorName as Indicador,
                 MonitoramentoName as Setor,
                 TarefaName as ''Itens Verificados'',
+				AuditorId,
+				AuditorName as Visto,
+				EvaluationNumber,
+				Sample,
                 H.*,
                 Meta as Meta,
                 --AVComPeso as ''AV com Peso'',
                 --nCComPeso as ''NC com Peso'',
                 UnidadeName as Unidade,
                 Cast(AV as int) as AV,
-                iif(NC = 1, ''C'' , ''NC'') as ''Resultado'',
-                ''{retorno.Aprovador}'' as Visto,
-                ''13:40'' as Hora 
+                Cast(NC as int) as NC,
+                iif(NC = 0, ''C'' , ''NC'') as ''Resultado'',
+                --''Célia Regina Mattia GQC/ANH'' as Visto,
+                CONVERT(VARCHAR(10), ConsolidationDate, 103) as ''Data da Coleta'',
+				CONVERT(CHAR(8),ConsolidationDate,108) as ''Hora''
+
 			INTO #CUBO_ACERTO
             FROM #CUBO C
 			LEFT JOIN #HeaderField H
@@ -420,35 +441,16 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 
 			';
 
-EXEC(@Header + @DEFECTS)
+            EXEC(@Header + @DEFECTS)
 
-DROP TABLE #CollectionLevel2
-
-
+            DROP TABLE #CollectionLevel2
+            
             ";
-
-            var query2 = $@"
-SELECT 
-                'IndicadorName' as Indicador,
-                'MonitoramentoName' as Setor,
-                'TarefaName' as 'Itens Verificados',
-                'Meta' as Meta,
-                --AVComPeso as ''AV com Peso'',
-                --nCComPeso as ''NC com Peso'',
-                'UnidadeName' as Unidade,
-                '1'as AV,
-                'NC'as 'Resultado',
-                '{retorno.Aprovador.ToString()}' as Visto,
-                '13:40' as Hora";
 
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
-                retorno.Resultado = QueryNinja(dbSgq, query2);
+                retorno.Resultado = QueryNinja(dbSgq, query);
             }
-
-            //resultado[0].Property("nova").Values("oi");
-
-            //return Ok(resultado);
             return Ok(retorno);
         }
 
