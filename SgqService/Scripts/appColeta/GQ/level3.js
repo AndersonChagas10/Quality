@@ -1527,7 +1527,7 @@ function saveResultLevel3() {
 
             } else if (inputType == 3) { //Intervalos
 
-                value = (level3).find('.levelValue').val();
+                value = converteParaFloat((level3).find('.levelValue').val());
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
 
             } else if (inputType == 4) { //Calcula valor do Campo Calculado
@@ -1559,18 +1559,18 @@ function saveResultLevel3() {
 
             } else if (inputType == 8) { //Escala Likert
 
-                value = (level3).find('.levelValue').val();
+                value = converteParaFloat((level3).find('.levelValue').val());
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
 
             } else if (inputType == 9) { //Intervalo com Observação
 
                 level3.attr('value', $(level3).find('.levelValueNotes').val());
-                value = (level3).find('.levelValue').val();
+                value = converteParaFloat((level3).find('.levelValue').val());
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
 
             } else if (inputType == 10) { //Resultado
 
-                value = (level3).find('.levelValue').val();
+                value = converteParaFloat((level3).find('.levelValue').val());
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
 
             } else if (inputType == 11) { //Observação
@@ -2098,6 +2098,11 @@ function saveResultLevel3() {
 
     createFileResult();
 
+}
+
+function converteParaFloat(item) {
+    var numeroConvertido = parseFloat(item.replace(',', '.'));
+    return numeroConvertido;
 }
 
 function resetLevel3(level3Group) {
