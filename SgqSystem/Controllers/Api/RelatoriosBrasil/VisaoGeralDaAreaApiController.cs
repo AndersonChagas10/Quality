@@ -1929,8 +1929,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereStructure +
                 whereCriticalLevel +
                 whereParCompany +
-            @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
+            $@"
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}         
                 AND C.IsActive = 1        
             GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
         
@@ -1955,8 +1955,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                 whereStructure +
                 whereCriticalLevel +
                 whereParCompany +
-            @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
+            $@"
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}         
                 AND C.IsActive = 1
             GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
         
@@ -2072,8 +2072,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          whereStructure +
                          whereCriticalLevel +
                          whereParCompany +
-                      @"
-                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
+                      $@"
+                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}         
                         AND C.IsActive = 1
                       GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -2093,8 +2093,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          whereStructure +
                          whereCriticalLevel +
                          whereParCompany +
-                      @"
-                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
+                      $@"
+                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}         
                         AND C.IsActive = 1  
                       GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -2116,8 +2116,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                          whereStructure +
                          whereCriticalLevel +
                          whereParCompany +
-                      @"
-                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
+                      $@"
+                        AND Reg.Active = 1 and Reg.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}         
                         AND C.IsActive = 1  
                       GROUP BY S.ParCompany_Id, S.ParCompanyName, C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -2621,7 +2621,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
             List<ParStructure> list = null;
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                string consulta = "select * from parstructure where parstructuregroup_id =2";
+                string consulta = $"select * from parstructure where ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup2 as string} ";
 
                 list = factory.SearchQuery<ParStructure>(consulta).ToList();
             }
