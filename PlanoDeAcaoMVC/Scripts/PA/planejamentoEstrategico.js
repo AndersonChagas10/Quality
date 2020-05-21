@@ -24,7 +24,9 @@
         $('#TaticoVinculado').show();
     }
     else if (isNovaAcao) {
+
         $('#NovaAcao').show();
+
         if (planejamentoCorrentId > 0) {
             $('#BuscarPlanejamentos').show();
         }
@@ -45,7 +47,6 @@
     }
     else {
         $('#NovoPlanejamento').show();
-
     }
 
     $('#Fechar').show();
@@ -71,27 +72,29 @@ function NovoPlanejamento() {//Pos Modal2
 
         } else {
             $('.novoItem ').show();
-            $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
-            //$('#Planejamento > table > tbody > tr:nth-child(10)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(15)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(16)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(21)').hide();
+
+            $('#Planejamento > table > tbody > tr .tatico').parents("tr").hide();
+
+            //$('#Planejamento > table > tbody > tr:nth-child(2)').hide();
+            //$('#Planejamento > table > tbody > tr:nth-child(3)').hide();
+            //$('#Planejamento > table > tbody > tr:nth-child(11)').hide();
+            //$('#Planejamento > table > tbody > tr:nth-child(12)').hide();
+            //$('#Planejamento > table > tbody > tr:nth-child(13)').hide();
+            //$('#Planejamento > table > tbody > tr:nth-child(14)').hide();
+            //$('#Planejamento > table > tbody > tr:nth-child(15)').hide();
+            //$('#Planejamento > table > tbody > tr:nth-child(16)').hide();
+            //$('#Planejamento > table > tbody > tr:nth-child(17)').hide();
+            //$('#Planejamento > table > tbody > tr:nth-child(18)').hide();
+            //$('#Planejamento > table > tbody > tr:nth-child(19)').hide();
+            //$('#Planejamento > table > tbody > tr:nth-child(20)').hide();
+            //$('#Planejamento > table > tbody > tr:nth-child(21)').hide();
 
             DdlChangeEstrategico();
 
-            setTimeout(function(){
-                $('#Planejamento select').select2(configSelect2)
+            setTimeout(function () {
+                $('#Planejamento select').select2(configSelect2);
             }, 500);
-            
+
         }
 
         InitDatePiker();
@@ -123,7 +126,9 @@ function SalvarPlanejamento(form) {
 
     var sendObj = $('#Planejamento').serializeObject();
 
-    let isValid = $('#Planejamento').find('.error').length == 0
+    sendObj.IsActive = true;
+
+    let isValid = $('#Planejamento').find('.error').length === 0;
     if (!isValid) {
         alert(Resources('required_fields'));
         return
@@ -132,7 +137,7 @@ function SalvarPlanejamento(form) {
     if (isClickedTaticoVinculado)
         sendObj['IsTAtico'] = true;
 
-    if (sendObj != undefined) {
+    if (sendObj !== undefined) {
         $.post(urlSalvarPlanejamento, sendObj, function (r) {
 
             planejamentoCorrentId = parseInt(r.Id);
@@ -148,19 +153,22 @@ function SalvarPlanejamento(form) {
 }
 
 function SalvarPlanejamentoEditado(form) {
-
+    
     var sendObj = {};
-
-    if (isClickedTaticoVinculado)
-        sendObj['IsTAtico'] = true;
 
     sendObj = $(form).serializeObject();
 
+    if (isClickedTaticoVinculado) {
+        sendObj['IsTAtico'] = true;
+        sendObj.IsActive = sendObj.IsActive_Tatico;
+    }
 
-    let isValid = ($(form).find('.error:visible').length == 0)
+
+    let isValid = ($(form).find('.error:visible').length === 0);
+
     if (!isValid) {
         alert(Resources('required_fields'))
-        return
+        return;
     }
 
     $.post(urlSalvarPlanejamento, sendObj, function (r) {
@@ -181,7 +189,8 @@ function SalvarPlanejamentoEditado(form) {
 function EditarPlanejamento(model) {
 
     var title = $('#Header').html();
-    var title2 = " > Novo"
+    var title2 = " > Novo";
+
     if (isTaticoClicked) {
         $('#Header').html(Resources('tactical_planning'));
     } else {
@@ -189,72 +198,56 @@ function EditarPlanejamento(model) {
     }
 
     $.get(urlNovoPlanejamento, function (r) {
+
         $('#modalLindo').find('.modal-body').empty().append(r);
+
         if (isTaticoClicked) {
+
             $('.novoItem ').hide();
+
             if (isClickedTaticoVinculado) {
 
-                //Novo tatico
                 $('#Planejamento > #IsTatico').val(true);
-                $('#Planejamento > table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
-                $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
-                $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').attr('disabled', true);
-                $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').attr('disabled', true);
-                $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
-                $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
-                $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
-                $('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
-                if (model != undefined) {
+                $('#Planejamento > table > tbody > tr .estrategico').attr('disabled', true);
 
-                    //$('#Id').val(model.Id);
+                if (model !== undefined) {
+
                     $('#Estrategico_Id').val(model.Id);
                     if (model.Diretoria_Id > 0)
-                        $('#Planejamento > table > tbody > tr:nth-child(1)').find('input, select').val(model.Diretoria_Id);
+                        $('#Planejamento #Diretoria_Id').val(model.Diretoria_Id);
                     if (model.Missao_Id > 0)
-                        $('#Planejamento > table > tbody > tr:nth-child(4)').find('input, select').val(model.Missao_Id);
+                        $('#Planejamento #Missao_Id').val(model.Missao_Id);
                     if (model.Visao_Id > 0)
-                        $('#Planejamento > table > tbody > tr:nth-child(5)').find('input, select').val(model.Visao_Id);
+                        $('#Planejamento #Visao_Id').val(model.Visao_Id);
                     if (model.TemaAssunto_Id > 0)
-                        $('#Planejamento > table > tbody > tr:nth-child(6)').find('input, select').val(model.TemaAssunto_Id);
+                        $('#Planejamento #TemaAssunto_Id').val(model.TemaAssunto_Id);
                     if (model.Dimensao_Id > 0)
-                        $('#Planejamento > table > tbody > tr:nth-child(7)').find('input, select').val(model.Dimensao_Id);
+                        $('#Planejamento #Dimensao_Id').val(model.Dimensao_Id);
                     if (model.Objetivo_Id > 0)
-                        $('#Planejamento > table > tbody > tr:nth-child(8)').find('input, select').val(model.Objetivo_Id);
+                        $('#Planejamento #Objetivo_Id').val(model.Objetivo_Id);
                     if (model.IndicadoresDiretriz_Id > 0)
-                        $('#Planejamento > table > tbody > tr:nth-child(9)').find('input, select').val(model.IndicadoresDiretriz_Id);
+                        $('#Planejamento #IndicadoresDiretriz_Id').val(model.IndicadoresDiretriz_Id);
                     if (model.Responsavel_Diretriz > 0)
-                        $('#Planejamento > table > tbody > tr:nth-child(10)').find('input, select').val(model.Responsavel_Diretriz);
+                        $('#Planejamento #Responsavel_Diretriz').val(model.Responsavel_Diretriz);
+
+                    $('#Planejamento #IsActive').val(model.IsActive);
+                    $('#Planejamento #IsActive').prop("checked", model.IsActive);
 
                 }
 
                 $('.novoTatico').show();
                 DdlChangeTatico(model);
+
             } else {
 
-                $('#Planejamento > table > tbody > tr:nth-child(1)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(6)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(7)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(8)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(9)').hide();
-                //$('#Planejamento > table > tbody > tr:nth-child(10)').hide();
-                $('#Planejamento > table > tbody > tr:nth-child(11)').hide();
+                $('#Planejamento > table > tbody > tr .estrategico').parents("tr").hide();
                 DdlChangeEstrategico();
             }
+
         } else {
+
             $('.novoItem ').show();
-            $('#Planejamento > table > tbody > tr:nth-child(2)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(3)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(4)').hide();
-            //$('#Planejamento > table > tbody > tr:nth-child(10)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(12)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(13)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(14)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(15)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(16)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(17)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(18)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(19)').hide();
-            $('#Planejamento > table > tbody > tr:nth-child(20)').hide();
+            $('#Planejamento > table > tbody > tr .tatico').parents("tr").hide();
         }
 
         InitDatePiker();
@@ -377,7 +370,7 @@ function DdlChangeTatico(model) {
                     } catch (e) {
                     }
                     finally {
-                         $('#modalLindo select').select2(configSelect2);
+                        $('#modalLindo select').select2(configSelect2);
                     }
 
                 });
@@ -403,7 +396,7 @@ function changeChainJsWithHTMLResponseGET(idMaster, urlGETChildren, idChildren, 
             let childrenEl = $(idChildren)
             childrenEl.parent().html('').append(response);
             childrenEl.remove();
-             $(idChildren).select2(configSelect2);
+            $(idChildren).select2(configSelect2);
 
             if (masterCB)
                 masterCB()
@@ -468,7 +461,7 @@ function changeIniciativa() {
 
             $('#formEditTatico #IndicadoresDeProjeto_Id').parent().html('').append(r);
 
-            // $('#formEditTatico #IndicadoresDeProjeto_Id').select2(configSelect2);
+             $('#formEditTatico #IndicadoresDeProjeto_Id').select2(configSelect2);
 
             $('#formEditTatico #IndicadoresDeProjeto_Id').change();
         });
@@ -489,7 +482,6 @@ function changeIndicadoresProjetos() {
 
             $('#formEditTatico #ObjetivoGerencial_Id').addClass('tatico');
 
-            // $('#formEditTatico #ObjetivoGerencial_Id').select2(configSelect2);
         });
     });
 }
@@ -499,16 +491,10 @@ function TesteRenan(r, tipo, model) {
 
     var form = $(r);
 
-    if (tipo == 'Tatico') {
+    if (tipo === 'Tatico') {
 
-        form.find('table > tbody > tr:nth-child(1)').find('input, select').attr('disabled', true);
-        form.find('table > tbody > tr:nth-child(4)').find('input, select').attr('disabled', true);
-        form.find('table > tbody > tr:nth-child(5)').find('input, select').attr('disabled', true);
-        form.find('table > tbody > tr:nth-child(6)').find('input, select').attr('disabled', true);
-        form.find('table > tbody > tr:nth-child(7)').find('input, select').attr('disabled', true);
-        form.find('table > tbody > tr:nth-child(8)').find('input, select').attr('disabled', true);
-        form.find('table > tbody > tr:nth-child(9)').find('input, select').attr('disabled', true);
-        form.find('table > tbody > tr:nth-child(10)').find('input, select').attr('disabled', true);
+        form.find("table > tbody > tr .estrategico").attr('disabled', true);
+
         form.attr('id', 'formEditTatico');
 
         form.find('button').each(function (o, c) {
@@ -521,9 +507,14 @@ function TesteRenan(r, tipo, model) {
         });
 
         $('#modalLindo').find('.modal-body .content2').append(form);
+
+        let btnChangeTatico = "";
+        let btnSaveTatico = `<button type='button' class='btn btn-primary showAsEstrategy' id='save' onclick="isClickedEstrategico=false;isClickedTaticoVinculado=true;SalvarPlanejamentoEditado($('#formEditTatico'))">${Resources('save_tactical')}</button> | `;
+
         if (model.Acao && model.Acao.Id > 0)
-            $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('acao',$('#Acao'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>" + Resources('change_tactical_link') + "</button>");
-        $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='save' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=true;SalvarPlanejamentoEditado($('#formEditTatico'))\" >" + Resources('save_tactical') + "</button><hr>");
+            btnChangeTatico = `<button type='button' class='btn btn-warning' onclick="changePlanejamento('acao',$('#Acao'))" data-toggle='modal' data-target='#modalChangeEstrategico'>${Resources('change_tactical_link')}</button>`;
+
+        $('#modalLindo').find('.modal-body .content2').append(btnSaveTatico + btnChangeTatico + "<hr>");
 
         myfunction();
 
@@ -532,20 +523,8 @@ function TesteRenan(r, tipo, model) {
         form.find('#Estrategico_Id').remove();
         form.find('#IsTatico').val(false).change();
 
-        form.find('table > tbody > tr:nth-child(2)').hide();
-        form.find('table > tbody > tr:nth-child(3)').hide();
-        form.find('table > tbody > tr:nth-child(11)').hide();
-        form.find('table > tbody > tr:nth-child(12)').hide();
-        form.find('table > tbody > tr:nth-child(13)').hide();
-        form.find('table > tbody > tr:nth-child(14)').hide();
-        form.find('table > tbody > tr:nth-child(15)').hide();
-        form.find('table > tbody > tr:nth-child(16)').hide();
-        form.find('table > tbody > tr:nth-child(17)').hide();
-        form.find('table > tbody > tr:nth-child(18)').hide();
-        form.find('table > tbody > tr:nth-child(19)').hide();
-        form.find('table > tbody > tr:nth-child(20)').hide();
-        form.find('table > tbody > tr:nth-child(21)').hide();
-        form.find('table > tbody > tr:nth-child(22)').hide();
+        form.find('table > tbody > tr .tatico').parents("tr").hide();
+
         form.attr('id', 'formEditEstrategy');
 
         form.find('button').each(function (o, c) {
@@ -561,12 +540,17 @@ function TesteRenan(r, tipo, model) {
             $('#modalLindo').find('.modal-body .content1').append(form);
         }
 
+        let btnChangeEstrategico = "";
+        let btnSalvar = "";
+
         if (model.Tatico_Id > 0)
-            $('#modalLindo').find('.modal-body .content1').append("<button type='button' class='btn btn-warning pull-right' onclick=\"changePlanejamento('tatico',$('#formEditTatico'))\" data-toggle='modal' data-target='#modalChangeEstrategico'>" + Resources('change_strategic_link') + "</button>");
+            btnChangeEstrategico = `<button type='button' class='btn btn-warning' onclick="changePlanejamento('tatico',$('#formEditTatico'))" data-toggle='modal' data-target='#modalChangeEstrategico'>${Resources('change_strategic_link')}</button>`;
 
         if (IsAdmin) {
-            $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"isClickedEstrategico=true;isClickedTaticoVinculado=false;SalvarPlanejamentoEditado($('#formEditEstrategy'))\">" + Resources('save_strategic') + "</button><hr>");
+            btnSalvar = `<button type="button" class="btn btn-primary showAsEstrategy" id="Salvar" onclick="isClickedEstrategico=true;isClickedTaticoVinculado=false;SalvarPlanejamentoEditado($('#formEditEstrategy'))">${Resources("save_strategic")}</button> | `;
         }
+
+        $('#modalLindo').find('.modal-body .content2').append(btnSalvar + btnChangeEstrategico + "<hr>");
 
         DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
 
@@ -583,7 +567,7 @@ function TesteRenan(r, tipo, model) {
 
     DisabilitaBotaoGerenciar();
 
-    setTimeout(function(){
+    setTimeout(function () {
         $('#modalLindo select').select2(configSelect2);
     }, 500)
 }

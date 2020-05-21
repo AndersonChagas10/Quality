@@ -45,8 +45,7 @@ namespace PlanoAcaoCore
         [Display(Name = "Departamento")]
         public int? Departamento_Id { get; set; }
 
-        //[Display(Name = "Duracao dias")]
-        //public int DuracaoDias { get; set; }
+
 
         [Display(Name = "Como pontos importantes")]
         public string ComoPontosimportantes { get; set; }
@@ -164,15 +163,12 @@ namespace PlanoAcaoCore
                     return QuandoInicio.ToString("dd/MM/yyyy");
                 else
                     return string.Empty;
-                //return QuandoInicio.ToString("dd/MM/yyyy");
+
             }
         }
 
-        //public List<Pa_AcaoXQuem> AcaoXQuem { get; set; }
 
-        //public List<string> _Quem { get; set; }
-
-        //public List<Pa_Quem> _QuemObj { get; set; }
+        public bool IsActive { get; set; }
 
         public List<Pa_Acompanhamento> _Acompanhamento
         {
@@ -304,22 +300,22 @@ namespace PlanoAcaoCore
         {
             get
             {
-                return " \n SELECT ACAO.* ,                                                           " +
-                        " \n STA.Name as _StatusName,                                                           " +
-                        " \n UN.Name as _Unidade,                                                               " +
-                        " \n DPT.Name as _Departamento,                                                         " +
-                        " \n Q.Name as _Quem,                                                                  " +
-                        " \n CG.CausaGenerica as _CausaGenerica,                                               " +
-                        " \n CMG.ContramedidaGenerica as _ContramedidaGenerica,                                " +
-                        " \n GC.GrupoCausa as _GrupoCausa                                                      " +
-                        " \n FROM pa_acao ACAO                                                                 " +
-                        " \n LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id                                " +
-                        " \n LEFT JOIN Pa_Quem Q ON Q.Id = ACAO.Quem_Id                                        " +
-                        " \n LEFT JOIN Pa_CausaGenerica CG ON CG.Id = ACAO.CausaGenerica_Id                    " +
-                        " \n LEFT JOIN Pa_ContramedidaGenerica CMG ON CMG.Id = ACAO.ContramedidaGenerica_Id    " +
-                        " \n LEFT JOIN Pa_GrupoCausa GC ON GC.Id = ACAO.GrupoCausa_Id                          " +
-                        " \n LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id                    " +
-                        " \n LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]";
+                return $@"SELECT ACAO.* ,                                                               
+                        STA.Name as _StatusName,                                                        
+                        UN.Name as _Unidade,                                                            
+                        DPT.Name as _Departamento,                                                      
+                        Q.Name as _Quem,                                                                
+                        CG.CausaGenerica as _CausaGenerica,                                             
+                        CMG.ContramedidaGenerica as _ContramedidaGenerica,                              
+                        GC.GrupoCausa as _GrupoCausa                                                    
+                        FROM pa_acao ACAO                                                               
+                        LEFT JOIN Pa_Unidade UN ON UN.Id = ACAO.Unidade_Id                              
+                        LEFT JOIN Pa_Quem Q ON Q.Id = ACAO.Quem_Id                                      
+                        LEFT JOIN Pa_CausaGenerica CG ON CG.Id = ACAO.CausaGenerica_Id                  
+                        LEFT JOIN Pa_ContramedidaGenerica CMG ON CMG.Id = ACAO.ContramedidaGenerica_Id  
+                        LEFT JOIN Pa_GrupoCausa GC ON GC.Id = ACAO.GrupoCausa_Id                        
+                        LEFT JOIN Pa_Departamento DPT ON DPT.Id = ACAO.Departamento_Id                  
+                        LEFT JOIN Pa_Status STA ON STA.Id = ACAO.[Status]";
 
             }
         }
@@ -330,10 +326,6 @@ namespace PlanoAcaoCore
 
             foreach (var i in retorno)
             {
-                //i._Quem = Pa_Quem.GetQuemXAcao(i.Id).Select(r => r.Name).ToList();
-                //i._QuemObj = Pa_Quem.GetQuemXAcao(i.Id).ToList();
-                //i.AcaoXQuem = Pa_AcaoXQuem.Get(i.Id).ToList();
-                //i.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(i.Id);
                 i._QuandoInicio = i.QuandoInicio.ToShortDateString() + " " + i.QuandoInicio.ToShortTimeString();
                 i._QuandoFim = i.QuandoFim.ToShortDateString() + " " + i.QuandoFim.ToShortTimeString();
             }
@@ -345,14 +337,9 @@ namespace PlanoAcaoCore
         {
             var retorno = GetGenerico<Pa_Acao>(query + " WHERE ACAO.Id = " + Id);
 
-            //retorno._Quem = Pa_Quem.GetQuemXAcao(retorno.Id).Select(r => r.Name).ToList();
-            //retorno.AcaoXQuem = Pa_AcaoXQuem.Get(retorno.Id).ToList();
-            //retorno._QuemObj = Pa_Quem.GetQuemXAcao(retorno.Id).ToList();
-            //retorno.CausaMedidasXAcao = Pa_CausaMedidasXAcao.GetByAcaoId(retorno.Id);
             retorno._QuandoInicio = retorno.QuandoInicio.ToShortDateString() + " " + retorno.QuandoInicio.ToShortTimeString();
             retorno._QuandoFim = retorno.QuandoFim.ToShortDateString() + " " + retorno.QuandoFim.ToShortTimeString();
-            //retorno._QuandoInicio = retorno.QuandoInicio.ToShortDateString();
-            //retorno._QuandoFim = retorno.QuandoFim.ToShortDateString();
+
 
             using (var dbSgq = new Factory(Conn.dataSource2, Conn.catalog2, Conn.pass2, Conn.user2))
             {
@@ -386,7 +373,5 @@ namespace PlanoAcaoCore
 
             return retorno;
         }
-
-        //public Pa_CausaMedidasXAcao CausaMedidasXAcao { get; set; }
     }
 }

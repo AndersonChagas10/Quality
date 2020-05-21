@@ -52,7 +52,7 @@
 
             <tr style="@showTipo2" class="showAsEstrategy IndicadorSgq">
                 <td>
-                    @Html.LabelFor(r => r.Level1Id, ResourcesPA.Resource.indicator,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(r => r.Level1Id, ResourcesPA.Resource.indicator, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
                     @Html.DropDownListFor(r => r.Level1Id, new SelectList(ViewBag.Level1, "Id", "name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
@@ -61,7 +61,7 @@
             </tr>
             <tr style="@showTipo2" class="IndicadorSgq">
                 <td>
-                    @Html.LabelFor(r => r.Level2Id, ResourcesPA.Resource.monitoring,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(r => r.Level2Id, ResourcesPA.Resource.monitoring, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
                     @Html.DropDownListFor(r => r.Level2Id, new SelectList(ViewBag.Level2, "Id", "name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
@@ -70,7 +70,7 @@
             </tr>
             <tr style="@showTipo2" class="IndicadorSgq">
                 <td>
-                    @Html.LabelFor(r => r.Level3Id, ResourcesPA.Resource.task,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(r => r.Level3Id, ResourcesPA.Resource.task, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
                     @Html.DropDownListFor(r => r.Level3Id, new SelectList(ViewBag.Level3, "Id", "name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
@@ -92,7 +92,7 @@
 
             <tr class="showAsEstrategy" style="display:none;">
                 <td>
-                    @Html.LabelFor(r => r.Pa_Problema_Desvio_Id, ResourcesPA.Resource.problem_deviation,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(r => r.Pa_Problema_Desvio_Id, ResourcesPA.Resource.problem_deviation, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
                     @*@Html.DropDownListFor(r => r.Pa_Problema_Desvio_Id, new SelectList(ViewBag.Pa_Problema_Desvio, "Id", "name"), "Selecione...", new { @class = "form-control input-sm" })*@
@@ -130,7 +130,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.Label(Conn.nameCausaEspecifica, ResourcesPA.Resource.specific_cause,htmlAttributes: new { @class = "control-label " })
+                    @Html.Label(Conn.nameCausaEspecifica, ResourcesPA.Resource.specific_cause, htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
@@ -141,7 +141,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.Label(Conn.nameContramedidaEspecifica, ResourcesPA.Resource.specific_action,htmlAttributes: new { @class = "control-label " })
+                    @Html.Label(Conn.nameContramedidaEspecifica, ResourcesPA.Resource.specific_action, htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
@@ -161,18 +161,18 @@
                 <td style="text-align: center; display:none; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
 
                     @*<button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
-                    <span class="glyphicon glyphicon-plus"></span> Adicionar
-                </button>
+                            <span class="glyphicon glyphicon-plus"></span> Adicionar
+                        </button>
 
-                <button id="remove" style="display:none" type="button" class="btn btn-default btn-sm" onclick="Remover(this);">
-                    <span class="glyphicon glyphicon-remove"></span> Remover
-                </button>*@
+                        <button id="remove" style="display:none" type="button" class="btn btn-default btn-sm" onclick="Remover(this);">
+                            <span class="glyphicon glyphicon-remove"></span> Remover
+                        </button>*@
 
                 </td>
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.QuandoInicio, ResourcesPA.Resource.when_start2,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.QuandoInicio, ResourcesPA.Resource.when_start2, htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
@@ -182,18 +182,18 @@
                 <td></td>
             </tr>
             @*<tr>
-            <td>
-                @Html.LabelFor(model => model.DuracaoDias, htmlAttributes: new { @class = "control-label " })
-            </td>
-            <td>
-                @Html.EditorFor(model => model.DuracaoDias, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DuracaoDias, "", new { @class = "text-danger" })
-            </td>
-            <td></td>
-        </tr>*@
+                    <td>
+                        @Html.LabelFor(model => model.DuracaoDias, htmlAttributes: new { @class = "control-label " })
+                    </td>
+                    <td>
+                        @Html.EditorFor(model => model.DuracaoDias, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DuracaoDias, "", new { @class = "text-danger" })
+                    </td>
+                    <td></td>
+                </tr>*@
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.QuandoFim, ResourcesPA.Resource.when_end2,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.QuandoFim, ResourcesPA.Resource.when_end2, htmlAttributes: new { @class = "control-label " })
                     <i style="color:red">*</i>
                 </td>
                 <td>
@@ -204,7 +204,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.Label(Conn.nameComoPontosImportantes, ResourcesPA.Resource.as_important_points,htmlAttributes: new { @class = "control-label " })
+                    @Html.Label(Conn.nameComoPontosImportantes, ResourcesPA.Resource.as_important_points, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
                     @Html.EditorFor(model => model.ComoPontosimportantes, new { htmlAttributes = new { @class = "form-control" } })
@@ -213,18 +213,18 @@
                 <td></td>
             </tr>
             @*<tr>
-            <td>
-                @Html.LabelFor(model => model.Predecessora_Id, htmlAttributes: new { @class = "control-label " })
-            </td>
-            <td>
-                @Html.DropDownList("Predecessora_Id", new SelectList(ViewBag.Predecessora, "Id", "Id"), "Selecione...", new { @class = "form-control input-sm" })
-                @Html.ValidationMessageFor(model => model.Predecessora_Id, "", new { @class = "text-danger" })
-            </td>
-            <td></td>
-        </tr>*@
+                    <td>
+                        @Html.LabelFor(model => model.Predecessora_Id, htmlAttributes: new { @class = "control-label " })
+                    </td>
+                    <td>
+                        @Html.DropDownList("Predecessora_Id", new SelectList(ViewBag.Predecessora, "Id", "Id"), "Selecione...", new { @class = "form-control input-sm" })
+                        @Html.ValidationMessageFor(model => model.Predecessora_Id, "", new { @class = "text-danger" })
+                    </td>
+                    <td></td>
+                </tr>*@
             <tr class="showAsEstrategy">
                 <td>
-                    @Html.LabelFor(model => model.PraQue, ResourcesPA.Resource.for_what,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.PraQue, ResourcesPA.Resource.for_what, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
                     @Html.EditorFor(model => model.PraQue, new { htmlAttributes = new { @class = "form-control" } })
@@ -243,7 +243,7 @@
             </tr>
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.QuantoCusta, ResourcesPA.Resource.how_much,htmlAttributes: new { @class = "control-label" })
+                    @Html.LabelFor(model => model.QuantoCusta, ResourcesPA.Resource.how_much, htmlAttributes: new { @class = "control-label" })
                 </td>
                 <td>
                     @Html.Editor("_QuantoCusta", new { htmlAttributes = new { @class = "form-control QuantoCusta" } })
@@ -255,35 +255,51 @@
             </tr>
 
             @if (Model != null)
-    {
-        if (Model.Id > 0)
-        {
+            {
+                if (Model.Id > 0)
+                {
+                    <tr>
+                        <td>
+                            @Html.LabelFor(model => model.Status, ResourcesPA.Resource.status, htmlAttributes: new { @class = "control-label " })
+                        </td>
+                        <td>
+                            @Html.DropDownListFor(model => model.Status, new SelectList(ViewBag.Status, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+            }
+
+            @if (ViewBag.Panejamento != null)
+            {
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Panejamento_Id, ResourcesPA.Resource.planning, htmlAttributes: new { @class = "control-label " })
+                    </td>
+                    <td>
+                        @Html.DropDownList("Panejamento_Id", new SelectList(ViewBag.Panejamento, "Id", "Id"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
+                        @Html.ValidationMessageFor(model => model.Panejamento_Id, "", new { @class = "text-danger" })
+                    </td>
+                    <td></td>
+                </tr>
+            }
             <tr>
                 <td>
-                    @Html.LabelFor(model => model.Status, ResourcesPA.Resource.status,htmlAttributes: new { @class = "control-label " })
+                    @Html.LabelFor(model => model.IsActive, ResourcesPA.Resource.active, htmlAttributes: new { @class = "control-label " })
                 </td>
                 <td>
-                    @Html.DropDownListFor(model => model.Status, new SelectList(ViewBag.Status, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
-                    @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    @{
+                        string IsActive = "";
+                        if (Model.IsActive)
+                        {
+                            IsActive = "checked";
+                        }
+                        <input @IsActive name="IsActive" class="input-sm required" data-val-required="O campo IsActive é obrigatório." id="IsActive" type="checkbox" value="@Model.IsActive.ToString().ToLower()" onclick="this.value = this.checked">
+                    }
                 </td>
                 <td></td>
             </tr>
-}
-}
-
-            @if (ViewBag.Panejamento != null)
-    {
-        <tr>
-            <td>
-                @Html.LabelFor(model => model.Panejamento_Id, ResourcesPA.Resource.planning, htmlAttributes: new { @class = "control-label " })
-            </td>
-            <td>
-                @Html.DropDownList("Panejamento_Id", new SelectList(ViewBag.Panejamento, "Id", "Id"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
-                @Html.ValidationMessageFor(model => model.Panejamento_Id, "", new { @class = "text-danger" })
-            </td>
-            <td></td>
-        </tr>
-}
         </tbody>
     </table>
 
@@ -294,6 +310,6 @@
 </form>
 
 <script>
- 
+
 
 </script>

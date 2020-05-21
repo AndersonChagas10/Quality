@@ -83,5 +83,6 @@ namespace Dominio
         public string ParDepartmentsName { get; set; }
         public int? ParCargo_Id { get; set; }
         public string ParCargoName { get; set; }
+        public bool IsActive { get; set; }
     }
 }

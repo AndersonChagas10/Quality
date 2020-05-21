@@ -3,6 +3,7 @@ var addButton = (function () {
     var counter = 0;
 
     return function () {
+
         var objectContainer = $('#obj:hidden');
         var header = objectContainer.clone();
         counter += 1;
@@ -37,11 +38,11 @@ $('#new').click(addButton);
 
 $('#modalLindo').on('change', '.UnidadeMedida', function (e) {
 
-    let unidadeMedida = $(this).val();
+    let unidadeMedida = parseInt($(this).val());
     let valor = $(this).parent().parent().parent().find(".QuantoCusta").val();
     let inputQuantoCusta = $(this).parent().parent().parent().find(".QuantoCusta");
 
-    if (unidadeMedida == 1) {
+    if (unidadeMedida === 1) {
 
         $(inputQuantoCusta).get(0).type = 'text';
 
@@ -54,20 +55,20 @@ $('#modalLindo').on('change', '.UnidadeMedida', function (e) {
 
         $(inputQuantoCusta).maskMoney('destroy');
 
-        if (valor != "" && valor != NaN)
+        if (valor !== "" && !isNaN(valor))
             $(inputQuantoCusta).val(parseFloat(valor.replace("R$ ", "")));
         else
             $(inputQuantoCusta).val(valor);
 
         $(inputQuantoCusta).on("keypress", function (event) {
 
-            if (unidadeMedida == 2 || unidadeMedida == 3) {
+            if (unidadeMedida === 2 || unidadeMedida === 3) {
 
                 var $this = $(this);
 
-                if (($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) &&
+                if (($this.val().indexOf(',') !== -1 || $this.val().indexOf('.') !== -1) &&
                     ((event.which < 48 || event.which > 57) &&
-                        (event.which != 0 && event.which != 8))) {
+                        (event.which !== 0 && event.which !== 8))) {
                     event.preventDefault();
                 }
             }
@@ -77,13 +78,13 @@ $('#modalLindo').on('change', '.UnidadeMedida', function (e) {
 
 $('#modalLindo').on('change', '.UnidadeDeMedidaTatico', function (e) {
 
-    let unidadeMedida = $(this).val();
+    let unidadeMedida = parseInt($(this).val());
     let valorDe = $(this).parent().parent().parent().find(".ValorDe").val();
     let valorPara = $(this).parent().parent().parent().find(".ValorPara").val();
     let inputValorDe = $(this).parent().parent().parent().find(".ValorDe");
     let inputValorPara = $(this).parent().parent().parent().find(".ValorPara");
 
-    if (unidadeMedida == 1) {
+    if (unidadeMedida === 1) {
 
         let config = { prefix: 'R$ ', allowNegative: true, thousands: '.', decimal: ',', affixesStay: true, allowZero: true }
 
@@ -95,7 +96,7 @@ $('#modalLindo').on('change', '.UnidadeDeMedidaTatico', function (e) {
         $(inputValorDe).prop("disabled", false);
         $(inputValorPara).prop("disabled", false);
 
-    } else if (unidadeMedida == "" || unidadeMedida == null || unidadeMedida == undefined || unidadeMedida == NaN) {
+    } else if (unidadeMedida === "" || unidadeMedida === null || unidadeMedida === undefined || isNaN(unidadeMedida)) {
 
         $(inputValorDe).maskMoney('destroy');
         $(inputValorPara).maskMoney('destroy');
@@ -108,14 +109,14 @@ $('#modalLindo').on('change', '.UnidadeDeMedidaTatico', function (e) {
 
         $(inputValorDe).maskMoney('destroy');
 
-        if (valorDe != "" && valorDe != NaN)
+        if (valorDe !== "" && !isNaN(valorDe))
             $(inputValorDe).val(parseFloat(valorDe.replace("R$ ", "").replace(",", ".")));
         else
             $(inputValorDe).val(valorDe);
 
         $(inputValorPara).maskMoney('destroy');
 
-        if (valorPara != "" && valorPara != NaN)
+        if (valorPara !== "" && !isNaN(valorPara))
             $(inputValorPara).val(parseFloat(valorPara.replace("R$ ", "").replace(",", ".")));
         else
             $(inputValorPara).val(valorPara);
@@ -125,16 +126,16 @@ $('#modalLindo').on('change', '.UnidadeDeMedidaTatico', function (e) {
 
         $(inputValorDe).on("keypress", function (event) {
 
-            if (unidadeMedida == 2 || unidadeMedida == 3) {
+            if (unidadeMedida === 2 || unidadeMedida === 3) {
 
                 var $this = $(this);
 
-                if (event.which == 46 || event.which == 44) {//Caso for ponto ou virgula
-                    if ($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) {//se já existir um ponto ou uma virgula
+                if (event.which === 46 || event.which === 44) {//Caso for ponto ou virgula
+                    if ($this.val().indexOf(',') !== -1 || $this.val().indexOf('.') !== -1) {//se já existir um ponto ou uma virgula
                         event.preventDefault();
                     }
                 } else {
-                    if ((event.which < 48 || event.which > 57) && (event.which != 0 && event.which != 8)) {//se não for numero
+                    if ((event.which < 48 || event.which > 57) && (event.which !== 0 && event.which !== 8)) {//se não for numero
                         event.preventDefault();
                     }
                 }
@@ -143,16 +144,16 @@ $('#modalLindo').on('change', '.UnidadeDeMedidaTatico', function (e) {
 
         $(inputValorPara).on("keypress", function (event) {
 
-            if (unidadeMedida == 2 || unidadeMedida == 3) {
+            if (unidadeMedida === 2 || unidadeMedida === 3) {
 
                 var $this = $(this);
 
-                if (event.which == 46 || event.which == 44) {
-                    if ($this.val().indexOf(',') != -1 || $this.val().indexOf('.') != -1) {
+                if (event.which === 46 || event.which === 44) {
+                    if ($this.val().indexOf(',') !== -1 || $this.val().indexOf('.') !== -1) {
                         event.preventDefault();
                     }
                 } else {
-                    if ((event.which < 48 || event.which > 57) && (event.which != 0 && event.which != 8)) {
+                    if ((event.which < 48 || event.which > 57) && (event.which !== 0 && event.which !== 8)) {
                         event.preventDefault();
                     }
                 }
@@ -359,7 +360,7 @@ function SalvarAcaoEditada() {
 
     });
 
-    let isValid = $('.Acao').find('.error').length == 0;
+    let isValid = $('.Acao').find('.error').length === 0;
     if (!isValid) {
         alert(Resources('required_fields'))
         return;
@@ -479,7 +480,7 @@ function getAcao(data) {
 
         setTimeout(function () {
             $('#modalLindo').find('.modal-body .content3').find('#tipoIndicador').val(acao.TipoIndicador).change();
-             $('.content3 select').select2(configSelect2);
+            $('.content3 select').select2(configSelect2);
             $('.UnidadeMedida').change();
 
             InitDatePiker();
@@ -490,7 +491,9 @@ function getAcao(data) {
         MoneyMask();
         myfunction();
 
-        $('#modalLindo').find('.modal-body .content3').append("<button type='button' class='btn btn-primary' id='Salvar' onclick=\"isClickedEstrategico=false;isClickedTaticoVinculado=false;SalvarAcaoEditada();\" >" + Resources('save_operational') + "</button><hr>");
+        let btnSavarAcao = `<button type='button' class='btn btn-primary' id='Salvar' onclick="isClickedEstrategico=false;isClickedTaticoVinculado=false;SalvarAcaoEditada();" >${Resources('save_operational')}</button>`;
+
+        $('#modalLindo').find('.modal-body .content3').append(btnSavarAcao + "<hr>");
         $('#obj').show(); //Apagar depois
 
         $('#CausaGenerica_Id').change();
@@ -529,7 +532,7 @@ function getAcompanhamento(acaoCorrentId) {
         });
 
         $('.edit').off('click').on('click', function (data, a, b) {
-            var data = selecionado
+            var data = selecionado;
 
             $('#modalLindo').find('.modal-body').empty().append('<div class="content1"></div><div class="content2"></div><div class="content3"></div>');
 

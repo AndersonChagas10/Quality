@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,5 +41,9 @@ namespace Dominio
         public bool? IsFta { get; set; }
         public int? TemaProjeto_Id { get; set; }
         public int? TipoProjeto_Id { get; set; }
+        public bool IsActive { get; set; }
+
+        [NotMapped]
+        public bool IsActive_Tatico { get; set; }
     }
 }

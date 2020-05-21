@@ -13,7 +13,7 @@
         <button id="AddAcao" aria-expanded="false" data-target="#collapsible_obj_0" data-toggle="collapse" class="btn btn-default hidden">@ResourcesPA.Resource.action_name</button>
         &nbsp;<span data-toggle="tooltip" title="@ResourcesPA.Resource.delete_action" class="glyphicon glyphicon-trash" style="cursor:pointer" onclick="RemoveAcao(this)"></span>
     </p>
-    @*<div style="height: 0px;" aria-expanded="false" id="collapsible_obj_0" class="collapse in">*@
+
 
     <form id="Acao" class="Acao">
 
@@ -25,7 +25,7 @@
 
                 <tr>
                     <td style="width: 24%;">
-                        @Html.LabelFor(model => model.Unidade_Id, ResourcesPA.Resource.unit,htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(model => model.Unidade_Id, ResourcesPA.Resource.unit, htmlAttributes: new { @class = "control-label " })
                         <i style="color:red">*</i>
                     </td>
                     <td style="width: 60%;">
@@ -34,16 +34,7 @@
                     </td>
                     <td style="width: 16%;"></td>
                 </tr>
-                @* <tr>
-                        <td>
-                            @Html.LabelFor(model => model.Departamento_Id, htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td>
-                            @Html.DropDownList("Departamento_Id", new SelectList(ViewBag.Departamento, "Id", "Name"), "Selecione...", new { @class = "form-control input-sm" })
-                            @Html.ValidationMessageFor(model => model.Departamento_Id, "", new { @class = "text-danger" })
-                        </td>
-                        <td></td>
-                    </tr>*@
+
                 <tr class="showAsEstrategy">
                     <td style="width: 24%;">
                         @Html.Label(ResourcesPA.Resource.indicator_type, htmlAttributes: new { @class = "control-label " })
@@ -60,7 +51,7 @@
 
                 <tr style="display:none" class="IndicadorSgq">
                     <td>
-                        @Html.LabelFor(r => r.Level1Id, ResourcesPA.Resource.indicator,htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(r => r.Level1Id, ResourcesPA.Resource.indicator, htmlAttributes: new { @class = "control-label " })
                     </td>
                     <td>
                         @Html.DropDownListFor(r => r.Level1Id, new SelectList(ViewBag.Level1, "Id", "name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
@@ -69,7 +60,7 @@
                 </tr>
                 <tr style="display:none" class="IndicadorSgq">
                     <td>
-                        @Html.LabelFor(r => r.Level2Id, ResourcesPA.Resource.monitoring,htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(r => r.Level2Id, ResourcesPA.Resource.monitoring, htmlAttributes: new { @class = "control-label " })
                     </td>
                     <td>
                         @Html.DropDownListFor(r => r.Level2Id, new SelectList(ViewBag.Level2, "Id", "name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
@@ -78,7 +69,7 @@
                 </tr>
                 <tr style="display:none" class="IndicadorSgq">
                     <td>
-                        @Html.LabelFor(r => r.Level3Id, ResourcesPA.Resource.task,htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(r => r.Level3Id, ResourcesPA.Resource.task, htmlAttributes: new { @class = "control-label " })
                     </td>
                     <td>
                         @Html.DropDownListFor(r => r.Level3Id, new SelectList(ViewBag.Level3, "Id", "name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
@@ -89,20 +80,18 @@
 
                 <tr style="display:none" class="IndicadorOutros">
                     <td>
-                        @Html.LabelFor(r => r.Pa_IndicadorSgqAcao_Id, ResourcesPA.Resource.operational_indicator,htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(r => r.Pa_IndicadorSgqAcao_Id, ResourcesPA.Resource.operational_indicator, htmlAttributes: new { @class = "control-label " })
                     </td>
                     <td>
-                        @*@Html.DropDownListFor(r => r.Pa_IndicadorSgqAcao_Id, new SelectList(ViewBag.Pa_IndicadorSgqAcao, "Id", "name"), "Selecione...", new { @class = "form-control input-sm" })*@
                         @Html.DropDownList("Pa_IndicadorSgqAcao_Id", new SelectList(ViewBag.Pa_IndicadorSgqAcao, "Id", "name"), ResourcesPA.Resource.select, new { @class = "form-control input-sm" })
                     </td>
                     <td></td>
                 </tr>
                 <tr class="showAsEstrategy" style="display:none;">
                     <td>
-                        @Html.LabelFor(r => r.Pa_Problema_Desvio_Id, ResourcesPA.Resource.problem_deviation,htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(r => r.Pa_Problema_Desvio_Id, ResourcesPA.Resource.problem_deviation, htmlAttributes: new { @class = "control-label " })
                     </td>
                     <td>
-                        @*@Html.DropDownListFor(r => r.Pa_Problema_Desvio_Id, new SelectList(ViewBag.Pa_Problema_Desvio, "Id", "name"), "Selecione...", new { @class = "form-control input-sm" })*@
                         @Html.DropDownList("Pa_Problema_Desvio_Id", new SelectList(ViewBag.Pa_Problema_Desvio, "Id", "name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
                     </td>
                     <td></td>
@@ -137,7 +126,7 @@
                 </tr>
                 <tr>
                     <td>
-                        @Html.Label(Conn.nameCausaEspecifica, ResourcesPA.Resource.specific_cause,htmlAttributes: new { @class = "control-label " })
+                        @Html.Label(Conn.nameCausaEspecifica, ResourcesPA.Resource.specific_cause, htmlAttributes: new { @class = "control-label " })
                         <i style="color:red">*</i>
                     </td>
                     <td>
@@ -148,7 +137,7 @@
                 </tr>
                 <tr>
                     <td>
-                        @Html.Label(Conn.nameContramedidaEspecifica, ResourcesPA.Resource.specific_action,htmlAttributes: new { @class = "control-label " })
+                        @Html.Label(Conn.nameContramedidaEspecifica, ResourcesPA.Resource.specific_action, htmlAttributes: new { @class = "control-label " })
                         <i style="color:red">*</i>
                     </td>
                     <td>
@@ -167,18 +156,11 @@
                     </td>
                     <td style="text-align: center; display:none; vertical-align: bottom;" id="CausaMedidasXAcaoAdd">
 
-                        @*<button id="adicionar" type="button" class="btn btn-default btn-sm" onclick="Adicionar(this);">
-                                <span class="glyphicon glyphicon-plus"></span> Adicionar
-                            </button>
-
-                            <button id="remove" style="display:none" type="button" class="btn btn-default btn-sm" onclick="Remover(this);">
-                                <span class="glyphicon glyphicon-remove"></span> Remover
-                            </button>*@
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        @Html.LabelFor(model => model.QuandoInicio, ResourcesPA.Resource.when_start2,htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(model => model.QuandoInicio, ResourcesPA.Resource.when_start2, htmlAttributes: new { @class = "control-label " })
                         <i style="color:red">*</i>
                     </td>
                     <td>
@@ -187,19 +169,10 @@
                     </td>
                     <td></td>
                 </tr>
-                @*<tr>
-                        <td>
-                            @Html.LabelFor(model => model.DuracaoDias, htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td>
-                            @Html.EditorFor(model => model.DuracaoDias, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.DuracaoDias, "", new { @class = "text-danger" })
-                        </td>
-                        <td></td>
-                    </tr>*@
+
                 <tr>
                     <td>
-                        @Html.LabelFor(model => model.QuandoFim, ResourcesPA.Resource.when_end2,htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(model => model.QuandoFim, ResourcesPA.Resource.when_end2, htmlAttributes: new { @class = "control-label " })
                         <i style="color:red">*</i>
                     </td>
                     <td>
@@ -210,7 +183,7 @@
                 </tr>
                 <tr>
                     <td>
-                        @Html.Label(Conn.nameComoPontosImportantes, ResourcesPA.Resource.as_important_points,htmlAttributes: new { @class = "control-label " })
+                        @Html.Label(Conn.nameComoPontosImportantes, ResourcesPA.Resource.as_important_points, htmlAttributes: new { @class = "control-label " })
                     </td>
                     <td>
                         @Html.EditorFor(model => model.ComoPontosimportantes, new { htmlAttributes = new { @class = "form-control" } })
@@ -218,19 +191,10 @@
                     </td>
                     <td></td>
                 </tr>
-                @*<tr>
-                        <td>
-                            @Html.LabelFor(model => model.Predecessora_Id, htmlAttributes: new { @class = "control-label " })
-                        </td>
-                        <td>
-                            @Html.DropDownList("Predecessora_Id", new SelectList(ViewBag.Predecessora, "Id", "Id"), "Selecione...", new { @class = "form-control input-sm" })
-                            @Html.ValidationMessageFor(model => model.Predecessora_Id, "", new { @class = "text-danger" })
-                        </td>
-                        <td></td>
-                    </tr>*@
+
                 <tr class="showAsEstrategy">
                     <td>
-                        @Html.LabelFor(model => model.PraQue, ResourcesPA.Resource.for_what,htmlAttributes: new { @class = "control-label " })
+                        @Html.LabelFor(model => model.PraQue, ResourcesPA.Resource.for_what, htmlAttributes: new { @class = "control-label " })
                     </td>
                     <td>
                         @Html.EditorFor(model => model.PraQue, new { htmlAttributes = new { @class = "form-control" } })
@@ -249,11 +213,10 @@
                 </tr>
                 <tr>
                     <td>
-                        @Html.LabelFor(model => model.QuantoCusta, ResourcesPA.Resource.how_much,htmlAttributes: new { @class = "control-label" })
+                        @Html.LabelFor(model => model.QuantoCusta, ResourcesPA.Resource.how_much, htmlAttributes: new { @class = "control-label" })
                     </td>
                     <td>
                         @Html.Editor("_QuantoCusta", new { htmlAttributes = new { @class = "form-control QuantoCusta", @autocomplete = "off" } })
-                        @*@Html.ValidationMessageFor(model => model.QuantoCusta, "", new { @class = "text-danger" })*@
                         @Html.ValidationMessageFor(model => model._QuantoCusta, "", new { @class = "text-danger" })
                     </td>
                     <td></td>
@@ -264,7 +227,7 @@
                     {
                         <tr>
                             <td>
-                                @Html.LabelFor(model => model.Status, ResourcesPA.Resource.status,htmlAttributes: new { @class = "control-label " })
+                                @Html.LabelFor(model => model.Status, ResourcesPA.Resource.status, htmlAttributes: new { @class = "control-label " })
                             </td>
                             <td>
                                 @Html.DropDownList("Status", new SelectList(ViewBag.Status, "Id", "Name"), ResourcesPA.Resource.select2, new { @class = "form-control input-sm" })
@@ -288,12 +251,31 @@
                         <td></td>
                     </tr>
                 }
+
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.IsActive, ResourcesPA.Resource.active, htmlAttributes: new { @class = "control-label " })
+                    </td>
+                    <td>
+                        @{
+                            string IsActive = "";
+                            string IsActiveBool = "false";
+                            if (Model != null && Model.IsActive)
+                            {
+                                IsActive = "checked";
+                                IsActiveBool = "true";
+                            }
+                            <input @IsActive name="IsActive" class="input-sm required" data-val-required="O campo IsActive é obrigatório." id="IsActive" type="checkbox" value="@IsActiveBool" onclick="this.value = this.checked">
+                        }
+                    </td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
     </form>
 </div>
 <hr />
-@*</div>*@
+
 <div id="final"></div>
 
 <script>

@@ -60,14 +60,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
         public IEnumerable<Pa_Planejamento> GetPlanejamentoAcao()
         {
             var retorno = Pa_Planejamento.GetPlanejamentoAcao();
-            //foreach (var i in retorno)
-            //{
 
-            //    if (i.Estrategico_Id.GetValueOrDefault() > 0)
-            //    {
-            //        //i.Tatico_Id = Pa_BaseObject.ListarGenerico<Pa_Planejamento>("Select * from Pa_Planejamento where Estrategico_Id = " + i.Tatico_Id.GetValueOrDefault()).FirstOrDefault().Id;
-            //    }
-            //}
             return retorno;
         }
 
@@ -80,6 +73,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             planejamento.IsfiltrarAcao = null;
 
+            //Se for Tático
             if (planejamento.Estrategico_Id.GetValueOrDefault() > 0)
             {
                 if (!string.IsNullOrEmpty(planejamento._ValorDe))
@@ -112,6 +106,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 planejamento.DataFim = Guard.ParseDateToSqlV2(planejamento._DataFim, Guard.CultureCurrent.BR);
             }
 
+            //Se for Estratégico
             if (!planejamento.IsTatico)
             {
                 planejamento.Tatico_Id = null;
@@ -124,10 +119,12 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                 planejamento.Responsavel_Projeto = 0;
                 planejamento.UnidadeDeMedida_Id = 0;
                 planejamento.IndicadoresDeProjeto_Id = 0;
+                
             }
             else if (planejamento.IsTatico && planejamento.Tatico_Id.GetValueOrDefault() > 0)
             {
                 planejamento.Id = planejamento.Tatico_Id.GetValueOrDefault();
+                planejamento.IsActive = planejamento.IsActive_Tatico;
             }
 
             var newPlanejamento = Mapper.Map<Dominio.Pa_Planejamento>(planejamento);
