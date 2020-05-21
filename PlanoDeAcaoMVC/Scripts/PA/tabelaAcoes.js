@@ -6,104 +6,112 @@ var btnAcompanhamento = '<button type="button" class="btnAcompanhamento btn btn-
 var btnEditarPlanejamento = '<button type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp' + Resources('edit_planning') + '</button> ';
 var btnEditarPlanejamentoDisabled = '<button disabled type="button" class="btnEditarPlanejamento btn btn-default btn-sm" style="text-align: left; width:150px !important"><span title="EditarPlanejamento" style="cursor:pointer" class="glyphicon glyphicon-book"></span>&nbsp' + Resources('edit_planning') + '</button>';
 
-
-
 function GetDataTable(campo, filtro, campo2, filtro2) {
 
     $.get(urlGetPlanejamentoAcaoRange, enviar, function (r) {
 
-        dados = r;
-        dadosfilter = dados;
+        dadosAtivos = r.filter(x => x.IsActive == true && (x.IsActive_Tatico == true || x.Tatico_Id === 0) && (x.Acao.Id === 0 || x.Acao.IsActive == true));
+        dadosInativos = r.filter(x => x.IsActive === false || (x.IsActive_Tatico === false && x.Tatico_Id > 0) || (x.Acao.Id > 0 && x.Acao.IsActive === false));
 
-        let usuarioIscorporativo = false;
+        Inicializar(campo, filtro, campo2, filtro2, dadosAtivos);
 
-        if (usuarioIscorporativo) {
-            dados = $.grep(dados, function (a, b) { return a.Acao.TipoIndicador == 2 });
-            $('.optionAlternativeRole').remove();
-        }
-
-        //Regras para o primeiro filtro geral
-        if (campo == "") {
-            campo = "Todos";
-            $("campo1FiltroPie2 select").val("Todos");
-        }
-
-        if (campo != "Todos" && filtro != "Todos") {
-            dados = FiltraLinhas(dados, [campo], [filtro]);
-        }
-
-        //Regras para o segundo filtro geral
-        if (campo2 == "") {
-            campo2 = "Todos";
-            $("campo1FiltroPie2 select").val("Todos");
-        }
-
-        if (campo2 != "Todos" && filtro2 != "Todos") {
-            dados = FiltraLinhas(dados, [campo2], [filtro2]);
-        }
-
-        //gera o gráfico de Pizza
-        geraData1();
-        //GERAL GRAFICO POR PESSOAS ENVOLVIDAS
-        geraData2(dados);
-
-        distinctFilter(dados, $('#campo1Panel5').val(), 'valor1Panel5');
-        distinctFilter(dados, $('#campo2Panel5').val(), 'valor2Panel5');
-        distinctFilter(dados, $('#campo1Panel6').val(), 'valor1Panel6');
-        distinctFilter(dados, $('#campo2Panel6').val(), 'valor2Panel6');
-
-        graficoEstoque();
-
-        $('#btnpanel5').click();
-        $('#btnpanel6').click();
-
-        json = dados;
-
-        //Recupera colunas visíveis do usuário -- Não está em funçao pois dava loop infinito (16/01/2018 - Renan)
-        if (getCookie('webControlCookie')) {
-
-            Pa_Quem_Id = getCookie('webControlCookie')[0].split('=')[1];
-
-            $.post(urlGetUserColvis, { "Pa_Quem_Id": Pa_Quem_Id }, function (r) {
-
-                if (r.length > 0) {
-
-                    //Colunas da Tabela de Ações
-                    if (!!r[0].ColVisShow && !!r[0].ColVisHide) {
-
-                        ColvisarrayVisaoAtual_show = objectToArr(r[0].ColVisShow.split(","));
-                        ColvisarrayVisaoAtual_hide = objectToArr(r[0].ColVisHide.split(","));
-
-                        if (ColvisarrayVisaoAtual_hide.length > 0) {
-                            ColvisarrayVisaoUsuario_show = ColvisarrayVisaoAtual_show;
-                            ColvisarrayVisaoUsuario_hide = ColvisarrayVisaoAtual_hide;
-                        }
-                    }
-
-                    if (!!r[0].ColVisProjShow && !!r[0].ColVisProjHide) {
-                        //Colunas da Tabela de Planejamento
-                        ColvisarrayProjVisaoAtual_show = objectToArr(r[0].ColVisProjShow.split(","));
-                        ColvisarrayProjVisaoAtual_hide = objectToArr(r[0].ColVisProjHide.split(","));
-
-                        if (ColvisarrayProjVisaoAtual_hide.length > 0) {
-                            ColvisarrayProjVisaoUsuario_show = ColvisarrayProjVisaoAtual_show;
-                            ColvisarrayProjVisaoUsuario_hide = ColvisarrayProjVisaoAtual_hide;
-                        }
-                    }
-
-                }
-
-                //Monta a tabela
-                MountDataTable(json);
-
-            });
-        }
-
-        $('#spanSubTable').text(Resources("all_tasks_filter"));
-
-        distinctFilter(dados, $('#campo1FiltroPie2').val(), 'valor1FiltroPie2');
+        exibindoAtivos = true;
 
     });
+}
+
+function Inicializar(campo, filtro, campo2, filtro2, r) {
+
+    dadosfilter = r;
+    dados = Object.assign([], r);
+
+    let usuarioIscorporativo = false;
+
+    if (usuarioIscorporativo) {
+        dados = $.grep(dados, function (a, b) { return a.Acao.TipoIndicador == 2 });
+        $('.optionAlternativeRole').remove();
+    }
+
+    //Regras para o primeiro filtro geral
+    if (campo == "") {
+        campo = "Todos";
+        $("campo1FiltroPie2 select").val("Todos");
+    }
+
+    if (campo != "Todos" && filtro != "Todos") {
+        dados = FiltraLinhas(dados, [campo], [filtro]);
+    }
+
+    //Regras para o segundo filtro geral
+    if (campo2 == "") {
+        campo2 = "Todos";
+        $("campo1FiltroPie2 select").val("Todos");
+    }
+
+    if (campo2 != "Todos" && filtro2 != "Todos") {
+        dados = FiltraLinhas(dados, [campo2], [filtro2]);
+    }
+
+    //gera o gráfico de Pizza
+    geraData1();
+    //GERAL GRAFICO POR PESSOAS ENVOLVIDAS
+    geraData2(dados);
+
+    distinctFilter(dados, $('#campo1Panel5').val(), 'valor1Panel5');
+    distinctFilter(dados, $('#campo2Panel5').val(), 'valor2Panel5');
+    distinctFilter(dados, $('#campo1Panel6').val(), 'valor1Panel6');
+    distinctFilter(dados, $('#campo2Panel6').val(), 'valor2Panel6');
+
+    graficoEstoque();
+
+    $('#btnpanel5').click();
+    $('#btnpanel6').click();
+
+    json = dados;
+
+    //Recupera colunas visíveis do usuário -- Não está em funçao pois dava loop infinito (16/01/2018 - Renan)
+    if (getCookie('webControlCookie')) {
+
+        Pa_Quem_Id = getCookie('webControlCookie')[0].split('=')[1];
+
+        $.post(urlGetUserColvis, { "Pa_Quem_Id": Pa_Quem_Id }, function (r) {
+
+            if (r.length > 0) {
+
+                //Colunas da Tabela de Ações
+                if (!!r[0].ColVisShow && !!r[0].ColVisHide) {
+
+                    ColvisarrayVisaoAtual_show = objectToArr(r[0].ColVisShow.split(","));
+                    ColvisarrayVisaoAtual_hide = objectToArr(r[0].ColVisHide.split(","));
+
+                    if (ColvisarrayVisaoAtual_hide.length > 0) {
+                        ColvisarrayVisaoUsuario_show = ColvisarrayVisaoAtual_show;
+                        ColvisarrayVisaoUsuario_hide = ColvisarrayVisaoAtual_hide;
+                    }
+                }
+
+                if (!!r[0].ColVisProjShow && !!r[0].ColVisProjHide) {
+                    //Colunas da Tabela de Planejamento
+                    ColvisarrayProjVisaoAtual_show = objectToArr(r[0].ColVisProjShow.split(","));
+                    ColvisarrayProjVisaoAtual_hide = objectToArr(r[0].ColVisProjHide.split(","));
+
+                    if (ColvisarrayProjVisaoAtual_hide.length > 0) {
+                        ColvisarrayProjVisaoUsuario_show = ColvisarrayProjVisaoAtual_show;
+                        ColvisarrayProjVisaoUsuario_hide = ColvisarrayProjVisaoAtual_hide;
+                    }
+                }
+
+            }
+
+            //Monta a tabela
+            MountDataTable(json);
+
+        });
+    }
+
+    $('#spanSubTable').text(Resources("all_tasks_filter"));
+
+    distinctFilter(dados, $('#campo1FiltroPie2').val(), 'valor1FiltroPie2');
 }
 
 function MountDataTable(json) {
