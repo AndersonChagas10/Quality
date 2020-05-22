@@ -152,6 +152,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
             try
             {
                 acao = Mapper.Map<Dominio.Pa_Acao>(obj);
+                acao.IsActive = true;
             }
             catch (Exception ex)
             {

@@ -3501,4 +3501,21 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-716</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[PA] Inativar Planejamentos e Ações </Description>
+    <Script>
+      IF COL_LENGTH('Pa_Planejamento','IsActive') IS NULL
+      BEGIN
+      ALTER table Pa_Planejamento Add IsActive Bit Not Null Default 1
+      END
+
+      IF COL_LENGTH('Pa_Acao','IsActive') IS NULL
+      BEGIN
+      ALTER table Pa_Acao Add IsActive Bit Not Null Default 1
+      END
+    </Script>
+  </Card>
+
 </Cards>

@@ -1133,7 +1133,7 @@
             selectPredecessor = encadeado;
 
             $('#body').find('select').select2(configSelect2);
-            $('#body').find('select').select2('destroy')
+            $('#body').find('select').select2('destroy');
 
             //Remove select caso exista
             $('#encadeado').find('select').remove();
@@ -2002,18 +2002,22 @@
                 form.find('table > tbody > tr:nth-child(18)').hide();
                 form.attr('id', 'formEditEstrategy');
 
-                form.find('button').each(function (o,c){
-                    if($(c).attr('onclick').split(',')[1]){
+                form.find('button').each(function (o, c) {
+                    if ($(c).attr('onclick').split(',')[1]) {
                         let before = $(c).attr('onclick').split(',')[1]
-                        before = before.slice(2,before.length)
+                        before = before.slice(2, before.length)
                         console.log(before)
                         let after = `Novo(this, 'formEditTatico #${before}`
                         $(c).attr('onclick', after)
                     }
-                })
+                });
+
+                let btnSalvar = `<button type="button" class="btn btn-primary showAsEstrategy" id="Salvar" onclick="SalvarPlanejamentoEditado($('#formEditEstrategy'))">Salvar Estratégico</button>`;
+                let btnEditar = `<button type="button" class="btn btn-danger showAsEstrategy" id="Exluir" onclick="SalvarPlanejamentoEditado($('#formEditEstrategy'))">Excluir Estratégico</button>`;
 
                 $('#modalLindo').find('.modal-body .content1').append(form);
-                $('#modalLindo').find('.modal-body .content2').append("<button type='button' class='btn btn-primary showAsEstrategy' id='Salvar' onclick=\"SalvarPlanejamentoEditado($('#formEditEstrategy'))\">Salvar Estratégico</button><hr>");
+                $('#modalLindo').find('.modal-body .content2').append(btnSalvar + btnEditar + "<hr>");
+
                 DdlChangeEstrategico(model.Dimensao_Id, model.Objetivo_Id, model.IndicadoresDiretriz_Id, true);
 
                 //}

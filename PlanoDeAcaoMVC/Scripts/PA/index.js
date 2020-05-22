@@ -31,7 +31,6 @@ var campo1Panel5Selected = "";
 var filtrosDeColunas = [];
 
 var tableModalNovoApartirDe = {};
-
 var IsAdmin = getRole("Admin").length > 0;
 
 var counter = 0;
@@ -644,6 +643,12 @@ function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado, Nom
     $('#ModalNovoApartirDeAlgo').find('h4').text(Resources('create') + " " + NomeDoQueSeraCriado + " " + Resources('from') + " " + NomeApartirDeQueSeraCriado);
 
     $.post(urlGetListPlanejamento + '/' + tipoQueSeraCriado, function (r) {
+
+        if (exibindoAtivos) {
+            r.datas = r.datas.filter(x => x.IsActive === "True");
+        } else {
+            r.datas = r.datas.filter(x => x.IsActive === "False");
+        }
 
         var col = r.columns;
 

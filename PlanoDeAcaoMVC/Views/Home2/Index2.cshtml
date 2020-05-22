@@ -310,6 +310,10 @@
             display: table;
             width: 100%;
         }
+
+        #btnExibirInativos {
+            float: right;
+        }
     </style>
 
 }
@@ -326,6 +330,8 @@
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Gerencia');">@ResourcesPA.Resource.project_overview_management</button>
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Diretriz');">@ResourcesPA.Resource.project_overview_guideline</button>
+
+            <button type="button" class="btn" id="btnExibirInativos" onclick="exibirInativos()">Exibindo Ativos</button>
         </div>
     </div>
 </div>
@@ -1082,6 +1088,57 @@
         var urlAcompanhamentoDetalhes = '@Url.Action("Acompanhamento", "Pa_Acao")'
         var AcaoDetalhes = '@Url.Action("Details", "Pa_Acao")'
         var urlGetDiretriz = '@Url.Action("GetDiretriz", "api/Generics")'
+
+        let exibindoAtivos = true;
+
+        let dadosAtivos = [];
+        let dadosInativos = [];
+
+        function exibirInativos() {
+
+            if (exibindoAtivos) { //Exibe inativos
+
+                dadosPie2 = "";
+                FiltraLinhasComTodos(dadosInativos, "", "Todos");
+                getDateRange($("input[name='daterange']").val());
+
+                Inicializar($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text(), $('#campo2Filtro option:selected').val(),
+                    $('#valor2Filtro option:selected').text(), dadosInativos);
+
+                exibindoAtivos = false;
+
+
+            } else { //Exibe ativos
+
+                dadosPie2 = "";
+                FiltraLinhasComTodos(dadosAtivos, "", "Todos");
+                getDateRange($("input[name='daterange']").val());
+
+                Inicializar($('#campo1Filtro option:selected').val(), $('#valor1Filtro option:selected').text(), $('#campo2Filtro option:selected').val(),
+                    $('#valor2Filtro option:selected').text(), dadosAtivos);
+
+                exibindoAtivos = true;
+
+            }
+
+            trocaBotaoExibirInativos();
+        }
+
+        function trocaBotaoExibirInativos() {
+
+            if (!exibindoAtivos) {
+
+                $('#btnExibirInativos').html("Exibindo Inativos");
+                //$('#btnExibirInativos').removeClass("btn-success");
+                $('#btnExibirInativos').addClass("btn-default");
+
+            } else {
+                $('#btnExibirInativos').html("Exibindo Ativos");
+                $('#btnExibirInativos').removeClass("btn-default");
+                //$('#btnExibirInativos').addClass("btn-success");
+            }
+
+        }
 
     </script>
 
