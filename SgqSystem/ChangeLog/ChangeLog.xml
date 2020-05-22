@@ -3454,6 +3454,13 @@
   </Card>
 
   <Card>
+    <CardNumber>SGQ-720</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>[RH] AppColeta - Criação do campo de busca nas listas do App.</Description>
+    <Script></Script>
+  </Card>
+
+  <Card>
     <CardNumber>SGQ-712</CardNumber>
     <Version>1.8.0</Version>
     <Description>Adicionado niveis de estrutura no dicionario estático.</Description>
