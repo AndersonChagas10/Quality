@@ -253,6 +253,7 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                        ,V.Name AS Visão
                        ,DR.Name AS Diretriz
                        ,IND.Name AS [Indicador da Diretriz]
+                       ,P.IsActive
                     FROM PA_PLANEJAMENTO P
                     LEFT JOIN Pa_Diretoria D
                     	ON D.Id = P.Diretoria_Id
@@ -278,21 +279,15 @@ namespace PlanoDeAcaoMVC.Controllers.Api
                         , PR.Name AS Projeto
                         , OB.Name AS [Objetivo Gerencial]
                         , Q.Name AS [Responsável]
+                        ,P.IsActive
                         FROM PA_PLANEJAMENTO P
-                        LEFT JOIN Pa_Gerencia G
-                        ON G.ID = P.Gerencia_Id
-                        LEFT JOIN Pa_Coordenacao C
-                        ON C.Id = P.Coordenacao_Id
-                        LEFT JOIN Pa_Iniciativa PR
-                        ON PR.Id = P.Iniciativa_Id
-                        LEFT JOIN Pa_ObjetivoGeral OB
-                        ON OB.Id = P.ObjetivoGerencial_Id
-                        LEFT JOIN Pa_TemaProjeto TP
-                        ON TP.Id = P.TemaProjeto_Id
-                        LEFT JOIN Pa_TipoProjeto TIP
-                        ON TIP.Id = P.TipoProjeto_Id
-                        LEFT JOIN Pa_Quem Q
-                        ON Q.Id = P.Responsavel_Projeto
+                        LEFT JOIN Pa_Gerencia G ON G.ID = P.Gerencia_Id
+                        LEFT JOIN Pa_Coordenacao C ON C.Id = P.Coordenacao_Id
+                        LEFT JOIN Pa_Iniciativa PR ON PR.Id = P.Iniciativa_Id
+                        LEFT JOIN Pa_ObjetivoGeral OB ON OB.Id = P.ObjetivoGerencial_Id
+                        LEFT JOIN Pa_TemaProjeto TP ON TP.Id = P.TemaProjeto_Id
+                        LEFT JOIN Pa_TipoProjeto TIP ON TIP.Id = P.TipoProjeto_Id
+                        LEFT JOIN Pa_Quem Q ON Q.Id = P.Responsavel_Projeto
                         WHERE P.ESTRATEGICO_ID IS NOT NULL";
             }
 

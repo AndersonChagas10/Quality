@@ -1102,9 +1102,7 @@
                     $('#valor2Filtro option:selected').text(), dadosInativos);
 
                 exibindoAtivos = false;
-                $('#btnExibirInativos').html("Exibindo Inativos");
-                $('#btnExibirInativos').removeClass("btn-success");
-                $('#btnExibirInativos').addClass("btn-default");
+
 
             } else { //Exibe ativos
 
@@ -1116,10 +1114,26 @@
                     $('#valor2Filtro option:selected').text(), dadosAtivos);
 
                 exibindoAtivos = true;
+
+            }
+
+            trocaBotaoExibirInativos();
+        }
+
+        function trocaBotaoExibirInativos() {
+
+            if (!exibindoAtivos) {
+
+                $('#btnExibirInativos').html("Exibindo Inativos");
+                $('#btnExibirInativos').removeClass("btn-success");
+                $('#btnExibirInativos').addClass("btn-default");
+
+            } else {
                 $('#btnExibirInativos').html("Exibindo Ativos");
-                $('#btnExibirInativos').removeClass("btn-default"); 
+                $('#btnExibirInativos').removeClass("btn-default");
                 $('#btnExibirInativos').addClass("btn-success");
             }
+
         }
 
     </script>

@@ -31,7 +31,6 @@ var campo1Panel5Selected = "";
 var filtrosDeColunas = [];
 
 var tableModalNovoApartirDe = {};
-
 var IsAdmin = getRole("Admin").length > 0;
 
 var counter = 0;
@@ -50,6 +49,8 @@ var tableModalNovo;
 
 var Chaveamento = [];
 var ChaveamentoObjetivo = [];
+
+
 
 var json = FiltraColunas(dados, [
     Resources("directorship"),
@@ -645,6 +646,12 @@ function AbrirModalNovoApartirDeAlgo(tipoQueSeraCriado, NomeDoQueSeraCriado, Nom
 
     $.post(urlGetListPlanejamento + '/' + tipoQueSeraCriado, function (r) {
 
+        if (exibindoAtivos) {
+            r.datas = r.datas.filter(x => x.IsActive === "True");
+        } else {
+            r.datas = r.datas.filter(x => x.IsActive === "False");
+        }
+
         var col = r.columns;
 
         col.unshift({
@@ -738,5 +745,7 @@ $(document).ready(function () {
     if (IsAdmin) {
         $('#NovoPlanejamento').prop("disabled", false);
     }
+
+
 
 });

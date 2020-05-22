@@ -16,6 +16,7 @@ function GetDataTable(campo, filtro, campo2, filtro2) {
         Inicializar(campo, filtro, campo2, filtro2, dadosAtivos);
 
         exibindoAtivos = true;
+        trocaBotaoExibirInativos();
 
     });
 }
