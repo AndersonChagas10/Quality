@@ -6,6 +6,8 @@
     ViewBag.Title = "Formulário";
 
     ViewBag.ShowIndicadorMER = true;
+    ViewBag.ShowCurrentDate = true;
+    ViewBag.ShowParCompany = true;
 
     //var url = Url.Action("Index", "Home");
 
@@ -102,10 +104,9 @@
         <br />
         <div class="page-content">
 
-
-
             <div class="loader" hidden></div>
             <div class="alert alert-info" role="alert" id="mensagemSemDados" hidden> Sem dados. </div>
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
             <div class="container-fluid">
                 <div id="cabecalhoDiv" class="row" hidden>
@@ -115,21 +116,21 @@
                                 <img height="90" class="img-responsive" src="~/Imagens/JBS_logo.jpg" />
                             </td>
 
-                            <td style="text-align:center; font-weight:bold;">Verificação MER</td>
+                            <td style="text-align:center; font-weight:bold;"><text id="tdNomeRelatorio"></text></td>
 
                             <td rowspan="3" class="col-xs-2">
                                 <img height="90" width="120" src="~/Imagens/novoLogoFriboi.PNG" />
                             </td>
                         </tr>
                         <tr>
-                            <td><strong>Elaborador:</strong> Lisha Stephanie Calil Czar/ GQU - AMS </td>
+                            <td><strong>Elaborador:</strong> <text id="tdElaborador"></text></td>
                         </tr>
                         <tr>
-                            <td><strong>Aprovador:</strong> Andréia Fernanda do Nascimento Scalon / GQU - AMS</td>
+                            <td><strong>Aprovador:</strong> <text id="tdAprovador"></text></td>
                         </tr>
                     </table>
                     <div>
-                        Data: ____/____/____
+                        Data: <text id="dataColeta"></text>
                     </div>
                 </div>
 
@@ -175,13 +176,12 @@
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
         var $btn = $('#btnSend');
 
+        $('[name="parCompany_Ids"]').parent().find('label strong').append('<span style="color:red;font-size:20px"> *</span>');
+
         $('body').on('click', '#btnPrint', function () {
             $('#printTitulo').html("Relatório Verificação MER");
             $("#printElaborador").html("Thais");
             $("#printAprovador").html("Camila");
-            //$("#printCodigoRodape").html(codigoRodape);
-            //$("#printImagemCabecalhoLeft").attr('src', imagemCabecalhoLeft);
-           // $("#printImagemCabecalhoRight").attr('src', imagemCabecalhoRight);
 
             printGRT.Inicializar({
 
@@ -208,6 +208,12 @@
             if (!$("#divFilterReports").is(":hidden"))
                 toggleDivFilterReports();
 
+            if (!objFiltro.parCompany_Ids || objFiltro.parCompany_Ids.length < 0) {
+                GuardJs.exibirMensagemAlerta("Selecione uma Unidade.");
+                $("#mensagemSemDados").hide();
+                return false;
+            }
+
             $btn.button('loading');
             $(".loader").show();
 
@@ -222,16 +228,26 @@
                 type: 'POST',
                 contentType: "application/json",
                 success: function (data) {
+                
                     $btn.button('reset');
                     $(".loader").hide();
+                    if (data.Resultado.length > 0) {
 
-                    if (data.length > 0) {
+                        $("#mensagemSemDados").hide();
+                        $("#pivot-table").show();
+                        GuardJs.esconderMensagem();
                         $("#rodape").show();
                         $("#cabecalhoDiv").show();
-                        $("#pivot-table").show();
-                        montaTabelaDinamica(data);
+
+                        $("#tdElaborador").text(data.Elaborador[0]["Elaborador"]);
+                        $("#tdAprovador").text(data.Aprovador);
+                        $("#tdNomeRelatorio").text(data.RelatorioName[0]["NomeRelatorio"]);
+                        $("#dataColeta").text(data.Resultado[0]["Data da Coleta"]);
+                        
+                        montaTabelaDinamica(data.Resultado);
                     } else {
                         $("#mensagemSemDados").show();
+                        GuardJs.esconderMensagem();
                     }
 
                 },
@@ -260,6 +276,7 @@
             var valores = [
                 //"AV com Peso",
                 //"NC com Peso",
+                "Data da Coleta",
                 "Hora",
                 "Resultado",
                 "Visto",
@@ -511,7 +528,7 @@
                 for (var j = 0; j < attrLinha.length; j++) {
                     atributos[attrLinha[j].name] = attrLinha[j].value;
                 }
-
+                
                 var objAtributos = Object.keys(atributos);
                 for (var j = 0; j < listaObj.length; j++) {
                     var deuMatch = true;
@@ -524,8 +541,17 @@
                         }
                     }
                     if (deuMatch) {
+                        
                         ultimoObjeto = listaObj[j];
                         td.innerHTML = ultimoObjeto[td.getAttribute("data-value")];
+
+                        if (td.getAttribute("data-value") == "Resultado"
+                            && parseFloat(ultimoObjeto["NC"]) > 0) {
+                            td.style.backgroundColor = "black";
+                            td.style.color = "white";
+                            td.style.fontWeight = "bold";
+                        }
+
                         if (((1 + numeroObjeto) % valores.length) == 0) {
                             ultimoObjeto = undefined;
                             listaObj.splice(j, 1);
