@@ -3494,4 +3494,11 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-712</CardNumber>
+    <Version>1.8.0</Version>
+    <Description>Adicionado niveis de estrutura no dicionario estático.</Description>
+    <Script></Script>
+  </Card>
+
 </Cards>

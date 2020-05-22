@@ -754,10 +754,10 @@ namespace SgqSystem.Controllers.Api.Formulario
             {
 
                 var query = $@"
-                            SELECT DISTINCT Structure1.* FROM (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 4) Structure1 
-                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 5) Structure2 on Structure1.Id = Structure2.ParStructureParent_Id
-                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 6) Structure3 on Structure2.Id = Structure3.ParStructureParent_Id
-                            WHERE Structure1.ParStructureGroup_Id = 4 
+                            SELECT DISTINCT Structure1.* FROM (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup1 as string}) Structure1 
+                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup2 as string}) Structure2 on Structure1.Id = Structure2.ParStructureParent_Id
+                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}) Structure3 on Structure2.Id = Structure3.ParStructureParent_Id
+                            WHERE Structure1.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup1 as string} 
                             {whereStructParent}
                             AND Structure1.Name like '%{search}%'";
 
@@ -1004,7 +1004,7 @@ namespace SgqSystem.Controllers.Api.Formulario
 
         private List<ParStructure> GetParStructureRegional(DataCarrierFormularioNew form, Factory factory)
         {
-            var sql = "Select Id, Name from ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 5 AND Active = 1";
+            var sql = $"Select Id, Name from ParStructure WITH (NOLOCK) where ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup2 as string} AND Active = 1";
 
             var retorno = factory.SearchQuery<ParStructure>(sql).ToList();
 
@@ -1371,10 +1371,10 @@ namespace SgqSystem.Controllers.Api.Formulario
             {
 
                 var query = $@"
-                            SELECT DISTINCT Structure2.* FROM (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 4) Structure1 
-                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 5) Structure2 on Structure1.Id = Structure2.ParStructureParent_Id
-                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 6) Structure3 on Structure2.Id = Structure3.ParStructureParent_Id
-                            WHERE Structure2.ParStructureGroup_Id = 5
+                            SELECT DISTINCT Structure2.* FROM (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup1 as string}) Structure1 
+                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup2 as string}) Structure2 on Structure1.Id = Structure2.ParStructureParent_Id
+                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}) Structure3 on Structure2.Id = Structure3.ParStructureParent_Id
+                            WHERE Structure2.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup2 as string}
                             {whereStructParent}
                             AND Structure1.Name like '%{search}%'";
 
@@ -1402,10 +1402,10 @@ namespace SgqSystem.Controllers.Api.Formulario
             {
 
                 var query = $@"
-                            SELECT DISTINCT Structure3.* FROM (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 4) Structure1 
-                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 5) Structure2 on Structure1.Id = Structure2.ParStructureParent_Id
-                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = 6) Structure3 on Structure2.Id = Structure3.ParStructureParent_Id
-                            WHERE Structure3.ParStructureGroup_Id = 6
+                            SELECT DISTINCT Structure3.* FROM (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup1 as string}) Structure1 
+                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup2 as string}) Structure2 on Structure1.Id = Structure2.ParStructureParent_Id
+                            LEFT JOIN (SELECT * FROM ParStructure WITH (NOLOCK) where ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}) Structure3 on Structure2.Id = Structure3.ParStructureParent_Id
+                            WHERE Structure3.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}
                             {whereStructParent}
                             AND Structure1.Name like '%{search}%'";
 
@@ -1783,7 +1783,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             INNER JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.Id
                             INNER JOIN ParStructureGroup PSG WITH (NOLOCK) ON PSG.Id = PS.ParStructureGroup_Id
                             WHERE 1 = 1
-                            AND PS1.ParStructureGroup_Id = 5
+                            AND PS1.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup2 as string}
                             {whereUnidadesUsuario}
                             {whereClusterGroup}
                             {whereCluster}
@@ -1881,7 +1881,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             INNER JOIN ParStructureGroup PSG WITH (NOLOCK)
                             	ON PSG.Id = PS.ParStructureGroup_Id
                             WHERE 1 = 1
-                            AND PS.ParStructureGroup_Id = 6
+                            AND PS.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}
                             {whereClusterGroup}
                             {whereUnidadesUsuario}
                             {whereCluster}

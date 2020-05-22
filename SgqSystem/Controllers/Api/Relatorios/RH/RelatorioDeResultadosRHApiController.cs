@@ -1338,17 +1338,15 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                    ,10.0 AS Meta           
                    ,50.0 as av                     
                   ,case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as decimal(10,1)) end nc
-                  FROM " + "VisaoGeralDaAreaApiController.sqlBaseGraficosScorecardDiario()" +
-                  @"
+                  FROM VisaoGeralDaAreaApiController.sqlBaseGraficosScorecardDiario()
                   where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL) 
-                  " + whereClusterGroup +
-                  whereCluster +
-                  whereStructure +
-                  whereCriticalLevel +
-                  whereParCompany +
-                  whereUnit +
-                @"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
+                  {whereClusterGroup }
+                  {whereCluster }
+                  {whereStructure }
+                  {whereCriticalLevel }
+                  {whereParCompany }
+                  {whereUnit }
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}         
                   AND C.IsActive = 1
                 GROUP BY C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name, S.mesData
                 
@@ -1441,17 +1439,15 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
               ,10.0 AS Meta           
               ,50.0 as av                     
              ,case when sum(av) is null or sum(av) = 0 then 0 else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as decimal(10,1)) end nc
-             FROM " + "VisaoGeralDaAreaApiController.sqlBaseGraficosVGA()" +
-               @"
+             FROM VisaoGeralDaAreaApiController.sqlBaseGraficosVGA()
                  where 1=1 AND (pC.IsActive = 1 OR PC.ISACTIVE IS NULL)
-                 " + whereClusterGroup +
-               whereCluster +
-               whereStructure +
-               whereCriticalLevel +
-               whereParCompany +
-               whereUnit +
-               @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
+               {whereClusterGroup }
+               {whereCluster }
+               {whereStructure }
+               {whereCriticalLevel }
+               {whereParCompany }
+               {whereUnit }
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}         
                 AND C.IsActive = 1
                GROUP BY C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -2275,7 +2271,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
 
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null" +
+                    $"\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}   and PP1.Name is not null" +
                     "\n group by mesData ORDER BY 10";
 
             #endregion
