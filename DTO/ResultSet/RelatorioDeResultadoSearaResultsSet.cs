@@ -56,8 +56,9 @@ public class RelatorioDeResultadoSearaResultsSet
         var groupBy5 = "";
         //var selectTotal = " SELECT A.UnidadeName, A.AV, A.C, A.C, B.TOTAL AS PORCC, A.DATA FROM #RR1 A INNER JOIN #RR2 B ON A.DATA = B.DATA1 ";
         var selectTotal = " SELECT A.UnidadeName, A.AV, A.C, A.C, B.TOTAL AS PORCC, A.DATA FROM #RR1 A INNER JOIN #RR2 B ON A.DATA = B.DATA1 ";
+		    selectTotal = " SELECT A.UnidadeName, A.AV, A.C,  (A.AV -A.C) as NC , B.TOTAL AS PORCC, A.DATA FROM #RR1 A INNER JOIN #RR2 B ON A.DATA = B.DATA1 and a.UnidadeName = (select name from ParCompany where id = b.Parcompany_id) ";
 
-        if (1==1)
+		if (1==1)
         {
             campos5 = " ,M.Name + '/' + CAST(DATEPART(YEAR, data1) AS VARCHAR) as data1 ";
             groupBy5 = "  , M.Name + '/' + CAST(DATEPART(YEAR, data1) AS VARCHAR) ";
@@ -99,9 +100,9 @@ public class RelatorioDeResultadoSearaResultsSet
             whereUnit = $@"AND CUBOL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
         }
 
-        if (form.ParStructure_Ids.Length > 0)
+        if (form.ParStructure2_Ids.Length > 0)
         {
-            whereStructure = $@"AND CUBOL3.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+            whereStructure = $@"AND CUBOL3.Regional in ({string.Join(",", form.ParStructure2_Ids)})";
         }
 
         var query = $@"
@@ -541,9 +542,9 @@ GROUP BY Parcompany_id
             whereUnit = $@"AND CUBOL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
         }
 
-        if (form.ParStructure_Ids.Length > 0)
+        if (form.ParStructure2_Ids.Length > 0)
         {
-            whereStructure = $@"AND CUBOL3.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+            whereStructure = $@"AND CUBOL3.Regional in ({string.Join(",", form.ParStructure2_Ids)})";
         }
 
         var query = $@"
@@ -1335,7 +1336,7 @@ GROUP BY Parcompany_id
             campos3 = $@" , cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(month(CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(month(CUBOL3.CollectionDate) as varchar) else cast(month(CUBOL3.CollectionDate) as varchar) end  AS Data ";
             groupBy = $@" GROUP BY cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(month(CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(month(CUBOL3.CollectionDate) as varchar) else cast(month(CUBOL3.CollectionDate) as varchar) end ";
             orderBy = "ORDER BY 1 ASC";
-            selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADEname = B.data ";
+            selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADEname = B.Data ORDER BY 1 ASC ";
             campos4 = " sum(PESOTOTAL) AS PESOTOTAL, sum(TOTAL) AS TOTAL";
         }
         else if (form.ShowModeloGrafico_Id[0] == 3)
@@ -1345,7 +1346,7 @@ GROUP BY Parcompany_id
             campos3 = $@" , cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(datepart(week,CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(datepart(week,CUBOL3.CollectionDate) as varchar) else cast(datepart(week,CUBOL3.CollectionDate) as varchar) end  AS Data ";
             groupBy = $@" GROUP BY cast(year(CUBOL3.CollectionDate) as varchar) + '-' + case when LEN(cast(datepart(week,CUBOL3.CollectionDate) as varchar)) = 1 then '0' + cast(datepart(week,CUBOL3.CollectionDate) as varchar) else cast(datepart(week,CUBOL3.CollectionDate) as varchar) end ";
             orderBy = "ORDER BY 1 ASC";
-            selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADEname = B.data ";
+            selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADEname = B.Data ORDER BY 1 ASC ";
             campos4 = " sum(PESOTOTAL) AS PESOTOTAL, sum(TOTAL) AS TOTAL";
         }
         else if (form.ShowModeloGrafico_Id[0] == 4)
@@ -1355,7 +1356,7 @@ GROUP BY Parcompany_id
             campos3 = $@" , convert(varchar, CUBOL3.CollectionDate ,103) Data ";
             groupBy = $@" GROUP BY convert(varchar, CUBOL3.CollectionDate ,103)	,C.Name ";
             orderBy = "ORDER BY 1 ASC";
-            selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADEname = B.Data ";
+            selectTotal = " SELECT *, CONCAT(RIGHT(B.DATA,4),RIGHT(LEFT(B.DATA,5),2),LEFT(B.DATA,2)) DATAORDEM  FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADEname = B.Data ORDER BY 14 ASC ";
             campos4 = " sum(PESOTOTAL) AS PESOTOTAL, sum(TOTAL) AS TOTAL";
         }
         else if (form.ShowDimensaoGrafico_Id.Length > 0)
@@ -1368,7 +1369,7 @@ GROUP BY Parcompany_id
                     groupBy = $@" GROUP BY C.NAME, C.Id ";
                     groupBy2 = $@" GROUP BY C.ParCompany_Id, data ";
                     orderBy = "ORDER BY 4 DESC";
-                    selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADE_ID = B.PARCOMPANY_ID ";
+                    selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADE_ID = B.PARCOMPANY_ID ORDER BY TOTAL DESC ";
                     break;
 
                 case 1: //INDICADORES
@@ -1377,7 +1378,7 @@ GROUP BY Parcompany_id
                     groupBy = $@" GROUP BY PL1.NAME, PL1.Id ";
                     groupBy2 = $@" GROUP BY C.ParLevel1_Id, data ";
                     orderBy = "ORDER BY 4 DESC";
-                    selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADE_ID = B.PARLevel1_id  ";
+                    selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADE_ID = B.PARLevel1_id  ORDER BY TOTAL DESC ";
                     break;
 
                 case 2: //MONITORAMENTOS
@@ -1386,7 +1387,7 @@ GROUP BY Parcompany_id
                     groupBy = $@" GROUP BY PL2.NAME, PL2.Id ";
                     groupBy2 = $@" GROUP BY C.ParLevel2_id, data ";
                     orderBy = "ORDER BY 4 DESC";
-                    selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADE_ID = B.PARlevel2_ID ";
+                    selectTotal = " SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADE_ID = B.PARlevel2_ID  ORDER BY TOTAL DESC ";
                     break;
 
                 case 3: //TAREFAS
@@ -1401,7 +1402,7 @@ GROUP BY Parcompany_id
                     groupBy = $@" GROUP BY PL3.NAME, PL3.Id ";
                     groupBy2 = $@" GROUP BY C.ParLevel2_id, data ";
                     orderBy = "ORDER BY 4 DESC";
-                    selectTotal = " SELECT *, NULL AS PESOTOTAL, NULL AS TOTAL FROM #RR1 A  ";
+                    selectTotal = " SELECT *, NULL AS PESOTOTAL, NULL AS TOTAL FROM #RR1 A ORDER BY NC DESC  ";
                     
 
                     break;
@@ -1433,7 +1434,24 @@ GROUP BY Parcompany_id
 
                     break;
 
-                default:
+				case 6: //GRUPO DE TAREFAS
+						//campos = $@" PL3.NAME AS UnidadeName, PL3.Id as Unidade_Id ";
+
+					//groupBy = $@" GROUP BY PL3.NAME, PL3.Id ";
+
+					//orderBy = "ORDER BY 4 DESC";
+
+					campos = $@" CUBOL3.GRUPOTAREFA AS UnidadeName, CUBOL3.GRUPOTAREFA as Unidade_Id ";
+					campos2 = $@" ,null as Parcompany_id, null as parlevel1_id, C.parlevel2_id as parlevel2_id , null as data  ";
+					groupBy = $@" GROUP BY CUBOL3.GRUPOTAREFA, CUBOL3.GRUPOTAREFA ";
+					groupBy2 = $@" GROUP BY C.ParLevel2_id, data ";
+					orderBy = "ORDER BY 4 DESC";
+					selectTotal = " SELECT *, NULL AS PESOTOTAL, NULL AS TOTAL FROM #RR1 A  ";
+
+
+					break;
+
+				default:
                     break;
             }
 
@@ -1476,9 +1494,9 @@ GROUP BY Parcompany_id
             whereUnit = $@"AND CUBOL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
         }
 
-        if (form.ParStructure_Ids.Length > 0)
+        if (form.ParStructure2_Ids.Length > 0)
         {
-            whereStructure = $@"AND CUBOL3.Regional in ({string.Join(",", form.ParStructure_Ids)})";
+            whereStructure = $@"AND CUBOL3.Regional in ({string.Join(",", form.ParStructure2_Ids)})";
         }
 
         var query = $@"
@@ -1508,7 +1526,8 @@ GROUP BY Parcompany_id
 			   PL2P.Equacao,
 			   PL2P.Peso,
 			   c2.evaluationNumber as Avaliacao,
-			   pp.Name as SKU
+			   pp.Name as SKU,
+			   PGL1.Name as GRUPOTAREFA
 	           INTO #CUBOLEVEL3
         FROM CollectionLevel2 C2 WITH (NOLOCK)
         INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
@@ -1525,9 +1544,18 @@ GROUP BY Parcompany_id
         
         LEFT JOIN ParProduto PP on pp.Id = cfpp.ParProduto_Id
 
+		LEFT JOIN ParVinculoPeso PVP 
+		ON PVP.ParLevel1_Id = C2.ParLevel1_Id
+		AND PVP.ParLevel2_Id = C2.ParLevel2_Id
+		AND PVP.ParLevel3_Id = r3.ParLevel3_Id
+		AND PVP.IsActive = 1
+		LEFT JOIN ParGroupParLevel1 PGL1
+		ON PGL1.Id = PVP.ParGroupParLevel1_Id
+
         WHERE 1=1
           AND R3.IsNotEvaluate = 0
           AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+		
      --------------------------------
                  
 
