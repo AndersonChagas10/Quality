@@ -575,6 +575,19 @@ namespace SgqServiceBusiness.Services
             return texto;
         }
 
+        public string campoTextoNumeroDefeitos(string id, string classe = null)
+        {
+            if (!string.IsNullOrEmpty(classe))
+            {
+                classe = " " + classe;
+            }
+
+            string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +
+                                 "         <input type=\"text\" class=\"form-control text-center levelValue levelValueNotes naoValidarInput\" style=\"width:100%;\" placeholder=\"Observações\">     " +
+                                 "</div>                                                    ";
+            return texto;
+        }
+
         public string campoTextoMinutos_(string id, string classe = null)
         {
             string texto = "<div class=\"input-group input-group-sm width180 pull-right" + classe + "\" style=\"width: 100% !important;\">                            " +

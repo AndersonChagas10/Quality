@@ -50,7 +50,7 @@ function resetBody(result) {
 function initializeInputs() {
 
     $('input.interval').inputmask("numeric", { allowMinus: true, radixPoint: ',' });
-    $('.defects input').inputmask("integer", { allowMinus: false });
+    $('.defects input.defects').inputmask("integer", { allowMinus: false });
     $('.calculado .input01').inputmask("numeric", { allowMinus: true, radixPoint: ',' });
     $('.calculado .input02').inputmask("numeric", { allowMinus: true, radixPoint: ',', mask: "9" });
 
