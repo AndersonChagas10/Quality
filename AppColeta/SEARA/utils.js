@@ -161,7 +161,7 @@ function setInputBackGroundColorNone(input) {
 function getBotaoBuscar() {
     var botaoBuscar = '<div class="pull-right">                     ' +
         '                  <label style="padding-right:5px">Buscar</label> ' +
-        '                  <input type="text" onkeyup="buscarItemNaLista(this)"/>' +
+        '                  <input type="text" onkeyup="buscarItemNaLista(this)" style="height:35px;"/>' +
         '              </div>';
     return botaoBuscar;
 }
