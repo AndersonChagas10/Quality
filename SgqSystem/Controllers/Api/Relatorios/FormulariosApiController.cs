@@ -48,8 +48,104 @@ namespace SgqSystem.Controllers.Api.Relatorios
 				
 -------------------------------------------------------------------------------------------------------------------------
 
+-- TRATAMENTO INPUTS BINARIOS
+-- binarios 1,6-- Retorna input
+-- numeros 2,3,4,5,7,8,9,10,11,13,14,99 -- Retorna o Value
+--CREATE TABLE #INPUT_TYPES
+--(
+--	ParLevel3InputType_Id INT,
+--	Sentido INT,
+--	ParLevel3Bool_Id INT,
+--	SIGLA VARCHAR(10)
+--)
+
+--INSERT INTO #INPUT_TYPES
+--SELECT 1,0,1,'NC' UNION ALL
+--SELECT 1,0,2,'PRT' UNION ALL
+--SELECT 1,0,3,'NÃO' UNION ALL
+--SELECT 1,0,4,'PRS' UNION ALL
+--SELECT 1,0,5,'NA' UNION ALL
+--SELECT 1,0,6,'SIM' UNION ALL
+--SELECT 1,1,1,'C' UNION ALL
+--SELECT 1,1,2,'AUT' UNION ALL
+--SELECT 1,1,3,'SIM' UNION ALL
+--SELECT 1,1,4,'AUS' UNION ALL
+--SELECT 1,1,5,'AC' UNION ALL
+--SELECT 1,1,6,'NÃO' UNION ALL
+
+--SELECT 6,0,1,'NC' UNION ALL
+--SELECT 6,0,2,'PRT' UNION ALL
+--SELECT 6,0,3,'NÃO' UNION ALL
+--SELECT 6,0,4,'PRS' UNION ALL
+--SELECT 6,0,5,'NA' UNION ALL
+--SELECT 6,0,6,'SIM' UNION ALL
+--SELECT 6,1,1,'C' UNION ALL
+--SELECT 6,1,2,'AUT' UNION ALL
+--SELECT 6,1,3,'SIM' UNION ALL
+--SELECT 6,1,4,'AUS' UNION ALL
+--SELECT 6,1,5,'AC' UNION ALL
+--SELECT 6,1,6,'NÃO'
+
+--ID	Descrição		Sigla		ID	Descrição	Sigla
+--1		Não Conforme	NC			1	Conforme	C
+--2		Presente		PRT			2	Ausente		AUT
+--3		Não				NÃO			3	Sim			SIM
+--4		Presença		PRS			4	Ausência	AUS
+--5		Não Aceitável	NA			5	Aceitável	AC
+--6		Sim				SIM			7	Não			NÃO
+
+--ID	Descrição	Sigla
+--1	Conforme		C	
+--2	Ausente			AUT
+--3	Sim				SIM
+--4	Ausência		AUS
+--5	Aceitável		AC
+--7	Não				NÃO
+
+
+
+--SELECT 
+--	CASE
+--		WHEN L3V.ParLevel3InputType_Id in (2,3,4,5,7,8,9,10,11,13,14,99)
+--		THEN R.Value
+--		WHEN L3V.ParLevel3InputType_Id in (1,6)
+--		THEN (--1
+--					SELECT TOP 1 IT.SIGLA
+--					FROM #INPUT_TYPES IT
+--					WHERE 1=1 
+--					AND IT.ParLevel3InputType_Id = 1
+--					AND IT.Sentido = CAST(R.IsConform AS INT)
+--					AND IT.ParLevel3Bool_Id = IIF(R.IsConform = 1,L3V.ParLevel3BoolTrue_Id,ParLevel3BoolFalse_Id)  ) END
+--	Resultado,L3V.*,* 
+--	FROM CollectionLevel2 C
+--	LEFT JOIN Result_Level3 R 
+--		ON C.ID = R.CollectionLevel2_Id
+--OUTER APPLY (SELECT TOP 1
+--				*
+--			FROM ParLevel3Value L3V WITH (NOLOCK)
+--			WHERE 1=1
+--			AND ISNULL(L3V.ParCompany_Id,C.UnitId)  = C.UnitId
+--			AND ISNULL(L3V.ParLevel1_Id,C.ParLevel1_Id)  = C.ParLevel1_Id
+--			AND ISNULL(L3V.ParLevel2_Id,C.ParLevel2_Id)  = C.ParLevel2_Id
+--			AND L3V.ParLevel3_Id  = R.ParLevel3_Id
+--			AND L3V.IsActive = 1
+--			ORDER BY 3 DESC,2,1) AS L3V
+--	WHERE 1=1
+--	AND CollectionDate BETWEEN '2020-05-22' AND '2020-05-23'
+--	AND C.ParLevel1_Id = 46
+
+
+
+
+	
+---------------------------------------------------------------------------------------------------------------------------------	
+				
+-------------------------------------------------------------------------------------------------------------------------
+
+    
           DECLARE @DATEINI DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}' DECLARE @DATEFIM DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}';
 		 DECLARE @UNITID VARCHAR(10) = '{ form.ParCompany_Ids[0]}', @PARLEVEL1_ID VARCHAR(10) = '{indicador_Id}',@PARLEVEL2_ID VARCHAR(10) = '0';
+
 
 
 		 -------------------------------------------------------------------------------------------------------------------------
@@ -57,6 +153,43 @@ namespace SgqSystem.Controllers.Api.Relatorios
 		   
 		 DECLARE @DATAINICIAL DATETIME = @DATEINI;
 		 DECLARE @DATAFINAL DATETIME = @DATEFIM;                     
+
+		CREATE TABLE #INPUT_TYPES
+		(
+			ParLevel3InputType_Id INT,
+			Sentido INT,
+			ParLevel3Bool_Id INT,
+			SIGLA VARCHAR(10)
+		)
+
+		INSERT INTO #INPUT_TYPES
+		SELECT 1,0,1,'NC' UNION ALL
+		SELECT 1,0,2,'PRT' UNION ALL
+		SELECT 1,0,3,'NÃO' UNION ALL
+		SELECT 1,0,4,'PRS' UNION ALL
+		SELECT 1,0,5,'NA' UNION ALL
+		SELECT 1,0,6,'SIM' UNION ALL
+		SELECT 1,1,1,'C' UNION ALL
+		SELECT 1,1,2,'AUT' UNION ALL
+		SELECT 1,1,3,'SIM' UNION ALL
+		SELECT 1,1,4,'AUS' UNION ALL
+		SELECT 1,1,5,'AC' UNION ALL
+		SELECT 1,1,6,'NÃO' UNION ALL
+
+		SELECT 6,0,1,'NC' UNION ALL
+		SELECT 6,0,2,'PRT' UNION ALL
+		SELECT 6,0,3,'NÃO' UNION ALL
+		SELECT 6,0,4,'PRS' UNION ALL
+		SELECT 6,0,5,'NA' UNION ALL
+		SELECT 6,0,6,'SIM' UNION ALL
+		SELECT 6,1,1,'C' UNION ALL
+		SELECT 6,1,2,'AUT' UNION ALL
+		SELECT 6,1,3,'SIM' UNION ALL
+		SELECT 6,1,4,'AUS' UNION ALL
+		SELECT 6,1,5,'AC' UNION ALL
+		SELECT 6,1,6,'NÃO'
+
+
 
                     SELECT 
 	                     id
@@ -235,6 +368,17 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         	CL2.ParLevel1_Id,
         	CL2.ParLevel2_Id,
         	R3.ParLevel3_Id,
+			CASE
+				WHEN L3V.ParLevel3InputType_Id in (2,3,4,5,7,8,9,10,11,13,14,99)
+				THEN R3.Value
+				WHEN L3V.ParLevel3InputType_Id in (1,6)
+				THEN (--1
+							SELECT TOP 1 IT.SIGLA
+							FROM #INPUT_TYPES IT
+							WHERE 1=1 
+							AND IT.ParLevel3InputType_Id = L3V.ParLevel3InputType_Id
+							AND IT.Sentido = CAST(R3.IsConform AS INT)
+							AND IT.ParLevel3Bool_Id = IIF(R3.IsConform = 1,L3V.ParLevel3BoolTrue_Id,L3V.ParLevel3BoolFalse_Id)  ) END Resultado,
         	R3.WeiDefects,
         	R3.Defects,
         	R3.WeiEvaluation,
@@ -243,9 +387,19 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         FROM #CollectionLevel2 CL2 WITH (NOLOCK) 
         LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
         	ON CL2.ID = R3.CollectionLevel2_Id
+		OUTER APPLY (SELECT TOP 1
+						L3V.ParLevel3InputType_Id,L3V.ParLevel3BoolTrue_Id,L3V.ParLevel3BoolFalse_Id
+					FROM ParLevel3Value L3V WITH (NOLOCK)
+					WHERE 1=1
+					AND ISNULL(L3V.ParCompany_Id,CL2.UnitId)  = CL2.UnitId
+					AND ISNULL(L3V.ParLevel1_Id,CL2.ParLevel1_Id)  = CL2.ParLevel1_Id
+					AND ISNULL(L3V.ParLevel2_Id,CL2.ParLevel2_Id)  = CL2.ParLevel2_Id
+					AND L3V.ParLevel3_Id  = R3.ParLevel3_Id
+					AND L3V.IsActive = 1
+					ORDER BY 3 DESC,2,1) AS L3V
         WHERE 1=1 
         AND CL2.CollectionDate BETWEEN @DATEINI AND @DATEFIM
-        AND R3.IsNotEvaluate = 0      
+        --AND R3.IsNotEvaluate = 0      
 
         CREATE INDEX IDX_HashConsolidationLevel ON #ConsolidationLevel (ConsolidationDate,UnitId,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
         CREATE INDEX IDX_HashConsolidationLevel_level3 ON #ConsolidationLevel (ConsolidationDate,ParLevel1_Id,ParLevel2_Id,ParLevel3_Id); 
@@ -323,6 +477,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 					            AND (isnull(pg.EffectiveDate,pg.EffectiveDate) <= C1.ConsolidationDate)
 					            AND (pg.ParCompany_Id =  C1.UnitId or pg.ParCompany_Id is null)
 					            Order By EffectiveDate DESC, ParCompany_Id DESC))	AS Meta
+				,Resultado
         	INTO #CUBO
         	FROM #ConsolidationLevel C1
         	INNER JOIN ParLevel1 L1 WITH (NOLOCK)
@@ -401,6 +556,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 			,U.Name
 			,C1.EvaluationNumber
 			,C1.Sample
+			,Resultado
         
             update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta)) 
 
@@ -419,10 +575,11 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 UnidadeName as Unidade,
                 Cast(AV as int) as AV,
                 Cast(NC as int) as NC,
-                iif(NC = 0, ''C'' , ''NC'') as ''Resultado'',
+				Resultado,
+                -- iif(NC = 1, ''C'' , ''NC'') as ''Resultado'',
                 --''Célia Regina Mattia GQC/ANH'' as Visto,
                 CONVERT(VARCHAR(10), ConsolidationDate, 103) as ''Data da Coleta'',
-				CONVERT(CHAR(8),ConsolidationDate,108) as ''Hora''
+				CONVERT(CHAR(5),ConsolidationDate,108) as ''Hora''
 
 			INTO #CUBO_ACERTO
             FROM #CUBO C
@@ -437,14 +594,13 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 			END
 	
 			SELECT * FROM #CUBO_ACERTO
-	
-
 			';
 
             EXEC(@Header + @DEFECTS)
 
             DROP TABLE #CollectionLevel2
-            
+            DROP TABLE #INPUT_TYPES
+
             ";
 
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
