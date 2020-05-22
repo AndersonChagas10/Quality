@@ -310,6 +310,10 @@
             display: table;
             width: 100%;
         }
+
+        #btnExibirInativos {
+            float: right;
+        }
     </style>
 
 }
@@ -327,7 +331,7 @@
 
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalVisaoGeralProjetos" onclick="vgp('Diretriz');">@ResourcesPA.Resource.project_overview_guideline</button>
 
-            <button type="button" class="btn btn-success" id="btnExibirInativos" onclick="exibirInativos()">Exibindo Ativos</button>
+            <button type="button" class="btn" id="btnExibirInativos" onclick="exibirInativos()">Exibindo Ativos</button>
         </div>
     </div>
 </div>
@@ -1125,13 +1129,13 @@
             if (!exibindoAtivos) {
 
                 $('#btnExibirInativos').html("Exibindo Inativos");
-                $('#btnExibirInativos').removeClass("btn-success");
+                //$('#btnExibirInativos').removeClass("btn-success");
                 $('#btnExibirInativos').addClass("btn-default");
 
             } else {
                 $('#btnExibirInativos').html("Exibindo Ativos");
                 $('#btnExibirInativos').removeClass("btn-default");
-                $('#btnExibirInativos').addClass("btn-success");
+                //$('#btnExibirInativos').addClass("btn-success");
             }
 
         }
