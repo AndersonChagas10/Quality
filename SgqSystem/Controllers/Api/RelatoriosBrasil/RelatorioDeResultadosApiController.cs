@@ -1411,8 +1411,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                   whereCriticalLevel +
                   whereParCompany +
                   whereUnit +
-                @"
-                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
+                $@"
+                  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}         
                   AND C.IsActive = 1
                 GROUP BY C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name, S.mesData
                 
@@ -1514,8 +1514,8 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                whereCriticalLevel +
                whereParCompany +
                whereUnit +
-               @"
-                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6        
+               $@"
+                AND Reg.Active = 1 and Reg.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}         
                 AND C.IsActive = 1
                GROUP BY C.Initials, C.Name, S.LEVEL1ID, s.LEVEL1NAME, S.TIPOINDICADOR, Reg.Id, Reg.Name
 
@@ -2339,7 +2339,7 @@ namespace SgqSystem.Controllers.Api.RelatoriosBrasil
                     "\n  on C.Id = S.ParCompany_Id  and S.Level1Id = P1.Id " +
 
                     "\n  WHERE 1 = 1 " +
-                    "\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = 6  and PP1.Name is not null" +
+                    $"\n  AND Reg.Active = 1 and Reg.ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup3 as string}   and PP1.Name is not null" +
                     "\n group by mesData ORDER BY 10";
 
             #endregion

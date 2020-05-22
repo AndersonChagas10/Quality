@@ -2,6 +2,7 @@
 using Dominio;
 using DTO.DTO.Params;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -20,8 +21,12 @@ namespace SgqSystem.Controllers.Api
         [Route("GetRegionaisUsuario")]
         public List<ParStructureDTO> GetRegionaisUsuario()
         {
-
-            var retorno = Mapper.Map<List<ParStructureDTO>>(db.ParStructure.Where(r => r.ParStructureGroup_Id == 2 && r.ParStructureParent_Id == 1).ToList());
+            int parStructureGroup1 = Convert.ToInt32(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup1);
+            int parStructureGroup2 = Convert.ToInt32(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup2);
+           var retorno = Mapper.Map<List<ParStructureDTO>>(
+                db.ParStructure
+                .Where(r => r.ParStructureGroup_Id == parStructureGroup2
+                && r.ParStructureParent_Id == parStructureGroup1).ToList());
 
             return retorno;
         }

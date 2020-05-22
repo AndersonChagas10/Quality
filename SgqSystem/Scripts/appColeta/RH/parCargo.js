@@ -63,7 +63,14 @@ function listarParCargo(isVoltar) {
         '        <div class="col-xs-12">                               ' +
         '            <div class="panel panel-primary">                 ' +
         '              <div class="panel-heading">                     ' +
+        '			    <div class="row">                          ' +
+        '			      <div class="col-xs-9">                         ' +
         '                <h3 class="panel-title">' + voltar + ' Selecione o cargo que deseja coletar</h3>        ' +
+        '                 </div >                                          ' +
+        '                 <div class="col-xs-3">                           ' +
+        getBotaoBuscar() +
+        '                 </div>                                           ' +
+        '               </div>                                             ' +
         '              </div>                                          ' +
         '              <div class="panel-body">                        ' +
         '                <div class="list-group" id="divCargo">                      ' +

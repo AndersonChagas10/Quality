@@ -564,7 +564,7 @@
             },
             NC: function (data, func, nome, id, funcParaAcumuladas, grafico, arr, arr2, arr3) {
                 return {
-                    visible: $(dimensaoGrafico).val() == 3 ? true : false,
+                    visible: $(dimensaoGrafico).val() == 3 ? true : $(dimensaoGrafico).val() == 6 ? true : false,
                     name: Resources('nonconformity'),
                     color: Chart.CorTotalNc(),//'rgba(77,143,189,1)',
                     data: data,
@@ -691,7 +691,7 @@
                     data[a] = parseFloat(b) > 100 ? 100 : b;
                 });
                 return {
-                    visible: $(dimensaoGrafico).val() == 3 ? false : true,
+                    visible: $(dimensaoGrafico).val() == 3 ? false : $(dimensaoGrafico).val() == 6 ? false : true,
                     name: '% SEARA',
                     color: Chart.CorTotalTotal(),//'rgba(240,124,0,1)',
                     data: data,

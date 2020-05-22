@@ -86,3 +86,35 @@ function dateDiff(date1, date2) {
     var dataFinal = new Date(date2);
     return (dataFinal - dataInicial) / 1000 / 60 / 60 / 24;
 }
+
+function getBotaoBuscar() {
+    var botaoBuscar = '<div class="pull-right">                     ' +
+        '                  <label style="padding-right:5px">Buscar</label> ' +
+        '                  <input type="text" onkeyup="buscarItemNaLista(this)"/>' +
+        '              </div>';
+    return botaoBuscar;
+}
+
+function buscarItemNaLista(input) {
+    $('body').off('keyup', input).on('keyup', input, function () {
+        $('button.list-group-item').each(function (i, o) {
+            var mostrarItem = $(o).text().toLowerCase().includes($(input).val().toLowerCase());
+            if (mostrarItem) {
+                $(o).show();
+            } else {
+                $(o).hide();
+            }
+        })
+        if ($('button.list-group-item:visible').length == 0) {
+            if ($('span.list-group-item').length == 0) {
+                $('.list-group').append("<span class='list-group-item col-xs-12 text-center'>Nenhum resultado encontrado com o termo digitado.</span>");
+            } else {
+                $('span.list-group-item').show();
+            }
+        } else {
+            if ($('span.list-group-item').length > 0) {
+                $('span.list-group-item').hide();
+            }
+        }
+    });
+}

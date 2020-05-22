@@ -341,7 +341,7 @@ function matchCustom(params, data) {
         return null;
     }
 
-    if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) > 0) {
+    if (data.text.toUpperCase().indexOf(params.term.toUpperCase()) >= 0) {
         var modifiedData = $.extend({}, data, true);
 
         return modifiedData;

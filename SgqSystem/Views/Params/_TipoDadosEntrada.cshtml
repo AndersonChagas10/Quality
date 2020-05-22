@@ -241,6 +241,7 @@
     var eTipoDado_BinarioObrigatorio = 12;
     var eTipoDado_Data = 13;
     var eTipoDado_Hora = 14;
+    var eTipoDado_NumeroDefeitosComTexto = 15;
     var eTipoDado_Recravacao = 99;
 
     var levelParamsDTO = @Html.Raw(Json.Encode(@Model.paramsDto.parLevel3Dto.listLevel3Value));
@@ -300,7 +301,7 @@
                 companyName = "@Resources.Resource.all";
             }
 
-            if (selectTipoInput == eTipoDado_NumeroDefeitos || selectTipoInput == eTipoDado_Intervalos || selectTipoInput == eTipoDado_IntervalosTexto || selectTipoInput == eTipoDado_Calculado || selectTipoInput == eTipoDado_Texto) {
+            if (selectTipoInput == eTipoDado_NumeroDefeitos || selectTipoInput == eTipoDado_Intervalos || selectTipoInput == eTipoDado_IntervalosTexto || selectTipoInput == eTipoDado_Calculado || selectTipoInput == eTipoDado_Texto || selectTipoInput == eTipoDado_NumeroDefeitosComTexto) {
                 selectConformeName = "";
                 selectNaoConformeName = "";
                 parLevel3Value_DynamicValue = "";
@@ -621,7 +622,7 @@
                         o["AcceptableValueBetween_Name"] = "";
                         o["IntervalMin"] = "";
                         o["IntervalMax"] = "";
-                    } else if (o.ParLevel3InputType_Id == eTipoDado_NumeroDefeitos) {
+                    } else if (o.ParLevel3InputType_Id == eTipoDado_NumeroDefeitos || o.ParLevel3InputType_Id == eTipoDado_NumeroDefeitosComTexto) {
                         o["ParMeasurementUnit_Name"] = "";
                         o["ParLevel3BoolFalse_Name"] = "";
                         o["ParLevel3BoolTrue_Name"] = "";
@@ -969,10 +970,12 @@
         }
 
         //Numero de defeitos
-        if (tipoSelecionado == eTipoDado_NumeroDefeitos) {
+        if (tipoSelecionado == eTipoDado_NumeroDefeitos || tipoSelecionado == eTipoDado_NumeroDefeitosComTexto) {
             resetaParIntervalos();
             resetaParDefeitos();
             resetaParBinarios();
+            $('#selectConforme').val(null);
+            $('#selectNaoConforme').val(null);
             $('#parLevel3Value_IntervalMin').inputmask("numeric",  {
                 allowMinus: true
             });
