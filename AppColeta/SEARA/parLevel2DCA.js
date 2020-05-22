@@ -257,19 +257,16 @@ $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', fun
     }
  }
 
- function getCalculoPorMonitoramento(parLevel1_Id, parLevel2_Id, avaliacaoAtual) {
-
+function getCalculoPorMonitoramento(parLevel1_Id, parLevel2_Id, avaliacaoAtual) {
+    var pesoCritico = 0;
     var _avaliacaoAtual = avaliacaoAtual;
     var _parLevel1_Id = parLevel1_Id;
-    var _parLevel2_Id = parLevel2_Id;
-    currentParLevel2_Id = _parLevel2_Id;
+    var _parLevel2_Id = parLevel2_Id; currentParLevel2_Id = _parLevel2_Id;
     var listaDeTarefas = GetListaDeTarefasPorMonitoramento();
-
     var tarefasVinculadas = $.grep(parametrization.listaParVinculoPeso, function (o) {
         return o.ParLevel1_Id == _parLevel1_Id && o.ParLevel2_Id == _parLevel2_Id;
     });
-
-     var totalTarefasComAlgumaNC = 0;
+    var totalTarefasComAlgumaNC = 0;
     var totalTarefasAcimaLimiteNC = 0;
     var totalDeAmostras = 0;
     var totalDeAmostrasColetadas = 0;
@@ -279,100 +276,99 @@ $('body').off('click', '[data-proxima-av]').on('click', '[data-proxima-av]', fun
         var amostrasColetadas = 0;
         var amostrasColetadasConforme = 0;
         var vinculoPeso = o;
-
         var quantidadeDeColetasPorTarefa = $.grep(coletasDCA, function (coletas) {
-            if(coletas.ParLevel1_Id == _parLevel1_Id 
-                && coletas.ParLevel2_Id == _parLevel2_Id 
+            if (coletas.ParLevel1_Id == _parLevel1_Id
+                && coletas.ParLevel2_Id == _parLevel2_Id
                 && coletas.ParLevel3_Id == vinculoPeso.ParLevel3_Id
                 && coletas.Evaluation == _avaliacaoAtual
-                && coletas.Outros.indexOf('ParFamiliaProduto_Id:'+currentFamiliaProdutoDCA_Id+',') > 0){
-                    amostrasColetadasConforme += coletas.IsConform ? 1 : 0;
+                && coletas.Outros.indexOf('ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ',') > 0) {
+                amostrasColetadasConforme += coletas.IsConform ? 1 : 0;
                 return true;
             }
         });
         totalDeAmostrasColetadasConforme += amostrasColetadasConforme;
-
+        for (i = 0; i < quantidadeDeColetasPorTarefa.length; i++) {
+            if (quantidadeDeColetasPorTarefa[0].IsConform == false
+                && quantidadeDeColetasPorTarefa[0].WeiDefects == 5) {
+                pesoCritico = 1;
+            }
+        }
         if (o.Sample > 0 && quantidadeDeColetasPorTarefa.length > 0) {
             if (o.Sample > quantidadeDeColetasPorTarefa.length) {
                 amostrasColetadas += quantidadeDeColetasPorTarefa.length;
             } else {
                 amostrasColetadas += o.Sample;
             }
-        }else if(quantidadeDeColetasPorTarefa.length > 0){
+        } else if (quantidadeDeColetasPorTarefa.length > 0) {
             amostrasColetadas += 1;
         }
         totalDeAmostrasColetadas += amostrasColetadas;
-
         var tarefa = $.grep(listaDeTarefas, function (level3) {
-            if(level3.Id == vinculoPeso.ParLevel3_Id){
-                return true;
-            }
+            if (level3.Id == vinculoPeso.ParLevel3_Id) { return true; }
         });
         var limiteNCDaTarefa = 1;
-        if (tarefa.length > 0 && tarefa[0] && tarefa[0].ParLevel3Value){
+        if (tarefa.length > 0 && tarefa[0] && tarefa[0].ParLevel3Value) {
             limiteNCDaTarefa = UmSeForNaNOuNull(tarefa[0].ParLevel3Value.LimiteNC);
         }
-        if((amostrasColetadas-amostrasColetadasConforme) > limiteNCDaTarefa){
+        if ((amostrasColetadas - amostrasColetadasConforme) > limiteNCDaTarefa) {
             totalTarefasAcimaLimiteNC++;
         }
-
         if ((amostrasColetadas - amostrasColetadasConforme) > 0) {
             totalTarefasComAlgumaNC++;
         }
-
-        if(coletasSincronizadas == false && quantidadeDeColetasPorTarefa.length > 0)
+        if (coletasSincronizadas == false && quantidadeDeColetasPorTarefa.length > 0)
             coletasSincronizadas = quantidadeDeColetasPorTarefa[0].Synced == true;
-
         totalDeAmostras += (o.Sample > 0) ? o.Sample : 0;
     });
-
-    var parVinculoPesoParLevel2 = getParVinculoPesoParLevel2PorIndicador(_parLevel1_Id,_parLevel2_Id);
+    var parVinculoPesoParLevel2 = getParVinculoPesoParLevel2PorIndicador(_parLevel1_Id, _parLevel2_Id);
 
     /*
-     * QtdeNC      = Quantidade total de Não Conformidades (Por amostra)
-     * QtdeC       = Quantidade total de Conformidade (Por amostra)
-     * QtdeTLNC    = Quantidade de tarefas que passaram do limite de Não Conformidade
-     * QtdeT       = Quantidade de tarefas
-     * QtdeTNC     = Quantidade de tarefas com alguma Não Conformidade
-     * QtdeTC      = Quantidade de tarefas com conformidade
-    */
-    var variaveisEquacao = [
-        { id: /QtdeNC/g, valor:(parseInt(totalDeAmostrasColetadas)-parseInt(totalDeAmostrasColetadasConforme)) },
+
+    QtdeNC      = Quantidade total de Não Conformidades (Por amostra)
+
+    QtdeC       = Quantidade total de Conformidade (Por amostra)
+
+    QtdeTLNC    = Quantidade de tarefas que passaram do limite de Não Conformidade
+
+    QtdeT       = Quantidade de tarefas
+
+    QtdeTNC     = Quantidade de tarefas com alguma Não Conformidade
+
+    QtdeTC      = Quantidade de tarefas com conformidade
+
+    TCrit	   = Existe tarefa critica? 0 não 1 sim    
+
+*/
+
+    var variaveisEquacao = [{ id: /QtdeNC/g, valor: (parseInt(totalDeAmostrasColetadas) - parseInt(totalDeAmostrasColetadasConforme)) },
         { id: /QtdeTLNC/g, valor: parseInt(totalTarefasAcimaLimiteNC) },
         { id: /QtdeTNC/g, valor: parseInt(totalTarefasComAlgumaNC) },
         { id: /QtdeTC/g, valor: parseInt(listaDeTarefas.length) - parseInt(totalTarefasComAlgumaNC) },
         { id: /QtdeC/g, valor: (parseInt(totalDeAmostrasColetadasConforme)) },
         { id: /QtdeT/g, valor: parseInt(listaDeTarefas.length) },
-    ];
+        { id: /TCrit/g, valor: parseInt(pesoCritico) },];
     var equacao = parVinculoPesoParLevel2.Equacao;
     variaveisEquacao.forEach(function (variavel) {
-        equacao = equacao.replace(variavel.id,variavel.valor);
-    });  
-
-     try {
-
+        equacao = equacao.replace(variavel.id, variavel.valor);
+    });
+    try {
         var porcentagemEquacao = eval(equacao);
-
-     } catch (e) {
-         console.warn(e);
-         porcentagemEquacao = null;
-     }
-
-    var porcentagemTotal = parseInt(totalDeAmostrasColetadasConforme)/parseInt(totalDeAmostrasColetadas)*100;
-
+    } catch (e) {
+        console.warn(e); porcentagemEquacao = null;
+    }
+    var porcentagemTotal = parseInt(totalDeAmostrasColetadasConforme) / parseInt(totalDeAmostrasColetadas) * 100;
     return {
-        AmostraTotal: parseInt(totalDeAmostras)
-        , AmostraTotalColetada: parseInt(totalDeAmostrasColetadas)
-        , AmostraTotalColetadasConforme: parseInt(totalDeAmostrasColetadasConforme)
-        , TotalTarefasAcimaLimiteNC: parseInt(totalTarefasAcimaLimiteNC)
-        , ColetasSincronizadas: coletasSincronizadas
-        , ParVinculoPesoParLevel2 : parVinculoPesoParLevel2
-        , Equacao : equacao
-        , PorcentagemEquacao : porcentagemEquacao
-        , Porcentagem : equacao.length > 0 ? porcentagemEquacao : porcentagemTotal
-        , PorcentagemTotalRespondida : porcentagemTotal
+        AmostraTotal: parseInt(totalDeAmostras),
+        AmostraTotalColetada: parseInt(totalDeAmostrasColetadas),
+        AmostraTotalColetadasConforme: parseInt(totalDeAmostrasColetadasConforme),
+        TotalTarefasAcimaLimiteNC: parseInt(totalTarefasAcimaLimiteNC),
+        ColetasSincronizadas: coletasSincronizadas,
+        ParVinculoPesoParLevel2: parVinculoPesoParLevel2,
+        Equacao: equacao,
+        PorcentagemEquacao: porcentagemEquacao,
+        Porcentagem: equacao.length > 0 ? porcentagemEquacao : porcentagemTotal,
+        PorcentagemTotalRespondida: porcentagemTotal
     };
-
 }
 
 function GetListaDeTarefasPorMonitoramento(){
