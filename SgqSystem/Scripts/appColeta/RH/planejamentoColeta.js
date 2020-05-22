@@ -151,7 +151,7 @@ function voltarPlanejamentoColeta() {
     if (currentPlanejamento.length > 0) {
         openMenu();
     } else {
-        openParCluster();
+        ,
         //openParFrequency();
     }
 }

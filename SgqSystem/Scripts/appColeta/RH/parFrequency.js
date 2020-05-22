@@ -41,7 +41,9 @@ function openParFrequency() {
 
 function listarParFrequency() {
 
-	cleanGlobalVarParFrequency();
+    cleanGlobalVarParFrequency();
+
+    currentParFrequency_Id = null;
 
 	_readFile("parFrequency.txt", function (data) {
 
