@@ -1427,7 +1427,7 @@ GROUP BY Parcompany_id
                     groupBy = $@" GROUP BY SKU, CUBOL3.ParProduto_Id ";
                     groupBy2 = $@" GROUP BY SKU, data ";
                     orderBy = "ORDER BY 4 DESC";
-                    selectTotal = "  SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UnidadeName = B.SKU  ";
+                    selectTotal = "  SELECT * FROM #RR1 A INNER JOIN #RR2 B ON A.UnidadeName = B.SKU  ORDER BY TOTAL DESC  ";
                     campos4 = "SKU, AVG(PESOTOTAL) AS PESOTOTAL, AVG(TOTAL) AS TOTAL";
                     groupBy3 = ", SKU";
                
@@ -1446,7 +1446,7 @@ GROUP BY Parcompany_id
 					groupBy = $@" GROUP BY CUBOL3.GRUPOTAREFA, CUBOL3.GRUPOTAREFA ";
 					groupBy2 = $@" GROUP BY C.ParLevel2_id, data ";
 					orderBy = "ORDER BY 4 DESC";
-					selectTotal = " SELECT *, NULL AS PESOTOTAL, NULL AS TOTAL FROM #RR1 A  ";
+					selectTotal = " SELECT *, NULL AS PESOTOTAL, NULL AS TOTAL FROM #RR1 A  ORDER BY NC DESC   ";
 
 
 					break;
