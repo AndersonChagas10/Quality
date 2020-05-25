@@ -3503,7 +3503,7 @@
 
   <Card>
     <CardNumber>SGQ-716</CardNumber>
-    <Version>1.8.0</Version>
+    <Version>1.9.0</Version>
     <Description>[PA] Inativar Planejamentos e Ações </Description>
     <Script>
       IF COL_LENGTH('Pa_Planejamento','IsActive') IS NULL
