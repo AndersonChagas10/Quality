@@ -28,8 +28,9 @@ namespace SgqSystem.Controllers.V2.Api
 
             var listaParFrequencyVinculada_Id = db.ParEvaluationXDepartmentXCargo
                    .AsNoTracking()
-                   .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
-                   .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id || x.ParCluster_Id == null)
+                   .Where(x => x.IsActive && (x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null))
+                   .Where(x => x.IsActive && (x.ParCluster_Id == appParametrization.ParCluster_Id || x.ParCluster_Id == null))
+                   .Where(x => x.ParDepartment.Active == true)
                    .Where(x => x.IsActive)
                    .Select(x => x.ParFrequencyId)
                    .Distinct()
