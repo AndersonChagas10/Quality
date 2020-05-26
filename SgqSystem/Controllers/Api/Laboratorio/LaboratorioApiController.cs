@@ -28,7 +28,7 @@ namespace SgqSystem.Controllers.Api
             using (var db = new Factory("DefaultConnection"))
             {
 
-                retorno = db.QueryNinjaADO(sqlQuery + " " + whereDate);
+                retorno = db.QueryNinjaADO(sqlQuery + "\n" + whereDate);
             }
 
             return retorno;
