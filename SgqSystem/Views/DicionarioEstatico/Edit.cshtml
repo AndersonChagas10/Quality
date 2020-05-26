@@ -3,6 +3,13 @@
 @{
     ViewBag.Title = "Dicionário Estático";
 }
+<style>
+
+    textarea {
+        resize: vertical;
+    }
+
+</style>
 
 <div class="page-content-wrapper">
     <!-- BEGIN CONTENT BODY -->
@@ -14,7 +21,7 @@
                 <li>
                     <a href="@Url.Action("Index", "Home")">Home</a>
                     <i class="fa fa-angle-right"></i>
-                    <a href="@Url.Action("Index", "ResoucePTs")">Dicionário Estático</a>
+                    <a href="@Url.Action("Index", "DicionarioEstatico")">Dicionário Estático</a>
                     <i class="fa fa-angle-right"></i>
                 </li>
                 <li>
@@ -73,7 +80,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Value, Resources.Resource.value as string, htmlAttributes: new { @class = "control-label col-md-2" })
                                             <div class="col-md-10">
-                                                @Html.EditorFor(model => model.Value, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.TextAreaFor(model => model.Value,  new { @class = "form-control" } )
                                                 @Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })
                                             </div>
                                         </div>

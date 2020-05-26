@@ -3518,4 +3518,11 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-739</CardNumber>
+    <Version>1.9.0</Version>
+    <Description>[GQ] Relatório de Análise Crítica Atualizar cubo automaticamente </Description>
+    <Script></Script>
+  </Card>
+
 </Cards>
