@@ -179,7 +179,7 @@
         $('[name="parCompany_Ids"]').parent().find('label strong').append('<span style="color:red;font-size:20px"> *</span>');
 
         $('body').on('click', '#btnPrint', function () {
-            $('#printTitulo').html("Relatório Verificação MER");
+            $('#printTitulo').html($("#tdNomeRelatorio").text());
             $("#printElaborador").html($("#tdElaborador").text());
             $("#printAprovador").html($("#tdAprovador").text());
 
