@@ -2840,4 +2840,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-740</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Appcoleta - Inserção do campo de busca na lista de SKUs.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
