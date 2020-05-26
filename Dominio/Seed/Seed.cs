@@ -63,8 +63,7 @@ namespace Dominio.Seed
 
             #if !DEBUG
                  dicionarioSeed.SetDicionarioEstatico();
-            #endif 
-
+            #endif
 
             using (var db = new Dominio.SgqDbDevEntities())
             {

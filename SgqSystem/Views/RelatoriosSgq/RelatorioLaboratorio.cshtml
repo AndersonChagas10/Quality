@@ -130,7 +130,7 @@
 
     @Scripts.Render("~/Scripts/heatmap.js")
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
 
@@ -318,9 +318,9 @@
                 } else {
 
                     let arrAv = arrFiltrado.map(x => x.AV);
-                    let amostragem = arrAv.reduce((accumulator, currentValue) => accumulator + currentValue);
+                    let amostragem = arrAv.reduce(sumReduce);
                     let arrNc = arrFiltrado.map(x => x.NC);
-                    let qtdNC = arrNc.reduce((accumulator, currentValue) => accumulator + currentValue)
+                    let qtdNC = arrNc.reduce(sumReduce)
 
                     obj.data.push(getPorcentagem(amostragem, qtdNC));
                 }
@@ -505,8 +505,8 @@
                     let percNC = null
 
                     if (arrFiltrados.length > 0) {
-                        qtdeNC = arrFiltrados.map(x => x.NC).reduce((accumulator, currentValue) => accumulator += currentValue);
-                        amostragem = arrFiltrados.map(x => x.AV).reduce((accumulator, currentValue) => accumulator += currentValue);
+                        qtdeNC = arrFiltrados.map(x => x.NC).reduce(sumReduce);
+                        amostragem = arrFiltrados.map(x => x.AV).reduce(sumReduce);
                         percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
                     }
 
@@ -519,6 +519,14 @@
             resolve(listaDistinct);
 
         });
+    }
+
+    function sumReduce(accumulator, currentValue) {
+
+        accumulator = parseInt(accumulator);
+        currentValue = parseInt(currentValue);
+
+        return accumulator + currentValue
     }
 
     $('#btnToggleDivFilterReports').on('click', () => {
@@ -759,6 +767,6 @@
         }
     }
 
-    </script>
+</script>
 
 }

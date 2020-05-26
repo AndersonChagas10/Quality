@@ -3503,7 +3503,7 @@
 
   <Card>
     <CardNumber>SGQ-716</CardNumber>
-    <Version>1.8.0</Version>
+    <Version>1.9.0</Version>
     <Description>[PA] Inativar Planejamentos e Ações </Description>
     <Script>
       IF COL_LENGTH('Pa_Planejamento','IsActive') IS NULL
@@ -3516,6 +3516,13 @@
       ALTER table Pa_Acao Add IsActive Bit Not Null Default 1
       END
     </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-739</CardNumber>
+    <Version>1.9.0</Version>
+    <Description>[GQ] Relatório de Análise Crítica Atualizar cubo automaticamente </Description>
+    <Script></Script>
   </Card>
 
 </Cards>

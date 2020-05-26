@@ -104,6 +104,9 @@ namespace Dominio.Seed
 
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "desdobrarAutomatico", Value = "false", ControllerName = "", Descricao = "Desdobramento automático no AppColeta de Gestão" });
 
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "queryRelatorioLaboratorio", Value = "", ControllerName = "LaboratorioApiController", Descricao = "Query do relatório de Análise Laboratoriais" });
+
+
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys).ToList();
 
                 if (add.Count > 0)
