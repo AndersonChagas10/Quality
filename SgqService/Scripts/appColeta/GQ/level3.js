@@ -1520,8 +1520,8 @@ function saveResultLevel3() {
 
             } else if (inputType == 2) { //Número de defeitos
 
-                if (parseFloat(value) > 0) {
-                    value = parseFloat(value);
+                if (converteParaFloat(value) > 0) {
+                    value = converteParaFloat(value);
                     conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
                 }
 
@@ -1625,7 +1625,7 @@ function saveResultLevel3() {
                     temDefeito = 1;
                     value = 1;
                     conform = false;
-                } else if ((inputType == 7 || inputType == 6 || inputType == 10)) {
+                } else if ((inputType == 2 || inputType == 3 || inputType == 6 || inputType == 7 || inputType == 8 || inputType == 9 || inputType == 10)) {
                     temDefeito = 0;
                     if (conform == false) {
                         temDefeito = 1;
