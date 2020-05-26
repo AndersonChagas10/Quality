@@ -561,25 +561,25 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta)) 
 
 			SELECT 
-                IndicadorName as Indicador,
-                MonitoramentoName as Setor,
-                TarefaName as ''Itens Verificados'',
+                IndicadorName as ''indicador'',
+                MonitoramentoName as ''setor'',
+                TarefaName as ''itensverificados'',
 				AuditorId,
-				AuditorName as Visto,
-				EvaluationNumber as ''Avaliação'',
-				Sample as Amostra,
+				AuditorName as ''visto'',
+				EvaluationNumber as ''avaliação'',
+				Sample as ''amostra'',
                 H.*,
                 Meta as Meta,
                 --AVComPeso as ''AV com Peso'',
                 --nCComPeso as ''NC com Peso'',
-                UnidadeName as Unidade,
-                Cast(AV as int) as AV,
-                Cast(NC as int) as NC,
-				Resultado,
-                -- iif(NC = 1, ''C'' , ''NC'') as ''Resultado'',
-                --''Célia Regina Mattia GQC/ANH'' as Visto,
-                CONVERT(VARCHAR(10), ConsolidationDate, 103) as ''Data da Coleta'',
-				CONVERT(CHAR(5),ConsolidationDate,108) as ''Hora''
+                UnidadeName as unidade,
+                Cast(AV as int) as av,
+                Cast(NC as int) as nc,
+				Resultado as ''resultado'',
+                -- iif(NC = 1, ''C'' , ''NC'') as ''resultado'',
+                --''Célia Regina Mattia GQC/ANH'' as visto,
+                CONVERT(VARCHAR(10), ConsolidationDate, 103) as ''datadacoleta'',
+				CONVERT(CHAR(5),ConsolidationDate,108) as ''hora''
 
 			INTO #CUBO_ACERTO
             FROM #CUBO C
@@ -602,6 +602,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             DROP TABLE #INPUT_TYPES
 
             ";
+
 
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {

@@ -134,7 +134,7 @@
                     </div>
                 </div>
 
-                <div class="row" id="corpoPagina">
+                <div class="row" id="corpoPagina" >
                     <div id="pivot-table">
 
                     </div>
@@ -180,8 +180,8 @@
 
         $('body').on('click', '#btnPrint', function () {
             $('#printTitulo').html("Relatório Verificação MER");
-            $("#printElaborador").html("Thais");
-            $("#printAprovador").html("Camila");
+            $("#printElaborador").html($("#tdElaborador").text());
+            $("#printAprovador").html($("#tdAprovador").text());
 
             printGRT.Inicializar({
 
@@ -246,7 +246,7 @@
                         $("#tdElaborador").text(data.Elaborador[0]["Elaborador"]);
                         $("#tdAprovador").text(data.Aprovador);
                         $("#tdNomeRelatorio").text(data.RelatorioName[0]["NomeRelatorio"]);
-                        $("#dataColeta").text(data.Resultado[0]["Data da Coleta"]);
+                        $("#dataColeta").text(data.Resultado[0]["datadacoleta"]);
                         
                         montaTabelaDinamica(data.Resultado);
                     } else {
@@ -269,23 +269,23 @@
         function montaTabelaDinamica(data) {
 
             var cabecalhos = [
-                "AV",
+                "av",
             ];
 
             var linhas = [
-                "Itens Verificados",
-                "Avaliação",
-                "Amostra",
-                "Setor",
+                "itensverificados",
+                "avaliação",
+                "amostra",
+                "setor",
             ];
 
             var valores = [
                 //"AV com Peso",
                 //"NC com Peso",
-                "Data da Coleta",
-                "Hora",
-                "Resultado",
-                "Visto",
+                "datadacoleta",
+                "hora",
+                "resultado",
+                "visto",
             ]
 
             var obj = [];
@@ -295,11 +295,11 @@
                 obj.push(
                     {
                         "cotoco": "Cotoco " + Math.round(Math.random() * qtdMockColuna),
-                        cabecalho2: "Setor " + Math.round(Math.random() * qtdMockColuna),
-                        cabecalho3: "Unidade " + Math.round(Math.random() * qtdMockColuna),
-                        cabecalho4: "Turno " + Math.round(Math.random() * qtdMockColuna),
-                        cabecalho5: "Av " + Math.round(Math.random() * qtdMockColuna),
-                        linha1: "Cluster " + Math.round(Math.random() * qtdMockLinha),
+                        cabecalho2: "setor " + Math.round(Math.random() * qtdMockColuna),
+                        cabecalho3: "unidade " + Math.round(Math.random() * qtdMockColuna),
+                        cabecalho4: "turno " + Math.round(Math.random() * qtdMockColuna),
+                        cabecalho5: "av " + Math.round(Math.random() * qtdMockColuna),
+                        linha1: "cluster " + Math.round(Math.random() * qtdMockLinha),
                         linha2: "Função " + Math.round(Math.random() * qtdMockLinha),
                         linha3: "Amostra " + Math.round(Math.random() * qtdMockLinha),
                         linha4: "Cabecalho " + Math.round(Math.random() * qtdMockLinha),
@@ -519,14 +519,14 @@
 
             var listaObj = [...obj];
             var ultimoObjeto = undefined;
+            var ultimaPosicaoDoObjeto = 0;
             for (var i = 0; i < listaTds.length; i++) {
                 var td = listaTds[i];
                 var cellIndex = td.cellIndex;
                 var rowIndex = td.parentNode.rowIndex;
-
                 var numeroObjeto = (cellIndex - td.parentNode.getElementsByTagName('th').length);
                 var atributos = {};
-                var attrColuna = document.querySelector("#pivot-table > table > tbody > tr:nth-child(" + cabecalhos.length + ") > th:nth-child(" + (1 + Math.floor(numeroObjeto / valores.length)) + ")").attributes;
+                var attrColuna = document.querySelector("#pivot-table  > table > tbody > tr:nth-child(" + cabecalhos.length + ") > th:nth-child(" + (1 + Math.floor(numeroObjeto / valores.length)) + ")").attributes;
                 for (var j = 0; j < attrColuna.length; j++) {
                     atributos[attrColuna[j].name] = attrColuna[j].value;
                 }
@@ -535,7 +535,6 @@
                 for (var j = 0; j < attrLinha.length; j++) {
                     atributos[attrLinha[j].name] = attrLinha[j].value;
                 }
-                
                 var objAtributos = Object.keys(atributos);
                 for (var j = 0; j < listaObj.length; j++) {
                     var deuMatch = true;
@@ -548,20 +547,21 @@
                         }
                     }
                     if (deuMatch) {
-                        
-                        ultimoObjeto = listaObj[j];
+                        if (!ultimoObjeto) {
+                            ultimaPosicaoDoObjeto = j;
+                        }
+                        ultimoObjeto = listaObj[ultimaPosicaoDoObjeto];
                         td.innerHTML = ultimoObjeto[td.getAttribute("data-value")];
 
-                        if (td.getAttribute("data-value") == "Resultado"
-                            && parseFloat(ultimoObjeto["NC"]) > 0) {
+                        if (td.getAttribute("data-value") == "resultado"
+                            && parseFloat(ultimoObjeto["nc"]) > 0) {
                             td.style.backgroundColor = "black";
-                            td.style.color = "white";
-                            td.style.fontWeight = "bold";
+                            td.setAttribute('style', "background-color: black !important;  color: white !important; font-weight: bold !important;");
                         }
 
                         if (((1 + numeroObjeto) % valores.length) == 0) {
                             ultimoObjeto = undefined;
-                            listaObj.splice(j, 1);
+                            listaObj.splice(ultimaPosicaoDoObjeto, 1);
                         }
                         break;
                     }
