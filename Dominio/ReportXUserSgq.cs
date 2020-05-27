@@ -47,5 +47,8 @@ namespace Dominio
         [Display(Name = "Codigo do Relatório")]
         public string CodigoRelatorio { get; set; }
 
+        [NotMapped]
+        public ICollection<ParReportLayoutXReportXUser> parReportLayoutXReportXUser { get; set; }
+
     }
 }
