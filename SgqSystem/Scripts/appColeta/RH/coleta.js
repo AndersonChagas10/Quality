@@ -1446,7 +1446,10 @@ function HeaderFieldsIsValid() {
 
     retorno = true;
 
-    $('#headerFieldDepartment input, #headerFieldDepartment select, #headerFieldLevel1 input, #headerFieldLevel1 select, #headerFieldLevel2 input, #headerFieldLevel2 select').each(function () {
+    $('#headerFieldDepartment input, #headerFieldDepartment select, '+ 
+    '#headerFieldLevel1 input, #headerFieldLevel1 select, ' +
+    '#headerFieldLevel2 input, #headerFieldLevel2 select, ' + 
+    '#headerFieldLevel3 input, #headerFieldLevel3 select').each(function () {
 
         $self = $(this);
 
@@ -1459,7 +1462,6 @@ function HeaderFieldsIsValid() {
                 retorno = false;
             }
         }
-
     });
 
     if (!retorno) {

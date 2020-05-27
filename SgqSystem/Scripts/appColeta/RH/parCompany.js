@@ -37,6 +37,11 @@ function listarParCompany(isVoltar) {
     
     cleanGlobalVarParCluster();
 
+    currentParCompany_Id = null;
+    currentParClusterGroup_Id = null;
+    currentParCluster_Id = null;
+    currentParFrequency_Id = null;
+
     _readFile("parCompany.txt", function (data) {
 
         data = JSON.parse(data);
