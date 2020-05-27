@@ -208,6 +208,8 @@ namespace SgqSystem.Controllers.V2.Api
             {
                 db.Configuration.LazyLoadingEnabled = false;
 
+                db.Database.CommandTimeout = 180;
+
                 listaParVinculoPeso = business.GetListaParVinculoPeso();
 
                 listaParLevel1 = business.GetListaParLevel1(listaParVinculoPeso);
