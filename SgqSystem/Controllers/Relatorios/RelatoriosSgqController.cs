@@ -195,6 +195,11 @@ namespace SgqSystem.Controllers
 
             ViewBag.Produtos = listaProdutos.getProdutos();
 
+            using (var dbEntity = new Dominio.SgqDbDevEntities())
+            {
+                ViewBag.ParReasonEdit = dbEntity.ParReason.Where(x => x.IsActive && x.ParReasonType_Id == 3).ToList();
+            }
+
             //Fim da Role
 
             return View(form);

@@ -29,10 +29,13 @@
     ViewBag.ShowUserCompanies = true; //Exibe somente as unidades do usuário no filtro
 
     var urlGet = Url.Action("GetApontamentosDiariosRH", "api/ApontamentosDiarios");
+    var urlSave = Url.Action("Save", "api/ApontamentosDiarios");
+    var urlLogTrack = Url.Action("Get", "api/LogTrack");
 }
 
 @section Content {
 
+    @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
     <div id="divApontamentosDiarios"></div>
     <div id="divTable">
         <table id="resultsApontamentos" class="table table-striped"></table>
@@ -48,6 +51,9 @@
     <script>
 
         var urlGet = '@Html.Raw(@urlGet)';
+        var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
+        var urlSave = '@Html.Raw(@urlSave)';
+        var urlLogTrack = '@Html.Raw(urlLogTrack)';
 
         function enviarFiltro() {
             openLoader('Aguarde...');
@@ -89,6 +95,24 @@
 
             else {
 
+                $('#tabelaAnaliticoButtons').show();
+                //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
+                var regraEdit = false;
+
+                var roles = $.grep(getCookie('webControlCookie'), function (a, b) {
+                    return a.indexOf('roles') != -1;
+                })[0].split('=')[1].split(',');
+
+                var role = roles.find(function(e) {
+                    return e === 'Admin';
+                });
+
+                if (RoleUser.indexOf("366") >= 0 || RoleUser.indexOf("346") >= 0 || RoleUser.indexOf("1885") >= 0 || role == 'Admin') {
+                    regraEdit = true ;
+                }else{
+                    regraEdit = false;
+                }
+
                 //Fim Regra
                 var Tipo1 = {};
                 var Tipo2 = {};
@@ -106,6 +130,15 @@
 
                 var colunas =
                     [
+                        {
+                            title: "@Resources.Resource.edit", mData: null, mRender: function (data, type, full) {
+                                if (data.ParLevel3InputType_Id == 11) {
+                                    return '<button class="btn btn-link custom-button" disabled style="cursor: not-allowed;">' + "@Resources.Resource.edit" + '</button>';
+                                } else {
+                                    return '<button id="edit" data-ParLevel3InputType_Id="' + data.ParLevel3InputType_Id + '" class="btn btn-link custom-button" data-toggle="modal" data-target="#myModal">' + "@Resources.Resource.edit" + '</button>';
+                                }
+                            }, "visible": regraEdit
+                        },
                         { title: "@Resources.Resource.unit", mData: "Unidade" },
                         { title: "Cluster", mData: "ClusterName" },
                         //{ title: "@Resources.Resource.cluster", mData: "Processo" },
@@ -180,6 +213,15 @@
                                     return '@Resources.Resource.normal';
                                 }
                             }
+                        },
+                        {
+
+                            title: "Histórico Resultado", mData: null, mRender: function (data, type, full) {
+                                return full.HasHistoryResult_Level3 ?
+                                    '<button class="btn btn-info btn-sm" id="viewHistory" class="btn btn-link custom-button" height="60" style="width:80px;"  data-toggle="modal" data-target="#modalLogTrackHistory">' + "Visualizar" + '</button>'
+                                    :
+                                    '<button class="btn btn-default btn-sm" disabled="" title="Não há edições" style="width:80px;">-</button>';
+                            }
                         }
                     ];
 
@@ -192,6 +234,86 @@
                             oTable.fnAdjustColumnSizing();
                         }
                     }, 100);
+                    $('#resultsApontamentos tbody').on('click', 'button#edit', function (data) {
+
+                        var data = table.row($(this).parents('tr')).data();
+                        $('#myModal #changeConform').empty();
+                        $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+
+                        if (data.ParLevel3InputType_Id != 10) {
+                            $('#myModal #ResultLevel3_Id').val(data.ResultLevel3Id);
+                            $('#myModal #changeConform').append(montaHtmlEdicao(data));
+                            $("#botaoSalvar").show();
+                            InitiMasksDefaults();
+                        } else {
+                            $("#myModal #Level3Name").append("<div class='alert alert-warning' id='mensagemErro'>O item selecionado possui vínculos de resultado. A edição está desabilitada.</div>");
+                            $("#botaoSalvar").hide();
+                        }
+                    });
+
+                    $('#resultsApontamentos tbody').on('click', 'button#viewHistory', function (data) {
+
+                        var data = table.row($(this).parents('tr')).data();
+
+                        var tableLogTrack = $('#modalLogTrackHistory .modal-body');
+                        $(tableLogTrack).html('');
+
+                        $.get(urlLogTrack + "/Result_Level3/" + data.ResultLevel3Id, function (r) {
+
+                            var htmlHead = "<thead><tr>";
+                            htmlHead += "<th></th>";
+                            htmlHead += "<th>Data Alteração</th>";
+                            htmlHead += "<th>Quem</th>";
+                            htmlHead += "<th>Resultado</th>";
+                            htmlHead += "<th>Valor</th>";
+                            htmlHead += "<th>Valor do Texto</th>";
+                            htmlHead += "<th>Não avaliado</th>";
+                            htmlHead += "<th>Tipo Motivo</th>";
+                            htmlHead += "<th>Motivo</th>";
+                            htmlHead += "</tr></thead>";
+
+                            var htmlBody = "";
+                            var quantidadeNaLista = r.length;
+                            r.splice(0, 0, r[r.length - 1]);
+                            r = r.slice(0, -1);
+                            $.each(r, function (i, o) {
+
+                                if (i == 0) {
+                                    htmlBody += "<tr style='background-color:#ddd;' title='Original'>";
+                                    htmlBody += "<td>Original</td>";
+                                } else if(i == 1){
+                                    htmlBody += "<tr style='background-color:#5cb85c;' title='Atual'>";
+                                    htmlBody += "<td>Edição "+(quantidadeNaLista-i)+"</td>";
+                                } else {
+                                    htmlBody += "<tr>";
+                                    htmlBody += "<td>Edição "+(quantidadeNaLista-i)+"</td>";
+                                }
+
+                                htmlBody += "<td>"+o.addDate+"</td>";
+                                htmlBody += "<td>"+o.userSgq_Name+"</td>";
+                                htmlBody += "<td>"+(o.obj.IsConform ? "Conforme" : "Não Conforme")+"</td>";
+                                htmlBody += "<td>"+o.obj.Value+"</td>";
+                                htmlBody += "<td>"+(o.obj.ValueText == 'null' || o.obj.ValueText == 'undefined' ? "" : o.obj.ValueText)+"</td>";
+                                htmlBody += "<td>"+(o.obj.IsNotEvaluate ? "Não Avaliado" : "Avaliado")+"</td>";
+                                htmlBody += "<td>"+o.parReason+"</td>";
+                                htmlBody += "<td>"+o.motivo+"</td>";
+                                htmlBody += "</tr>";
+                            });
+
+                            var tableHtml = "<table>"+htmlHead+"<tbody>"+htmlBody+"</tbody>"+"</table>"
+                            $(tableLogTrack).html(tableHtml);
+
+                            $(tableLogTrack).find('table').dataTable({
+                                "ordering": false,
+                                "pageLength": 25,
+                                "scrollX": true,
+                                "initComplete": function (settings, json) {
+                                    setTimeout(function () {$.fn.dataTable.tables({ visible: true, api: true }).columns.adjust(); },500)
+                                }
+                            } );
+
+                        })
+                    });
 
                 }
 
@@ -235,6 +357,48 @@
             CarregaPivotTable(arrayData, "PivotTable");
             $("#PivotTable").css("display", "block");
         });
+
+        function montaHtmlEdicao(o) {
+            html = '<div>';
+            var inputTypeId = o.ParLevel3InputType_Id;
+            if (inputTypeId == 2 || inputTypeId == 3 || inputTypeId == 4 || inputTypeId == 7 || inputTypeId == 9 || inputTypeId == 15) {
+                var intervalMax = o.IntervaloMaximo == null ? "" : parseFloat(o.IntervaloMaximo.replace(',', '.'));
+                var intervalMin = o.IntervaloMinimo == null ? "" : parseFloat(o.IntervaloMinimo.replace(',', '.'));
+                var valorAtual = parseFloat(o.Lancado.replace(',', '.'));
+                html += "<label'> @Resources.Resource.max_interval : </label> " +
+                    "<label id='intervalMax'>"+ intervalMax +"</label>" +
+                    "<br>" +
+                    "<label'> @Resources.Resource.min_interval : </label>" +
+                    "<label id='intervalMin'>"+ intervalMin +"</label>" +
+                    "<br>" +
+                    "<label>  @Resources.Resource.current_value : </label>" +
+                    "<label>&nbsp"+ valorAtual +"</label>" +
+                    "<br>" +
+                    "<label>  @Resources.Resource.new_value : </label>" +
+                    "<input type='number' id='intervaloValor' class='form-control' value="+ valorAtual +" />" +
+                    "<br>";
+            }
+            if (inputTypeId == 1 || inputTypeId == 6) {
+                var checkedAttr = o.Conforme == true ? "checked='checked'" : "";
+                html += "<label for='Conforme: '> @Resources.Resource.conform2 : </label>" +
+                        "<input class='.check-box' id='conform' name='conform'  "+ checkedAttr +"  type='checkbox' value='true'><input name='conform' type='hidden' value='false'>" +
+                        "<br>";
+            }
+            if (inputTypeId == 5) {
+                var valueText = o.ValueText == "undefined" || o.ValueText == null ? "" : o.ValueText;
+                html += "<label for='Conforme: '> @Resources.Resource.current_value : </label>" + valueText +
+                        "<br>" +
+                        "<label for='Conforme: '> @Resources.Resource.new_value : </label>" +
+                         "<input type='text' id='texto' class='form-control text' value='" + valueText + "' />"
+            }
+
+            var naoAvaliado = o.NA == true ? "checked='checked'" : "";
+            html += "<label for='Conforme: '> @Resources.Resource.unvalued : </label>" +
+                    "<input type='checkbox' id='IsEvaluated' "+ naoAvaliado +" class='.check-box' />";
+            html += '</div>';
+            return html;
+        }
+
     </script>
 
 }
