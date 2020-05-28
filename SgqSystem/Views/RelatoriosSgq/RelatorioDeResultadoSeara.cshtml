@@ -165,6 +165,12 @@
                 closeLoader();
                 $('#tabela').show();
 
+                $('#resultsUnidades > div > div:nth-child(4) > div.column1.removeMargin.titleHeatMap > table').hide()
+                $('#listaRodape').hide()
+                $('#totalMedia').hide()
+                $('#listaMedia').hide()
+                $('#cabecalhoTotal').hide()
+
             })
             .fail(function (jqXHR, textStatus, msg) {
                 //console.log(msg);
