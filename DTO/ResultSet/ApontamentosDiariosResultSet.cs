@@ -1135,6 +1135,7 @@ public class ApontamentosDiariosResultSet
 							AND PL3V.IsActive = 1
 							ORDER BY PL3V.Id DESC, PL3V.ParCompany_Id DESC, PL3V.ParLevel2_Id DESC, PL3V.ParLevel1_Id DESC)
 						AS ParLevel3InputType_Id
+                        ,CASE WHEN (SELECT TOP 1 Id FROM LogTrack LT WHERE LT.Tabela = 'Result_Level3' AND LT.Json_Id = R3.Id) IS NOT NULL THEN 1 ELSE 0 END AS HasHistoryResult_Level3
 					   ,CASE
 							WHEN MA.Motivo IS NULL THEN 0
 							ELSE 1

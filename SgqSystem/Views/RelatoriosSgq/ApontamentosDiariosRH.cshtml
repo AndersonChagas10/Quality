@@ -36,6 +36,7 @@
 @section Content {
 
     @Html.Partial("~/Views/RelatoriosSgq/_ResultLevel3Edit.cshtml")
+    @Html.Partial("~/Views/RelatoriosSgq/_LogTrackHistory.cshtml")
     <div id="divApontamentosDiarios"></div>
     <div id="divTable">
         <table id="resultsApontamentos" class="table table-striped"></table>
@@ -397,7 +398,7 @@
                 html += "<br>" +
                         "<label> @Resources.Resource.unvalued  </label>&nbsp" +
                         "<input type='checkbox' id='IsEvaluated' "+ naoAvaliado +" class='.check-box' />";
-            } 
+            }
             html += '</div>';
 
             return html;
@@ -433,7 +434,7 @@
             var selectParReasonEdit = $('select[name="selectParReasonEdit"]:visible').val();
             var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
             dadosResultLevel3["Motivo"] = textareaParReasonEdit;
-            
+
             $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
                 $('.alertParReasonEditIsRequired').addClass('hide');
 
