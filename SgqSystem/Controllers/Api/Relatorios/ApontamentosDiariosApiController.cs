@@ -254,6 +254,27 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [Route("SaveRH/{userSgq_Id}/{parReason_Id}")]
+        public Result_Level3DTO SaveResultLevel3RH([FromUri] int userSgq_Id, int parReason_Id, [FromBody] Result_Level3DTO resultLevel3)
+        {
+            var resultlevel3Old = db.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
+            resultlevel3Old.Value = resultLevel3.Value;
+            resultlevel3Old.ValueText = resultLevel3.ValueText;
+            resultlevel3Old.IsConform = resultLevel3.IsConform;
+            resultlevel3Old.IsNotEvaluate = resultLevel3.IsNotEvaluate;
+            
+            var auditorId = db.CollectionLevel2.Where(x => x.Id == resultlevel3Old.CollectionLevel2_Id).Select(x => x.AuditorId).First();
+            db.Entry(resultlevel3Old).State = EntityState.Modified;
+            db.SaveChanges();
+
+            LogSystem.LogTrackBusiness.Register(resultlevel3Old, resultlevel3Old.Id, "Result_Level3", userSgq_Id, parReason_Id, resultLevel3.Motivo);
+
+            ConsolidacaoEdicao(resultLevel3.Id);
+            return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
+
+        }
+
+        [HttpPost]
         [Route("GetRL/{level1}/{shift}/{period}/{date}")]
         public List<CollectionLevel2> GetResultLevel3(int level1, int shift, int period, DateTime date)
         {

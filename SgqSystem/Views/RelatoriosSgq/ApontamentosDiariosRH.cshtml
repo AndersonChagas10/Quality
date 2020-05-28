@@ -29,7 +29,7 @@
     ViewBag.ShowUserCompanies = true; //Exibe somente as unidades do usuário no filtro
 
     var urlGet = Url.Action("GetApontamentosDiariosRH", "api/ApontamentosDiarios");
-    var urlSave = Url.Action("Save", "api/ApontamentosDiarios");
+    var urlSave = Url.Action("SaveRH", "api/ApontamentosDiarios");
     var urlLogTrack = Url.Action("Get", "api/LogTrack");
 }
 
@@ -238,13 +238,13 @@
 
                         var data = table.row($(this).parents('tr')).data();
                         $('#myModal #changeConform').empty();
+                        $("#myModal #Level3Name").empty();
                         $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
 
-                        if (data.ParLevel3InputType_Id != 10) {
+                        if (data.ParLevel3InputType_Id != 10 && data.ParLevel3InputType_Id != null) {
                             $('#myModal #ResultLevel3_Id').val(data.ResultLevel3Id);
                             $('#myModal #changeConform').append(montaHtmlEdicao(data));
                             $("#botaoSalvar").show();
-                            InitiMasksDefaults();
                         } else {
                             $("#myModal #Level3Name").append("<div class='alert alert-warning' id='mensagemErro'>O item selecionado possui vínculos de resultado. A edição está desabilitada.</div>");
                             $("#botaoSalvar").hide();
@@ -361,10 +361,10 @@
         function montaHtmlEdicao(o) {
             html = '<div>';
             var inputTypeId = o.ParLevel3InputType_Id;
-            if (inputTypeId == 2 || inputTypeId == 3 || inputTypeId == 4 || inputTypeId == 7 || inputTypeId == 9 || inputTypeId == 15) {
-                var intervalMax = o.IntervaloMaximo == null ? "" : parseFloat(o.IntervaloMaximo.replace(',', '.'));
-                var intervalMin = o.IntervaloMinimo == null ? "" : parseFloat(o.IntervaloMinimo.replace(',', '.'));
-                var valorAtual = parseFloat(o.Lancado.replace(',', '.'));
+            if (inputTypeId == 2 || inputTypeId == 3 || inputTypeId == 4 || inputTypeId == 7 || inputTypeId == 8 || inputTypeId == 9 || inputTypeId == 15) {
+                var intervalMax = o.IntervaloMaximo == null ? "Sem intervalo máximo" : parseFloat(o.IntervaloMaximo.replace(',', '.'));
+                var intervalMin = o.IntervaloMinimo == null ? "Sem intervalo mínimo" : parseFloat(o.IntervaloMinimo.replace(',', '.'));
+                var valorAtual = o.Lancado == null ? "Sem valor atual" : parseFloat(o.Lancado.replace(',', '.'));
                 html += "<label'> @Resources.Resource.max_interval : </label> " +
                     "<label id='intervalMax'>"+ intervalMax +"</label>" +
                     "<br>" +
@@ -375,28 +375,89 @@
                     "<label>&nbsp"+ valorAtual +"</label>" +
                     "<br>" +
                     "<label>  @Resources.Resource.new_value : </label>" +
-                    "<input type='number' id='intervaloValor' class='form-control' value="+ valorAtual +" />" +
+                    "<input type='number' id='inputValor' class='form-control' value="+ valorAtual +" />" +
                     "<br>";
+            }
+            if (inputTypeId == 5 || inputTypeId == 6 || inputTypeId == 9 || inputTypeId == 15) {
+                var valueText = o.ValueText == "undefined" || o.ValueText == null ? "" : o.ValueText;
+                html += "<label> @Resources.Resource.current_value (Campo Texto) : </label>&nbsp" + valueText +
+                    "<br>" +
+                    "<label> @Resources.Resource.new_value (Campo Texto) : </label>" +
+                    "<input type='text' id='texto' class='form-control text' value='" + valueText + "' />"
             }
             if (inputTypeId == 1 || inputTypeId == 6) {
                 var checkedAttr = o.Conforme == true ? "checked='checked'" : "";
-                html += "<label for='Conforme: '> @Resources.Resource.conform2 : </label>" +
+                html += "<br>" +
+                        "<label> @Resources.Resource.conform2  </label>&nbsp" +
                         "<input class='.check-box' id='conform' name='conform'  "+ checkedAttr +"  type='checkbox' value='true'><input name='conform' type='hidden' value='false'>" +
                         "<br>";
             }
-            if (inputTypeId == 5) {
-                var valueText = o.ValueText == "undefined" || o.ValueText == null ? "" : o.ValueText;
-                html += "<label for='Conforme: '> @Resources.Resource.current_value : </label>" + valueText +
-                        "<br>" +
-                        "<label for='Conforme: '> @Resources.Resource.new_value : </label>" +
-                         "<input type='text' id='texto' class='form-control text' value='" + valueText + "' />"
+            if (inputTypeId == 1 || inputTypeId == 2 || inputTypeId == 3 || inputTypeId == 4 || inputTypeId == 6 || inputTypeId == 7 || inputTypeId == 8 || inputTypeId == 9 || inputTypeId == 10 || inputTypeId == 15) {
+                var naoAvaliado = o.NA == true ? "checked='checked'" : "";
+                html += "<br>" +
+                        "<label> @Resources.Resource.unvalued  </label>&nbsp" +
+                        "<input type='checkbox' id='IsEvaluated' "+ naoAvaliado +" class='.check-box' />";
+            } 
+            html += '</div>';
+
+            return html;
+        }
+
+        function SalvarResultLevel3() {
+
+            var dadosResultLevel3 = {};
+
+            dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
+            dadosResultLevel3["IsNotEvaluate"] = $('#IsEvaluated').is(':checked');
+
+            if ($('#inputValor').length)
+                dadosResultLevel3["Value"] = $('#inputValor').val().replace(',','.');
+            if ($('#texto').length){
+                dadosResultLevel3["ValueText"] = $('#texto').val();
+                if(dadosResultLevel3.ValueText == ""){
+                    dadosResultLevel3.IsNotEvaluate = true;
+                }
             }
 
-            var naoAvaliado = o.NA == true ? "checked='checked'" : "";
-            html += "<label for='Conforme: '> @Resources.Resource.unvalued : </label>" +
-                    "<input type='checkbox' id='IsEvaluated' "+ naoAvaliado +" class='.check-box' />";
-            html += '</div>';
-            return html;
+            //verifica se o valor inserido é maior que o permitido, se for, a flag isconform fica falsa e salva como nao conforme
+            if ((parseFloat($("#intervalMin").text().replace(',', '.')) != NaN && parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text().replace(',', '.')) && parseInt(dadosResultLevel3["Value"]) >= parseInt($("#intervalMin").text().replace(',', '.')))
+                || (parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text().replace(',', '.')))
+            || dadosResultLevel3["Value"] == "")
+                dadosResultLevel3["IsConform"] = true;
+            else
+                dadosResultLevel3["IsConform"] = false;
+
+            if ($("#intervalMax").text() == "" && $("#intervalMin").text() == "")
+                dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
+
+            var selectParReasonEdit = $('select[name="selectParReasonEdit"]:visible').val();
+            var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
+            dadosResultLevel3["Motivo"] = textareaParReasonEdit;
+            
+            $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
+                $('.alertParReasonEditIsRequired').addClass('hide');
+
+            if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 1) {
+                $('.alertParReasonEditIsRequired').removeClass('hide');
+                $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');
+                return;
+            }
+
+            $.post(urlSave + "/" + @Html.Raw(ViewBag.UserId) + "/" + selectParReasonEdit, dadosResultLevel3, function (r, x, e) {
+
+                $('textarea[name="textareaParReasonEdit"]:visible').val('');
+                $("#myModal").modal('hide');
+                openMessageModal(Resources('done'), Resources('registry_alter_success'));
+
+            }).fail(function (r, x, e) {
+
+                console.log(r);
+                console.log(x);
+                console.log(e);
+                openMessageModal(Resources('impossible_refresh_result'), Resources('impossible_refresh_result'));
+
+            });
+
         }
 
     </script>

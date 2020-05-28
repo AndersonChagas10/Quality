@@ -197,7 +197,7 @@ namespace SgqSystem.Controllers
 
             using (var dbEntity = new Dominio.SgqDbDevEntities())
             {
-                ViewBag.ParReasonEdit = dbEntity.ParReason.Where(x => x.IsActive && x.ParReasonType_Id == 3).ToList();
+                ViewBag.ParReasonEdit = dbEntity.ParReason.Where(x => x.IsActive && x.ParReasonType_Id == 17).ToList();
             }
 
             //Fim da Role
