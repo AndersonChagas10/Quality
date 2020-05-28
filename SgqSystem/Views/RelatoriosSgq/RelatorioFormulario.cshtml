@@ -219,12 +219,9 @@
             $("#mensagemSemDados").hide();
             GuardJs.esconderMensagem();
 
-
             $("#rodape").hide();
             $("#cabecalhoDiv").hide();
             $("#pivot-table").hide();
-
-           
 
             $.ajax({
                 data: JSON.stringify(objFiltro),
@@ -246,7 +243,7 @@
                         $("#tdElaborador").text(data.Elaborador[0]["Elaborador"]);
                         $("#tdAprovador").text(data.Aprovador);
                         $("#tdNomeRelatorio").text(data.RelatorioName[0]["NomeRelatorio"]);
-                        $("#dataColeta").text(data.Resultado[0]["datadacoleta"]);
+                        $("#dataColeta").text(data.Resultado[0]["data"]);
                         
                         montaTabelaDinamica(data.Resultado);
                     } else {
@@ -273,7 +270,7 @@
             ];
 
             var linhas = [
-                "itensverificados",
+                "itens verificados",
                 "avaliação",
                 "amostra",
                 "setor",
@@ -282,7 +279,7 @@
             var valores = [
                 //"AV com Peso",
                 //"NC com Peso",
-                "datadacoleta",
+                "data",
                 "hora",
                 "resultado",
                 "visto",
@@ -462,7 +459,18 @@
                 if (!atributos) {
                     atributos = "";
                 }
-                atributos += " " + itemMatriz.nivel + "='" + itemMatriz.titulo + "'";
+                //padrao 
+                atributos += " " + itemMatriz.nivel.replace(/[^\w\s]/gi, '') + "='" + itemMatriz.titulo.replace(/[^\w\s]/gi, '') + "'";
+
+                //var titulo = "";
+                //var nivel = "";
+                //if (itemMatriz.titulo != undefined)
+                //    titulo = itemMatriz.titulo.replace(/[^\w\s]/gi, '');
+                //else
+
+
+                //if (itemMatriz.nivel != undefined)
+                //    nivel = itemMatriz.nivel.replace(/[^\w\s]/gi, '');
 
                 if (indexAtual == indexMaximo) {
                     html = '<th ' + atributos + '>';
@@ -540,7 +548,7 @@
                     var deuMatch = true;
                     if (!ultimoObjeto) {
                         for (var z = 0; z < objAtributos.length; z++) {
-                            if (listaObj[j][objAtributos[z]] && atributos[objAtributos[z]] != listaObj[j][objAtributos[z]]) {
+                            if (listaObj[j][objAtributos[z].replace(/-/gi, ' ')] && atributos[objAtributos[z]].replace(/[^\w\s]/gi, '') != listaObj[j][objAtributos[z].replace(/-/gi, ' ')].replace(/[^\w\s]/gi, '')) {
                                 deuMatch = false;
                                 break;
                             }

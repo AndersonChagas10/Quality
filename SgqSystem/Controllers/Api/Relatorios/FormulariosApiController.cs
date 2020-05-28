@@ -563,7 +563,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 			SELECT 
                 IndicadorName as ''indicador'',
                 MonitoramentoName as ''setor'',
-                TarefaName as ''itensverificados'',
+                TarefaName as ''itens verificados'',
 				AuditorId,
 				AuditorName as ''visto'',
 				EvaluationNumber as ''avaliação'',
@@ -575,10 +575,10 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 UnidadeName as unidade,
                 Cast(AV as int) as av,
                 Cast(NC as int) as nc,
-				Resultado as ''resultado'',
+				iif(AVComPeso = 0 and nCComPeso = 0, ''NA'' , Resultado) as  ''resultado'',
                 -- iif(NC = 1, ''C'' , ''NC'') as ''resultado'',
                 --''Célia Regina Mattia GQC/ANH'' as visto,
-                CONVERT(VARCHAR(10), ConsolidationDate, 103) as ''datadacoleta'',
+                CONVERT(VARCHAR(10), ConsolidationDate, 103) as ''data'',
 				CONVERT(CHAR(5),ConsolidationDate,108) as ''hora''
 
 			INTO #CUBO_ACERTO
