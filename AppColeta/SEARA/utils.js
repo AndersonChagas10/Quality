@@ -50,19 +50,19 @@ function criaHtmlSelect(titulo,options){
 }
 
 function ZeroSeForNaN(valor){
-    return isNaN(valor) ? 0 : valor;
+    return parseFloat(isNaN(valor) || valor == null ? 0 : parseFloat(valor).toFixed(2));
 }
 
 function UmSeForNaN(valor){
-    return isNaN(valor) ? 1 : valor;
+    return parseFloat(isNaN(valor) ? 1 : parseFloat(valor).toFixed(2));
 }
 
 function UmSeForNaNOuNull(valor){
-    return isNaN(valor) || valor == null ? 1 : valor;
+    return parseFloat(isNaN(valor) || valor == null ? 1 : parseFloat(valor).toFixed(2));
 }
 
 function TracoSeForNaN(valor){
-    return isNaN(valor) ? '-' : valor;
+    return parseFloat(isNaN(valor) ? '-' : parseFloat(valor).toFixed(2));
 }
 
 function serializeFormToObject(divId){

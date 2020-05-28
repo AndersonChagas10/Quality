@@ -1506,5 +1506,5 @@ function atualizaPorcentagemDeTarefas(){
     $('span.porcentagemTarefa').text(ZeroSeForNaN(calculoPorMonitoramento.Porcentagem));
     var porcentagemTotalMonitoramento = ZeroSeForNaN($('span.porcentagemTotalMonitoramento').text());
 
-    $('span.porcentagemMonitoramento').text((ZeroSeForNaN(calculoPorMonitoramento.Porcentagem)/100)*porcentagemTotalMonitoramento);
+    $('span.porcentagemMonitoramento').text(ZeroSeForNaN((ZeroSeForNaN(calculoPorMonitoramento.Porcentagem)/100)*porcentagemTotalMonitoramento));
 }

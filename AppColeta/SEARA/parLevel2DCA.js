@@ -49,8 +49,8 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
             btnProximaAvaliacao = '';
         }
 
-        var porcentagemTotalConsiderandoPeso = (calculoPorMonitoramento.ParVinculoPesoParLevel2.Peso/quantidadeDeLevel2ComPeso)*100;
-        var porcentagemAtualConsiderandoPeso = (calculoPorMonitoramento.Porcentagem / 100) * porcentagemTotalConsiderandoPeso;
+        var porcentagemTotalConsiderandoPeso = ZeroSeForNaN((calculoPorMonitoramento.ParVinculoPesoParLevel2.Peso/quantidadeDeLevel2ComPeso)*100);
+        var porcentagemAtualConsiderandoPeso = ZeroSeForNaN((calculoPorMonitoramento.Porcentagem / 100) * porcentagemTotalConsiderandoPeso);
         porcentagemTotal += ZeroSeForNaN(porcentagemAtualConsiderandoPeso);
 
         htmlLista += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
@@ -58,7 +58,7 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
             'data-current-evaluation="' + avaliacaoAtual + '"                       ' +
             'data-total-porcentagem="' + porcentagemTotalConsiderandoPeso + '">                       ' +
             '	<div class="col-xs-4">' + o.Name + '</div>                                      ' +
-            '	<div class="col-xs-4 text-center">Conforme: ' + ZeroSeForNaN(porcentagemAtualConsiderandoPeso)+'% / '+porcentagemTotalConsiderandoPeso+'%</div>      ' +
+            '	<div class="col-xs-4 text-center">Conforme: ' + porcentagemAtualConsiderandoPeso+'% / '+porcentagemTotalConsiderandoPeso+'%</div>      ' +
             '	<div class="col-xs-4 text-center">Respondido: '+ZeroSeForNaN(parseInt(calculoPorMonitoramento.AmostraTotalColetada/calculoPorMonitoramento.AmostraTotal*100))+'%</div>              ' +
             '</button>';
     });
