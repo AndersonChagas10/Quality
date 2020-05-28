@@ -2926,7 +2926,7 @@
       IF COL_LENGTH('ParLevel3Value','IsNCTextRequired') IS NULL
       BEGIN
       ALTER TABLE ParLevel3Value
-      ADD IsNCTextRequired bit not null default 0
+      ADD IsNCTextRequired bit null
       END
     </Script>
   </Card>
