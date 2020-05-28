@@ -125,7 +125,7 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
         if(amostraTotal == 0)
             return [];
 
-        var amostraCompleta = amostraAtual >= amostraTotal ? 1 : 0;
+        var amostraCompleta = amostraAtual > amostraTotal ? 1 : 0;
 
         retorno += '<div class="col-xs-12" data-linha-coleta ';
         retorno += ' data-collapse-target="' + level1.Id + '-' + level2.Id + '"';
