@@ -3525,4 +3525,17 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-750</CardNumber>
+    <Version>1.9.0</Version>
+    <Description>[GQ][RH] Correção da tabela ParLevel3Value coluna IsNCTextRequired </Description>
+    <Script>
+      IF COLUMNPROPERTY(OBJECT_ID('ParLevel3Value', 'U'), 'IsNCTextRequired', 'AllowsNull') = 0
+      BEGIN
+      ALTER TABLE ParLevel3Value ALTER COLUMN IsNCTextRequired BIT NULL
+      END
+      GO
+    </Script>
+  </Card>
+
 </Cards>
