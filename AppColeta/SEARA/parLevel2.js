@@ -65,7 +65,6 @@ function listarParLevel2(isVoltar) {
         '				<h3 class="panel-title">' + voltar + ' Selecione o Monitoramento</h3>            ' +
         '                 </div >                                          ' +
         '                 <div class="col-xs-3">                           ' +
-        getBotaoBuscar() +
         '                 </div>                                           ' +
         '               </div>                                             ' +
 		'			  </div>                                               ' +
