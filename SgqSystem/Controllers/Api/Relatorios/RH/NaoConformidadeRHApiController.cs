@@ -274,7 +274,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     GrupoDeEmpresa.Id as GrupoDeEmpresa_Id,
 	                SUM(WeiEvaluation) AS AV,
 	                SUM(WeiDefects) AS NC,
-	                SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	                SUM(WeiDefects)/IIF(SUM(WeiEvaluation)*100 > 0, SUM(WeiEvaluation)*100,1) AS [PROC]
 	                FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	                INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	                LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
@@ -434,7 +434,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     Regional.Id as Regional_Id,
 	                SUM(WeiEvaluation) AS AV,
 	                SUM(WeiDefects) AS NC,
-	                SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	                SUM(WeiDefects)/IIF(SUM(WeiEvaluation)*100 > 0, SUM(WeiEvaluation)*100,1) AS [PROC]
 	                FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	                INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	                LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
@@ -613,7 +613,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                     C.Id as Unidade_Id,
 	                SUM(WeiEvaluation) AS AV,
 	                SUM(WeiDefects) AS NC,
-	                SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	                SUM(WeiDefects)/IIF(SUM(WeiEvaluation)*100 > 0, SUM(WeiEvaluation)*100,1)  AS [PROC]
 	                FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	                INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	                LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
@@ -743,7 +743,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	            D.Id AS DepartamentoPai_Id,
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
-	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            SUM(WeiDefects)/IIF(SUM(WeiEvaluation)*100 > 0, SUM(WeiEvaluation)*100,1)  AS [PROC]
 	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
@@ -873,7 +873,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	            CG.Id AS Cargo_Id,
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
-	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            SUM(WeiDefects)/IIF(SUM(WeiEvaluation)*100 > 0, SUM(WeiEvaluation)*100,1)  AS [PROC]
 	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
@@ -1034,7 +1034,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	            D1.Id AS Departamento_Id,
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
-	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            SUM(WeiDefects)/IIF(SUM(WeiEvaluation)*100 > 0, SUM(WeiEvaluation)*100,1)  AS [PROC]
 	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
@@ -1713,7 +1713,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	            L.Id AS Indicador_Id,
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
-	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            SUM(WeiDefects)/IIF(SUM(WeiEvaluation)*100 > 0, SUM(WeiEvaluation)*100,1)  AS [PROC]
 	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            INNER JOIN ParLevel1 L WITH (NOLOCK)  ON CuboL3.Parlevel1_Id = L.ID
@@ -2141,7 +2141,7 @@ DROP TABLE #AMOSTRATIPO4 ";
                 whereStructure3 = $@"AND CuboL3.Regional in ({string.Join(",", form.ParStructure3_Ids)})";
             }
 
-            
+
 
             //if (form.ParCriticalLevel_Ids.Length > 0)
             //{
@@ -2161,7 +2161,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 	            M.Id AS Monitoramento_Id,
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
-	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            SUM(WeiDefects)/IIF(SUM(WeiEvaluation)*100 > 0, SUM(WeiEvaluation)*100,1)  AS [PROC]
 	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	            INNER JOIN ParCompany C WITH (NOLOCK)  ON CuboL3.Unitid = C.ID
 	            INNER JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
@@ -2306,7 +2306,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 	            T.ID AS Tarefa_Id,
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
-	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            SUM(WeiDefects)/IIF(SUM(WeiEvaluation)*100 > 0, SUM(WeiEvaluation)*100,1)  AS [PROC]
 	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            INNER JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
@@ -2467,7 +2467,7 @@ DROP TABLE #AMOSTRATIPO4 ";
 	            T.ID AS Tarefa_Id,
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
-	            SUM(WeiDefects)/SUM(WeiEvaluation)*100 AS [PROC]
+	            SUM(WeiDefects)/IIF(SUM(WeiEvaluation)*100 > 0, SUM(WeiEvaluation)*100,1)  AS [PROC]
 	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            INNER JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
