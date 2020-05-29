@@ -535,7 +535,7 @@ namespace DTO.DTO.Params
                 this.IndicadorVinculadoAFamiliaDeProduto = databaseSgq.ParLevel1XParFamiliaProduto
                     .Any(x => x.IsActive == true && x.ParLevel1_Id == this.CollectionLevel2.ParLevel1_Id);
             }
-            if (parLevel3ValueDTO.ParLevel3InputType_Id == 2 && IndicadorVinculadoAFamiliaDeProduto)
+            if ((parLevel3ValueDTO.ParLevel3InputType_Id == 2 || parLevel3ValueDTO.ParLevel3InputType_Id == 15) && IndicadorVinculadoAFamiliaDeProduto)
                 return true;
             return false;
         }
