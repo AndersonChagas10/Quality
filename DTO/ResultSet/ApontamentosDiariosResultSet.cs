@@ -71,6 +71,11 @@ public class ApontamentosDiariosResultSet
     public bool HasHistoryResult_Level3 { get; set; }
     public bool HasHistoryHeaderField { get; set; }
 
+    public bool? IsNcTextRequired { get; set; }
+
+    public bool? IsRequired { get; set; }
+    public bool? IsAtiveNa { get; set; }
+
     public int C2ID { get; set; }
     public string DesvioAv { get; set; }
 
@@ -1135,6 +1140,39 @@ public class ApontamentosDiariosResultSet
 							AND PL3V.IsActive = 1
 							ORDER BY PL3V.Id DESC, PL3V.ParCompany_Id DESC, PL3V.ParLevel2_Id DESC, PL3V.ParLevel1_Id DESC)
 						AS ParLevel3InputType_Id
+                        ,(SELECT TOP 1
+								PL3V.IsRequired
+							FROM ParLevel3Value PL3V
+							WHERE 1 = 1
+							AND (ISNULL(PL3V.ParCompany_Id, UN.Id) = UN.Id)
+							AND (ISNULL(PL3V.ParLevel1_Id, L1.Id) = L1.Id)
+							AND (ISNULL(PL3V.ParLevel2_Id, L2.Id) = L2.Id)
+							AND PL3V.ParLevel3_Id = L3.Id
+							AND PL3V.IsActive = 1
+							ORDER BY PL3V.Id DESC, PL3V.ParCompany_Id DESC, PL3V.ParLevel2_Id DESC, PL3V.ParLevel1_Id DESC)
+						AS IsRequired
+                        ,(SELECT TOP 1
+								PL3V.IsNCTextRequired
+							FROM ParLevel3Value PL3V
+							WHERE 1 = 1
+							AND (ISNULL(PL3V.ParCompany_Id, UN.Id) = UN.Id)
+							AND (ISNULL(PL3V.ParLevel1_Id, L1.Id) = L1.Id)
+							AND (ISNULL(PL3V.ParLevel2_Id, L2.Id) = L2.Id)
+							AND PL3V.ParLevel3_Id = L3.Id
+							AND PL3V.IsActive = 1
+							ORDER BY PL3V.Id DESC, PL3V.ParCompany_Id DESC, PL3V.ParLevel2_Id DESC, PL3V.ParLevel1_Id DESC)
+						AS IsNCTextRequired
+						,(SELECT TOP 1
+								PL3V.IsAtiveNA
+							FROM ParLevel3Value PL3V
+							WHERE 1 = 1
+							AND (ISNULL(PL3V.ParCompany_Id, UN.Id) = UN.Id)
+							AND (ISNULL(PL3V.ParLevel1_Id, L1.Id) = L1.Id)
+							AND (ISNULL(PL3V.ParLevel2_Id, L2.Id) = L2.Id)
+							AND PL3V.ParLevel3_Id = L3.Id
+							AND PL3V.IsActive = 1
+							ORDER BY PL3V.Id DESC, PL3V.ParCompany_Id DESC, PL3V.ParLevel2_Id DESC, PL3V.ParLevel1_Id DESC)
+						AS IsAtiveNA
                         ,CASE WHEN (SELECT TOP 1 Id FROM LogTrack LT WHERE LT.Tabela = 'Result_Level3' AND LT.Json_Id = R3.Id) IS NOT NULL THEN 1 ELSE 0 END AS HasHistoryResult_Level3
 					   ,CASE
 							WHEN MA.Motivo IS NULL THEN 0

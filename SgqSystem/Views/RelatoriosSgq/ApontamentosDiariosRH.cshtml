@@ -50,7 +50,7 @@
 @section Scripts {
 
     <script>
-
+        var dataEdit;
         var urlGet = '@Html.Raw(@urlGet)';
         var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
         var urlSave = '@Html.Raw(@urlSave)';
@@ -237,14 +237,15 @@
                     }, 100);
                     $('#resultsApontamentos tbody').on('click', 'button#edit', function (data) {
 
-                        var data = table.row($(this).parents('tr')).data();
+                        dataEdit = table.row($(this).parents('tr')).data();
                         $('#myModal #changeConform').empty();
                         $("#myModal #Level3Name").empty();
-                        $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
+                        $('.alertTextIsRequired').addClass('hide');
+                        $('#myModal #estName').html(dataEdit.Unidade + " > " + dataEdit.Indicador + " > " + dataEdit.Monitoramento + " > " + dataEdit.Tarefa);
 
-                        if (data.ParLevel3InputType_Id != 10 && data.ParLevel3InputType_Id != null) {
-                            $('#myModal #ResultLevel3_Id').val(data.ResultLevel3Id);
-                            $('#myModal #changeConform').append(montaHtmlEdicao(data));
+                        if (dataEdit.ParLevel3InputType_Id != 10 && dataEdit.ParLevel3InputType_Id != null) {
+                            $('#myModal #ResultLevel3_Id').val(dataEdit.ResultLevel3Id);
+                            $('#myModal #changeConform').append(montaHtmlEdicao(dataEdit));
                             $("#botaoSalvar").show();
                         } else {
                             $("#myModal #Level3Name").append("<div class='alert alert-warning' id='mensagemErro'>O item selecionado possui vínculos de resultado. A edição está desabilitada.</div>");
@@ -254,12 +255,12 @@
 
                     $('#resultsApontamentos tbody').on('click', 'button#viewHistory', function (data) {
 
-                        var data = table.row($(this).parents('tr')).data();
+                        dataEdit = table.row($(this).parents('tr')).data();
 
                         var tableLogTrack = $('#modalLogTrackHistory .modal-body');
                         $(tableLogTrack).html('');
 
-                        $.get(urlLogTrack + "/Result_Level3/" + data.ResultLevel3Id, function (r) {
+                        $.get(urlLogTrack + "/Result_Level3/" + dataEdit.ResultLevel3Id, function (r) {
 
                             var htmlHead = "<thead><tr>";
                             htmlHead += "<th></th>";
@@ -379,12 +380,34 @@
                     "<input type='number' id='inputValor' class='form-control' value="+ valorAtual +" />" +
                     "<br>";
             }
-            if (inputTypeId == 5 || inputTypeId == 6 || inputTypeId == 9 || inputTypeId == 15) {
-                var valueText = o.ValueText == "undefined" || o.ValueText == null ? "" : o.ValueText;
+            if (inputTypeId == 6 || inputTypeId == 9 || inputTypeId == 15) {
+                var valueText = o.ValueText == "" || o.ValueText == "undefined" || o.ValueText == null ? "Sem valor atual" : o.ValueText;
                 html += "<label> @Resources.Resource.current_value (Campo Texto) : </label>&nbsp" + valueText +
                     "<br>" +
                     "<label> @Resources.Resource.new_value (Campo Texto) : </label>" +
+                    "<input type='text' id='texto' class='form-control text' value='" + o.ValueText + "' />"
+            }
+            if (inputTypeId == 5 || inputTypeId == 11) {
+                var currentValue = o.Lancado == "" || o.Lancado == "undefined" || o.Lancado == null ? "Sem valor atual" : o.Lancado;
+                var valueText = o.Lancado == "" || o.Lancado == "undefined" || o.Lancado == null ? "" : o.Lancado;
+                html += "<label> @Resources.Resource.current_value : </label>&nbsp" + currentValue +
+                    "<br>" +
+                    "<label> @Resources.Resource.new_value : </label>" +
                     "<input type='text' id='texto' class='form-control text' value='" + valueText + "' />"
+            }
+            if (inputTypeId == 13) {
+                var valueText = o.Lancado == "" || o.Lancado == "undefined" || o.Lancado == null ? "Sem valor atual" : o.Lancado;
+                html += "<label> @Resources.Resource.current_value : </label>&nbsp" + valueText +
+                    "<br>" +
+                    "<label> @Resources.Resource.new_value : </label>" +
+                    "<input type='date' id='texto' class='form-control text' value='" + o.Lancado + "' />"
+            }
+            if (inputTypeId == 14) {
+                var valueText = o.Lancado == "" || o.Lancado == "undefined" || o.Lancado == null ? "Sem valor atual" : o.Lancado;
+                html += "<label> @Resources.Resource.current_value : </label>&nbsp" + valueText +
+                    "<br>" +
+                    "<label> @Resources.Resource.new_value : </label>" +
+                    "<input type='time' id='texto' class='form-control text' value='" + o.Lancado + "' />"
             }
             if (inputTypeId == 1 || inputTypeId == 6) {
                 var checkedAttr = o.Conforme == true ? "checked='checked'" : "";
@@ -393,7 +416,7 @@
                         "<input class='.check-box' id='conform' name='conform'  "+ checkedAttr +"  type='checkbox' value='true'><input name='conform' type='hidden' value='false'>" +
                         "<br>";
             }
-            if (inputTypeId == 1 || inputTypeId == 2 || inputTypeId == 3 || inputTypeId == 4 || inputTypeId == 6 || inputTypeId == 7 || inputTypeId == 8 || inputTypeId == 9 || inputTypeId == 10 || inputTypeId == 15) {
+            if (dataEdit.IsAtiveNa) {
                 var naoAvaliado = o.NA == true ? "checked='checked'" : "";
                 html += "<br>" +
                         "<label> @Resources.Resource.unvalued  </label>&nbsp" +
@@ -405,7 +428,6 @@
         }
 
         function SalvarResultLevel3() {
-
             var dadosResultLevel3 = {};
 
             dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
@@ -415,9 +437,6 @@
                 dadosResultLevel3["Value"] = $('#inputValor').val().replace(',','.');
             if ($('#texto').length){
                 dadosResultLevel3["ValueText"] = $('#texto').val();
-                if(dadosResultLevel3.ValueText == ""){
-                    dadosResultLevel3.IsNotEvaluate = true;
-                }
             }
 
             //verifica se o valor inserido é maior que o permitido, se for, a flag isconform fica falsa e salva como nao conforme
@@ -428,8 +447,34 @@
             else
                 dadosResultLevel3["IsConform"] = false;
 
-            if ($("#intervalMax").text() == "" && $("#intervalMin").text() == "")
+            if (dataEdit.ParLevel3InputType_Id == 1 || dataEdit.ParLevel3InputType_Id == 6)
                 dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
+
+            if (dataEdit.ParLevel3InputType_Id == 5) {
+                if ($('#texto').val() != "" && $('#texto').val() != null && $('#texto').val() != "undefined") {
+                    dadosResultLevel3["IsConform"] = false;
+                } else {
+                    dadosResultLevel3["IsConform"] = true;
+                }
+            }
+
+            if (dataEdit.IsNcTextRequired && !dadosResultLevel3["IsConform"] && !dadosResultLevel3["IsNotEvaluate"]) {
+                if ($('#texto').val() == "" || $('#texto').val() == null || $('#texto').val() == "undefined") {
+                    $('.alertTextIsRequired').removeClass('hide');
+                    $('#texto').attr('style', 'border:1px solid red;');
+                    return;
+                } else {
+                    $('.alertTextIsRequired').addClass('hide');
+                    $('#texto').attr('style','');
+                }
+            }
+            else if (dataEdit.IsNcTextRequired && dadosResultLevel3["IsConform"]) {
+                $('.alertTextIsRequired').addClass('hide');
+                $('#texto').attr('style','');
+            }
+
+            if (dataEdit.ParLevel3InputType_Id == 11 || dataEdit.ParLevel3InputType_Id == 13 || dataEdit.ParLevel3InputType_Id == 14)
+                dadosResultLevel3["IsConform"] = true;
 
             var selectParReasonEdit = $('select[name="selectParReasonEdit"]:visible').val();
             var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
