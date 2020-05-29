@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -26,7 +26,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>true</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -384,6 +385,7 @@
     <Compile Include="Controllers\Api\RelatoriosBrasil\VisaoGeralDaAreaApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\RoleApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\UserSgqApiController.cs" />
+    <Compile Include="Controllers\Api\Utilidades\UtilidadesApiController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
@@ -462,6 +464,7 @@
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
+    <Compile Include="Controllers\Utilidades\UtilController.cs" />
     <Compile Include="Controllers\V2\Api\AppColetaController.cs" />
     <Compile Include="Controllers\V2\Api\DepartmentXRotinaApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParClusterApiController.cs" />
@@ -2197,6 +2200,7 @@
     <Content Include="Views\ParFamiliaProdutoXParProduto\Index.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioDeResultadoSeara.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioConsistencyCallMSP.cshtml" />
+    <Content Include="Views\Utilidades\SqlStudio.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
