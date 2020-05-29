@@ -302,6 +302,10 @@
 
         criarFiltroDeFrequencia();
     }, 100);
+
+    if ($('.level2Group .level2:visible').length == 1 && $('.App').attr('desdobrar-automatico') == "true") {
+        $('.level2Group .level2:visible').trigger('click');
+    }
 }
 
 $(document).on('click', '.level2Group .level2', function (e) {

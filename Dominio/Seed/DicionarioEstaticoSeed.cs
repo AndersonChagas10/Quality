@@ -101,6 +101,9 @@ namespace Dominio.Seed
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "ParStructureGroup2", Value = "2", ControllerName = "Relatorios", Descricao = "Hierarquia da estrutura da empresa 2" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "ParStructureGroup3", Value = "3", ControllerName = "Relatorios", Descricao = "Hierarquia da estrutura da empresa 3" });
                 
+
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "desdobrarAutomatico", Value = "false", ControllerName = "", Descricao = "Desdobramento automático no AppColeta de Gestão" });
+
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys).ToList();
 
                 if (add.Count > 0)

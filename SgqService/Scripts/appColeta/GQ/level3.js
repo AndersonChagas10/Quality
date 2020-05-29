@@ -1573,6 +1573,13 @@ function saveResultLevel3() {
                 value = (level3).find('.levelValue').val();
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
 
+            } else if (inputType == 15) { //Numero de Defeitos com Observação
+                level3.attr('value', $(level3).find('.levelValueNotes').val());
+                if (parseFloat(value) > 0) {
+                    value = parseFloat(value);
+                    conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
+                }
+
             } else if (inputType == 11) { //Observação
 
                 if (parseFloat(value) > 0) {

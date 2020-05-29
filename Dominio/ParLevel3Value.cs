@@ -46,7 +46,7 @@ namespace Dominio
 
         public bool? IsRequired { get; set; }
 
-        public bool? IsNCTextRequired { get; set; }
+        public bool? IsNCTextRequired { get; set; } = false;
 
         public bool? IsDefaultAnswer { get; set; }
 

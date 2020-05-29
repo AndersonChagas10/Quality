@@ -2926,7 +2926,7 @@
       IF COL_LENGTH('ParLevel3Value','IsNCTextRequired') IS NULL
       BEGIN
       ALTER TABLE ParLevel3Value
-      ADD IsNCTextRequired bit not null default 0
+      ADD IsNCTextRequired bit null
       END
     </Script>
   </Card>
@@ -3423,7 +3423,7 @@
     <Script>
     </Script>
   </Card>
-  
+
   <Card>
     <CardNumber>SGQ-674</CardNumber>
     <Version>1.4.0</Version>
@@ -3458,6 +3458,40 @@
     <Version>1.8.0</Version>
     <Description>[RH] AppColeta - Criação do campo de busca nas listas do App.</Description>
     <Script></Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-710</CardNumber>
+    <Version>1.7.0</Version>
+    <Description> [GESTÃO] 5S - Possibilitar desdobramento automático APP antigo (GQ).</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-711</CardNumber>
+    <Version>1.7.0</Version>
+    <Description> [GESTÃO] Parametrização/ AppColeta - Adição do novo tipo de dado de entrada "Número de Defeitos com Texto".</Description>
+    <Script>
+      BEGIN
+      IF NOT EXISTS (SELECT
+      *
+      FROM ParLevel3InputType
+      WHERE Id = 15)
+      BEGIN
+      INSERT INTO ParLevel3InputType (Id, Name, Description, AddDate, IsActive) VALUES (15, 'Número de Defeitos com Texto', 'Número de Defeitos com Texto', GETDATE(), 1)
+      END
+      END
+      GO
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-713</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] AppColeta - Criação de um campo de busca nas listas do App.</Description>
+    <Script>
+    </Script>
   </Card>
 
   <Card>

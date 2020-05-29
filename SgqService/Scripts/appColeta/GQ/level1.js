@@ -150,6 +150,9 @@ function level1Show(inicio, cluster) {
     ReauditByHeader.CurrentReauditNumber = 0;
     ReauditByHeader.triggerReaudit = false;
 
+    if ($('.level1List .level1:visible').length == 1 && $('.App').attr('desdobrar-automatico') == "true") {
+        $('.level1List .level1:visible').trigger('click');
+    }
 }
 
 function configureZoom() {

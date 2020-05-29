@@ -5152,7 +5152,7 @@ namespace SgqServiceBusiness.Api
 
             string tags = $@"breadmainlevel=""{ CommonData.getResource("slaughter").Value.ToString() }""" +
                           $@" culture=""{ culture }"" turningtime=""03:00"" serverdate=""{ DateTime.Now.AddDays(1).ToString("dd/MM/yyyy HH:mm") }""" +
-                          $@" serverdateutc=""{ DateTime.UtcNow }"" local=""{ local }""";
+                          $@" serverdateutc=""{ DateTime.UtcNow }"" local=""{ local }"" desdobrar-automatico=""{ DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.desdobrarAutomatico as string }""";
 
             return html.div(
                             outerhtml: navBar(UserSgq_Id, ParCompany_Id) +
@@ -7752,6 +7752,15 @@ namespace SgqServiceBusiness.Api
                                   );
 
                 input = html.campoHora(id: parLevel3.Id.ToString());
+            }
+            else if (parLevel3.ParLevel3InputType_Id == 15)
+            {
+                classInput = " defects";
+                labels = html.campoTextoNumeroDefeitos(id: parLevel3.Id.ToString());
+                input = html.campoNumeroDeDefeitos(id: parLevel3.Id.ToString(),
+                                                intervalMin: parLevel3.IntervalMin,
+                                                intervalMax: parLevel3.IntervalMax,
+                                                unitName: parLevel3.ParMeasurementUnit_Name);
             }
             else
             {
