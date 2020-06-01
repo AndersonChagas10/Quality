@@ -73,7 +73,7 @@ namespace SgqSystem.Controllers.CadastrosGerais
                 }
             }
 
-            return RedirectToAction("Details", "ReportXUserSgq", form.ReportXUserSgq_Id);
+            return RedirectToAction("Details/" + form.ReportXUserSgq_Id, "ReportXUserSgq");
         }
     }
 }
