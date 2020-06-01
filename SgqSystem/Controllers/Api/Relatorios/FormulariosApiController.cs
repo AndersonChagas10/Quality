@@ -563,7 +563,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 			SELECT 
                 IndicadorName as ''indicador'',
                 MonitoramentoName as ''setor'',
-                TarefaName as ''itens verificados'',
+                TarefaName as ''itensverificados'',
 				AuditorId,
 				AuditorName as ''visto'',
 				EvaluationNumber as ''avaliação'',

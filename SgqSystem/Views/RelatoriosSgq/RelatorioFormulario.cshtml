@@ -270,7 +270,7 @@
             ];
 
             var linhas = [
-                "itens verificados",
+                "itensverificados",
                 "avaliação",
                 "amostra",
                 "setor",
@@ -440,13 +440,13 @@
             htmlTable += "<tr>";
             for (var i = 0; i < colspanTotal; i++) {
                 for (var j = 0; j < linhas.length; j++) {
-                    htmlTable += "<th>" + linhas[j] + "</th>";
+                    htmlTable += "<th>" + gambiarraTrocarTitulo(linhas[j]) + "</th>";
                 }
             }
             for (var i = 0; i < colspanTotal; i++) {
                 for (var j = 0; j < valores.length; j++) {
                     console.log(valores[j]);
-                    htmlTable += "<th>" + valores[j] + "</th>";
+                    htmlTable += "<th>" + gambiarraTrocarTitulo(valores[j]) + "</th>";
                 }
             }
             htmlTable += "</tr>";
@@ -460,17 +460,7 @@
                     atributos = "";
                 }
                 //padrao 
-                atributos += " " + itemMatriz.nivel.replace(/[^\w\s]/gi, '') + "='" + itemMatriz.titulo.replace(/[^\w\s]/gi, '') + "'";
-
-                //var titulo = "";
-                //var nivel = "";
-                //if (itemMatriz.titulo != undefined)
-                //    titulo = itemMatriz.titulo.replace(/[^\w\s]/gi, '');
-                //else
-
-
-                //if (itemMatriz.nivel != undefined)
-                //    nivel = itemMatriz.nivel.replace(/[^\w\s]/gi, '');
+                atributos += " " + itemMatriz.nivel + "='" + itemMatriz.titulo + "'";
 
                 if (indexAtual == indexMaximo) {
                     html = '<th ' + atributos + '>';
@@ -577,5 +567,13 @@
             }
         }
         /***FIM: MONTA VALORES HTML **********************************************/
+
+        function gambiarraTrocarTitulo(titulo) {
+            if (titulo == 'itensverificados') {
+                return 'itens verificados';
+            }
+
+            return titulo;
+        }
     </script>
 }
