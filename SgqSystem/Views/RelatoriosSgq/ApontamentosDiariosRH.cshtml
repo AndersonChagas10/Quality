@@ -400,14 +400,14 @@
                 html += "<label> @Resources.Resource.current_value : </label>&nbsp" + valueText +
                     "<br>" +
                     "<label> @Resources.Resource.new_value : </label>" +
-                    "<input type='date' id='texto' class='form-control text' value='" + o.Lancado + "' />"
+                    "<input type='date' id='inputValor' class='form-control text' value='" + o.Lancado + "' />"
             }
             if (inputTypeId == 14) {
                 var valueText = o.Lancado == "" || o.Lancado == "undefined" || o.Lancado == null ? "Sem valor atual" : o.Lancado;
                 html += "<label> @Resources.Resource.current_value : </label>&nbsp" + valueText +
                     "<br>" +
                     "<label> @Resources.Resource.new_value : </label>" +
-                    "<input type='time' id='texto' class='form-control text' value='" + o.Lancado + "' />"
+                    "<input type='time' id='inputValor' class='form-control text' value='" + o.Lancado + "' />"
             }
             if (inputTypeId == 1 || inputTypeId == 6) {
                 var checkedAttr = o.Conforme == true ? "checked='checked'" : "";
