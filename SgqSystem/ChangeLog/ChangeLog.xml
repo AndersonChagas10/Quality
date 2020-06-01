@@ -3095,7 +3095,7 @@
     <Script>
       IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReportLayoutXReportXUser' AND xtype='U')
       CREATE TABLE [dbo].[ParReportLayoutXReportXUser](
-      [Id] [bigint] IDENTITY(1,1) NOT NULL primary key,
+      [Id] [int] IDENTITY(1,1) NOT NULL primary key,
       [AlterDate] [datetime] NULL,
       [AddDate] [datetime] NULL,
       [ReportXUserSgq_Id] [int] NULL,
@@ -3103,7 +3103,8 @@
       [LayoutLevel] int not null,
       [IdReference] int null,
       [NickName] varchar(100) null,
-      [TableReference] varchar(100) null
+      [TableReference] varchar(100) null,
+      [IsActive] bit not null
       )
       GO
     </Script>

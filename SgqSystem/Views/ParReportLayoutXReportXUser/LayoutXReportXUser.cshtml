@@ -21,16 +21,22 @@
                     @Html.ActionLink(Resources.Resource.create as string, "Create", "ParReportLayoutXReportXUser", new { reportXUserId = Model.Id  }, new { @class = "btn btn-primary" })
                 </p>
 
-                <table class="table" id="tabelaLayout">
+                <table class="table table-striped" id="tabelaLayout">
                     <thead style="background-color: cornflowerblue;">
                         <tr>
-                            <th></th>
+                            <th>Valor</th>
+                            <th>Apelido</th>
+                            <th>Nivel Layout</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in Model.parReportLayoutXReportXUser)
                         {
-                            <tr>>
+                            <tr>
+                                <td>@item.Value</td>
+                                <td>@item.NickName</td>
+                                <td>@item.LayoutLevel.ToString()</td>
                                 <td>
                                     @Html.ActionLink("Inativar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
                                 </td>
@@ -55,5 +61,12 @@
 <script>
     $(document).ready(function () {
         closeLeftSidebar();
+
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tabelaLayout').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 </script>

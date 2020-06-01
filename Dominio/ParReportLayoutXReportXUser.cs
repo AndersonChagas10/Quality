@@ -10,8 +10,6 @@ namespace Dominio
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
-
         public int ReportXUserSgq_Id { get; set; }
 
         public string Value { get; set; }
@@ -21,6 +19,8 @@ namespace Dominio
         public int IdReference { get; set; }
 
         public string NickName { get; set; }
+
+        public bool IsActive { get; set; }
 
         public string TableReference { get; set; }
     }

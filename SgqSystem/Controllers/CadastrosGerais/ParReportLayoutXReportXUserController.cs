@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dominio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,20 +9,25 @@ namespace SgqSystem.Controllers.CadastrosGerais
 {
     public class ParReportLayoutXReportXUserController : BaseController
     {
-        public class EnumeradorLayoutLevel {
-            public enum Level{
-                Cabecalho, //0
-                Linha,     //1
-                Valor      //2
-            }
+
+        private SgqDbDevEntities db = new SgqDbDevEntities();
+
+        public enum LayoutLevelEnum
+        {
+            Cabecalho = 1,
+            Linha = 2,
+            Valor = 3
         }
 
-        public enum AcessoType
-        {
-            Admin = 1,
-            PAGED = 2,
-            GED = 3
+        public class LayoutLevel{
+
+            public int Id { get; set; }
+
+            public string Name { get; set; }
+
         }
+
+        List<LayoutLevel> NiveisLayout = new List<LayoutLevel>();
 
         // GET: ParReportLayoutXReportXUser
         public ActionResult Index()
@@ -31,26 +37,43 @@ namespace SgqSystem.Controllers.CadastrosGerais
 
         public ActionResult Create(int reportXUserId)
         {
-            var teste = EnumeradorLayoutLevel.Level.Linha;
-
-            var teste2 = new EnumeradorLayoutLevel.Level();
-
-            //var oi = AcessoType;
-
-            var enumeradorLayoutLevel = new List<EnumeradorLayoutLevel.Level>();
+            salvar(LayoutLevelEnum.Cabecalho.ToString(), (int)LayoutLevelEnum.Cabecalho);
+            salvar(LayoutLevelEnum.Linha.ToString(), (int)LayoutLevelEnum.Linha);
+            salvar(LayoutLevelEnum.Valor.ToString(), (int)LayoutLevelEnum.Valor);
 
             ViewBag.ReportXUser_Id = reportXUserId;
-            
 
-            ViewBag.ItemMenu_Id = new SelectList(enumeradorLayoutLevel, "Id", "Name");
+            ViewBag.NiveisLayout_Id = new SelectList(NiveisLayout.ToList(), "Id", "Name");
 
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Create()
+        private void salvar(string name, int id)
         {
-            return View();
+            LayoutLevel niveisLayout = new LayoutLevel();
+
+            niveisLayout.Id = id;
+            niveisLayout.Name = name;
+
+            NiveisLayout.Add(niveisLayout);
+        }
+
+        [HttpPost]
+        public ActionResult Create(ParReportLayoutXReportXUser form)
+        {
+
+            if (ModelState.IsValid)
+            {
+                using (db)
+                {
+                    form.IsActive = true;
+                    db.ParReportLayoutXReportXUser.Add(form);
+
+                    db.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Details", "ReportXUserSgq", form.ReportXUserSgq_Id);
         }
     }
 }
