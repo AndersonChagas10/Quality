@@ -130,643 +130,709 @@
 
     @Scripts.Render("~/Scripts/heatmap.js")
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-    let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
+        let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Laboratorio"))';
 
-    let arrObjDados = [];
-    let arrTitulo = [];
+        let arrObjDados = [];
+        let arrTitulo = [];
 
-    let chart = null;
+        let chart = null;
 
-    function buscarDados() {
+        function buscarDados() {
 
-        arrObjDados = [];
-        arrTitulo = [];
+            arrObjDados = [];
+            arrTitulo = [];
 
-        $('#container').html("");
-        $('#placeholder').html("");
-        $('#filtroGrafico').html("");
+            $('#container').html("");
+            $('#placeholder').html("");
+            $('#filtroGrafico').html("");
 
-        hideMessage();
-        exibirLoader();
+            hideMessage();
+            exibirLoader();
 
-        window.scrollTo(0, 0);
+            window.scrollTo(0, 0);
 
-        if (!$("#divFilterReports").is(":hidden"))
-            toggleDivFilterReports();
+            if (!$("#divFilterReports").is(":hidden"))
+                toggleDivFilterReports();
 
-        $.ajax({
-            data: JSON.stringify(objFiltro),
-            url: urlBuscaDados,
-            type: 'POST',
-            dataType: "JSON",
-            success: retornoAjax,
-            timeout: 600000,
-            contentType: "APPLICATION/JSON; CHARSET=UTF-8",
-            error: function (a, b, c) {
-                console.log(a);
-                console.log(b);
-                console.log(c);
-                esconderLoader();
-            }
-        });
+            $.ajax({
+                data: JSON.stringify(objFiltro),
+                url: urlBuscaDados,
+                type: 'POST',
+                dataType: "JSON",
+                success: retornoAjax,
+                timeout: 600000,
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                error: function (a, b, c) {
+                    console.log(a);
+                    console.log(b);
+                    console.log(c);
+                    esconderLoader();
+                }
+            });
 
-    }
-
-    function retornoAjax(data) {
-
-        let linha = "cNmVeiculos";
-        let coluna = "cNmRegional";
-
-        esconderLoader();
-
-        if (!data.length) {
-            showMessage("Sem dados.");
-        } else {
-
-            appendChartFilter(Object.keys(data[0]), "cNmVeiculos");
-            gerarGrafico(data, "cNmVeiculos");
-            gerarMapaCalor(data, 0, linha, coluna, false);
         }
-    }
 
-    //Gráfico
-    function gerarGrafico(data, serie) {
+        function retornoAjax(data) {
 
-        const categories = getCategories(data, "dColetaAmostra");
-        const series = getSeriesByCategories(data, categories, serie);
+            let linha = "cNmVeiculos";
+            let coluna = "cNmRegional";
 
-        chart = Highcharts.chart('container', {
-            chart: {
-                type: 'line'
-            },
-            credits: {
-                enabled: false
-            },
-            title: {
-                text: '% DE NC ANÁLISES MICROBIOLÓGICAS POR TIPO DE VEÍCULO'
-            },
-            subtitle: {
-                text: ''
-            },
-            xAxis: {
-                categories: categories
-            },
-            yAxis: {
-                title: {
-                    text: '% NC'
+            esconderLoader();
+
+            if (!data.length) {
+                showMessage("Sem dados.");
+            } else {
+
+                appendChartFilter(Object.keys(data[0]), "cNmVeiculos");
+                gerarGrafico(data, "cNmVeiculos");
+                gerarMapaCalor(data, 0, linha, coluna, false);
+            }
+        }
+
+        //Gráfico
+        async function gerarGrafico(data, serie) {
+
+            const categories = await getCategories(data, "dColetaAmostra");
+            const series = getSeriesByCategories(data, categories, serie);
+
+            chart = Highcharts.chart('container', {
+                chart: {
+                    type: 'line'
                 },
-                labels: {
-                    formatter: function () {
-                        return this.value + '%'
-                    }
-                }
-            },
-            tooltip: {
-                crosshairs: true,
-                shared: true
-            },
-            plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true,
-                        format: '{y} %'
+                credits: {
+                    enabled: false
+                },
+                title: {
+                    text: '% DE NC ANÁLISES MICROBIOLÓGICAS POR TIPO DE VEÍCULO'
+                },
+                subtitle: {
+                    text: ''
+                },
+                xAxis: {
+                    categories: categories
+                },
+                yAxis: {
+                    title: {
+                        text: '% NC'
                     },
-                    enableMouseTracking: true
-                }
-            },
-            series: series
-        });
-    }
+                    labels: {
+                        formatter: function () {
+                            return this.value + '%'
+                        }
+                    }
+                },
+                tooltip: {
+                    crosshairs: true,
+                    shared: true
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true,
+                            format: '{y} %'
+                        },
+                        enableMouseTracking: true
+                    }
+                },
+                series: await series
+            });
+        }
 
-    //Matriz de calor
-    function gerarMapaCalor(data, numeroDesdobramento, linha, coluna) {
+        //Matriz de calor
+        function gerarMapaCalor(data, numeroDesdobramento, linha, coluna) {
 
-        let tituloDesdobramento = "Mapa de Calor " + linha + " por " + coluna + "</br>" + arrTitulo.slice(0, numeroDesdobramento).join(" | ");
+            let tituloDesdobramento = "Mapa de Calor " + linha + " por " + coluna + "</br>" + arrTitulo.slice(0, numeroDesdobramento).join(" | ");
 
-        removeDivs(numeroDesdobramento);
-        appendDiv(numeroDesdobramento, Object.keys(data[0]), tituloDesdobramento);
-        appendDataArr(data, numeroDesdobramento);
-        setTituloMatriz(numeroDesdobramento, tituloDesdobramento);
-        gerarMatriz(data, numeroDesdobramento, linha, coluna);
+            removeDivs(numeroDesdobramento);
+            appendDiv(numeroDesdobramento, Object.keys(data[0]), tituloDesdobramento);
+            appendDataArr(data, numeroDesdobramento);
+            setTituloMatriz(numeroDesdobramento, tituloDesdobramento);
+            gerarMatriz(data, numeroDesdobramento, linha, coluna);
 
-        $(`#selectLinha_${numeroDesdobramento}`).val(linha);
-        $(`#selectColuna_${numeroDesdobramento}`).val(coluna);
+            $(`#selectLinha_${numeroDesdobramento}`).val(linha);
+            $(`#selectColuna_${numeroDesdobramento}`).val(coluna);
 
-        $(`#select1_${ numeroDesdobramento }`).val(linha);
-        $(`#select2_${numeroDesdobramento}`).val(coluna);
+            $(`#select1_${numeroDesdobramento}`).val(linha);
+            $(`#select2_${numeroDesdobramento}`).val(coluna);
 
-        $(".select-filter select").select2({ width: '245px' });
-    }
+            $(".select-filter select").select2({ width: '245px' });
+        }
 
-    //Ultis
-    function exibirLoader() {
-        $('.loader').show();
-    }
+        //Ultis
+        function exibirLoader() {
+            $('.loader').show();
+        }
 
-    function esconderLoader() {
-        $('.loader').hide();
-    }
+        function esconderLoader() {
+            $('.loader').hide();
+        }
 
-    function getPorcentagem(amostragem, quantidade) {
+        async function getPorcentagem(amostragem, quantidade) {
 
-        amostragem = parseFloat(amostragem);
-        quantidade = parseFloat(quantidade);
+            return new Promise((resolve) => {
 
-        let porcentagemNC = (quantidade * 100) / amostragem;
+                setTimeout(function () {
 
-        porcentagemNC = parseFloat((porcentagemNC).toFixed(2));
+                    amostragem = parseFloat(amostragem);
+                    quantidade = parseFloat(quantidade);
 
-        return porcentagemNC
+                    let porcentagemNC = (quantidade * 100) / amostragem;
 
-    }
+                    porcentagemNC = parseFloat((porcentagemNC).toFixed(2));
 
-    function getCategories(data, categoriesColumDataName) {
+                    resolve(porcentagemNC);
 
-        if (!data)
-            return [];
-
-        //retornar mes e ano
-        const categoriesArr = [... new Set(data.map(x => convertDateToYearMouth(x[categoriesColumDataName])))]
-
-        categoriesArr.sort();
-
-        return categoriesArr;
-    }
-
-    function getSeriesByCategories(data, categories, serie) {
-
-        const series = [];
-
-        seriesName = [... new Set(data.map(x => x[serie]))];
-
-        seriesName.forEach((serieName) => { //seriesName
-
-            const obj = {};
-            obj.name = serieName;
-            obj.data = [];
-
-            categories.forEach((o) => { //datas
-
-                let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x[serie] == serieName);
-
-                if (arrFiltrado.length == 0) {
-
-                    obj.data.push(null);
-
-                } else {
-
-                    let arrAv = arrFiltrado.map(x => x.AV);
-                    let amostragem = arrAv.reduce(sumReduce);
-                    let arrNc = arrFiltrado.map(x => x.NC);
-                    let qtdNC = arrNc.reduce(sumReduce)
-
-                    obj.data.push(getPorcentagem(amostragem, qtdNC));
-                }
+                }, 0);
 
             });
 
-            series.push(obj);
+            //return porcentagemNC
 
-        });
-
-        return series;
-
-    }
-
-    function convertDateToYearMouth(date) {
-
-        let mes = (parseInt(new Date(date).getMonth().toString()) + 1).toString();
-        let ano = parseInt(new Date(date).getFullYear().toString());
-
-        if (mes.length == 1)
-            mes = "0" + mes;
-
-        return ano + "-" + mes;
-
-    }
-
-    function appendDiv(numeroDesdobramento, keys, titulo = "") {
-
-        let options = keys.reduce((accumulator, currentValue) => accumulator += `<option value="${currentValue}">${currentValue}</option>`);
-
-        let botaoTrocarEixos = `<button type="button" id-desdobramento="${numeroDesdobramento}" class="btnChangeEixos btn btn-primary" onclick="changeEixos(this);" title="Trocar eixos">Trocar</button>`;
-        let botaoExibirEixos = `<button type="button" id-desdobramento="${numeroDesdobramento}" class="btnExibirEixos btn-sm btn-default" onclick="exibirBtnEixo(this);" title="Avançado"><i class="fa fa-cog"></i></button>`;
-
-        let htmlDiv = `
-        <div class="panel panel-primary" id-desdobramento="${numeroDesdobramento}">
-            <div class="panel-heading">${botaoExibirEixos} <div class="titulo-desdobramento">${titulo}</div></div>
-            <div class="panel-body">
-              <div class="row select-filter" select-filter-eixos="${numeroDesdobramento}" hidden>
-                    <div class="col-sm-12">
-                        <form class="form-inline">
-                          <strong>A matriz atual exibirá: </strong>
-                          <div class="form-group">
-                            <label for="coluna">Linha</label>
-                            <select class="form-control" id="selectLinha_${numeroDesdobramento}">
-                            ${options}
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label for="coluna">Coluna</label>
-                            <select class="form-control" id="selectColuna_${numeroDesdobramento}">
-                            ${options}
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            ${botaoTrocarEixos}
-                          </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento}"></div>
-                <div class="row select-filter" select-filter>
-                    <div class="col-sm-12">
-                        <form class="form-inline">
-                          <strong>A próxima matriz exibirá: </strong>
-                          <div class="form-group">
-                            <label for="coluna">Linha</label>
-                            <select class="form-control" id="select1_${numeroDesdobramento}">
-                            ${options}
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label for="coluna">Coluna</label>
-                            <select class="form-control" id="select2_${numeroDesdobramento}">
-                            ${options}
-                            </select>
-                          </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>`;
-
-        $('#placeholder').append(htmlDiv);
-    }
-
-    function removeDivs(numeroDesdobramento) {
-
-        $('#placeholder').find('.matriz').each(function (index) {
-
-            let numeroDiv = parseInt($(this).attr('data-numer-div'));
-
-            if (numeroDiv >= numeroDesdobramento) {
-                $(this).remove();
-                $("[id-desdobramento=" + numeroDiv + "]").remove();
-            }
-
-        });
-    }
-
-    function appendDataArr(data, numeroDesdobramento) {
-
-        arrObjDados.splice(numeroDesdobramento, arrObjDados.length);
-
-        arrObjDados[numeroDesdobramento] = data;
-
-    }
-
-    function desdobraMatriz(newData, numeroDesdobramento, linha, coluna) {
-
-        let matrizAnterior = JSON.stringify(arrObjDados[numeroDesdobramento - 1]);
-        let matrizAtual = JSON.stringify(newData);
-
-        hideMessage();
-
-        if (matrizAnterior === matrizAtual || newData.length === 0) {
-            showMessage("Fim do desdobramento.");
-            removeDivs(numeroDesdobramento);
-            removeLoading();
-            return;
         }
 
-        gerarMapaCalor(newData, numeroDesdobramento, linha, coluna);
+        function getCategories(data, categoriesColumDataName) {
 
-    }
+            return new Promise((resolve) => {
 
-    function showMessage(mensagem) {
-        $("#divAlertFim").html(mensagem);
-        $("#divAlertFim").show()
-    }
+                let categoriesArr = [];
 
-    function hideMessage() {
-        $("#divAlertFim").hide();
-    }
+                if (!data)
+                    return [];
 
-    function goScroll(elemId) {
+                setTimeout(function () {
 
-        document.querySelector(elemId).scrollIntoView({ behavior: 'smooth' });
-    }
+                    //retornar mes e ano
+                    categoriesArr = [... new Set(data.map(x => convertDateToYearMouth(x[categoriesColumDataName])))]
 
-    function enviarFiltro() {
-        buscarDados();
-    }
+                    categoriesArr.sort();
 
-    function setTituloArr(titulo, numeroDesdobramento) {
+                    resolve(categoriesArr);
 
-        arrTitulo.splice(numeroDesdobramento, arrTitulo.length);
+                }, 0);
 
-        arrTitulo.push(titulo);
+            });
 
-    }
+            //return categoriesArr;
+        }
 
-    function aplicarDistinctNaLista(lista, listaDePropriedades, listaDeValores) {
+        async function getSeriesByCategories(data, categories, serie) {
 
-        return new Promise(async resolve => {
+            return new Promise((resolve) => {
+
+                const series = [];
+
+                setTimeout(async function () {
+
+                    seriesName = [... new Set(data.map(x => x[serie]))];
+
+                    for (const [index, serieName] of seriesName.entries()) {
+
+                        const obj = {};
+                        obj.name = serieName;
+                        obj.data = [];
+
+                        for (const [index, o] of categories.entries()) {
+
+                            let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x[serie] == serieName);
+
+                            if (arrFiltrado.length == 0) {
+
+                                obj.data.push(null);
+
+                            } else {
+
+                                let arrAv = arrFiltrado.map(x => x.AV);
+                                let amostragem = arrAv.reduce(sumReduce);
+                                let arrNc = arrFiltrado.map(x => x.NC);
+                                let qtdNC = arrNc.reduce(sumReduce)
+
+                                let porcentagem = await getPorcentagem(amostragem, qtdNC)
+
+                                obj.data.push(porcentagem);
+                            }
+
+                        }
+
+                        series.push(obj);
+
+                    }
+
+                    resolve(series);
+
+                });
+                //return series;
+            });
+
+        }
+
+        function convertDateToYearMouth(date) {
+
+            let mes = (parseInt(new Date(date).getMonth().toString()) + 1).toString();
+            let ano = parseInt(new Date(date).getFullYear().toString());
+
+            if (mes.length == 1)
+                mes = "0" + mes;
+
+            return ano + "-" + mes;
+
+        }
+
+        function appendDiv(numeroDesdobramento, keys, titulo = "") {
+
+            let options = keys.reduce((accumulator, currentValue) => accumulator += `<option value="${currentValue}">${currentValue}</option>`);
+
+            let botaoTrocarEixos = `<button type="button" id-desdobramento="${numeroDesdobramento}" class="btnChangeEixos btn btn-primary" onclick="changeEixos(this);" title="Trocar eixos">Trocar</button>`;
+            let botaoExibirEixos = `<button type="button" id-desdobramento="${numeroDesdobramento}" class="btnExibirEixos btn-sm btn-default" onclick="exibirBtnEixo(this);" title="Avançado"><i class="fa fa-cog"></i></button>`;
+
+            let htmlDiv = `
+            <div class="panel panel-primary" id-desdobramento="${numeroDesdobramento}">
+                <div class="panel-heading">${botaoExibirEixos} <div class="titulo-desdobramento">${titulo}</div></div>
+                <div class="panel-body">
+                  <div class="row select-filter" select-filter-eixos="${numeroDesdobramento}" hidden>
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+                              <strong>A matriz atual exibirá: </strong>
+                              <div class="form-group">
+                                <label for="coluna">Linha</label>
+                                <select class="form-control" id="selectLinha_${numeroDesdobramento}">
+                                ${options}
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label for="coluna">Coluna</label>
+                                <select class="form-control" id="selectColuna_${numeroDesdobramento}">
+                                ${options}
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                ${botaoTrocarEixos}
+                              </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="matriz" id="placeholder_${numeroDesdobramento}" data-numer-div="${numeroDesdobramento}"></div>
+                    <div class="row select-filter" select-filter>
+                        <div class="col-sm-12">
+                            <form class="form-inline">
+                              <strong>A próxima matriz exibirá: </strong>
+                              <div class="form-group">
+                                <label for="coluna">Linha</label>
+                                <select class="form-control" id="select1_${numeroDesdobramento}">
+                                ${options}
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label for="coluna">Coluna</label>
+                                <select class="form-control" id="select2_${numeroDesdobramento}">
+                                ${options}
+                                </select>
+                              </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+
+            $('#placeholder').append(htmlDiv);
+        }
+
+        function removeDivs(numeroDesdobramento) {
+
+            $('#placeholder').find('.matriz').each(function (index) {
+
+                let numeroDiv = parseInt($(this).attr('data-numer-div'));
+
+                if (numeroDiv >= numeroDesdobramento) {
+                    $(this).remove();
+                    $("[id-desdobramento=" + numeroDiv + "]").remove();
+                }
+
+            });
+        }
+
+        function appendDataArr(data, numeroDesdobramento) {
+
+            arrObjDados.splice(numeroDesdobramento, arrObjDados.length);
+
+            arrObjDados[numeroDesdobramento] = data;
+
+        }
+
+        function desdobraMatriz(newData, numeroDesdobramento, linha, coluna) {
+
+            let matrizAnterior = JSON.stringify(arrObjDados[numeroDesdobramento - 1]);
+            let matrizAtual = JSON.stringify(newData);
+
+            hideMessage();
+
+            if (matrizAnterior === matrizAtual || newData.length === 0) {
+                showMessage("Fim do desdobramento.");
+                removeDivs(numeroDesdobramento);
+                removeLoading();
+                return;
+            }
+
+            gerarMapaCalor(newData, numeroDesdobramento, linha, coluna);
+
+        }
+
+        function showMessage(mensagem) {
+            $("#divAlertFim").html(mensagem);
+            $("#divAlertFim").show()
+        }
+
+        function hideMessage() {
+            $("#divAlertFim").hide();
+        }
+
+        function goScroll(elemId) {
+
+            document.querySelector(elemId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function enviarFiltro() {
+            buscarDados();
+        }
+
+        function setTituloArr(titulo, numeroDesdobramento) {
+
+            arrTitulo.splice(numeroDesdobramento, arrTitulo.length);
+
+            arrTitulo.push(titulo);
+
+        }
+
+        async function aplicarDistinctNaLista(lista, listaDePropriedades) {
+
+            return new Promise(async resolve => {
+
+
+                let arrColuna = await new Promise(resolve => {
+
+                    setTimeout(function () {
+
+                        let arrColuna = [... new Set(lista.map(x => x[listaDePropriedades[1]]))];
+                        arrColuna.sort();
+
+                        resolve(arrColuna);
+                    });
+                });
+
+                let arrLinha = await new Promise(resolve => {
+
+                    setTimeout(function () {
+
+                        let arrLinha = [... new Set(lista.map(x => x[listaDePropriedades[0]]))];
+                        arrLinha.sort();
+
+                        resolve(arrLinha);
+
+                    }, 0);
+
+                });
+
+                let abc = montaListaDistinct(arrColuna, arrLinha, lista, listaDePropriedades);
+
+                resolve(abc);
+
+                //return listaDistinct;
+
+            });
+        }
+
+        function montaListaDistinct(arrColuna, arrLinha, lista, listaDePropriedades) {
 
             let listaDistinct = [];
 
-            let arrColuna = await new Promise(resolve => {
+            return new Promise((resolve) => {
 
-                let arrColuna = [... new Set(lista.map(x => x[listaDePropriedades[1]]))];
-                arrColuna.sort();
+                setTimeout(function () {
 
-                resolve(arrColuna);
+                    for (const [index, coluna] of arrColuna.entries()) {
 
-            });
+                        for (const [index, linha] of arrLinha.entries()) {
 
-            let arrLinha = await new Promise(resolve => {
+                            let arrFiltrados = lista.filter(x => x[listaDePropriedades[1]] == coluna && x[listaDePropriedades[0]] == linha);
 
-                let arrLinha = [... new Set(lista.map(x => x[listaDePropriedades[0]]))];
-                arrLinha.sort();
-                resolve(arrLinha);
-            });
+                            let qtdeNC = null;
+                            let amostragem = null;
+                            let percNC = null
 
-            for (const [index, coluna] of arrColuna.entries()) {
+                            if (arrFiltrados.length > 0) {
+                                qtdeNC = arrFiltrados.map(x => x.NC).reduce(sumReduce);
+                                amostragem = arrFiltrados.map(x => x.AV).reduce(sumReduce);
+                                percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
+                            }
 
-                for (const [index, linha] of arrLinha.entries()) {
+                            listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
 
-                    let arrFiltrados = lista.filter(x => x[listaDePropriedades[1]] == coluna && x[listaDePropriedades[0]] == linha);
+                        }
 
-                    let qtdeNC = null;
-                    let amostragem = null;
-                    let percNC = null
-
-                    if (arrFiltrados.length > 0) {
-                        qtdeNC = arrFiltrados.map(x => x.NC).reduce(sumReduce);
-                        amostragem = arrFiltrados.map(x => x.AV).reduce(sumReduce);
-                        percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
                     }
 
-                    listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
+                    resolve(listaDistinct);
 
-                }
+                }, 0);
 
+            });
+        }
+
+        function sumReduce(accumulator, currentValue) {
+
+            accumulator = parseInt(accumulator);
+            currentValue = parseInt(currentValue);
+
+            accumulator == isNaN(accumulator) ? 0 : accumulator;
+            currentValue = isNaN(currentValue) ? 0 : currentValue;
+
+
+            return accumulator + currentValue
+        }
+
+        $('#btnToggleDivFilterReports').on('click', () => {
+
+            if (chart) {
+                chart.reflow();
+                chart.redraw();
             }
 
-            resolve(listaDistinct);
-
         });
-    }
 
-    function sumReduce(accumulator, currentValue) {
+        function changeEixos(thiss) {
 
-        accumulator = parseInt(accumulator);
-        currentValue = parseInt(currentValue);
+            setLoading(thiss);
 
-        return accumulator + currentValue
-    }
+            let numeroDesdobramento = parseInt($(thiss).attr("id-desdobramento"));
+            let linha = $('#selectLinha_' + numeroDesdobramento + ' :selected').val();
+            let coluna = $('#selectColuna_' + numeroDesdobramento + ' :selected').val();
 
-    $('#btnToggleDivFilterReports').on('click', () => {
+            let data = arrObjDados[numeroDesdobramento];
 
-        if (chart) {
-            chart.reflow();
-            chart.redraw();
+            let tituloDesdobramento = "Mapa de Calor " + linha + " por " + coluna + "</br>" + arrTitulo.slice(0, numeroDesdobramento).join(" | ");
+
+            setTituloMatriz(numeroDesdobramento, tituloDesdobramento);
+
+            gerarMatriz(data, numeroDesdobramento, linha, coluna);
+
         }
 
-    });
+        function exibirBtnEixo(thiss) {
 
-    function changeEixos(thiss) {
+            const numeroDesdobramento = $(thiss).attr("id-desdobramento");
+            const isHidden = $(`[select-filter-eixos="${numeroDesdobramento}"]`).is(":hidden");
 
-        setLoading(thiss);
-
-        let numeroDesdobramento = parseInt($(thiss).attr("id-desdobramento"));
-        let linha = $('#selectLinha_' + numeroDesdobramento + ' :selected').val();
-        let coluna = $('#selectColuna_' + numeroDesdobramento + ' :selected').val();
-
-        let data = arrObjDados[numeroDesdobramento];
-
-        let tituloDesdobramento = "Mapa de Calor " + linha + " por " + coluna + "</br>" + arrTitulo.slice(0, numeroDesdobramento).join(" | ");
-
-        setTituloMatriz(numeroDesdobramento, tituloDesdobramento);
-
-        gerarMatriz(data, numeroDesdobramento, linha, coluna);
-
-    }
-
-    function exibirBtnEixo(thiss) {
-
-        const numeroDesdobramento = $(thiss).attr("id-desdobramento");
-        const isHidden = $(`[select-filter-eixos="${numeroDesdobramento}"]`).is(":hidden");
-
-        if (isHidden) {
-            $(`[select-filter-eixos="${numeroDesdobramento}"]`).show();
-        } else {
-            $(`[select-filter-eixos="${numeroDesdobramento}"]`).hide();
+            if (isHidden) {
+                $(`[select-filter-eixos="${numeroDesdobramento}"]`).show();
+            } else {
+                $(`[select-filter-eixos="${numeroDesdobramento}"]`).hide();
+            }
         }
-    }
 
-    function ajustaMatriz(idMatriz) {
+        function ajustaMatriz(idMatriz) {
 
-        const height = $(idMatriz).find("#listaCabecalho > th:nth-child(1)").css("height");
-        const hasOverflow = $(idMatriz).find("#listaInidicador > tr").length > 5;
-        const hasoverflowx = $(idMatriz).find("#listaCabecalho > th").length > 6;
+            const height = $(idMatriz).find("#listaCabecalho > th:nth-child(1)").css("height");
+            const hasOverflow = $(idMatriz).find("#listaInidicador > tr").length > 5;
+            const hasoverflowx = $(idMatriz).find("#listaCabecalho > th").length > 6;
 
-        $(idMatriz).find(" > div > div.row.row1.linha > div.column1.removeMargin.titleHeatMap > table > tbody > tr:nth-child(1)").css("height", height);
+            $(idMatriz).find(" > div > div.row.row1.linha > div.column1.removeMargin.titleHeatMap > table > tbody > tr:nth-child(1)").css("height", height);
 
-        $(idMatriz).find("#cabecalhoTotal > tbody > tr:nth-child(1) > th").css("height", height);
+            $(idMatriz).find("#cabecalhoTotal > tbody > tr:nth-child(1) > th").css("height", height);
 
-        if (hasOverflow && !hasoverflowx) {
-            $(idMatriz).find(".column3.removeMargin.titleHeatMap").each(function () {
+            if (hasOverflow && !hasoverflowx) {
+                $(idMatriz).find(".column3.removeMargin.titleHeatMap").each(function () {
                 $(this).removeClass("removeMargin");
                 $(this).addClass("margin-left-6px");
             });
+            }
         }
-    }
 
-    async function gerarMatriz(data, numeroDesdobramento, linha, coluna) {
+        function gerarMatriz(data, numeroDesdobramento, linha, coluna) {
 
-        let dados = await aplicarDistinctNaLista(data, [linha, coluna]);
+            setTimeout(async function () {
 
-        let w = $('#container').innerWidth();
-        let idMatriz = "#placeholder_" + numeroDesdobramento;
+                let dados = await aplicarDistinctNaLista(data, [linha, coluna]);
 
-        let config = {
-            maxWidth: "98%",
-            widthColumn1: "18%",
-            widthColumn2: "60%",
-            widthColumn3: "20%",
-            colorMin: "00e600",
-            colorMid: "fef104",
-            colorMax: "ff0000",
-            isGradient: true,
-            colorMain: "dddddd",
-            colorEmptyTd: "f9f9f9",
-            jsonName: "Data",
-            valorVazio: "-",
-        };
+                let w = $('#container').innerWidth();
+                let idMatriz = "#placeholder_" + numeroDesdobramento;
 
-        config.tituloDesdobramento = "";
-        config.Cabecalho = `<a class="cabecalho" data-key="${coluna}" data-titulo="{${coluna}}" data-tituloDesdobramento="${config.tituloDesdobramento}">{${coluna}}</a>`;
-        config.Indicador = `<a class="indicador" data-key="${linha}" data-titulo="{${linha}}" data-tituloDesdobramento="${config.tituloDesdobramento}">{${linha}}</a>`;
-        config.tituloIndicador = linha;
-        config.tituloColuna = coluna;
-        config.json = dados;
-        config.idPlaceholder = idMatriz;
-        config.cellWidth = "150";
-        config.heatmapType = "line";
-        config.Valores = [
-            { "title": "% NC", "render": function () { return '<span>{PercNC}</span>'; }, "heatmap": true /*, "groupFunction": "AVG"*/ }
-        ];
+                let config = {
+                    maxWidth: "98%",
+                    widthColumn1: "18%",
+                    widthColumn2: "60%",
+                    widthColumn3: "20%",
+                    colorMin: "00e600",
+                    colorMid: "fef104",
+                    colorMax: "ff0000",
+                    isGradient: true,
+                    colorMain: "dddddd",
+                    colorEmptyTd: "f9f9f9",
+                    jsonName: "Data",
+                    valorVazio: "-",
+                };
 
-        HeatMap.Inicializar(config);
+                config.tituloDesdobramento = "";
+                config.Cabecalho = `<a class="cabecalho" data-key="${coluna}" data-titulo="{${coluna}}" data-tituloDesdobramento="${config.tituloDesdobramento}">{${coluna}}</a>`;
+                config.Indicador = `<a class="indicador" data-key="${linha}" data-titulo="{${linha}}" data-tituloDesdobramento="${config.tituloDesdobramento}">{${linha}}</a>`;
+                config.tituloIndicador = linha;
+                config.tituloColuna = coluna;
+                config.json = dados;
+                config.idPlaceholder = idMatriz;
+                config.cellWidth = "150";
+                config.heatmapType = "line";
+                config.Valores = [
+                    { "title": "% NC", "render": function () { return '<span>{PercNC}</span>'; }, "heatmap": true /*, "groupFunction": "AVG"*/ }
+                ];
 
-        HeatMap.RecalculaMatrizPorcentagem();
+                HeatMap.Inicializar(config);
 
-        ajustaMatriz(idMatriz);
+                HeatMap.RecalculaMatrizPorcentagem();
 
-        if (numeroDesdobramento > 0)
-            goScroll(idMatriz);
+                ajustaMatriz(idMatriz);
 
-        removeLoading();
+                if (numeroDesdobramento > 0)
+                    goScroll(idMatriz);
 
-        //Clique no cabeçalho da Linha
-        $(idMatriz).off("click", ".horizontal th .cabecalho").on("click", ".horizontal th .cabecalho", function () {
+                removeLoading();
 
-            setLoading(this);
+                //Clique no cabeçalho da Linha
+                $(idMatriz).off("click", ".horizontal th .cabecalho").on("click", ".horizontal th .cabecalho", function () {
 
-            let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
+                setLoading(this);
 
-            let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
-            let coluna = $('#select2_' + numeroDesdobramento + ' :selected').val();
+                let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
 
-            let property = $(this).attr('data-key');
-            let value = $(this).attr('data-titulo');
+                let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
+                let coluna = $('#select2_' + numeroDesdobramento + ' :selected').val();
 
-            value = value == "-" ? null : value;
+                let property = $(this).attr('data-key');
+                let value = $(this).attr('data-titulo');
 
-            let newData = arrObjDados[numeroDesdobramento].filter(x => x[property] == value);
+                value = value == "-" ? null : value;
 
-            setTituloArr(property + ": " + value, numeroDesdobramento);
+                let newData = arrObjDados[numeroDesdobramento].filter(x => x[property] == value);
 
-            numeroDesdobramento = numeroDesdobramento + 1;
-            desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
+                setTituloArr(property + ": " + value, numeroDesdobramento);
 
-        });
+                numeroDesdobramento = numeroDesdobramento + 1;
+                desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
 
-        //Clique no lista da Linha
-        $(idMatriz).off("click", "th.esquerda .indicador").on("click", "th.esquerda .indicador", function () {
+            });
 
-            setLoading(this);
+                //Clique no lista da Linha
+                $(idMatriz).off("click", "th.esquerda .indicador").on("click", "th.esquerda .indicador", function () {
 
-            let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
+                setLoading(this);
 
-            let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
-            let coluna = $('#select2_' + numeroDesdobramento + ' :selected').val();
+                let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
 
-            let property = $(this).attr('data-key');
-            let value = $(this).attr('data-titulo');
+                let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
+                let coluna = $('#select2_' + numeroDesdobramento + ' :selected').val();
 
-            value = value == "-" ? null : value;
+                let property = $(this).attr('data-key');
+                let value = $(this).attr('data-titulo');
 
-            let newData = arrObjDados[numeroDesdobramento].filter(x => x[property] == value);
+                value = value == "-" ? null : value;
 
-            setTituloArr(property + ": " + value, numeroDesdobramento);
+                let newData = arrObjDados[numeroDesdobramento].filter(x => x[property] == value);
 
-            numeroDesdobramento = numeroDesdobramento + 1;
-            desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
+                setTituloArr(property + ": " + value, numeroDesdobramento);
 
-        });
+                numeroDesdobramento = numeroDesdobramento + 1;
+                desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
 
-        //Clique no meio da matriz
-        $(idMatriz).off("click", "#listaValores td").on("click", "#listaValores td", function () {
+            });
 
-            setLoading(this);
+                //Clique no meio da matriz
+                $(idMatriz).off("click", "#listaValores td").on("click", "#listaValores td", function () {
 
-            let indicadorNumero = parseInt($(this).attr("data-indicador")) + 1;
-            let cabecalhoNumero = parseInt($(this).attr("data-cabecalho")) + 1;
+                setLoading(this);
 
-            let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
+                let indicadorNumero = parseInt($(this).attr("data-indicador")) + 1;
+                let cabecalhoNumero = parseInt($(this).attr("data-cabecalho")) + 1;
 
-            let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
-            let coluna = $('#select2_' + numeroDesdobramento + ' :selected').val();
+                let numeroDesdobramento = parseInt($(this).parents(".matriz").attr("data-numer-div"));
 
-            let propertyLinha = $("#placeholder_" + numeroDesdobramento + " #listaInidicador > tr:nth-child(" + indicadorNumero + ") > th > a").attr('data-key');
-            let valueLinha = $("#placeholder_" + numeroDesdobramento + " #listaInidicador > tr:nth-child(" + indicadorNumero + ") > th > a").attr('data-titulo');
-            let propertyColuna = $("#placeholder_" + numeroDesdobramento + " #listaCabecalho > th:nth-child(" + cabecalhoNumero + ") > a").attr('data-key');
-            let valueColuna = $("#placeholder_" + numeroDesdobramento + " #listaCabecalho > th:nth-child(" + cabecalhoNumero + ") > a").attr('data-titulo');
+                let linha = $('#select1_' + numeroDesdobramento + ' :selected').val();
+                let coluna = $('#select2_' + numeroDesdobramento + ' :selected').val();
 
-            let newData = arrObjDados[numeroDesdobramento].filter(x => x[propertyLinha] == valueLinha && x[propertyColuna] == valueColuna);
+                let propertyLinha = $("#placeholder_" + numeroDesdobramento + " #listaInidicador > tr:nth-child(" + indicadorNumero + ") > th > a").attr('data-key');
+                let valueLinha = $("#placeholder_" + numeroDesdobramento + " #listaInidicador > tr:nth-child(" + indicadorNumero + ") > th > a").attr('data-titulo');
+                let propertyColuna = $("#placeholder_" + numeroDesdobramento + " #listaCabecalho > th:nth-child(" + cabecalhoNumero + ") > a").attr('data-key');
+                let valueColuna = $("#placeholder_" + numeroDesdobramento + " #listaCabecalho > th:nth-child(" + cabecalhoNumero + ") > a").attr('data-titulo');
 
-            setTituloArr(propertyLinha + ": " + valueLinha + " | " + propertyColuna + ": " + valueColuna, numeroDesdobramento);
+                let newData = arrObjDados[numeroDesdobramento].filter(x => x[propertyLinha] == valueLinha && x[propertyColuna] == valueColuna);
 
-            numeroDesdobramento = numeroDesdobramento + 1;
-            desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
+                setTituloArr(propertyLinha + ": " + valueLinha + " | " + propertyColuna + ": " + valueColuna, numeroDesdobramento);
 
-        });
+                numeroDesdobramento = numeroDesdobramento + 1;
+                desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
 
-    }
+            });
 
-    function setTituloMatriz(numeroDesdobramento, tituloDesdobramento) {
-
-        $(`[id-desdobramento="${numeroDesdobramento}"] .titulo-desdobramento`).html(tituloDesdobramento);
-
-    }
-
-    let elementLoading = null;
-
-    async function setLoading(elem) {
-
-        elementLoading = $(elem);
-
-        $(elementLoading).button('loading');
-
-    }
-
-    async function removeLoading() {
-        if (elementLoading)
-            $(elementLoading).button('reset');
-
-    }
-
-    function appendChartFilter(keys, preSelected) {
-
-        let options = keys.reduce((accumulator, currentValue) => accumulator += `<option value="${currentValue}" ${currentValue == preSelected ? "selected" : ""} >${currentValue}</option>`);
-
-        let html = `<div id="divChangeFilterChart" hidden>
-                        <select id="select-filter-chart">
-                        ${options}
-                        <select id="select-filter-chart">
-                        <button type="button" onclick="changeFilterChart(this);" class="btn btn-primary" id="btnChangeFilterChart" title="Trocar Serie">Trocar</button>
-                    </div>
-                    <button type="button" onclick="showFilterChart();" class="btn-sm btn-default" id="btnShowFilterChart" title="Avançado"><i class="fa fa-cog"></i></button>`;
-
-        $("#filtroGrafico").html(html);
-
-    }
-
-    function changeFilterChart(thiss) {
-
-        let dados = arrObjDados[0];
-        let serie = $(thiss).parent().find('#select-filter-chart option:selected').val();
-
-        gerarGrafico(dados, serie);
-
-    }
-
-    function showFilterChart() {
-
-        if ($("#divChangeFilterChart").is(":hidden")) {
-            $("#divChangeFilterChart").show();
-
-        } else {
-            $("#divChangeFilterChart").hide();
+            }, 0);
 
         }
-    }
 
-</script>
+        function setTituloMatriz(numeroDesdobramento, tituloDesdobramento) {
+
+            $(`[id-desdobramento="${numeroDesdobramento}"] .titulo-desdobramento`).html(tituloDesdobramento);
+
+        }
+
+        let elementLoading = null;
+
+        function setLoading(elem) {
+
+            elementLoading = $(elem);
+
+            $(elementLoading).button('loading');
+
+        }
+
+        function removeLoading() {
+            if (elementLoading)
+                $(elementLoading).button('reset');
+
+        }
+
+        function appendChartFilter(keys, preSelected) {
+
+            let options = keys.reduce((accumulator, currentValue) => accumulator += `<option value="${currentValue}" ${currentValue == preSelected ? "selected" : ""} >${currentValue}</option>`);
+
+            let html = `<div id="divChangeFilterChart" hidden>
+                            <select id="select-filter-chart">
+                            ${options}
+                            <select id="select-filter-chart">
+                            <button type="button" onclick="changeFilterChart(this);" class="btn btn-primary" id="btnChangeFilterChart" title="Trocar Serie">Trocar</button>
+                        </div>
+                        <button type="button" onclick="showFilterChart();" class="btn-sm btn-default" id="btnShowFilterChart" title="Avançado"><i class="fa fa-cog"></i></button>`;
+
+            $("#filtroGrafico").html(html);
+
+        }
+
+        function changeFilterChart(thiss) {
+
+            let dados = arrObjDados[0];
+            let serie = $(thiss).parent().find('#select-filter-chart option:selected').val();
+
+            gerarGrafico(dados, serie);
+
+        }
+
+        function showFilterChart() {
+
+            if ($("#divChangeFilterChart").is(":hidden")) {
+                $("#divChangeFilterChart").show();
+
+            } else {
+                $("#divChangeFilterChart").hide();
+
+            }
+        }
+
+    </script>
 
 }

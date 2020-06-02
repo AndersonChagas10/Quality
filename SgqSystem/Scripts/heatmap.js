@@ -179,8 +179,8 @@ var HeatMap = {
                 let valorCabecalho = RetornaTituloValor(z);
                 let identificador = HeatMap.idRodape + ' td[' + HeatMap.dataCabecalho + '="' + cabecalhoX + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
 
-                let amostragem = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.Amostragem).reduce((acumulador, valoratual) => acumulador += valoratual);
-                let qtdeNC = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.QtdeNC).reduce((acumulador, valoratual) => acumulador += valoratual);
+                let amostragem = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.Amostragem).reduce(sumReduce);
+                let qtdeNC = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.QtdeNC).reduce(sumReduce);
 
                 let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
 
