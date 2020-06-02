@@ -1,7 +1,9 @@
 ﻿using Dominio;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -37,18 +39,26 @@ namespace SgqSystem.Controllers.CadastrosGerais
 
         public ActionResult Create(int reportXUserId)
         {
-            salvar(LayoutLevelEnum.Cabecalho.ToString(), (int)LayoutLevelEnum.Cabecalho);
-            salvar(LayoutLevelEnum.Linha.ToString(), (int)LayoutLevelEnum.Linha);
-            salvar(LayoutLevelEnum.Valor.ToString(), (int)LayoutLevelEnum.Valor);
+            PreencheViewBags(reportXUserId);
+           
+
+            return View();
+        }
+
+        private void PreencheViewBags(int reportXUserId)
+        {
+            AdicionaItemNivelLayout(LayoutLevelEnum.Cabecalho.ToString(), (int)LayoutLevelEnum.Cabecalho);
+            AdicionaItemNivelLayout(LayoutLevelEnum.Linha.ToString(), (int)LayoutLevelEnum.Linha);
+            AdicionaItemNivelLayout(LayoutLevelEnum.Valor.ToString(), (int)LayoutLevelEnum.Valor);
 
             ViewBag.ReportXUser_Id = reportXUserId;
 
             ViewBag.NiveisLayout_Id = new SelectList(NiveisLayout.ToList(), "Id", "Name");
 
-            return View();
+            ViewBag.ReportLayoutItens = new SelectList(db.ReportLayoutItens.Where(x => x.IsActive).ToList(), "Name", "Name");
         }
 
-        private void salvar(string name, int id)
+        private void AdicionaItemNivelLayout(string name, int id)
         {
             LayoutLevel niveisLayout = new LayoutLevel();
 
@@ -75,5 +85,71 @@ namespace SgqSystem.Controllers.CadastrosGerais
 
             return RedirectToAction("Details/" + form.ReportXUserSgq_Id, "ReportXUserSgq");
         }
+
+        // GET: ReportXUserSgqs/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            ParReportLayoutXReportXUser reportLayoutXReportXUser = db.ParReportLayoutXReportXUser.Find(id);
+
+            if (reportLayoutXReportXUser == null)
+            {
+                return HttpNotFound();
+            }
+            PreencheViewBags(reportLayoutXReportXUser.ReportXUserSgq_Id);
+            return View(reportLayoutXReportXUser);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(ParReportLayoutXReportXUser reportLayoutXReportXUser)
+        {
+            if (ModelState.IsValid)
+            {
+                reportLayoutXReportXUser.AlterDate = DateTime.Now;
+                reportLayoutXReportXUser.IsActive = true;
+                db.Entry(reportLayoutXReportXUser).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Details/" + reportLayoutXReportXUser.ReportXUserSgq_Id, "ReportXUserSgq");
+            }
+            PreencheViewBags(reportLayoutXReportXUser.ReportXUserSgq_Id);
+            return View(reportLayoutXReportXUser);
+        }
+
+
+        // GET: ParReportLayoutXReportXUser/Delete/5
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var reportLayoutXReportXUser = db.ParReportLayoutXReportXUser.Where(r => r.Id == id).FirstOrDefault();
+
+            if (reportLayoutXReportXUser == null)
+            {
+                return HttpNotFound();
+            }
+            return View(reportLayoutXReportXUser);
+        }
+
+        // POST: ParReportLayoutXReportXUser/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            ParReportLayoutXReportXUser reportLayoutXReportXUser = db.ParReportLayoutXReportXUser.Find(id);
+
+            reportLayoutXReportXUser.IsActive = false;
+            db.SaveChanges();
+
+            return RedirectToAction("Details/" + reportLayoutXReportXUser.ReportXUserSgq_Id, "ReportXUserSgq");
+        }
+
     }
 }

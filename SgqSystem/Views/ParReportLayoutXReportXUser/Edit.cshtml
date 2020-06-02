@@ -3,7 +3,7 @@
 @{
     /**/
 
-    ViewBag.Title = "Cadastro relatório X Layout";
+    ViewBag.Title = "Edição relatório X Layout";
 }
 
 <div class="page-content-wrapper">
@@ -39,7 +39,7 @@
                     <div class="portlet-title tabbable-line">
                         <div class="caption">
                             <i class="icon-share font-dark"></i>
-                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.create  Cadastro relatório X Layout</span>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.edit  Cadastro relatório X Layout</span>
                         </div>
                     </div>
                     <div class="portlet-body">
@@ -57,7 +57,7 @@
                                         <div class="form-group">
                                             @Html.LabelFor(model => model.Value, "Valor", htmlAttributes: new { @class = "control-label col-md-3" })
                                             <div class="col-md-6">
-                                                @Html.DropDownListFor(m => m.Value, (SelectList)ViewBag.ReportLayoutItens, "Selecionar", new { @class = "form-control"})
+                                                @Html.DropDownListFor(m => m.Value, (SelectList)ViewBag.ReportLayoutItens, "Selecionar", new { @class = "form-control" })
                                                 @Html.ValidationMessageFor(model => model.Value, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -81,16 +81,9 @@
                                         <div class="form-group">
                                             <div class="col-md-offset-3 col-md-9">
                                                 <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
-                                                @*@if (ViewBag.Parent_Id != null)
-                                                    {
-                                                        @Html.ActionLink(Resources.Resource.back as string + " para detalhes", "Details", new { id = ViewBag.Parent_Id }, new { @class = "btn btn-default" })
-                                                    }
-                                                    else
-                                                    {
-                                                        @Html.ActionLink(Resources.Resource.back as string, "Index", null, new { @class = "btn btn-default" })
-                                                    }*@
-
-
+                                               
+                                                @Html.ActionLink(Resources.Resource.back as string + " para detalhes", "Details","ReportXUserSgq", new { id = ViewBag.ReportXUser_Id }, new { @class = "btn btn-default" })
+                                     
                                             </div>
                                         </div>
                                     </div>

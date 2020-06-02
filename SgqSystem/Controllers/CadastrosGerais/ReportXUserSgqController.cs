@@ -70,7 +70,7 @@ namespace SgqSystem.Controllers
             ReportXUserSgq reportXUserSgq = db.ReportXUserSgq.Where(x => x.Id == id).Include(x => x.ParCompany).Include(X => X.ParLevel1).FirstOrDefault();
 
             if(reportXUserSgq != null)
-                reportXUserSgq.parReportLayoutXReportXUser = db.ParReportLayoutXReportXUser.Where(x => x.ReportXUserSgq_Id == reportXUserSgq.Id).ToList();
+                reportXUserSgq.parReportLayoutXReportXUser = db.ParReportLayoutXReportXUser.Where(x => x.ReportXUserSgq_Id == reportXUserSgq.Id && x.IsActive).OrderByDescending(x => x.LayoutLevel).ToList();
 
             if (reportXUserSgq == null)
             {

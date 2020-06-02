@@ -123,6 +123,7 @@
     <Compile Include="ParHeaderFieldGeral.cs" />
     <Compile Include="ParHeaderFieldXComponenteGenerico.cs" />
     <Compile Include="ParReportLayoutXReportXUser.cs" />
+    <Compile Include="ReportLayoutItens.cs" />
     <Compile Include="ResultLevel3XParQualification.cs" />
     <Compile Include="Result_Level3XParHeaderFieldGeral.cs" />
     <Compile Include="Seara\ParLevel1XParFamiliaProduto.cs" />

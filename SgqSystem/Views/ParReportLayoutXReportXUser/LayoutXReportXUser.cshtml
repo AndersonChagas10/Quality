@@ -18,7 +18,7 @@
             <div class="tab-pane active" id="setup_tab">
 
                 <p>
-                    @Html.ActionLink(Resources.Resource.create as string, "Create", "ParReportLayoutXReportXUser", new { reportXUserId = Model.Id  }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink(Resources.Resource.create as string, "Create", "ParReportLayoutXReportXUser", new { reportXUserId = Model.Id }, new { @class = "btn btn-primary" })
                 </p>
 
                 <table class="table table-striped" id="tabelaLayout">
@@ -27,6 +27,7 @@
                             <th>Valor</th>
                             <th>Apelido</th>
                             <th>Nivel Layout</th>
+                            <th>Ativo</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -36,9 +37,23 @@
                             <tr>
                                 <td>@item.Value</td>
                                 <td>@item.NickName</td>
-                                <td>@item.LayoutLevel.ToString()</td>
+
+                                @if (@item.LayoutLevel == 1)
+                                {
+                                    <td>Cabeçalho</td>
+                                }
+                                else if (item.LayoutLevel == 2)
+                                {
+                                    <td>Linha</td>
+                                }
+                                else
+                                {
+                                    <td>Valor</td>
+                                }
+                                    <td> @Html.DisplayFor(modelItem => item.IsActive)</td>
                                 <td>
-                                    @Html.ActionLink("Inativar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                    @Html.ActionLink("Editar", "Edit", "ParReportLayoutXReportXUser", new { id = item.Id }, new { @class = "btn btn-success" })
+                                    @Html.ActionLink("Inativar", "Delete", "ParReportLayoutXReportXUser", new { id = item.Id }, new { @class = "btn btn-danger" })
                                 </td>
                             </tr>
                         }
@@ -63,6 +78,8 @@
         closeLeftSidebar();
 
         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
             null,
             null,
             { "bSearchable": false }

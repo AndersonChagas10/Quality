@@ -9,11 +9,15 @@ namespace SgqSystem.Controllers.Api.Relatorios
 {
     public class Data
     {
-        public List<JObject> Resultado { get; set; }
+       public List<JObject> Resultado { get; set; }
 
        public Object Aprovador { get; set; }
+
        public Object Elaborador { get; set; }
+
        public Object RelatorioName { get; set; }
+
+       public List<ParReportLayoutXReportXUser> ParReportLayoutXReportXUser { get; set; }
     }
 
     [RoutePrefix("api/Formularios")]
@@ -41,6 +45,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
                 retorno.Elaborador = getElaboradorName(form, db);
 
                 retorno.RelatorioName = getRelatorioName(form, db);
+
+                //retorno.ParReportLayoutXReportXUser = getRelatorioLayoutFormat(form, db);
             }
             var query = $@"
             	
