@@ -3501,4 +3501,11 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-741</CardNumber>
+    <Version>1.8.0</Version>
+    <Description> [RH] Apontamentos Diários - Possibilitar a edição dos dados coletados.</Description>
+    <Script></Script>
+  </Card>
+
 </Cards>
