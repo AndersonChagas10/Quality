@@ -3151,6 +3151,14 @@
       IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 12)
       insert into ReportLayoutItens(Id, Name, IsActive) values('12', 'C',1)
       GO
+
+      IF COL_LENGTH('ParReportLayoutXReportXUser','Ordenacao') IS NULL
+      BEGIN
+      ALTER TABLE ParReportLayoutXReportXUser
+      ADD Ordenacao int null;
+      END
+      GO
+      
     </Script>
   </Card>
 

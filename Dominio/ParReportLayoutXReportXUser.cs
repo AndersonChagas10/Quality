@@ -23,5 +23,8 @@ namespace Dominio
         public bool IsActive { get; set; }
 
         public string TableReference { get; set; }
+
+        public int Ordenacao { get; set; }
+
     }
 }

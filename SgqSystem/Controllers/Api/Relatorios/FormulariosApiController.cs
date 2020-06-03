@@ -3,6 +3,7 @@ using DTO;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.Relatorios
@@ -28,6 +29,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
         public IHttpActionResult GetJsonFormulario([FromBody] DTO.DataCarrierFormularioNew form)
         {
             // List<JObject> resultado = new List<JObject>();
+            int reportXUser_Id = 0;
 
             Data retorno = new Data();
 
@@ -46,7 +48,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
                 retorno.RelatorioName = getRelatorioName(form, db);
 
-                //retorno.ParReportLayoutXReportXUser = getRelatorioLayoutFormat(form, db);
+                retorno.ParReportLayoutXReportXUser = getRelatorioLayoutFormat(form, db);
             }
             var query = $@"
             	
@@ -614,6 +616,26 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 retorno.Resultado = QueryNinja(dbSgq, query);
             }
             return Ok(retorno);
+        }
+
+        private List<ParReportLayoutXReportXUser> getRelatorioLayoutFormat(DataCarrierFormularioNew form, SgqDbDevEntities db)
+        {
+            var reportXUserXLayout = new List<ParReportLayoutXReportXUser>();
+            using (db)
+            {
+                var idUnidade = 1;//form.ParCompany_Ids[0];
+                var idIndicador = 1;//form.ShowIndicador_Id[0];
+
+                var reportXUser_Id = db.ReportXUserSgq
+                    .Where(x => (x.ParCompany_Id == idUnidade || x.ParCompany_Id == null) && x.ParLevel1_Id == idIndicador)
+                    .Select(x => x.Id)
+                    .FirstOrDefault();
+
+                if(reportXUser_Id > 0)
+                    reportXUserXLayout = db.ParReportLayoutXReportXUser.Where(x => x.ReportXUserSgq_Id == reportXUser_Id && x.IsActive).OrderBy(x => x.Ordenacao).ToList();
+            }
+
+            return reportXUserXLayout;
         }
 
         private object getElaboradorName(DataCarrierFormularioNew form, SgqDbDevEntities db)

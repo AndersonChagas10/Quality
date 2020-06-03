@@ -27,6 +27,7 @@
                             <th>Valor</th>
                             <th>Apelido</th>
                             <th>Nivel Layout</th>
+                            <th>Ordenação</th>
                             <th>Ativo</th>
                             <th>Ações</th>
                         </tr>
@@ -34,28 +35,29 @@
                     <tbody>
                         @foreach (var item in Model.parReportLayoutXReportXUser)
                         {
-                            <tr>
-                                <td>@item.Value</td>
-                                <td>@item.NickName</td>
+                        <tr>
+                            <td>@item.Value</td>
+                            <td>@item.NickName</td>
 
-                                @if (@item.LayoutLevel == 1)
-                                {
-                                    <td>Cabeçalho</td>
-                                }
-                                else if (item.LayoutLevel == 2)
-                                {
-                                    <td>Linha</td>
-                                }
-                                else
-                                {
-                                    <td>Valor</td>
-                                }
-                                    <td> @Html.DisplayFor(modelItem => item.IsActive)</td>
-                                <td>
-                                    @Html.ActionLink("Editar", "Edit", "ParReportLayoutXReportXUser", new { id = item.Id }, new { @class = "btn btn-success" })
-                                    @Html.ActionLink("Inativar", "Delete", "ParReportLayoutXReportXUser", new { id = item.Id }, new { @class = "btn btn-danger" })
-                                </td>
-                            </tr>
+                            @if (@item.LayoutLevel == 1)
+                            {
+                                <td>Cabeçalho</td>
+                            }
+                            else if (item.LayoutLevel == 2)
+                            {
+                                <td>Linha</td>
+                            }
+                            else
+                            {
+                                <td>Valor</td>
+                            }
+                            <td> @Html.DisplayFor(modelItem => item.Ordenacao)</td>
+                            <td> @Html.DisplayFor(modelItem => item.IsActive)</td>
+                            <td>
+                                @Html.ActionLink("Editar", "Edit", "ParReportLayoutXReportXUser", new { id = item.Id }, new { @class = "btn btn-success" })
+                                @Html.ActionLink("Inativar", "Delete", "ParReportLayoutXReportXUser", new { id = item.Id }, new { @class = "btn btn-danger" })
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
@@ -78,6 +80,7 @@
         closeLeftSidebar();
 
         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
             null,
             null,
             null,
