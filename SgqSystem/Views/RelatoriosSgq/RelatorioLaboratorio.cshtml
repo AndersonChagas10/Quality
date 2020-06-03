@@ -505,9 +505,8 @@
         }
 
         async function aplicarDistinctNaLista(lista, listaDePropriedades) {
-
+            
             return new Promise(async resolve => {
-
 
                 let arrColuna = await new Promise(resolve => {
 
@@ -517,6 +516,7 @@
                         arrColuna.sort();
 
                         resolve(arrColuna);
+
                     });
                 });
 
@@ -533,11 +533,7 @@
 
                 });
 
-                let abc = montaListaDistinct(arrColuna, arrLinha, lista, listaDePropriedades);
-
-                resolve(abc);
-
-                //return listaDistinct;
+                resolve(montaListaDistinct(arrColuna, arrLinha, lista, listaDePropriedades));
 
             });
         }
@@ -548,29 +544,9 @@
 
             return new Promise((resolve) => {
 
-                setTimeout(function () {
+                setTimeout(async function () {
 
-                    for (const [index, coluna] of arrColuna.entries()) {
-
-                        for (const [index, linha] of arrLinha.entries()) {
-
-                            let arrFiltrados = lista.filter(x => x[listaDePropriedades[1]] == coluna && x[listaDePropriedades[0]] == linha);
-
-                            let qtdeNC = null;
-                            let amostragem = null;
-                            let percNC = null
-
-                            if (arrFiltrados.length > 0) {
-                                qtdeNC = arrFiltrados.map(x => x.NC).reduce(sumReduce);
-                                amostragem = arrFiltrados.map(x => x.AV).reduce(sumReduce);
-                                percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
-                            }
-
-                            listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
-
-                        }
-
-                    }
+                    listaDistinct = await insereListaDistinct(arrColuna, arrLinha, lista, listaDePropriedades, listaDistinct, 0, 0);
 
                     resolve(listaDistinct);
 
@@ -579,17 +555,60 @@
             });
         }
 
-        function sumReduce(accumulator, currentValue) {
+        function insereListaDistinct(arrColuna, arrLinha, lista, listaDePropriedades, listaDistinct, currentI, currentJ) {
+            return new Promise((resolve) => {
+                setTimeout(async function () {
 
-            accumulator = parseInt(accumulator);
-            currentValue = parseInt(currentValue);
+                    let count = 0;
 
-            accumulator == isNaN(accumulator) ? 0 : accumulator;
-            currentValue = isNaN(currentValue) ? 0 : currentValue;
+                    for (let i = currentI; i < arrColuna.length; i++) {
 
+                        let coluna = arrColuna[i];
 
-            return accumulator + currentValue
+                        for (let j = currentJ; j < arrLinha.length; j++) {
+
+                            let linha = arrLinha[j];
+
+                            let arrFiltrados = lista.filter(x => x[listaDePropriedades[1]] == coluna && x[listaDePropriedades[0]] == linha);
+
+                            let qtdeNC = null;
+                            let amostragem = null;
+                            let percNC = null;
+
+                            if (arrFiltrados.length > 0) {
+                                qtdeNC = arrFiltrados.map(x => x.NC).reduce(sumReduce);
+                                amostragem = arrFiltrados.map(x => x.AV).reduce(sumReduce);
+                                percNC = await getPorcentagem(amostragem, qtdeNC);
+                            }
+
+                            count++;
+
+                            listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
+
+                            if (count >= 500) {
+                                await insereListaDistinct(arrColuna, arrLinha, lista, listaDePropriedades, listaDistinct, i, ++j);
+                                resolve(listaDistinct);
+                            }
+                        }
+
+                        if (count >= 500) {
+                            await insereListaDistinct(arrColuna, arrLinha, lista, listaDePropriedades, listaDistinct, ++i, 0);
+                            resolve(listaDistinct);
+                        }
+                    }
+
+                    resolve(listaDistinct);
+
+                }, 100);
+            });
         }
+
+        const trampoline = fn => {
+            while (typeof fn === 'function') {
+                fn = fn();
+            }
+            return fn;
+        };
 
         $('#btnToggleDivFilterReports').on('click', () => {
 
@@ -653,7 +672,7 @@
             setTimeout(async function () {
 
                 let dados = await aplicarDistinctNaLista(data, [linha, coluna]);
-
+                debugger
                 let w = $('#container').innerWidth();
                 let idMatriz = "#placeholder_" + numeroDesdobramento;
 
