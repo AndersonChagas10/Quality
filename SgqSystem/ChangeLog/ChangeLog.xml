@@ -2926,7 +2926,7 @@
       IF COL_LENGTH('ParLevel3Value','IsNCTextRequired') IS NULL
       BEGIN
       ALTER TABLE ParLevel3Value
-      ADD IsNCTextRequired bit not null default 0
+      ADD IsNCTextRequired bit null
       END
     </Script>
   </Card>
@@ -3536,6 +3536,13 @@
       END
       GO
     </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-741</CardNumber>
+    <Version>1.8.0</Version>
+    <Description> [RH] Apontamentos Diários - Possibilitar a edição dos dados coletados.</Description>
+    <Script></Script>
   </Card>
 
 </Cards>
