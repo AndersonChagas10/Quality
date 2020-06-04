@@ -20,7 +20,7 @@
             <div class="form-group">
                 <label><strong>Indicador</strong></label>
                 <select class="form-control" name="ShowIndicador_Id" id="ShowIndicador_Id">
-                    <option value="112">Monitoramento - MER</option>
+                    <option value="151">Monitoramento - MER</option>
                     <option value="127">Verificação - Identificação, remoção, segregação e destinação do material especificado de risco (MER)</option>
                 </select>
             </div>
@@ -233,7 +233,6 @@
                 
                     $btn.button('reset');
                     $(".loader").hide();
-                    montaLayout(data.ParReportLayoutXReportXUser);
                     if (data.Resultado.length > 0) {
 
                         $("#mensagemSemDados").hide();
@@ -245,8 +244,9 @@
                         $("#tdElaborador").text(data.Elaborador[0]["Elaborador"]);
                         $("#tdAprovador").text(data.Aprovador);
                         $("#tdNomeRelatorio").text(data.RelatorioName[0]["NomeRelatorio"]);
-                        $("#dataColeta").text(data.Resultado[0]["Data da Coleta"]);
-                        
+                        $("#dataColeta").text(data.Resultado[0]["data"]);
+
+                        montaLayout(data.ParReportLayoutXReportXUser);
                         montaTabelaDinamica(data.Resultado);
                     } else {
                         $("#mensagemSemDados").show();
@@ -294,8 +294,6 @@
         }
 
         function montaTabelaDinamica(data) {
-
-            montaLayout(data.ParReportLayoutXReportXUser);
 
             //var cabecalhos = [
             //    "AV",

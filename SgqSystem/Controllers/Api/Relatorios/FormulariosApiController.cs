@@ -28,17 +28,12 @@ namespace SgqSystem.Controllers.Api.Relatorios
         [HttpPost]
         public IHttpActionResult GetJsonFormulario([FromBody] DTO.DataCarrierFormularioNew form)
         {
-            // List<JObject> resultado = new List<JObject>();
-            int reportXUser_Id = 0;
-
             Data retorno = new Data();
 
             var indicador_Id = "0";
 
             if (form.ShowIndicador_Id.Length > 0)
                  indicador_Id = form.ShowIndicador_Id[0].ToString();
-
-      
 
             using (var db = new SgqDbDevEntities())
             {
@@ -569,25 +564,25 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta)) 
 
 			SELECT 
-                IndicadorName as Indicador,
-                MonitoramentoName as Setor,
-                TarefaName as ''Itens Verificados'',
+                IndicadorName as indicador,
+                MonitoramentoName as setor,
+                TarefaName as ''itensverificados'',
 				AuditorId,
-				AuditorName as Visto,
+				AuditorName as visto,
 				EvaluationNumber,
 				Sample,
                 H.*,
                 Meta as Meta,
                 --AVComPeso as ''AV com Peso'',
                 --nCComPeso as ''NC com Peso'',
-                UnidadeName as Unidade,
-                Cast(AV as int) as AV,
-                Cast(NC as int) as NC,
-				Resultado,
+                UnidadeName as unidade,
+                Cast(AV as int) as av,
+                Cast(NC as int) as nc,
+				Resultado as ''resultado'',
                 -- iif(NC = 1, ''C'' , ''NC'') as ''Resultado'',
                 --''Célia Regina Mattia GQC/ANH'' as Visto,
-                CONVERT(VARCHAR(10), ConsolidationDate, 103) as ''Data da Coleta'',
-				CONVERT(CHAR(5),ConsolidationDate,108) as ''Hora''
+                CONVERT(VARCHAR(10), ConsolidationDate, 103) as ''data'',
+				CONVERT(CHAR(5),ConsolidationDate,108) as ''hora''
 
 			INTO #CUBO_ACERTO
             FROM #CUBO C
@@ -623,8 +618,8 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             var reportXUserXLayout = new List<ParReportLayoutXReportXUser>();
             using (db)
             {
-                var idUnidade = 1;//form.ParCompany_Ids[0];
-                var idIndicador = 1;//form.ShowIndicador_Id[0];
+                var idUnidade = form.ParCompany_Ids[0];
+                var idIndicador = form.ShowIndicador_Id[0];
 
                 var reportXUser_Id = db.ReportXUserSgq
                     .Where(x => (x.ParCompany_Id == idUnidade || x.ParCompany_Id == null) && x.ParLevel1_Id == idIndicador)
