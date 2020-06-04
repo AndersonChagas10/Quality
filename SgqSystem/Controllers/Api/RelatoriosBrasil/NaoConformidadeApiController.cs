@@ -1492,23 +1492,22 @@ FROM (SELECT
 		--  	ON CL2.ParLevel2_id = L2.Id
 		--  INNER JOIN ParDepartment D WITH (NOLOCK)
 		--  	ON L2.ParDepartment_Id = D.Id
-            LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
-			        ON P1M.ParLevel1_Id = IND.Id
-			        --Variavel
-			        AND P1M.IsActive = 1
-			        AND P1M.EffectiveDateStart <= @DATAINICIAL
-			        AND (P1M.ParCluster_Id IS NULL
-			        OR P1M.ParCluster_Id IN (SELECT
-					        ParCluster_Id
-				        FROM ParCompanyCluster
-				        WHERE ParCompany_Id = UNI.Id
-				        AND Active = 1)
-			        ) 
+		INNER JOIN ConsolidationLevel1XCluster PLC WITH (NOLOCK)
+			ON PLC.ConsolidationLevel1_Id = CL1.ID
+        OUTER APPLY 
+				(SELECT TOP 1 * 
+					FROM ParLevel1XModule P1M WITH (NOLOCK)
+					WHERE 1=1
+					AND P1M.ParLevel1_Id = IND.ID
+			    --Variavel
+					AND P1M.IsActive = 1
+					AND P1M.EffectiveDateStart <= @DATAINICIAL
+					AND (ISNULL(P1M.ParCluster_Id,PLC.ParCluster_Id) = PLC.ParCluster_Id)
+					ORDER BY EffectiveDateStart DESC
+					) as P1M
 
-        LEFT JOIN ParLevel1XCluster PLC
-			ON dbo.grtFN_getParLevel1XCluster(CL1.ConsolidationDate,CL1.ParLevel1_Id,CL1.Unitid,3) = PLC.ID
 		WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-		AND UNI.Name = '{form.unitName }'
+		AND CL1.UnitId = @ParCompany_id
         {whereDepartment}
         {whereShift}
         {whereCriticalLevel}
@@ -1689,22 +1688,21 @@ FROM (SELECT
                             AND A4.DATA = CL1.ConsolidationDate
                             AND A4.[SHIFT] = CL1.[SHIFT]
                             AND A4.[PERIOD] = CL1.[PERIOD]
-                        LEFT JOIN ParLevel1XModule P1M WITH (NOLOCK)
-			                        ON P1M.ParLevel1_Id = IND.Id
-			                        --Variavel
-			                        AND P1M.IsActive = 1
-			                        AND P1M.EffectiveDateStart <= @DATAINICIAL
-			                        AND (P1M.ParCluster_Id IS NULL
-			                        OR P1M.ParCluster_Id IN (SELECT
-					                        ParCluster_Id
-				                        FROM ParCompanyCluster
-				                        WHERE ParCompany_Id = UNI.Id
-				                        AND Active = 1)
-			                        )
-                        LEFT JOIN ParLevel1XCluster PLC
-			                ON dbo.grtFN_getParLevel1XCluster(CL1.ConsolidationDate,CL1.ParLevel1_Id,CL1.Unitid,3) = PLC.ID
+		                INNER JOIN ConsolidationLevel1XCluster PLC WITH (NOLOCK)
+			                ON PLC.ConsolidationLevel1_Id = CL1.ID
+                        OUTER APPLY 
+				                (SELECT TOP 1 * 
+					                FROM ParLevel1XModule P1M WITH (NOLOCK)
+					                WHERE 1=1
+					                AND P1M.ParLevel1_Id = IND.ID
+			                    --Variavel
+					                AND P1M.IsActive = 1
+					                AND P1M.EffectiveDateStart <= @DATAINICIAL
+					                AND (ISNULL(P1M.ParCluster_Id,PLC.ParCluster_Id) = PLC.ParCluster_Id)
+					                ORDER BY EffectiveDateStart DESC
+					                ) as P1M
             			WHERE CL1.ConsolidationDate BETWEEN @DATAINICIAL AND @DATAFINAL
-            			AND UNI.Name = '" + form.unitName + @"'
+		                AND CL1.UnitId = @ParCompany_id
                         " + whereDepartment_Todos + @"
                         " + whereShift + @"
                         " + whereCriticalLevel + @"
