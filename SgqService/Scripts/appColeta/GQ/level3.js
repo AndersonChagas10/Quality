@@ -6,7 +6,7 @@ var tdefAv;
 var tdef3;
 var propertyObjAnteriorDef3, tempHDL2;
 var ParReasonSelected_Id = null;
-var ParReasonType_Id = null //Antecipado = 1, Atrasado = 2, N/A = 3
+var ParReasonType_Id = null; //Antecipado = 1, Atrasado = 2, N/A = 3
 var parDepartmentSelected_Id = null;
 
 function HourToMinutes(hour) {
@@ -540,12 +540,12 @@ function configVinculoAvAm() {
         if (level3) {
             if (level3TemVinculo(l1_id, level2Id, level3Id, avaliacao, amostra, level3)) {
                 $(e).removeClass('hide');
-                if ($(e).parent().parent().parent().find('.level3:visible').length > 0)
-                    $(e).parent().parent().parent().show();
+                if ($(e).parents('.level3List').find('.level3:visible').length > 0)
+                    $(e).parents('.level3List').show();
             } else {
                 $(e).addClass('hide');
-                if ($(e).parent().parent().parent().find('.level3:visible').length == 0)
-                    $(e).parent().parent().parent().hide();
+                if ($(e).parents('.level3List').find('.level3:visible').length == 0)
+                    $(e).parents('.level3List').hide();
             }
         }
     });

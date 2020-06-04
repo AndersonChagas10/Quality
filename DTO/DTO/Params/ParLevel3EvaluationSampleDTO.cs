@@ -12,7 +12,7 @@ namespace DTO.DTO.Params
         public int ParLevel3_Id { get; set; }
         public decimal? SampleNumber { get; set; } = 0;
         public decimal? EvaluationNumber { get; set; } = 0;
-        public string EvaluationInterval { get; set; }
+        public string EvaluationInterval { get; set; } = "";
         public bool IsActive { get; set; } = true;
         public ParCompanyDTO ParCompany { get; set; }
         public ParLevel1DTO ParLevel1 { get; set; }

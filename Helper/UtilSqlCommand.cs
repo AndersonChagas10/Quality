@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Text;
 
 namespace SgqSystem.Helpers
@@ -11,6 +12,7 @@ namespace SgqSystem.Helpers
         {
             string stackTrace = "";
             string message = "";
+
 
             if (exception.InnerException != null)
             {
@@ -29,6 +31,21 @@ namespace SgqSystem.Helpers
             {
                 stackTrace = exception.StackTrace;
                 message = exception.Message;
+            }
+
+            if (exception.GetType() == typeof(DbEntityValidationException))
+            {
+                stackTrace = "";
+                foreach (var eve in (exception as DbEntityValidationException).EntityValidationErrors)
+                {
+                    stackTrace += string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        stackTrace += string.Format("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
             }
 
             stackTrace = $"Ocorreu um erro inesperado: {message} -> {stackTrace}";
