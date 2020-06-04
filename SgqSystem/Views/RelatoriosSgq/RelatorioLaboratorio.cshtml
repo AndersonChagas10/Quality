@@ -671,8 +671,12 @@
 
             setTimeout(async function () {
 
+                setLoaderMatriz(numeroDesdobramento);
+
                 let dados = await aplicarDistinctNaLista(data, [linha, coluna]);
-                debugger
+
+                removeLoaderMatriz(numeroDesdobramento);
+
                 let w = $('#container').innerWidth();
                 let idMatriz = "#placeholder_" + numeroDesdobramento;
 
@@ -791,6 +795,20 @@
             });
 
             }, 0);
+
+        }
+
+        function setLoaderMatriz(numeroDesdobramento) {
+            let idMatriz = "#placeholder_" + numeroDesdobramento;
+
+            $(idMatriz).addClass("loader");
+
+        }
+
+        function removeLoaderMatriz(numeroDesdobramento) {
+            let idMatriz = "#placeholder_" + numeroDesdobramento;
+
+            $(idMatriz).removeClass("loader");
 
         }
 

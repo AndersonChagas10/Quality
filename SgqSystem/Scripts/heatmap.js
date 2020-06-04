@@ -660,7 +660,7 @@ function PreencheCalorNasCelulasValores() {
 
                     let divsValores = $(identificadorValores + " :last-child");
 
-                    if (divsValores.length === 1)
+                    if (divsValores.length === 1 || HeatMap.minMaxPorIndicador[indicadorY].max === HeatMap.minMaxPorIndicador[indicadorY].min)
                         return;
 
                     $(divsValores).each(function (i, o) {
