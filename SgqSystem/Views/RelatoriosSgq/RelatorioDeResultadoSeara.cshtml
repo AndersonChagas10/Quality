@@ -165,11 +165,11 @@
                 closeLoader();
                 $('#tabela').show();
 
-                $('#resultsUnidades > div > div:nth-child(4) > div.column1.removeMargin.titleHeatMap > table').hide()
-                $('#listaRodape').hide()
-                $('#totalMedia').hide()
-                $('#listaMedia').hide()
-                $('#cabecalhoTotal').hide()
+		$('#showCUnidade').text($('#totalMedia > tr > td').text() + '%')
+
+            	$('#showCUnidade').css('font-size', '40px')
+            	$('#showCUnidade').css('padding', '40px')
+
 
             })
             .fail(function (jqXHR, textStatus, msg) {
@@ -815,7 +815,12 @@
 
         function GerarPorcCTotal(retornoArray) {
             var PorcCTotal = retornoArray[0].PorcC;
-            $('#showCUnidade > h1').text(PorcCTotal.toFixed(2) + " %");
+            //$('#showCUnidade > h1').text(PorcCTotal.toFixed(2) + " %");
+            $('#showCUnidade').text($('#totalMedia > tr > td').text() + '%')
+
+            $('#showCUnidade').css('font-size', '40px')
+            $('#showCUnidade').css('padding', '40px')
+
             $('#showCUnidade').removeClass("hide")
         }
 
