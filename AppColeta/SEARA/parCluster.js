@@ -21,7 +21,7 @@ function listarParCluster() {
         '			      <div class="col-xs-9">                         ' +
         '				<h3 class="panel-title">' + voltar + 'Qual cluster deseja realizar coleta?</h3>' +
         '                 </div >                                          ' +
-        '                 <div class="col-xs-3">                           ' +
+        '                 <div class="col-md-3">                           ' +
         getBotaoBuscar() +
         '                 </div>                                           ' +
         '               </div>                                             ' +

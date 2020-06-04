@@ -55,110 +55,117 @@ namespace DTO.DTO.Params
 
         public string CreateUpdate()
         {
-            isQueryEdit = true;
-            GetDataToEdit();
-
-            if (string.IsNullOrEmpty(Value) || Value.Substring(0, 1) == "x")
+            var query = "";
+            try
             {
+                isQueryEdit = true;
+                GetDataToEdit();
+
+                if (string.IsNullOrEmpty(Value) || Value.Substring(0, 1) == "x")
+                {
+                    using (var databaseSgq = new SgqDbDevEntities())
+                    {
+                        Value = databaseSgq.Result_Level3.FirstOrDefault(r => r.Id == Id).Value;
+                    }
+                }
+
+                var texto = "";
+
+                if (!string.IsNullOrEmpty(ValueText))
+                {
+                    texto += ValueText;
+                }
+
+                //bool isBEA = false;
+                //string WeiEvaluateBEA = "@WeiEvaluation";
+                decimal _WeiEvaluation2 = Decimal.ToInt32(_WeiEvaluation);
+
                 using (var databaseSgq = new SgqDbDevEntities())
                 {
-                    Value = databaseSgq.Result_Level3.FirstOrDefault(r => r.Id == Id).Value;
+
+                    var result_level3_obj = databaseSgq.Result_Level3.FirstOrDefault(r => r.Id == Id);
+
+                    var collectionLevel2_obj = databaseSgq.CollectionLevel2.FirstOrDefault(r => r.Id == result_level3_obj.CollectionLevel2_Id);
+
+                    var parLeve1BEA = databaseSgq.ParLevel1VariableProductionXLevel1.FirstOrDefault(r => r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id);
+
+                    //Se for BEA
+                    if (parLeve1BEA != null)
+                        if (parLeve1BEA.ParLevel1VariableProduction_Id == 3)
+                        {
+                            var collectionLevel2_obj2 = databaseSgq.CollectionLevel2.Where(
+                            r => DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(collectionLevel2_obj.CollectionDate) &&
+                            r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id &&
+                            r.Shift == collectionLevel2_obj.Shift &&
+                            r.Period == collectionLevel2_obj.Period &&
+                            r.UnitId == collectionLevel2_obj.UnitId &&
+                            r.Sample < collectionLevel2_obj.Sample
+                            ).OrderByDescending(r => r.Sample).FirstOrDefault();
+
+
+                            if (collectionLevel2_obj2 != null)
+
+                                _WeiEvaluation2 = collectionLevel2_obj.Sample - collectionLevel2_obj2.Sample;
+
+                            else
+                                _WeiEvaluation2 = collectionLevel2_obj.Sample;
+
+                            //isBEA = true;
+                            //WeiEvaluateBEA = "Sample";
+                        }
                 }
+
+                query = "UPDATE [dbo].[Result_Level3] SET ";
+                query += "\n [IsConform] = " + _IsConform + ",";
+                query += "\n [Defects] = " + _Defects + ",";
+                query += "\n [WeiDefects] = " + _WeiDefects + ",";
+                query += "\n [Value] = " + _Value + ",";
+                query += "\n [IsNotEvaluate] = " + _IsNotEvaluate + ",";
+                query += "\n [ValueText] = '" + texto + "',";
+                query += "\n [WeiEvaluation] = " + Decimal.ToInt32(_WeiEvaluation2);//+ " " + Decimal.ToInt32(_WeiEvaluation) + ",";
+                query += "\n WHERE Id = " + Id;
+
+
+                query += "                                                                                                                    " +
+                "\n DECLARE @ID INT = (SELECT TOP 1 CollectionLevel2_Id FROM Result_Level3 WHERE Id = " + Id + " )                            " +
+                "\n DECLARE @Defects DECIMAL(10,3)                                                                                            " +
+                "\n DECLARE @DefectsResult DECIMAL(10, 3)                                                                                     " +
+                "\n DECLARE @EvatuationResult DECIMAL(10, 3)                                                                                  " +
+                "\n DECLARE @WeiEvaluation DECIMAL(10, 3)                                                                                     " +
+                "\n DECLARE @WeiDefects DECIMAL(10, 3)                                                                                        " +
+                "\n DECLARE @TotalLevel3Evaluation  DECIMAL(10, 3)                                                                            " +
+                "\n DECLARE @TotalLevel3WithDefects DECIMAL(10, 3)                                                                            " +
+                "\n                                                                                                                           " +
+                "\n select                                                                                                                    " +
+                "\n                                                                                                                           " +
+                "\n @Defects = isnull(sum(r3.Defects),0),                                                                                     " +
+                "\n @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                         " +
+                "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
+                "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                        " +
+                "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
+                "\n @TotalLevel3Evaluation = count(1),                                                                                        " +
+                "\n @TotalLevel3WithDefects = (select count(1) from result_level3 where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         " +
+                "\n from result_level3 r3                                                                                                     " +
+                "\n where collectionlevel2_id = @ID                                                                                           " +
+                "\n and r3.IsNotEvaluate = 0                                                                                                  " +
+                "\n                                                                                                                           " +
+                "\n                                                                                                                           " +
+                "\n UPDATE CollectionLevel2                                                                                                   " +
+                "\n SET Defects = @Defects                                                                                                    " +
+                "\n , DefectsResult = @DefectsResult                                                                                          " +
+                "\n , EvaluatedResult = @EvatuationResult                                                                                     " +
+                "\n , WeiEvaluation = @WeiEvaluation                                                                                          " +
+                "\n , WeiDefects = @WeiDefects                                                                                                " +
+                "\n , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                          " +
+                "\n , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        " +
+                "\n , AlterDate = GETDATE()                                                                                                   " +
+                "\n WHERE Id = @ID                                                                                                            ";
             }
-
-            var texto = "";
-
-            if (!string.IsNullOrEmpty(ValueText))
+            catch (Exception e)
             {
-                texto += ValueText;
+                LogSystem.LogErrorBusiness.Register(new Exception("1"));
+                throw;
             }
-
-            //bool isBEA = false;
-            //string WeiEvaluateBEA = "@WeiEvaluation";
-            decimal _WeiEvaluation2 = Decimal.ToInt32(_WeiEvaluation);
-
-            using (var databaseSgq = new SgqDbDevEntities())
-            {
-
-                var result_level3_obj = databaseSgq.Result_Level3.FirstOrDefault(r => r.Id == Id);
-
-                var collectionLevel2_obj = databaseSgq.CollectionLevel2.FirstOrDefault(r => r.Id == result_level3_obj.CollectionLevel2_Id);
-
-                var parLeve1BEA = databaseSgq.ParLevel1VariableProductionXLevel1.FirstOrDefault(r => r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id);
-
-                //Se for BEA
-                if (parLeve1BEA != null)
-                    if (parLeve1BEA.ParLevel1VariableProduction_Id == 3)
-                    {
-                        var collectionLevel2_obj2 = databaseSgq.CollectionLevel2.Where(
-                        r => DbFunctions.TruncateTime(r.CollectionDate) == DbFunctions.TruncateTime(collectionLevel2_obj.CollectionDate) &&
-                        r.ParLevel1_Id == collectionLevel2_obj.ParLevel1_Id &&
-                        r.Shift == collectionLevel2_obj.Shift &&
-                        r.Period == collectionLevel2_obj.Period &&
-                        r.UnitId == collectionLevel2_obj.UnitId &&
-                        r.Sample < collectionLevel2_obj.Sample
-                        ).OrderByDescending(r => r.Sample).FirstOrDefault();
-
-
-                        if (collectionLevel2_obj2 != null)
-
-                            _WeiEvaluation2 = collectionLevel2_obj.Sample - collectionLevel2_obj2.Sample;
-
-                        else
-                            _WeiEvaluation2 = collectionLevel2_obj.Sample;
-
-                        //isBEA = true;
-                        //WeiEvaluateBEA = "Sample";
-                    }
-            }
-
-            var query = "UPDATE [dbo].[Result_Level3] SET ";
-            query += "\n [IsConform] = " + _IsConform + ",";
-            query += "\n [Defects] = " + _Defects + ",";
-            query += "\n [WeiDefects] = " + _WeiDefects + ",";
-            query += "\n [Value] = " + _Value + ",";
-            query += "\n [IsNotEvaluate] = " + _IsNotEvaluate + ",";
-            query += "\n [ValueText] = '" + texto + "',";
-            query += "\n [WeiEvaluation] = " + Decimal.ToInt32(_WeiEvaluation2) + ",";//+ " " + Decimal.ToInt32(_WeiEvaluation) + ",";
-            query = query.Remove(query.Length - 1);//Remove a ultima virgula antes do where.
-            query += "\n WHERE Id = " + Id;
-
-
-            query += "                                                                                                                    " +
-            "\n DECLARE @ID INT = (SELECT TOP 1 CollectionLevel2_Id FROM Result_Level3 WHERE Id = " + Id + " )                            " +
-            "\n DECLARE @Defects DECIMAL(10,3)                                                                                            " +
-            "\n DECLARE @DefectsResult DECIMAL(10, 3)                                                                                     " +
-            "\n DECLARE @EvatuationResult DECIMAL(10, 3)                                                                                  " +
-            "\n DECLARE @WeiEvaluation DECIMAL(10, 3)                                                                                     " +
-            "\n DECLARE @WeiDefects DECIMAL(10, 3)                                                                                        " +
-            "\n DECLARE @TotalLevel3Evaluation  DECIMAL(10, 3)                                                                            " +
-            "\n DECLARE @TotalLevel3WithDefects DECIMAL(10, 3)                                                                            " +
-            "\n                                                                                                                           " +
-            "\n select                                                                                                                    " +
-            "\n                                                                                                                           " +
-            "\n @Defects = isnull(sum(r3.Defects),0),                                                                                     " +
-            "\n @DefectsResult = case when sum(r3.WeiDefects) > 0 then 1 else 0 end,                                                         " +
-            "\n @EvatuationResult = case when sum(r3.Evaluation) > 0 then 1 else 0 end,                                                   " +
-            "\n @WeiEvaluation = isnull(sum(r3.WeiEvaluation),0),                                                                        " +
-            "\n @WeiDefects = isnull(sum(r3.WeiDefects),0),                                                                               " +
-            "\n @TotalLevel3Evaluation = count(1),                                                                                        " +
-            "\n @TotalLevel3WithDefects = (select count(1) from result_level3 where collectionLevel2_Id = @ID and Defects > 0  and IsNotEvaluate = 0)         " +
-            "\n from result_level3 r3                                                                                                     " +
-            "\n where collectionlevel2_id = @ID                                                                                           " +
-            "\n and r3.IsNotEvaluate = 0                                                                                                  " +
-            "\n                                                                                                                           " +
-            "\n                                                                                                                           " +
-            "\n UPDATE CollectionLevel2                                                                                                   " +
-            "\n SET Defects = @Defects                                                                                                    " +
-            "\n , DefectsResult = @DefectsResult                                                                                          " +
-            "\n , EvaluatedResult = @EvatuationResult                                                                                     " +
-            "\n , WeiEvaluation = @WeiEvaluation                                                                                          " +
-            "\n , WeiDefects = @WeiDefects                                                                                                " +
-            "\n , TotalLevel3Evaluation = @TotalLevel3Evaluation                                                                          " +
-            "\n , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        " +
-            "\n , AlterDate = GETDATE()                                                                                                   " +
-            "\n WHERE Id = @ID                                                                                                            ";
-
             return query;
         }
 
@@ -187,7 +194,8 @@ namespace DTO.DTO.Params
 
                     try
                     {
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
+                            || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))
                             return "0";
                     }
                     catch (Exception e)
@@ -228,7 +236,10 @@ namespace DTO.DTO.Params
 
                     try
                     {
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6)) != null)//TEXTO
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 5 
+                        || r.ParLevel3InputType_Id == 6)) != null
+                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//TEXTO
+
                             return "1";
                     }
                     catch (Exception e)
@@ -325,7 +336,8 @@ namespace DTO.DTO.Params
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
+                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
+                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//é um BINARIO
                     {
                         defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                     }
@@ -385,7 +397,8 @@ namespace DTO.DTO.Params
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
+                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
+                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//é um BINARIO
                     {
                         defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                     }
