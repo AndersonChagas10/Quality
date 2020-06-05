@@ -38,6 +38,9 @@ namespace LogSystem
             _LogRequest.Request = request;
             _LogRequest.Path = path;
 
+            if (path == "/ImportacaoExcel/Importar")
+                _params = "";
+
             _LogRequest.Params = JsonConvert.SerializeObject(_params, Formatting.None, new JsonSerializerSettings()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
