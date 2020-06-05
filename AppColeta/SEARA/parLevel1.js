@@ -32,7 +32,7 @@ function listarParLevel1(isVoltar) {
         '			      <div class="col-xs-9">                         ' +
         '				    <h3 class="panel-title">' + voltar + ' Selecione o Indicador</h3>' +
         '                 </div >                                          ' +
-        '                 <div class="col-xs-3">                           ' +
+        '                 <div class="col-md-3">                           ' +
         getBotaoBuscar()                                                     +
         '                 </div>                                           ' +
         '               </div>                                             ' +

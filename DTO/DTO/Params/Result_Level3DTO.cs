@@ -55,6 +55,7 @@ namespace DTO.DTO.Params
 
         public string CreateUpdate()
         {
+            var query = "";
             isQueryEdit = true;
             GetDataToEdit();
 
@@ -112,15 +113,14 @@ namespace DTO.DTO.Params
                     }
             }
 
-            var query = "UPDATE [dbo].[Result_Level3] SET ";
+            query = "UPDATE [dbo].[Result_Level3] SET ";
             query += "\n [IsConform] = " + _IsConform + ",";
             query += "\n [Defects] = " + _Defects + ",";
             query += "\n [WeiDefects] = " + _WeiDefects + ",";
             query += "\n [Value] = " + _Value + ",";
             query += "\n [IsNotEvaluate] = " + _IsNotEvaluate + ",";
             query += "\n [ValueText] = '" + texto + "',";
-            query += "\n [WeiEvaluation] = " + Decimal.ToInt32(_WeiEvaluation2) + ",";//+ " " + Decimal.ToInt32(_WeiEvaluation) + ",";
-            query = query.Remove(query.Length - 1);//Remove a ultima virgula antes do where.
+            query += "\n [WeiEvaluation] = " + Decimal.ToInt32(_WeiEvaluation2);//+ " " + Decimal.ToInt32(_WeiEvaluation) + ",";
             query += "\n WHERE Id = " + Id;
 
 
@@ -158,7 +158,6 @@ namespace DTO.DTO.Params
             "\n , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        " +
             "\n , AlterDate = GETDATE()                                                                                                   " +
             "\n WHERE Id = @ID                                                                                                            ";
-
             return query;
         }
 
@@ -187,7 +186,8 @@ namespace DTO.DTO.Params
 
                     try
                     {
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
+                            || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))
                             return "0";
                     }
                     catch (Exception e)
@@ -228,7 +228,10 @@ namespace DTO.DTO.Params
 
                     try
                     {
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6)) != null)//TEXTO
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 5
+                        || r.ParLevel3InputType_Id == 6)) != null
+                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//TEXTO
+
                             return "1";
                     }
                     catch (Exception e)
@@ -323,7 +326,8 @@ namespace DTO.DTO.Params
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
+                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
+                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//é um BINARIO
                     {
                         defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                     }
@@ -383,7 +387,8 @@ namespace DTO.DTO.Params
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
+                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
+                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//é um BINARIO
                     {
                         defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                     }
@@ -520,7 +525,7 @@ namespace DTO.DTO.Params
 
         private bool MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(ParLevel3ValueDTO parLevel3ValueDTO)
         {
-            if(parLevel3ValueDTO == null)
+            if (parLevel3ValueDTO == null)
             {
                 return false;
             }
@@ -545,8 +550,8 @@ namespace DTO.DTO.Params
                     if (ParLevel3.ParLevel3Value.IsNotNull())
                     {
                         var filtroParLevel3Value = ParLevel3.ParLevel3Value
-                            .Where(r => (r.ParCompany_Id == CollectionLevel2.UnitId || r.ParCompany_Id == null) && 
-                            (CollectionLevel2.ParLevel1_Id == r.ParLevel1_Id || r.ParLevel1_Id == null) && 
+                            .Where(r => (r.ParCompany_Id == CollectionLevel2.UnitId || r.ParCompany_Id == null) &&
+                            (CollectionLevel2.ParLevel1_Id == r.ParLevel1_Id || r.ParLevel1_Id == null) &&
                             (CollectionLevel2.ParLevel2_Id == r.ParLevel2_Id || r.ParLevel2_Id == null))
                             .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                             .ToList();

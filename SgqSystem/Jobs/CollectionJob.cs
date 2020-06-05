@@ -2,8 +2,11 @@
 using Dominio;
 using Helper;
 using Quartz;
+using SgqSystem.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +15,8 @@ namespace SgqSystem.Jobs
 {
     public class CollectionJob : IJob
     {
-
+        private static int quantidadeMaximaProcessada = 100;
+        private static int quantidadeProcessada = 100;
         public void Execute(IJobExecutionContext context)
         {
             ExecuteCollectionJob(null);
@@ -35,17 +39,23 @@ namespace SgqSystem.Jobs
                 try
                 {
                     Int32.TryParse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.CollectionJobTime0IsDisabled, out intervalTimeCollectionJob);
-                }catch(Exception)
+                }
+                catch (Exception)
                 {
 
                 }
 
                 if (intervalTimeCollectionJob > 0)
                 {
-                    //Pegar as collectionsLevel2 da Collection
-                    List<CollectionLevel2> collectionsLevel2MontadoDaCollection = GetCollectionsLevel2NotProcess();
+                    if (quantidadeProcessada == quantidadeMaximaProcessada)
+                    {
+                        //Pegar as collectionsLevel2 da Collection
+                        List<CollectionLevel2> collectionsLevel2MontadoDaCollection = GetCollectionsLevel2NotProcess();
+                        quantidadeProcessada = quantidadeMaximaProcessada - collectionsLevel2MontadoDaCollection.Count;
 
-                    ConsolidarCollectionLevel2(collectionsLevel2MontadoDaCollection);
+                        LogSystem.LogErrorBusiness.Register(new Exception("Iniciado CollectionJob - quantidadeProcessada: " + quantidadeProcessada));
+                        ConsolidarCollectionLevel2(collectionsLevel2MontadoDaCollection);
+                    }
 
                     Thread.Sleep(intervalTimeCollectionJob);
                 }
@@ -61,92 +71,189 @@ namespace SgqSystem.Jobs
         {
             try
             {
+                List<ParLevel3> parLevel3List = new List<ParLevel3>();
+                int consolidationLevel2_Id = 0;
                 using (var db = new SgqDbDevEntities())
                 {
+                    db.Configuration.AutoDetectChangesEnabled = false;
+                    db.Configuration.LazyLoadingEnabled = false;
+                    parLevel3List = db.ParLevel3.ToList();
                     //var headerFieldsProcess_Id = new List<int>();
-                    var parLevel3List = db.ParLevel3.Select(x => new { x.Name, x.Id } ).ToList();
-                    int consolidationLevel2_Id = returnConsolidationLevel2Id();
+                    consolidationLevel2_Id = returnConsolidationLevel2Id();
+                }
 
-                    foreach (var collectionLevel2MontadoDaCollection in collectionsLevel2MontadoDaCollection)
+                foreach (var collectionLevel2MontadoDaCollection in collectionsLevel2MontadoDaCollection)
+                {
+                    Task.Run(() =>
                     {
-                        var resultsLevel3 = GetResultLevel3NotProcess(collectionLevel2MontadoDaCollection);
-                        var collectionLevel2Consolidada = SetConsolidation(collectionLevel2MontadoDaCollection, resultsLevel3);
-                        var collectionLevel2DoBanco = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
-
-                        if (collectionLevel2DoBanco == null)
+                        try
                         {
-                            collectionLevel2Consolidada.ConsolidationLevel2_Id = consolidationLevel2_Id;
-
-                            var collectionLevel2Save = db.CollectionLevel2.Add(collectionLevel2Consolidada);
-                            db.SaveChanges();
-
-                            if (collectionLevel2MontadoDaCollection.ParCargo_Id != null)
-                                db.CollectionLevel2XParCargo.Add(new CollectionLevel2XParCargo() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParCargo_Id = collectionLevel2MontadoDaCollection.ParCargo_Id.Value });
-
-                            if (collectionLevel2MontadoDaCollection.ParCluster_Id != null)
-                                db.CollectionLevel2XCluster.Add(new CollectionLevel2XCluster() { /*AddDate = DateTime.Now,*/ CollectionLevel2_Id = collectionLevel2Save.Id, ParCluster_Id = collectionLevel2MontadoDaCollection.ParCluster_Id.Value });
-
-                            if (collectionLevel2MontadoDaCollection.ParDepartment_Id != null)
-                                db.CollectionLevel2XParDepartment.Add(new CollectionLevel2XParDepartment() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParDepartment_Id = collectionLevel2MontadoDaCollection.ParDepartment_Id.Value });
-
-                            if (collectionLevel2MontadoDaCollection.Outros?.GetIntFromJsonText("ParFamiliaProduto_Id") != null)
-                                db.CollectionLevel2XParFamiliaProdutoXParProduto.Add(
-                                    new Dominio.Seara.CollectionLevel2XParFamiliaProdutoXParProduto() {
-                                        AddDate = DateTime.Now,
-                                        CollectionLevel2_Id = collectionLevel2Save.Id,
-                                        ParFamiliaProduto_Id = collectionLevel2MontadoDaCollection.Outros.GetIntFromJsonText("ParFamiliaProduto_Id").Value,
-                                        ParProduto_Id = collectionLevel2MontadoDaCollection.Outros.GetIntFromJsonText("ParProduto_Id")
-                                    });
-
-                            db.SaveChanges();
-                        }
-                        else
-                        {
-                            collectionLevel2DoBanco.ParDepartment_Id = collectionLevel2Consolidada.ParDepartment_Id; //db.CollectionLevel2XParDepartment.Where(x => x.CollectionLevel2_Id == collection.Id).Select(x => x.ParDepartment_Id).FirstOrDefault();
-                            collectionLevel2DoBanco.ParCargo_Id = collectionLevel2Consolidada.ParCargo_Id; //db.CollectionLevel2XParCargo.Where(x => x.CollectionLevel2_Id == collection.Id).Select(x => x.ParCargo_Id).FirstOrDefault();
-                            collectionLevel2DoBanco.ParCluster_Id = collectionLevel2Consolidada.ParCluster_Id;//db.CollectionLevel2XCluster.Where(x => x.CollectionLevel2_Id == collection.Id).Select(x => x.ParCluster_Id).FirstOrDefault();
-                            collectionLevel2DoBanco.CollectionDate = collectionLevel2Consolidada.CollectionDate;
-                            collectionLevel2Consolidada = collectionLevel2DoBanco;
-                        }
-
-                        var collectionsProcessed_Id = new List<int>();
-                        var collectionsProcessWithError_Id = new List<int>();
-                        foreach (var resultLevel3 in resultsLevel3)
-                        {
-                            if (!(resultLevel3.ParLevel3_Id > 0))
-                                continue;
-
-                            int collectionId = resultLevel3.Id;
-
-                            try
+                            using (var db = new SgqDbDevEntities())
                             {
-                                resultLevel3.CollectionLevel2_Id = collectionLevel2Consolidada.Id;
-                                resultLevel3.HasPhoto = resultLevel3.HasPhoto == null ? false : resultLevel3.HasPhoto;
-                                resultLevel3.ParLevel3_Name = parLevel3List.Where(x => x.Id == resultLevel3.ParLevel3_Id).Select(x => x.Name).FirstOrDefault();
-                                db.Result_Level3.Add(resultLevel3);
-                                db.SaveChanges();
+                                db.Configuration.AutoDetectChangesEnabled = false;
+                                db.Configuration.LazyLoadingEnabled = false;
 
-                                collectionsProcessed_Id.Add(collectionId);
-                            }
-                            catch (Exception ex)
-                            {
-                                collectionsProcessWithError_Id.Add(collectionId);
+                                var resultsLevel3 = GetResultLevel3NotProcess(collectionLevel2MontadoDaCollection);
+                                var collectionLevel2Consolidada = SetConsolidation(collectionLevel2MontadoDaCollection, resultsLevel3);
+                                var collectionLevel2DoBanco = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
+
+                                if (collectionLevel2DoBanco == null)
+                                {
+                                    collectionLevel2Consolidada.ConsolidationLevel2_Id = consolidationLevel2_Id;
+
+                                    var collectionLevel2Save = db.CollectionLevel2.Add(collectionLevel2Consolidada);
+                                    db.SaveChanges();
+
+                                    if (collectionLevel2MontadoDaCollection.ParCargo_Id != null)
+                                        db.CollectionLevel2XParCargo.Add(new CollectionLevel2XParCargo() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParCargo_Id = collectionLevel2MontadoDaCollection.ParCargo_Id.Value });
+
+                                    if (collectionLevel2MontadoDaCollection.ParCluster_Id != null)
+                                        db.CollectionLevel2XCluster.Add(new CollectionLevel2XCluster() { /*AddDate = DateTime.Now,*/ CollectionLevel2_Id = collectionLevel2Save.Id, ParCluster_Id = collectionLevel2MontadoDaCollection.ParCluster_Id.Value });
+
+                                    if (collectionLevel2MontadoDaCollection.ParDepartment_Id != null)
+                                        db.CollectionLevel2XParDepartment.Add(new CollectionLevel2XParDepartment() { AddDate = DateTime.Now, CollectionLevel2_Id = collectionLevel2Save.Id, ParDepartment_Id = collectionLevel2MontadoDaCollection.ParDepartment_Id.Value });
+
+                                    if (collectionLevel2MontadoDaCollection.Outros?.GetIntFromJsonText("ParFamiliaProduto_Id") != null)
+                                        db.CollectionLevel2XParFamiliaProdutoXParProduto.Add(
+                                            new Dominio.Seara.CollectionLevel2XParFamiliaProdutoXParProduto()
+                                            {
+                                                AddDate = DateTime.Now,
+                                                CollectionLevel2_Id = collectionLevel2Save.Id,
+                                                ParFamiliaProduto_Id = collectionLevel2MontadoDaCollection.Outros.GetIntFromJsonText("ParFamiliaProduto_Id").Value,
+                                                ParProduto_Id = collectionLevel2MontadoDaCollection.Outros.GetIntFromJsonText("ParProduto_Id")
+                                            });
+
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    collectionLevel2DoBanco.ParDepartment_Id = collectionLevel2Consolidada.ParDepartment_Id; //db.CollectionLevel2XParDepartment.Where(x => x.CollectionLevel2_Id == collection.Id).Select(x => x.ParDepartment_Id).FirstOrDefault();
+                                    collectionLevel2DoBanco.ParCargo_Id = collectionLevel2Consolidada.ParCargo_Id; //db.CollectionLevel2XParCargo.Where(x => x.CollectionLevel2_Id == collection.Id).Select(x => x.ParCargo_Id).FirstOrDefault();
+                                    collectionLevel2DoBanco.ParCluster_Id = collectionLevel2Consolidada.ParCluster_Id;//db.CollectionLevel2XCluster.Where(x => x.CollectionLevel2_Id == collection.Id).Select(x => x.ParCluster_Id).FirstOrDefault();
+                                    collectionLevel2DoBanco.CollectionDate = collectionLevel2Consolidada.CollectionDate;
+                                    collectionLevel2Consolidada = collectionLevel2DoBanco;
+                                }
+
+                                var collectionsProcessed_Id = new List<int>();
+                                var collectionsProcessWithError_Id = new List<int>();
+
+                                using (Factory factory = new Factory("DefaultConnection"))
+                                {
+                                    foreach (var resultLevel3 in resultsLevel3)
+                                    {
+                                        if (!(resultLevel3.ParLevel3_Id > 0))
+                                            continue;
+
+                                        int collectionId = resultLevel3.Id;
+
+                                        try
+                                        {
+                                            resultLevel3.CollectionLevel2_Id = collectionLevel2Consolidada.Id;
+                                            resultLevel3.HasPhoto = resultLevel3.HasPhoto == null ? false : resultLevel3.HasPhoto;
+                                            resultLevel3.ParLevel3_Name = parLevel3List
+                                            .Where(x => x.Id == resultLevel3.ParLevel3_Id)
+                                            .Select(x => x.Name).FirstOrDefault();
+
+                                            #region inserir collection
+                                            string sql = $@"
+INSERT INTO [Result_Level3]
+           ([CollectionLevel2_Id]
+           ,[ParLevel3_Id]
+           ,[ParLevel3_Name]
+           ,[Weight]
+           ,[IntervalMin]
+           ,[IntervalMax]
+           ,[Value]
+           ,[ValueText]
+           ,[IsConform]
+           ,[IsNotEvaluate]
+           ,[Defects]
+           ,[PunishmentValue]
+           ,[WeiEvaluation]
+           ,[Evaluation]
+           ,[WeiDefects]
+           ,[CT4Eva3]
+           ,[Sampling]
+           ,[HasPhoto])
+     VALUES
+           (@CollectionLevel2_Id
+           ,@ParLevel3_Id
+           ,@ParLevel3_Name
+           ,@Weight
+           ,@IntervalMin
+           ,@IntervalMax
+           ,@Value
+           ,@ValueText
+           ,@IsConform
+           ,@IsNotEvaluate
+           ,@Defects
+           ,@PunishmentValue
+           ,@WeiEvaluation
+           ,@Evaluation
+           ,@WeiDefects
+           ,@CT4Eva3
+           ,@Sampling
+           ,@HasPhoto);
+            SELECT @@IDENTITY AS 'Identity';";
+
+                                            using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                                            {
+                                                cmd.CommandType = CommandType.Text;
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@CollectionLevel2_Id", resultLevel3.CollectionLevel2_Id);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel3_Id", resultLevel3.ParLevel3_Id);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel3_Name", resultLevel3.ParLevel3_Name);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@Weight", resultLevel3.Weight);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@IntervalMin", resultLevel3.IntervalMin);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@IntervalMax", resultLevel3.IntervalMax);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@Value", resultLevel3.Value);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@ValueText", resultLevel3.ValueText);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@IsConform", resultLevel3.IsConform);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@IsNotEvaluate", resultLevel3.IsNotEvaluate);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@Defects", resultLevel3.Defects);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@PunishmentValue", resultLevel3.PunishmentValue);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@WeiEvaluation", resultLevel3.WeiEvaluation);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@Evaluation", resultLevel3.Evaluation);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@WeiDefects", resultLevel3.WeiDefects);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@CT4Eva3", resultLevel3.CT4Eva3);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@Sampling", resultLevel3.Sampling);
+                                                UtilSqlCommand.AddParameterNullable(cmd, "@HasPhoto", resultLevel3.HasPhoto);
+                                                var id = Convert.ToInt32(cmd.ExecuteScalar());
+                                            }
+                                            #endregion
+
+                                            collectionsProcessed_Id.Add(collectionId);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            LogSystem.LogErrorBusiness.Register(ex, new { collectionId });
+                                            collectionsProcessWithError_Id.Add(collectionId);
+                                        }
+                                    }
+                                }
+
+                                UpdateCollectionStatus(db, collectionsProcessed_Id, collectionsProcessWithError_Id);
+
+                                //validar primeiro se existe o headerField Inserido
+                                //se existir header Fields para essa collectionLevel2, remove os cabeçalhos
+                                DeleteHeaderFieldIfExists(collectionLevel2Consolidada);
+
+                                RegisterHeaderField(db, collectionLevel2Consolidada);
                             }
                         }
-
-                        UpdateCollectionStatus(db, collectionsProcessed_Id, collectionsProcessWithError_Id);
-
-                        //validar primeiro se existe o headerField Inserido
-                        //se existir header Fields para essa collectionLevel2, remove os cabeçalhos
-                        DeleteHeaderFieldIfExists(collectionLevel2Consolidada);
-
-                        RegisterHeaderField(db, collectionLevel2Consolidada);
-                    }
+                        catch (Exception ex)
+                        {
+                            LogSystem.LogErrorBusiness.Register(ex);
+                        }
+                        finally
+                        {
+                            quantidadeProcessada++;
+                        }
+                    });
                 }
             }
             catch (Exception ex)
             {
-                //return BadRequest(ex.ToClient());
+                LogSystem.LogErrorBusiness.Register(ex);
             }
         }
 
@@ -161,7 +268,7 @@ namespace SgqSystem.Jobs
             }
             catch (Exception ex)
             {
-
+                LogSystem.LogErrorBusiness.Register(ex, new { collectionsProcessed_Id });
             }
 
             try
@@ -173,14 +280,14 @@ namespace SgqSystem.Jobs
             }
             catch (Exception ex)
             {
-
+                LogSystem.LogErrorBusiness.Register(ex, new { collectionWithError_Id });
             }
         }
 
         private static List<CollectionLevel2> GetCollectionsLevel2NotProcess()
         {
             var sql = $@"
-                        SELECT DISTINCT top 20 
+                        SELECT DISTINCT top {quantidadeMaximaProcessada}
                     	Evaluation as EvaluationNumber
                        ,Sample
                        ,ParLevel1_Id
@@ -200,7 +307,9 @@ namespace SgqSystem.Jobs
                         AND ParHeaderField_Id IS NULL
                         AND ParHeaderField_Value IS NULL
                         AND Evaluation is not null
-						AND Sample is not null";
+						AND Sample is not null
+                        and ParCompany_Id is not null
+                        and adddate < '{DateTime.Now.AddMinutes(-2).ToString("yyyy-MM-dd HH:mm")}'";
 
             var collectionLevel2 = new List<CollectionLevel2>();
 
@@ -213,6 +322,7 @@ namespace SgqSystem.Jobs
                 }
                 catch (Exception ex)
                 {
+                    LogSystem.LogErrorBusiness.Register(ex, new { sql });
                 }
 
                 return collectionLevel2;
@@ -245,7 +355,7 @@ namespace SgqSystem.Jobs
                         Period_Id = {collection.Period} AND ParCompany_Id = {collection.UnitId} 
                         AND (ParCluster_Id = {collection.ParCluster_Id ?? 0} OR ParCluster_Id IS NULL)
                         AND (ParCargo_Id = {collection.ParCargo_Id ?? 0} OR ParCargo_Id IS NULL)
-                        AND ParFrequency_Id {((collection.ParFrequency_Id > 0) ? (" = "+ collection.ParFrequency_Id) : " IS NULL")} 
+                        AND ParFrequency_Id {((collection.ParFrequency_Id > 0) ? (" = " + collection.ParFrequency_Id) : " IS NULL")} 
                         AND (ParDepartment_Id = {collection.ParDepartment_Id ?? 0}  OR ParDepartment_Id IS NULL)
                         AND CAST(CONVERT(VARCHAR(19), IIF(DATEPART(MILLISECOND, CollectionDate) > 500, DATEADD(SECOND, 1, CollectionDate), CollectionDate), 120) AS DATE) = '{collection.CollectionDate.ToString("yyyy-MM-dd")}'";
 
@@ -257,6 +367,7 @@ namespace SgqSystem.Jobs
                 }
                 catch (Exception ex)
                 {
+                    LogSystem.LogErrorBusiness.Register(ex, collection);
                 }
 
                 return resultsLevel3;
@@ -289,7 +400,7 @@ namespace SgqSystem.Jobs
             collection.Key = collection.CollectionDate.ToString("yyyy-MM-dd") + "-" + collection.UnitId + "-" +
                 collection.ParLevel1_Id + "-" + collection.ParLevel2_Id + "-" + collection.Shift + "-" +
                 collection.ParCluster_Id + "-" + collection.ParCargo_Id + "-" + collection.ParDepartment_Id + "-" +
-                collection.EvaluationNumber + "-" + collection.Sample + "-" + collection.ParFrequency_Id + "-" + 
+                collection.EvaluationNumber + "-" + collection.Sample + "-" + collection.ParFrequency_Id + "-" +
                 collection.Outros?.GetFromJsonText("ParFamiliaProduto_Id");
 
             return collection;
@@ -348,7 +459,7 @@ namespace SgqSystem.Jobs
                     queryParCargo = "Is NULL";
                 else
                     queryParCargo = " = " + collectionLevel2.ParCargo_Id;
-         
+
 
                 if (collectionLevel2.ParDepartment_Id == null || collectionLevel2.ParDepartment_Id == 0)
                     queryParDepartment = "Is NULL";
