@@ -134,7 +134,7 @@
                     </div>
                 </div>
 
-                <div class="row" id="corpoPagina">
+                <div class="row" id="corpoPagina" >
                     <div id="pivot-table">
 
                     </div>
@@ -180,9 +180,9 @@
         $('[name="parCompany_Ids"]').parent().find('label strong').append('<span style="color:red;font-size:20px"> *</span>');
 
         $('body').on('click', '#btnPrint', function () {
-            $('#printTitulo').html("Relatório Verificação MER");
-            $("#printElaborador").html("Thais");
-            $("#printAprovador").html("Camila");
+            $('#printTitulo').html($("#tdNomeRelatorio").text());
+            $("#printElaborador").html($("#tdElaborador").text());
+            $("#printAprovador").html($("#tdAprovador").text());
 
             printGRT.Inicializar({
 
@@ -441,12 +441,12 @@
             htmlTable += "<tr>";
             for (var i = 0; i < colspanTotal; i++) {
                 for (var j = 0; j < linhas.length; j++) {
-                    htmlTable += "<th>" + linhas[j] + "</th>";
+                    htmlTable += "<th>" + gambiarraTrocarTitulo(linhas[j]) + "</th>";
                 }
             }
             for (var i = 0; i < colspanTotal; i++) {
                 for (var j = 0; j < valores.length; j++) {
-                    htmlTable += "<th>" + valores[j] + "</th>";
+                    htmlTable += "<th>" + gambiarraTrocarTitulo(valores[j]) + "</th>";
                 }
             }
             htmlTable += "</tr>";
@@ -516,14 +516,14 @@
 
             var listaObj = [...obj];
             var ultimoObjeto = undefined;
+            var ultimaPosicaoDoObjeto = 0;
             for (var i = 0; i < listaTds.length; i++) {
                 var td = listaTds[i];
                 var cellIndex = td.cellIndex;
                 var rowIndex = td.parentNode.rowIndex;
-
                 var numeroObjeto = (cellIndex - td.parentNode.getElementsByTagName('th').length);
                 var atributos = {};
-                var attrColuna = document.querySelector("#pivot-table > table > tbody > tr:nth-child(" + cabecalhos.length + ") > th:nth-child(" + (1 + Math.floor(numeroObjeto / valores.length)) + ")").attributes;
+                var attrColuna = document.querySelector("#pivot-table  > table > tbody > tr:nth-child(" + cabecalhos.length + ") > th:nth-child(" + (1 + Math.floor(numeroObjeto / valores.length)) + ")").attributes;
                 for (var j = 0; j < attrColuna.length; j++) {
                     atributos[attrColuna[j].name] = attrColuna[j].value;
                 }
@@ -532,33 +532,33 @@
                 for (var j = 0; j < attrLinha.length; j++) {
                     atributos[attrLinha[j].name] = attrLinha[j].value;
                 }
-                
                 var objAtributos = Object.keys(atributos);
                 for (var j = 0; j < listaObj.length; j++) {
                     var deuMatch = true;
                     if (!ultimoObjeto) {
                         for (var z = 0; z < objAtributos.length; z++) {
-                            if (listaObj[j][objAtributos[z]] && atributos[objAtributos[z]] != listaObj[j][objAtributos[z]]) {
+                            if (listaObj[j][objAtributos[z].replace(/-/gi, ' ')] && atributos[objAtributos[z]].replace(/[^\w\s]/gi, '') != listaObj[j][objAtributos[z].replace(/-/gi, ' ')].replace(/[^\w\s]/gi, '')) {
                                 deuMatch = false;
                                 break;
                             }
                         }
                     }
                     if (deuMatch) {
-                        
-                        ultimoObjeto = listaObj[j];
+                        if (!ultimoObjeto) {
+                            ultimaPosicaoDoObjeto = j;
+                        }
+                        ultimoObjeto = listaObj[ultimaPosicaoDoObjeto];
                         td.innerHTML = ultimoObjeto[td.getAttribute("data-value")];
 
-                        if (td.getAttribute("data-value") == "Resultado"
-                            && parseFloat(ultimoObjeto["NC"]) > 0) {
+                        if (td.getAttribute("data-value") == "resultado"
+                            && parseFloat(ultimoObjeto["nc"]) > 0) {
                             td.style.backgroundColor = "black";
-                            td.style.color = "white";
-                            td.style.fontWeight = "bold";
+                            td.setAttribute('style', "background-color: black !important;  color: white !important; font-weight: bold !important;");
                         }
 
                         if (((1 + numeroObjeto) % valores.length) == 0) {
                             ultimoObjeto = undefined;
-                            listaObj.splice(j, 1);
+                            listaObj.splice(ultimaPosicaoDoObjeto, 1);
                         }
                         break;
                     }
@@ -566,5 +566,13 @@
             }
         }
         /***FIM: MONTA VALORES HTML **********************************************/
+
+        function gambiarraTrocarTitulo(titulo) {
+            if (titulo == 'itensverificados') {
+                return 'itens verificados';
+            }
+
+            return titulo;
+        }
     </script>
 }

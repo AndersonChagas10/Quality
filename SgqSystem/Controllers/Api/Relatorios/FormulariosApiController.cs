@@ -564,13 +564,13 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta)) 
 
 			SELECT 
-                IndicadorName as indicador,
-                MonitoramentoName as setor,
+                IndicadorName as ''indicador'',
+                MonitoramentoName as ''setor'',
                 TarefaName as ''itensverificados'',
 				AuditorId,
-				AuditorName as visto,
-				EvaluationNumber,
-				Sample,
+				AuditorName as ''visto'',
+				EvaluationNumber as ''avaliação'',
+				Sample as ''amostra'',
                 H.*,
                 Meta as Meta,
                 --AVComPeso as ''AV com Peso'',
