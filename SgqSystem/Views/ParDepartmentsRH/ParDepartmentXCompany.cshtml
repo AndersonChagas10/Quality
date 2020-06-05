@@ -2,7 +2,9 @@
 
 
 @{
-    ViewBag.Title = "Centro de Custo x Unidade";
+                /**/
+
+                ViewBag.Title = "Centro de Custo x Unidade";
 }
 
 
@@ -18,8 +20,8 @@
             <div class="tab-pane active" id="setup_tab">
 
                 @*<p>
-                    @Html.ActionLink(Resources.Resource.create as string, "Create", "ParDepartmentsRH", new { parCompanyId = ViewBag.ParCompanyId }, new { @class = "btn btn-primary" })
-                </p>*@
+                        @Html.ActionLink(Resources.Resource.create as string, "Create", "ParDepartmentsRH", new { parCompanyId = ViewBag.ParCompanyId }, new { @class = "btn btn-primary" })
+                    </p>*@
 
                 <table class="table" id="tabelaEmpresa">
                     <thead style="background-color: cornflowerblue;">
@@ -38,17 +40,17 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Description)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IsActive)
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>
