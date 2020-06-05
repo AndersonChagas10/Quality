@@ -721,6 +721,9 @@
     <Content Include="..\AppColeta\SEARA\utils.js">
       <Link>Scripts\appColeta\SEARA\utils.js</Link>
     </Content>
+    <Content Include="..\AppColeta\SEARA\version.js">
+      <Link>Scripts\appColeta\SEARA\version.js</Link>
+    </Content>
     <Content Include="..\AppColeta\SEARA\zoom.js">
       <Link>Scripts\appColeta\SEARA\zoom.js</Link>
     </Content>
