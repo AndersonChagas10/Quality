@@ -3545,4 +3545,12 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-764</CardNumber>
+    <Version>1.9.0</Version>
+    <Description>[GQ] Relatório Análise Laboratoriais - Melhorria de performance do relatório.</Description>
+    <Script>
+    </Script>
+  </Card>
+  
 </Cards>
