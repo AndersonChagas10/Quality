@@ -3545,4 +3545,51 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-765</CardNumber>
+    <Version>1.9.0</Version>
+    <Description> [RH] Coleta parcial</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='CollectionParcial' AND xtype='U')
+      CREATE TABLE [dbo].[CollectionParcial](
+	    [Id] [bigint] IDENTITY(1,1) NOT NULL,
+	    [CollectionDate] [datetime] NULL,
+	    [AddDate] [datetime] NULL,
+	    [UserSgq_Id] [int] NULL,
+	    [Shift_Id] [int] NULL,
+	    [Period_Id] [int] NULL,
+	    [ParCargo_Id] [int] NULL,
+	    [ParCompany_Id] [int] NULL,
+	    [ParDepartment_Id] [int] NULL,
+	    [ParCluster_Id] [int] NULL,
+	    [ParLevel1_Id] [int] NULL,
+	    [ParLevel2_Id] [int] NULL,
+	    [ParLevel3_Id] [int] NULL,
+	    [CollectionType] [int] NULL,
+	    [Weigth] [decimal](38, 10) NULL,
+	    [IntervalMin] [decimal](38, 10) NULL,
+	    [IntervalMax] [decimal](38, 10) NULL,
+	    [Value] [varchar](255) NULL,
+	    [ValueText] [varchar](255) NULL,
+	    [IsNotEvaluate] [bit] NULL,
+	    [IsConform] [bit] NULL,
+	    [Defects] [decimal](38, 10) NULL,
+	    [PunishimentValue] [decimal](38, 10) NULL,
+	    [WeiEvaluation] [decimal](38, 10) NULL,
+	    [Evaluation] [int] NULL,
+	    [WeiDefects] [decimal](38, 10) NULL,
+	    [HasPhoto] [bit] NULL,
+	    [Sample] [int] NULL,
+	    [HaveCorrectiveAction] [bit] NULL,
+	    [Parfrequency_Id] [int] NULL,
+	    [AlertLevel] [int] NULL,
+	    [ParHeaderField_Id] [int] NULL,
+	    [ParHeaderField_Value] [varchar](255) NULL,
+	    [IsProcessed] [bit] NULL DEFAULT 0,
+	    [Outros] [varchar](max) NULL
+      ) 
+      GO
+    </Script>
+  </Card>
+
 </Cards>
