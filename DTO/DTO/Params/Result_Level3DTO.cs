@@ -257,18 +257,16 @@ namespace DTO.DTO.Params
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
-                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//BINARIO
+                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//BINARIO
                     {
                         return IsConform.GetValueOrDefault() ? "1" : "0";
                     }
-                    else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2) != null)//NUMERO DEFEITOS
+                    else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2 || r.ParLevel3InputType_Id == 15) != null)//NUMERO DEFEITOS
                     {
 
                         var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
-                        var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
                         var valorDefinido = Guard.ConverteValorCalculado(_Value);
-                        var dentroDoRange = (valorDefinido <= vmax && valorDefinido >= vmin);
+                        var dentroDoRange = (valorDefinido <= vmax);
                         return dentroDoRange ? "1" : "0";
                     }
                     else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 4) != null)//CALCULADO
@@ -486,8 +484,6 @@ namespace DTO.DTO.Params
             return "<div>" +
                         "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" + double.Parse(IntervalMax, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
                         "<br>" +
-                        "<label for='Conforme: '> " + Resources.Resource.min_interval + ": </label>" + double.Parse(IntervalMin, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMin) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
-                        "<br>" +
                         "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + double.Parse(Value, CultureInfo.InvariantCulture) + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
                         "<br>" +
                         "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp" +
@@ -555,10 +551,9 @@ namespace DTO.DTO.Params
                             .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                             .ToList();
 
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull()
-                            || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull())
                             return mountHtmlConform();
-                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2).IsNotNull())
+                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2 || r.ParLevel3InputType_Id == 15).IsNotNull())
                             return mountHtmlNumeroDefeitos();
                         else if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7 || r.ParLevel3InputType_Id == 9)).IsNotNull())
                             return mountHtmlIntervalos();
