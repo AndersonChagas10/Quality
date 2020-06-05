@@ -100,6 +100,8 @@ var HeatMap = {
         this.Indicadores = [];
         this.Cabecalhos = [];
 
+        this.minMaxPorIndicador = [];
+
         this.Preparar();
     },
 
@@ -132,6 +134,7 @@ var HeatMap = {
     colorMid: "",
     percentageMax: 0.95,
     colorMax: "",
+
 
     RecalculaMatrizPorcentagem: function () {
 
@@ -660,8 +663,10 @@ function PreencheCalorNasCelulasValores() {
 
                     let divsValores = $(identificadorValores + " :last-child");
 
-                    if (divsValores.length === 1 || HeatMap.minMaxPorIndicador[indicadorY].max === HeatMap.minMaxPorIndicador[indicadorY].min)
-                        return;
+                    if (divsValores.length === 1 ||
+                        (HeatMap.minMaxPorIndicador[indicadorY] !== undefined &&
+                            (HeatMap.minMaxPorIndicador[indicadorY].max === HeatMap.minMaxPorIndicador[indicadorY].min)))
+                        continue;
 
                     $(divsValores).each(function (i, o) {
                         var valor = ValorNumerico($(o).text());
@@ -690,7 +695,7 @@ function PreencheCalorMedia() {
                 var identificador = HeatMap.idMedia + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
 
                 if (HeatMap.Indicadores.length === 1)
-                    return;
+                    continue;
 
                 $(identificador).each(function (i, o) {
                     var valor = ValorNumerico($(o).text());
@@ -718,7 +723,7 @@ function PreencheCalorRodape() {
                 var identificador = HeatMap.idRodape + ' td[' + HeatMap.dataCabecalho + '="' + cabecalhoX + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
 
                 if (HeatMap.Cabecalhos.length === 1)
-                    return;
+                    continue;
 
                 $(identificador).each(function (i, o) {
                     var valor = ValorNumerico($(o).text());

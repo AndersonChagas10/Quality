@@ -588,13 +588,15 @@
                             if (count >= 500) {
                                 await insereListaDistinct(arrColuna, arrLinha, lista, listaDePropriedades, listaDistinct, i, ++j);
                                 resolve(listaDistinct);
+                                return;
                             }
                         }
 
-                        if (count >= 500) {
-                            await insereListaDistinct(arrColuna, arrLinha, lista, listaDePropriedades, listaDistinct, ++i, 0);
-                            resolve(listaDistinct);
-                        }
+                        //if (count >= 500) {
+                        //    await insereListaDistinct(arrColuna, arrLinha, lista, listaDePropriedades, listaDistinct, ++i, 0);
+                        //    resolve(listaDistinct);
+                        //    return;
+                        //}
                     }
 
                     resolve(listaDistinct);
