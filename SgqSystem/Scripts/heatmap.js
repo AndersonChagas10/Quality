@@ -694,7 +694,7 @@ function PreencheCalorMedia() {
                 var valorCabecalho = RetornaTituloValor(z);
                 var identificador = HeatMap.idMedia + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
 
-                if (HeatMap.Indicadores.length === 1)
+                if (HeatMap.Indicadores.length === 1 || (HeatMap.minMedia === HeatMap.maxMedia))
                     continue;
 
                 $(identificador).each(function (i, o) {
@@ -722,7 +722,7 @@ function PreencheCalorRodape() {
                 var valorCabecalho = RetornaTituloValor(z);
                 var identificador = HeatMap.idRodape + ' td[' + HeatMap.dataCabecalho + '="' + cabecalhoX + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
 
-                if (HeatMap.Cabecalhos.length === 1)
+                if (HeatMap.Cabecalhos.length === 1 || (HeatMap.minRodape === HeatMap.maxRodape))
                     continue;
 
                 $(identificador).each(function (i, o) {
