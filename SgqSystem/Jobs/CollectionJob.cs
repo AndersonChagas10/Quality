@@ -302,6 +302,7 @@ INSERT INTO [Result_Level3]
                        ,IIF(UserSgq_Id is null, 0,UserSgq_Id) as AuditorId
                        ,CONVERT(VARCHAR(19),IIF(DATEPART(MILLISECOND,CollectionDate)>500,DATEADD(SECOND,1,CollectionDate),CollectionDate),120) AS CollectionDate
                        ,GETDATE() as StartPhaseDate
+                        ,Outros
                         FROM Collection with (nolock)
                         WHERE IsProcessed = 0
                         AND ParHeaderField_Id IS NULL
