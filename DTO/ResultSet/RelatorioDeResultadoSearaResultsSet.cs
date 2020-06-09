@@ -1357,7 +1357,14 @@ GROUP BY Parcompany_id
             groupBy = $@" GROUP BY convert(varchar, CUBOL3.CollectionDate ,103)	,C.Name ";
             orderBy = "ORDER BY 1 ASC";
             selectTotal = " SELECT *, CONCAT(RIGHT(B.DATA,4),RIGHT(LEFT(B.DATA,5),2),LEFT(B.DATA,2)) DATAORDEM  FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADEname = B.Data ORDER BY 14 ASC ";
-            campos4 = " sum(PESOTOTAL) AS PESOTOTAL, sum(TOTAL) AS TOTAL";
+
+			selectTotal = @"
+							SELECT UnidadeName, Unidade_Id, sum(av) AV, SUM(NC) NC, SUM (C) C, SUM (C) / SUM (AV) PORCC, SUM (NC) / SUM (AV) PORCNC, PESOTOTAL, TOTAL, Parcompany_id, parlevel1_id, parlevel2_id, data, CONCAT(RIGHT(B.DATA,4),RIGHT(LEFT(B.DATA,5),2),LEFT(B.DATA,2)) DATAORDEM  FROM #RR1 A INNER JOIN #RR2 B ON A.UNIDADEname = B.Data 
+							group by UnidadeName, Unidade_Id, PESOTOTAL, TOTAL, Parcompany_id, parlevel1_id, parlevel2_id, data
+							ORDER BY 14 ASC	
+					";
+			
+			campos4 = " sum(PESOTOTAL) AS PESOTOTAL, sum(TOTAL) AS TOTAL";
         }
         else if (form.ShowDimensaoGrafico_Id.Length > 0)
         {
