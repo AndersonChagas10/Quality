@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,6 +26,9 @@ namespace Dominio
         public string TableReference { get; set; }
 
         public int Ordenacao { get; set; }
+
+        [NotMapped]
+        public int Level1_Id { get; set; }
 
     }
 }

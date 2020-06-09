@@ -18,7 +18,7 @@
             <div class="tab-pane active" id="setup_tab">
 
                 <p>
-                    @Html.ActionLink(Resources.Resource.create as string, "Create", "ParReportLayoutXReportXUser", new { reportXUserId = Model.Id }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink(Resources.Resource.create as string, "Create", "ParReportLayoutXReportXUser", new { reportXUserId = Model.Id, level1_Id = Model.ParLevel1_Id }, new { @class = "btn btn-primary" })
                 </p>
 
                 <table class="table table-striped" id="tabelaLayout">
@@ -33,31 +33,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.parReportLayoutXReportXUser)
+                        @foreach (var item in Model.ParReportLayoutXReportXUser)
                         {
-                        <tr>
-                            <td>@item.Value</td>
-                            <td>@item.NickName</td>
+                            <tr>
+                                <td>@item.Value</td>
+                                <td>@item.NickName</td>
 
-                            @if (@item.LayoutLevel == 1)
-                            {
-                                <td>Cabeçalho</td>
-                            }
-                            else if (item.LayoutLevel == 2)
-                            {
-                                <td>Linha</td>
-                            }
-                            else
-                            {
-                                <td>Valor</td>
-                            }
-                            <td> @Html.DisplayFor(modelItem => item.Ordenacao)</td>
-                            <td> @Html.DisplayFor(modelItem => item.IsActive)</td>
-                            <td>
-                                @Html.ActionLink("Editar", "Edit", "ParReportLayoutXReportXUser", new { id = item.Id }, new { @class = "btn btn-success" })
-                                @Html.ActionLink("Inativar", "Delete", "ParReportLayoutXReportXUser", new { id = item.Id }, new { @class = "btn btn-danger" })
-                            </td>
-                        </tr>
+                                @if (@item.LayoutLevel == 1)
+                                {
+                                    <td>Cabeçalho</td>
+                                }
+                                else if (item.LayoutLevel == 2)
+                                {
+                                    <td>Linha</td>
+                                }
+                                else
+                                {
+                                    <td>Valor</td>
+                                }
+                                <td> @Html.DisplayFor(modelItem => item.Ordenacao)</td>
+                                <td> @Html.DisplayFor(modelItem => item.IsActive)</td>
+                                <td>
+                                    @Html.ActionLink("Editar", "Edit", "ParReportLayoutXReportXUser", new { id = item.Id, level1_Id = Model.ParLevel1_Id }, new { @class = "btn btn-success" })
+                                    @Html.ActionLink("Inativar", "Delete", "ParReportLayoutXReportXUser", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>

@@ -247,7 +247,7 @@
                         $("#dataColeta").text(data.Resultado[0]["data"]);
 
                         montaLayout(data.ParReportLayoutXReportXUser);
-                        montaTabelaDinamica(data.Resultado);
+                        montaTabelaDinamica(data.Resultado, data.ParReportLayoutXReportXUser);
                     } else {
                         $("#mensagemSemDados").show();
                         GuardJs.esconderMensagem();
@@ -274,44 +274,22 @@
 
             cabecalhos = $.map(layout, function (o, i) {
                 if (o.LayoutLevel == 1)
-                    return o.NickName;
+                    return o.Value;
             });
 
             linhas = $.map(layout, function (o, i) {
                 if (o.LayoutLevel == 2)
-                    return o.NickName;
+                    return o.Value;
             });
 
             valores = $.map(layout, function (o, i) {
                 if (o.LayoutLevel == 3)
-                    return o.NickName;
+                    return o.Value;
             });
-
-            console.log(cabecalhos);
-            console.log(linhas);
-            console.log(valores);
 
         }
 
-        function montaTabelaDinamica(data) {
-
-            //var cabecalhos = [
-            //    "AV",
-            //];
-
-            //var linhas = [
-            //    "Itens Verificados",
-            //    "Setor",
-            //];
-
-            //var valores = [
-            //    //"AV com Peso",
-            //    //"NC com Peso",
-            //    "Data da Coleta",
-            //    "Hora",
-            //    "Resultado",
-            //    "Visto",
-            //];
+        function montaTabelaDinamica(data, layout) {
 
             var obj = [];
 
@@ -441,12 +419,34 @@
             htmlTable += "<tr>";
             for (var i = 0; i < colspanTotal; i++) {
                 for (var j = 0; j < linhas.length; j++) {
-                    htmlTable += "<th>" + gambiarraTrocarTitulo(linhas[j]) + "</th>";
+
+                    //validação para trocar o value pelo nickname se for diferente de vazio
+                    var apelido = $(layout).map(function (i, o) {
+                        if (linhas[j] == o.Value) {
+                            if (o.NickName != "" && o.NickName != null)
+                                return o.NickName;
+                            else
+                                return o.Value;
+                        }
+                    });
+
+                    htmlTable += "<th>" + apelido[0] + "</th>";
                 }
             }
             for (var i = 0; i < colspanTotal; i++) {
                 for (var j = 0; j < valores.length; j++) {
-                    htmlTable += "<th>" + gambiarraTrocarTitulo(valores[j]) + "</th>";
+
+                    //validação para trocar o value pelo nickname se for diferente de vazio
+                    var apelido = $(layout).map(function (i, o) {
+                        if (valores[j] == o.Value) {
+                            if (o.NickName != "" && o.NickName != null)
+                                return o.NickName;
+                            else
+                                return o.Value;
+                        }
+                    });
+
+                    htmlTable += "<th>" + apelido[0] + "</th>";
                 }
             }
             htmlTable += "</tr>";
@@ -567,12 +567,5 @@
         }
         /***FIM: MONTA VALORES HTML **********************************************/
 
-        function gambiarraTrocarTitulo(titulo) {
-            if (titulo == 'itensverificados') {
-                return 'itens verificados';
-            }
-
-            return titulo;
-        }
     </script>
 }
