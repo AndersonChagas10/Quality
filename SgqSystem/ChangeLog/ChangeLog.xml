@@ -2848,4 +2848,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-766</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Apontamentos Diários - Criação de um Apontamento Diário específico para Seara, com edição de Produto/ SKU e Log de rastreabilidade.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
