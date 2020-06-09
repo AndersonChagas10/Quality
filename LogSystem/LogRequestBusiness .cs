@@ -38,6 +38,10 @@ namespace LogSystem
             _LogRequest.Request = request;
             _LogRequest.Path = path;
 
+            //TODO: melhorar esse if (criado para não tentar salvar o arquivo excel de importação e quebrar o mesmo)
+            if (path.Contains("/ImportacaoExcel/Importar"))
+                _params = "";
+
             _LogRequest.Params = JsonConvert.SerializeObject(_params, Formatting.None, new JsonSerializerSettings()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
