@@ -307,7 +307,7 @@ function getBinario(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
-    if (level3.ParLevel3Value.IsRequiredInt) {
+    if (level3.ParLevel3Value.IsRequiredInt || currentIsPartialSave) {
         respostaPadrao = "&nbsp;";
         botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-tarefa data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     } else {
@@ -347,7 +347,7 @@ function getBinarioComTexto(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
-    if (level3.ParLevel3Value.IsRequiredInt) {
+    if (level3.ParLevel3Value.IsRequiredInt || currentIsPartialSave) {
         respostaPadrao = "&nbsp;";
         botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-tarefa data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     } else {
@@ -1021,7 +1021,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         return false;
     }
 
-    if (!ColetasIsValid()) {
+    if (!currentIsPartialSave && !ColetasIsValid()) {
         return false;
     }
 
@@ -1053,6 +1053,9 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
         var data = $(o);
         var isNA = $(data).attr('data-conforme-na') == "";
+
+
+
         coletaJson.push(
             {
                 Evaluation: coletaAgrupada.Evaluation,
@@ -1077,7 +1080,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseFloat($(data).attr('data-peso')),
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
                 ParCluster_Id: currentParCluster_Id,
-                Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')) })
+                Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')) }),
+                IsPartialSave: currentIsPartialSave
                 /*
 				"Shift_Id":1,
 				"Period_Id":1,
@@ -1280,7 +1284,8 @@ function getCollectionHeaderFields() {
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
-                Parfrequency_Id: parametrization.currentParFrequency_Id
+                Parfrequency_Id: parametrization.currentParFrequency_Id,
+                IsPartialSave: currentIsPartialSave
             });
 
     });
@@ -1304,7 +1309,8 @@ function getCollectionHeaderFields() {
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
+                Parfrequency_Id: parametrization.currentParFrequency_Id,
+                IsPartialSave: currentIsPartialSave
             });
 
     });
@@ -1330,7 +1336,8 @@ function getCollectionHeaderFields() {
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
+                Parfrequency_Id: parametrization.currentParFrequency_Id,
+                IsPartialSave: currentIsPartialSave
             });
 
     });
@@ -1357,7 +1364,8 @@ function getCollectionHeaderFields() {
                 ParLevel1_Id: $self.parents('#headerFieldLevel3').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel3').attr('parLevel2Id'),
                 ParLevel3_Id: $self.parents('#headerFieldLevel3').attr('parLevel3Id'),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
+                Parfrequency_Id: parametrization.currentParFrequency_Id,
+                IsPartialSave: currentIsPartialSave
             });
 
     });

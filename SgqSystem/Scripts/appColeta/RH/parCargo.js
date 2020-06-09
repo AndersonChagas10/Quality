@@ -32,6 +32,7 @@ function listarParCargo(isVoltar) {
                 'data-total-sample="' + o.Evaluation.Sample + '"                                     ' +
                 'data-current-evaluation="' + currentEvaluationSample.Evaluation + '"                ' +
                 'data-redistribute-weight="' + o.Evaluation.RedistributeWeight + '"                ' +
+                'data-partial-save="' + o.Evaluation.IsPartialCollection + '"                ' +
                 'data-current-sample="' + currentEvaluationSample.Sample + '">                       ' +
                 '	<div class="col-xs-3">' + o.Name + '</div>                                      ' +
                 '	<div class="col-xs-1">&nbsp;</div>                                                                  ' +
@@ -45,6 +46,7 @@ function listarParCargo(isVoltar) {
                 'data-total-sample="' + o.Evaluation.Sample + '"                                                                 ' +
                 'data-current-evaluation="' + currentEvaluationSample.Evaluation + '"                                            ' +
                 'data-redistribute-weight="' + o.Evaluation.RedistributeWeight + '"                ' +
+                'data-partial-save="' + o.Evaluation.IsPartialCollection + '"                ' +
                 'data-current-sample="' + currentEvaluationSample.Sample + '">                                                   ' +
                 '	<div class="col-xs-3">' + o.Name + '</div>                                                                  ' +
                 '	<div class="col-xs-1">&nbsp;</div>                                                                  ' +
@@ -162,6 +164,7 @@ $('body').off('click', '[data-par-cargo-id]').on('click', '[data-par-cargo-id]',
 
     currentTotalEvaluationValue = $(this).attr('data-total-evaluation');
     currentRedistributeWeight = $(this).attr('data-redistribute-weight') == 'true';
+    currentIsPartialSave = $(this).attr('data-partial-save') == 'true';
     currentTotalSampleValue = $(this).attr('data-total-sample');
     var currentEvaluationValue = $(this).attr('data-current-evaluation');
 

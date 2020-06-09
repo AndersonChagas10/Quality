@@ -58,5 +58,8 @@ namespace Dominio
 
         [NotMapped]
         public string GUIID { get; set; }
+
+        [NotMapped]
+        public bool IsPartialSave { get; set; }
     }
 }
