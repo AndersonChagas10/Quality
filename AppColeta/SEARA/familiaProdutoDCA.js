@@ -108,6 +108,7 @@ $('body').off('keyup', '#buscaProdutoDCA').on('keyup', '#buscaProdutoDCA', funct
     }
     $('#selectProdutoDCA').html(listaProdutosDCA);
 
+    currentProdutoDCA_Id = parseInt($('select[name="produtoDCA"]').val());
 });
 
 $('body').off('change', 'select[name="produtoDCA"]').on('change', 'select[name="produtoDCA"]', function (e) {
