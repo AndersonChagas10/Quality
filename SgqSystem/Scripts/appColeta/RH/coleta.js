@@ -1025,6 +1025,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         return false;
     }
 
+    verificaIsPartialSave();
+
     //Verifica se existe coleta já realizada para este cargo.
     var coletaAgrupada = null;
     $(coletasAgrupadas).each(function (i, o) {
@@ -1054,7 +1056,9 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         var data = $(o);
         var isNA = $(data).attr('data-conforme-na') == "";
 
-
+        //se for coleta parcial e não tiver sido respondido, não é enviado
+        if (currentIsPartialSave && fieldIsEmpty(data))
+            return;
 
         coletaJson.push(
             {
@@ -1081,7 +1085,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
                 ParCluster_Id: currentParCluster_Id,
                 Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')) }),
-                IsPartialSave: currentIsPartialSave
+                IsPartialSave: hasPartialSave
                 /*
 				"Shift_Id":1,
 				"Period_Id":1,
@@ -1285,7 +1289,7 @@ function getCollectionHeaderFields() {
                 CollectionDate: getCurrentDate(),
                 UserSgq_Id: currentLogin.Id,
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
-                IsPartialSave: currentIsPartialSave
+                IsPartialSave: hasPartialSave
             });
 
     });
@@ -1310,7 +1314,7 @@ function getCollectionHeaderFields() {
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
-                IsPartialSave: currentIsPartialSave
+                IsPartialSave: hasPartialSave
             });
 
     });
@@ -1337,7 +1341,7 @@ function getCollectionHeaderFields() {
                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
-                IsPartialSave: currentIsPartialSave
+                IsPartialSave: hasPartialSave
             });
 
     });
@@ -1365,7 +1369,7 @@ function getCollectionHeaderFields() {
                 ParLevel2_Id: $self.parents('#headerFieldLevel3').attr('parLevel2Id'),
                 ParLevel3_Id: $self.parents('#headerFieldLevel3').attr('parLevel3Id'),
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
-                IsPartialSave: currentIsPartialSave
+                IsPartialSave: hasPartialSave
             });
 
     });
