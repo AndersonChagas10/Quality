@@ -62,7 +62,7 @@ namespace SgqSystem.Controllers.V2.Api
             AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
 
             #region ColetaParcial
-            appColetaBusiness.SaveCollectionPartial(listSimpleCollect, guiid);
+            var listaParcial = appColetaBusiness.SaveCollectionPartial(listSimpleCollect, guiid);
             #endregion
 
             listSimpleCollect = listSimpleCollect.Where(x => !x.IsPartialSave).ToList();
@@ -116,7 +116,7 @@ namespace SgqSystem.Controllers.V2.Api
                 new { GUIID = guiid.ToString(), ListaCollection = string.Join(",", listaDeColetasSemErro.Select(x => x.Id)) });
             #endregion
 
-            if (listaDeColetasComErro.Count == listSimpleCollect.Count)
+            if (listSimpleCollect.Count > 0 && listaDeColetasComErro.Count == listSimpleCollect.Count)
                 return BadRequest("Ocorreu erro em todas as tentativas de registrar as coletas.");
 
             #region Consolidação Sincrona
@@ -169,7 +169,10 @@ namespace SgqSystem.Controllers.V2.Api
             catch { }
             #endregion
 
+            listaDeColetasSemErro.AddRange(listaParcial);
+
             return Ok(listaDeColetasSemErro);
+
         }
 
         [HttpPost]
@@ -1248,6 +1251,25 @@ WHERE 1 = 1
 
             return Ok(coletaAgrupada.ToList());
         }
+
+        [HttpPost]
+        [Route("GetColetaParcial")]
+        public IHttpActionResult GetColetaParcial()
+        {
+            //Enviar parametros para não buscar todas as coletas
+            List<CollectionPartial> coletasParciais = new List<CollectionPartial>();
+            InicioRequisicao();
+
+            var sql = $@"Select * from CollectionPartial";
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                coletasParciais = factory.SearchQuery<CollectionPartial>(sql).ToList();
+            }
+
+            return Ok(coletasParciais);
+        }
+
         #endregion
 
         public class GetResultsData

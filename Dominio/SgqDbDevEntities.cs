@@ -267,6 +267,7 @@ namespace Dominio
         public System.Data.Entity.DbSet<Dominio.ParVinculoPeso> ParVinculoPeso { get; set; }
         public virtual DbSet<IntegracaoSistemica> IntegracaoSistemica { get; set; }
         public virtual DbSet<Collection> Collection { get; set; }
+        public virtual DbSet<CollectionPartial> CollectionPartial { get; set; }
         public virtual DbSet<ParLevel3XHelp> ParLevel3XHelp { get; set; }
         public virtual DbSet<ParAlertType> ParAlertType { get; set; }
         public virtual DbSet<ParAlert> ParAlert { get; set; }

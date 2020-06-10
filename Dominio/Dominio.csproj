@@ -65,6 +65,7 @@
     <Compile Include="CollectionLevel2XParHeaderFieldGeral.cs" />
     <Compile Include="CollectionLevel2XParReason.cs" />
     <Compile Include="CollectionLevel2XParHeaderField.cs" />
+    <Compile Include="CollectionPartial.cs" />
     <Compile Include="ConsolidationLevel1.cs" />
     <Compile Include="ConsolidationLevel2.cs" />
     <Compile Include="CorrectiveAction.cs" />

@@ -133,6 +133,9 @@ namespace SgqServiceBusiness.Controllers.RH
 
         public List<Collection> SaveCollectionPartial(List<Collection> listSimpleCollect, Guid guiid)
         {
+            
+            listSimpleCollect = listSimpleCollect.Where(x => x.IsPartialSave).ToList();
+
             for (int i = 0; i < listSimpleCollect.Count; i++)
             {
                 listSimpleCollect[i] =  SaveCollectionPartial(listSimpleCollect[i], guiid);
@@ -144,12 +147,15 @@ namespace SgqServiceBusiness.Controllers.RH
 
         public Collection SaveCollectionPartial(Collection item, Guid guiid)
         {
-
+            item.AddDate = DateTime.Now;
+            item.Shift_Id = 1;
+            item.Period_Id = 1;
+            item.IsProcessed = false;
 
             try
             {
                 string sql = $@"
-                INSERT INTO [dbo].[Collection]
+                INSERT INTO [CollectionPartial]
                    ([CollectionDate]
                    ,[AddDate]
                    ,[UserSgq_Id]
@@ -268,6 +274,8 @@ namespace SgqServiceBusiness.Controllers.RH
             }
             catch (Exception ex)
             {
+                item.HasError = true;
+                item.GUIID = guiid.ToString();
                 LogSystem.LogErrorBusiness.Register(ex, item);
             }
 
