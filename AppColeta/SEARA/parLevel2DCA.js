@@ -5,6 +5,7 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
     currentParLevel2_Id = null;
 
     var listaParLevel2 = retornaParLevel2DCA(currentParLevel1_Id);
+    listaParLevel2.sort((a, b) => a.Name.localeCompare(b.Name));
 
     var htmlLista = "";
     var btnProximaAvaliacao = '<button class="btn btn-block btn-primary input-lg col-xs-12" data-proxima-av style="margin-top:10px">Próxima Avaliação</button>';
