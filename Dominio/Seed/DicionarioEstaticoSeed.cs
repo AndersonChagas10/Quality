@@ -77,7 +77,7 @@ namespace Dominio.Seed
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "credentialPassServerPhoto", Value = "1qazmko0", ControllerName = "WebConfig", Descricao = "" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "copyright", Value = "© 2019 - GRT", ControllerName = "_layout", Descricao = "" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "systemName", Value = "SGQ", ControllerName = "_layout", Descricao = "" });
-                DicionariosInserir.Add(new DicionarioEstatico() { Key = "RunScriptsSystem", Value = "false", ControllerName = "Global.asax", Descricao = "" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "RunScriptsSystem", Value = "true", ControllerName = "Global.asax", Descricao = "" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "RunScriptsService", Value = "true", ControllerName = "Global.asax", Descricao = "" });
 
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "IsAssinaturaSupervisor", Value = "true", ControllerName = "Global.asax", Descricao = "" });
