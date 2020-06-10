@@ -1522,7 +1522,6 @@ SELECT
 		,CL2XSFP.ParFamiliaProduto_Id
     FROM CollectionLevel2 C2 WITH (NOLOCK)
     LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
-	INNER JOIN ParEvaluationXDepartmentXCargo PEDC WITH(NOLOCK) ON C2.UnitId = PEDC.ParCompany_Id 
 	LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CL2XSFP ON CL2XSFP.CollectionLevel2_Id = c2.Id
 WHERE 1 = 1
 		AND C2.CollectionDate BETWEEN @DateTimeInicio AND @DateTimeFinal
