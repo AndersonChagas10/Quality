@@ -16,7 +16,7 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
 
         var ultimaAvaliacaoDCA = getResultEvaluationDCA(currentParLevel1_Id, o.Id);
 
-        if (avaliacaoAtual == 0 || (ultimaAvaliacaoDCA.Evaluation < avaliacaoAtual && pularParaProximaAvaliacao == false)) {
+        if (avaliacaoAtual == 0 || (ultimaAvaliacaoDCA.Evaluation < avaliacaoAtual && !(pularParaProximaAvaliacao == true))) {
             avaliacaoAtual = ultimaAvaliacaoDCA.Evaluation;
             currentEvaluationDCA = ultimaAvaliacaoDCA;
         }
