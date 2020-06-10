@@ -69,9 +69,17 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ParFamiliaProduto.Add(parFamiliaProduto);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var verificaSeJaExiste = db.ParFamiliaProduto.Where(x => x.Name == parFamiliaProduto.Name).ToList();
+                if (verificaSeJaExiste.Count() > 0)
+                {
+                    ViewBag.NomeJaExiste = "Já existe um item com o mesmo nome cadastrado!";
+                }
+                else
+                {
+                    db.ParFamiliaProduto.Add(parFamiliaProduto);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
 
             return View(parFamiliaProduto);
@@ -90,7 +98,7 @@ namespace SgqSystem.Controllers
                 return HttpNotFound();
             }
 
-            MontaLista(parFamiliaProduto.ParCompany);
+            MontaLista(parFamiliaProduto.ParCompany_Id);
             return View(parFamiliaProduto);
         }
 
@@ -103,10 +111,19 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(parFamiliaProduto).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var verificaSeJaExiste = db.ParFamiliaProduto.Where(x => x.Name == parFamiliaProduto.Name && x.Id != parFamiliaProduto.Id).ToList();
+                if (verificaSeJaExiste.Count() > 0)
+                {
+                    ViewBag.NomeJaExiste = "Já existe um item com o mesmo nome cadastrado!";
+                }
+                else
+                {
+                    db.Entry(parFamiliaProduto).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            MontaLista(parFamiliaProduto.ParCompany_Id);
             return View(parFamiliaProduto);
         }
 
@@ -145,13 +162,16 @@ namespace SgqSystem.Controllers
             base.Dispose(disposing);
         }
 
-        private void MontaLista(ParCompany parCompany)
+        private void MontaLista(int? id)
         {
-            ViewBag.ParentsCreate = db.ParCompany.Where(x => x.Id == parCompany.Id).ToList()
-           .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
-           .ToList();
+            if (id != null)
+            {
+                ViewBag.ParentsCreate = db.ParCompany.Where(x => x.Id == id).ToList()
+              .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+              .ToList();
+            }
 
-            if (ViewBag.ParentsCreate.Count == 0)
+            if (id == null || ViewBag.ParentsCreate.Count == 0)
             {
                 var semDados = new List<KeyValuePair<int, string>>() {
                     new KeyValuePair<int, string>(0, ""),

@@ -66,9 +66,17 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.ParProduto.Add(parProduto);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var verificaSeJaExiste = db.ParProduto.Where(x => x.Name == parProduto.Name).ToList();
+                if (verificaSeJaExiste.Count() > 0)
+                {
+                    ViewBag.NomeJaExiste = "Já existe um item com o mesmo nome cadastrado!";
+                }
+                else
+                {
+                    db.ParProduto.Add(parProduto);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
 
             return View(parProduto);
@@ -87,7 +95,7 @@ namespace SgqSystem.Controllers
                 return HttpNotFound();
             }
 
-            MontaLista(parProduto.ParCompany);
+            MontaLista(parProduto.ParCompany_Id);
             return View(parProduto);
         }
 
@@ -100,10 +108,19 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(parProduto).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var verificaSeJaExiste = db.ParProduto.Where(x => x.Name == parProduto.Name && x.Id != parProduto.Id).ToList();
+                if (verificaSeJaExiste.Count() > 0)
+                {
+                    ViewBag.NomeJaExiste = "Já existe um item com o mesmo nome cadastrado!";
+                }
+                else
+                {
+                    db.Entry(parProduto).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
+            MontaLista(parProduto.ParCompany_Id);
             return View(parProduto);
         }
 
@@ -142,13 +159,16 @@ namespace SgqSystem.Controllers
             base.Dispose(disposing);
         }
 
-        private void MontaLista(ParCompany parCompany)
+        private void MontaLista(int? id)
         {
-            ViewBag.ParentsCreate = db.ParCompany.Where(x => x.Id == parCompany.Id).ToList()
-           .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
-           .ToList();
+            if (id != null)
+            {
+                ViewBag.ParentsCreate = db.ParCompany.Where(x => x.Id == id).ToList()
+            .Select(x => new KeyValuePair<int, string>(x.Id, x.Id + "- " + x.Name))
+            .ToList();
+            }
 
-            if (ViewBag.ParentsCreate.Count == 0)
+            if (id == null || ViewBag.ParentsCreate.Count == 0)
             {
                 var semDados = new List<KeyValuePair<int, string>>() {
                     new KeyValuePair<int, string>(0, ""),
