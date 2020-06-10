@@ -186,8 +186,7 @@ namespace DTO.DTO.Params
 
                     try
                     {
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
-                            || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)
                             return "0";
                     }
                     catch (Exception e)
@@ -266,7 +265,7 @@ namespace DTO.DTO.Params
                     }
                     else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2 || r.ParLevel3InputType_Id == 15) != null)//NUMERO DEFEITOS
                     {
-
+                        IntervalMax = IntervalMax.Replace(',', '.');
                         var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
                         var valorDefinido = Guard.ConverteValorCalculado(_Value);
                         var dentroDoRange = (valorDefinido <= vmax);
@@ -485,11 +484,14 @@ namespace DTO.DTO.Params
         public string mountHtmlNumeroDefeitos()
         {
             var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
-
+            
             return "<div>" +
-                        "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" + double.Parse(IntervalMax, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                        "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" +
+                        "<span id='intervalMax'>" + double.Parse(IntervalMax.Replace(',', '.'), CultureInfo.InvariantCulture)+ 
+                        "</span>" + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
                         "<br>" +
-                        "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + double.Parse(Value, CultureInfo.InvariantCulture) + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                        "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + 
+                        Value + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
                         "<br>" +
                         "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp" +
                     "<input type='text' id='numeroDeDefeitos' class='decimal' />" +
