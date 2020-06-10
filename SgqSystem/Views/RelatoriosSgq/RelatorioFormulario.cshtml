@@ -324,11 +324,11 @@
 
                 var itemAtual = {};
                 itemAtual.nivel = nomeDoNivel;
-                itemAtual.titulo = valorCabecalho;
+                itemAtual.titulo = valorCabecalho.replace("'", "´");
                 itemAtual.lista = [];
 
                 if (matriz.lista) {
-                    itemDaLista = matriz.lista.filter((item) => item.titulo == valorCabecalho)
+                    itemDaLista = matriz.lista.filter((item) => item.titulo.replace("'", "´") == valorCabecalho.replace("'", "´"))
                     if (itemDaLista.length == 0) {
                         matriz.lista.push(itemAtual); //Adicionado como filho
                     } else {
