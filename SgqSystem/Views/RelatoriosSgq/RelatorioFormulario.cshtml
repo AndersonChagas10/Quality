@@ -20,7 +20,7 @@
             <div class="form-group">
                 <label><strong>Indicador</strong></label>
                 <select class="form-control" name="ShowIndicador_Id" id="ShowIndicador_Id">
-                    <option value="151">Monitoramento - MER</option>
+                    <option value="1">Monitoramento - MER</option>
                     <option value="127">Verificação - Identificação, remoção, segregação e destinação do material especificado de risco (MER)</option>
                 </select>
             </div>
@@ -417,22 +417,22 @@
             }
             /***FIM: MONTA COLUNAS HTML **********************************************/
             htmlTable += "<tr>";
-            for (var i = 0; i < colspanTotal; i++) {
-                for (var j = 0; j < linhas.length; j++) {
+            
+            for (var j = 0; j < linhas.length; j++) {
 
-                    //validação para trocar o value pelo nickname se for diferente de vazio
-                    var apelido = $(layout).map(function (i, o) {
-                        if (linhas[j] == o.Value) {
-                            if (o.NickName != "" && o.NickName != null)
-                                return o.NickName;
-                            else
-                                return o.Value;
-                        }
-                    });
+                //validação para trocar o value pelo nickname se for diferente de vazio
+                var apelido = $(layout).map(function (i, o) {
+                    if (linhas[j] == o.Value) {
+                        if (o.NickName != "" && o.NickName != null)
+                            return o.NickName;
+                        else
+                            return o.Value;
+                    }
+                });
 
-                    htmlTable += "<th>" + apelido[0] + "</th>";
-                }
+                htmlTable += "<th>" + apelido[0] + "</th>";
             }
+            
             for (var i = 0; i < colspanTotal; i++) {
                 for (var j = 0; j < valores.length; j++) {
 

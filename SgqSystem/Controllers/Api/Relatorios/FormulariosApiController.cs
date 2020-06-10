@@ -146,15 +146,15 @@ namespace SgqSystem.Controllers.Api.Relatorios
 -------------------------------------------------------------------------------------------------------------------------
 
     
-         -- DECLARE @DATEINI DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}' DECLARE @DATEFIM DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}';
-		-- DECLARE @UNITID VARCHAR(10) = '{ form.ParCompany_Ids[0]}', @PARLEVEL1_ID VARCHAR(10) = '{indicador_Id}',@PARLEVEL2_ID VARCHAR(10) = '0';
+          DECLARE @DATEINI DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}' DECLARE @DATEFIM DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}';
+		  DECLARE @UNITID VARCHAR(10) = '{ form.ParCompany_Ids[0]}', @PARLEVEL1_ID VARCHAR(10) = '1' ,@PARLEVEL2_ID VARCHAR(10) = '0';
 
 
 		 -------------------------------------------------------------------------------------------------------------------------
 		 -------------------------------------------------------------------------------------------------------------------------		 
-		   
-		 DECLARE @DATAINICIAL DATETIME = @DATEINI;
-		 DECLARE @DATAFINAL DATETIME = @DATEFIM;                     
+		
+         DECLARE @DATAINICIAL DATETIME = @DATEINI;
+		 DECLARE @DATAFINAL DATETIME = @DATEFIM;      
 
 		CREATE TABLE #INPUT_TYPES
 		(
@@ -620,6 +620,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 
                 var reportXUser_Id = db.ReportXUserSgq
                     .Where(x => (x.ParCompany_Id == idUnidade || x.ParCompany_Id == null) && x.ParLevel1_Id == idIndicador)
+                    .OrderByDescending(x => x.ParCompany_Id)
                     .Select(x => x.Id)
                     .FirstOrDefault();
 
