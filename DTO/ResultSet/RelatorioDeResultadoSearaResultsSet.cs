@@ -44,7 +44,8 @@ public class RelatorioDeResultadoSearaResultsSet
         var whereCargo = "";
         var whereStructure = "";
         var whereUnit = "";
-        var whereParLevel1 = "";
+		var whereTurno = "";
+		var whereParLevel1 = "";
         var whereParLevel2 = "";
         var whereParLevel3 = "";
 
@@ -100,7 +101,13 @@ public class RelatorioDeResultadoSearaResultsSet
             whereUnit = $@"AND CUBOL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
         }
 
-        if (form.ParStructure2_Ids.Length > 0)
+		if (form.ShowTurnoSeara[0] != "-1")
+		{
+			whereTurno = $@"AND CUBOL3.HeaderFieldList LIKE '%{ form.ShowTurnoSeara[0] }%' ";
+		}
+
+
+		if (form.ParStructure2_Ids.Length > 0)
         {
             whereStructure = $@"AND CUBOL3.Regional in ({string.Join(",", form.ParStructure2_Ids)})";
         }
@@ -109,6 +116,70 @@ public class RelatorioDeResultadoSearaResultsSet
 
   DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
                  DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
+
+            -- Criação da Fato de Cabeçalhos
+					SELECT
+						CL2HF.Id
+					   ,CL2HF.CollectionLevel2_Id
+					   ,CL2HF.ParHeaderFieldGeral_Id
+					   ,CL2HF.ParFieldType_Id
+					   ,CL2HF.Value INTO #CollectionLevel2XParHeaderFieldGeral
+					FROM CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
+					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
+						ON CL2.Id = CL2HF.CollectionLevel2_Id
+						WHERE CL2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+						
+										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel_ID ON #CollectionLevel2XParHeaderFieldGeral (CollectionLevel2_Id);
+					-- Concatenação da Fato de Cabeçalhos
+			-- Concatenação da Fato de Cabeçalhos
+					SELECT
+						CL2HF.CollectionLevel2_Id
+					   ,STUFF((SELECT DISTINCT
+								', ' + CONCAT('', CASE
+									WHEN CL2HF2.ParFieldType_Id = 1 OR
+										CL2HF2.ParFieldType_Id = 3 THEN PMV.Name
+									WHEN CL2HF2.ParFieldType_Id = 2 THEN CASE
+											WHEN HF.Description = 'Produto' THEN CAST(PRD.nCdProduto AS VARCHAR(500)) + ' - ' + PRD.cNmProduto
+											ELSE EQP.Nome
+										END
+									WHEN CL2HF2.ParFieldType_Id = 6 THEN CONVERT(VARCHAR, CL2HF2.Value, 103)
+									ELSE CL2HF2.Value
+								END)
+							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (NOLOCK)
+							LEFT JOIN collectionlevel2 CL2 (NOLOCK)
+								ON CL2.Id = CL2HF2.CollectionLevel2_Id
+							LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
+								ON CL2HF2.ParHeaderFieldGeral_Id = HF.Id 
+							LEFT JOIN ParLevel2 L2 (NOLOCK)
+								ON L2.Id = CL2.ParLevel2_Id
+							LEFT JOIN ParMultipleValuesGeral PMV (NOLOCK)
+								ON CL2HF2.Value = CAST(PMV.Id AS VARCHAR(500))
+								AND CL2HF2.ParFieldType_Id <> 2
+							LEFT JOIN Equipamentos EQP (NOLOCK)
+								ON CAST(EQP.Id AS VARCHAR(500)) = CL2HF2.Value
+								AND EQP.ParCompany_Id = CL2.UnitId
+								AND CL2HF2.ParFieldType_Id = 2
+							LEFT JOIN Produto PRD WITH (NOLOCK)
+								ON CAST(PRD.nCdProduto AS VARCHAR(500)) = CL2HF2.Value
+								AND CL2HF2.ParFieldType_Id = 2
+							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
+							and hf.name like '%turno%'
+							AND CL2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+							FOR XML PATH (''))
+						, 1, 1, '') AS HeaderFieldList
+						INTO #CollectionLevel2XParHeaderFieldGeralTURNO
+					FROM #CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
+					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
+						ON CL2.Id = CL2HF.CollectionLevel2_Id
+					LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
+						ON CL2HF.ParHeaderFieldGeral_Id = HF.Id
+					LEFT JOIN ParLevel2 L2 (NOLOCK)
+						ON L2.Id = CL2.ParLevel2_Id
+						WHERE HF.Name LIKE '%turno%'
+						AND CL2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+					GROUP BY CL2HF.CollectionLevel2_Id
+										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeralTURNO (CollectionLevel2_Id);
+
 
             SELECT CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,
                C2.ParFrequency_Id ,
@@ -127,17 +198,19 @@ public class RelatorioDeResultadoSearaResultsSet
                R3.Defects WeiDefects,
 	           cfpp.ParFamiliaProduto_Id,
 	           cfpp.ParProduto_Id,
-               C2.ID AS CollectionLevel2_Id,
+			   C2.ID AS CollectionLevel2_Id,
 			   R3V.LimiteNC,
 			   PL2P.Equacao,
 			   PL2P.Peso,
 			   c2.evaluationNumber as Avaliacao,
-			   pp.Name as SKU
+			   pp.Name as SKU,
+			   PGL1.Name as GRUPOTAREFA,
+			   HFTURNO.HeaderFieldList	
 	           INTO #CUBOLEVEL3
         FROM CollectionLevel2 C2 WITH (NOLOCK)
         INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
-
-        INNER JOIN parlevel3value R3V WITH (NOLOCK) ON R3V.parlevel3_id = R3.parlevel3_id and R3V.ParLevel1_id = C2.ParLevel1_id and R3V.parlevel2_id = C2.ParLevel2_id and R3V.IsActive = 1 
+		LEFT JOIN #CollectionLevel2XParHeaderFieldGeralTURNO HFTURNO ON HFTURNO.CollectionLevel2_Id = C2.Id
+		INNER JOIN parlevel3value R3V WITH (NOLOCK) ON R3V.parlevel3_id = R3.parlevel3_id and R3V.ParLevel1_id = C2.ParLevel1_id and R3V.parlevel2_id = C2.ParLevel2_id and R3V.IsActive = 1 
 		INNER JOIN ParVinculoPesoParLevel2 PL2P WITH (NOLOCK) ON PL2P.ParLevel1_Id = C2.ParLevel1_Id AND PL2P.ParLevel2_Id = C2.ParLevel2_Id AND PL2P.IsActive = 1
 
         LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) ON C2.ID = C2XDP.CollectionLevel2_Id
@@ -147,13 +220,23 @@ public class RelatorioDeResultadoSearaResultsSet
         LEFT JOIN ParStructure S1 ON CS.ParStructure_Id = S1.Id
         LEFT JOIN ParStructure S2 ON S1.ParStructureParent_Id = S2.Id
         LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP on cfpp.CollectionLevel2_Id = c2.Id
-
+        
         LEFT JOIN ParProduto PP on pp.Id = cfpp.ParProduto_Id
+
+		LEFT JOIN ParVinculoPeso PVP 
+		ON PVP.ParLevel1_Id = C2.ParLevel1_Id
+		AND PVP.ParLevel2_Id = C2.ParLevel2_Id
+		AND PVP.ParLevel3_Id = r3.ParLevel3_Id
+		AND PVP.IsActive = 1
+		LEFT JOIN ParGroupParLevel1 PGL1
+		ON PGL1.Id = PVP.ParGroupParLevel1_Id
 
         WHERE 1=1
           AND R3.IsNotEvaluate = 0
           AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-
+		
+		DROP TABLE #CollectionLevel2XParHeaderFieldGeral 
+		DROP TABLE #CollectionLevel2XParHeaderFieldGeralTURNO
      --------------------------------
 
                
@@ -234,6 +317,7 @@ public class RelatorioDeResultadoSearaResultsSet
 
                     {whereStructure}
                     {whereUnit}
+					{whereTurno}
                     {whereDepartment}
                     {whereSecao}
                     {whereCargo}
@@ -298,6 +382,7 @@ SELECT -- MONITORAMENTO
 
                     {whereStructure}
                     {whereUnit}
+					{whereTurno}
                     {whereDepartment}
                     {whereSecao}
                     {whereCargo}
@@ -439,6 +524,7 @@ SELECT -- INDICADOR
 
                     {whereStructure}
                     {whereUnit}
+					{whereTurno}
                     {whereDepartment}
                     {whereSecao}
                     {whereCargo}
@@ -496,6 +582,7 @@ GROUP BY Parcompany_id
         var whereCargo = "";
         var whereStructure = "";
         var whereUnit = "";
+		var whereTurno = "";
         var whereParLevel1 = "";
         var whereParLevel2 = "";
         var whereParLevel3 = "";
@@ -542,7 +629,12 @@ GROUP BY Parcompany_id
             whereUnit = $@"AND CUBOL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
         }
 
-        if (form.ParStructure2_Ids.Length > 0)
+		if (form.ShowTurnoSeara[0] != "-1")
+		{
+			whereTurno = $@"AND CUBOL3.HeaderFieldList LIKE '%{ form.ShowTurnoSeara[0] }%' ";
+		}
+
+		if (form.ParStructure2_Ids.Length > 0)
         {
             whereStructure = $@"AND CUBOL3.Regional in ({string.Join(",", form.ParStructure2_Ids)})";
         }
@@ -552,7 +644,71 @@ GROUP BY Parcompany_id
                  DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
                  DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
 
-        SELECT CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,
+		-- Criação da Fato de Cabeçalhos
+					SELECT
+						CL2HF.Id
+					   ,CL2HF.CollectionLevel2_Id
+					   ,CL2HF.ParHeaderFieldGeral_Id
+					   ,CL2HF.ParFieldType_Id
+					   ,CL2HF.Value INTO #CollectionLevel2XParHeaderFieldGeral
+					FROM CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
+					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
+						ON CL2.Id = CL2HF.CollectionLevel2_Id
+						WHERE CL2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+						
+										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel_ID ON #CollectionLevel2XParHeaderFieldGeral (CollectionLevel2_Id);
+					-- Concatenação da Fato de Cabeçalhos
+			-- Concatenação da Fato de Cabeçalhos
+					SELECT
+						CL2HF.CollectionLevel2_Id
+					   ,STUFF((SELECT DISTINCT
+								', ' + CONCAT('', CASE
+									WHEN CL2HF2.ParFieldType_Id = 1 OR
+										CL2HF2.ParFieldType_Id = 3 THEN PMV.Name
+									WHEN CL2HF2.ParFieldType_Id = 2 THEN CASE
+											WHEN HF.Description = 'Produto' THEN CAST(PRD.nCdProduto AS VARCHAR(500)) + ' - ' + PRD.cNmProduto
+											ELSE EQP.Nome
+										END
+									WHEN CL2HF2.ParFieldType_Id = 6 THEN CONVERT(VARCHAR, CL2HF2.Value, 103)
+									ELSE CL2HF2.Value
+								END)
+							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (NOLOCK)
+							LEFT JOIN collectionlevel2 CL2 (NOLOCK)
+								ON CL2.Id = CL2HF2.CollectionLevel2_Id
+							LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
+								ON CL2HF2.ParHeaderFieldGeral_Id = HF.Id 
+							LEFT JOIN ParLevel2 L2 (NOLOCK)
+								ON L2.Id = CL2.ParLevel2_Id
+							LEFT JOIN ParMultipleValuesGeral PMV (NOLOCK)
+								ON CL2HF2.Value = CAST(PMV.Id AS VARCHAR(500))
+								AND CL2HF2.ParFieldType_Id <> 2
+							LEFT JOIN Equipamentos EQP (NOLOCK)
+								ON CAST(EQP.Id AS VARCHAR(500)) = CL2HF2.Value
+								AND EQP.ParCompany_Id = CL2.UnitId
+								AND CL2HF2.ParFieldType_Id = 2
+							LEFT JOIN Produto PRD WITH (NOLOCK)
+								ON CAST(PRD.nCdProduto AS VARCHAR(500)) = CL2HF2.Value
+								AND CL2HF2.ParFieldType_Id = 2
+							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
+							and hf.name like '%turno%'
+							AND CL2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+							FOR XML PATH (''))
+						, 1, 1, '') AS HeaderFieldList
+						INTO #CollectionLevel2XParHeaderFieldGeralTURNO
+					FROM #CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
+					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
+						ON CL2.Id = CL2HF.CollectionLevel2_Id
+					LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
+						ON CL2HF.ParHeaderFieldGeral_Id = HF.Id
+					LEFT JOIN ParLevel2 L2 (NOLOCK)
+						ON L2.Id = CL2.ParLevel2_Id
+						WHERE HF.Name LIKE '%turno%'
+						AND CL2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+					GROUP BY CL2HF.CollectionLevel2_Id
+										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeralTURNO (CollectionLevel2_Id);
+
+
+            SELECT CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,
                C2.ParFrequency_Id ,
                S2.ParStructureParent_Id AS Holding ,
                S1.ParStructureParent_Id AS GrupoDeEmpresa ,
@@ -569,19 +725,20 @@ GROUP BY Parcompany_id
                R3.Defects WeiDefects,
 	           cfpp.ParFamiliaProduto_Id,
 	           cfpp.ParProduto_Id,
-               C2.ID AS CollectionLevel2_Id,
+			   C2.ID AS CollectionLevel2_Id,
 			   R3V.LimiteNC,
 			   PL2P.Equacao,
 			   PL2P.Peso,
 			   c2.evaluationNumber as Avaliacao,
-			   pp.Name as SKU
+			   pp.Name as SKU,
+			   PGL1.Name as GRUPOTAREFA,
+			   HFTURNO.HeaderFieldList	
 	           INTO #CUBOLEVEL3
         FROM CollectionLevel2 C2 WITH (NOLOCK)
         INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
-
-        INNER JOIN parlevel3value R3V WITH (NOLOCK) ON R3V.parlevel3_id = R3.parlevel3_id and R3V.ParLevel1_id = C2.ParLevel1_id and R3V.parlevel2_id = C2.ParLevel2_id and R3V.IsActive = 1 
+		LEFT JOIN #CollectionLevel2XParHeaderFieldGeralTURNO HFTURNO ON HFTURNO.CollectionLevel2_Id = C2.Id
+		INNER JOIN parlevel3value R3V WITH (NOLOCK) ON R3V.parlevel3_id = R3.parlevel3_id and R3V.ParLevel1_id = C2.ParLevel1_id and R3V.parlevel2_id = C2.ParLevel2_id and R3V.IsActive = 1 
 		INNER JOIN ParVinculoPesoParLevel2 PL2P WITH (NOLOCK) ON PL2P.ParLevel1_Id = C2.ParLevel1_Id AND PL2P.ParLevel2_Id = C2.ParLevel2_Id AND PL2P.IsActive = 1
-
 
         LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) ON C2.ID = C2XDP.CollectionLevel2_Id
         LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) ON C2.ID = C2XCG.CollectionLevel2_Id
@@ -590,13 +747,23 @@ GROUP BY Parcompany_id
         LEFT JOIN ParStructure S1 ON CS.ParStructure_Id = S1.Id
         LEFT JOIN ParStructure S2 ON S1.ParStructureParent_Id = S2.Id
         LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP on cfpp.CollectionLevel2_Id = c2.Id
-
+        
         LEFT JOIN ParProduto PP on pp.Id = cfpp.ParProduto_Id
+
+		LEFT JOIN ParVinculoPeso PVP 
+		ON PVP.ParLevel1_Id = C2.ParLevel1_Id
+		AND PVP.ParLevel2_Id = C2.ParLevel2_Id
+		AND PVP.ParLevel3_Id = r3.ParLevel3_Id
+		AND PVP.IsActive = 1
+		LEFT JOIN ParGroupParLevel1 PGL1
+		ON PGL1.Id = PVP.ParGroupParLevel1_Id
 
         WHERE 1=1
           AND R3.IsNotEvaluate = 0
           AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
-
+		
+		DROP TABLE #CollectionLevel2XParHeaderFieldGeral 
+		DROP TABLE #CollectionLevel2XParHeaderFieldGeralTURNO
      --------------------------------
 
                  
@@ -641,6 +808,7 @@ GROUP BY Parcompany_id
 
                     {whereStructure}
                     {whereUnit}
+					{whereTurno}
                     {whereDepartment}
                     {whereSecao}
                     {whereCargo}
@@ -702,6 +870,7 @@ SELECT -- MONITORAMENTO
 
                     {whereStructure}
                     {whereUnit}
+					{whereTurno}
                     {whereDepartment}
                     {whereSecao}
                     {whereCargo}
@@ -840,6 +1009,7 @@ SELECT -- INDICADOR
 
                     {whereStructure}
                     {whereUnit}
+					{whereTurno}
                     {whereDepartment}
                     {whereSecao}
                     {whereCargo}
@@ -1315,7 +1485,8 @@ GROUP BY Parcompany_id
         var whereCargo = "";
         var whereStructure = "";
         var whereUnit = "";
-        var whereParLevel1 = "";
+		var whereTurno = "";
+		var whereParLevel1 = "";
         var whereParLevel2 = "";
         var whereParLevel3 = "";
         var campos = "";
@@ -1501,7 +1672,13 @@ GROUP BY Parcompany_id
             whereUnit = $@"AND CUBOL3.UnitId in ({ string.Join(",", form.ParCompany_Ids) }) ";
         }
 
-        if (form.ParStructure2_Ids.Length > 0)
+		if (form.ShowTurnoSeara[0].ToString() != "-1")
+		{
+			whereTurno = $@"AND CUBOL3.HeaderFieldList LIKE '%{ form.ShowTurnoSeara[0] }%' ";
+		}
+
+
+		if (form.ParStructure2_Ids.Length > 0)
         {
             whereStructure = $@"AND CUBOL3.Regional in ({string.Join(",", form.ParStructure2_Ids)})";
         }
@@ -1510,6 +1687,70 @@ GROUP BY Parcompany_id
 
             DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
             DECLARE @DATAFINAL   DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}'
+
+			-- Criação da Fato de Cabeçalhos
+					SELECT
+						CL2HF.Id
+					   ,CL2HF.CollectionLevel2_Id
+					   ,CL2HF.ParHeaderFieldGeral_Id
+					   ,CL2HF.ParFieldType_Id
+					   ,CL2HF.Value INTO #CollectionLevel2XParHeaderFieldGeral
+					FROM CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
+					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
+						ON CL2.Id = CL2HF.CollectionLevel2_Id
+						WHERE CL2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+						
+										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel_ID ON #CollectionLevel2XParHeaderFieldGeral (CollectionLevel2_Id);
+					-- Concatenação da Fato de Cabeçalhos
+			-- Concatenação da Fato de Cabeçalhos
+					SELECT
+						CL2HF.CollectionLevel2_Id
+					   ,STUFF((SELECT DISTINCT
+								', ' + CONCAT('', CASE
+									WHEN CL2HF2.ParFieldType_Id = 1 OR
+										CL2HF2.ParFieldType_Id = 3 THEN PMV.Name
+									WHEN CL2HF2.ParFieldType_Id = 2 THEN CASE
+											WHEN HF.Description = 'Produto' THEN CAST(PRD.nCdProduto AS VARCHAR(500)) + ' - ' + PRD.cNmProduto
+											ELSE EQP.Nome
+										END
+									WHEN CL2HF2.ParFieldType_Id = 6 THEN CONVERT(VARCHAR, CL2HF2.Value, 103)
+									ELSE CL2HF2.Value
+								END)
+							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (NOLOCK)
+							LEFT JOIN collectionlevel2 CL2 (NOLOCK)
+								ON CL2.Id = CL2HF2.CollectionLevel2_Id
+							LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
+								ON CL2HF2.ParHeaderFieldGeral_Id = HF.Id 
+							LEFT JOIN ParLevel2 L2 (NOLOCK)
+								ON L2.Id = CL2.ParLevel2_Id
+							LEFT JOIN ParMultipleValuesGeral PMV (NOLOCK)
+								ON CL2HF2.Value = CAST(PMV.Id AS VARCHAR(500))
+								AND CL2HF2.ParFieldType_Id <> 2
+							LEFT JOIN Equipamentos EQP (NOLOCK)
+								ON CAST(EQP.Id AS VARCHAR(500)) = CL2HF2.Value
+								AND EQP.ParCompany_Id = CL2.UnitId
+								AND CL2HF2.ParFieldType_Id = 2
+							LEFT JOIN Produto PRD WITH (NOLOCK)
+								ON CAST(PRD.nCdProduto AS VARCHAR(500)) = CL2HF2.Value
+								AND CL2HF2.ParFieldType_Id = 2
+							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
+							and hf.name like '%turno%'
+							AND CL2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+							FOR XML PATH (''))
+						, 1, 1, '') AS HeaderFieldList
+						INTO #CollectionLevel2XParHeaderFieldGeralTURNO
+					FROM #CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
+					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
+						ON CL2.Id = CL2HF.CollectionLevel2_Id
+					LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
+						ON CL2HF.ParHeaderFieldGeral_Id = HF.Id
+					LEFT JOIN ParLevel2 L2 (NOLOCK)
+						ON L2.Id = CL2.ParLevel2_Id
+						WHERE HF.Name LIKE '%turno%'
+						AND CL2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+					GROUP BY CL2HF.CollectionLevel2_Id
+										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeralTURNO (CollectionLevel2_Id);
+
 
             SELECT CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,
                C2.ParFrequency_Id ,
@@ -1534,10 +1775,12 @@ GROUP BY Parcompany_id
 			   PL2P.Peso,
 			   c2.evaluationNumber as Avaliacao,
 			   pp.Name as SKU,
-			   PGL1.Name as GRUPOTAREFA
+			   PGL1.Name as GRUPOTAREFA,
+			   HFTURNO.HeaderFieldList	
 	           INTO #CUBOLEVEL3
         FROM CollectionLevel2 C2 WITH (NOLOCK)
         INNER JOIN Result_Level3 R3 WITH (NOLOCK) ON C2.Id = R3.CollectionLevel2_Id
+		LEFT JOIN #CollectionLevel2XParHeaderFieldGeralTURNO HFTURNO ON HFTURNO.CollectionLevel2_Id = C2.Id
 		INNER JOIN parlevel3value R3V WITH (NOLOCK) ON R3V.parlevel3_id = R3.parlevel3_id and R3V.ParLevel1_id = C2.ParLevel1_id and R3V.parlevel2_id = C2.ParLevel2_id and R3V.IsActive = 1 
 		INNER JOIN ParVinculoPesoParLevel2 PL2P WITH (NOLOCK) ON PL2P.ParLevel1_Id = C2.ParLevel1_Id AND PL2P.ParLevel2_Id = C2.ParLevel2_Id AND PL2P.IsActive = 1
 
@@ -1563,6 +1806,8 @@ GROUP BY Parcompany_id
           AND R3.IsNotEvaluate = 0
           AND C2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
 		
+		DROP TABLE #CollectionLevel2XParHeaderFieldGeral 
+		DROP TABLE #CollectionLevel2XParHeaderFieldGeralTURNO
      --------------------------------
                  
 
@@ -1599,6 +1844,7 @@ GROUP BY Parcompany_id
 
                     {whereStructure}
                     {whereUnit}
+					{whereTurno}
                     {whereDepartment}
                     {whereSecao}
                     {whereCargo}
@@ -1658,6 +1904,7 @@ SELECT -- MONITORAMENTO
 
                     {whereStructure}
                     {whereUnit}
+					{whereTurno}
                     {whereDepartment}
                     {whereSecao}
                     {whereCargo}
@@ -1792,6 +2039,7 @@ SELECT -- INDICADOR
 
                     {whereStructure}
                     {whereUnit}
+					{whereTurno}
                     {whereDepartment}
                     {whereSecao}
                     {whereCargo}

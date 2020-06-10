@@ -52,6 +52,22 @@
                                 </div>
                             }
 
+                            @if (ViewBag.ShowTurnoSeara == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Turno</strong></label>
+                                        <select class="form-control" name="ShowTurnoSeara" id="TurnoSeara">
+                                            <option value="-1">Selecione</option>
+                                            <option value="Turno 1">Turno 1</option>
+                                            <option value="Turno 2">Turno 2</option>
+                                            <option value="Turno 3">Turno 3</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+
                             @if (ViewBag.ShowDimensaoGrafico == true)
                             {
                                 <div class="col-sm-12">
@@ -74,7 +90,7 @@
                             {
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label><strong>Modelo Gráfico</strong></label>                                       
+                                        <label><strong>Modelo Gráfico</strong></label>
                                         <select class="form-control" name="ShowModeloGrafico_Id" id="modeloGrafico">
                                             <option value="1">Comparativo</option>
                                             <option value="2">Evolutivo Mensal</option>
@@ -84,7 +100,9 @@
                                     </div>
                                 </div>
                             }
-                           
+
+
+
                             @if (ViewBag.ShowParModule == true)
                             {
                                 <div class="col-sm-12">
