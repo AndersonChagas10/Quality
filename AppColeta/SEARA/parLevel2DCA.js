@@ -14,10 +14,11 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
     var avaliacaoAtual = 0;
     $(listaParLevel2).each(function (i, o) {
 
-        currentEvaluationDCA = getResultEvaluationDCA(currentParLevel1_Id, o.Id);
+        var ultimaAvaliacaoDCA = getResultEvaluationDCA(currentParLevel1_Id, o.Id);
 
-        if (avaliacaoAtual == 0 || (currentEvaluationDCA.Evaluation < avaliacaoAtual && pularParaProximaAvaliacao == false)) {
-            avaliacaoAtual = currentEvaluationDCA.Evaluation;
+        if (avaliacaoAtual == 0 || (ultimaAvaliacaoDCA.Evaluation < avaliacaoAtual && pularParaProximaAvaliacao == false)) {
+            avaliacaoAtual = ultimaAvaliacaoDCA.Evaluation;
+            currentEvaluationDCA = ultimaAvaliacaoDCA;
         }
 
         var parVinculoPesoLevel2 = getParVinculoPesoParLevel2PorIndicador(o.Id, currentParLevel1_Id);
