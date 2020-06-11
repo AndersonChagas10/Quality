@@ -170,7 +170,21 @@
 		$('#showCUnidade').text($('#totalMedia > tr > td').text() + '%')
 
             	$('#showCUnidade').css('font-size', '40px')
-            	$('#showCUnidade').css('padding', '40px')
+                $('#showCUnidade').css('padding', '40px')
+
+                $('#divTable').show();
+
+                setTimeout(function () {
+                    
+                    $('#showCUnidade').text($('#totalMedia > tr > td').text() + '%')
+
+                    $('#showCUnidade').css('font-size', '40px')
+                    $('#showCUnidade').css('padding', '40px')
+
+                    $('#showCUnidade').removeClass("hide")
+
+                }, 1000);
+
 
 
             })
@@ -203,25 +217,25 @@
             //    closeLoader();
             //});
 
-            $.ajax({
-                url: urlGetPorcCTotal,
-                type: 'post',
-                data: JSON.stringify(objFiltro),
-                dataType: "JSON",
-                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
-                beforeSend: function () {
-                }
-            })
-            .done(function (data) {
-                GerarPorcCTotal(data);
-                closeLoader();
-                $('#divTable').show();
-            })
-            .fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
-                preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
-                closeLoader();
-            });
+            //$.ajax({
+            //    url: urlGetPorcCTotal,
+            //    type: 'post',
+            //    data: JSON.stringify(objFiltro),
+            //    dataType: "JSON",
+            //    contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+            //    beforeSend: function () {
+            //    }
+            //})
+            //.done(function (data) {
+            //    GerarPorcCTotal(data);
+            //    closeLoader();
+            //    $('#divTable').show();
+            //})
+            //.fail(function (jqXHR, textStatus, msg) {
+            //    console.log(msg);
+            //    preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+            //    closeLoader();
+            //});
 
             $("#PivotTable").css("display", "none");
             $('#RGTarefasPivotTable').hide();
