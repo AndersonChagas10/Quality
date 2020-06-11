@@ -18,6 +18,7 @@ function openColetaDCA(levels) {
             var hasLevel3 = false;
             var striped = true;
 
+            level2.ParLevel3.sort((a, b) => a.Name.localeCompare(b.Name));
             level2.ParLevel3.forEach(function (level3) {
 
                 var inputLevel3 = getInputLevel3DCA(level3, level2, level1, striped);

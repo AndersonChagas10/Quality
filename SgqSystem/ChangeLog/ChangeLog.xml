@@ -2848,4 +2848,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-800</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Appcoleta - Ordenar as listas de Clusters, Indicadores, Monitoramentos, Anomalias e SKUs em ordem alfabética.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
