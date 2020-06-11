@@ -133,7 +133,7 @@ namespace SgqServiceBusiness.Controllers.RH
 
         public List<Collection> SaveCollectionPartial(List<Collection> listSimpleCollect, Guid guiid)
         {
-            
+            //Não salvar header field
             listSimpleCollect = listSimpleCollect.Where(x => x.IsPartialSave).ToList();
 
             for (int i = 0; i < listSimpleCollect.Count; i++)
@@ -280,6 +280,65 @@ namespace SgqServiceBusiness.Controllers.RH
             }
 
             return item;
+        }
+
+        public void DeleteCollectionsPartialDuplicadas(List<Collection> listSimpleCollect, Guid guiid)
+        {
+            //Somente coleta sem header field
+            listSimpleCollect = listSimpleCollect.Where(x => x.ParHeaderField_Id == null).ToList();
+
+            foreach (var coleta in listSimpleCollect)
+            {
+                DeleteCollectionPartialDuplicada(coleta, guiid);
+            }
+        }
+
+        private void DeleteCollectionPartialDuplicada(Collection coleta, Guid guiid)
+        {
+            //Verificar quais coletas ja foram coletadas retornar e pagar as que já existem
+            try
+            {
+
+                var sql = $@"DELETE CollectionPartial where 1 = 1 AND 
+                        ParCargo_Id = @ParCargo_Id AND 
+                        ParCompany_Id = @ParCompany_Id AND 
+                        ParDepartment_Id = @ParDepartment_Id AND 
+                        ParCluster_Id = @ParCluster_Id AND 
+                        ((ParLevel1_Id = @ParLevel1_Id AND
+                        ParLevel2_Id = @ParLevel2_Id AND
+                        ParLevel3_Id = @ParLevel3_Id) OR (ParHeaderField_Id Is Not NULL)) AND
+                        Parfrequency_Id = @Parfrequency_Id AND
+                        Evaluation = @Evaluation AND
+                        Sample = @Sample AND
+                        cast(CollectionDate as date) = cast(@CollectionDate as date)";
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCargo_Id", coleta.ParCargo_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCompany_Id", coleta.ParCompany_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartment_Id", coleta.ParDepartment_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCluster_Id", coleta.ParCluster_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel1_Id", coleta.ParLevel1_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel2_Id", coleta.ParLevel2_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel3_Id", coleta.ParLevel3_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Parfrequency_Id", coleta.Parfrequency_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Evaluation", coleta.Evaluation);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Sample", coleta.Sample);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@CollectionDate", coleta.CollectionDate);
+                        var id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                coleta.HasError = true;
+                coleta.GUIID = guiid.ToString();
+                LogSystem.LogErrorBusiness.Register(ex, coleta);
+            }
         }
 
         public void SaveCollection(Collection item)

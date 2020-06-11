@@ -3,7 +3,7 @@ var interacaoComFormulario = 0;
 
 function openColeta(levels) {
 
-    readColetasParciais();
+    readColetasParciais(desabilitaColetados);
 
     interacaoComFormulario = 0;
 
@@ -87,8 +87,6 @@ function openColeta(levels) {
     });
 
     setBreadcrumbs();
-
-    desabilitaColetados();
 }
 
 $('body')
@@ -1125,9 +1123,11 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 
     //Salva a coleta realizada numa variavel global
     SalvarColetas(coletaJson);
+    addColetasParciais(coletaJson);
 
     //Atualiza para a proxima coleta (se precisar adicionar amostra ou avaliação)
-    coletaAgrupada = AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada);
+    if(!hasPartialSave)
+        coletaAgrupada = AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada);
 
     //Mostra mensagem de que a coleta foi realizada com sucesso e fecha após 3 segundos
     openMensagem("Amostra salva com sucesso!", "blue", "white");
@@ -1140,6 +1140,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         listarParLevels();
         $("html, body").animate({ scrollTop: 0 }, "fast");
     }
+
 });
 
 function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {
@@ -1161,6 +1162,7 @@ function SalvarColetas(coletaJson) {
     }
 
     AtualizarArquivoDeColetas();
+
 }
 
 function OpenCorrectiveAction(coleta) {

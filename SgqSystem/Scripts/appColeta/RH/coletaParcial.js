@@ -1,7 +1,6 @@
 var hasPartialSave = false;
 var coletasParciais = [];
 
-//Todo: validar se todos os inputs foram preenchidos, caso não tenha sido, alterar flag hasPartialSave para true
 function verificaIsPartialSave() {
 
     hasPartialSave = false;
@@ -10,28 +9,9 @@ function verificaIsPartialSave() {
         return;
     }
 
-    //percorrer todos os inputs e procurar em todos, se algum não foi preenchido
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
-    var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta] input[data-texto]');
-    var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value] div[data-qualification-required]');
-    var selectQualificationColeta = $('form[data-form-coleta] div[data-qualificationlevel3value] select[data-qualificationselect]');
-
     var errorCount = 0;
-    var inputVal;
     var data;
-    var linhaQualification;
-    var selectQualification;
-
-    // for (var i = 0; i < qualification.length; i++) {
-    //     linhaQualification = qualification[i];
-    //     selectQualification = selectQualificationColeta[i];
-
-    //     if ($(linhaQualification).attr('data-qualification-required') == 'true' && $(selectQualification).length > 0) {
-    //         if ($(selectQualification).val() == null || $(selectQualification).val() == undefined || $(selectQualification).val() == "") {
-    //             errorCount++;
-    //         } 
-    //     }
-    // }
 
     for (var i = 0; i < linhasDaColeta.length; i++) {
 
@@ -42,8 +22,8 @@ function verificaIsPartialSave() {
                 errorCount++;
 
         } else if (typeof ($(data).find('input[data-valor]').val()) != 'undefined') {
-            if ($(data).find('input[data-valor]').val() == "");
-            errorCount++;
+            if ($(data).find('input[data-valor]').val() == "")
+                errorCount++;
 
         } else if (typeof ($(data).find('input[data-texto]').val()) != 'undefined') {
             if ($(data).find('input[data-valor]').val() == "")
@@ -101,15 +81,7 @@ function buscarColetasParciais(){
             type: 'POST',
             url: urlPreffix + '/api/AppColeta/GetColetaParcial',
             contentType: "application/json",
-            success: function (data) {
-
-                _writeFile("coletasParciais.txt", JSON.stringify(data), function () {
-
-                    atualizaArquivoColetaParciais(data);
-
-                });
-
-            },
+            success: atualizaArquivoColetaParciais,
             timeout: 600000,
             error: function () {
                 
@@ -121,14 +93,41 @@ function buscarColetasParciais(){
 
 function atualizaArquivoColetaParciais(data) {
 
+    _writeFile("coletasParciais.txt", JSON.stringify(data), function () {
+
+        atualizaVariavelColetaParciais(data);
+
+    });
+}
+
+function atualizaVariavelColetaParciais(data) {
+
     coletasParciais = data;
 }
 
-function readColetasParciais() {
+function addColetasParciais(data) {
+
+    data = $.grep(data, function (o, i) {
+        return o.IsPartialSave === true;
+    });
+
+    if (data && data.length > 0) {
+
+        data = coletasParciais.concat(data);
+
+        atualizaArquivoColetaParciais(data);
+    }
+
+}
+
+function readColetasParciais(callback) {
 
     _readFile("coletasParciais.txt", function (data) {
 
-        atualizaArquivoColetaParciais(JSON.parse(data));
+        atualizaVariavelColetaParciais(JSON.parse(data));
+
+        if (callback)
+            callback();
 
     });
 
@@ -141,11 +140,10 @@ function desabilitaColetados() {
         return;
     }
 
-    //percorrer todos os inputs e procurar em todos, se algum não foi preenchido
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
-    var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta] input[data-texto]');
     var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value] div[data-qualification-required]');
     var selectQualificationColeta = $('form[data-form-coleta] div[data-qualificationlevel3value] select[data-qualificationselect]');
+    var dataApp = getCurrentDate().split("T")[0];
 
     for (var i = 0; i < qualification.length; i++) {
 
@@ -162,16 +160,14 @@ function desabilitaColetados() {
 
     for (var i = 0; i < linhasDaColeta.length; i++) {
 
-        debugger
-
         var data = linhasDaColeta[i];
-        var inputVal = inputsDaColeta[i];
-
         var indicador_Id = parseInt($(data).attr('data-level1'));
         var monitoramento_Id = parseInt($(data).attr('data-level2'));
         var tarefa_Id = parseInt($(data).attr('data-level3'));
 
         var coleta = $.grep(coletasParciais, function (o, i) {
+
+            var dataColetaParcial = o.CollectionDate.split("T")[0];
 
             return o.ParCompany_Id == currentParCompany_Id &&
                 o.ParDepartment_Id == currentParDepartment_Id &&
@@ -181,10 +177,10 @@ function desabilitaColetados() {
                 o.ParLevel1_Id == indicador_Id &&
                 o.ParLevel2_Id == monitoramento_Id &&
                 o.ParLevel3_Id == tarefa_Id &&
-                //o.CollectionDate == data
                 o.Evaluation == currentEvaluationSample.Evaluation &&
                 o.Sample == currentEvaluationSample.Sample &&
-                o.ParHeaderField_Id == null;
+                o.ParHeaderField_Id == null &&
+                dataApp == dataColetaParcial;
 
         })[0];
 

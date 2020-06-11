@@ -169,6 +169,8 @@ namespace SgqSystem.Controllers.V2.Api
             catch { }
             #endregion
 
+            appColetaBusiness.DeleteCollectionsPartialDuplicadas(listaDeColetasSemErro, guiid);
+
             listaDeColetasSemErro.AddRange(listaParcial);
 
             return Ok(listaDeColetasSemErro);
