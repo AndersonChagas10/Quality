@@ -22,36 +22,33 @@ function verificaIsPartialSave() {
     var linhaQualification;
     var selectQualification;
 
-    for (var i = 0; i < qualification.length; i++) {
-        linhaQualification = qualification[i];
-        selectQualification = selectQualificationColeta[i];
+    // for (var i = 0; i < qualification.length; i++) {
+    //     linhaQualification = qualification[i];
+    //     selectQualification = selectQualificationColeta[i];
 
-        if ($(linhaQualification).attr('data-qualification-required') == 'true' && $(selectQualification).length > 0) {
-            if ($(selectQualification).val() == null || $(selectQualification).val() == undefined || $(selectQualification).val() == "") {
-                errorCount++;
-            } 
-        }
-    }
+    //     if ($(linhaQualification).attr('data-qualification-required') == 'true' && $(selectQualification).length > 0) {
+    //         if ($(selectQualification).val() == null || $(selectQualification).val() == undefined || $(selectQualification).val() == "") {
+    //             errorCount++;
+    //         } 
+    //     }
+    // }
 
     for (var i = 0; i < linhasDaColeta.length; i++) {
+
         data = linhasDaColeta[i];
-        inputVal = inputsDaColeta[i];
 
-        if ($(inputVal).attr('data-required-text') == 'true') {
-
-            if ($(data).attr('data-conforme') == "0") {
-                if ($(inputVal).val() == null || $(inputVal).val() == undefined || $(inputVal).val() == "") {
-                    errorCount++;
-                } 
-            }
-
-        }
-
-        if ($(data).attr('data-conforme-na') != "") {
-            if ($(data).attr('data-conforme') == "" || $(data).attr('data-conforme') == null || $(data).attr('data-conforme') == "undefined") {
+        if (typeof ($(data).find('[data-binario]').val()) != 'undefined') {
+            if ($(data).find('[data-binario]').text() == "")
                 errorCount++;
-            }
-        }
+
+        } else if (typeof ($(data).find('input[data-valor]').val()) != 'undefined') {
+            if ($(data).find('input[data-valor]').val() == "");
+            errorCount++;
+
+        } else if (typeof ($(data).find('input[data-texto]').val()) != 'undefined') {
+            if ($(data).find('input[data-valor]').val() == "")
+                errorCount++
+        } 
     }
     if (errorCount > 0) {
         hasPartialSave = true;
@@ -65,17 +62,19 @@ function fieldIsEmpty(campo) {
         return false;
 
     var data = campo;
-    var inputVal = $(campo).find('input[data-texto]');
 
-    if ($(data).attr('data-conforme') == "0") {
-        if ($(inputVal).val() == null || $(inputVal).val() == undefined || $(inputVal).val() == "") {
+    if (typeof ($(data).find('[data-binario]').val()) != 'undefined') {
+        if ($(data).find('[data-binario]').text().trim() == "")
             return true;
-        }
-    }
 
-    if ($(data).attr('data-conforme') == "" || $(data).attr('data-conforme') == null || $(data).attr('data-conforme') == "undefined") {
-        return true;
-    }
+    } else if (typeof ($(data).find('input[data-valor]').val()) != 'undefined') {
+        if ($(data).find('input[data-valor]').val() == "")
+            return true;
+
+    } else if (typeof ($(data).find('input[data-texto]').val()) != 'undefined') {
+        if ($(data).find('input[data-valor]').val() == "")
+            return true;
+    } 
 
     return false;
 
@@ -129,13 +128,13 @@ function readColetasParciais() {
 
     _readFile("coletasParciais.txt", function (data) {
 
-        atualizaArquivoColetaParciais(data);
+        atualizaArquivoColetaParciais(JSON.parse(data));
 
     });
 
 }
 
-function desabilitaColetados(){
+function desabilitaColetados() {
 
 
     if (!currentIsPartialSave) {
@@ -156,7 +155,7 @@ function desabilitaColetados(){
         if ($(linhaQualification).attr('data-qualification-required') == 'true' && $(selectQualification).length > 0) {
             if ($(selectQualification).val() == null || $(selectQualification).val() == undefined || $(selectQualification).val() == "") {
                 errorCount++;
-            } 
+            }
         }
 
     }
@@ -172,48 +171,67 @@ function desabilitaColetados(){
         var monitoramento_Id = parseInt($(data).attr('data-level2'));
         var tarefa_Id = parseInt($(data).attr('data-level3'));
 
-        var coleta = $.filter(coletasParciais, function(o, i) {
+        var coleta = $.grep(coletasParciais, function (o, i) {
 
-            return o.currentParCompany_Id == currentParCompany_Id &&
-                o.currentParDepartmentParent_Id == currentParDepartmentParent_Id &&
-                o.currentParDepartment_Id == currentParDepartment_Id &&
-                o.currentParClusterGroup_Id == currentParClusterGroup_Id &&
-                o.currentParCluster_Id == currentParCluster_Id &&
-                o.currentParFrequency_Id == currentParFrequency_Id &&
-                o.currentParCargo_Id == currentParCargo_Id &&
+            return o.ParCompany_Id == currentParCompany_Id &&
+                o.ParDepartment_Id == currentParDepartment_Id &&
+                o.ParCluster_Id == currentParCluster_Id &&
+                o.Parfrequency_Id == currentParFrequency_Id &&
+                o.ParCargo_Id == currentParCargo_Id &&
                 o.ParLevel1_Id == indicador_Id &&
                 o.ParLevel2_Id == monitoramento_Id &&
                 o.ParLevel3_Id == tarefa_Id &&
                 //o.CollectionDate == data
-                o.Evaluation == currentEvaluationSample.Evaluation && 
-                o.Sample == currentEvaluationSample.Sample;
+                o.Evaluation == currentEvaluationSample.Evaluation &&
+                o.Sample == currentEvaluationSample.Sample &&
+                o.ParHeaderField_Id == null;
 
         })[0];
 
-        if(coleta){
-
+        if (coleta) {
 
             if (typeof ($(data).find('input[data-valor]').val()) != 'undefined') {
-                $(data).find('input[data-valor]').val();
+                $(data).find('input[data-valor]').val(coleta.Value);
             }
 
             if (typeof ($(data).find('input[data-texto]').val()) != 'undefined') {
-                $(data).find('input[data-texto]').val();
+                $(data).find('input[data-texto]').val(coleta.ValueText);
             }
 
             if (typeof ($(data).find('[data-binario]').val()) != 'undefined') {
-                //trocar para o valor que foi coletado (não sei como fazer isso)
+                setBinarioRespondido(data, coleta.IsConform);
             }
 
-            //Inserir valor na linha da coleta
-
-            //Verificar qual é o tipo de entrada
-
-            //Inativar a linha que foi coletado
-    
+            $(data).find('input, button').prop("disabled", true);
+            $(data).css("background-color", "#999");
 
         }
+    }
+}
+
+function setBinarioRespondido(self, isConform) {
+
+    var linha = $(self).parents('[data-conforme]');
+
+    resetarLinha(linha);
+    linha.attr('data-conforme', isConform ? 0 : 1);
+    setFieldColorGray($(self));
+
+    var button = $(self).find('[data-binario]');
+
+    if (isConform) {
+
+        $(button).text($(button).attr('data-positivo'));
+
+    } else {
+
+        $(button).text($(button).attr('data-negativo'));
 
     }
+
+    validateShowQualification(linha);
+
+    $(self).addClass('btn-default');
+    $(self).removeClass('btn-secundary');
 
 }

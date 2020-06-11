@@ -2,6 +2,9 @@ var coletaJson = [];
 var interacaoComFormulario = 0;
 
 function openColeta(levels) {
+
+    readColetasParciais();
+
     interacaoComFormulario = 0;
 
     coletaJson = [];
@@ -84,6 +87,8 @@ function openColeta(levels) {
     });
 
     setBreadcrumbs();
+
+    desabilitaColetados();
 }
 
 $('body')
