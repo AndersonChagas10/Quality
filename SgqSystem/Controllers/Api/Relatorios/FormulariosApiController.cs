@@ -147,15 +147,14 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
     
           DECLARE @DATEINI DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}' DECLARE @DATEFIM DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}';
-		 DECLARE @UNITID VARCHAR(10) = '{ form.ParCompany_Ids[0]}', @PARLEVEL1_ID VARCHAR(10) = '{indicador_Id}',@PARLEVEL2_ID VARCHAR(10) = '0';
-
+		  DECLARE @UNITID VARCHAR(10) = '{ form.ParCompany_Ids[0]}', @PARLEVEL1_ID VARCHAR(10) = '1' ,@PARLEVEL2_ID VARCHAR(10) = '0';
 
 
 		 -------------------------------------------------------------------------------------------------------------------------
 		 -------------------------------------------------------------------------------------------------------------------------		 
-		   
-		 DECLARE @DATAINICIAL DATETIME = @DATEINI;
-		 DECLARE @DATAFINAL DATETIME = @DATEFIM;                     
+		
+         DECLARE @DATAINICIAL DATETIME = @DATEINI;
+		 DECLARE @DATAFINAL DATETIME = @DATEFIM;      
 
 		CREATE TABLE #INPUT_TYPES
 		(
@@ -233,7 +232,7 @@ DECLARE @HeaderField varchar(max);
 
 SELECT     @HeaderField =
 STUFF(   
-(SELECT DISTINCT ', '+ CONCAT(' [',ParHeaderField_Name,' - ',ROW_NUMBER() OVER(partition by cl2xph_.CollectionLevel2_id,cl2xph_.ParHeaderField_Name Order By cl2xph_.Id),']') 
+(SELECT DISTINCT ', ' + CONCAT(' [',ParHeaderField_Name,']') 
 FROM CollectionLevel2XParHeaderField cl2xph_ 
 INNER JOIN #CollectionLevel2 CL2
 	ON cl2xph_.CollectionLevel2_id = CL2.ID
@@ -253,7 +252,7 @@ SELECT * INTO #HeaderField FROM (
 SELECT 
 	DISTINCT 
 		 CL2.id CollectionLevel2_Id
-		,CONCAT(CL2HF2.ParHeaderField_Name,'' - '',ROW_NUMBER() OVER(partition by CL2HF2.CollectionLevel2_Id,CL2HF2.ParHeaderField_Name Order By CL2HF2.Id)) ParHeaderField_Name
+		,CL2HF2.ParHeaderField_Name
 		,CONCAT(HF.name, '': '', case 
 				when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
 				when CL2HF2.ParFieldType_Id = 2 then case when EQP.Nome is null then cast(PRD.nCdProduto as varchar(500)) + '' - '' + PRD.cNmProduto else EQP.Nome end 
@@ -565,8 +564,8 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 
 			SELECT 
                 IndicadorName as ''indicador'',
-                MonitoramentoName as ''setor'',
-                TarefaName as ''itensverificados'',
+                MonitoramentoName as ''monitoramento'',
+                TarefaName as ''tarefa'',
 				AuditorId,
 				AuditorName as ''visto'',
 				EvaluationNumber as ''avaliação'',
@@ -579,8 +578,6 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 Cast(AV as int) as av,
                 Cast(NC as int) as nc,
 				Resultado as ''resultado'',
-                -- iif(NC = 1, ''C'' , ''NC'') as ''Resultado'',
-                --''Célia Regina Mattia GQC/ANH'' as Visto,
                 CONVERT(VARCHAR(10), ConsolidationDate, 103) as ''data'',
 				CONVERT(CHAR(5),ConsolidationDate,108) as ''hora''
 
@@ -623,11 +620,18 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 
                 var reportXUser_Id = db.ReportXUserSgq
                     .Where(x => (x.ParCompany_Id == idUnidade || x.ParCompany_Id == null) && x.ParLevel1_Id == idIndicador)
+                    .OrderByDescending(x => x.ParCompany_Id)
                     .Select(x => x.Id)
                     .FirstOrDefault();
 
                 if(reportXUser_Id > 0)
                     reportXUserXLayout = db.ParReportLayoutXReportXUser.Where(x => x.ReportXUserSgq_Id == reportXUser_Id && x.IsActive).OrderBy(x => x.Ordenacao).ToList();
+
+                for (int i = 0; i < reportXUserXLayout.Count(); i++)
+                {
+                    if (reportXUserXLayout[i].Value.Split('|').Length > 1)
+                        reportXUserXLayout[i].Value = reportXUserXLayout[i].Value.Split('|')[1].Trim();
+                }
             }
 
             return reportXUserXLayout;

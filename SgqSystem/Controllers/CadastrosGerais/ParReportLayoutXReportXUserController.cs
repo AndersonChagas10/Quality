@@ -29,6 +29,12 @@ namespace SgqSystem.Controllers.CadastrosGerais
 
         }
 
+        public class LayoutHeaderFieldValue
+        {
+            public string Name { get; set; }
+
+        }
+
         List<LayoutLevel> NiveisLayout = new List<LayoutLevel>();
 
         // GET: ParReportLayoutXReportXUser
@@ -37,15 +43,7 @@ namespace SgqSystem.Controllers.CadastrosGerais
             return View();
         }
 
-        public ActionResult Create(int reportXUserId)
-        {
-            PreencheViewBags(reportXUserId);
-           
-
-            return View();
-        }
-
-        private void PreencheViewBags(int reportXUserId)
+        private void PreencheViewBags(int reportXUserId, int idLevel1)
         {
             AdicionaItemNivelLayout(LayoutLevelEnum.Cabecalho.ToString(), (int)LayoutLevelEnum.Cabecalho);
             AdicionaItemNivelLayout(LayoutLevelEnum.Linha.ToString(), (int)LayoutLevelEnum.Linha);
@@ -53,9 +51,27 @@ namespace SgqSystem.Controllers.CadastrosGerais
 
             ViewBag.ReportXUser_Id = reportXUserId;
 
+            ViewBag.Level1Id = idLevel1;
+
             ViewBag.NiveisLayout_Id = new SelectList(NiveisLayout.ToList(), "Id", "Name");
 
-            ViewBag.ReportLayoutItens = new SelectList(db.ReportLayoutItens.Where(x => x.IsActive).ToList(), "Name", "Name");
+            var layoutHeaderField = new List<LayoutHeaderFieldValue>();
+
+            var cabecalhosVinculadosIndicador = db.ParLevel1XHeaderField
+                .Where(x => x.ParLevel1_Id == idLevel1 && x.IsActive)
+                .Include(x => x.ParHeaderField)
+                .Distinct()
+                .ToList();
+
+            var itensDoRelatorio = db.ReportLayoutItens.Where(x => x.IsActive).ToList();
+
+            for (int i = 0; i < cabecalhosVinculadosIndicador.Count(); i++)
+            {
+                itensDoRelatorio.Add(new ReportLayoutItens() { Name = cabecalhosVinculadosIndicador[i].ParHeaderField_Id + " | " + cabecalhosVinculadosIndicador[i].ParHeaderField.Name.ToString() });
+            }
+
+            ViewBag.Level1_Id = idLevel1;
+            ViewBag.ReportLayoutItens = new SelectList(itensDoRelatorio, "Name", "Name");
         }
 
         private void AdicionaItemNivelLayout(string name, int id)
@@ -68,26 +84,49 @@ namespace SgqSystem.Controllers.CadastrosGerais
             NiveisLayout.Add(niveisLayout);
         }
 
-        [HttpPost]
-        public ActionResult Create(ParReportLayoutXReportXUser form)
+
+        public ActionResult Create(int reportXUserId, int level1_Id)
         {
+            PreencheViewBags(reportXUserId, level1_Id);
+
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult Create(ParReportLayoutXReportXUser reportLayoutXReportXUser)
+        {
+
+            ValidaObjeto(reportLayoutXReportXUser);
 
             if (ModelState.IsValid)
             {
+
+                if (reportLayoutXReportXUser.Value.Split('|').Count() > 1)
+                {
+                    reportLayoutXReportXUser.IdReference = int.Parse(reportLayoutXReportXUser.Value.Split('|')[0]);
+                   
+                    reportLayoutXReportXUser.TableReference = "ParHeaderField";
+                }
+
                 using (db)
                 {
-                    form.IsActive = true;
-                    db.ParReportLayoutXReportXUser.Add(form);
+                    reportLayoutXReportXUser.IsActive = true;
+                    db.ParReportLayoutXReportXUser.Add(reportLayoutXReportXUser);
 
                     db.SaveChanges();
+
+                    return RedirectToAction("Details/" + reportLayoutXReportXUser.ReportXUserSgq_Id, "ReportXUserSgq");
                 }
             }
 
-            return RedirectToAction("Details/" + form.ReportXUserSgq_Id, "ReportXUserSgq");
+            PreencheViewBags(reportLayoutXReportXUser.ReportXUserSgq_Id, reportLayoutXReportXUser.Level1_Id);
+
+            return View(reportLayoutXReportXUser);
         }
 
         // GET: ReportXUserSgqs/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, int level1_Id)
         {
             if (id == null)
             {
@@ -100,7 +139,7 @@ namespace SgqSystem.Controllers.CadastrosGerais
             {
                 return HttpNotFound();
             }
-            PreencheViewBags(reportLayoutXReportXUser.ReportXUserSgq_Id);
+            PreencheViewBags(reportLayoutXReportXUser.ReportXUserSgq_Id, level1_Id);
             return View(reportLayoutXReportXUser);
         }
 
@@ -108,16 +147,35 @@ namespace SgqSystem.Controllers.CadastrosGerais
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ParReportLayoutXReportXUser reportLayoutXReportXUser)
         {
+            ValidaObjeto(reportLayoutXReportXUser);
+          
             if (ModelState.IsValid)
             {
+                if (reportLayoutXReportXUser.Value.Split('|').Count() > 1)
+                {
+                    reportLayoutXReportXUser.IdReference = int.Parse(reportLayoutXReportXUser.Value.Split('|')[0]);
+
+                    reportLayoutXReportXUser.TableReference = "ParHeaderField";
+                }
+
                 reportLayoutXReportXUser.AlterDate = DateTime.Now;
                 reportLayoutXReportXUser.IsActive = true;
                 db.Entry(reportLayoutXReportXUser).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Details/" + reportLayoutXReportXUser.ReportXUserSgq_Id, "ReportXUserSgq");
             }
-            PreencheViewBags(reportLayoutXReportXUser.ReportXUserSgq_Id);
+
+            PreencheViewBags(reportLayoutXReportXUser.ReportXUserSgq_Id, reportLayoutXReportXUser.Level1_Id);
+
             return View(reportLayoutXReportXUser);
+        }
+
+        private void ValidaObjeto(ParReportLayoutXReportXUser reportLayoutXReportXUser)
+        {
+            if(reportLayoutXReportXUser.Value == null)
+            {
+                ModelState.AddModelError("Value", "O campo Valor é obrigatório");
+            }
         }
 
 
