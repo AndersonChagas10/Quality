@@ -2101,7 +2101,7 @@ function saveResultLevel3() {
 }
 
 function converteParaFloat(item) {
-    var numeroConvertido = parseFloat(item.replace(',', '.'));
+    var numeroConvertido = parseFloat(item.toString().replace(',', '.'));
     return numeroConvertido;
 }
 
