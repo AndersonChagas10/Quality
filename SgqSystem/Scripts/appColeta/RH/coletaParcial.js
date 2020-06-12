@@ -18,7 +18,7 @@ function verificaIsPartialSave() {
         data = linhasDaColeta[i];
 
         if (typeof ($(data).find('[data-binario]').val()) != 'undefined') {
-            if ($(data).find('[data-binario]').text() == "")
+            if ($(data).find('[data-binario]').text().trim() == "")
                 errorCount++;
 
         } else if (typeof ($(data).find('input[data-valor]').val()) != 'undefined') {
@@ -81,21 +81,26 @@ function buscarColetasParciais(){
             type: 'POST',
             url: urlPreffix + '/api/AppColeta/GetColetaParcial',
             contentType: "application/json",
-            success: atualizaArquivoColetaParciais,
+            success: function (data) {
+                atualizaArquivoColetaParciais(data);
+            },
             timeout: 600000,
             error: function () {
-                
+
             }
 
         });
     });
 }
 
-function atualizaArquivoColetaParciais(data) {
+function atualizaArquivoColetaParciais(data, callback) {
 
     _writeFile("coletasParciais.txt", JSON.stringify(data), function () {
 
         atualizaVariavelColetaParciais(data);
+
+        if (callback)
+            callback();
 
     });
 }
@@ -105,7 +110,7 @@ function atualizaVariavelColetaParciais(data) {
     coletasParciais = data;
 }
 
-function addColetasParciais(data) {
+function addColetasParciais(data, callback) {
 
     data = $.grep(data, function (o, i) {
         return o.IsPartialSave === true;
@@ -115,7 +120,8 @@ function addColetasParciais(data) {
 
         data = coletasParciais.concat(data);
 
-        atualizaArquivoColetaParciais(data);
+        atualizaArquivoColetaParciais(data, callback);
+
     }
 
 }
@@ -134,7 +140,6 @@ function readColetasParciais(callback) {
 }
 
 function desabilitaColetados() {
-
 
     if (!currentIsPartialSave) {
         return;

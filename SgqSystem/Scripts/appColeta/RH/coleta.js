@@ -1123,7 +1123,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 
     //Salva a coleta realizada numa variavel global
     SalvarColetas(coletaJson);
-    addColetasParciais(coletaJson);
+    addColetasParciais(coletaJson, coletaAgrupada.Sample == 1 ? undefined : desabilitaColetados);
 
     //Atualiza para a proxima coleta (se precisar adicionar amostra ou avaliação)
     if(!hasPartialSave)
