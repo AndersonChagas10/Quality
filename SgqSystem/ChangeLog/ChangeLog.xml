@@ -2849,6 +2849,14 @@
   </Card>
 
   <Card>
+    <CardNumber>SGQ-740</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Correção de bugs e adição de validações nos Cruds de FamiliaProduto, Produto e no vínculo FamiliaProdutoXProduto.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
     <CardNumber>SGQ-800</CardNumber>
     <Version>1.5.0</Version>
     <Description> [SEARA] Appcoleta - Ordenar as listas de Clusters, Indicadores, Monitoramentos, Anomalias e SKUs em ordem alfabética.</Description>
