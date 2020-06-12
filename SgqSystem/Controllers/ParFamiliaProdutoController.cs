@@ -173,8 +173,8 @@ namespace SgqSystem.Controllers
 
             if (id == null || ViewBag.ParentsCreate.Count == 0)
             {
-                var semDados = new List<KeyValuePair<int, string>>() {
-                    new KeyValuePair<int, string>(0, ""),
+                var semDados = new List<KeyValuePair<int?, string>>() {
+                    new KeyValuePair<int?, string>(null, ""),
                     };
                 ViewBag.ParentsCreate = semDados;
             }

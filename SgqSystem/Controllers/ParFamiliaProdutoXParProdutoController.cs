@@ -55,7 +55,7 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var verificaSeJaExiste = db.ParFamiliaProdutoXParProduto.Where(x => x.ParProduto_Id == parFamiliaProdutoXParProduto.ParProduto_Id).ToList();
+                var verificaSeJaExiste = db.ParFamiliaProdutoXParProduto.Where(x => x.ParProduto_Id == parFamiliaProdutoXParProduto.ParProduto_Id && x.ParFamiliaProduto_Id == parFamiliaProdutoXParProduto.ParFamiliaProduto_Id).ToList();
                 if (verificaSeJaExiste.Count() > 0)
                 {
                     ViewBag.VinculoJaExiste = "Já existe um vínculo com o mesmo produto cadastrado!";
@@ -96,7 +96,7 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var verificaSeJaExiste = db.ParFamiliaProdutoXParProduto.Where(x => x.ParProduto_Id == parFamiliaProdutoXParProduto.ParProduto_Id && x.Id != parFamiliaProdutoXParProduto.Id).ToList();
+                var verificaSeJaExiste = db.ParFamiliaProdutoXParProduto.Where(x => x.ParProduto_Id == parFamiliaProdutoXParProduto.ParProduto_Id && x.ParFamiliaProduto_Id == parFamiliaProdutoXParProduto.ParFamiliaProduto_Id && x.Id != parFamiliaProdutoXParProduto.Id).ToList();
                 if (verificaSeJaExiste.Count() > 0)
                 {
                     ViewBag.VinculoJaExiste = "Já existe um vínculo com o mesmo produto cadastrado!";
@@ -158,8 +158,8 @@ namespace SgqSystem.Controllers
 
             if (id == null || ViewBag.ProdutoEdit.Count == 0)
             {
-                var semDados = new List<KeyValuePair<int, string>>() {
-                    new KeyValuePair<int, string>(0, ""),
+                var semDados = new List<KeyValuePair<int?, string>>() {
+                    new KeyValuePair<int?, string>(null, ""),
                     };
                 ViewBag.ProdutoEdit = semDados;
             }
