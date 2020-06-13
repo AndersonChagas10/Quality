@@ -15,8 +15,7 @@ namespace SgqSystem.Jobs
 {
     public class CollectionJob : IJob
     {
-        private static int quantidadeMaximaProcessada = 100;
-        private static int quantidadeProcessada = 100;
+        private static int quantidadeMaximaProcessada = 20;
         public void Execute(IJobExecutionContext context)
         {
             ExecuteCollectionJob(null);
@@ -47,15 +46,10 @@ namespace SgqSystem.Jobs
 
                 if (intervalTimeCollectionJob > 0)
                 {
-                    if (quantidadeProcessada == quantidadeMaximaProcessada)
-                    {
-                        //Pegar as collectionsLevel2 da Collection
-                        List<CollectionLevel2> collectionsLevel2MontadoDaCollection = GetCollectionsLevel2NotProcess();
-                        quantidadeProcessada = quantidadeMaximaProcessada - collectionsLevel2MontadoDaCollection.Count;
+                    //Pegar as collectionsLevel2 da Collection
+                    List<CollectionLevel2> collectionsLevel2MontadoDaCollection = GetCollectionsLevel2NotProcess();
 
-                        LogSystem.LogErrorBusiness.Register(new Exception("Iniciado CollectionJob - quantidadeProcessada: " + quantidadeProcessada));
-                        ConsolidarCollectionLevel2(collectionsLevel2MontadoDaCollection);
-                    }
+                    ConsolidarCollectionLevel2(collectionsLevel2MontadoDaCollection);
 
                     Thread.Sleep(intervalTimeCollectionJob);
                 }
@@ -71,6 +65,7 @@ namespace SgqSystem.Jobs
         {
             try
             {
+                LogSystem.LogErrorBusiness.Register(new Exception("Iniciado ConsolidarCollectionLevel2"));
                 List<ParLevel3> parLevel3List = new List<ParLevel3>();
                 int consolidationLevel2_Id = 0;
                 using (var db = new SgqDbDevEntities())
@@ -244,7 +239,6 @@ INSERT INTO [Result_Level3]
                     }
                     finally
                     {
-                        quantidadeProcessada++;
                     }
                 }
             }
