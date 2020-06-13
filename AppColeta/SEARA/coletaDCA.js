@@ -1253,6 +1253,11 @@ function getAmostraAtual(parLevel1, parLevel2, parLevel3) {
             o.Outros.indexOf('ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ',') > 0
     });
 
+    var coletaAgrupadaColetada = getResultEvaluationDCA(parLevel1.Id, parLevel2.Id);
+    if(!!coletaAgrupadaColetada.ParFamiliaProduto_Id && coletaAgrupadaColetada.Evaluation >= currentEvaluationDCA.Evaluation){
+        return getAmostraTotal(parLevel1, parLevel2, parLevel3)+1;
+    }
+
     //Melhorar essa bosta
     if (coletasDCAFilter.length == 0) {
         return amostra;

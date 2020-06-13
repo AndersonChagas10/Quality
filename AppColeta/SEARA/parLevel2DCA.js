@@ -17,7 +17,7 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
 
         var ultimaAvaliacaoDCA = getResultEvaluationDCA(currentParLevel1_Id, o.Id);
 
-        if (avaliacaoAtual == 0 || (ultimaAvaliacaoDCA.Evaluation < avaliacaoAtual && !(pularParaProximaAvaliacao == true))) {
+        if (avaliacaoAtual == 0 || (ultimaAvaliacaoDCA.Evaluation > avaliacaoAtual && !(pularParaProximaAvaliacao == true))) {
             avaliacaoAtual = ultimaAvaliacaoDCA.Evaluation;
             currentEvaluationDCA = ultimaAvaliacaoDCA;
         }
@@ -66,7 +66,7 @@ function listarParLevel2DCA(isVoltar, pularParaProximaAvaliacao) {
             'data-total-porcentagem="' + porcentagemTotalConsiderandoPeso + '">                       ' +
             '	<div class="col-xs-4">' + o.Name + '</div>                                      ' +
             '	<div class="col-xs-4 text-center">Conforme: ' + porcentagemAtualConsiderandoPeso + '% / ' + porcentagemTotalConsiderandoPeso + '%</div>      ' +
-            '	<div class="col-xs-4 text-center">Respondido: ' + ZeroSeForNaN(parseInt(calculoPorMonitoramento.AmostraTotalColetada / calculoPorMonitoramento.AmostraTotal * 100)) + '%</div>              ' +
+            '	<div class="col-xs-4 text-center">Respondido: ' + (calculoPorMonitoramento.ColetasSincronizadas ? 100 : ZeroSeForNaN(parseInt(calculoPorMonitoramento.AmostraTotalColetada / calculoPorMonitoramento.AmostraTotal * 100))) + '%</div>              ' +
             '</button>';
     });
 
@@ -352,8 +352,11 @@ function getCalculoPorMonitoramento(parLevel1_Id, parLevel2_Id, avaliacaoAtual) 
                 totalTarefasComAlgumaNC++;
             }
         }
-        if (coletasSincronizadas == false && quantidadeDeColetasPorTarefa.length > 0)
-            coletasSincronizadas = quantidadeDeColetasPorTarefa[0].Synced == true;
+        
+        var coletaAgrupadaColetada = getResultEvaluationDCA(parLevel1_Id, parLevel2_Id);
+        if (coletasSincronizadas == false && !!coletaAgrupadaColetada.ParFamiliaProduto_Id && coletaAgrupadaColetada.Evaluation >= _avaliacaoAtual){
+            coletasSincronizadas = true;
+        }
         totalDeAmostras += (o.Sample > 0) ? o.Sample : 0;
     });
     var parVinculoPesoParLevel2 = getParVinculoPesoParLevel2PorIndicador(_parLevel1_Id, _parLevel2_Id);
