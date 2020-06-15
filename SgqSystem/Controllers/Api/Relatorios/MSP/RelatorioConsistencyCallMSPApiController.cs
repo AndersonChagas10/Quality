@@ -24,6 +24,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
         {
             RelatorioConsistencyCallMSPResultSet obj = new RelatorioConsistencyCallMSPResultSet();
 
+            var queryApontamentosDiarios = new RelatorioConsistencyCallMSPResultSet().Select(form);
             var querySelectFlavor = new RelatorioConsistencyCallMSPResultSet().SelectFlavor(form);
             var querySelectProduct = new RelatorioConsistencyCallMSPResultSet().SelectProduct(form);
             var querySelectBatch1 = new RelatorioConsistencyCallMSPResultSet().SelectBatch1(form);
@@ -59,65 +60,105 @@ namespace SgqSystem.Controllers.Api.Relatorios
             var querySelectTexture = new RelatorioConsistencyCallMSPResultSet().SelectTexture(form);
             var querySelectAppearance = new RelatorioConsistencyCallMSPResultSet().SelectAppearance(form);
 
+            
+
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                var flavor = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectFlavor).ToList();
-                if (flavor.Count > 0)
+                var retornoApontamentosDiarios = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(queryApontamentosDiarios).ToList();
+                
+                var productAndFlavor = "";
+                decimal somaIdadeMateriaPrima = 0;
+                decimal qtdIdadeMateriaPrima = 0;
+
+                foreach (var item in retornoApontamentosDiarios)
                 {
-                    foreach (var item in flavor)
+                    var headerFields = item.HeaderFieldList.Split(',');
+                    string[] produto = { };
+                    string[] sabor = { };
+                    foreach (var cabecalho in headerFields)
                     {
-                        if (obj.Flavor == null)
+                        if (cabecalho.Contains("PRODUTO") || cabecalho.Contains("Produto"))
+                            produto = cabecalho.Split(':');
+                        if (cabecalho.Contains("SABOR") || cabecalho.Contains("Sabor"))
+                            sabor = cabecalho.Split(':');
+                    }
+                    if (produto.Count() > 0 && sabor.Count() > 0)
+                    {
+                        var produtoSabor = produto[1] + " -" + sabor[1];
+
+                        if (productAndFlavor == "")
                         {
-                            obj.Flavor += item.Name;
+                            productAndFlavor += produtoSabor;
                         }
                         else
                         {
-                            obj.Flavor += "/ " + item.Name;
+                            if (!productAndFlavor.ToLower().Contains(produtoSabor.ToLower()))
+                                productAndFlavor += " / " + produtoSabor;
                         }
                     }
-                }
-                    
-                var product = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectProduct).ToList();
-                if (product.Count > 0)
-                {
-                    foreach (var item in product)
+
+                    if (item.Tarefa == "_Idade da matéria prima (Campo resultado)")
                     {
-                        if (obj.Product == null)
-                        {
-                            obj.Product += item.Name;
-                        }
-                        else
-                        {
-                            obj.Product += "/ " + item.Name;
-                        }
+                        somaIdadeMateriaPrima += Convert.ToInt32(item.Lancado);
+                        qtdIdadeMateriaPrima++;
+                        if (obj.Meat_age_min_max1 == null || Convert.ToInt32(item.Lancado) < obj.Meat_age_min_max1)
+                            obj.Meat_age_min_max1 = Convert.ToInt32(item.Lancado);
+                        if (obj.Meat_age_min_max2 == null || Convert.ToInt32(item.Lancado) > obj.Meat_age_min_max2)
+                            obj.Meat_age_min_max2 = Convert.ToInt32(item.Lancado);
                     }
                 }
 
-                var batch1 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectBatch1).ToList();
-                if (batch1.Count > 0)
-                    obj.Batch1 = Convert.ToDecimal(batch1[0].Batch);
+                obj.Product = productAndFlavor;
 
-                var batch2 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectBatch2).ToList();
-                if(batch2.Count > 0)
-                    obj.Batch2 = Convert.ToDecimal(batch2[0].Batch);
+                obj.Batch1 = retornoApontamentosDiarios.Where(x => x.Tarefa == "A curva de processo do tumbleamento corresponde ao produto em processo? (FOTO)"
+                    && x.Turno.Trim() == "1").Count();
+                obj.Batch1 = retornoApontamentosDiarios.Where(x => x.Tarefa == "A curva de processo do tumbleamento corresponde ao produto em processo? (FOTO)"
+                    && x.Turno.Trim() == "2").Count();
 
-                var porcWater = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectPorcWater).ToList();
-                if (porcWater.Count > 0)
-                    obj.PorcWater1 = Convert.ToDecimal(porcWater[0].PorcWater);
-                if (porcWater.Count > 1)
-                    obj.PorcWater2 = Convert.ToDecimal(porcWater[1].PorcWater);
+                var pesoCarneT1 = Convert.ToInt32(retornoApontamentosDiarios.Where(
+                    x => x.Tarefa == "Qual o peso da carne? (*Em desenvolvimento:Receita)" 
+                    && x.Turno.Trim() == "1").Sum(x => Convert.ToInt32(x.Lancado)));
+                var pesoCarneT2 = Convert.ToInt32(retornoApontamentosDiarios.Where(
+                    x => x.Tarefa == "Qual o peso da carne? (*Em desenvolvimento:Receita)" 
+                    && x.Turno.Trim() == "2").Sum(x => Convert.ToInt32(x.Lancado)));
+                var volumeAguaT1 = Convert.ToInt32(retornoApontamentosDiarios.Where(
+                    x => x.Tarefa == "Qual o volume de água utilizado? (*Em desenvolvimento:Receita)" 
+                    && x.Turno.Trim() == "1").Sum(x => Convert.ToInt32(x.Lancado)));
+                var volumeAguaT2 = Convert.ToInt32(retornoApontamentosDiarios.Where(
+                    x => x.Tarefa == "Qual o volume de água utilizado? (*Em desenvolvimento:Receita)" 
+                    && x.Turno.Trim() == "2").Sum(x => Convert.ToInt32(x.Lancado)));
 
-                var meat_age_avg = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectMeatAgeAVG).ToList();
-                if (meat_age_avg.Count > 0)
-                    obj.Meat_age_avg = Convert.ToDecimal(meat_age_avg[0].MeatAgeAVG);
+                obj.PorcWater1 = volumeAguaT1 / pesoCarneT1;
+                obj.PorcWater2 = volumeAguaT2 / pesoCarneT2;
 
-                var meat_age_min_max1 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectMeatAgeMin).ToList();
-                if (meat_age_min_max1.Count > 0)
-                    obj.Meat_age_min_max1 = Convert.ToDecimal(meat_age_min_max1[0].MeatAgeMin);
+                obj.Meat_age_avg = somaIdadeMateriaPrima / qtdIdadeMateriaPrima;
 
-                var meat_age_min_max2 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectMeatAgeMax).ToList();
-                if (meat_age_min_max2.Count > 0)
-                    obj.Meat_age_min_max2 = Convert.ToDecimal(meat_age_min_max2[0].MeatAgeMax);
+
+                //var batch1 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectBatch1).ToList();
+                //if (batch1.Count > 0)
+                //    obj.Batch1 = Convert.ToDecimal(batch1[0].Batch);
+
+                //var batch2 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectBatch2).ToList();
+                //if(batch2.Count > 0)
+                //    obj.Batch2 = Convert.ToDecimal(batch2[0].Batch);
+
+                //var porcWater = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectPorcWater).ToList();
+                //if (porcWater.Count > 0)
+                //    obj.PorcWater1 = Convert.ToDecimal(porcWater[0].PorcWater);
+                //if (porcWater.Count > 1)
+                //    obj.PorcWater2 = Convert.ToDecimal(porcWater[1].PorcWater);
+
+                //var meat_age_avg = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectMeatAgeAVG).ToList();
+                //if (meat_age_avg.Count > 0)
+                //    obj.Meat_age_avg = Convert.ToDecimal(meat_age_avg[0].MeatAgeAVG);
+
+                //var meat_age_min_max1 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectMeatAgeMin).ToList();
+                //if (meat_age_min_max1.Count > 0)
+                //    obj.Meat_age_min_max1 = Convert.ToDecimal(meat_age_min_max1[0].MeatAgeMin);
+
+                //var meat_age_min_max2 = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectMeatAgeMax).ToList();
+                //if (meat_age_min_max2.Count > 0)
+                //    obj.Meat_age_min_max2 = Convert.ToDecimal(meat_age_min_max2[0].MeatAgeMax);
 
                 var meats = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(querySelectMeats).ToList();
                 if (meats.Count > 0)
