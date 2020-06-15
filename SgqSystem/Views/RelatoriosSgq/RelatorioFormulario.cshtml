@@ -130,7 +130,7 @@
                         </tr>
                     </table>
                     <div>
-                        Data: <text id="dataColeta"></text>
+                        Unidade: <text id="unidadeColeta"></text>
                     </div>
                 </div>
 
@@ -244,7 +244,7 @@
                         $("#tdElaborador").text(data.Elaborador[0]["Elaborador"]);
                         $("#tdAprovador").text(data.Aprovador);
                         $("#tdNomeRelatorio").text(data.RelatorioName[0]["NomeRelatorio"]);
-                        $("#dataColeta").text(data.Resultado[0]["data"]);
+                        $("#unidadeColeta").text(data.Resultado[0]["unidade"]);
 
                         montaLayout(data.ParReportLayoutXReportXUser);
                         montaTabelaDinamica(data.Resultado, data.ParReportLayoutXReportXUser);
