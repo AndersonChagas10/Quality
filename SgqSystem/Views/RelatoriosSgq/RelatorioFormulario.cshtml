@@ -20,7 +20,7 @@
             <div class="form-group">
                 <label><strong>Indicador</strong></label>
                 <select class="form-control" name="ShowIndicador_Id" id="ShowIndicador_Id">
-                    <option value="112">Monitoramento - MER</option>
+                    <option value="1">Monitoramento - MER</option>
                     <option value="127">Verificação - Identificação, remoção, segregação e destinação do material especificado de risco (MER)</option>
                 </select>
             </div>
@@ -119,7 +119,7 @@
                             <td style="text-align:center; font-weight:bold;"><text id="tdNomeRelatorio"></text></td>
 
                             <td rowspan="3" class="col-xs-2">
-                                <img height="90" width="120" src="~/Imagens/novoLogoFriboi.PNG" />
+                                <img height="90" width="120" src="~/Imagens/novoLogoFriboi2.PNG" />
                             </td>
                         </tr>
                         <tr>
@@ -130,7 +130,7 @@
                         </tr>
                     </table>
                     <div>
-                        Data: <text id="dataColeta"></text>
+                        Unidade: <text id="unidadeColeta"></text>
                     </div>
                 </div>
 
@@ -243,7 +243,7 @@
                         $("#tdElaborador").text(data.Elaborador[0]["Elaborador"]);
                         $("#tdAprovador").text(data.Aprovador);
                         $("#tdNomeRelatorio").text(data.RelatorioName[0]["NomeRelatorio"]);
-                        $("#dataColeta").text(data.Resultado[0]["data"]);
+                        $("#unidadeColeta").text(data.Resultado[0]["unidade"]);
 
                         montaTabelaDinamica(data.Resultado);
                     } else {
