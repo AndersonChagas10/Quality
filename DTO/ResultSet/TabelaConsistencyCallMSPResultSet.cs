@@ -11,7 +11,8 @@ namespace DTO.ResultSet
         public string Indicador { get; set; }
         public string Monitoramento { get; set; }
         public string Tarefa { get; set; }
-        public string Lancado { get; set; }
+        public string Value { get; set; }
+        public string Conforme { get; set; }
 
         public Nullable<decimal> AV_Peso { get; set; }
         public Nullable<decimal> _AV_Peso { get { return AV_Peso.HasValue ? AV_Peso.Value : 0M; } }
