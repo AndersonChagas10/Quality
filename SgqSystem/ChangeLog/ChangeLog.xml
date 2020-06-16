@@ -3508,4 +3508,11 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-704</CardNumber>
+    <Version>1.9.0</Version>
+    <Description>[GQ] FORMULÁRIOS - Ajustes</Description>
+    <Script></Script>
+  </Card>
+
 </Cards>
