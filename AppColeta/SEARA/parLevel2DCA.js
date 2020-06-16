@@ -354,7 +354,9 @@ function getCalculoPorMonitoramento(parLevel1_Id, parLevel2_Id, avaliacaoAtual) 
         }
         
         var coletaAgrupadaColetada = getResultEvaluationDCA(parLevel1_Id, parLevel2_Id);
-        if (coletasSincronizadas == false && !!coletaAgrupadaColetada.ParFamiliaProduto_Id && coletaAgrupadaColetada.Evaluation >= _avaliacaoAtual){
+        if (coletasSincronizadas == false &&
+            ((!!coletaAgrupadaColetada.ParFamiliaProduto_Id && coletaAgrupadaColetada.Evaluation >= _avaliacaoAtual)
+            || quantidadeDeColetasPorTarefa.length > 0)) {
             coletasSincronizadas = true;
         }
         totalDeAmostras += (o.Sample > 0) ? o.Sample : 0;

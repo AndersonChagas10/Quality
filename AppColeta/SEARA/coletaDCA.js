@@ -1216,13 +1216,17 @@ function getQuantidadeNC(parLevel1, parLevel2, parLevel3) {
 
     var qtdeNC = 0;
 
-    if (coletasDCA.length == 0) {
-        return qtdeNC;
-    }
+
+    var currentDate = new Date(getCurrentDate());
+    currentDate = currentDate.getDay() + currentDate.getMonth() + currentDate.getFullYear();
 
     var coletasDCAFilter = $.grep(coletasDCA, function (o) {
 
+        var currentDateColetaDCA = new Date(o.CollectionDate);
+        currentDateColetaDCA = currentDateColetaDCA.getDay() + currentDateColetaDCA.getMonth() + currentDateColetaDCA.getFullYear();
+
         return o.ParLevel1_Id == parLevel1.Id &&
+            currentDate == currentDateColetaDCA && 
             o.ParLevel2_Id == parLevel2.Id &&
             o.ParLevel3_Id == parLevel3.Id &&
             o.Evaluation == currentEvaluationDCA.Evaluation &&
@@ -1245,13 +1249,14 @@ function getAmostraAtual(parLevel1, parLevel2, parLevel3) {
 
     var amostra = 1;
 
-    if (coletasDCA.length == 0) {
-        return amostra;
-    }
-
+    var currentDate = new Date(getCurrentDate());
+    currentDate = currentDate.getDay() + currentDate.getMonth() + currentDate.getFullYear();
     var coletasDCAFilter = $.grep(coletasDCA, function (o) {
 
+        var currentDateColetaDCA = new Date(o.CollectionDate);
+        currentDateColetaDCA = currentDateColetaDCA.getDay() + currentDateColetaDCA.getMonth() + currentDateColetaDCA.getFullYear();
         return o.ParLevel1_Id == parLevel1.Id &&
+            currentDate == currentDateColetaDCA && 
             o.ParLevel2_Id == parLevel2.Id &&
             o.ParLevel3_Id == parLevel3.Id &&
             o.Evaluation == currentEvaluationDCA.Evaluation &&
