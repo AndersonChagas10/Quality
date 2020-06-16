@@ -414,7 +414,7 @@ public class ApontamentosDiariosResultSet
                  on c2.Id = HF.CollectionLevel2_Id
 				 LEFT JOIN                             
                  #CollectionLevel2XParHeaderFieldGeralTURNO HFTURNO 
-                 on c2.Id = HF.CollectionLevel2_Id
+                 on c2.Id = HFTURNO.CollectionLevel2_Id
                  LEFT JOIN #CollectionLevel2XCollectionJson CLCJ
                  ON CLCJ.CollectionLevel2_Id = C2.Id
                  LEFT JOIN #CollectionJson CJ
