@@ -1,6 +1,7 @@
 ﻿using ADOFactory;
 using AutoMapper;
 using Dominio;
+using Dominio.Seara;
 using DTO;
 using DTO.DTO.Params;
 using DTO.Helpers;
@@ -49,6 +50,23 @@ namespace SgqSystem.Controllers.Api
             CommonLog.SaveReport(form, "Report_Apontamentos_Diarios");
 
             var query = new ApontamentosDiariosResultSet().Select(form);
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                _list = factory.SearchQuery<ApontamentosDiariosResultSet>(query).ToList();
+
+                return _list;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetApontamentosDiariosSeara")]
+        public List<ApontamentosDiariosResultSet> GetApontamentosDiariosSeara([FromBody] FormularioParaRelatorioViewModel form)
+        {
+
+            CommonLog.SaveReport(form, "Report_Apontamentos_Diarios");
+
+            var query = new ApontamentosDiariosResultSet().SelectSeara(form);
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
@@ -358,6 +376,42 @@ namespace SgqSystem.Controllers.Api
             return true;
         }
 
+        [HttpPost]
+        [Route("EditProduto/{ParFamiliaProduto_Id}")]
+        public string EditProduto(int ParFamiliaProduto_Id)
+        {
+            var retorno = getProdutos(ParFamiliaProduto_Id);
+
+            var json = JsonConvert.SerializeObject(retorno, Formatting.None, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+
+            return json;
+        }
+
+        [HttpPost]
+        [Route("SaveProduto")]
+        public bool SaveProduto([FromBody] ListCollectionLevel2xParProduto listCollectionLevel2XParProduto)
+        {
+            var collectionLevel2xParFamiliaProdutoxParProdutoOld = db.CollectionLevel2XParFamiliaProdutoXParProduto
+            .Where(x => x.CollectionLevel2_Id == listCollectionLevel2XParProduto.CollectionLevel2_Id).FirstOrDefault();
+
+            collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto_Id = listCollectionLevel2XParProduto.ParProduto_Id;
+            collectionLevel2xParFamiliaProdutoxParProdutoOld.AlterDate = DateTime.Now;
+            db.Entry(collectionLevel2xParFamiliaProdutoxParProdutoOld).State = EntityState.Modified;
+            db.SaveChanges();
+
+            var produto = db.ParProduto.Find(listCollectionLevel2XParProduto.ParProduto_Id);
+            collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto = produto.Name;
+
+            var auditorId = db.CollectionLevel2.Where(x => x.Id == listCollectionLevel2XParProduto.CollectionLevel2_Id).Select(x => x.AuditorId).First();
+            LogSystem.LogTrackBusiness.RegisterIfNotExist(collectionLevel2xParFamiliaProdutoxParProdutoOld, listCollectionLevel2XParProduto.CollectionLevel2_Id, "CollectionLevel2XParFamiliaProdutoXParProduto", auditorId);
+            LogSystem.LogTrackBusiness.Register(collectionLevel2xParFamiliaProdutoxParProdutoOld, listCollectionLevel2XParProduto.CollectionLevel2_Id, "CollectionLevel2XParFamiliaProdutoXParProduto", listCollectionLevel2XParProduto.UserSgq_Id, listCollectionLevel2XParProduto.ParReason_Id, listCollectionLevel2XParProduto.Motivo);
+
+            return true;
+        }
+
         public class Select
         {
             public ParHeaderField HeaderField { get; set; }
@@ -374,6 +428,23 @@ namespace SgqSystem.Controllers.Api
             public int ParLevel2_Id { get; set; }
             public int EvaluationNumber { get; set; }
             public int Sample { get; set; }
+        }
+
+        public List<ParProdutoResultSet> getProdutos(int ParFamiliaProduto_Id)
+        {
+            var query = $@"SELECT
+                        PFP_PP.ParProduto_Id AS ParProduto_Id
+                        ,PP.Name AS ParProduto
+                        FROM ParFamiliaProdutoXParProduto PFP_PP
+                        INNER JOIN ParProduto PP
+                        ON PP.Id = PFP_PP.ParProduto_Id
+                        WHERE 1=1
+                        AND PFP_PP.IsActive = 1
+                        AND PFP_PP.ParFamiliaProduto_Id = {ParFamiliaProduto_Id}";
+
+            var produtos = db.Database.SqlQuery<ParProdutoResultSet>(query).ToList();
+
+            return produtos;
         }
 
         public List<Select> getSelects(int ResultLevel3_Id)
@@ -487,6 +558,15 @@ namespace SgqSystem.Controllers.Api
             public string Motivo { get; set; }
             public int UserSgq_Id { get; set; } //Quem editou
             public List<CollectionLevel2XParHeaderField> HeaderField { get; set; }
+        }
+
+        public class ListCollectionLevel2xParProduto
+        {
+            public int ParReason_Id { get; set; }
+            public string Motivo { get; set; }
+            public int UserSgq_Id { get; set; } //Quem editou
+            public int CollectionLevel2_Id { get; set; }
+            public int ParProduto_Id { get; set; }
         }
     }
 }

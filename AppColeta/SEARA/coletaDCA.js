@@ -18,6 +18,7 @@ function openColetaDCA(levels) {
             var hasLevel3 = false;
             var striped = true;
 
+            level2.ParLevel3.sort((a, b) => a.Name.localeCompare(b.Name));
             level2.ParLevel3.forEach(function (level3) {
 
                 var inputLevel3 = getInputLevel3DCA(level3, level2, level1, striped);
@@ -1251,6 +1252,11 @@ function getAmostraAtual(parLevel1, parLevel2, parLevel3) {
             o.Evaluation == currentEvaluationDCA.Evaluation &&
             o.Outros.indexOf('ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ',') > 0
     });
+
+    var coletaAgrupadaColetada = getResultEvaluationDCA(parLevel1.Id, parLevel2.Id);
+    if(!!coletaAgrupadaColetada.ParFamiliaProduto_Id && coletaAgrupadaColetada.Evaluation >= currentEvaluationDCA.Evaluation){
+        return getAmostraTotal(parLevel1, parLevel2, parLevel3)+1;
+    }
 
     //Melhorar essa bosta
     if (coletasDCAFilter.length == 0) {

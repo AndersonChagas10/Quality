@@ -4,7 +4,8 @@ function listarParLevel1(isVoltar) {
 	currentParLevel2_Id = null;
 	objCabecalhoLevel1 = {};
 
-	var listaParLevel1 = RetornarParLevel1(currentParCluster_Id);
+    var listaParLevel1 = RetornarParLevel1(currentParCluster_Id);
+    listaParLevel1.sort((a, b) => a.Name.localeCompare(b.Name))
 
 	var htmlLista = "";
 

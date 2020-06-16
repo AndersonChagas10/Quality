@@ -82,7 +82,9 @@ function getSelectProdutosDCA() {
     var htmlLista = '<input type="text" id="buscaProdutoDCA" class="form-control" style="height:50px;" placeholder="Buscar Produto/ SKU">';
     htmlLista += '<select id="selectProdutoDCA" name="produtoDCA" class="form-control" style="height:50px;">';
 
-	$(getParProdutoPorFamiliaDeProduto()).each(function (i, o) {
+    var listaParProdutoPorFamiliaDeProduto = getParProdutoPorFamiliaDeProduto();
+    listaParProdutoPorFamiliaDeProduto.sort((a, b) => a.Name.localeCompare(b.Name));
+    $(listaParProdutoPorFamiliaDeProduto).each(function (i, o) {
 		var selected = "";
 		if(currentProdutoDCA_Id == o.Id){
 			selected = " selected";
