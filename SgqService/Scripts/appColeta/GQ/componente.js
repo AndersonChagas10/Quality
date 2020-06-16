@@ -310,5 +310,7 @@ function removeLevel3NA() {
 }
 
 function reiniciaComponente() {
-    $('.painelLevel03:visible select.selectComponente').trigger("change");
+    setTimeout(function () {
+        $('.painelLevel03:visible select.selectComponente').trigger("change");
+    }, 100);
 }
