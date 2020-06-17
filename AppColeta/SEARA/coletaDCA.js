@@ -546,7 +546,7 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         htmlAmostraNC +
         '<div class="col-xs-4 no-gutters">' +
         '<div class="col-xs-8">' +
-        '	<input type="number" class="col-xs-12 input-sm" data-valor/>' +
+        '	<input type="number" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="col-xs-12 input-sm" data-valor/>' +
         '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
         //'<div class="col-xs-2" >' + btnColeta + '</div>' +
@@ -574,7 +574,7 @@ function getNumerodeDefeitosComTextoDCA(level3, amostraAtual, amostraTotal, amos
         htmlAmostraNC +
         '<div class="col-xs-4 no-gutters">' +
         '<div class="col-xs-4" style="padding:0 2px 0 2px !important">' +
-        '	<input type="number" class="col-xs-12 input-sm" data-valor/>' +
+        '	<input type="number" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="col-xs-12 input-sm" data-valor/>' +
         '</div>' +
         '<div class="col-xs-4" style="padding:0 2px 0 2px !important">' +
         '	<input type="text" class="col-xs-12 input-sm" data-texto placeholder="Observações"/>' +
