@@ -129,6 +129,7 @@ namespace SgqSystem.Controllers
             if (ModelState.IsValid)
             {
                 reportXUserSgq.AlterDate = DateTime.Now;
+                reportXUserSgq.IsActive = true;
                 db.Entry(reportXUserSgq).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

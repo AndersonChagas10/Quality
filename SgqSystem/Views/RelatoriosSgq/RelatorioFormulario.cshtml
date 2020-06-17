@@ -6,15 +6,15 @@
     ViewBag.Title = "Formulário";
 
     ViewBag.ShowIndicadorMER = true;
-    ViewBag.ShowCurrentDate = true;
-    ViewBag.ShowParCompany = true;
+    //ViewBag.ShowCurrentDate = true;
+    //ViewBag.ShowParCompany = true;
 
     //var url = Url.Action("Index", "Home");
 
 }
 
 @section NovoFiltro {
-    @if (ViewBag.ShowIndicadorMER == true)
+    @if (ViewBag.ShowIndicadorMER == false)
     {
         <div class="col-sm-12">
             <div class="form-group">
