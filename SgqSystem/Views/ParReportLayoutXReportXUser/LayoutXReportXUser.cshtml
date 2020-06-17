@@ -1,0 +1,94 @@
+﻿
+@model  Dominio.ReportXUserSgq
+
+
+@{
+                /**/
+
+                ViewBag.Title = "Cadastro de Layout X Relatório";
+}
+
+<div class="portlet light bordered">
+    <div class="portlet-title tabbable-line">
+        <div class="caption">
+            <i class="icon-share font-dark"></i>
+            <span class="caption-subject font-dark bold uppercase">Layout X Relatório</span>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="tab-content">
+            <div class="tab-pane active" id="setup_tab">
+
+                <p>
+                    @Html.ActionLink(Resources.Resource.create as string, "Create", "ParReportLayoutXReportXUser", new { reportXUserId = Model.Id, level1_Id = Model.ParLevel1_Id }, new { @class = "btn btn-primary" })
+                </p>
+
+                <table class="table table-striped" id="tabelaLayout">
+                    <thead style="background-color: cornflowerblue;">
+                        <tr>
+                            <th>Valor</th>
+                            <th>Apelido</th>
+                            <th>Nivel Layout</th>
+                            <th>Ordenação</th>
+                            <th>Ativo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ParReportLayoutXReportXUser)
+                        {
+                            <tr>
+                                <td>@item.Value</td>
+                                <td>@item.NickName</td>
+
+                                @if (@item.LayoutLevel == 1)
+                                {
+                                    <td>Cabeçalho</td>
+                                }
+                                else if (item.LayoutLevel == 2)
+                                {
+                                    <td>Linha</td>
+                                }
+                                else
+                                {
+                                    <td>Valor</td>
+                                }
+                                <td> @Html.DisplayFor(modelItem => item.Ordenacao)</td>
+                                <td> @Html.DisplayFor(modelItem => item.IsActive)</td>
+                                <td>
+                                    @Html.ActionLink("Editar", "Edit", "ParReportLayoutXReportXUser", new { id = item.Id, level1_Id = Model.ParLevel1_Id }, new { @class = "btn btn-success" })
+                                    @Html.ActionLink("Inativar", "Delete", "ParReportLayoutXReportXUser", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar4");
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            null,
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tabelaLayout').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
+    });
+</script>

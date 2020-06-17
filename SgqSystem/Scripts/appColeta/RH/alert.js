@@ -86,7 +86,7 @@ function abreModalCorrectiveAction(listaDeColetaComAlertaEAcaoCorretiva, index){
         ParDepartment_Id: coleta.ParDepartment_Id,
         ParCargo_Id: coleta.ParCargo_Id,
         //ParCluster_Id: 1,
-        CollectionDate: getCurrentDate()
+        CollectionDate: coleta.CollectionDate
     };
 
     currentRespostasDaAcaoCorretiva = correctiveAction;

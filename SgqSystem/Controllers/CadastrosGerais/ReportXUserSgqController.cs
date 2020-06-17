@@ -60,6 +60,25 @@ namespace SgqSystem.Controllers
             return View(reportXUserSgq);
         }
 
+        // GET: ParDepartments/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            ReportXUserSgq reportXUserSgq = db.ReportXUserSgq.Where(x => x.Id == id).Include(x => x.ParCompany).Include(X => X.ParLevel1).FirstOrDefault();
+
+            if(reportXUserSgq != null)
+                reportXUserSgq.ParReportLayoutXReportXUser = db.ParReportLayoutXReportXUser.Where(x => x.ReportXUserSgq_Id == reportXUserSgq.Id && x.IsActive).OrderByDescending(x => x.LayoutLevel).ToList();
+
+            if (reportXUserSgq == null)
+            {
+                return HttpNotFound();
+            }
+            return View(reportXUserSgq);
+        }
+
         // GET: ReportXUserSgqs/Edit/5
         public ActionResult Edit(int? id)
         {

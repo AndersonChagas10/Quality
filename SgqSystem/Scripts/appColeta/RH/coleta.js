@@ -1071,6 +1071,7 @@ function PrepararColetas() {
         RedistributeWeight();
     }
 
+    var collectionDate = getCurrentDate();
     //Insere valores da coleta
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
 
@@ -1098,7 +1099,7 @@ function PrepararColetas() {
                 Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
                 ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
                 IsNotEvaluate: isNA,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 Weigth: $(data).attr('data-peso-parametrizado'),
                 WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
@@ -1126,7 +1127,7 @@ function PrepararColetas() {
 
     processAlertRole(coletaJson);
 
-    var cabecalhos = getCollectionHeaderFields();
+    var cabecalhos = getCollectionHeaderFields(collectionDate);
 
     if (cabecalhos) {
         cabecalhos.forEach(function (cabecalho) {
@@ -1292,7 +1293,7 @@ function getQualificationCollection(ParLevel1_Id, ParLevel2_Id, ParLevel3_Id) {
     return collectionQualification;
 }
 
-function getCollectionHeaderFields() {
+function getCollectionHeaderFields(collectionDate) {
 
     var collectionHeaderFied = [];
 
@@ -1312,7 +1313,7 @@ function getCollectionHeaderFields() {
                 ParCargo_Id: currentParCargo_Id,
                 ParCluster_Id: currentParCluster_Id,
                 ParCompany_Id: currentParCompany_Id,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
                 IsPartialSave: hasPartialSave
@@ -1336,7 +1337,7 @@ function getCollectionHeaderFields() {
                 ParCargo_Id: currentParCargo_Id,
                 ParCluster_Id: currentParCluster_Id,
                 ParCompany_Id: currentParCompany_Id,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
@@ -1362,7 +1363,7 @@ function getCollectionHeaderFields() {
                 ParCargo_Id: currentParCargo_Id,
                 ParCluster_Id: currentParCluster_Id,
                 ParCompany_Id: currentParCompany_Id,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
@@ -1389,7 +1390,7 @@ function getCollectionHeaderFields() {
                 ParCargo_Id: currentParCargo_Id,
                 ParCluster_Id: currentParCluster_Id,
                 ParCompany_Id: currentParCompany_Id,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel3').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel3').attr('parLevel2Id'),

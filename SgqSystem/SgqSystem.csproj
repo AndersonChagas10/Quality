@@ -26,7 +26,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>true</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -396,6 +397,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParDepartmentGroupsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParReportLayoutXReportXUserController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\CrudGenerico\ComponenteGenericoController.cs" />
     <Compile Include="Controllers\DicionarioEstaticoController.cs" />
@@ -1172,8 +1174,10 @@
     <Content Include="Imagens\A.png" />
     <Content Include="Imagens\C.png" />
     <Content Include="Imagens\D.png" />
+    <Content Include="Imagens\logoNovoGQ.png" />
     <Content Include="Imagens\MatrizVGA.PNG" />
     <Content Include="Imagens\novoLogoFriboi.PNG" />
+    <Content Include="Imagens\novoLogoFriboi2.png" />
     <Content Include="Imagens\P.png" />
     <Content Include="Content\Imagens\SGQLogo01.png" />
     <Content Include="images\sort_asc.png" />
@@ -2368,6 +2372,10 @@
     <Content Include="Views\Relatorios\GQ\Laboratorio\_FilterReportsLaboratorio.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioLaboratorio.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioFormulario.cshtml" />
+    <Content Include="Views\ParReportLayoutXReportXUser\LayoutXReportXUser.cshtml" />
+    <Content Include="Views\ParReportLayoutXReportXUser\Create.cshtml" />
+    <Content Include="Views\ParReportLayoutXReportXUser\Delete.cshtml" />
+    <Content Include="Views\ParReportLayoutXReportXUser\Edit.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

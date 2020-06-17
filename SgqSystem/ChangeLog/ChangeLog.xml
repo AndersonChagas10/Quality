@@ -3089,6 +3089,80 @@
   </Card>
 
   <Card>
+    <CardNumber>SGQ-705</CardNumber>
+    <Version>1.9.0</Version>
+    <Description>[GQ] - FORMULÁRIOS - Cadastros do formulário.</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReportLayoutXReportXUser' AND xtype='U')
+      CREATE TABLE [dbo].[ParReportLayoutXReportXUser](
+      [Id] [int] IDENTITY(1,1) NOT NULL primary key,
+      [AlterDate] [datetime] NULL,
+      [AddDate] [datetime] NULL,
+      [ReportXUserSgq_Id] [int] NULL,
+      [Value] varchar(100) null,
+      [LayoutLevel] int not null,
+      [IdReference] int null,
+      [NickName] varchar(100) null,
+      [TableReference] varchar(100) null,
+      [IsActive] bit not null
+      )
+      GO
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ReportLayoutItens' AND xtype='U')
+      CREATE TABLE [dbo].[ReportLayoutItens](
+      [Id] [int] NOT NULL primary key,
+      [Name] varchar(100) not null,
+      [IsActive] bit not null
+      )
+      GO
+      IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 1)
+      insert into ReportLayoutItens(Id, Name, IsActive) values('1', 'Indicador',1)
+
+      IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 2)
+      insert into ReportLayoutItens(Id, Name, IsActive) values('2', 'Monitoramento',1)
+
+      IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 3)
+      insert into ReportLayoutItens(Id, Name, IsActive) values('3', 'Tarefa',1)
+
+      IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 4)
+      insert into ReportLayoutItens(Id, Name, IsActive) values('4', 'Data da Coleta',1)
+
+      IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 5)
+      insert into ReportLayoutItens(Id, Name, IsActive) values('5', 'Hora',1)
+
+      IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 6)
+      insert into ReportLayoutItens(Id, Name, IsActive) values('6', 'Visto',1)
+
+      IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 7)
+      insert into ReportLayoutItens(Id, Name, IsActive) values('7', 'Avaliação',1)
+
+      IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 8)
+      insert into ReportLayoutItens(Id, Name, IsActive) values('8', 'Amostra',1)
+
+      IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 9)
+      insert into ReportLayoutItens(Id, Name, IsActive) values('9', 'AV',1)
+
+      IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 10)
+      insert into ReportLayoutItens(Id, Name, IsActive) values('10', 'Resultado',1)
+
+      IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 11)
+      insert into ReportLayoutItens(Id, Name, IsActive) values('11', 'NC',1)
+
+      IF NOT EXISTS (SELECT * FROM ReportLayoutItens WHERE Id = 12)
+      insert into ReportLayoutItens(Id, Name, IsActive) values('12', 'C',1)
+      GO
+
+      IF COL_LENGTH('ParReportLayoutXReportXUser','Ordenacao') IS NULL
+      BEGIN
+      ALTER TABLE ParReportLayoutXReportXUser
+      ADD Ordenacao int null;
+      END
+      GO
+      
+    </Script>
+  </Card>
+
+  <Card>
     <CardNumber>SGQ-569</CardNumber>
     <Version>1.8.0</Version>
     <Description>[RH 5S] Parametrização/Coleta - Permitir tornar a qualificação obrigatória</Description>
@@ -3545,6 +3619,23 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-764</CardNumber>
+    <Version>1.9.0</Version>
+    <Description>[GQ] Relatório Análise Laboratoriais - Melhorria de performance do relatório.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+
+  <Card>
+    <CardNumber>SGQ-799</CardNumber>
+    <Version>1.9.0</Version>
+    <Description>[GQ] FORMULÁRIOS - Campo de cabeçalho.</Description>
+    <Script>
+    </Script>
+  </Card>
+  
   <Card>
     <CardNumber>SGQ-765</CardNumber>
     <Version>1.9.0</Version>
