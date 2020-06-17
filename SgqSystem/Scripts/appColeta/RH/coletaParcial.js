@@ -1,9 +1,27 @@
 var hasPartialSave = false;
 var coletasParciais = [];
 
-function verificaIsPartialSave() {
+//coletar sem validar
+function preparaColetaParcialFim() {
 
-    hasPartialSave = false;
+    closeMensagemImediatamente();
+    PrepararColetas();
+
+}
+
+function preparaColetaParcial() {
+
+    closeMensagemImediatamente();
+
+    if (currentIsPartialSave) {
+        verificaIsPartialSave();
+    }
+
+    PrepararColetas();
+
+}
+
+function verificaIsPartialSave() {
 
     if (!currentIsPartialSave) {
         return;
@@ -26,7 +44,7 @@ function verificaIsPartialSave() {
                 errorCount++;
 
         } else if (typeof ($(data).find('input[data-texto]').val()) != 'undefined') {
-            if ($(data).find('input[data-valor]').val() == "")
+            if ($(data).find('input[data-texto]').val() == "")
                 errorCount++
         } 
     }
@@ -35,6 +53,53 @@ function verificaIsPartialSave() {
     } 
 }
 
+function hasOnlyTextField() {
+
+    //Se apenas existir campos textos vazios para serem preenchidos
+    if (!currentIsPartialSave) {
+        return false;
+    }
+
+    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
+    var data;
+    var existeCampoTextoVazio = false;
+    var existeCampoVazio = false;
+
+    for (var i = 0; i < linhasDaColeta.length; i++) {
+
+        data = linhasDaColeta[i];
+
+        var inputType = parseInt($(data).attr('data-input-type'));
+
+        switch (inputType) {
+            case 1:
+            case 6:
+                if ($(data).find('[data-binario]').text().trim() == "")
+                    existeCampoVazio = true;
+
+                break;
+
+            case 5:
+            case 11:
+                if ($(data).find('input[data-texto]').val() == "" || $(data).find('input[data-valor]').val() == "")
+                    existeCampoTextoVazio = true;
+
+                break;
+
+            default:
+                if ($(data).find('input[data-valor]').val() == "")
+                    existeCampoVazio = true;
+
+                break;
+        }
+    }
+
+    if (existeCampoTextoVazio && !existeCampoVazio) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 function fieldIsEmpty(campo) {
 
@@ -52,9 +117,9 @@ function fieldIsEmpty(campo) {
             return true;
 
     } else if (typeof ($(data).find('input[data-texto]').val()) != 'undefined') {
-        if ($(data).find('input[data-valor]').val() == "")
+        if ($(data).find('input[data-texto]').val() == "")
             return true;
-    } 
+    }
 
     return false;
 
@@ -208,6 +273,179 @@ function desabilitaColetados() {
 
         }
     }
+
+    desabilitaCamposCabecalho();
+}
+
+function desabilitaCamposCabecalho() {
+    
+    setHeaderFieldLevel1();
+    setHeaderFieldLevel2();
+    setHeaderFieldLevel3();
+
+}
+
+function setHeaderFieldLevel1() {
+
+    var listaHeaderFieldLevel1 = $('[id=headerFieldLevel1]');
+    var dataApp = getCurrentDate().split("T")[0];
+
+    listaHeaderFieldLevel1.each(function (index, value) {
+
+        var inputSelect = $(value).find('input, select');
+        var parLevel1_Id = parseInt($(value).attr('parlevel1id'));
+
+        inputSelect.each(function (index, value) {
+
+            var parHeaderField_Id = parseInt($(value).attr('parheaderfield_id'));
+
+
+            var coletaHeaderFieldL1 = $.grep(coletasParciais, function (o, i) {
+
+                var dataColetaParcial = o.CollectionDate.split("T")[0];
+
+                return o.ParCompany_Id == currentParCompany_Id &&
+                    o.ParDepartment_Id == currentParDepartment_Id &&
+                    o.ParCluster_Id == currentParCluster_Id &&
+                    o.Parfrequency_Id == currentParFrequency_Id &&
+                    o.ParCargo_Id == currentParCargo_Id &&
+                    o.ParLevel1_Id == parLevel1_Id &&
+                    o.ParLevel2_Id == null &&
+                    o.ParLevel3_Id == null &&
+                    o.Evaluation == currentEvaluationSample.Evaluation &&
+                    o.Sample == currentEvaluationSample.Sample &&
+                    o.ParHeaderField_Id == parHeaderField_Id &&
+                    dataApp == dataColetaParcial;
+
+            })[0];
+
+            if (coletaHeaderFieldL1) {
+
+                if ($(value).is("select")) {
+
+                    $(value).val(coletaHeaderFieldL1.ParHeaderField_Value)
+
+                } else {
+
+                    $(value).val(coletaHeaderFieldL1.ParHeaderField_Value)
+                    $(value).text(coletaHeaderFieldL1.ParHeaderField_Value)
+                }
+
+                $(value).prop("disabled", true);
+
+            }
+
+        });
+
+    });
+}
+
+function setHeaderFieldLevel2() {
+
+    var listaHeaderFiledLevel2 = $('[id=headerFieldLevel2]');
+    var dataApp = getCurrentDate().split("T")[0];
+
+    listaHeaderFiledLevel2.each(function(index, value){
+
+        var inputSelect = $(value).find('input, select');
+        var parLevel1_Id = parseInt($(value).attr('parlevel1id'));
+        var parLevel2_Id = parseInt($(value).attr('parlevel2id'));
+
+        inputSelect.each(function (index, value) {
+
+            var parHeaderField_Id = parseInt($(value).attr('parheaderfield_id'));
+
+            var coletaHeaderFieldL2 = $.grep(coletasParciais, function (o, i) {
+
+                var dataColetaParcial = o.CollectionDate.split("T")[0];
+
+                return o.ParCompany_Id == currentParCompany_Id &&
+                    o.ParDepartment_Id == currentParDepartment_Id &&
+                    o.ParCluster_Id == currentParCluster_Id &&
+                    o.Parfrequency_Id == currentParFrequency_Id &&
+                    o.ParCargo_Id == currentParCargo_Id &&
+                    o.ParLevel1_Id == parLevel1_Id &&
+                    o.ParLevel2_Id == parLevel2_Id &&
+                    o.ParLevel3_Id == null &&
+                    o.Evaluation == currentEvaluationSample.Evaluation &&
+                    o.Sample == currentEvaluationSample.Sample &&
+                    o.ParHeaderField_Id == parHeaderField_Id &&
+                    dataApp == dataColetaParcial;
+
+            })[0];
+
+            if (coletaHeaderFieldL2) {
+
+                if ($(value).is("select")) {
+
+                    $(value).val(coletaHeaderFieldL2.ParHeaderField_Value)
+
+                } else {
+
+                    $(value).val(coletaHeaderFieldL2.ParHeaderField_Value)
+                    $(value).text(coletaHeaderFieldL2.ParHeaderField_Value)
+                }
+
+                $(value).prop("disabled", true);
+            }
+
+        });
+
+    });
+
+}
+
+function setHeaderFieldLevel3() {
+
+    var listaHeaderFieldLevel3 = $('[id=headerFieldLevel3]');
+    var dataApp = getCurrentDate().split("T")[0];
+
+    listaHeaderFieldLevel3.each(function(index, value){
+
+        var inputSelect = $(value).find('input, select');
+        var parLevel1_Id = parseInt($(value).attr('parlevel1id'));
+        var parLevel2_Id = parseInt($(value).attr('parlevel2id'));
+        var parLevel3_Id = parseInt($(value).attr('parlevel3id'));
+
+        inputSelect.each(function (index, value) {
+
+            var parHeaderField_Id = parseInt($(value).attr('parheaderfield_id'));
+
+            var coletaHeaderFieldL3 = $.grep(coletasParciais, function (o, i) {
+
+                var dataColetaParcial = o.CollectionDate.split("T")[0];
+
+                return o.ParCompany_Id == currentParCompany_Id &&
+                    o.ParDepartment_Id == currentParDepartment_Id &&
+                    o.ParCluster_Id == currentParCluster_Id &&
+                    o.Parfrequency_Id == currentParFrequency_Id &&
+                    o.ParCargo_Id == currentParCargo_Id &&
+                    o.ParLevel1_Id == parLevel1_Id &&
+                    o.ParLevel2_Id == parLevel2_Id &&
+                    o.ParLevel3_Id == parLevel3_Id &&
+                    o.Evaluation == currentEvaluationSample.Evaluation &&
+                    o.Sample == currentEvaluationSample.Sample &&
+                    o.ParHeaderField_Id == parHeaderField_Id &&
+                    dataApp == dataColetaParcial;
+
+            })[0];
+
+            if (coletaHeaderFieldL3) {
+
+                if ($(value).is("select")) {
+
+                    $(value).val(coletaHeaderFieldL3.ParHeaderField_Value)
+
+                } else {
+
+                    $(value).val(coletaHeaderFieldL3.ParHeaderField_Value)
+                    $(value).text(coletaHeaderFieldL3.ParHeaderField_Value)
+                }
+
+                $(value).prop("disabled", true);
+            }
+        });
+    });
 }
 
 function setBinarioRespondido(self, isConform) {

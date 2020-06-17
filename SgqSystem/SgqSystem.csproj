@@ -1182,6 +1182,7 @@
     <Content Include="Scripts\appColeta\RH\alert.js" />
     <Content Include="Scripts\appColeta\RH\app.js" />
     <Content Include="Scripts\appColeta\RH\coleta.js" />
+    <Content Include="Scripts\appColeta\RH\coletaParcial.js" />
     <Content Include="Scripts\appColeta\RH\correctiveAction.js" />
     <Content Include="Scripts\appColeta\RH\crypto.js" />
     <Content Include="Scripts\appColeta\RH\guard.js" />

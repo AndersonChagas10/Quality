@@ -231,6 +231,7 @@ function getInputLevel3(level3, level2, level1, striped) {
         retorno += '<div class="col-xs-12" data-linha-coleta ';
         retorno += ' data-collapse-target="' + level1.Id + '-' + level2.Id + '"';
         retorno += ' data-conforme="' + conforme + '"';
+        retorno += ' data-input-type="' + level3.ParLevel3InputType.Id + '"';
         retorno += ' data-default-answer="' + level3.ParLevel3Value.IsDefaultAnswerInt + '"';
         retorno += ' data-min="' + level3.ParLevel3Value.IntervalMin + '"';
         retorno += ' data-max="' + level3.ParLevel3Value.IntervalMax + '"';
@@ -310,7 +311,7 @@ function getBinario(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
-    if (level3.ParLevel3Value.IsRequiredInt || currentIsPartialSave) {
+    if (level3.ParLevel3Value.IsRequiredInt) {
         respostaPadrao = "&nbsp;";
         botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-tarefa data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     } else {
@@ -350,7 +351,7 @@ function getBinarioComTexto(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
-    if (level3.ParLevel3Value.IsRequiredInt || currentIsPartialSave) {
+    if (level3.ParLevel3Value.IsRequiredInt) {
         respostaPadrao = "&nbsp;";
         botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-tarefa data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     } else {
@@ -1024,11 +1025,27 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         return false;
     }
 
-    if (!currentIsPartialSave && !ColetasIsValid()) {
-        return false;
+    hasPartialSave = false;
+
+    if (currentIsPartialSave && hasOnlyTextField()) {
+
+        openMessageConfirm("Deseja finalizar a amostra?", "todos os campos não preenchidos serão salvos.", preparaColetaParcialFim, closeMensagemImediatamente, "orange", "white");
+
+    } else if (currentIsPartialSave) {
+
+        preparaColetaParcial();
+
+    } else {
+
+        if (ColetasIsValid()) {
+            PrepararColetas();
+        }
+
     }
 
-    verificaIsPartialSave();
+});
+
+function PrepararColetas() {
 
     //Verifica se existe coleta já realizada para este cargo.
     var coletaAgrupada = null;
@@ -1056,12 +1073,14 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 
     //Insere valores da coleta
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
+
         var data = $(o);
         var isNA = $(data).attr('data-conforme-na') == "";
 
         //se for coleta parcial e não tiver sido respondido, não é enviado
-        if (currentIsPartialSave && fieldIsEmpty(data))
+        if (currentIsPartialSave && fieldIsEmpty(data)) {
             return;
+        }
 
         coletaJson.push(
             {
@@ -1141,7 +1160,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         $("html, body").animate({ scrollTop: 0 }, "fast");
     }
 
-});
+}
 
 function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {
     coletaAgrupada.Sample++; //Incrementa a amostra
