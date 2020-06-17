@@ -1,4 +1,4 @@
-var coletaJson = [];
+﻿var coletaJson = [];
 var currentEvaluationDCA = {};
 var coletasDCA = [];
 var objCabecalhoLevel1 = [];
@@ -63,8 +63,8 @@ function openColetaDCA(levels) {
         getParHeaderFieldDeparment() +
         '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
         coleta +
-        '					<button class="btn btn-success pull-right" data-salvar-tarefas style="margin:10px 25px">Salvar todas as tarefas</button>       ' +
-        '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar-dca style="margin-top:10px" disabled>Salvar</button>       ' +
+        //'					<button class="btn btn-success pull-right" data-salvar-tarefas style="margin:10px 25px">Salvar todas as tarefas</button>       ' +
+        '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar-dca style="margin-top:10px">Salvar</button>       ' +
         '				</form>                                                                                                                    ' +
         '			  </div>                                                                                                                       ' +
         '       </div>                                                                                                                             ' +
@@ -74,8 +74,8 @@ function openColetaDCA(levels) {
 
     $('div#app').html(html);
 
-    if ($("[data-linha-coleta][data-synced='false'][data-amostra-completa='1']").length == $("[data-linha-coleta]").length) {
-        habilitaBotaoSalvar();
+    if ($("[data-linha-coleta][data-amostra-completa='1']").length == $("[data-linha-coleta]").length) {
+        desabilitaBotaoSalvar();
     }
 
     atualizaCorSePassarDoLimiteDeNC();
@@ -198,7 +198,7 @@ function getBinarioDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
     var html = '';
     var botao = '';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
+    //var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -236,7 +236,7 @@ function getBinarioDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         botao +
         '   </div>' +
         '   <div class="col-xs-2" >' + btnNA + '</div>' +
-        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
+        //'   <div class="col-xs-2" >' + btnColeta + '</div>' +
         '</div>' +
         '<div class="clearfix"></div>';
 
@@ -247,7 +247,7 @@ function getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
+    //var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -294,7 +294,7 @@ function getBinarioComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         botao +
         '   </div>' +
         '   <div class="col-xs-2" >' + btnNA + '</div>' +
-        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
+        //'   <div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -306,7 +306,7 @@ function getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
+    //var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -342,7 +342,7 @@ function getIntervaloDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '       </div>' +
         '   </div>' +
         '   <div class="col-xs-2" >' + btnNA + '</div>' +
-        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
+        //'   <div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -354,7 +354,7 @@ function getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC)
 
     var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
+    //var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -393,7 +393,7 @@ function getIntervaloemMinutosDCA(level3, amostraAtual, amostraTotal, amostraNC)
         '   </div>' +
         '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
-        '<div class="col-xs-2" >' + btnColeta + '</div>' +
+        //'<div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -405,7 +405,7 @@ function getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostr
 
     var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
+    //var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -445,7 +445,7 @@ function getIntervaloComObservacaoDCA(level3, amostraAtual, amostraTotal, amostr
         '   </div>' +
         '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
-        '<div class="col-xs-2" >' + btnColeta + '</div>' +
+        //'<div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -457,7 +457,7 @@ function getObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
+    //var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -480,7 +480,7 @@ function getObservacaoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
         '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
-        '<div class="col-xs-2" >' + btnColeta + '</div>' +
+        //'<div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -492,7 +492,7 @@ function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
+    //var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -515,7 +515,7 @@ function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '	<input type="text" class="col-xs-12 input-sm" data-valor/>' +
         '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
-        '<div class="col-xs-2" >' + btnColeta + '</div>' +
+        //'<div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -526,7 +526,7 @@ function getTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
+    //var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -549,7 +549,7 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '	<input type="number" min="0" onkeyup="if(this.value<0){this.value= this.value * -1}" class="col-xs-12 input-sm" data-valor/>' +
         '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
-        '<div class="col-xs-2" >' + btnColeta + '</div>' +
+        //'<div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -560,7 +560,7 @@ function getNumerodeDefeitosDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 function getNumerodeDefeitosComTextoDCA(level3, amostraAtual, amostraTotal, amostraNC) {
     var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
+    //var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
 
     var html = '';
 
@@ -580,7 +580,7 @@ function getNumerodeDefeitosComTextoDCA(level3, amostraAtual, amostraTotal, amos
         '	<input type="text" class="col-xs-12 input-sm" data-texto placeholder="Observações"/>' +
         '</div>' +
         '<div class="col-xs-2" >' + btnNA + '</div>' +
-        '<div class="col-xs-2" >' + btnColeta + '</div>' +
+        //'<div class="col-xs-2" >' + btnColeta + '</div>' +
         '</div>' +
         '<div class="clearfix"></div>';
 
@@ -591,7 +591,7 @@ function getLikertDCA(level3, amostraAtual, amostraTotal, amostraNC) {
 
     var disabled = amostraAtual > amostraTotal ? 'disabled' : '';
     var btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na-dca ' + disabled + '>N/A</button>';
-    var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
+    //var btnColeta = '<button type="button" class="btn btn-success pull-right btn-sm btn-block" data-coleta-dca ' + disabled + '>Salvar</button>';
     //var amostraAtual = 0;
     //var amostraTotal = 10;
     //var amostraNC = 0;
@@ -619,7 +619,7 @@ function getLikertDCA(level3, amostraAtual, amostraTotal, amostraNC) {
         '	    <input type="text" class="col-xs-12 input-sm" data-valor/>' +
         '   </div>' +
         '   <div class="col-xs-2" >' + btnNA + '</div>' +
-        '   <div class="col-xs-2" >' + btnColeta + '</div>' +
+        //'   <div class="col-xs-2" >' + btnColeta + '</div>' +
         // btnInfo +
         '</div>' +
         '<div class="clearfix"></div>';
@@ -800,7 +800,7 @@ $('body')
         }
     });
 
-$('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', function () {
+function SalvarAnomalias() {
 
     if (!hederFieldIsValid("#headerFieldLevel2")) {
         openMensagem("Existem cabeçalhos obrigatórios não preenchidos!", "yellow", "black");
@@ -808,123 +808,128 @@ $('body').off('click', '[data-coleta-dca]').on('click', '[data-coleta-dca]', fun
         return false;
     }
 
-    var $botaoColeta = $(this);
-    var linhaTarefa = $(this).parents('[data-linha-coleta]');
-    var currentEvaluation = currentEvaluationDCA.Evaluation;
-    var currentSample = parseInt($(linhaTarefa).attr('data-sample'));
-    var isNA = $(linhaTarefa).attr('data-conforme-na') == "";
-    var qtdeNC = parseInt($(linhaTarefa).attr('data-qtdeNc'));
-    var maxSample = parseInt($(linhaTarefa).attr('data-samplemax'));
-    var $botaoNa = $(linhaTarefa).find('[data-na-dca]');
+    //var $botaoColeta = $(this);
+    //var linhaTarefa = $(this).parents('[data-linha-coleta]');
+    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
+    for (var i = 0; i < linhasDaColeta.length; i++) {
+        var linhaTarefa = linhasDaColeta[i];
+        var currentEvaluation = currentEvaluationDCA.Evaluation;
+        var currentSample = parseInt($(linhaTarefa).attr('data-sample'));
+        var isNA = $(linhaTarefa).attr('data-conforme-na') == "";
+        var qtdeNC = parseInt($(linhaTarefa).attr('data-qtdeNc'));
+        var maxSample = parseInt($(linhaTarefa).attr('data-samplemax'));
+        var $botaoNa = $(linhaTarefa).find('[data-na-dca]');
 
-    var coletaDCA = {};
-    var parParLevel3InputType_Id = linhaTarefa.attr('data-parlevel3inputtype');
-    var numeroProximaAmostra = currentSample;
+        var coletaDCA = {};
+        var parParLevel3InputType_Id = $(linhaTarefa).attr('data-parlevel3inputtype');
+        var numeroProximaAmostra = currentSample;
 
-    if (parParLevel3InputType_Id == 2 || parParLevel3InputType_Id == 15) {
+        if (parParLevel3InputType_Id == 2 || parParLevel3InputType_Id == 15) {
 
-        var quantidadeDeDefeitos = linhaTarefa.find('input[type="number"]').val();
+            var quantidadeDeDefeitos = $(linhaTarefa).find('input[type="number"]').val();
 
-        if (maxSample < quantidadeDeDefeitos || quantidadeDeDefeitos < 0) {
-            openMensagem("O valor digitado não está de acordo com o número de amostra.", "yellow", "black");
-            setTimeout(closeMensagem, 3000);
-            return false;
+            if (maxSample < quantidadeDeDefeitos || quantidadeDeDefeitos < 0) {
+                openMensagem("O valor digitado não está de acordo com o número de amostra.", "yellow", "black");
+                setTimeout(closeMensagem, 3000);
+                return false;
+            }
+
+            coletaDCA = {
+                Id: 0,
+                CollectionDate: getCurrentDate(),
+                UserSgq_Id: currentLogin.Id,
+                Shift_Id: 1,
+                Period_Id: 1,
+                ParCompany_Id: currentParCompany_Id,
+                ParLevel1_Id: currentParLevel1_Id,
+                ParLevel2_Id: currentParLevel2_Id,
+                ParLevel3_Id: parseInt($(linhaTarefa).attr('data-level3')),
+                Weigth: $(linhaTarefa).attr('data-peso'),
+                IntervalMin: $(linhaTarefa).attr('data-min') == "null" ? null : $(linhaTarefa).attr('data-min'),
+                IntervalMax: $(linhaTarefa).attr('data-max') == "null" ? null : $(linhaTarefa).attr('data-max'),
+                Value: typeof ($(linhaTarefa).find('input[data-valor]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-valor]').val(),
+                ValueText: typeof ($(linhaTarefa).find('input[data-texto]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-texto]').val(),
+                IsConform: isNA || !(quantidadeDeDefeitos > 0) ? 1 : 0,
+                IsNotEvaluate: isNA,
+                Defects: isNA || !(quantidadeDeDefeitos > 0) ? 0 : quantidadeDeDefeitos,
+                WeiEvaluation: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')) * currentEvaluation,
+                Evaluation: currentEvaluation,
+                WeiDefects: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')),
+                Sample: maxSample,
+                Outros: '{ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ', ParProduto_Id:' + currentProdutoDCA_Id + '}'
+            };
+            coletaDCA.WeiDefects = isNA ? 0 : coletaDCA.Defects * coletaDCA.WeiDefects;
+
+            coletasDCA.push(coletaDCA);
+
+            //Contar quantidade de NC
+            //qtdeNC += coletaDCA.WeiDefects;
+            numeroProximaAmostra = maxSample + 1;
+
+        } else {
+            coletaDCA = {
+                Id: 0,
+                CollectionDate: getCurrentDate(),
+                UserSgq_Id: currentLogin.Id,
+                Shift_Id: 1,
+                Period_Id: 1,
+                ParCompany_Id: currentParCompany_Id,
+                ParLevel1_Id: currentParLevel1_Id,
+                ParLevel2_Id: currentParLevel2_Id,
+                ParLevel3_Id: parseInt($(linhaTarefa).attr('data-level3')),
+                Weigth: $(linhaTarefa).attr('data-peso'),
+                IntervalMin: $(linhaTarefa).attr('data-min') == "null" ? null : $(linhaTarefa).attr('data-min'),
+                IntervalMax: $(linhaTarefa).attr('data-max') == "null" ? null : $(linhaTarefa).attr('data-max'),
+                Value: typeof ($(linhaTarefa).find('input[data-valor]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-valor]').val(),
+                ValueText: typeof ($(linhaTarefa).find('input[data-texto]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-texto]').val(),
+                IsConform: isNA ? 1 : $(linhaTarefa).attr('data-conforme') == "1",
+                IsNotEvaluate: isNA,
+                Defects: isNA ? 0 : $(linhaTarefa).attr('data-conforme') == "1" ? 0 : 1,
+                WeiEvaluation: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')) * currentEvaluation,
+                Evaluation: currentEvaluation,
+                WeiDefects: isNA ? 0 : ($(linhaTarefa).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(linhaTarefa).attr('data-peso')),
+                Sample: currentSample,
+                Outros: '{ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ', ParProduto_Id:' + currentProdutoDCA_Id + '}'
+            };
+
+            coletasDCA.push(coletaDCA);
+
+            //Contar quantidade de NC
+            //qtdeNC += coletaDCA.WeiDefects;
+            numeroProximaAmostra++;
         }
 
-        coletaDCA = {
-            Id: 0,
-            CollectionDate: getCurrentDate(),
-            UserSgq_Id: currentLogin.Id,
-            Shift_Id: 1,
-            Period_Id: 1,
-            ParCompany_Id: currentParCompany_Id,
-            ParLevel1_Id: currentParLevel1_Id,
-            ParLevel2_Id: currentParLevel2_Id,
-            ParLevel3_Id: parseInt($(linhaTarefa).attr('data-level3')),
-            Weigth: $(linhaTarefa).attr('data-peso'),
-            IntervalMin: $(linhaTarefa).attr('data-min') == "null" ? null : $(linhaTarefa).attr('data-min'),
-            IntervalMax: $(linhaTarefa).attr('data-max') == "null" ? null : $(linhaTarefa).attr('data-max'),
-            Value: typeof ($(linhaTarefa).find('input[data-valor]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-valor]').val(),
-            ValueText: typeof ($(linhaTarefa).find('input[data-texto]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-texto]').val(),
-            IsConform: isNA || !(quantidadeDeDefeitos > 0) ? 1 : 0,
-            IsNotEvaluate: isNA,
-            Defects: isNA || !(quantidadeDeDefeitos > 0) ? 0 : quantidadeDeDefeitos,
-            WeiEvaluation: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')) * currentEvaluation,
-            Evaluation: currentEvaluation,
-            WeiDefects: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')),
-            Sample: maxSample,
-            Outros: '{ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ', ParProduto_Id:' + currentProdutoDCA_Id + '}'
-        };
-        coletaDCA.WeiDefects = isNA ? 0 : coletaDCA.Defects * coletaDCA.WeiDefects;
+        $(linhaTarefa).attr('data-qtdeNc', qtdeNC);
+        $(linhaTarefa).find('.amostraNC').html(qtdeNC);
+        //$botaoColeta.prop("disabled", true);
+        $botaoNa.prop("disabled", true);
 
-        coletasDCA.push(coletaDCA);
+        if (numeroProximaAmostra > maxSample) {
+            numeroProximaAmostra = maxSample;
+            $(linhaTarefa).attr('data-amostra-completa', 1);
+            resetarLinha($(linhaTarefa));
+            verificaSalvar();
 
-        //Contar quantidade de NC
-        qtdeNC += coletaDCA.WeiDefects;
-        numeroProximaAmostra = maxSample + 1;
+        } else {
 
-    } else {
-        coletaDCA = {
-            Id: 0,
-            CollectionDate: getCurrentDate(),
-            UserSgq_Id: currentLogin.Id,
-            Shift_Id: 1,
-            Period_Id: 1,
-            ParCompany_Id: currentParCompany_Id,
-            ParLevel1_Id: currentParLevel1_Id,
-            ParLevel2_Id: currentParLevel2_Id,
-            ParLevel3_Id: parseInt($(linhaTarefa).attr('data-level3')),
-            Weigth: $(linhaTarefa).attr('data-peso'),
-            IntervalMin: $(linhaTarefa).attr('data-min') == "null" ? null : $(linhaTarefa).attr('data-min'),
-            IntervalMax: $(linhaTarefa).attr('data-max') == "null" ? null : $(linhaTarefa).attr('data-max'),
-            Value: typeof ($(linhaTarefa).find('input[data-valor]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-valor]').val(),
-            ValueText: typeof ($(linhaTarefa).find('input[data-texto]').val()) == 'undefined' ? null : $(linhaTarefa).find('input[data-texto]').val(),
-            IsConform: isNA ? 1 : $(linhaTarefa).attr('data-conforme') == "1",
-            IsNotEvaluate: isNA,
-            Defects: isNA ? 0 : $(linhaTarefa).attr('data-conforme') == "1" ? 0 : 1,
-            WeiEvaluation: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')) * currentEvaluation,
-            Evaluation: currentEvaluation,
-            WeiDefects: isNA ? 0 : ($(linhaTarefa).attr('data-conforme') == "1" ? 0 : 1) * parseInt($(linhaTarefa).attr('data-peso')),
-            Sample: currentSample,
-            Outros: '{ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ', ParProduto_Id:' + currentProdutoDCA_Id + '}'
-        };
+            setTimeout(function () {
 
-        coletasDCA.push(coletaDCA);
+                //$botaoColeta.prop("disabled", false);
+                $botaoNa.prop("disabled", false);
 
-        //Contar quantidade de NC
-        qtdeNC += coletaDCA.WeiDefects;
-        numeroProximaAmostra++;
+                resetarLinha($(linhaTarefa));
+
+            }, 1000);
+        }
+
+        $(linhaTarefa).attr('data-sample', numeroProximaAmostra);
+        $(linhaTarefa).find('.amostra').html(numeroProximaAmostra);
+
+        atualizaCorSePassarDoLimiteDeNC();
+        atualizaPorcentagemDeTarefas();
     }
 
-    $(linhaTarefa).attr('data-qtdeNc', qtdeNC);
-    $(linhaTarefa).find('.amostraNC').html(qtdeNC);
-    $botaoColeta.prop("disabled", true);
-    $botaoNa.prop("disabled", true);
-
-    if (numeroProximaAmostra > maxSample) {
-        numeroProximaAmostra = maxSample;
-        $(linhaTarefa).attr('data-amostra-completa', 1);
-        resetarLinha(linhaTarefa);
-        verificaSalvar();
-
-    } else {
-
-        setTimeout(function () {
-
-            $botaoColeta.prop("disabled", false);
-            $botaoNa.prop("disabled", false);
-
-            resetarLinha(linhaTarefa);
-
-        }, 1000);
-    }
-
-    $(linhaTarefa).attr('data-sample', numeroProximaAmostra);
-    $(linhaTarefa).find('.amostra').html(numeroProximaAmostra);
-
-    atualizaCorSePassarDoLimiteDeNC();
-    atualizaPorcentagemDeTarefas();
-});
+};
 
 function resetarLinha(linha) {
 
@@ -1211,13 +1216,17 @@ function getQuantidadeNC(parLevel1, parLevel2, parLevel3) {
 
     var qtdeNC = 0;
 
-    if (coletasDCA.length == 0) {
-        return qtdeNC;
-    }
+
+    var currentDate = new Date(getCurrentDate());
+    currentDate = currentDate.getDay() + currentDate.getMonth() + currentDate.getFullYear();
 
     var coletasDCAFilter = $.grep(coletasDCA, function (o) {
 
+        var currentDateColetaDCA = new Date(o.CollectionDate);
+        currentDateColetaDCA = currentDateColetaDCA.getDay() + currentDateColetaDCA.getMonth() + currentDateColetaDCA.getFullYear();
+
         return o.ParLevel1_Id == parLevel1.Id &&
+            currentDate == currentDateColetaDCA && 
             o.ParLevel2_Id == parLevel2.Id &&
             o.ParLevel3_Id == parLevel3.Id &&
             o.Evaluation == currentEvaluationDCA.Evaluation &&
@@ -1240,13 +1249,14 @@ function getAmostraAtual(parLevel1, parLevel2, parLevel3) {
 
     var amostra = 1;
 
-    if (coletasDCA.length == 0) {
-        return amostra;
-    }
-
+    var currentDate = new Date(getCurrentDate());
+    currentDate = currentDate.getDay() + currentDate.getMonth() + currentDate.getFullYear();
     var coletasDCAFilter = $.grep(coletasDCA, function (o) {
 
+        var currentDateColetaDCA = new Date(o.CollectionDate);
+        currentDateColetaDCA = currentDateColetaDCA.getDay() + currentDateColetaDCA.getMonth() + currentDateColetaDCA.getFullYear();
         return o.ParLevel1_Id == parLevel1.Id &&
+            currentDate == currentDateColetaDCA && 
             o.ParLevel2_Id == parLevel2.Id &&
             o.ParLevel3_Id == parLevel3.Id &&
             o.Evaluation == currentEvaluationDCA.Evaluation &&
@@ -1254,8 +1264,8 @@ function getAmostraAtual(parLevel1, parLevel2, parLevel3) {
     });
 
     var coletaAgrupadaColetada = getResultEvaluationDCA(parLevel1.Id, parLevel2.Id);
-    if(!!coletaAgrupadaColetada.ParFamiliaProduto_Id && coletaAgrupadaColetada.Evaluation >= currentEvaluationDCA.Evaluation){
-        return getAmostraTotal(parLevel1, parLevel2, parLevel3)+1;
+    if (!!coletaAgrupadaColetada.ParFamiliaProduto_Id && coletaAgrupadaColetada.Evaluation >= currentEvaluationDCA.Evaluation) {
+        return getAmostraTotal(parLevel1, parLevel2, parLevel3) + 1;
     }
 
     //Melhorar essa bosta
@@ -1328,58 +1338,74 @@ function verificaSalvar() {
 }
 
 
-$('body').off('click', '[data-salvar-tarefas]').on('click', '[data-salvar-tarefas]', function (e) {
-    e.preventDefault();
-    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
-    for (var i = 0; i < linhasDaColeta.length; i++) {
-        var data = linhasDaColeta[i];
-        var btnSalvarTarefa = $(data).find('[data-coleta-dca]')[0];
-        var amostraCompleta = $(data).attr('data-amostra-completa');
-        if (amostraCompleta != '1') {
-            $(btnSalvarTarefa).trigger('click');
-        }
+//$('body').off('click', '[data-salvar-tarefas]').on('click', '[data-salvar-tarefas]', function (e) {
+//    e.preventDefault();
+//    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
+//    for (var i = 0; i < linhasDaColeta.length; i++) {
+//        var data = linhasDaColeta[i];
+
+//    }
+//});
+
+function ConfirmarSalvar() {
+    if (confirm("Você deseja salvar as anomalias deste monitoramento?") == true) {
+        SalvarAnomalias();
+        return true;
+    } else {
+        return false;
     }
-});
+}
 
 $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', function (e) {
     e.preventDefault();
 
-    //TODO: aplicar função para inserir arr de coletas no arr de salvar coletas
-    var cabecalhosDCA = getCollectionHeaderFieldsDCA();
+    if (ConfirmarSalvar()) {
+        //TODO: aplicar função para inserir arr de coletas no arr de salvar coletas
+        var cabecalhosDCA = getCollectionHeaderFieldsDCA();
 
-    if (cabecalhosDCA) {
-        cabecalhosDCA.forEach(function (cabecalho) {
-            coletasDCA.unshift(cabecalho);
+        if (cabecalhosDCA) {
+            cabecalhosDCA.forEach(function (cabecalho) {
+                coletasDCA.unshift(cabecalho);
+            });
+        }
+
+        var coletasDoMonitoramentoSendoSalvo = $.grep(coletasDCA, function (coleta) {
+            return coleta.ParLevel1_Id == currentParLevel1_Id
+                && (coleta.ParLevel2_Id == currentParLevel2_Id || coleta.ParLevel2_Id == null)
+                && coleta.Outros != null
+                && coleta.Outros.indexOf('ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ',') > 0
+                && coleta.Synced != true
         });
-    }
 
-    var coletasDoMonitoramentoSendoSalvo = $.grep(coletasDCA, function (coleta) {
-        return coleta.ParLevel1_Id == currentParLevel1_Id
-            && (coleta.ParLevel2_Id == currentParLevel2_Id || coleta.ParLevel2_Id == null)
-            && coleta.Outros != null
-            && coleta.Outros.indexOf('ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ',') > 0
-            && coleta.Synced != true
-    });
+        SalvarColetasDCA(coletasDoMonitoramentoSendoSalvo);
 
-    SalvarColetasDCA(coletasDoMonitoramentoSendoSalvo);
+        for (var i = coletasDCA.length - 1; i >= 0; i--) {
+            var coleta = coletasDCA[i];
+            var exist = $.grep(coletasDoMonitoramentoSendoSalvo, function (coletaSalva) {
+                return JSON.stringify(coletaSalva) == JSON.stringify(coleta);
+            });
+            if (exist.length > 0) {
+                coletasDCA[i].Synced = true;
+                //coletasDCA.splice(i, 1);
+            }
+        }
 
-    for (var i = coletasDCA.length - 1; i >= 0; i--) {
-        var coleta = coletasDCA[i];
-        var exist = $.grep(coletasDoMonitoramentoSendoSalvo, function (coletaSalva) {
-            return JSON.stringify(coletaSalva) == JSON.stringify(coleta);
+        SalvarColetasAgrupadasDCA();
+
+        openMensagem("Avaliacao salva com sucesso!", "blue", "white");
+        closeMensagem(3000);
+
+        var desabilitarSalvar = true;
+
+        $('[data-linha-coleta]').each(function (i, o) {
+            if ($(o).attr('data-amostra-completa') == "0") {
+                desabilitarSalvar = false;
+            }
         });
-        if (exist.length > 0) {
-            coletasDCA[i].Synced = true;
-            //coletasDCA.splice(i, 1);
+        if (desabilitarSalvar) {
+            desabilitaBotaoSalvar();
         }
     }
-
-    SalvarColetasAgrupadasDCA();
-
-    openMensagem("Avaliacao salva com sucesso!", "blue", "white");
-    closeMensagem(3000);
-    desabilitaBotaoSalvar();
-
 });
 
 function getCollectionHeaderFieldsDCA() {
@@ -1458,6 +1484,15 @@ function SalvarColetasAgrupadasDCA() {
         coletaAgrupada = AtualizaContadorDaAvaliacao(coletaAgrupada);
     }
 }
+
+$('body')
+    .off('keyup', '[data-linha-coleta] input[data-valor]')
+    .on('keyup', '[data-linha-coleta] input[data-valor]', function () {
+        var qtdNC = $(this).val() == "" ? 0 : $(this).val();
+        $(this).parents('[data-linha-coleta]').attr('data-qtdeNc', qtdNC);
+        $(this).parents('[data-linha-coleta]').find('.amostraNC').html(qtdNC);
+        atualizaCorSePassarDoLimiteDeNC();
+    });
 
 function atualizaCorSePassarDoLimiteDeNC() {
     $('[data-linha-coleta]').each(function (i, o) {
