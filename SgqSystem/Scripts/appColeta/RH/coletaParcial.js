@@ -94,6 +94,22 @@ function hasOnlyTextField() {
         }
     }
 
+    //validar campos de cabeçalho faltantes
+    var cabecalhos = $("[id=headerFieldDepartment],[id=headerFieldLevel1],[id=headerFieldLevel2],[id=headerFieldLevel3]");
+
+    cabecalhos.find("select, input").each(function(i, o){
+
+        if ($(o).is("select")) {
+            if ($(o).find(":selected").val() == "")
+                existeCampoTextoVazio = true;
+        } else {
+            if ($(o).text() == "") {
+                existeCampoTextoVazio = true;
+            }
+        }
+
+    });
+
     if (existeCampoTextoVazio && !existeCampoVazio) {
         return true;
     } else {
