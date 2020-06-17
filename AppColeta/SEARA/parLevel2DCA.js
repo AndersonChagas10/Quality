@@ -335,7 +335,7 @@ function getCalculoPorMonitoramento(parLevel1_Id, parLevel2_Id, avaliacaoAtual) 
         if (tarefa.length > 0 && tarefa[0] && tarefa[0].ParLevel3Value) {
             limiteNCDaTarefa = UmSeForNaNOuNull(tarefa[0].ParLevel3Value.LimiteNC);
         }
-        if (tarefa[0].ParLevel3InputType
+        if (tarefa.length > 0 && tarefa[0].ParLevel3InputType
             && quantidadeDeColetasPorTarefa.length > 0
             && (tarefa[0].ParLevel3InputType.Id == 2 || tarefa[0].ParLevel3InputType.Id == 15)) {
             if ((o.Sample - amostrasColetadasConforme) > limiteNCDaTarefa) {
