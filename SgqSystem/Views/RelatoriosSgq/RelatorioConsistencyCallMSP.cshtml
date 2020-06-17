@@ -62,7 +62,7 @@
 
                 <div class="text-center" id="divFlavor" hidden>
                     <p style="margin-bottom: 0;">Flavor</p>
-                    <div class="bg-info text-center">
+                    <div class="bg-info text-center" style="padding:10px">
                         <div id="flavor" style="font-weight: bold; font-size: 30px; padding-bottom: 15px; padding-top: 15px; display: inline;"></div>
                     </div>
                 </div>
@@ -262,6 +262,8 @@
                 "</tbody></table>";
 
                 var classPackingWaterActivity = retornoArray.Packing_water_activity <= retornoArray.Packing_water_activity_max ? "good" : "bad";
+                var packingWaterActivity = retornoArray.Packing_water_activity == null ? "-" : retornoArray.Packing_water_activity.toFixed(3);
+
                 var tableCooking2 = "<table class='table table-hover table-striped'><tbody>" +
                 montaLinha3Cols("Foss used for pull moisture","Foss 1", retornoArray.Foss_used_for_pull, "", "good", "", "%") +
                 montaLinha3Cols("Foss used for packing moisture", "Foss 2", retornoArray.Foss_used_for_packing, "", "good", "", "%") +
@@ -275,7 +277,7 @@
                         retornoArray.Staging_room_temperature1 <= 8.88889 ? "good" : "bad",
                     retornoArray.Staging_room_temperature2 <= 48 ? "good" : "bad", "°C", "°F") +
                     "<tr><td scope='row' class='firstCol'> Packing Water Activity Target (max) </td><td colspan='2' align='center' class='target'>" + retornoArray.Packing_water_activity_max.toFixed(3) + "</td></tr>" +
-                    "<tr><td scope='row' class='firstCol'> Packing Water Activity </td><td colspan='2' align='center' class='"+ classPackingWaterActivity +"'>" + retornoArray.Packing_water_activity.toFixed(3) + "</td></tr>" +
+                    "<tr><td scope='row' class='firstCol'> Packing Water Activity </td><td colspan='2' align='center' class='"+ classPackingWaterActivity +"'>" + packingWaterActivity + "</td></tr>" +
                 montaLinha2Cols("Packing moisture average (min)", retornoArray.Packing_moisture_avg_min, "target", "%") +
                 montaLinha2Cols("Packing moisture average (max)", retornoArray.Packing_moisture_avg_max, "target", "%") +
                     montaLinha2Cols("Packing moisture average", retornoArray.Packing_moisture_avg,
@@ -283,10 +285,12 @@
                     montaLinha2Cols("Reanalysis (Foss 1 Posse) - bulk moisture <b>(28% to 30%)</b>", retornoArray.Reanalysis_foss_1, retornoArray.Reanalysis_foss_1 >= 28 && retornoArray.Reanalysis_foss_1 <= 30 ? "good" : "bad", "%") +
                 montaLinha2Cols("Reanalysis (Foss 2 Posse) - bulk moisture <b>(28% to 30%)</b>", retornoArray.Reanalysis_foss_2, retornoArray.Reanalysis_foss_2 >= 28 && retornoArray.Reanalysis_foss_2 <= 30 ? "good" : "bad", "%") +
                 montaLinha2Cols("Alpena's moisture", retornoArray.Alpenas_moisture, "good", "") +
-                montaLinha3Cols("Packing room temperature (Target 60F) MÁX", retornoArray.Packing_room_temperature_max1, retornoArray.Packing_room_temperature_max2, "target", "target", "°C", "°F") +
+                    montaLinha3Cols("Packing room temperature (Target 60F) MÁX", retornoArray.Packing_room_temperature_max1, retornoArray.Packing_room_temperature_max2,
+                        retornoArray.Packing_room_temperature_max1 <= 15.5556 ? "good" : "bad",
+                        retornoArray.Packing_room_temperature_max2 <= 60 ? "good" : "bad", "°C", "°F") +
                     montaLinha3Cols("Packing room temperature <b>(Target 60F) </b> AVERAGE ", retornoArray.Packing_room_temperature1, retornoArray.Packing_room_temperature2,
-                        retornoArray.Packing_room_temperature1 <= retornoArray.Packing_room_temperature_max1 ? "good" : "bad",
-                        retornoArray.Packing_room_temperature2 <= retornoArray.Packing_room_temperature_max2 ? "good" : "bad", "°C", "°F") +
+                        retornoArray.Packing_room_temperature1 <= 15.5556 ? "good" : "bad",
+                        retornoArray.Packing_room_temperature2 <= 60 ? "good" : "bad", "°C", "°F") +
                 montaLinha2Cols("Yield - Target min", retornoArray.Yield_target_min, "target", "%") +
                 montaLinha2Cols("Yield - Target", retornoArray.Yield_target, "target", "%") +
                     montaLinha3Cols("Yield", retornoArray.Yield1, retornoArray.Yield2,

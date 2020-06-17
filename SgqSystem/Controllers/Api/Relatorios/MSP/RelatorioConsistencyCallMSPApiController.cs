@@ -30,7 +30,10 @@ namespace SgqSystem.Controllers.Api.Relatorios
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 var retornoApontamentosDiarios = factory.SearchQuery<TabelaConsistencyCallMSPResultSet>(queryApontamentosDiarios).ToList();
-                
+
+                if (retornoApontamentosDiarios.Count() == 0)
+                    return obj;
+
                 var productAndFlavor = "";
                 decimal qtdFlats = 0;
                 decimal qtdInsides = 0;

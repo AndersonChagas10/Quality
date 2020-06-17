@@ -252,6 +252,7 @@ namespace DTO.ResultSet
                  #CollectionLevel2XParHeaderField2 HF
                  on c2.Id = HF.CollectionLevel2_Id
                  WHERE 1=1
+                 AND R3.IsNotEvaluate = 0
                      DROP TABLE #CollectionLevel2
                      DROP TABLE #Result_Level3
 					 DROP TABLE #CollectionLevel2XParHeaderField

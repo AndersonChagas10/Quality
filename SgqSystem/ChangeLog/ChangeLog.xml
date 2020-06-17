@@ -2677,4 +2677,13 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-826</CardNumber>
+    <Version>1.4.0</Version>
+    <Description> [MSP] Relatório Consistency Call - Substituição das queries por apenas uma, efetuando os cálculos do relatório via BackEnd 
+                  e substituição dos Ids mockados por dados inputáveis via Componente Genérico.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
