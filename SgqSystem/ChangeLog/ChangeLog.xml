@@ -3635,5 +3635,13 @@
     <Script>
     </Script>
   </Card>
+
+  <Card>
+    <CardNumber>SGQ-827</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[RH] Apontamentos Diários RH - Separação das colunas de cabeçalho por Indicador, Monitoramento e Tarefa.</Description>
+    <Script>
+    </Script>
+  </Card>
   
 </Cards>

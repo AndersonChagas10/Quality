@@ -1011,6 +1011,9 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "executionTime", Value = "Horário de Execução" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "lastExecution", Value = "Última Execução" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "one_required_field", Value = "É obrigatório preencher um dos campos:" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "header_fields_l1", Value = "Cabeçalho Indicador" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "header_fields_l2", Value = "Cabeçalho Monitoramento" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "header_fields_l3", Value = "Cabeçalho Tarefa" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
