@@ -3636,6 +3636,26 @@
     </Script>
   </Card>
 
+
+  <Card>
+    <CardNumber>SGQ-824</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[GQ] FORMULÁRIOS - Criação e inserção das informações dos filtros no formulário</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReportXFilter' AND xtype='U')
+      CREATE TABLE [dbo].[ParReportXFilter](
+      [Id] [int] IDENTITY(1,1) NOT NULL primary key,
+      [Name] varchar(100) not null,
+      [AlterDate] [datetime] NULL,
+      [AddDate] [datetime] NULL,
+      [ReportXUserSgq_Id] [int] NULL,
+      [IsActive] bit not null
+      )
+      GO
+    </Script>
+  </Card>
+  
+
   <Card>
     <CardNumber>SGQ-827</CardNumber>
     <Version>1.10.0</Version>

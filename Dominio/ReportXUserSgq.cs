@@ -50,5 +50,8 @@ namespace Dominio
         [NotMapped]
         public ICollection<ParReportLayoutXReportXUser> ParReportLayoutXReportXUser { get; set; }
 
+        [NotMapped]
+        public ICollection<ParReportXFilter> ParReportXFilter { get; set; }
+
     }
 }
