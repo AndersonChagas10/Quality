@@ -95,7 +95,36 @@ namespace Dominio.Seed
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "parLevel1ComAgrupamentoPorDepartamentoNaColeta", Value = "126|136|135", ControllerName = "SyncServiceApiController", Descricao = "Agrupar na coleta por departamento os Ids especificados" });
 
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "CollectionJobTime0IsDisabled", Value = "0", ControllerName = "CollectionJob", Descricao = "Intervalo que o CollectionJob será executado, 0 = desligado" });
-                
+
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "flatsInsidesEyes", Value = "2009", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "batch", Value = "1900", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "porcWaterPesoCarne", Value = "1868", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "porcWaterVolumeAgua", Value = "1867", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "meatAge", Value = "2009", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "tumblerBatchSize", Value = "1868", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "meatTemperature", Value = "1851", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "thicknessAvgCoxaoDuro", Value = "1848", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "thicknessAvgLagarto", Value = "1849", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "thicknessAvgBorboleta", Value = "1850", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "meetCanadianRequirements", Value = "1947", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "marinationTime", Value = "1908", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "waitTime", Value = "1956", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "fossPull", Value = "1999", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "fossPacking", Value = "2000", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "pullMoistureAvg", Value = "1948", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "stagingRoomTemperature", Value = "1954", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "packingWaterActivity", Value = "1946", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "packingMoistureAvg", Value = "1957", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "reanalysisFoss1", Value = "1883", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "reanalysisFoss2", Value = "1957", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "packingRoomTemperature", Value = "2001", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "woodChips", Value = "1941", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "finalProductThickness", Value = "1967", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "flavorSensorial", Value = "2002", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "odorSensorial", Value = "2003", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "textureSensorial", Value = "2004", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "appearanceSensorial", Value = "2005", ControllerName = "api/RelatorioConsistencyCallMSP", Descricao = "Id da tarefa que é utilizada no Consistency" });
+
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys).ToList();
 
                 if (add.Count > 0)
