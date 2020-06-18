@@ -5,7 +5,7 @@
 
     ViewBag.Title = "Formulário";
 
-    ViewBag.ShowIndicadorMER = true;
+    ViewBag.ShowIndicadorMER = false;
     //ViewBag.ShowCurrentDate = true;
     //ViewBag.ShowParCompany = true;
 
@@ -14,7 +14,7 @@
 }
 
 @section NovoFiltro {
-    @if (ViewBag.ShowIndicadorMER == false)
+    @if (ViewBag.ShowIndicadorMER == true)
     {
         <div class="col-sm-12">
             <div class="form-group">
@@ -134,7 +134,7 @@
                     </div>
                 </div>
 
-                <div class="row" id="corpoPagina" >
+                <div class="row" id="corpoPagina">
                     <div id="pivot-table">
 
                     </div>
@@ -170,14 +170,14 @@
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="~/Scripts/Print/printGRT.js"></script>
-   
+
     <script>
         let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/Formularios"))';
 
         $('button').button({ loadingText: '@Resources.Resource.loading...' });
         var $btn = $('#btnSend');
 
-        $('[name="parCompany_Ids"]').parent().find('label strong').append('<span style="color:red;font-size:20px"> *</span>');
+       // $('[name="parCompany_Ids"]').parent().find('label strong').append('<span style="color:red;font-size:20px"> *</span>');
 
         $('body').on('click', '#btnPrint', function () {
             $('#printTitulo').html($("#tdNomeRelatorio").text());
@@ -204,66 +204,67 @@
 
         function enviarFiltro() {
 
-            window.scrollTo(0, 0);
+            var itensNaoRespondidos = validaObrigatorios();
+            if (itensNaoRespondidos.length > 0) {
+                $(itensNaoRespondidos).map(function (i, o) {
+                    GuardJs.exibirMensagemAlerta("o campo " + o + " é obrigatorio");
+                });
 
-            if (!$("#divFilterReports").is(":hidden"))
-                toggleDivFilterReports();
+            } else {
+                window.scrollTo(0, 0);
 
-            if (!objFiltro.parCompany_Ids || objFiltro.parCompany_Ids.length < 0) {
-                GuardJs.exibirMensagemAlerta("Selecione uma Unidade.");
-                $("#mensagemSemDados").hide();
-                return false;
+                if (!$("#divFilterReports").is(":hidden"))
+                    toggleDivFilterReports();
+
+                    $btn.button('loading');
+                    $(".loader").show();
+                    $("#mensagemSemDados").hide();
+                    GuardJs.esconderMensagem();
+
+                    $("#rodape").hide();
+                    $("#cabecalhoDiv").hide();
+                    $("#pivot-table").hide();
+
+                    $.ajax({
+                        data: JSON.stringify(objFiltro),
+                        url: urlBuscaDados,
+                        type: 'POST',
+                        contentType: "application/json",
+                        success: function (data) {
+
+                            $btn.button('reset');
+                            $(".loader").hide();
+                            if (data.Resultado.length > 0) {
+
+                                $("#mensagemSemDados").hide();
+                                $("#pivot-table").show();
+                                GuardJs.esconderMensagem();
+                                $("#rodape").show();
+                                $("#cabecalhoDiv").show();
+
+                                $("#tdElaborador").text(data.Elaborador[0]["Elaborador"]);
+                                $("#tdAprovador").text(data.Aprovador);
+                                $("#tdNomeRelatorio").text(data.RelatorioName[0]["NomeRelatorio"]);
+                                $("#unidadeColeta").text(data.Resultado[0]["unidade"]);
+
+                                montaLayout(data.ParReportLayoutXReportXUser);
+                                montaTabelaDinamica(data.Resultado, data.ParReportLayoutXReportXUser);
+                            } else {
+                                $("#mensagemSemDados").show();
+                                GuardJs.esconderMensagem();
+                            }
+
+                        },
+                        timeout: 600000,
+                        contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                        error: function (a, b, c) {
+                            $(".loader").hide();
+                            console.log(a);
+                            console.log(b);
+                            console.log(c);
+                        }
+                    });
             }
-
-            $btn.button('loading');
-            $(".loader").show();
-            $("#mensagemSemDados").hide();
-            GuardJs.esconderMensagem();
-
-            $("#rodape").hide();
-            $("#cabecalhoDiv").hide();
-            $("#pivot-table").hide();
-
-            $.ajax({
-                data: JSON.stringify(objFiltro),
-                url: urlBuscaDados,
-                type: 'POST',
-                contentType: "application/json",
-                success: function (data) {
-                
-                    $btn.button('reset');
-                    $(".loader").hide();
-                    if (data.Resultado.length > 0) {
-
-                        $("#mensagemSemDados").hide();
-                        $("#pivot-table").show();
-                        GuardJs.esconderMensagem();
-                        $("#rodape").show();
-                        $("#cabecalhoDiv").show();
-
-                        $("#tdElaborador").text(data.Elaborador[0]["Elaborador"]);
-                        $("#tdAprovador").text(data.Aprovador);
-                        $("#tdNomeRelatorio").text(data.RelatorioName[0]["NomeRelatorio"]);
-                        $("#unidadeColeta").text(data.Resultado[0]["unidade"]);
-
-                        montaLayout(data.ParReportLayoutXReportXUser);
-                        montaTabelaDinamica(data.Resultado, data.ParReportLayoutXReportXUser);
-                    } else {
-                        $("#mensagemSemDados").show();
-                        GuardJs.esconderMensagem();
-                    }
-
-                },
-                timeout: 600000,
-                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
-                error: function (a, b, c) {
-                    $(".loader").hide();
-                    console.log(a);
-                    console.log(b);
-                    console.log(c);
-                }
-            });
-
         }
 
         var cabecalhos = [];
@@ -417,7 +418,7 @@
             }
             /***FIM: MONTA COLUNAS HTML **********************************************/
             htmlTable += "<tr>";
-            
+
             for (var j = 0; j < linhas.length; j++) {
 
                 //validação para trocar o value pelo nickname se for diferente de vazio
@@ -432,7 +433,7 @@
 
                 htmlTable += "<th>" + apelido[0] + "</th>";
             }
-            
+
             for (var i = 0; i < colspanTotal; i++) {
                 for (var j = 0; j < valores.length; j++) {
 

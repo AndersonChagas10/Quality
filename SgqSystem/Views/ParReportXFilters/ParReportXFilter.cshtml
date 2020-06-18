@@ -25,8 +25,9 @@
                         <tr>
                             <th>Nome</th>
                             <th>Ativo</th>
+                            <th>Obrigatório</th>
+                            <th>Multiplo</th>
                             <th>Ações</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,6 +36,8 @@
                             <tr>
                                 <td> @item.FilterLevel_Name</td>
                                 <td> @Html.DisplayFor(modelItem => item.IsActive)</td>
+                                <td> @Html.DisplayFor(modelItem => item.IsRequired)</td>
+                                <td> @Html.DisplayFor(modelItem => item.IsMultiple)</td>
                                 <td>
                                     @Html.ActionLink("Editar", "Edit", "ParReportXFilters", new { id = item.Id, level1_Id = Model.ParLevel1_Id }, new { @class = "btn btn-success" })
                                     @Html.ActionLink("Inativar", "Delete", "ParReportXFilters", new { id = item.Id }, new { @class = "btn btn-danger" })
@@ -59,6 +62,7 @@
         closeLeftSidebar();
 
         DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
             null,
             null,
             null,

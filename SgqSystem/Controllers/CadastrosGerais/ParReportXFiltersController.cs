@@ -147,6 +147,8 @@ namespace SgqSystem.Controllers.CadastrosGerais
             AdicionaItemObjFiltro(FilterEnum.Departamento.ToString(), (int)FilterEnum.Departamento);
             AdicionaItemObjFiltro(FilterEnum.Secao.ToString(), (int)FilterEnum.Secao);
             AdicionaItemObjFiltro(FilterEnum.Cargo.ToString(), (int)FilterEnum.Cargo);          
+            AdicionaItemObjFiltro(FilterEnum.Avaliacao.ToString(), (int)FilterEnum.Avaliacao);          
+            AdicionaItemObjFiltro(FilterEnum.Amostra.ToString(), (int)FilterEnum.Amostra);          
 
             ViewBag.NiveisFiltro_Id = new SelectList(NiveisFilter.ToList(), "Id", "Name");
 
