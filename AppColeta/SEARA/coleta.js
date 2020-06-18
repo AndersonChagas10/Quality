@@ -679,6 +679,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     //var collectionHeaderFields = getCollectionHeaderFields();
     //console.table(collectionHeaderFields);
 
+    var collectionDate = getCurrentDate();
+
     //Insere valores da coleta
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
         var data = $(o);
@@ -699,7 +701,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 Value: typeof ($(data).find('input[data-valor]').val()) == 'undefined' ? null : $(data).find('input[data-valor]').val(),
                 ValueText: typeof ($(data).find('input[data-texto]').val()) == 'undefined' ? null : $(data).find('input[data-texto]').val(),
                 IsNotEvaluate: isNA,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 Weigth: $(data).attr('data-peso'),
                 WeiEvaluation: isNA ? 0 : $(data).attr('data-peso'),
@@ -724,7 +726,7 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
 
     processAlertRole(coletaJson);
 
-    var cabecalhos = getCollectionHeaderFields();
+    var cabecalhos = getCollectionHeaderFields(collectionDate);
 
     if (cabecalhos) {
         cabecalhos.forEach(function (cabecalho) {
@@ -778,7 +780,7 @@ function SalvarColetas(coletaJson) {
     AtualizarArquivoDeColetas();
 }
 
-function getCollectionHeaderFields() {
+function getCollectionHeaderFields(collectionDate) {
 
     var collectionHeaderFied = [];
 
@@ -797,7 +799,7 @@ function getCollectionHeaderFields() {
                 //ParDepartment_Id: currentParDepartment_Id,
                 //ParCargo_Id: currentParCargo_Id,
                 ParCompany_Id: currentParCompany_Id,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 //Parfrequency_Id: parametrization.currentParFrequency_Id
             });
@@ -819,7 +821,7 @@ function getCollectionHeaderFields() {
                 //ParDepartment_Id: currentParDepartment_Id,
                 //ParCargo_Id: currentParCargo_Id,
                 ParCompany_Id: currentParCompany_Id,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
                 //Parfrequency_Id: parametrization.currentParFrequency_Id
@@ -843,7 +845,7 @@ function getCollectionHeaderFields() {
                 //ParDepartment_Id: currentParDepartment_Id,
                 //ParCargo_Id: currentParCargo_Id,
                 ParCompany_Id: currentParCompany_Id,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),

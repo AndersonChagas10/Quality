@@ -800,7 +800,7 @@ $('body')
         }
     });
 
-function SalvarAnomalias() {
+function SalvarAnomalias(collectionDate) {
 
     if (!hederFieldIsValid("#headerFieldLevel2")) {
         openMensagem("Existem cabeçalhos obrigatórios não preenchidos!", "yellow", "black");
@@ -836,7 +836,7 @@ function SalvarAnomalias() {
 
             coletaDCA = {
                 Id: 0,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 Shift_Id: 1,
                 Period_Id: 1,
@@ -869,7 +869,7 @@ function SalvarAnomalias() {
         } else {
             coletaDCA = {
                 Id: 0,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 Shift_Id: 1,
                 Period_Id: 1,
@@ -1216,7 +1216,6 @@ function getQuantidadeNC(parLevel1, parLevel2, parLevel3) {
 
     var qtdeNC = 0;
 
-
     var currentDate = new Date(getCurrentDate());
     currentDate = currentDate.getDay() + currentDate.getMonth() + currentDate.getFullYear();
 
@@ -1349,7 +1348,6 @@ function verificaSalvar() {
 
 function ConfirmarSalvar() {
     if (confirm("Você deseja salvar as anomalias deste monitoramento?") == true) {
-        SalvarAnomalias();
         return true;
     } else {
         return false;
@@ -1360,8 +1358,11 @@ $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', fun
     e.preventDefault();
 
     if (ConfirmarSalvar()) {
+
+        var collectionDate = getCurrentDate();
         //TODO: aplicar função para inserir arr de coletas no arr de salvar coletas
-        var cabecalhosDCA = getCollectionHeaderFieldsDCA();
+        SalvarAnomalias(collectionDate);
+        var cabecalhosDCA = getCollectionHeaderFieldsDCA(collectionDate);
 
         if (cabecalhosDCA) {
             cabecalhosDCA.forEach(function (cabecalho) {
@@ -1408,7 +1409,7 @@ $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', fun
     }
 });
 
-function getCollectionHeaderFieldsDCA() {
+function getCollectionHeaderFieldsDCA(collectionDate) {
 
     var collectionHeaderFiedDCA = [];
 
@@ -1425,7 +1426,7 @@ function getCollectionHeaderFieldsDCA() {
                 Evaluation: currentEvaluationDCA.Evaluation,
                 Sample: currentEvaluationDCA.Sample,
                 ParCompany_Id: currentParCompany_Id,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel1').attr('parLevel2Id'),
@@ -1448,7 +1449,7 @@ function getCollectionHeaderFieldsDCA() {
                 Evaluation: currentEvaluationDCA.Evaluation,
                 Sample: currentEvaluationDCA.Sample,
                 ParCompany_Id: currentParCompany_Id,
-                CollectionDate: getCurrentDate(),
+                CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),

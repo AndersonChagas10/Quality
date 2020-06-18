@@ -124,6 +124,7 @@ namespace SgqSystem.Jobs
                                 collectionLevel2DoBanco.ParCargo_Id = collectionLevel2Consolidada.ParCargo_Id; //db.CollectionLevel2XParCargo.Where(x => x.CollectionLevel2_Id == collection.Id).Select(x => x.ParCargo_Id).FirstOrDefault();
                                 collectionLevel2DoBanco.ParCluster_Id = collectionLevel2Consolidada.ParCluster_Id;//db.CollectionLevel2XCluster.Where(x => x.CollectionLevel2_Id == collection.Id).Select(x => x.ParCluster_Id).FirstOrDefault();
                                 collectionLevel2DoBanco.CollectionDate = collectionLevel2Consolidada.CollectionDate;
+                                collectionLevel2DoBanco.AuditorId = collectionLevel2Consolidada.AuditorId;
                                 collectionLevel2Consolidada = collectionLevel2DoBanco;
                             }
 
@@ -541,7 +542,7 @@ INSERT INTO [Result_Level3]
                             AND cl.Evaluation = {collectionLevel2.EvaluationNumber}
                             AND (cl.Sample = {collectionLevel2.Sample} 
                                 OR cl.Outros like '%ParFamiliaProduto_Id%') 
-                            AND Cl.CollectionDate BETWEEN DATEADD(minute, -5, '{collectionDate}') and DATEADD(minute, 5, '{collectionDate}')";
+                            AND Cl.CollectionDate = '{collectionDate}'";
 
                 headerFields = factory.SearchQuery<CollectionLevel2XParHeaderFieldGeral>(sql).ToList();
             }
