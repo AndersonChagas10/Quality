@@ -465,6 +465,7 @@
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
     <Compile Include="Controllers\Utilidades\UtilController.cs" />
     <Compile Include="Controllers\V2\Api\AppColetaController.cs" />
+    <Compile Include="Controllers\V2\Api\ConsolidationSearaApiController.cs" />
     <Compile Include="Controllers\V2\Api\DepartmentXRotinaApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParClusterApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParClusterGroupApiController.cs" />
