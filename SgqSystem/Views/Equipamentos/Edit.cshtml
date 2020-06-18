@@ -93,6 +93,8 @@
                                                     <option value="Esteiras" @(Model.Subtipo == "Esteiras" ? "selected" : "")>Esteiras</option>
                                                     <option value="Tunel de Encolhimento" @(Model.Subtipo == "Tunel de Encolhimento" ? "selected" : "")>Tunel de Encolhimento</option>
                                                     <option value="VS" @(Model.Subtipo == "VS" ? "selected" : "")>VS</option>
+                                                    <option value="Umidade" @(Model.Subtipo == "Umidade" ? "selected" : "")>Umidade</option>
+                                                    <option value="Atividade de Água" @(Model.Subtipo == "Atividade de Água" ? "selected" : "")>Atividade de Água</option>
                                                 </select>
                                                 @*@Html.EditorFor(model => model.AmostraPorDia, new { htmlAttributes = new { @class = "form-control" } })*@
                                                 @*@Html.ValidationMessageFor(model => model.Subtipo, "", new { @class = "text-danger" })*@

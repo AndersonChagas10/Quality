@@ -30,6 +30,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
         {
             Data retorno = new Data();
 
+            Data retorno = new Data();
+
             var indicador_Id = "0";
 
             if (form.ParLevel1_Ids.Length > 0)
