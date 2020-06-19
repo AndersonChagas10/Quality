@@ -560,7 +560,7 @@ INSERT INTO [Result_Level3]
                             AND (cl.Sample = {collectionLevel2.Sample} 
                                 OR cl.Outros like '%ParFamiliaProduto_Id%') 
                             AND cl.OUTROS = '{collectionLevel2.Outros}'
-                            AND Cl.CollectionDate BETWEEN DATEADD(minute, -0.5, '{collectionDate}') and DATEADD(minute, 0.5, '{collectionDate}')";
+                            AND Cl.CollectionDate BETWEEN DATEADD(second, -60, '{collectionDate}') and DATEADD(second, 60, '{collectionDate}')";
 
                 headerFields = factory.SearchQuery<CollectionLevel2XParHeaderFieldGeral>(sql).ToList();
             }
