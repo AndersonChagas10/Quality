@@ -373,45 +373,131 @@ namespace SgqSystem.Controllers
                 switch (item.FilterLevel)
                 {
                     case 1:
-                        //if (item.IsRequired)
-                        //{
-                        //    ViewBag.ShowCurrentDateRequired = true;
-                        //}
-                        //else
-                        //{
 
-                        //}
-                        ViewBag.ShowCurrentDate = true;
+                        if (item.IsMultiple)
+                            ViewBag.ShowRangeDate = true;
+                        else
+                            ViewBag.ShowCurrentDate = true;
+
+                        if (item.IsRequired == true)
+                            ViewBag.DateIsrequired = 1;
+                        else
+                            ViewBag.DateIsrequired = 0;
+
                         break;
                     case 2:
                         ViewBag.ShowParLevel1GQ = true;
+                        if (item.IsMultiple)
+                            ViewBag.ShowParLevel1GQMultiple = "multiple";
+                        else
+                            ViewBag.ShowParLevel1GQMultiple = "";
+
+                        if (item.IsRequired == true)
+                            ViewBag.ParLevel1GQIsrequired = 1;
+                        else
+                            ViewBag.ParLevel1GQIsrequired = 0;
+
                         break;
                     case 3:
                         ViewBag.ShowParLevel2GQ = true;
+
+                        if (item.IsMultiple)
+                            ViewBag.ShowParLevel2GQMultiple = "multiple";
+                        else
+                            ViewBag.ShowParLevel2GQMultiple = "";
+
+                        if (item.IsRequired == true)
+                            ViewBag.ParLevel2GQIsrequired = 1;
+                        else
+                            ViewBag.ParLevel2GQIsrequired = 0; ;
                         break;
                     case 4:
                         ViewBag.ShowParLevel3GQ = true;
+
+                        if (item.IsMultiple)
+                            ViewBag.ShowParLevel3GQMultiple = "multiple";
+                        else
+                            ViewBag.ShowParLevel3GQMultiple = "";
+
+                        if (item.IsRequired == true)
+                            ViewBag.ParLevel3GQIsrequired = 1;
+                        else
+                            ViewBag.ParLevel3GQIsrequired = 0;
                         break;
                     case 5:
                         ViewBag.ShowParModule = true;
+
+                        if (item.IsRequired == true)
+                            ViewBag.Isrequired = true;
                         break;
                     case 6:
                         ViewBag.ShowParClusterGroup = true;
+
+                        if (item.IsRequired == true)
+                            ViewBag.Isrequired = true;
                         break;
                     case 7:
                         ViewBag.ShowParCluster = true;
+
+                        if (item.IsRequired == true)
+                            ViewBag.Isrequired = true;
                         break;
                     case 8:
                         ViewBag.ShowParStructure1 = true;
+
+                        if (item.IsRequired == true)
+                            ViewBag.Isrequired = true;
                         break;
                     case 9:
                         ViewBag.ShowParStructure2 = true;
+
+                        if (item.IsRequired == true)
+                            ViewBag.Isrequired = true;
                         break;
                     case 10:
                         ViewBag.ShowParStructure2 = true;
+
+                        if (item.IsRequired == true)
+                            ViewBag.Isrequired = true;
                         break;
                     case 11:
                         ViewBag.ShowParCompany = true;
+
+                        if (item.IsMultiple)
+                            ViewBag.ShowParCompanyMultiple = "multiple";
+                        else
+                            ViewBag.ShowParCompanyMultiple = "";
+
+                        if (item.IsRequired == true)
+                            ViewBag.ParCompanyIsrequired = 1;
+                        else
+                            ViewBag.ParCompanyIsrequired = 0;
+                        break;
+                    case 16:
+                        ViewBag.ShowAvaliacao = true;
+
+                        if (item.IsMultiple)
+                            ViewBag.ShowAvaliacaoMultiple = "multiple";
+                        else
+                            ViewBag.ShowAvaliacaoMultiple = "";
+
+                        if (item.IsRequired == true)
+                            ViewBag.AvaliacaoIsrequired = 1;
+                        else
+                            ViewBag.Isrequired = 0;
+                        break;
+                    case 17:
+                        ViewBag.ShowAmostra = true;
+
+                        if (item.IsMultiple)
+                            ViewBag.ShowAmostraMultiple = "multiple";
+                        else
+                            ViewBag.ShowAmostraMultiple = "";
+
+                        if (item.IsRequired == true)
+                            ViewBag.AmostraIsrequired = 1;
+                        else
+                            ViewBag.AmostraIsrequired = 0;
                         break;
                 }
             }

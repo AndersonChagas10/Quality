@@ -16,7 +16,9 @@
         Turno = 12,
         Departamento = 13,
         Secao = 14,
-        Cargo = 15
+        Cargo = 15,
+        Avaliacao = 16,
+        Amostra = 17
 
     }
 }

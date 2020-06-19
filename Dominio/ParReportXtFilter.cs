@@ -18,6 +18,10 @@ namespace Dominio
 
         public bool IsActive { get; set; }
 
+        public bool IsRequired { get; set; }
+
+        public bool IsMultiple { get; set; }
+
         public int ReportXUserSgq_Id { get; set; }
 
         [NotMapped]

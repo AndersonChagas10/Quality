@@ -616,7 +616,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             using (db)
             {
                 var idUnidade = form.ParCompany_Ids[0];
-                var idIndicador = form.ShowIndicador_Id[0];
+                var idIndicador = form.ParLevel1_Ids[0];
 
                 var reportXUser_Id = db.ReportXUserSgq
                     .Where(x => (x.ParCompany_Id == idUnidade || x.ParCompany_Id == null) && x.ParLevel1_Id == idIndicador)
@@ -648,7 +648,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             var SQL = $@"SELECT top 1
                     Elaborador
                     FROM ReportXUserSgq RXU      
-                    WHERE RXU.ParLevel1_Id = {form.ShowIndicador_Id[0]}
+                    WHERE RXU.ParLevel1_Id = {form.ParLevel1_Ids[0]}
                     {whereCompany} 
                     OR RXU.Parcompany_Id IS NULL
                     Order by RXU.Parcompany_Id desc";
@@ -667,7 +667,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             var SQL = $@"SELECT top 1
                     NomeRelatorio
                     FROM ReportXUserSgq RXU      
-                    WHERE RXU.ParLevel1_Id = {form.ShowIndicador_Id[0]}
+                    WHERE RXU.ParLevel1_Id = {form.ParLevel1_Ids[0]}
                     {whereCompany} 
                     OR RXU.Parcompany_Id IS NULL
                     Order by RXU.Parcompany_Id desc";
@@ -686,7 +686,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             var SQL = $@"SELECT top 1
                     Aprovador
                     FROM ReportXUserSgq RXU      
-                    WHERE RXU.ParLevel1_Id = {form.ShowIndicador_Id[0]}
+                    WHERE RXU.ParLevel1_Id = {form.ParLevel1_Ids[0]}
                     {whereCompany} 
                     OR RXU.Parcompany_Id IS NULL
                     Order by RXU.Parcompany_Id desc";
