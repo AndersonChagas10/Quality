@@ -102,14 +102,33 @@ namespace SgqSystem.Controllers.V2.Api
 
                             var resultsLevel3 = GetResultLevel3NotProcess(collectionLevel2MontadoDaCollection);
                             List<Result_Level3> resultsLevel3Agrupada = new List<Result_Level3>();
-                            foreach (var resultLevel3 in resultsLevel3)
+                            int ultimaLevel3 = 0;
+                            int quantasLevel3ForamProcessadas = 0;
+                            foreach (var resultLevel3 in resultsLevel3.OrderBy(x=>x.ParLevel3_Id))
                             {
+                                if(ultimaLevel3 != resultLevel3.ParLevel3_Id)
+                                {
+                                    ultimaLevel3 = resultLevel3.ParLevel3_Id;
+                                    quantasLevel3ForamProcessadas = 0;
+                                }
+
+                                quantasLevel3ForamProcessadas++;
+
                                 Result_Level3 resultLevel3Agrupado = resultsLevel3Agrupada
                                     .Where(x => x.ParLevel3_Id == resultLevel3.ParLevel3_Id && x.Evaluation == resultLevel3.Evaluation)
                                     .FirstOrDefault();
                                 if (resultLevel3Agrupado != null)
                                 {
-                                    resultLevel3Agrupado.Sampling = resultLevel3Agrupado.Sampling > resultLevel3.Sampling ? resultLevel3Agrupado.Sampling : resultLevel3.Sampling;
+                                    if(quantasLevel3ForamProcessadas > 1 
+                                        && (!string.IsNullOrEmpty(resultLevel3.Value) && quantasLevel3ForamProcessadas > Convert.ToInt32(resultLevel3.Value))
+                                            || string.IsNullOrEmpty(resultLevel3.Value))
+                                    {
+                                        resultLevel3Agrupado.Sampling = quantasLevel3ForamProcessadas;
+                                    }
+                                    else
+                                    {
+                                        resultLevel3Agrupado.Sampling = resultLevel3Agrupado.Sampling > resultLevel3.Sampling ? resultLevel3Agrupado.Sampling : resultLevel3.Sampling;
+                                    }
                                     resultLevel3Agrupado.WeiEvaluation += resultLevel3.WeiEvaluation;
                                     resultLevel3Agrupado.Defects += resultLevel3.Defects;
                                     resultLevel3Agrupado.WeiDefects += resultLevel3.WeiDefects;
