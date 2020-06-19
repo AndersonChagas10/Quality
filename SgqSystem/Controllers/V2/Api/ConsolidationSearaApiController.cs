@@ -113,6 +113,11 @@ namespace SgqSystem.Controllers.V2.Api
                                     resultLevel3Agrupado.WeiEvaluation += resultLevel3.WeiEvaluation;
                                     resultLevel3Agrupado.Defects += resultLevel3.Defects;
                                     resultLevel3Agrupado.WeiDefects += resultLevel3.WeiDefects;
+                                    resultLevel3Agrupado.Value = resultLevel3Agrupado.Defects.ToString();
+                                }
+                                else
+                                {
+                                    resultsLevel3Agrupada.Add(resultLevel3);
                                 }
                             }
 
@@ -134,7 +139,7 @@ namespace SgqSystem.Controllers.V2.Api
                                     collectionLevel2DoBanco = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
 
                                     if (collectionLevel2DoBanco != null)
-                                        collectionLevel2Consolidada.EvaluationNumber++;
+                                        collectionLevel2MontadoDaCollection.EvaluationNumber++;
 
                                 } while (collectionLevel2DoBanco != null);
 
@@ -375,7 +380,7 @@ INSERT INTO [Result_Level3]
                         ,HasPhoto  FROM Collection with (nolock)
                     WHERE Evaluation = {collection.EvaluationNumber} AND IsProcessed = 0 AND
                         UserSgq_Id = {collection.AuditorId} AND ParLevel1_Id = {collection.ParLevel1_Id} AND
-                        Outros = {collection.Outros} AND
+                        Outros = '{collection.Outros}' AND
                         ParLevel2_Id = {collection.ParLevel2_Id} AND Shift_Id = {collection.Shift} AND
                         Period_Id = {collection.Period} AND ParCompany_Id = {collection.UnitId} 
                         AND (ParCluster_Id = {collection.ParCluster_Id ?? 0} OR ParCluster_Id IS NULL)
