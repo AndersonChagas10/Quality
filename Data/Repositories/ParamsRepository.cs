@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
+using LogSystem;
 
 namespace Data.Repositories
 {
@@ -87,7 +88,7 @@ namespace Data.Repositories
                         SalvaParLevel1HeaderField(idParLevel1HeaderField, parLevel1HeaderField);/*Salva ParLevel1XHeaderField*/
 
                         //Salvar o ComponenteGenericoXHeaderField
-                        if(parHeadField.ParHeaderFieldXComponenteGenerico != null)
+                        if (parHeadField.ParHeaderFieldXComponenteGenerico != null)
                             SalvarParHeaderFieldXComponenteGenerico(parHeadField.ParHeaderFieldXComponenteGenerico, parHeadField.Id);
 
                     }
@@ -555,7 +556,7 @@ namespace Data.Repositories
                 }
                 catch (Exception ex)
                 {
-                    
+
                 }
 
 
@@ -641,25 +642,34 @@ namespace Data.Repositories
 
         public void AddUpdateParLevel3EvaluationSample(List<ParLevel3EvaluationSample> paramLevel3EvaluationSample, int ParLevel3_Id)
         {
-            paramLevel3EvaluationSample.ForEach(r => r.ParLevel3_Id = ParLevel3_Id);
 
-            if (paramLevel3EvaluationSample.Any(r => r.Id == 0))
+            try
             {
-                db.ParLevel3EvaluationSample.AddRange(paramLevel3EvaluationSample.Where(r => r.Id == 0));
-            }
+                paramLevel3EvaluationSample.ForEach(r => r.ParLevel3_Id = ParLevel3_Id);
 
-            if (paramLevel3EvaluationSample.Any(r => r.Id > 0))
-            {
-                foreach (var i in paramLevel3EvaluationSample.Where(r => r.Id > 0))
+                if (paramLevel3EvaluationSample.Any(r => r.Id == 0))
                 {
-                    Guard.verifyDate(i, "AlterDate");
-                    db.ParLevel3EvaluationSample.Attach(i);
-                    db.Entry(i).State = EntityState.Modified;
-                    db.Entry(i).Property(e => e.AddDate).IsModified = false;
+                    db.ParLevel3EvaluationSample.AddRange(paramLevel3EvaluationSample.Where(r => r.Id == 0));
                 }
-            }
 
-            db.SaveChanges();
+                if (paramLevel3EvaluationSample.Any(r => r.Id > 0))
+                {
+                    foreach (var i in paramLevel3EvaluationSample.Where(r => r.Id > 0))
+                    {
+                        Guard.verifyDate(i, "AlterDate");
+                        db.ParLevel3EvaluationSample.Attach(i);
+                        db.Entry(i).State = EntityState.Modified;
+                        db.Entry(i).Property(e => e.AddDate).IsModified = false;
+                    }
+                }
+
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                LogSystem.LogErrorBusiness.Register(ex, paramLevel3EvaluationSample);
+                throw;
+            }
         }
 
         public void AddUpdateParLevel3XDepartment(List<ParLevel3XParDepartment> paramLevel3XParDepartment, int ParLevel3_Id)

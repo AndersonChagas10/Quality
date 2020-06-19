@@ -1,20 +1,16 @@
 ﻿using ADOFactory;
-using AutoMapper;
 using Dominio;
-using DTO.Interfaces.Services;
 using DTO;
-using DTO.DTO.Params;
 using DTO.ResultSet;
 using Helper;
+using SgqService.ViewModels;
 using SgqSystem.Secirity;
-using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using SgqService.ViewModels;
 
 namespace SgqSystem.Controllers
 {
@@ -150,7 +146,7 @@ namespace SgqSystem.Controllers
             var db2 = new SqlConnection(conexao);
 
             SGQDBContext.Generico listaProdutos = new SGQDBContext.Generico(db2);
-            
+
             ViewBag.Produtos = listaProdutos.getProdutos();
 
             //Fim da Role
@@ -330,13 +326,95 @@ namespace SgqSystem.Controllers
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult RelatorioLaboratorio()
         {
+            
+
             return View("~/Views/RelatoriosSgq/RelatorioLaboratorio.cshtml", form);
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = false)]
         public ActionResult RelatorioFormulario()
         {
+            var indicadorId = 1;
+            var unidadeId = 1;
+            MontaViewBagFiltros(indicadorId, unidadeId);
+
             return View("~/Views/RelatoriosSgq/RelatorioFormulario.cshtml", form);
+        }
+
+        private void MontaViewBagFiltros(int indicadorId, int unidadeId)
+        {
+            var reportXFilter = new List<ParReportXFilter>();
+            var reportxUser = new ReportXUserSgq();
+
+            using (var db = new SgqDbDevEntities())
+            {
+                reportxUser = db.ReportXUserSgq.Where(x => x.ParLevel1_Id == indicadorId && x.ParCompany_Id == unidadeId && x.IsActive).FirstOrDefault();
+                reportXFilter = db.ParReportXFilter.Where(x => x.ReportXUserSgq_Id == reportxUser.Id && x.IsActive == true).ToList();
+            }
+
+            //Montagem das Viewbags
+            //Data = 1,
+            //Indicador = 2,
+            //Monitoramento = 3,
+            //Tarefa = 4,
+            //Modulo = 5,
+            //GrupoDeCluster = 6,
+            //Cluster = 7,
+            //Holding = 8,
+            //Negocio = 9,
+            //Regional = 10,
+            //Unidade = 11,
+            //Turno = 12,
+            //Departamento = 13,
+            //Secao = 14,
+            //Cargo = 15
+            foreach (var item in reportXFilter)
+            {
+                switch (item.FilterLevel)
+                {
+                    case 1:
+                        //if (item.IsRequired)
+                        //{
+                        //    ViewBag.ShowCurrentDateRequired = true;
+                        //}
+                        //else
+                        //{
+
+                        //}
+                        ViewBag.ShowCurrentDate = true;
+                        break;
+                    case 2:
+                        ViewBag.ShowParLevel1GQ = true;
+                        break;
+                    case 3:
+                        ViewBag.ShowParLevel2GQ = true;
+                        break;
+                    case 4:
+                        ViewBag.ShowParLevel3GQ = true;
+                        break;
+                    case 5:
+                        ViewBag.ShowParModule = true;
+                        break;
+                    case 6:
+                        ViewBag.ShowParClusterGroup = true;
+                        break;
+                    case 7:
+                        ViewBag.ShowParCluster = true;
+                        break;
+                    case 8:
+                        ViewBag.ShowParStructure1 = true;
+                        break;
+                    case 9:
+                        ViewBag.ShowParStructure2 = true;
+                        break;
+                    case 10:
+                        ViewBag.ShowParStructure2 = true;
+                        break;
+                    case 11:
+                        ViewBag.ShowParCompany = true;
+                        break;
+                }
+            }
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
@@ -1392,7 +1470,8 @@ namespace SgqSystem.Controllers
             tabela.CallBackTableEsquerda = form.CallBackTableEsquerda;
             tabela.CallBackTableX = form.CallBackTableX;
             tabela.Title = form.Title;
-            if (tabela.trsCabecalho1[0].name == "Indicadores por Unidades") {
+            if (tabela.trsCabecalho1[0].name == "Indicadores por Unidades")
+            {
                 tabela.trsCabecalho1[0].name = Resources.Resource.indicators_by_units;
             }
             return View(tabela);
@@ -1444,7 +1523,7 @@ namespace SgqSystem.Controllers
                 whereCriticalLevel = $@"AND S.Level1Id IN (SELECT P1XC.ParLevel1_Id FROM ParLevel1XCluster P1XC WHERE P1XC.ParCriticalLevel_Id = { form.criticalLevelId })";
             }
 
-            if(form.unitIdArr.Count() > 0 && form.unitIdArr[0] > 0)
+            if (form.unitIdArr.Count() > 0 && form.unitIdArr[0] > 0)
             {
                 whereParCompany = $@"AND S.ParCompany_Id IN (" + string.Join(",", form.unitIdArr) + ") ";
             }
@@ -4118,7 +4197,7 @@ namespace SgqSystem.Controllers
             var pacote = Resources.Resource.package;
             /*1º*/
             tabela.trsCabecalho1 = new List<Ths>();
-            tabela.trsCabecalho1.Add(new Ths() { name = "Todos os Indicadores por Todas as Regionais"});
+            tabela.trsCabecalho1.Add(new Ths() { name = "Todos os Indicadores por Todas as Regionais" });
             tabela.trsCabecalho1.Add(new Ths() { name = "" });
             /*Fim  1º*/
 
@@ -4787,7 +4866,7 @@ namespace SgqSystem.Controllers
 
             var tabela = new TabelaDinamicaResultados();
 
-                       
+
             var where = string.Empty;
             where += "";
 
@@ -5045,7 +5124,7 @@ namespace SgqSystem.Controllers
             var result3 = result.Where(r => r.QUERY == 3).ToList();
             var result4 = result.Where(r => r.QUERY == 4).ToList();
             var queryRowsBody = result.Where(r => r.QUERY == 6).ToList();
-            
+
             #endregion
 
             #region Cabecalhos
@@ -5338,7 +5417,7 @@ namespace SgqSystem.Controllers
 
             // Total Direita
             var query2 =
- 
+
 
             @" SELECT 2 AS QUERY, LEVEL1NAME COLLATE Latin1_General_CI_AS as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, 
                 case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end as REAL,
@@ -5807,7 +5886,7 @@ namespace SgqSystem.Controllers
 
             // Total Direita
             var query2 =
- 
+
 
             @" SELECT 2 AS QUERY, LEVEL1NAME COLLATE Latin1_General_CI_AS as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, 
                 case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end as REAL,
@@ -5839,7 +5918,7 @@ namespace SgqSystem.Controllers
             // Total Inferior Esquerda
 
             var query3 =
- 
+
 
             @" SELECT 3 AS QUERY,  NULL as CLASSIFIC_NEGOCIO, companySigla as MACROPROCESSO,
                  case when sum(av) is null or sum(av) = 0 then '-'else cast(round(cast(case when isnull(avg(PontosIndicador), 100) = 0 or isnull(avg([PONTOS ATINGIDOS OK]), 100) = 0 then 0 else (ISNULL(avg([PONTOS ATINGIDOS OK]), 100) / isnull(avg(PontosIndicador), 100)) * 100  end as decimal (10, 1)), 2) as varchar) end as REAL,
@@ -5872,7 +5951,7 @@ namespace SgqSystem.Controllers
 
             // Total Inferior Direita
             var query4 =
- 
+
 
 
              @" SELECT 4,  NULL as CLASSIFIC_NEGOCIO, NULL MACROPROCESSO, 
@@ -6395,7 +6474,7 @@ namespace SgqSystem.Controllers
 
             //Nome das linhas da tabela esquerda por ex, indicador X, indicador Y (de uma unidade X, y...)
             var query6 =
-  
+
 
 
                @" SELECT 6 AS QUERY, LEVEL1NAME COLLATE Latin1_General_CI_AS as CLASSIFIC_NEGOCIO, null as MACROPROCESSO, 

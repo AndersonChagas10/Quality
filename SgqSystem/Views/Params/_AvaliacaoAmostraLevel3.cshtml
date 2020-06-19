@@ -214,10 +214,10 @@
                 interval = $('#' + seletorTato + ' #intervaloParaAvaliar').val();
             }
 
-            if(interval.length == 0){
+            @*if(interval.length == 0){
                 openMessageModal('@Resources.Resource.sampleInterval');
                 return false;
-            }
+            }*@
 
             function verify(data){
                 return (data == 0 || data == -1 || data == null) ? 1 : 0;
@@ -294,7 +294,7 @@
                 dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].ParCompany_Id"] = o.ParCompany_Id;
                 dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].ParLevel1_Id"] = o.ParLevel1_Id;
                 dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].ParLevel2_Id"] = o.ParLevel2_Id;
-                dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].EvaluationInterval"] = o.EvaluationInterval;
+                dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].EvaluationInterval"] = o.EvaluationInterval == null ? "" : o.EvaluationInterval;
                 dados["paramsDto.parLevel" + level + "Dto.listParLevel3EvaluationSample[" + c + "].IsActive"] = o.IsActive;
 
             });
@@ -327,6 +327,10 @@
                         }
                     }else{
                         o['ParLevel2_Name'] = "@Resources.Resource.all";
+                    }
+
+                    if(o.EvaluationInterval == null){
+                        o['EvaluationInterval'] = "";
                     }
 
                     if((o.ParLevel1_Id == null

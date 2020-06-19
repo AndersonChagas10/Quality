@@ -999,7 +999,6 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "parStructure2", Value = "Grupo de Empresa"});
                 ResourcesInserir.Add(new ResourcePT() { Key = "parStructure3", Value = "Regional"});
                 ResourcesInserir.Add(new ResourcePT() { Key = "user", Value = "Usuário" });
-                ResourcesInserir.Add(new ResourcePT() { Key = "pdca_menu_item", Value = "Exibir no PDCA" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "appcoleta_corrective_action_modal_input", Value = "Correção" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "consistency_call", Value = "Consistency Call" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "product", Value = "Produto" });
@@ -1011,6 +1010,9 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "executionTime", Value = "Horário de Execução" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "lastExecution", Value = "Última Execução" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "one_required_field", Value = "É obrigatório preencher um dos campos:" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "header_fields_l1", Value = "Cabeçalho Indicador" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "header_fields_l2", Value = "Cabeçalho Monitoramento" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "header_fields_l3", Value = "Cabeçalho Tarefa" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 

@@ -356,11 +356,16 @@ namespace SgqSystem.Controllers.V2.Api
         public IHttpActionResult PostParLevel3(ParLevel3 parLevel3)
         {
             InicioRequisicao();
+
+            if (parLevel3.Name.Length > 500)
+            {
+                return Ok(new { mensagem = "O tamanho do campo Nome ultrapassou o limite" });
+            }
+
             if (!SaveOrUpdateParLevel3(parLevel3))
             {
                 return StatusCode(HttpStatusCode.BadRequest);
             }
-
             return Ok(parLevel3.Id);
         }
 

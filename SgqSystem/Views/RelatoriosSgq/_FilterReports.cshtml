@@ -417,7 +417,7 @@
                                 }
                             </select>
 
-                            @if (ViewBag.ShowParLevel1GQ == true)
+                            @if (ViewBag.ShowParLevel1GQMultiple == true)
                             {
                                 <div class="col-sm-12">
                                     <div class="form-group">
@@ -429,6 +429,22 @@
                                             Abrir
                                         </button>
                                         <select class="form-control" name="parLevel1_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParLevel1GQ == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>@Resources.Resource.level1</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=parLevel1_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParLevel1GQ", "api/Formulario")"
+                                                data-filtroselect3-default-select="@ViewBag.ShowParLevel1Default">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="parLevel1_Ids"></select>
                                     </div>
                                 </div>
                             }
@@ -748,6 +764,17 @@
 @section Scripts {
     <script src="~/Scripts/Select3/select3.js"></script>
     <script>
+
+        function validaObrigatorios() {
+            $("select").map(function (i, o) {
+
+                if ($(o).attr('data-required') == 1) {
+                    if ($(o).find('option:selected').text() == "" || $(o).find('option:selected').text() == null) {
+                        alert('O filtro ' + $(o).parent().find("label").text() + ' é obrigatorio')
+                    }
+                }
+            });
+        }
 
         function toggleDivFilterReports() {
             if ($('#divFilterReports').hasClass("hide")) {

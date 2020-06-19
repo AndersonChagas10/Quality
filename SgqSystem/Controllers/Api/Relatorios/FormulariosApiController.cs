@@ -32,8 +32,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
             var indicador_Id = "0";
 
-            if (form.ShowIndicador_Id.Length > 0)
-                 indicador_Id = form.ShowIndicador_Id[0].ToString();
+            if (form.ParLevel1_Ids.Length > 0)
+                 indicador_Id = form.ParLevel1_Ids[0].ToString();
 
             using (var db = new SgqDbDevEntities())
             {

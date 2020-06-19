@@ -23,8 +23,7 @@ namespace Dominio
         public decimal? EvaluationNumber { get; set; }
 
         [StringLength(30)]
-        [Required(AllowEmptyStrings = true)]
-        public string EvaluationInterval { get; set; }
+        public string EvaluationInterval { get; set; } = "";
 
         public bool? IsActive { get; set; }
 
