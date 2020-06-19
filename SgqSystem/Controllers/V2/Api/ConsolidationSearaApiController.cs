@@ -556,11 +556,27 @@ INSERT INTO [Result_Level3]
                             AND ((cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id IS NULL AND cl.ParLevel2_Id IS NULL) OR
                                 (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id IS NULL) OR
                                 (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id = {collectionLevel2.ParLevel2_Id}))
-                            AND cl.Evaluation = {collectionLevel2.EvaluationNumber}
+                            AND cl.Evaluation <= {collectionLevel2.EvaluationNumber}
                             AND (cl.Sample = {collectionLevel2.Sample} 
                                 OR cl.Outros like '%ParFamiliaProduto_Id%') 
                             AND cl.OUTROS = '{collectionLevel2.Outros}'
-                            AND Cl.CollectionDate BETWEEN DATEADD(second, -60, '{collectionDate}') and DATEADD(second, 60, '{collectionDate}')";
+                            AND Cl.CollectionDate = (
+                                select min(collectiondate) 
+                                FROM Collection CL with (nolock)
+                                WHERE 1 =1 AND ParHeaderField_Id IS NOT NULL
+                                    AND CL.UserSgq_Id = {collectionLevel2.AuditorId}
+                                    AND cl.Shift_Id = {collectionLevel2.Shift}
+                                    AND cl.Period_Id = {collectionLevel2.Period}
+                                    AND CL.ParCargo_Id {queryParCargo}
+                                    AND cl.ParCompany_Id = {collectionLevel2.UnitId}
+                                    AND ((cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id IS NULL AND cl.ParLevel2_Id IS NULL) OR
+                                        (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id IS NULL) OR
+                                        (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id = {collectionLevel2.ParLevel2_Id}))
+                                    AND cl.Evaluation <= {collectionLevel2.EvaluationNumber}
+                                    AND (cl.Sample = {collectionLevel2.Sample} 
+                                        OR cl.Outros like '%ParFamiliaProduto_Id%') 
+                                    AND cl.OUTROS = '{collectionLevel2.Outros}'
+                                    AND Cl.CollectionDate BETWEEN DATEADD(minute, -5, '{collectionDate}') and DATEADD(minute, 5, '{collectionDate}'))";
 
                 headerFields = factory.SearchQuery<CollectionLevel2XParHeaderFieldGeral>(sql).ToList();
             }
