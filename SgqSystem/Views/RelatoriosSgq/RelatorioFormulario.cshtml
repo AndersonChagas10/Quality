@@ -386,7 +386,17 @@
                 } else {
                     html = '<th colspan="' + (itemMatriz.span * valores.length) + '">';
                 }
-                html += itemMatriz.titulo + '</th>';
+
+                var apelido = $(layout).map(function (i, o) {
+                    if (itemMatriz.nivel == o.Value) {
+                        if (o.NickName != "" && o.NickName != null)
+                            return o.NickName;
+                        else
+                            return itemMatriz.titulo;
+                    }
+                });
+
+                html += apelido[0] + '</th>';
 
                 if (!matrizHtmlColunas[indexAtual]) {
                     matrizHtmlColunas.push(html);
