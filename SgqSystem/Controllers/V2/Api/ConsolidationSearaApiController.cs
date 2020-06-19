@@ -55,7 +55,7 @@ namespace SgqSystem.Controllers.V2.Api
                         AND Evaluation is not null
 						AND Sample is not null
                         and ParCompany_Id is not null
-                        AND cast(CollectionDate as date) beetwen '{dataIni:YYYY-mm-DD}' AND '{dataFim:YYYY-mm-DD}'";
+                        AND cast(CollectionDate as date) between '{dataIni:yyyy-MM-dd}' AND '{dataFim:yyyy-MM-dd}'";
 
             var collectionLevel2 = new List<CollectionLevel2>();
 
