@@ -406,7 +406,7 @@ INSERT INTO [Result_Level3]
                         AND (ParCargo_Id = {collection.ParCargo_Id ?? 0} OR ParCargo_Id IS NULL)
                         AND ParFrequency_Id {((collection.ParFrequency_Id > 0) ? (" = " + collection.ParFrequency_Id) : " IS NULL")} 
                         AND (ParDepartment_Id = {collection.ParDepartment_Id ?? 0}  OR ParDepartment_Id IS NULL)
-                        AND CAST(CONVERT(VARCHAR(19), IIF(DATEPART(MILLISECOND, CollectionDate) > 500, DATEADD(SECOND, 1, CollectionDate), CollectionDate), 120) AS DATE) = '{collection.CollectionDate.ToString("yyyy-MM-dd")}'";
+                        AND CollectionDate BETWEEN DATEADD(minute, -5, '{collection.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss")}') and DATEADD(minute, 5, '{collection.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss")}')";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
