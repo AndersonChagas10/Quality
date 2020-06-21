@@ -1059,7 +1059,7 @@ INSERT INTO [dbo].[Collection]
             {
             }
 
-            if (intervalTimeCollectionJob <= 0)
+            if (intervalTimeCollectionJob == 0)
             {
                 var coletasRegistradasPorCollectionLevel2 = coletasRegistradas
                     .Where(x => x.ParHeaderField_Id == null

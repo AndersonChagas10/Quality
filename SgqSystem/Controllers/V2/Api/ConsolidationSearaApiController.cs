@@ -143,6 +143,9 @@ namespace SgqSystem.Controllers.V2.Api
                             var listaPossibilidadesDeAmostra = resultsLevel3Agrupada.Select(x => x.Sampling).Distinct();
 
                             //25 100 10
+
+                            var avaliacaoAntesDeReconsolidar = Convert.ToInt32(collectionLevel2MontadoDaCollection.EvaluationNumber ?? 1);
+
                             foreach (var amostra in listaPossibilidadesDeAmostra)
                             {
                                 var resultsLevel3AgrupadaTemp = resultsLevel3Agrupada.Where(x => x.Sampling == amostra).ToList();
@@ -153,7 +156,6 @@ namespace SgqSystem.Controllers.V2.Api
 
                                 do
                                 {
-
                                     collectionLevel2Consolidada = SetConsolidation(collectionLevel2MontadoDaCollection, resultsLevel3AgrupadaTemp);
                                     collectionLevel2DoBanco = db.CollectionLevel2.Where(x => x.Key == collectionLevel2Consolidada.Key).FirstOrDefault();
 
@@ -310,7 +312,7 @@ INSERT INTO [Result_Level3]
                                 //se existir header Fields para essa collectionLevel2, remove os cabeçalhos
                                 DeleteHeaderFieldIfExists(collectionLevel2Consolidada);
 
-                                RegisterHeaderField(collectionLevel2Consolidada);
+                                RegisterHeaderField(collectionLevel2Consolidada, avaliacaoAntesDeReconsolidar);
                             }
                         }
                     }
@@ -455,10 +457,11 @@ INSERT INTO [Result_Level3]
             return collection;
         }
 
-        private static void RegisterHeaderField(CollectionLevel2 collectionLevel2)
+        private static void RegisterHeaderField(CollectionLevel2 collectionLevel2, int avaliacaoAntesDeReconsolidar)
         {
+            string sqlHF = "";
             //se não existir insere um novo
-            var headerFields = GetHeaderFieldsByCollectionLevel2(collectionLevel2);
+            var headerFields = GetHeaderFieldsByCollectionLevel2(collectionLevel2, avaliacaoAntesDeReconsolidar, out sqlHF);
 
             if (headerFields.Count > 0)
             {
@@ -515,6 +518,19 @@ INSERT INTO [Result_Level3]
                     LogSystem.LogErrorBusiness.Register(ex);
                 }
             }
+            else
+            {
+                var sqlTemp = sqlHF?.Trim();//1500
+                int count = sqlTemp.Length;//1100
+                int max = 400;
+                while (count > 0)
+                {
+                    LogSystem.LogErrorBusiness.Register(
+                        new Exception("Qual avaliação está buscando: "+ (count > 400 ? sqlTemp.Substring(sqlTemp.Length-count, max) : sqlTemp.Substring(sqlTemp.Length - count, count-1))), 
+                        new { avaliacaoAntesDeReconsolidar });
+                    count -= 400;
+                }
+            }
 
         }
         private static void DeleteHeaderFieldIfExists(CollectionLevel2 collectionLevel2)
@@ -532,7 +548,7 @@ INSERT INTO [Result_Level3]
             }
         }
 
-        private static List<CollectionLevel2XParHeaderFieldGeral> GetHeaderFieldsByCollectionLevel2(CollectionLevel2 collectionLevel2)
+        private static List<CollectionLevel2XParHeaderFieldGeral> GetHeaderFieldsByCollectionLevel2(CollectionLevel2 collectionLevel2, int avaliacaoAntesDeReconsolidar, out string sql)
         {
             var headerFields = new List<CollectionLevel2XParHeaderFieldGeral>();
 
@@ -555,7 +571,7 @@ INSERT INTO [Result_Level3]
                 else
                     queryParDepartment = " = " + collectionLevel2.ParDepartment_Id;
 
-                var sql = $@"SELECT
+                sql = $@"SELECT
                             	CL.ParHeaderField_Id as ParHeaderFieldGeral_Id
                                ,CL.ParHeaderField_Value as Value
                                ,PHFG.ParFieldType_Id
@@ -570,14 +586,9 @@ INSERT INTO [Result_Level3]
                             AND CL.UserSgq_Id = {collectionLevel2.AuditorId}
                             AND cl.Shift_Id = {collectionLevel2.Shift}
                             AND cl.Period_Id = {collectionLevel2.Period}
-                            AND CL.ParCargo_Id {queryParCargo}
                             AND cl.ParCompany_Id = {collectionLevel2.UnitId}
-                            AND ((cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id IS NULL AND cl.ParLevel2_Id IS NULL) OR
-                                (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id IS NULL) OR
-                                (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id = {collectionLevel2.ParLevel2_Id}))
-                            AND cl.Evaluation <= {collectionLevel2.EvaluationNumber}
-                            AND (cl.Sample = {collectionLevel2.Sample} 
-                                OR cl.Outros like '%ParFamiliaProduto_Id%') 
+                            AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id}
+                            AND cl.Evaluation = {avaliacaoAntesDeReconsolidar}
                             AND cl.OUTROS = '{collectionLevel2.Outros}'
                             AND Cl.CollectionDate = (
                                 select min(collectiondate) 
@@ -586,14 +597,9 @@ INSERT INTO [Result_Level3]
                                     AND CL.UserSgq_Id = {collectionLevel2.AuditorId}
                                     AND cl.Shift_Id = {collectionLevel2.Shift}
                                     AND cl.Period_Id = {collectionLevel2.Period}
-                                    AND CL.ParCargo_Id {queryParCargo}
                                     AND cl.ParCompany_Id = {collectionLevel2.UnitId}
-                                    AND ((cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id IS NULL AND cl.ParLevel2_Id IS NULL) OR
-                                        (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id IS NULL) OR
-                                        (cl.ParDepartment_Id {queryParDepartment} AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id} AND cl.ParLevel2_Id = {collectionLevel2.ParLevel2_Id}))
-                                    AND cl.Evaluation <= {collectionLevel2.EvaluationNumber}
-                                    AND (cl.Sample = {collectionLevel2.Sample} 
-                                        OR cl.Outros like '%ParFamiliaProduto_Id%') 
+                                    AND cl.ParLevel1_Id = {collectionLevel2.ParLevel1_Id}
+                                    AND cl.Evaluation = {avaliacaoAntesDeReconsolidar}
                                     AND cl.OUTROS = '{collectionLevel2.Outros}'
                                     AND Cl.CollectionDate BETWEEN DATEADD(minute, -5, '{collectionDate}') and DATEADD(minute, 5, '{collectionDate}'))";
 
