@@ -332,12 +332,13 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = false)]
-        public ActionResult RelatorioFormulario()
+        public ActionResult RelatorioFormulario(int reportXUserSgq_Id)
         {
             var indicadorId = 1;
             var unidadeId = 1;
             MontaViewBagFiltros(indicadorId, unidadeId);
 
+            ViewBag.ReportXUserSgq_Id = reportXUserSgq_Id;
             return View("~/Views/RelatoriosSgq/RelatorioFormulario.cshtml", form);
         }
 

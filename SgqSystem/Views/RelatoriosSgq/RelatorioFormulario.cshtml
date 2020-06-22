@@ -242,10 +242,10 @@
                                 $("#rodape").show();
                                 $("#cabecalhoDiv").show();
 
-                                $("#tdElaborador").text(data.Elaborador[0]["Elaborador"]);
-                                $("#tdAprovador").text(data.Aprovador);
-                                $("#tdNomeRelatorio").text(data.RelatorioName[0]["NomeRelatorio"]);
-                                $("#unidadeColeta").text(data.Resultado[0]["unidade"]);
+                        $("#tdElaborador").text(data.Elaborador);
+                        $("#tdAprovador").text(data.Aprovador);
+                        $("#tdNomeRelatorio").text(data.RelatorioName);
+                        $("#unidadeColeta").text(data.Resultado[0]["unidade"]);
 
                                 montaLayout(data.ParReportLayoutXReportXUser);
                                 montaTabelaDinamica(data.Resultado, data.ParReportLayoutXReportXUser);
