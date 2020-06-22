@@ -10,15 +10,15 @@ namespace SgqSystem.Controllers.Api.Relatorios
 {
     public class Data
     {
-       public List<JObject> Resultado { get; set; }
+        public List<JObject> Resultado { get; set; }
 
-       public Object Aprovador { get; set; }
+        public Object Aprovador { get; set; }
 
-       public Object Elaborador { get; set; }
+        public Object Elaborador { get; set; }
 
-       public Object RelatorioName { get; set; }
+        public Object RelatorioName { get; set; }
 
-       public List<ParReportLayoutXReportXUser> ParReportLayoutXReportXUser { get; set; }
+        public List<ParReportLayoutXReportXUser> ParReportLayoutXReportXUser { get; set; }
     }
 
     [RoutePrefix("api/Formularios")]
@@ -30,21 +30,23 @@ namespace SgqSystem.Controllers.Api.Relatorios
         {
             Data retorno = new Data();
 
-            var indicador_Id = "0";
+            if (form.ReportXUserSgq_Id.Length <= 0)
+            {
+                return BadRequest("Não foi especificado um ID de relatório cadastrado");
+            }
 
-            if (form.ShowIndicador_Id.Length > 0)
-                 indicador_Id = form.ShowIndicador_Id[0].ToString();
-
+            ReportXUserSgq reportXUserSgq = null;
             using (var db = new SgqDbDevEntities())
             {
-                retorno.Aprovador = getAprovadorName(form, db);
+                var reportXUserSgq_Id = form.ReportXUserSgq_Id[0];
+                reportXUserSgq = db.ReportXUserSgq.Where(x => x.Id == reportXUserSgq_Id).FirstOrDefault();
+                retorno.Aprovador = reportXUserSgq.Aprovador;
+                retorno.Elaborador = reportXUserSgq.Elaborador;
+                retorno.RelatorioName = reportXUserSgq.NomeRelatorio;
 
-                retorno.Elaborador = getElaboradorName(form, db);
-
-                retorno.RelatorioName = getRelatorioName(form, db);
-
-                retorno.ParReportLayoutXReportXUser = getRelatorioLayoutFormat(form, db);
+                retorno.ParReportLayoutXReportXUser = getRelatorioLayoutFormat(reportXUserSgq, db);
             }
+
             var query = $@"
             	
 ---------------------------------------------------------------------------------------------------------------------------------	
@@ -141,17 +143,20 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
 
 	
----------------------------------------------------------------------------------------------------------------------------------	
+-------------------------------------------------------------------------------------------------------------------------
 				
 -------------------------------------------------------------------------------------------------------------------------
 
     
-          DECLARE @DATEINI DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}' DECLARE @DATEFIM DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}';
-		  DECLARE @UNITID VARCHAR(10) = '{ form.ParCompany_Ids[0]}', @PARLEVEL1_ID VARCHAR(10) = '1' ,@PARLEVEL2_ID VARCHAR(10) = '0';
+        DECLARE @DATEINI DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}';
+        DECLARE @DATEFIM DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}';
+        DECLARE @UNITID VARCHAR(10) = '{ form.ParCompany_Ids[0]}';
+        DECLARE @PARLEVEL1_ID VARCHAR(10) = '{reportXUserSgq.ParLevel1_Id}';
+        DECLARE @PARLEVEL2_ID VARCHAR(10) = '0';
 
 
-		 -------------------------------------------------------------------------------------------------------------------------
-		 -------------------------------------------------------------------------------------------------------------------------		 
+-------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------		 
 		
          DECLARE @DATAINICIAL DATETIME = @DATEINI;
 		 DECLARE @DATAFINAL DATETIME = @DATEFIM;      
@@ -610,22 +615,12 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             return Ok(retorno);
         }
 
-        private List<ParReportLayoutXReportXUser> getRelatorioLayoutFormat(DataCarrierFormularioNew form, SgqDbDevEntities db)
+        private List<ParReportLayoutXReportXUser> getRelatorioLayoutFormat(ReportXUserSgq reportXUserSgq, SgqDbDevEntities db)
         {
             var reportXUserXLayout = new List<ParReportLayoutXReportXUser>();
             using (db)
             {
-                var idUnidade = form.ParCompany_Ids[0];
-                var idIndicador = form.ShowIndicador_Id[0];
-
-                var reportXUser_Id = db.ReportXUserSgq
-                    .Where(x => (x.ParCompany_Id == idUnidade || x.ParCompany_Id == null) && x.ParLevel1_Id == idIndicador)
-                    .OrderByDescending(x => x.ParCompany_Id)
-                    .Select(x => x.Id)
-                    .FirstOrDefault();
-
-                if(reportXUser_Id > 0)
-                    reportXUserXLayout = db.ParReportLayoutXReportXUser.Where(x => x.ReportXUserSgq_Id == reportXUser_Id && x.IsActive).OrderBy(x => x.Ordenacao).ToList();
+                reportXUserXLayout = db.ParReportLayoutXReportXUser.Where(x => x.ReportXUserSgq_Id == reportXUserSgq.Id && x.IsActive).OrderBy(x => x.Ordenacao).ToList();
 
                 for (int i = 0; i < reportXUserXLayout.Count(); i++)
                 {
@@ -635,63 +630,6 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             }
 
             return reportXUserXLayout;
-        }
-
-        private object getElaboradorName(DataCarrierFormularioNew form, SgqDbDevEntities db)
-        {
-            var whereCompany = "";
-            if(form.ParCompany_Ids.Length > 0)
-            {
-                whereCompany = $"AND RXU.Parcompany_Id = { form.ParCompany_Ids[0]}";
-            }
-
-            var SQL = $@"SELECT top 1
-                    Elaborador
-                    FROM ReportXUserSgq RXU      
-                    WHERE RXU.ParLevel1_Id = {form.ShowIndicador_Id[0]}
-                    {whereCompany} 
-                    OR RXU.Parcompany_Id IS NULL
-                    Order by RXU.Parcompany_Id desc";
-
-            return QueryNinja(db, SQL);
-        }
-
-        private object getRelatorioName(DataCarrierFormularioNew form, SgqDbDevEntities db)
-        {
-            var whereCompany = "";
-            if (form.ParCompany_Ids.Length > 0)
-            {
-                whereCompany = $"AND RXU.Parcompany_Id = { form.ParCompany_Ids[0]}";
-            }
-
-            var SQL = $@"SELECT top 1
-                    NomeRelatorio
-                    FROM ReportXUserSgq RXU      
-                    WHERE RXU.ParLevel1_Id = {form.ShowIndicador_Id[0]}
-                    {whereCompany} 
-                    OR RXU.Parcompany_Id IS NULL
-                    Order by RXU.Parcompany_Id desc";
-
-
-            return QueryNinja(db, SQL);
-        }
-
-        private object getAprovadorName(DataCarrierFormularioNew form, SgqDbDevEntities db)
-        {
-            var whereCompany = "";
-            if (form.ParCompany_Ids.Length > 0)
-            {
-                whereCompany = $"AND RXU.Parcompany_Id = { form.ParCompany_Ids[0]}";
-            }
-            var SQL = $@"SELECT top 1
-                    Aprovador
-                    FROM ReportXUserSgq RXU      
-                    WHERE RXU.ParLevel1_Id = {form.ShowIndicador_Id[0]}
-                    {whereCompany} 
-                    OR RXU.Parcompany_Id IS NULL
-                    Order by RXU.Parcompany_Id desc";
-
-            return QueryNinja(db, SQL)[0]["Aprovador"];
         }
     }
 }
