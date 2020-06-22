@@ -113,13 +113,13 @@
                     <table id="cabecalho" class="table table-bordered">
                         <tr>
                             <td rowspan="3" class="col-xs-2">
-                                <img height="90" class="img-responsive" src="~/Imagens/JBS_logo.jpg" />
+                                <img height="90" width="120" src="~/Imagens/novoLogoFriboi2.PNG" />
                             </td>
 
                             <td style="text-align:center; font-weight:bold;"><text id="tdNomeRelatorio"></text></td>
 
                             <td rowspan="3" class="col-xs-2">
-                                <img height="90" width="120" src="~/Imagens/novoLogoFriboi2.PNG" />
+                                <img height="90" class="img-responsive" src="~/Imagens/novoLogoFriboi.PNG" />
                             </td>
                         </tr>
                         <tr>
@@ -141,19 +141,13 @@
                     <br /><br /><br />
                     <footer id="rodape" hidden>
                         <div class="row">
-                            <div class="col-xs-4" style="text-align:center">
-                                _________________________________
-                                <br />
-                                Monitor da GQ
-                            </div>
-
-                            <div class="col-xs-4" style="text-align:center">
+                            <div class="col-xs-6" style="text-align:center">
                                 _________________________________
                                 <br />
                                 Supervisor do Setor
                             </div>
 
-                            <div class="col-xs-4" style="text-align:center">
+                            <div class="col-xs-6" style="text-align:center">
                                 _________________________________
                                 <br />
                                 Supervisor da GQ
@@ -266,7 +260,7 @@
         function montaTabelaDinamica(data) {
 
             var cabecalhos = [
-                "av",
+                "data",
             ];
 
             var linhas = [
@@ -279,7 +273,6 @@
             var valores = [
                 //"AV com Peso",
                 //"NC com Peso",
-                "data",
                 "hora",
                 "resultado",
                 "visto",
@@ -323,12 +316,12 @@
                 var valorCabecalho = objeto[nomeDoNivel];
 
                 var itemAtual = {};
-                itemAtual.nivel = nomeDoNivel;
+                itemAtual.titulo = valorCabecalho.replace("'", "´");
                 itemAtual.titulo = valorCabecalho;
                 itemAtual.lista = [];
 
                 if (matriz.lista) {
-                    itemDaLista = matriz.lista.filter((item) => item.titulo == valorCabecalho)
+                    itemDaLista = matriz.lista.filter((item) => item.titulo.replace("'", "´") == valorCabecalho.replace("'", "´"))
                     if (itemDaLista.length == 0) {
                         matriz.lista.push(itemAtual); //Adicionado como filho
                     } else {
