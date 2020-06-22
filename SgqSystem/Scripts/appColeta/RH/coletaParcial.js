@@ -227,22 +227,7 @@ function desabilitaColetados() {
     }
 
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
-    var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value] div[data-qualification-required]');
-    var selectQualificationColeta = $('form[data-form-coleta] div[data-qualificationlevel3value] select[data-qualificationselect]');
     var dataApp = getCurrentDate().split("T")[0];
-
-    for (var i = 0; i < qualification.length; i++) {
-
-        var linhaQualification = qualification[i];
-        var selectQualification = selectQualificationColeta[i];
-
-        if ($(linhaQualification).attr('data-qualification-required') == 'true' && $(selectQualification).length > 0) {
-            if ($(selectQualification).val() == null || $(selectQualification).val() == undefined || $(selectQualification).val() == "") {
-                errorCount++;
-            }
-        }
-
-    }
 
     for (var i = 0; i < linhasDaColeta.length; i++) {
 
@@ -286,6 +271,7 @@ function desabilitaColetados() {
 
             $(data).find('input, button').prop("disabled", true);
             $(data).css("background-color", "#999");
+            validateShowQualification(data);
 
         }
     }
@@ -298,7 +284,66 @@ function desabilitaCamposCabecalho() {
     setHeaderFieldLevel1();
     setHeaderFieldLevel2();
     setHeaderFieldLevel3();
+    setQualificationField();
+}
 
+function setQualificationField(){
+
+    var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value]');
+    var dataApp = getCurrentDate().split("T")[0];
+
+    qualification.each(function (index, value) {
+
+        var inputSelect = $(value).find('input, select');
+        var parLevel1_Id = parseInt($(value).attr('parlevel1id'));
+        var parLevel2_Id = parseInt($(value).attr('parlevel2id'));
+        var parLevel3_Id = parseInt($(value).attr('parlevel3id'));
+
+        inputSelect.each(function (index, value) {
+
+            var coletaQualification = $.grep(coletasParciais, function (o, i) {
+
+                var dataColetaParcial = o.CollectionDate.split("T")[0];
+
+                return o.ParCompany_Id == currentParCompany_Id &&
+                    o.ParDepartment_Id == currentParDepartment_Id &&
+                    o.ParCluster_Id == currentParCluster_Id &&
+                    o.Parfrequency_Id == currentParFrequency_Id &&
+                    o.ParCargo_Id == currentParCargo_Id &&
+                    o.ParLevel1_Id == parLevel1_Id &&
+                    o.ParLevel2_Id == parLevel2_Id &&
+                    o.ParLevel3_Id == parLevel3_Id &&
+                    o.Evaluation == currentEvaluationSample.Evaluation &&
+                    o.Sample == currentEvaluationSample.Sample &&
+                    dataApp == dataColetaParcial &&
+                    (o.Outros != null && o.Outros != '{"Qualification_Value":[]}');
+
+            })[0];
+
+            if (coletaQualification) {
+
+                var qualificationValue = JSON.parse(coletaQualification.Outros);
+
+                if (qualificationValue && qualificationValue.Qualification_Value[0]) {
+
+                    if ($(value).is("select")) {
+
+                        $(value).val(qualificationValue.Qualification_Value[0])
+
+                    } else {
+
+                        $(value).val(qualificationValue.Qualification_Value[0])
+                        $(value).text(qualificationValue.Qualification_Value[0])
+                    }
+
+                    $(value).prop("disabled", true);
+                }
+
+            }
+
+        });
+
+    });
 }
 
 function setHeaderFieldLevel1() {
@@ -483,8 +528,6 @@ function setBinarioRespondido(self, isConform) {
         $(button).text($(button).attr('data-negativo'));
 
     }
-
-    validateShowQualification(linha);
 
     $(self).addClass('btn-default');
     $(self).removeClass('btn-secundary');
