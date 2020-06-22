@@ -297,6 +297,20 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [Route("EditCabecalhoSeara/{ResultLevel3_Id}")]
+        public string EditCabecalhoSeara(int ResultLevel3_Id)
+        {
+            var retorno = getSelectsSeara(ResultLevel3_Id);
+
+            var json = JsonConvert.SerializeObject(retorno, Formatting.None, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+
+            return json;
+        }
+
+        [HttpPost]
         [Route("SaveCabecalho")]
         public bool SaveCabecalho([FromBody] ListCollectionLevel2XParHeaderField Lsc2xhf)
         {
@@ -377,6 +391,86 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
+        [Route("SaveCabecalhoSeara")]
+        public bool SaveCabecalhoSeara([FromBody] ListCollectionLevel2XParHeaderFieldGeral Lsc2xhf)
+        {
+            try
+            {
+                CollectionLevel2 collectionLevel2 = null;
+                List<SelectSeara> headerFieldsValues = null;
+                if (Lsc2xhf.HeaderField.Count() > 0)
+                {
+                    int collectionLevel2_Id = Lsc2xhf.HeaderField[0].CollectionLevel2_Id;
+                    collectionLevel2 = db.CollectionLevel2.Where(x => x.Id == collectionLevel2_Id).FirstOrDefault();
+                    headerFieldsValues = GetSelectsByHeaderFieldGeral(Lsc2xhf.HeaderField, collectionLevel2);
+                }
+
+                using (SgqDbDevEntities dbEntities = new SgqDbDevEntities())
+                {
+                    dbEntities.Configuration.LazyLoadingEnabled = false;
+                    foreach (var item in Lsc2xhf.HeaderField)
+                    {
+                        if (item.Id > 0)//Update
+                        {
+                            var original = dbEntities.CollectionLevel2XParHeaderFieldGeral.FirstOrDefault(c => c.Id == item.Id);
+                            original.CollectionLevel2 = null;
+                            original.ParHeaderFieldGeral = null;
+
+                            if (original.Value == item.Value)
+                                continue;
+
+                            var valueSelected = headerFieldsValues.Where(x => x.HeaderFieldGeral.Id == item.ParHeaderFieldGeral_Id).FirstOrDefault();
+                            if (valueSelected != null)
+                                original.ParHeaderField_ValueName = valueSelected.Values.Where(x => x.Id == Convert.ToInt32(original.Value)).FirstOrDefault()?.Name;
+
+                            //[TODO] Inserir registro de log de edição
+                            var auditorId = dbEntities.CollectionLevel2.Where(x => x.Id == original.CollectionLevel2_Id).Select(x => x.AuditorId).First();
+                            LogSystem.LogTrackBusiness.RegisterIfNotExist(original, original.Id, "CollectionLevel2XParHeaderFieldGeral", auditorId);
+
+                            if (string.IsNullOrEmpty(item.Value))//Remover
+                            {
+                                dbEntities.CollectionLevel2XParHeaderFieldGeral.Remove(original);
+                            }
+                            else //Update
+                            {
+                                valueSelected = headerFieldsValues.Where(x => x.HeaderFieldGeral.Id == item.ParHeaderFieldGeral_Id).FirstOrDefault();
+                                if (valueSelected != null)
+                                    original.ParHeaderField_ValueName = valueSelected.Values.Where(x => x.Id == Convert.ToInt32(item.Value)).FirstOrDefault()?.Name;
+
+                                original.Value = item.Value;
+                                original.ParHeaderFieldGeral_Id = item.ParHeaderFieldGeral_Id;
+                                original.ParHeaderField_Name = item.ParHeaderField_Name;
+                                LogSystem.LogTrackBusiness.Register(original, original.Id, "CollectionLevel2XParHeaderFieldGeral", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(item.Value)) //Add
+                        {
+                            dbEntities.CollectionLevel2XParHeaderFieldGeral.Add(item);
+                        }
+                    }
+
+                    dbEntities.SaveChanges();
+
+                    //Reconsolida
+                    if (Lsc2xhf.HeaderField.Count > 0)
+                    {
+                        var syncServices = new SgqServiceBusiness.Api.SyncServiceApiController(conexao, conexao);
+
+                        syncServices.ReconsolidationToLevel3(Lsc2xhf.HeaderField[0].CollectionLevel2_Id.ToString());
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+                throw;
+            }
+
+            return true;
+        }
+
+        [HttpPost]
         [Route("EditProduto/{ParFamiliaProduto_Id}")]
         public string EditProduto(int ParFamiliaProduto_Id)
         {
@@ -418,6 +512,15 @@ namespace SgqSystem.Controllers.Api
             public List<ParMultipleValues> Values { get; set; }
             public string ValueSelected { get; set; }
             public int CollectionLevel2XParHeaderField_Id { get; set; }
+            public CollectionLevel2 CollectionLevel2 { get; set; }
+        }
+
+        public class SelectSeara
+        {
+            public ParHeaderFieldGeral HeaderFieldGeral { get; set; }
+            public List<ParMultipleValuesGeral> Values { get; set; }
+            public string ValueSelected { get; set; }
+            public int CollectionLevel2XParHeaderFieldGeral_Id { get; set; }
             public CollectionLevel2 CollectionLevel2 { get; set; }
         }
 
@@ -465,6 +568,26 @@ namespace SgqSystem.Controllers.Api
             var coletas = db.Database.SqlQuery<CollectionLevel2XParHeaderField>(query).ToList();
 
             return GetSelectsByHeaderField(coletas, collectionLevel2);
+        }
+
+        public List<SelectSeara> getSelectsSeara(int ResultLevel3_Id)
+        {
+            //pegar os cabeçalhos
+            var collectionLevel2 = getCollectionLevel2ByResultLevel3(ResultLevel3_Id);
+
+            var query = $@"SELECT *
+            FROM CollectionLevel2XParHeaderFieldGeral
+            WHERE CollectionLevel2_Id IN (SELECT
+            		Id
+            	FROM CollectionLevel2
+            	WHERE id IN (SELECT
+            			CollectionLevel2_Id
+            		FROM Result_Level3
+            		WHERE id = { ResultLevel3_Id }))";
+
+            var coletas = db.Database.SqlQuery<CollectionLevel2XParHeaderFieldGeral>(query).ToList();
+
+            return GetSelectsByHeaderFieldGeral(coletas, collectionLevel2);
         }
 
         public List<Select> GetSelectsByHeaderField(List<CollectionLevel2XParHeaderField> coletas, CollectionLevel2 collectionLevel2)
@@ -539,6 +662,72 @@ namespace SgqSystem.Controllers.Api
             return resultHeaderField;
         }
 
+        public List<SelectSeara> GetSelectsByHeaderFieldGeral(List<CollectionLevel2XParHeaderFieldGeral> coletas, CollectionLevel2 collectionLevel2)
+        {
+
+            var resultHeaderField = new List<SelectSeara>();
+
+            //Seleciona os cabeçalhos
+            var headerFields = db.ParHeaderFieldGeral
+                .Where(x => ((x.ParLevelHeaderField_Id == 1 && x.Generic_Id == collectionLevel2.ParLevel1_Id)
+                || (x.ParLevelHeaderField_Id == 2 && x.Generic_Id == collectionLevel2.ParLevel2_Id)) && x.IsActive == true)
+                .OrderBy(r => r.ParLevelHeaderField_Id).ThenBy(r => r.Id).ToList();
+
+            var values = db.ParMultipleValuesGeral.ToList();
+
+            foreach (var headerField in headerFields)
+            {
+                var select = new SelectSeara();
+
+                //Atribui o campo de cabeçalho
+                select.HeaderFieldGeral = headerField;
+
+                if (headerField.ParFieldType_Id == 2) //Se for campo integração
+                {
+                    SGQDBContext.ParFieldType ParFieldTypeDB = new SGQDBContext.ParFieldType();
+                    //select.Values = ParFieldTypeDB.getIntegrationValues(headerField.Id, headerField.Description, collectionLevel2.UnitId).ToList();
+                }
+                else
+                {
+                    //pegar values dos campos de cabeçalho
+                    select.Values = values.Where(r => r.ParHeaderFieldGeral_Id == headerField.Id).ToList();
+                }
+
+                //Atribui o selecionado
+                //Se tiver mais do que um valor duplica a inserção
+                var resultados = coletas.Where(r => r.ParHeaderFieldGeral_Id == headerField.Id).ToList();
+
+                select.CollectionLevel2 = collectionLevel2;
+
+                //Quantidades de campos coletados
+                if (resultados.Count > 0)
+                {
+                    foreach (var resultado in resultados)
+                    {
+                        //Atribui a quantidade de cabeçalhos                       
+                        select.CollectionLevel2XParHeaderFieldGeral_Id = resultado.Id;
+                        select.ValueSelected = resultado.Value;
+                        resultHeaderField.Add(new SelectSeara()
+                        {
+                            CollectionLevel2 = select.CollectionLevel2,
+                            CollectionLevel2XParHeaderFieldGeral_Id = select.CollectionLevel2XParHeaderFieldGeral_Id,
+                            HeaderFieldGeral = select.HeaderFieldGeral,
+                            Values = select.Values,
+                            ValueSelected = select.ValueSelected
+                        });
+                    }
+                }
+                else
+                {
+                    //Somente atribui sem valor selecionado
+                    resultHeaderField.Add(select);
+                }
+            }
+
+            //pegar os valor que está selecionado
+            return resultHeaderField;
+        }
+
         public CollectionLevel2 getCollectionLevel2ByResultLevel3(int ResultLevel3_Id)
         {
             var query = $@"SELECT
@@ -558,6 +747,14 @@ namespace SgqSystem.Controllers.Api
             public string Motivo { get; set; }
             public int UserSgq_Id { get; set; } //Quem editou
             public List<CollectionLevel2XParHeaderField> HeaderField { get; set; }
+        }
+
+        public class ListCollectionLevel2XParHeaderFieldGeral
+        {
+            public int ParReason_Id { get; set; }
+            public string Motivo { get; set; }
+            public int UserSgq_Id { get; set; } //Quem editou
+            public List<CollectionLevel2XParHeaderFieldGeral> HeaderField { get; set; }
         }
 
         public class ListCollectionLevel2xParProduto
