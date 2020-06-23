@@ -563,6 +563,12 @@ public class RelatorioDeResultadoSearaResultsSet
 			, CUBO2.SKU
 
 
+			SELECT PL2P.ParLevel1_Id, SUM(PESO) AS PESO_MONITORAMENTO 
+			INTO #PESOTOTALMONITORAMENTOINDICADOR
+			FROM ParVinculoPesoParLevel2 PL2P WITH (NOLOCK)
+			WHERE IsActive = 1
+			GROUP BY PL2P.ParLevel1_Id
+
 			SELECT 
 				CUBO1.ParCompany_Id, 
 				CUBO1.DataTruncada,
@@ -572,20 +578,27 @@ public class RelatorioDeResultadoSearaResultsSet
 				CUBO1.TURNO,
 				SUM(CUBO1.AV) AS AV,
 				SUM(CUBO1.Defects) AS Defects,
-				SUM(CUBO1.PESO) AS [PESOTOTAL]
-				,SUM((CUBO1.PESO / PM.PESO)) AS [PESO]
-				,SUM( (CUBO1.PESO / PM.PESO) * RESPOSTA2) TOTAL -- 0 98,125 0 100 97,5
+				SUM(CUBO1.PESO) AS [PESOTOTAL],
+				PMM.PESO_MONITORAMENTO
+				,SUM((CUBO1.PESO / PMM.PESO_MONITORAMENTO)) AS [PESO]
+				,CASE 
+					WHEN SUM((CUBO1.PESO / PMM.PESO_MONITORAMENTO)) < 1 THEN SUM( (CUBO1.PESO / PMM.PESO_MONITORAMENTO) * RESPOSTA2) + (1 - SUM((CUBO1.PESO / PMM.PESO_MONITORAMENTO)) ) * 100  
+					WHEN SUM((CUBO1.PESO / PMM.PESO_MONITORAMENTO)) > 1 THEN ((SUM( (CUBO1.PESO / PMM.PESO_MONITORAMENTO) * RESPOSTA2)) / SUM((CUBO1.PESO / PMM.PESO_MONITORAMENTO))) 
+				ELSE SUM( (CUBO1.PESO / PMM.PESO_MONITORAMENTO) * RESPOSTA2) END TOTAL 
 			INTO #CUBO1
 			FROM ( SELECT * FROM #CUBO2) CUBO1
 			INNER JOIN #PESOMONITORAMENTOINDICADOR PM 
 			ON PM.ParLevel1_Id = CUBO1.ParLevel1_Id
+			INNER JOIN #PESOTOTALMONITORAMENTOINDICADOR PMM
+			ON PMM.ParLevel1_id = CUBO1.ParLevel1_Id
 			GROUP BY 
 			CUBO1.ParCompany_Id, 
 			CUBO1.DataTruncada,
 			CUBO1.PARLEVEL1_ID, 
 			CUBO1.SKU, 
 			CUBO1.CABECALHO, 
-			CUBO1.TURNO 
+			CUBO1.TURNO,
+			PMM.PESO_MONITORAMENTO
 
 			-- TABELA
 			SELECT 
@@ -594,20 +607,22 @@ public class RelatorioDeResultadoSearaResultsSet
 				, SUM(C.AV) - SUM(C.Defects) AS C
 				, SUM(C.Defects) AS NC
 				, ROUND(avg(C.Total),2) AS PORCC
-				, CASE WHEN LEN(CAST(MONTH(C.DataTruncada) AS VARCHAR)) = 1 THEN '0' + CAST(MONTH(C.DataTruncada) AS VARCHAR) ELSE CAST(MONTH(C.DataTruncada) AS VARCHAR) END + '/' + CAST(YEAR(C.DataTruncada) AS VARCHAR) AS DATA
+				, CAST(RIGHT(LEFT(C.DataTruncada,7),2) AS VARCHAR) + '/' + CAST(LEFT(C.DataTruncada,4) AS VARCHAR) AS DATA
 
 			FROM #CUBO1 C
 			LEFT JOIN ParCompany UN WITH (NOLOCK)
 			ON UN.ID = C.PARCOMPANY_ID
 			GROUP BY 
 			UN.Name
-			, C.DataTruncada
+			, CAST(LEFT(C.DataTruncada,4) AS VARCHAR)
+			, CAST(RIGHT(LEFT(C.DataTruncada,7),2) AS VARCHAR)
 			ORDER BY 1 ASC
 
 			DROP TABLE #CUBOLEVEL3
 			DROP TABLE #CUBO2
 			DROP TABLE #CUBO1
 			DROP TABLE #PESOMONITORAMENTOINDICADOR
+			DROP TABLE #PESOTOTALMONITORAMENTOINDICADOR
 	
 		";
 		
@@ -2042,6 +2057,11 @@ GROUP BY Parcompany_id
 	, CUBO2.PARLEVEL2_ID
 	, CUBO2.SKU
 
+	SELECT PL2P.ParLevel1_Id, SUM(PESO) AS PESO_MONITORAMENTO 
+	INTO #PESOTOTALMONITORAMENTOINDICADOR
+	FROM ParVinculoPesoParLevel2 PL2P WITH (NOLOCK)
+	WHERE IsActive = 1
+	GROUP BY PL2P.ParLevel1_Id
 
 	SELECT 
 		CUBO1.ParCompany_Id, 
@@ -2052,28 +2072,40 @@ GROUP BY Parcompany_id
 		CUBO1.TURNO,
 		SUM(CUBO1.AV) AS AV,
 		SUM(CUBO1.Defects) AS Defects,
-		SUM(CUBO1.PESO) AS [PESOTOTAL]
-		,SUM((CUBO1.PESO / PM.PESO)) AS [PESO]
-		,SUM( (CUBO1.PESO / PM.PESO) * RESPOSTA2) TOTAL -- 0 98,125 0 100 97,5
+		SUM(CUBO1.PESO) AS [PESOTOTAL],
+        PMM.PESO_MONITORAMENTO
+		,SUM((CUBO1.PESO / PMM.PESO_MONITORAMENTO)) AS [PESO]
+		,CASE 
+			WHEN SUM((CUBO1.PESO / PMM.PESO_MONITORAMENTO)) < 1 THEN SUM( (CUBO1.PESO / PMM.PESO_MONITORAMENTO) * RESPOSTA2) + (1 - SUM((CUBO1.PESO / PMM.PESO_MONITORAMENTO)) ) * 100  
+			WHEN SUM((CUBO1.PESO / PMM.PESO_MONITORAMENTO)) > 1 THEN ((SUM( (CUBO1.PESO / PMM.PESO_MONITORAMENTO) * RESPOSTA2)) / SUM((CUBO1.PESO / PMM.PESO_MONITORAMENTO))) 
+		ELSE SUM( (CUBO1.PESO / PMM.PESO_MONITORAMENTO) * RESPOSTA2) END TOTAL 
 	INTO #CUBO1
 	FROM ( SELECT * FROM #CUBO2) CUBO1
 	INNER JOIN #PESOMONITORAMENTOINDICADOR PM 
 	ON PM.ParLevel1_Id = CUBO1.ParLevel1_Id
+    INNER JOIN #PESOTOTALMONITORAMENTOINDICADOR PMM
+    ON PMM.ParLevel1_id = CUBO1.ParLevel1_Id
 	GROUP BY 
 	CUBO1.ParCompany_Id, 
 	CUBO1.DataTruncada,
 	CUBO1.PARLEVEL1_ID, 
 	CUBO1.SKU, 
 	CUBO1.CABECALHO, 
-	CUBO1.TURNO 
+	CUBO1.TURNO,
+	PMM.PESO_MONITORAMENTO
+
+
+	
+
+
 ";
 
 		if (form.ShowModeloGrafico_Id[0] == 2) //DIA
 		{
-			query += $@"-- DIARIO
+			query += $@"-- MES
 						SELECT 
-							C.DataTruncada as UnidadeName 
-							, C.DataTruncada as UnidadeId 
+							CAST(LEFT(C.DataTruncada,7) AS VARCHAR) as UnidadeName 
+							, CAST(LEFT(C.DataTruncada,7) AS VARCHAR) as UnidadeId 
 							, SUM(C.AV) AS AV
 							, SUM(C.Defects) AS NC
 							, SUM(C.AV) - SUM(C.Defects) AS C
@@ -2082,10 +2114,10 @@ GROUP BY Parcompany_id
 							, SUM(C.PESO) AS [PESOTOTAL]
 							, SUM(C.PESO) AS [PESO]
 							, avg(C.Total) TOTAL 
-							, C.DataTruncada as UnidadeId
+							, CAST(LEFT(C.DataTruncada,7) AS VARCHAR) as UnidadeId
 						FROM #CUBO1 C
 						GROUP BY 
-						C.DataTruncada
+						CAST(LEFT(C.DataTruncada,7) AS VARCHAR)
 						ORDER BY 1 ";
 		}
 		else if (form.ShowModeloGrafico_Id[0] == 3) //SEMANA
@@ -2110,10 +2142,11 @@ GROUP BY Parcompany_id
 		}
 		else if (form.ShowModeloGrafico_Id[0] == 4) //MES
 		{
-			query += $@"-- MES
+			query += $@" 
+						-- DIARIO
 						SELECT 
-							CAST(YEAR(C.DataTruncada) AS VARCHAR) + '-' + CASE WHEN LEN(CAST(MONTH(C.DataTruncada) AS VARCHAR)) = 1 THEN '0' + CAST(MONTH(C.DataTruncada) AS VARCHAR) ELSE CAST(MONTH(C.DataTruncada) AS VARCHAR) END as UnidadeName 
-							, CAST(YEAR(C.DataTruncada) AS VARCHAR) + '-' + CASE WHEN LEN(CAST(MONTH(C.DataTruncada) AS VARCHAR)) = 1 THEN '0' + CAST(MONTH(C.DataTruncada) AS VARCHAR) ELSE CAST(MONTH(C.DataTruncada) AS VARCHAR) END as UnidadeId 
+							C.DataTruncada as UnidadeName 
+							, C.DataTruncada as UnidadeId 
 							, SUM(C.AV) AS AV
 							, SUM(C.Defects) AS NC
 							, SUM(C.AV) - SUM(C.Defects) AS C
@@ -2122,7 +2155,7 @@ GROUP BY Parcompany_id
 							, SUM(C.PESO) AS [PESOTOTAL]
 							, SUM(C.PESO) AS [PESO]
 							, avg(C.Total) TOTAL 
-							, CAST(YEAR(C.DataTruncada) AS VARCHAR) + '-' + CASE WHEN LEN(CAST(MONTH(C.DataTruncada) AS VARCHAR)) = 1 THEN '0' + CAST(MONTH(C.DataTruncada) AS VARCHAR) ELSE CAST(MONTH(C.DataTruncada) AS VARCHAR) END as UnidadeId
+							, C.DataTruncada as UnidadeId
 						FROM #CUBO1 C
 						GROUP BY 
 						C.DataTruncada
@@ -2288,7 +2321,9 @@ GROUP BY Parcompany_id
 					DROP TABLE #CUBOLEVEL3
 					DROP TABLE #CUBO2
 					DROP TABLE #CUBO1
-					DROP TABLE #PESOMONITORAMENTOINDICADOR";
+					DROP TABLE #PESOMONITORAMENTOINDICADOR
+					DROP TABLE #PESOTOTALMONITORAMENTOINDICADOR
+					";
 		
                
         return query;
