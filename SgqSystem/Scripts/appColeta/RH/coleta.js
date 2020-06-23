@@ -898,12 +898,15 @@ function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
 
             var qualificationGroupName = '';
 
+            if (parametrization.listaPargroupQualification.length == 0) {
+                return;
+            }
+
             if (parametrization.listaPargroupQualification[i] != undefined) {
                 qualificationGroupName = parametrization.listaPargroupQualification[i].Name;
             } else {
                 qualificationGroupName = parametrization.listaPargroupQualification[0].Name;
             }
-
 
             if ($(linhaLevel3).attr('data-conforme') == o.Value) {
                 var options = '';

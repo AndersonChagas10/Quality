@@ -627,6 +627,7 @@
                 ParL3TipoDado.insertTable(obj);
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-success" data-edit>Salvar</button>');
                 $('#' + id + ' [data-form] [data-action]').append('<button class="form-control btn btn-danger" data-cancel>Cancelar</button>');
+
                 if (obj.ParLevel3InputType_Id == 1 || obj.ParLevel3InputType_Id == 6 || obj.ParLevel3InputType_Id == 15)
                     $('#' + id + ' [data-form] [data-action]').append('<button onclick="openQualificationModal(' + obj.Id + ')" data-qualification class="form-control btn btn-primary col-md-4">Adicionar Qualificação</button>');
 
