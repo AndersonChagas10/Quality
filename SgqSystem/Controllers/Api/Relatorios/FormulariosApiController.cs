@@ -47,6 +47,36 @@ namespace SgqSystem.Controllers.Api.Relatorios
                 retorno.ParReportLayoutXReportXUser = getRelatorioLayoutFormat(reportXUserSgq, db);
             }
 
+            var whereParCompany = "";
+            if (form.ParCompany_Ids.Length > 0)
+            {
+                whereParCompany = $"and CL2.UnitId in ({ string.Join(",", form.ParCompany_Ids)})";
+            }
+
+            var whereParLevel2 = "";
+            if (form.ParLevel2_Ids.Length > 0)
+            {
+                whereParLevel2 = $"AND CL2.ParLevel2_Id in ({ string.Join(",", form.ParLevel2_Ids)})";
+            }
+
+            var whereParLevel3 = "";
+            if (form.ParLevel3_Ids.Length > 0)
+            {
+                whereParLevel3 = $"and R3.ParLevel3_Id in ({ string.Join(",", form.ParLevel3_Ids)})";
+            }
+
+            var whereEvaluation = "";
+            if (form.Evaluation.Length > 0)
+            {
+                whereEvaluation = $"and CL2.EvaluationNumber = {form.Evaluation[0]}";
+            }
+
+            var whereSample = "";
+            if (form.Sample.Length > 0)
+            {
+                whereSample = $"and CL2.Sample = {form.Sample[0]}";
+            }
+
             var query = $@"
             	
 ---------------------------------------------------------------------------------------------------------------------------------	
@@ -150,7 +180,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
     
         DECLARE @DATEINI DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}';
         DECLARE @DATEFIM DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}';
-        DECLARE @UNITID VARCHAR(10) = '{ form.ParCompany_Ids[0]}';
+        DECLARE @UNITID VARCHAR(10) = '{reportXUserSgq.ParCompany_Id ?? form.ParCompany_Ids[0] }';
         DECLARE @PARLEVEL1_ID VARCHAR(10) = '{reportXUserSgq.ParLevel1_Id}';
         DECLARE @PARLEVEL2_ID VARCHAR(10) = '0';
 
@@ -219,9 +249,12 @@ namespace SgqSystem.Controllers.Api.Relatorios
 						AND cl2.Collectiondate BETWEEN @DATEINI AND @DATEFIM
 						AND CL2.ParLevel1_Id != 43
 						AND CL2.ParLevel1_Id != 42
+                        {whereParCompany}
+                        {whereParLevel2}
+                        {whereEvaluation}
+                        {whereSample}
 						AND CASE WHEN @UNITID = '0' THEN '0' ELSE cl2.unitid END = @UNITID
 						AND CASE WHEN @PARLEVEL1_ID = '0' THEN '0' ELSE cl2.ParLevel1_id END = @PARLEVEL1_ID
-						AND CASE WHEN @PARLEVEL2_ID = '0' THEN '0' ELSE cl2.ParLevel2_id END = @PARLEVEL2_ID
 
  
                     CREATE INDEX IDX_CollectionLevel2_ID ON #CollectionLevel2(ID);
@@ -237,7 +270,7 @@ DECLARE @HeaderField varchar(max);
 
 SELECT     @HeaderField =
 STUFF(   
-(SELECT DISTINCT ', ' + CONCAT(' [',ParHeaderField_Name,']') 
+(SELECT DISTINCT ', ' + CONCAT(' [',LOWER(REPLACE(ParHeaderField_Name, ' ',  '')),']') 
 FROM CollectionLevel2XParHeaderField cl2xph_ 
 INNER JOIN #CollectionLevel2 CL2
 	ON cl2xph_.CollectionLevel2_id = CL2.ID
@@ -257,7 +290,7 @@ SELECT * INTO #HeaderField FROM (
 SELECT 
 	DISTINCT 
 		 CL2.id CollectionLevel2_Id
-		,CL2HF2.ParHeaderField_Name
+		,REPLACE(CL2HF2.ParHeaderField_Name, '' '',  '''') as ParHeaderField_Name
 		,CONCAT(HF.name, '': '', case 
 				when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
 				when CL2HF2.ParFieldType_Id = 2 then case when EQP.Nome is null then cast(PRD.nCdProduto as varchar(500)) + '' - '' + PRD.cNmProduto else EQP.Nome end 
@@ -352,14 +385,15 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         SELECT CL2.CollectionDate,CL2.UnitId,COUNT(distinct CL2.id) AS NA
         	INTO #NA
         	FROM CollectionLevel2 CL2 WITH (NOLOCK)
-        	LEFT JOIN Result_Level3 CL3 WITH (NOLOCK)
-        		ON CL3.CollectionLevel2_Id = CL2.Id
+        	LEFT JOIN Result_Level3 R3 WITH (NOLOCK)
+        		ON R3.CollectionLevel2_Id = CL2.Id
+                {whereParLevel3}
         	WHERE CONVERT(DATE, CL2.CollectionDate) between CONVERT(DATE,@DATEINI) and CONVERT(DATE,@DATEFIM)
         	AND CL2.ParLevel1_Id IN (SELECT 
         			id
         		FROM Parlevel1 WITH (NOLOCK)
         		WHERE Hashkey = 1 )
-        	AND CL3.IsNotEvaluate = 1
+        	AND R3.IsNotEvaluate = 1
         	GROUP BY CL2.CollectionDate,CL2.UnitId
         HAVING COUNT(DISTINCT CL2.id) > 1
         
@@ -394,6 +428,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
         FROM #CollectionLevel2 CL2 WITH (NOLOCK) 
         LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
         	ON CL2.ID = R3.CollectionLevel2_Id
+            {whereParLevel3}
 		OUTER APPLY (SELECT TOP 1
 						L3V.ParLevel3InputType_Id,L3V.ParLevel3BoolTrue_Id,L3V.ParLevel3BoolFalse_Id
 					FROM ParLevel3Value L3V WITH (NOLOCK)
@@ -625,7 +660,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 for (int i = 0; i < reportXUserXLayout.Count(); i++)
                 {
                     if (reportXUserXLayout[i].Value.Split('|').Length > 1)
-                        reportXUserXLayout[i].Value = reportXUserXLayout[i].Value.Split('|')[1].Trim();
+                        reportXUserXLayout[i].Value = reportXUserXLayout[i].Value.Split('|')[1].Trim().Replace(" ", "").ToLower();
                 }
             }
 

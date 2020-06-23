@@ -6,6 +6,7 @@
     ViewBag.Title = "Formulário";
 
     ViewBag.ShowIndicadorMER = false;
+    ViewBag.ShowLinkedFilters = false;
     //ViewBag.ShowCurrentDate = true;
     //ViewBag.ShowParCompany = true;
 
@@ -224,7 +225,6 @@
                     $("#rodape").hide();
                     $("#cabecalhoDiv").hide();
                     $("#pivot-table").hide();
-
                     $.ajax({
                         data: JSON.stringify(objFiltro),
                         url: urlBuscaDados,
