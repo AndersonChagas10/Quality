@@ -2686,4 +2686,14 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-872</CardNumber>
+    <Version>1.4.0</Version>
+    <Description> [MSP] AppColeta - Adição do Turno 3 ao banco. </Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM Shift WHERE id = 3)
+      INSERT INTO Shift values ('Turno 3', getdate(), getdate())
+    </Script>
+  </Card>
+
 </Cards>
