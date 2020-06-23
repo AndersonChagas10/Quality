@@ -9,7 +9,7 @@
     var urlPhotoPreview = Url.Action("PhotoPreview", "api/ApontamentosDiarios");
     var urlGetCarousel = Url.Action("GetCarousel", "RelatoriosSgq");
     var urlLogTrack = Url.Action("Get", "api/LogTrack");
-    var urlLogTrackHeaderField = Url.Action("GetHeaderFieldByResult_Level3", "api/LogTrack");
+    var urlLogTrackHeaderField = Url.Action("GetHeaderFieldGeralByResult_Level3", "api/LogTrack");
 
 }
 
@@ -119,10 +119,10 @@
         var urlLogTrackHeaderField = '@Html.Raw(urlLogTrackHeaderField)';
         var $btn = $('#btnSend');
         var RoleUser = @Html.Raw(Json.Encode(ViewBag.Roles));
-        var urlEditCabecalho = '@Html.Raw(Url.Action("EditCabecalhoSeara", "api/ApontamentosDiarios"))';
+        var urlEditCabecalho = '@Html.Raw(Url.Action("EditCabecalhoGeral", "api/ApontamentosDiarios"))';
         var urlEditProduto = '@Html.Raw(Url.Action("EditProduto", "api/ApontamentosDiarios"))';
         var urlSaveProduto = '@Html.Raw(Url.Action("SaveProduto", "api/ApontamentosDiarios"))';
-        var urlSaveHeaderField = '@Html.Raw(Url.Action("SaveCabecalhoSeara", "api/ApontamentosDiarios"))';
+        var urlSaveHeaderFieldGeral = '@Html.Raw(Url.Action("SaveCabecalhoGeral", "api/ApontamentosDiarios"))';
         var listaProdutosJson = @Html.Raw(Json.Encode(ViewBag.Produtos));
 
         $('#simpleCallendar').hide().attr('disabled', true);
@@ -1059,7 +1059,7 @@
 
                 $.post(urlSaveHeaderFieldGeral,
                     {
-                        "HeaderFieldGeral": objToSave,
+                        "HeaderField": objToSave,
                         "UserSgq_Id": @Html.Raw(ViewBag.UserId),
                         "ParReason_Id": selectParReasonEdit,
                         "Motivo": textareaParReasonEdit

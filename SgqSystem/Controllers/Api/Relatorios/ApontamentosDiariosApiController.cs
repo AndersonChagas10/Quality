@@ -297,10 +297,10 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("EditCabecalhoSeara/{ResultLevel3_Id}")]
-        public string EditCabecalhoSeara(int ResultLevel3_Id)
+        [Route("EditCabecalhoGeral/{ResultLevel3_Id}")]
+        public string EditCabecalhoGeral(int ResultLevel3_Id)
         {
-            var retorno = getSelectsSeara(ResultLevel3_Id);
+            var retorno = getSelectsGeral(ResultLevel3_Id);
 
             var json = JsonConvert.SerializeObject(retorno, Formatting.None, new JsonSerializerSettings()
             {
@@ -391,13 +391,13 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("SaveCabecalhoSeara")]
-        public bool SaveCabecalhoSeara([FromBody] ListCollectionLevel2XParHeaderFieldGeral Lsc2xhf)
+        [Route("SaveCabecalhoGeral")]
+        public bool SaveCabecalhoGeral([FromBody] ListCollectionLevel2XParHeaderFieldGeral Lsc2xhf)
         {
             try
             {
                 CollectionLevel2 collectionLevel2 = null;
-                List<SelectSeara> headerFieldsValues = null;
+                List<SelectGeral> headerFieldsValues = null;
                 if (Lsc2xhf.HeaderField.Count() > 0)
                 {
                     int collectionLevel2_Id = Lsc2xhf.HeaderField[0].CollectionLevel2_Id;
@@ -438,8 +438,6 @@ namespace SgqSystem.Controllers.Api
                                     original.ParHeaderField_ValueName = valueSelected.Values.Where(x => x.Id == Convert.ToInt32(item.Value)).FirstOrDefault()?.Name;
 
                                 original.Value = item.Value;
-                                original.ParHeaderFieldGeral_Id = item.ParHeaderFieldGeral_Id;
-                                original.ParHeaderField_Name = item.ParHeaderField_Name;
                                 LogSystem.LogTrackBusiness.Register(original, original.Id, "CollectionLevel2XParHeaderFieldGeral", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
                             }
                         }
@@ -515,7 +513,7 @@ namespace SgqSystem.Controllers.Api
             public CollectionLevel2 CollectionLevel2 { get; set; }
         }
 
-        public class SelectSeara
+        public class SelectGeral
         {
             public ParHeaderFieldGeral HeaderFieldGeral { get; set; }
             public List<ParMultipleValuesGeral> Values { get; set; }
@@ -570,7 +568,7 @@ namespace SgqSystem.Controllers.Api
             return GetSelectsByHeaderField(coletas, collectionLevel2);
         }
 
-        public List<SelectSeara> getSelectsSeara(int ResultLevel3_Id)
+        public List<SelectGeral> getSelectsGeral(int ResultLevel3_Id)
         {
             //pegar os cabeçalhos
             var collectionLevel2 = getCollectionLevel2ByResultLevel3(ResultLevel3_Id);
@@ -662,10 +660,10 @@ namespace SgqSystem.Controllers.Api
             return resultHeaderField;
         }
 
-        public List<SelectSeara> GetSelectsByHeaderFieldGeral(List<CollectionLevel2XParHeaderFieldGeral> coletas, CollectionLevel2 collectionLevel2)
+        public List<SelectGeral> GetSelectsByHeaderFieldGeral(List<CollectionLevel2XParHeaderFieldGeral> coletas, CollectionLevel2 collectionLevel2)
         {
 
-            var resultHeaderField = new List<SelectSeara>();
+            var resultHeaderField = new List<SelectGeral>();
 
             //Seleciona os cabeçalhos
             var headerFields = db.ParHeaderFieldGeral
@@ -677,7 +675,7 @@ namespace SgqSystem.Controllers.Api
 
             foreach (var headerField in headerFields)
             {
-                var select = new SelectSeara();
+                var select = new SelectGeral();
 
                 //Atribui o campo de cabeçalho
                 select.HeaderFieldGeral = headerField;
@@ -707,7 +705,7 @@ namespace SgqSystem.Controllers.Api
                         //Atribui a quantidade de cabeçalhos                       
                         select.CollectionLevel2XParHeaderFieldGeral_Id = resultado.Id;
                         select.ValueSelected = resultado.Value;
-                        resultHeaderField.Add(new SelectSeara()
+                        resultHeaderField.Add(new SelectGeral()
                         {
                             CollectionLevel2 = select.CollectionLevel2,
                             CollectionLevel2XParHeaderFieldGeral_Id = select.CollectionLevel2XParHeaderFieldGeral_Id,
