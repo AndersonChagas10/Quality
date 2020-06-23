@@ -41,7 +41,6 @@ function listarParCluster() {
     currentParCluster_Id = null;
     currentParFrequency_Id = null;
 
-
     _readFile("parCluster.txt", function (data) {
 
         data = JSON.parse(data);

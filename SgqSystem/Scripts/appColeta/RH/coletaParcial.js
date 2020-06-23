@@ -151,6 +151,8 @@ function buscarColetasParciais(){
 
     pingLogado(urlPreffix, function () {
 
+        openMensagem("Aguarde, Carregando Coletas Parciais...", "blue", "white");
+
         $.ajax({
 
             data: JSON.stringify({
@@ -164,6 +166,7 @@ function buscarColetasParciais(){
             contentType: "application/json",
             success: function (data) {
                 atualizaArquivoColetaParciais(data);
+                closeMensagemImediatamente();
             },
             timeout: 600000,
             error: function () {

@@ -112,7 +112,6 @@ function enviarColeta() {
 						enviarColetaEmExecucao = false;
 						atualizaColetasAposSincronizacao(data);
 						enviarColeta();
-						atualizaColetasParciais(data);
 						
 						if(currentBaixarGetResultadoAposEnviarOsDadosColetados == true
 							&& globalColetasRealizadas.length == 0){
