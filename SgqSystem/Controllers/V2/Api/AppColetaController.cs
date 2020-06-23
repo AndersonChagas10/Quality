@@ -1256,13 +1256,48 @@ WHERE 1 = 1
 
         [HttpPost]
         [Route("GetColetaParcial")]
-        public IHttpActionResult GetColetaParcial()
+        public IHttpActionResult GetColetaParcial(GetResultsData data)
         {
             //Enviar parametros para não buscar todas as coletas
             List<CollectionPartial> coletasParciais = new List<CollectionPartial>();
             InicioRequisicao();
 
-            var sql = $@"Select * from CollectionPartial";
+            var sql = $@"
+DECLARE @ParFrequency_Id INT = {data.ParFrequency_Id};
+DECLARE @ParCompany_Id INT = {data.ParCompany_Id};
+DECLARE @DataColeta DATETIME = '{data.CollectionDate:yyyy-MM-dd HH:mm:ss}';
+DECLARE @DateTimeInicio DATETIME;
+DECLARE @DateTimeFinal DATETIME;
+
+SET @DateTimeInicio =
+CASE @ParFrequency_Id
+	WHEN 1 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME)  -- Período
+	WHEN 2 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME)  -- Turno
+	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME)  -- Diario
+	WHEN 4 THEN CAST(DATEADD(DAY, -DATEPART(WEEKDAY, @DataColeta) + 1, @DataColeta) AS DATE)  -- Semanal
+	WHEN 5 THEN IIF(DATEPART(DAY, @DataColeta) <= 15, CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-01'), CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-16'))  -- Quinzenal
+	WHEN 6 THEN CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-01')  -- Mensal
+	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME) -- Diario com Intervalo 
+END
+
+SET @DateTimeFinal =
+CASE @ParFrequency_Id
+	WHEN 1 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Período
+	WHEN 2 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Turno
+	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Diario
+	WHEN 4 THEN CAST(CONCAT(CAST(DATEADD(DAY, 7 - DATEPART(WEEKDAY, @DataColeta), @DataColeta) AS DATE), ' 23:59:59') AS DATETIME) -- Semanal
+	WHEN 5 THEN IIF(DATEPART(DAY, @DataColeta) <= 15, CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-15 23:59:59'), CONCAT(EOMONTH(@DataColeta), ' 23:59:59'))  -- Quinzenal
+	WHEN 6 THEN EOMONTH(@DataColeta)  -- Mensal
+	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Diario com Intervalo 
+END
+
+SELECT
+	*
+FROM CollectionPartial CP
+WHERE 1 = 1
+AND CP.CollectionDate BETWEEN @DateTimeInicio AND @DateTimeFinal
+AND CP.ParCompany_Id = @ParCompany_Id
+AND cp.Parfrequency_Id = @ParFrequency_Id";
 
             using (var factory = new Factory("DefaultConnection"))
             {

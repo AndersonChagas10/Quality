@@ -299,35 +299,63 @@ namespace SgqServiceBusiness.Controllers.RH
             try
             {
 
-                var sql = $@"DELETE CollectionPartial where 1 = 1 AND 
-                        ParCargo_Id = @ParCargo_Id AND 
-                        ParCompany_Id = @ParCompany_Id AND 
-                        ParDepartment_Id = @ParDepartment_Id AND 
-                        ParCluster_Id = @ParCluster_Id AND 
-                        ((ParLevel1_Id = @ParLevel1_Id AND
-                        ParLevel2_Id = @ParLevel2_Id AND
-                        ParLevel3_Id = @ParLevel3_Id) OR (ParHeaderField_Id Is Not NULL)) AND
-                        Parfrequency_Id = @Parfrequency_Id AND
-                        Evaluation = @Evaluation AND
-                        Sample = @Sample AND
-                        cast(CollectionDate as date) = cast(@CollectionDate as date)";
+                var sql = $@"
+DECLARE @ParFrequency_Id INT = @@ParFrequency_Id;
+DECLARE @ParCompany_Id INT = @@ParCompany_Id;
+DECLARE @DataColeta DATETIME = @@CollectionDate;
+DECLARE @DateTimeInicio DATETIME;
+DECLARE @DateTimeFinal DATETIME;
+
+SET @DateTimeInicio =
+CASE @ParFrequency_Id
+	WHEN 1 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME)  -- Período
+	WHEN 2 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME)  -- Turno
+	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME)  -- Diario
+	WHEN 4 THEN CAST(DATEADD(DAY, -DATEPART(WEEKDAY, @DataColeta) + 1, @DataColeta) AS DATE)  -- Semanal
+	WHEN 5 THEN IIF(DATEPART(DAY, @DataColeta) <= 15, CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-01'), CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-16'))  -- Quinzenal
+	WHEN 6 THEN CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-01')  -- Mensal
+	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME) -- Diario com Intervalo 
+END
+
+SET @DateTimeFinal =
+CASE @ParFrequency_Id
+	WHEN 1 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Período
+	WHEN 2 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Turno
+	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Diario
+	WHEN 4 THEN CAST(CONCAT(CAST(DATEADD(DAY, 7 - DATEPART(WEEKDAY, @DataColeta), @DataColeta) AS DATE), ' 23:59:59') AS DATETIME) -- Semanal
+	WHEN 5 THEN IIF(DATEPART(DAY, @DataColeta) <= 15, CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-15 23:59:59'), CONCAT(EOMONTH(@DataColeta), ' 23:59:59'))  -- Quinzenal
+	WHEN 6 THEN EOMONTH(@DataColeta)  -- Mensal
+	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Diario com Intervalo 
+END
+
+DELETE CollectionPartial
+WHERE 1 = 1
+	AND ParCargo_Id = @@ParCargo_Id
+	AND ParCompany_Id = @ParCompany_Id
+	AND ParDepartment_Id = @@ParDepartment_Id
+	AND ParCluster_Id = @@ParCluster_Id
+	AND ((ParLevel1_Id = @@ParLevel1_Id AND ParLevel2_Id = @@ParLevel2_Id AND ParLevel3_Id = @@ParLevel3_Id) OR (ParHeaderField_Id IS NOT NULL))
+	AND Parfrequency_Id = @ParFrequency_Id
+	AND Evaluation = @@Evaluation
+	AND Sample = @@Sample
+	AND CollectionDate BETWEEN @DateTimeInicio AND @DateTimeFinal";
 
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
                     {
                         cmd.CommandType = CommandType.Text;
-                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCargo_Id", coleta.ParCargo_Id);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCompany_Id", coleta.ParCompany_Id);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartment_Id", coleta.ParDepartment_Id);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCluster_Id", coleta.ParCluster_Id);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel1_Id", coleta.ParLevel1_Id);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel2_Id", coleta.ParLevel2_Id);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel3_Id", coleta.ParLevel3_Id);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@Parfrequency_Id", coleta.Parfrequency_Id);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@Evaluation", coleta.Evaluation);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@Sample", coleta.Sample);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@CollectionDate", coleta.CollectionDate);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParCargo_Id", coleta.ParCargo_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParCompany_Id", coleta.ParCompany_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParDepartment_Id", coleta.ParDepartment_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParCluster_Id", coleta.ParCluster_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParLevel1_Id", coleta.ParLevel1_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParLevel2_Id", coleta.ParLevel2_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParLevel3_Id", coleta.ParLevel3_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParFrequency_Id", coleta.Parfrequency_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@Evaluation", coleta.Evaluation);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@Sample", coleta.Sample);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@CollectionDate", coleta.CollectionDate);
                         var id = Convert.ToInt32(cmd.ExecuteScalar());
 
                     }

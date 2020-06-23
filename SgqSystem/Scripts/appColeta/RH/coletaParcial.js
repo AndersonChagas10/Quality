@@ -227,7 +227,6 @@ function desabilitaColetados() {
     }
 
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
-    var dataApp = getCurrentDate().split("T")[0];
 
     for (var i = 0; i < linhasDaColeta.length; i++) {
 
@@ -237,8 +236,6 @@ function desabilitaColetados() {
         var tarefa_Id = parseInt($(data).attr('data-level3'));
 
         var coleta = $.grep(coletasParciais, function (o, i) {
-
-            var dataColetaParcial = o.CollectionDate.split("T")[0];
 
             return o.ParCompany_Id == currentParCompany_Id &&
                 o.ParDepartment_Id == currentParDepartment_Id &&
@@ -250,9 +247,7 @@ function desabilitaColetados() {
                 o.ParLevel3_Id == tarefa_Id &&
                 o.Evaluation == currentEvaluationSample.Evaluation &&
                 o.Sample == currentEvaluationSample.Sample &&
-                o.ParHeaderField_Id == null &&
-                dataApp == dataColetaParcial;
-
+                o.ParHeaderField_Id == null; 
         })[0];
 
         if (coleta) {
@@ -290,7 +285,6 @@ function desabilitaCamposCabecalho() {
 function setQualificationField(){
 
     var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value]');
-    var dataApp = getCurrentDate().split("T")[0];
 
     qualification.each(function (index, value) {
 
@@ -303,8 +297,6 @@ function setQualificationField(){
 
             var coletaQualification = $.grep(coletasParciais, function (o, i) {
 
-                var dataColetaParcial = o.CollectionDate.split("T")[0];
-
                 return o.ParCompany_Id == currentParCompany_Id &&
                     o.ParDepartment_Id == currentParDepartment_Id &&
                     o.ParCluster_Id == currentParCluster_Id &&
@@ -315,7 +307,6 @@ function setQualificationField(){
                     o.ParLevel3_Id == parLevel3_Id &&
                     o.Evaluation == currentEvaluationSample.Evaluation &&
                     o.Sample == currentEvaluationSample.Sample &&
-                    dataApp == dataColetaParcial &&
                     (o.Outros != null && o.Outros != '{"Qualification_Value":[]}');
 
             })[0];
@@ -349,7 +340,6 @@ function setQualificationField(){
 function setHeaderFieldLevel1() {
 
     var listaHeaderFieldLevel1 = $('[id=headerFieldLevel1]');
-    var dataApp = getCurrentDate().split("T")[0];
 
     listaHeaderFieldLevel1.each(function (index, value) {
 
@@ -363,8 +353,6 @@ function setHeaderFieldLevel1() {
 
             var coletaHeaderFieldL1 = $.grep(coletasParciais, function (o, i) {
 
-                var dataColetaParcial = o.CollectionDate.split("T")[0];
-
                 return o.ParCompany_Id == currentParCompany_Id &&
                     o.ParDepartment_Id == currentParDepartment_Id &&
                     o.ParCluster_Id == currentParCluster_Id &&
@@ -375,8 +363,7 @@ function setHeaderFieldLevel1() {
                     o.ParLevel3_Id == null &&
                     o.Evaluation == currentEvaluationSample.Evaluation &&
                     o.Sample == currentEvaluationSample.Sample &&
-                    o.ParHeaderField_Id == parHeaderField_Id &&
-                    dataApp == dataColetaParcial;
+                    o.ParHeaderField_Id == parHeaderField_Id;
 
             })[0];
 
@@ -404,7 +391,6 @@ function setHeaderFieldLevel1() {
 function setHeaderFieldLevel2() {
 
     var listaHeaderFiledLevel2 = $('[id=headerFieldLevel2]');
-    var dataApp = getCurrentDate().split("T")[0];
 
     listaHeaderFiledLevel2.each(function(index, value){
 
@@ -418,8 +404,6 @@ function setHeaderFieldLevel2() {
 
             var coletaHeaderFieldL2 = $.grep(coletasParciais, function (o, i) {
 
-                var dataColetaParcial = o.CollectionDate.split("T")[0];
-
                 return o.ParCompany_Id == currentParCompany_Id &&
                     o.ParDepartment_Id == currentParDepartment_Id &&
                     o.ParCluster_Id == currentParCluster_Id &&
@@ -430,8 +414,7 @@ function setHeaderFieldLevel2() {
                     o.ParLevel3_Id == null &&
                     o.Evaluation == currentEvaluationSample.Evaluation &&
                     o.Sample == currentEvaluationSample.Sample &&
-                    o.ParHeaderField_Id == parHeaderField_Id &&
-                    dataApp == dataColetaParcial;
+                    o.ParHeaderField_Id == parHeaderField_Id;
 
             })[0];
 
@@ -459,7 +442,6 @@ function setHeaderFieldLevel2() {
 function setHeaderFieldLevel3() {
 
     var listaHeaderFieldLevel3 = $('[id=headerFieldLevel3]');
-    var dataApp = getCurrentDate().split("T")[0];
 
     listaHeaderFieldLevel3.each(function(index, value){
 
@@ -474,8 +456,6 @@ function setHeaderFieldLevel3() {
 
             var coletaHeaderFieldL3 = $.grep(coletasParciais, function (o, i) {
 
-                var dataColetaParcial = o.CollectionDate.split("T")[0];
-
                 return o.ParCompany_Id == currentParCompany_Id &&
                     o.ParDepartment_Id == currentParDepartment_Id &&
                     o.ParCluster_Id == currentParCluster_Id &&
@@ -486,8 +466,7 @@ function setHeaderFieldLevel3() {
                     o.ParLevel3_Id == parLevel3_Id &&
                     o.Evaluation == currentEvaluationSample.Evaluation &&
                     o.Sample == currentEvaluationSample.Sample &&
-                    o.ParHeaderField_Id == parHeaderField_Id &&
-                    dataApp == dataColetaParcial;
+                    o.ParHeaderField_Id == parHeaderField_Id;
 
             })[0];
 
