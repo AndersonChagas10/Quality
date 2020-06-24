@@ -104,7 +104,8 @@ $(document).ready(function () {
                     }
                     else
                     {
-                        resultado = eval(resultado);
+                        var resultadoFormatado = resultado.replace(",", ".");
+                        resultado = eval(resultadoFormatado);
                     }
                     $(o).val(resultado);
                     $(o).trigger('input');
