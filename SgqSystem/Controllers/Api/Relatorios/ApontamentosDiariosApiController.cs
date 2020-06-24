@@ -413,19 +413,31 @@ namespace SgqSystem.Controllers.Api
                         if (item.Id > 0)//Update
                         {
                             var original = dbEntities.CollectionLevel2XParHeaderFieldGeral.FirstOrDefault(c => c.Id == item.Id);
-                            original.CollectionLevel2 = null;
-                            original.ParHeaderFieldGeral = null;
 
                             if (original.Value == item.Value)
                                 continue;
+
+                            var queryCL2Ids = $@"SELECT ID FROM CollectionLevel2
+                                                    WHERE ParLevel1_Id = {collectionLevel2.ParLevel1_Id}
+                                                    AND ParLevel2_Id = {collectionLevel2.ParLevel2_Id}
+                                                    AND UnitId = {collectionLevel2.UnitId}
+                                                    AND AuditorId = {collectionLevel2.AuditorId}
+                                                    AND Shift = {collectionLevel2.Shift}
+                                                    AND CollectionDate = '{collectionLevel2.CollectionDate.ToString("yyyy-MM-dd hh:mm:ss")}'
+                                                    AND EvaluationNumber = {collectionLevel2.EvaluationNumber}";
+
+                            var cL2Ids = QueryNinja(dbEntities, queryCL2Ids).ToList();
 
                             var valueSelected = headerFieldsValues.Where(x => x.HeaderFieldGeral.Id == item.ParHeaderFieldGeral_Id).FirstOrDefault();
                             if (valueSelected != null)
                                 original.ParHeaderField_ValueName = valueSelected.Values.Where(x => x.Id == Convert.ToInt32(original.Value)).FirstOrDefault()?.Name;
 
-                            //[TODO] Inserir registro de log de edição
                             var auditorId = dbEntities.CollectionLevel2.Where(x => x.Id == original.CollectionLevel2_Id).Select(x => x.AuditorId).First();
-                            LogSystem.LogTrackBusiness.RegisterIfNotExist(original, original.Id, "CollectionLevel2XParHeaderFieldGeral", auditorId);
+
+                            foreach (var id in cL2Ids)
+                            {
+                                LogSystem.LogTrackBusiness.RegisterIfNotExist(original, Convert.ToInt32(id["ID"]), "CollectionLevel2XParHeaderFieldGeral", auditorId);
+                            }
 
                             if (string.IsNullOrEmpty(item.Value))//Remover
                             {
@@ -433,12 +445,21 @@ namespace SgqSystem.Controllers.Api
                             }
                             else //Update
                             {
+                                var queryUpdateHeaderFields = $@"UPDATE CollectionLevel2XParHeaderFieldGeral
+                                                                 SET Value = '{item.Value}'
+                                                                 WHERE collectionLevel2_Id in ({queryCL2Ids})
+                                                                 AND ParHeaderFieldGeral_Id = {item.ParHeaderFieldGeral_Id}";
+
+                                dbEntities.Database.ExecuteSqlCommand(queryUpdateHeaderFields);
+
                                 valueSelected = headerFieldsValues.Where(x => x.HeaderFieldGeral.Id == item.ParHeaderFieldGeral_Id).FirstOrDefault();
                                 if (valueSelected != null)
                                     original.ParHeaderField_ValueName = valueSelected.Values.Where(x => x.Id == Convert.ToInt32(item.Value)).FirstOrDefault()?.Name;
 
-                                original.Value = item.Value;
-                                LogSystem.LogTrackBusiness.Register(original, original.Id, "CollectionLevel2XParHeaderFieldGeral", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
+                                foreach (var id in cL2Ids)
+                                {
+                                    LogSystem.LogTrackBusiness.Register(original, Convert.ToInt32(id["ID"]), "CollectionLevel2XParHeaderFieldGeral", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
+                                }
                             }
                         }
                         else if (!string.IsNullOrEmpty(item.Value)) //Add
