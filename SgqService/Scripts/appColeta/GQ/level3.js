@@ -2101,7 +2101,7 @@ function saveResultLevel3() {
 }
 
 function converteParaFloat(item) {
-    var numeroConvertido = parseFloat(item.replace(',', '.'));
+    var numeroConvertido = parseFloat(item.toString().replace(',', '.'));
     return numeroConvertido;
 }
 
@@ -2123,6 +2123,7 @@ function resetLevel3(level3Group) {
     updateCounters(level2, level3Group);
 
     getPadraoNumero();
+    reiniciaComponente();
 }
 
 $(document).on('click', '.button-expand', function (e) {

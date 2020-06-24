@@ -4,6 +4,35 @@ namespace DTO.ResultSet
 {
     public class TabelaConsistencyCallMSPResultSet
     {
+        public System.DateTime Data { get; set; }
+        public string _Data { get { return Data.ToShortDateString(); /*+ " " + Data.ToShortTimeString();*/ } }
+        public string _Hora { get { return Data.ToShortTimeString(); } }
+
+        public string Indicador { get; set; }
+        public string Monitoramento { get; set; }
+        public string Tarefa { get; set; }
+        public string Value { get; set; }
+        public string Conforme { get; set; }
+
+        public Nullable<decimal> AV_Peso { get; set; }
+        public Nullable<decimal> _AV_Peso { get { return AV_Peso.HasValue ? AV_Peso.Value : 0M; } }
+
+        public Nullable<decimal> NC_Peso { get; set; }
+        public int Amostra { get; set; }
+        public Nullable<int> Sequencial { get; set; }
+        public Nullable<int> Banda { get; set; }
+        public int ResultLevel3Id { get; set; }
+        public Nullable<int> HashKey { get; set; }
+
+        public string Unidade { get; set; }
+        public string Periodo { get; set; }
+        public string Turno { get; set; }
+        public string ValueText { get; set; }
+        public string HeaderFieldList { get; set; }
+
+        public System.DateTime AddDate { get; set; }
+        public string _AddDate { get { return AddDate.ToShortDateString(); /*+ " " + Data.ToShortTimeString();*/ } }
+        public string Type { get; set; }
         public string Name { get; set; }
         public string Batch { get; set; }
         public string PorcWater { get; set; }
