@@ -105,7 +105,7 @@ $(document).ready(function () {
                     else
                     {
                         var resultadoFormatado = resultado.replace(",", ".");
-                        resultado = eval(resultadoFormatado);
+                        resultado = eval(resultadoFormatado.toFixed(2));
                     }
                     $(o).val(resultado);
                     $(o).trigger('input');
