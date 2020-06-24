@@ -316,8 +316,8 @@
                 var valorCabecalho = objeto[nomeDoNivel];
 
                 var itemAtual = {};
+                itemAtual.nivel = nomeDoNivel;
                 itemAtual.titulo = valorCabecalho.replace("'", "´");
-                itemAtual.titulo = valorCabecalho;
                 itemAtual.lista = [];
 
                 if (matriz.lista) {
