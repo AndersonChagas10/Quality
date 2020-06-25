@@ -2023,10 +2023,10 @@ namespace SgqSystem.Controllers.Api.Formulario
                                ,CentroCusto.Name
                             FROM ParDepartment CentroCusto
                             INNER JOIN ParDepartment Secao ON Secao.Parent_Id IS NULL AND Secao.Active = 1
-                            INNER JOIN ParCompany PC on CentroCusto.ParCompany_Id = PC.Id
+                            INNER JOIN ParCompany PC ON (CentroCusto.ParCompany_Id = PC.Id OR CentroCusto.ParCompany_Id IS NULL)
                             WHERE 1 = 1
                             AND CentroCusto.Active = 1
-                            AND CentroCusto.Parent_Id IS NULL
+                            AND (CentroCusto.Parent_Id IS NULL OR CentroCusto.Parent_Id = 0)
                             AND CentroCusto.Hash IS NULL
                             {whereUnidadesUsuario}
                             AND CentroCusto.Name LIKE '%{search}%'
