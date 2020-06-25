@@ -20,6 +20,7 @@
                                 <h4><strong>Filtros</strong></h4>
                                 <input type="hidden" name="startDate" />
                                 <input type="hidden" name="endDate" />
+                                <input type="hidden" name="ReportXUserSgq_Id" value="@ViewBag.ReportXUserSgq_Id" />
                             </div>
 
                             @if (ViewBag.ShowCurrentDate == true)
@@ -804,7 +805,7 @@
             }
         }
 
-        $('#filterReports select').on('change', function () {
+        $('#filterReports select, #filterReports input').on('change', function () {
             preencheFiltrosAjax();
         });
         
