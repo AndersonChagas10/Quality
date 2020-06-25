@@ -3671,4 +3671,11 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-802</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[RH] Permitir selecionar Todos para Unidade nos cadastro de Centro de Custo + Parametrização </Description>
+    <Script></Script>
+  </Card>
+
 </Cards>
