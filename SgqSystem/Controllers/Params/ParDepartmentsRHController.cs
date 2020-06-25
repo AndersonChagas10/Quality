@@ -147,7 +147,7 @@ namespace SgqSystem.Controllers
                 if (parDepartment.ParDepartmentGroup_Id == 0)
                     parDepartment.ParDepartmentGroup_Id = null;
 
-                if (parDepartment.ParCompany_Id != parCompanyDepartmentOld && parDepartment.Parent_Id == null || (parDepartment.ParDepartmentGroup_Id != null))
+                //if (parDepartment.ParCompany_Id != parCompanyDepartmentOld && parDepartment.Parent_Id == null || (parDepartment.ParDepartmentGroup_Id != null))
                     AlteraParCompanyFilhos(parDepartment);
 
                 if (ModelState.IsValid)
@@ -274,7 +274,7 @@ namespace SgqSystem.Controllers
             ViewBag.Parent_Id = new SelectList(listaFilhos, "Id", "Name", parDepartment.Parent_Id);
 
             var listaUnidades = db.ParCompany.Where(x => x.IsActive).ToList();
-            listaUnidades.Insert(0, new ParCompany() { Id = 0, Name = "Selecione" });
+            listaUnidades.Insert(0, new ParCompany() { Id = 0, Name = "Todas Empresas" });
             ViewBag.ParCompany_Id = new SelectList(listaUnidades, "Id", "Name", parDepartment.ParCompany_Id);
 
             var listaGrupoDepartamentos = db.ParDepartmentGroup.Where(x => x.IsActive).ToList();
