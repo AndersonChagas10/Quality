@@ -7,6 +7,7 @@ using DTO.DTO.Params;
 using DTO.Helpers;
 using DTO.ResultSet;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SgqService.ViewModels;
 using SgqSystem.Handlres;
 using SgqSystem.Helpers;
@@ -397,17 +398,50 @@ namespace SgqSystem.Controllers.Api
             var collectionLevel2xParFamiliaProdutoxParProdutoOld = db.CollectionLevel2XParFamiliaProdutoXParProduto
             .Where(x => x.CollectionLevel2_Id == listCollectionLevel2XParProduto.CollectionLevel2_Id).FirstOrDefault();
 
-            collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto_Id = listCollectionLevel2XParProduto.ParProduto_Id;
-            collectionLevel2xParFamiliaProdutoxParProdutoOld.AlterDate = DateTime.Now;
-            db.Entry(collectionLevel2xParFamiliaProdutoxParProdutoOld).State = EntityState.Modified;
-            db.SaveChanges();
+            var collectionLevel2 = db.CollectionLevel2
+            .Where(x => x.Id == listCollectionLevel2XParProduto.CollectionLevel2_Id).FirstOrDefault();
+
+
+            var queryUpdateProdutoPorMonitoramento = $@"
+                                UPDATE CollectionLevel2XParFamiliaProdutoXParProduto
+                                SET ParProduto_Id = {listCollectionLevel2XParProduto.ParProduto_Id}
+                                WHERE CollectionLevel2_Id in (
+                                SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id = {collectionLevel2.ParLevel1_Id}
+                                AND ParLevel2_Id = {collectionLevel2.ParLevel2_Id}
+                                AND UnitId = {collectionLevel2.UnitId}
+                                AND Shift = {collectionLevel2.Shift}
+                                AND Period = {collectionLevel2.Period}
+                                AND CollectionDate = '{collectionLevel2.CollectionDate.ToString("yyyyMMdd HH:mm:ss")}'
+                                AND EvaluationNumber = {collectionLevel2.EvaluationNumber})";
+
+            db.Database.ExecuteSqlCommand(queryUpdateProdutoPorMonitoramento);
+
+            var queryGetCollectionlevel2Ids = $@"
+                                SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id = {collectionLevel2.ParLevel1_Id}
+                                AND ParLevel2_Id = {collectionLevel2.ParLevel2_Id}
+                                AND UnitId = {collectionLevel2.UnitId}
+                                AND Shift = {collectionLevel2.Shift}
+                                AND Period = {collectionLevel2.Period}
+                                AND CollectionDate = '{collectionLevel2.CollectionDate.ToString("yyyyMMdd HH:mm:ss")}'
+                                AND EvaluationNumber = {collectionLevel2.EvaluationNumber}";
+
+            List<JObject> listCollectionLevel2Ids = new List<JObject>();
+
+            using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
+            {
+                listCollectionLevel2Ids = QueryNinja(dbSgq, queryGetCollectionlevel2Ids);
+            }
 
             var produto = db.ParProduto.Find(listCollectionLevel2XParProduto.ParProduto_Id);
             collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto = produto.Name;
-
             var auditorId = db.CollectionLevel2.Where(x => x.Id == listCollectionLevel2XParProduto.CollectionLevel2_Id).Select(x => x.AuditorId).First();
-            LogSystem.LogTrackBusiness.RegisterIfNotExist(collectionLevel2xParFamiliaProdutoxParProdutoOld, listCollectionLevel2XParProduto.CollectionLevel2_Id, "CollectionLevel2XParFamiliaProdutoXParProduto", auditorId);
-            LogSystem.LogTrackBusiness.Register(collectionLevel2xParFamiliaProdutoxParProdutoOld, listCollectionLevel2XParProduto.CollectionLevel2_Id, "CollectionLevel2XParFamiliaProdutoXParProduto", listCollectionLevel2XParProduto.UserSgq_Id, listCollectionLevel2XParProduto.ParReason_Id, listCollectionLevel2XParProduto.Motivo);
+
+            foreach (var item in listCollectionLevel2Ids)
+            {
+                LogSystem.LogTrackBusiness.RegisterIfNotExist(collectionLevel2xParFamiliaProdutoxParProdutoOld, Convert.ToInt32(item["Id"]), "CollectionLevel2XParFamiliaProdutoXParProduto", auditorId);
+                LogSystem.LogTrackBusiness.Register(collectionLevel2xParFamiliaProdutoxParProdutoOld, Convert.ToInt32(item["Id"]), "CollectionLevel2XParFamiliaProdutoXParProduto", listCollectionLevel2XParProduto.UserSgq_Id, listCollectionLevel2XParProduto.ParReason_Id, listCollectionLevel2XParProduto.Motivo);
+
+            }
 
             return true;
         }
