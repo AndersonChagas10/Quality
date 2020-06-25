@@ -32,11 +32,20 @@ namespace Dominio
         //[ForeignKey("CollectionLevel2_Id")]
         //public virtual CollectionLevel2 CollectionLevel2 { get; set; }
 
+        [ForeignKey("CollectionLevel2_Id")]
+        public virtual CollectionLevel2 CollectionLevel2 { get; set; }
+
         [ForeignKey("ParFieldType_Id")]
         public virtual ParFieldType ParFieldType { get; set; }
 
+        [ForeignKey("ParHeaderFieldGeral_Id")]
+        public virtual ParHeaderFieldGeral ParHeaderFieldGeral { get; set; }
+
         [NotMapped]
         public int Collection_Id { get; set; }
+
+        [NotMapped]
+        public string ParHeaderField_ValueName { get; set; }
 
         //[ForeignKey("[ParHeaderFieldGeral_Id]")]
         //public virtual ParHeaderFieldGeral ParHeaderFieldGeral { get; set; }
