@@ -2064,18 +2064,21 @@ namespace SgqSystem.Controllers.Api.Formulario
             {
 
                 var query = $@"
-	                           SELECT DISTINCT TOP 500
-                            	Secao.Id
-                               ,Secao.Name
-                            FROM ParDepartment CentroCusto
-                            INNER JOIN ParDepartment Secao ON Secao.Parent_Id = CentroCusto.Id AND Secao.Active = 1
-	                            AND Secao.Name LIKE '%{search}%'
-	                            AND Secao.Parent_Id IS NOT NULL
-	                            AND Secao.Hash IS NOT NULL
-                            INNER JOIN ParCompany PC on CentroCusto.ParCompany_Id = PC.Id
-	                            AND CentroCusto.Active = 1
-                                AND CentroCusto.Parent_Id IS NULL
-                                AND CentroCusto.Hash IS NULL
+                          SELECT DISTINCT TOP 500
+                          	Secao.Id
+                             ,Secao.Name
+                          FROM ParDepartment CentroCusto WITH (NOLOCK)
+                          INNER JOIN ParDepartment Secao WITH (NOLOCK)
+                          	ON Secao.Parent_Id = CentroCusto.Id
+                          		AND Secao.Active = 1
+                          		AND Secao.Name LIKE '%{search}%'
+                          		AND Secao.Parent_Id IS NOT NULL
+                          		AND Secao.Hash IS NOT NULL
+                          INNER JOIN ParCompany PC WITH (NOLOCK)
+                          	ON (CentroCusto.ParCompany_Id = PC.Id or CentroCusto.ParCompany_Id Is Null)
+                          		AND CentroCusto.Active = 1
+                          		AND (CentroCusto.Parent_Id IS NULL OR CentroCusto.Parent_Id = 0)
+                          		AND CentroCusto.Hash IS NULL
                                 {whereParDepartment}
                             WHERE 1 = 1
                             {whereUnidadesUsuario}
