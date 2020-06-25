@@ -14,6 +14,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
         public Object Aprovador { get; set; }
         public Object Elaborador { get; set; }
         public Object RelatorioName { get; set; }
+        public Object CodigoRelatorio { get; set; }
     }
 
     [RoutePrefix("api/Formularios")]
@@ -29,10 +30,10 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
             var indicador_Id = "0";
 
-            if (form.ShowIndicador_Id.Length > 0)
-                indicador_Id = form.ShowIndicador_Id[0].ToString();
+            // if (form.ShowIndicador_Id.Length > 0)
+            // indicador_Id = form.ShowIndicador_Id[0].ToString();
 
-
+            indicador_Id = "1";
 
             using (var db = new SgqDbDevEntities())
             {
@@ -41,6 +42,9 @@ namespace SgqSystem.Controllers.Api.Relatorios
                 retorno.Elaborador = getElaboradorName(form, db);
 
                 retorno.RelatorioName = getRelatorioName(form, db);
+
+                retorno.CodigoRelatorio = getCodigoRelatorio(form, db);
+
             }
             var query = $@"
             	
@@ -666,6 +670,24 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                     Order by RXU.Parcompany_Id desc";
 
             return QueryNinja(db, SQL)[0]["Aprovador"];
+        }
+
+        private object getCodigoRelatorio(DataCarrierFormularioNew form, SgqDbDevEntities db)
+        {
+            var whereCompany = "";
+            if (form.ParCompany_Ids.Length > 0)
+            {
+                whereCompany = $"AND RXU.Parcompany_Id = { form.ParCompany_Ids[0]}";
+            }
+            var SQL = $@"SELECT top 1
+                    CodigoRelatorio
+                    FROM ReportXUserSgq RXU      
+                    WHERE RXU.ParLevel1_Id = {form.ShowIndicador_Id[0]}
+                    {whereCompany} 
+                    OR RXU.Parcompany_Id IS NULL
+                    Order by RXU.Parcompany_Id desc";
+
+            return QueryNinja(db, SQL)[0]["CodigoRelatorio"];
         }
     }
 }

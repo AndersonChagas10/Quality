@@ -29,7 +29,7 @@
 }
 
 @section Content {
-    <style>
+        <style>
 
         footer {
             font-size: 12px;
@@ -97,12 +97,15 @@
             padding: 2px;
             height: 15px !important;
         }
-    </style>
+
+        </style>
 
     <div class="page-content-wrapper">
         <button class="btn btn-primary" id="btnPrint">@Resources.Resource.print</button>
         <br />
         <div class="page-content">
+
+            <input id="rodapeCodigo" class="hidden" />
 
             <div class="loader" hidden></div>
             <div class="alert alert-info" role="alert" id="mensagemSemDados" hidden> Sem dados. </div>
@@ -153,9 +156,10 @@
                                 Supervisor da GQ
                             </div>
                         </div>
-
                     </footer>
+
                 </div>
+                
             </div>
         </div>
     </div>
@@ -181,6 +185,7 @@
 
                 headerHtml: document.getElementById('cabecalhoDiv').innerHTML,
                 bodyHtml: document.getElementById('corpoPagina').innerHTML,
+                footerHtml: $("#rodapeCodigo").text(),
                 numberMarginRight: 25,
                 numberMarginBottom: 25,
                 renderTableMargin: 0,
@@ -233,10 +238,11 @@
                         GuardJs.esconderMensagem();
                         $("#rodape").show();
                         $("#cabecalhoDiv").show();
-
+                        debugger
                         $("#tdElaborador").text(data.Elaborador[0]["Elaborador"]);
                         $("#tdAprovador").text(data.Aprovador);
                         $("#tdNomeRelatorio").text(data.RelatorioName[0]["NomeRelatorio"]);
+                        $("#rodapeCodigo").text(data.CodigoRelatorio);
                         $("#unidadeColeta").text(data.Resultado[0]["unidade"]);
 
                         montaTabelaDinamica(data.Resultado);
@@ -446,7 +452,7 @@
 
             /***INICIO: MONTA LINHAS HTML **********************************************/
             var matrizHtmlLinhas = [];
-            function montaLinhas(itemMatriz, numeroLinha, indexAtual, indexMaximo, atributos) {
+            function montaLinhas(itemMatriz, numeroLinha, indexAtual, indexMaximo, atributos, qtdColunasAnterior) {
                 var html;
 
                 if (!atributos) {
@@ -457,18 +463,24 @@
 
                 if (indexAtual == indexMaximo) {
                     html = '<th ' + atributos + '>';
-                } else if (itemMatriz.span > 1) {
-                    html = '<th rowspan="' + itemMatriz.span + '">';
+                //} else if (itemMatriz.span > 1) {
+                  //  html = '<th rowspan="' + itemMatriz.span + '">';
                 } else {
                     html = '<th>';
                 }
                 html += itemMatriz.titulo + '</th>';
 
                 if (!matrizHtmlLinhas[numeroLinha]) {
-                    matrizHtmlLinhas.push(html);
+                    var htmlTemp = "";
+                    for (var p = 0; p < qtdColunasAnterior; p++) {
+                        htmlTemp += "<th>&nbsp;</th>";
+                    }
+                    matrizHtmlLinhas.push(htmlTemp + html);
                 } else {
                     matrizHtmlLinhas[numeroLinha] += html;
                 }
+
+                qtdColunasAnterior++;
 
                 if (indexAtual == indexMaximo) {
                     numeroLinha++;
@@ -476,7 +488,7 @@
                     ++indexAtual;
                     for (var i = 0; i < itemMatriz.lista.length; i++) {
                         var item = itemMatriz.lista[i];
-                        numeroLinha = montaLinhas(item, numeroLinha, indexAtual, indexMaximo, atributos);
+                        numeroLinha = montaLinhas(item, numeroLinha, indexAtual, indexMaximo, atributos, qtdColunasAnterior);
                     }
                 }
                 return numeroLinha;
@@ -486,7 +498,7 @@
             var numeroLinha = 0;
             for (var i = 0; i < matrizLinhas.lista.length; i++) {
                 var item = matrizLinhas.lista[i];
-                numeroLinha = montaLinhas(item, numeroLinha, 0, linhas.length - 1);
+                numeroLinha = montaLinhas(item, numeroLinha, 0, linhas.length - 1, undefined,0);
             }
 
             for (var i = 0; i < matrizHtmlLinhas.length; i++) {
