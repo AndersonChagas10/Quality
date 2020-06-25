@@ -3673,4 +3673,18 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-854</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[GQ] CADASTRO DE FORMULÁRIO - Criar tela que liste os relatórios.</Description>
+    <Script></Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-853</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[GQ] CADASTRO DE FORMULÁRIOS - Fazer a amarração da query no cubo</Description>
+    <Script></Script>
+  </Card>
+
 </Cards>

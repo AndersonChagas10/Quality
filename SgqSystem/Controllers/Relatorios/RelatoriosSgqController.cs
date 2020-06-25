@@ -334,23 +334,21 @@ namespace SgqSystem.Controllers
         [FormularioPesquisa(filtraUnidadePorUsuario = false)]
         public ActionResult RelatorioFormulario(int reportXUserSgq_Id)
         {
-            var indicadorId = 1;
-            var unidadeId = 1;
-            MontaViewBagFiltros(indicadorId, unidadeId);
+            MontaViewBagFiltros(reportXUserSgq_Id);
 
             ViewBag.ReportXUserSgq_Id = reportXUserSgq_Id;
             return View("~/Views/RelatoriosSgq/RelatorioFormulario.cshtml", form);
         }
 
-        private void MontaViewBagFiltros(int indicadorId, int unidadeId)
+        private void MontaViewBagFiltros(int reportXUserSgq_Id)
         {
             var reportXFilter = new List<ParReportXFilter>();
             var reportxUser = new ReportXUserSgq();
 
             using (var db = new SgqDbDevEntities())
             {
-                reportxUser = db.ReportXUserSgq.Where(x => x.ParLevel1_Id == indicadorId && x.ParCompany_Id == unidadeId && x.IsActive).FirstOrDefault();
-                reportXFilter = db.ParReportXFilter.Where(x => x.ReportXUserSgq_Id == reportxUser.Id && x.IsActive == true).ToList();
+                reportxUser = db.ReportXUserSgq.Where(x => x.Id == reportXUserSgq_Id && x.IsActive).FirstOrDefault();
+                reportXFilter = db.ParReportXFilter.Where(x => x.ReportXUserSgq_Id == reportXUserSgq_Id && x.IsActive == true).ToList();
             }
 
             //Montagem das Viewbags
