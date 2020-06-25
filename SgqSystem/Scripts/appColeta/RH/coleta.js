@@ -1128,7 +1128,8 @@ function PrepararColetas() {
         );
     });
 
-    processAlertRole(coletaJson);
+    if (!hasPartialSave)
+        processAlertRole(coletaJson);
 
     var cabecalhos = getCollectionHeaderFields(collectionDate);
 
@@ -1140,7 +1141,7 @@ function PrepararColetas() {
     }
 
     //Se for a primeira, insere na lista de resultados
-    if (coletaAgrupada.Evaluation == 1 && coletaAgrupada.Sample == 1) {
+    if (coletaAgrupada.Evaluation == 1 && coletaAgrupada.Sample == 1 && !hasPartialSave) {
         coletasAgrupadas.push(coletaAgrupada);
     }
 
