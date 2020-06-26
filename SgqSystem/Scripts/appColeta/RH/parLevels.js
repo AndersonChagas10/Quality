@@ -202,6 +202,7 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
         });
     }
     
+    //Considerar Level1, Level2, Level3, Frequencia, Unidade, Todos os Cargos, todos Departamentos
     if (parVinculo.length == 0) {
         parVinculo = $.grep(parVinculos, function (obj) {
             return obj.ParLevel3_Id == parLevel3.Id &&
@@ -210,6 +211,19 @@ function vinculoPesoIsValid(parLevel1, parLevel2, parLevel3, parVinculos) {
                 obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
                 obj.ParCargo_Id == null &&
                 obj.ParDepartment_Id == null &&
+                obj.ParCompany_Id == currentParCompany_Id;
+        });
+    }
+
+    //Considerar Level1, Level2, Level3, Frequencia, Departamentos, Unidades e Todos os Cargos
+    if (parVinculo.length == 0) {
+        parVinculo = $.grep(parVinculos, function (obj) {
+            return obj.ParLevel3_Id == parLevel3.Id &&
+                obj.ParLevel2_Id == parLevel2.Id &&
+                obj.ParLevel1_Id == parLevel1.Id &&
+                obj.ParFrequency_Id == parametrization.currentParFrequency_Id &&
+                obj.ParCargo_Id == null &&
+                obj.ParDepartment_Id == currentParDepartment_Id &&
                 obj.ParCompany_Id == currentParCompany_Id;
         });
     }

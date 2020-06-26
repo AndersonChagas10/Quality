@@ -165,6 +165,7 @@ function chamaGetAppParametrization(){
 			_writeFile("appParametrization.txt", JSON.stringify(data), function () {
 				parametrization = data;
 				openPlanejamentoColeta();
+				atualizaColetasParciais();
 				closeMensagem();
 			});
 			sincronizarResultado();

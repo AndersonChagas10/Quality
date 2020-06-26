@@ -120,7 +120,7 @@ namespace SgqSystem.Controllers.Api.App
         {
             return Business.GetAPP();
         }
-
+        
         #region Nova Proposta Get Tela
 
         [HttpGet]

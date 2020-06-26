@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -1185,6 +1185,7 @@
     <Content Include="Scripts\appColeta\RH\alert.js" />
     <Content Include="Scripts\appColeta\RH\app.js" />
     <Content Include="Scripts\appColeta\RH\coleta.js" />
+    <Content Include="Scripts\appColeta\RH\coletaParcial.js" />
     <Content Include="Scripts\appColeta\RH\correctiveAction.js" />
     <Content Include="Scripts\appColeta\RH\crypto.js" />
     <Content Include="Scripts\appColeta\RH\guard.js" />

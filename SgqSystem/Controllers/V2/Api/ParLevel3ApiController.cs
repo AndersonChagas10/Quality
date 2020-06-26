@@ -10,10 +10,11 @@ using System.Web.Http;
 
 namespace SgqSystem.Controllers.V2.Api
 {
+
     [RoutePrefix("api/ParLevel3Api")]
     public class ParLevel3ApiController : BaseApiController
     {
-        //private SgqDbDevEntities db = new SgqDbDevEntities();
+        private static int[] parInputTypesWithQualificacao = { 1, 6, 15 };
 
         // GET: api/ParLevel1Api
         [HttpGet]
@@ -274,6 +275,7 @@ namespace SgqSystem.Controllers.V2.Api
                     item.PargroupQualification = db.PargroupQualification.Where(x => x.Id == item.PargroupQualification_Id).FirstOrDefault();
                 }
             }
+
             return Ok(lista);
         }
 
@@ -584,6 +586,26 @@ namespace SgqSystem.Controllers.V2.Api
             }
         }
 
+        private void InactiveAllPargroupQualificationXParLevel3Value(int level3Value_id)
+        {
+            var lista = new List<PargroupQualificationXParLevel3Value>();
+
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+
+                lista = db.PargroupQualificationXParLevel3Value.Where(x => x.ParLevel3Value_Id == level3Value_id && x.IsActive).ToList();
+
+                foreach (var item in lista)
+                {
+                    item.IsActive = false;
+
+                    SaveOrUpdatePargroupQualificationXParLevel3Value(item);
+                }
+            }
+
+        }
+
         private bool validaDuplicidade(PargroupQualificationXParLevel3Value form)
         {
             using (SgqDbDevEntities db = new SgqDbDevEntities())
@@ -667,6 +689,12 @@ namespace SgqSystem.Controllers.V2.Api
                                     }
                                 }
                             }
+                        }
+
+                        //Se não for Binário, Binario Com Texto e Binário com múltipla escolha - Excluir qualificações vinculadas
+                        if (!parInputTypesWithQualificacao.Contains(parLevel3Value.ParLevel3InputType_Id))
+                        {
+                            InactiveAllPargroupQualificationXParLevel3Value(parLevel3Value.Id);
                         }
                     }
                     else

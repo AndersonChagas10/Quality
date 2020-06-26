@@ -3667,6 +3667,14 @@
   </Card>
   
   <Card>
+    <CardNumber>SGQ-765</CardNumber>
+    <Version>1.9.0</Version>
+    <Description> [RH] Coleta parcial</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
     <CardNumber>SGQ-704</CardNumber>
     <Version>1.9.0</Version>
     <Description>[GQ] FORMULÁRIOS - Ajustes</Description>

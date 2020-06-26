@@ -71,6 +71,10 @@ namespace SgqServiceBusiness.Controllers.RH
         public List<ParLevel1AppViewModel> GetListaParLevel1(List<ParVinculoPesoAppViewModel> listaParVinculoPeso)
         {
             List<ParLevel1AppViewModel> listaParLevel1 = new List<ParLevel1AppViewModel>();
+
+            if (listaParVinculoPeso.Count == 0)
+                return listaParLevel1;
+
             try
             {
                 var query = $@" 

@@ -59,10 +59,16 @@ namespace SgqSystem.Controllers.V2.Api
             #endregion
 
             //var parLevel3List = db.ParLevel3.ToList();
-
             AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
 
+            #region ColetaParcial
+            var listaParcial = appColetaBusiness.SaveCollectionPartial(listSimpleCollect, guiid);
+            #endregion
+
+            listSimpleCollect = listSimpleCollect.Where(x => !x.IsPartialSave).ToList();
+
             List<Collection> listaSimpleCollectDuplicadas = new List<Collection>();
+
             //Adiciona os arquivos na Collection
             foreach (var item in listSimpleCollect)
             {
@@ -110,7 +116,7 @@ namespace SgqSystem.Controllers.V2.Api
                 new { GUIID = guiid.ToString(), ListaCollection = string.Join(",", listaDeColetasSemErro.Select(x => x.Id)) });
             #endregion
 
-            if (listaDeColetasComErro.Count == listSimpleCollect.Count)
+            if (listSimpleCollect.Count > 0 && listaDeColetasComErro.Count == listSimpleCollect.Count)
                 return BadRequest("Ocorreu erro em todas as tentativas de registrar as coletas.");
 
             #region Consolidação Sincrona
@@ -163,7 +169,12 @@ namespace SgqSystem.Controllers.V2.Api
             catch { }
             #endregion
 
+            appColetaBusiness.DeleteCollectionsPartialDuplicadas(listaDeColetasSemErro, guiid);
+
+            listaDeColetasSemErro.AddRange(listaParcial);
+
             return Ok(listaDeColetasSemErro);
+
         }
 
         [HttpPost]
@@ -197,10 +208,10 @@ namespace SgqSystem.Controllers.V2.Api
             List<ParEvaluation> listaParEvaluation;
             List<ParCluster> listaParCluster;
             List<ParClusterGroup> listaParClusterGroup;
-            List<ParQualification> listaParQualification;
-            List<PargroupQualificationXParQualification> listaPargroupQualificationXParQualification;
-            List<PargroupQualificationXParLevel3Value> listaPargroupQualificationXParLevel3Value;
-            List<PargroupQualification> listaPargroupQualification;
+            List<ParQualificationViewModel> listaParQualification;
+            List<PargroupQualificationXParQualificationVewModel> listaPargroupQualificationXParQualification;
+            List<PargroupQualificationXParLevel3ValueViewModel> listaPargroupQualificationXParLevel3Value;
+            List<PargroupQualificationViewModel> listaPargroupQualification;
 
             GetAppParametrizationBusiness business = new GetAppParametrizationBusiness(appParametrization);
 
@@ -227,67 +238,64 @@ namespace SgqSystem.Controllers.V2.Api
                 //   .Where(x => listaParVinculoPeso.Any(y => y.ParLevel1_Id == x.Id))
                 //   .ToList();
 
-                listaParLevel2 = business.GetListaParLevel2(listaParVinculoPeso);
-                //listaParLevel2 = db.ParLevel2
-                //    .AsNoTracking()
-                //    //.Where(x => x.ParFrequency_Id == appParametrization.ParFrequency_Id)
-                //    .Where(x => x.IsActive)
-                //    .Select(x => new ParLevel2AppViewModel()
-                //    {
-                //        Id = x.Id,
-                //        HasTakePhoto = x.HasTakePhoto,
-                //        Name = x.Name
-                //    })
-                //    .ToList()
-                //    .Where(x => listaParVinculoPeso.Any(y => y.ParLevel2_Id == x.Id))
-                //    .ToList();
+                listaParLevel2 = db.ParLevel2
+                    .AsNoTracking()
+                    //.Where(x => x.ParFrequency_Id == appParametrization.ParFrequency_Id)
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParLevel2AppViewModel()
+                    {
+                        Id = x.Id,
+                        HasTakePhoto = x.HasTakePhoto,
+                        Name = x.Name
+                    })
+                    .ToList()
+                    .Where(x => listaParVinculoPeso.Any(y => y.ParLevel2_Id == x.Id))
+                    .ToList();
 
-                listaParLevel3 = business.GetListaParLevel3(listaParVinculoPeso);
-                //listaParLevel3 = db.ParLevel3
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive)
-                //    .Select(x => new ParLevel3AppViewModel()
-                //    {
-                //        Id = x.Id,
-                //        HasTakePhoto = x.HasTakePhoto,
-                //        Name = x.Name
-                //    })
-                //    .ToList()
-                //    .Where(x => listaParVinculoPeso.Any(y => y.ParLevel3_Id == x.Id))
-                //    .ToList();
+                listaParLevel3 = db.ParLevel3
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParLevel3AppViewModel()
+                    {
+                        Id = x.Id,
+                        HasTakePhoto = x.HasTakePhoto,
+                        Name = x.Name
+                    })
+                    .ToList()
+                    .Where(x => listaParVinculoPeso.Any(y => y.ParLevel3_Id == x.Id))
+                    .ToList();
 
-                listaParEvaluation = business.GetListaParEvaluation();
-                //listaParEvaluation = db.ParEvaluation
-                //    .AsNoTracking()
-                //    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
-                //    .Where(x => x.ParFrequency_Id == appParametrization.ParFrequency_Id || x.ParFrequency_Id == null)
-                //    .Where(x => x.IsActive)
-                //    .OrderByDescending(x => x.ParCompany_Id)
-                //    .ToList();
+                listaParEvaluation = db.ParEvaluation
+                    .AsNoTracking()
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.ParFrequency_Id == appParametrization.ParFrequency_Id || x.ParFrequency_Id == null)
+                    .Where(x => x.IsActive)
+                    .OrderByDescending(x => x.ParCompany_Id)
+                    .ToList();
 
-                listaParEvaluationXDepartmentXCargoAppViewModel = business.GetListaParEvaluationXDepartmentXCargoAppViewModel();
-                //listaParEvaluationXDepartmentXCargoAppViewModel = db.ParEvaluationXDepartmentXCargo
-                //    .AsNoTracking()
-                //    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
-                //    .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id)
-                //    .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id)
-                //    .Where(x => x.IsActive)
-                //    .OrderByDescending(x => x.ParCompany_Id)
-                //    .Select(x => new ParEvaluationXDepartmentXCargoAppViewModel()
-                //    {
-                //        Id = x.Id,
-                //        ParCompany_Id = x.ParCompany_Id,
-                //        ParDepartment_Id = x.ParDepartment_Id,
-                //        ParCargo_Id = x.ParCargo_Id,
-                //        Sample = x.Sample,
-                //        Evaluation = x.Evaluation,
-                //        ParCluster_Id = x.ParCluster_Id
-                //    })
-                //    .ToList();
+                listaParEvaluationXDepartmentXCargoAppViewModel = db.ParEvaluationXDepartmentXCargo
+                .AsNoTracking()
+                .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                .Where(x => x.ParFrequencyId == appParametrization.ParFrequency_Id)
+                .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id)
+                .Where(x => x.IsActive)
+                .OrderByDescending(x => x.ParCompany_Id)
+                .Select(x => new ParEvaluationXDepartmentXCargoAppViewModel()
+                {
+                    Id = x.Id,
+                    ParCompany_Id = x.ParCompany_Id,
+                    ParDepartment_Id = x.ParDepartment_Id,
+                    ParCargo_Id = x.ParCargo_Id,
+                    Sample = x.Sample,
+                    Evaluation = x.Evaluation,
+                    ParCluster_Id = x.ParCluster_Id,
+                    RedistributeWeight = x.RedistributeWeight,
+                    IsPartialCollection = x.IsPartialCollection
+                })
+                .ToList();
 
-                var listaEvaluations = business.GetListaParEvaluationSchedule();
-                //var listaEvaluations = db.ParEvaluationSchedule
-                //        .Where(y => y.IsActive);
+                var listaEvaluations = db.ParEvaluationSchedule
+                        .Where(y => y.IsActive);
 
                 foreach (var item in listaParEvaluationXDepartmentXCargoAppViewModel)
                 {
@@ -302,86 +310,81 @@ namespace SgqSystem.Controllers.V2.Api
                         }).ToList();
                 }
 
-                listaParLevel3Value = business.GetListaParLevel3Value(listaParLevel1, listaParLevel2, listaParLevel3);
-                //listaParLevel3Value = db.ParLevel3Value
-                //    .AsNoTracking()
-                //    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
-                //    .Where(x => x.IsActive == true)
-                //    .OrderByDescending(x => x.ParCompany_Id)
-                //    .Select(x => new ParLevel3ValueAppViewModel()
-                //    {
-                //        Id = x.Id,
-                //        DynamicValue = x.DynamicValue,
-                //        IntervalMax = x.IntervalMax,
-                //        IntervalMin = x.IntervalMin,
-                //        AcceptableValueBetween = x.AcceptableValueBetween,
-                //        ParLevel3BoolFalse_Id = x.ParLevel3BoolFalse_Id,
-                //        ParLevel3BoolTrue_Id = x.ParLevel3BoolTrue_Id,
-                //        ParLevel3InputType_Id = x.ParLevel3InputType_Id,
-                //        ParMeasurementUnit_Id = x.ParMeasurementUnit_Id,
-                //        ParCompany_Id = x.ParCompany_Id,
-                //        ParLevel1_Id = x.ParLevel1_Id,
-                //        ParLevel2_Id = x.ParLevel2_Id,
-                //        ParLevel3_Id = x.ParLevel3_Id,
-                //        ShowLevel3Limits = x.ShowLevel3Limits,
-                //        IsRequired = x.IsRequired,
-                //        IsNCTextRequired = x.IsNCTextRequired,
-                //        IsDefaultAnswer = x.IsDefaultAnswer,
-                //        IsAtiveNA = x.IsAtiveNA,
-                //        DefaultMessageText = x.DefaultMessageText,
-                //        StringSizeAllowed = x.StringSizeAllowed
-                //    })
-                //    .ToList()
-                //    .Where(x => listaParLevel1.Any(y => y.Id == x.ParLevel1_Id))
-                //    .Where(x => listaParLevel2.Any(y => y.Id == x.ParLevel2_Id))
-                //    .Where(x => listaParLevel3.Any(y => y.Id == x.ParLevel3_Id))
-                //    .ToList();
+                listaParLevel3Value = db.ParLevel3Value
+                    .AsNoTracking()
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
+                    .Where(x => x.IsActive == true)
+                    .OrderByDescending(x => x.ParCompany_Id)
+                    .Select(x => new ParLevel3ValueAppViewModel()
+                    {
+                        Id = x.Id,
+                        DynamicValue = x.DynamicValue,
+                        IntervalMax = x.IntervalMax,
+                        IntervalMin = x.IntervalMin,
+                        AcceptableValueBetween = x.AcceptableValueBetween,
+                        ParLevel3BoolFalse_Id = x.ParLevel3BoolFalse_Id,
+                        ParLevel3BoolTrue_Id = x.ParLevel3BoolTrue_Id,
+                        ParLevel3InputType_Id = x.ParLevel3InputType_Id,
+                        ParMeasurementUnit_Id = x.ParMeasurementUnit_Id,
+                        ParCompany_Id = x.ParCompany_Id,
+                        ParLevel1_Id = x.ParLevel1_Id,
+                        ParLevel2_Id = x.ParLevel2_Id,
+                        ParLevel3_Id = x.ParLevel3_Id,
+                        ShowLevel3Limits = x.ShowLevel3Limits,
+                        IsRequired = x.IsRequired,
+                        IsNCTextRequired = x.IsNCTextRequired,
+                        IsDefaultAnswer = x.IsDefaultAnswer,
+                        IsAtiveNA = x.IsAtiveNA,
+                        DefaultMessageText = x.DefaultMessageText,
+                        StringSizeAllowed = x.StringSizeAllowed
+                    })
+                    .ToList()
+                    .Where(x => listaParLevel1.Any(y => y.Id == x.ParLevel1_Id))
+                    .Where(x => listaParLevel2.Any(y => y.Id == x.ParLevel2_Id))
+                    .Where(x => listaParLevel3.Any(y => y.Id == x.ParLevel3_Id))
+                    .ToList();
 
-                listaParLevel3InputType = business.GetListaParLevel3InputType();
-                //listaParLevel3InputType = db.ParLevel3InputType
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive)
-                //    .Select(x => new ParLevel3InputTypeAppViewModel()
-                //    {
-                //        Id = x.Id,
-                //        Name = x.Name,
-                //        Description = x.Description
-                //    })
-                //    .ToList();
+                listaParLevel3InputType = db.ParLevel3InputType
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParLevel3InputTypeAppViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description
+                    })
+                    .ToList();
 
-                listaParMeasurementUnit = business.GetListaParMeasurementUnit();
-                //listaParMeasurementUnit = db.ParMeasurementUnit
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive)
-                //    .Select(x => new ParMeasurementUnitAppViewModel()
-                //    {
-                //        Id = x.Id,
-                //        Name = x.Name,
-                //        Description = x.Description
-                //    })
-                //    .ToList();
+                listaParMeasurementUnit = db.ParMeasurementUnit
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParMeasurementUnitAppViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Description = x.Description
+                    })
+                    .ToList();
 
-                listaParLevel3BoolTrue = business.GetListaParLevel3BoolTrue();
-                //listaParLevel3BoolTrue = db.ParLevel3BoolTrue
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive)
-                //    .Select(x => new ParLevel3BoolTrueAppViewModel()
-                //    {
-                //        Id = x.Id,
-                //        Name = x.Name
-                //    })
-                //    .ToList();
+                listaParLevel3BoolTrue = db.ParLevel3BoolTrue
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParLevel3BoolTrueAppViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name
+                    })
+                    .ToList();
 
-                listaParLevel3BoolFalse = business.GetListaParLevel3BoolFalse();
-                //listaParLevel3BoolFalse = db.ParLevel3BoolFalse
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive)
-                //    .Select(x => new ParLevel3BoolFalseAppViewModel()
-                //    {
-                //        Id = x.Id,
-                //        Name = x.Name
-                //    })
-                //    .ToList();
+                listaParLevel3BoolFalse = db.ParLevel3BoolFalse
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParLevel3BoolFalseAppViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name
+                    })
+                    .ToList();
 
                 //if (departamentosFiltrados.Count > 0)
                 //{
@@ -477,17 +480,15 @@ namespace SgqSystem.Controllers.V2.Api
                     })
                     .ToList();
 
-                listaParLevel3XHelp = business.GetListaParLevel3XHelp();
-                //listaParLevel3XHelp = db.ParLevel3XHelp
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive)
-                //    .ToList();
+                listaParLevel3XHelp = db.ParLevel3XHelp
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
 
-                listaParAlert = business.GetListaParAlert();
-                //listaParAlert = db.ParAlert
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive && x.IsCollectAlert)
-                //    .ToList();
+                listaParAlert = db.ParAlert
+                    .AsNoTracking()
+                    .Where(x => x.IsActive && x.IsCollectAlert)
+                    .ToList();
 
                 //listaParDepartmentXHeaderField = db.ParDepartmentXHeaderField
                 //    .AsNoTracking()
@@ -504,30 +505,27 @@ namespace SgqSystem.Controllers.V2.Api
                 //    .Where(x => x.IsActive)
                 //    .ToList();
 
-                listaParHeaderFieldGeral = business.GetListaParHeaderFieldGeral();
-                //listaParHeaderFieldGeral = db.ParHeaderFieldGeral
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive)
-                //    .ToList();
 
-                listaParMultipleValuesGeral = business.GetListaParMultipleValuesGeral();
-                //listaParMultipleValuesGeral = db.ParMultipleValuesGeral
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive)
-                //    .ToList();
+                listaParHeaderFieldGeral = db.ParHeaderFieldGeral
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
 
-                listaParDepartmentXRotinaIntegracao = business.GetListaParDepartmentXRotinaIntegracao();
-                //listaParDepartmentXRotinaIntegracao = db.ParDepartmentXRotinaIntegracao
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive)
-                //    .ToList();
+                listaParMultipleValuesGeral = db.ParMultipleValuesGeral
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
+
+                listaParDepartmentXRotinaIntegracao = db.ParDepartmentXRotinaIntegracao
+                    .AsNoTracking()
+                    .Where(x => x.IsActive)
+                    .ToList();
 
                 //Aqui precisa tirar a query para não ir pro APP
-                listaRotinaIntegracao = business.GetListaRotinaIntegracao();
-                //listaRotinaIntegracao = db.RotinaIntegracao
-                //    .AsNoTracking()
-                //    .Where(x => x.IsActive && x.IsOffline == false)
-                //    .ToList();
+                listaRotinaIntegracao = db.RotinaIntegracao
+                    .AsNoTracking()
+                    .Where(x => x.IsActive && x.IsOffline == false)
+                    .ToList();
 
                 //Rotina Integração Offline
                 listaRotinaIntegracaoOffline = GetRotinaIntegracaoComResultados();
@@ -541,27 +539,25 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParClusterGroup = db.ParClusterGroup
                     .Where(x => x.IsActive && x.Id == appParametrization.ParClusterGroup_Id).ToList();
 
-                var listaParLevel3Value_Ids = new List<int>();
+                var listaParLevel3_Ids = new List<int>();
                 foreach (var item in listaParLevel3Value)
                 {
-                    listaParLevel3Value_Ids.Add(item.Id);
+                    listaParLevel3_Ids.Add(item.Id);
                 }
 
-
-                listaPargroupQualificationXParLevel3Value = business.GetListaPargroupQualificationXParLevel3Value(listaParLevel3Value_Ids);
-                //listaPargroupQualificationXParLevel3Value = db.PargroupQualificationXParLevel3Value
-                //     .Where(x => listaParLevel3_Ids.Any(y => y == x.ParLevel3Value_Id))
-                //     .Select(x => new PargroupQualificationXParLevel3ValueViewModel()
-                //     {
-                //         Id = x.Id,
-                //         PargroupQualification_Id = x.PargroupQualification_Id,
-                //         ParLevel3Value_Id = x.ParLevel3Value_Id,
-                //         Value = x.Value,
-                //         IsActive = x.IsActive,
-                //         IsRequired = x.IsRequired
-                //     })
-                //    .Where(x => x.IsActive)
-                //    .ToList();
+                listaPargroupQualificationXParLevel3Value = db.PargroupQualificationXParLevel3Value
+                     .Where(x => listaParLevel3_Ids.Any(y => y == x.ParLevel3Value_Id))
+                     .Select(x => new PargroupQualificationXParLevel3ValueViewModel()
+                     {
+                         Id = x.Id,
+                         PargroupQualification_Id = x.PargroupQualification_Id,
+                         ParLevel3Value_Id = x.ParLevel3Value_Id,
+                         Value = x.Value,
+                         IsActive = x.IsActive,
+                         IsRequired = x.IsRequired
+                     })
+                    .Where(x => x.IsActive)
+                    .ToList();
 
                 var listaPargroupQualificationXParLevel3Value_Ids = new List<int>();
                 foreach (var item in listaPargroupQualificationXParLevel3Value)
@@ -569,18 +565,17 @@ namespace SgqSystem.Controllers.V2.Api
                     listaPargroupQualificationXParLevel3Value_Ids.Add(item.PargroupQualification_Id);
                 }
 
-                listaPargroupQualificationXParQualification = business.GetListaPargroupQualificationXParQualification(listaPargroupQualificationXParLevel3Value_Ids);
-                //listaPargroupQualificationXParQualification = db.PargroupQualificationXParQualification
-                //    .Select(x => new PargroupQualificationXParQualificationVewModel()
-                //    {
-                //        Id = x.Id,
-                //        PargroupQualification_Id = x.PargroupQualification_Id,
-                //        ParQualification_Id = x.ParQualification_Id,
-                //        IsActive = x.IsActive
-                //    })
-                //    .Where(x => listaPargroupQualificationXParLevel3Value_Ids.Any(y => y == x.PargroupQualification_Id))
-                //    .Where(x => x.IsActive)
-                //    .ToList();
+                listaPargroupQualificationXParQualification = db.PargroupQualificationXParQualification
+                    .Select(x => new PargroupQualificationXParQualificationVewModel()
+                    {
+                        Id = x.Id,
+                        PargroupQualification_Id = x.PargroupQualification_Id,
+                        ParQualification_Id = x.ParQualification_Id,
+                        IsActive = x.IsActive
+                    })
+                    .Where(x => listaPargroupQualificationXParLevel3Value_Ids.Any(y => y == x.PargroupQualification_Id))
+                    .Where(x => x.IsActive)
+                    .ToList();
 
                 var listaPargroupQualificationXParQualification_Ids = new List<int?>();
                 foreach (var item in listaPargroupQualificationXParQualification)
@@ -588,17 +583,16 @@ namespace SgqSystem.Controllers.V2.Api
                     listaPargroupQualificationXParQualification_Ids.Add(item.ParQualification_Id);
                 }
 
-                listaParQualification = business.GetListaParQualification(listaPargroupQualificationXParQualification_Ids);
-                //listaParQualification = db.ParQualification
-                //    .Select(x => new ParQualificationViewModel()
-                //    {
-                //        Id = x.Id,
-                //        Name = x.Name,
-                //        IsActive = x.IsActive
-                //    })
-                //    .Where(x => listaPargroupQualificationXParQualification_Ids.Any(y => y== x.Id))
-                //    .Where(x => x.IsActive)
-                //    .ToList();
+                listaParQualification = db.ParQualification
+                    .Select(x => new ParQualificationViewModel()
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        IsActive = x.IsActive
+                    })
+                    .Where(x => listaPargroupQualificationXParQualification_Ids.Any(y => y == x.Id))
+                    .Where(x => x.IsActive)
+                    .ToList();
 
                 var listaPargroupQualification_Ids = new List<int?>();
                 foreach (var item in listaPargroupQualificationXParQualification)
@@ -606,17 +600,16 @@ namespace SgqSystem.Controllers.V2.Api
                     listaPargroupQualification_Ids.Add(item.Id);
                 }
 
-                listaPargroupQualification = business.GetListaPargroupQualification(listaPargroupQualification_Ids);
-                //listaPargroupQualification = db.PargroupQualification
-                //   .Select(x => new PargroupQualificationViewModel()
-                //   {
-                //       Id = x.Id,
-                //       Name = x.Name,
-                //       IsActive = x.IsActive
-                //   })
-                //   .Where(x => listaPargroupQualification_Ids.Any(y => y == x.Id))
-                //   .Where(x => x.IsActive)
-                //   .ToList();
+                listaPargroupQualification = db.PargroupQualification
+                   .Select(x => new PargroupQualificationViewModel()
+                   {
+                       Id = x.Id,
+                       Name = x.Name,
+                       IsActive = x.IsActive
+                   })
+                   .Where(x => listaPargroupQualification_Ids.Any(y => y == x.Id))
+                   .Where(x => x.IsActive)
+                   .ToList();
             }
 
             return Ok(new
@@ -651,7 +644,7 @@ namespace SgqSystem.Controllers.V2.Api
                 listaPargroupQualification,
                 listaPargroupQualificationXParQualification,
                 listaPargroupQualificationXParLevel3Value
-        });
+            });
         }
 
         [HttpPost]
@@ -905,7 +898,7 @@ WHERE 1 = 1
                     .AsNoTracking()
                     .Where(x => x.IsActive)
                     .ToList()
-                    .Where(x=>listaParLevel1XCluster.Any(y=> y.ParCluster_Id == x.Id))
+                    .Where(x => listaParLevel1XCluster.Any(y => y.ParCluster_Id == x.Id))
                     .ToList();
 
                 listaParLevel2 = db.ParLevel2
@@ -925,7 +918,7 @@ WHERE 1 = 1
                     .AsNoTracking()
                     .Where(x => x.IsActive)
                     .ToList()
-                    .Where(x => 
+                    .Where(x =>
                         listaParLevel2.Any(y => y.Id == x.ParLevel2_Id)
                         && listaParLevel1.Any(y => y.Id == x.ParLevel1_Id))
                     .ToList();
@@ -1260,6 +1253,60 @@ WHERE 1 = 1
 
             return Ok(coletaAgrupada.ToList());
         }
+
+        [HttpPost]
+        [Route("GetColetaParcial")]
+        public IHttpActionResult GetColetaParcial(GetResultsData data)
+        {
+            //Enviar parametros para não buscar todas as coletas
+            List<CollectionPartial> coletasParciais = new List<CollectionPartial>();
+            InicioRequisicao();
+
+            var sql = $@"
+DECLARE @ParFrequency_Id INT = {data.ParFrequency_Id};
+DECLARE @ParCompany_Id INT = {data.ParCompany_Id};
+DECLARE @DataColeta DATETIME = '{data.CollectionDate:yyyy-MM-dd HH:mm:ss}';
+DECLARE @DateTimeInicio DATETIME;
+DECLARE @DateTimeFinal DATETIME;
+
+SET @DateTimeInicio =
+CASE @ParFrequency_Id
+	WHEN 1 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME)  -- Período
+	WHEN 2 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME)  -- Turno
+	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME)  -- Diario
+	WHEN 4 THEN CAST(DATEADD(DAY, -DATEPART(WEEKDAY, @DataColeta) + 1, @DataColeta) AS DATE)  -- Semanal
+	WHEN 5 THEN IIF(DATEPART(DAY, @DataColeta) <= 15, CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-01'), CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-16'))  -- Quinzenal
+	WHEN 6 THEN CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-01')  -- Mensal
+	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME) -- Diario com Intervalo 
+END
+
+SET @DateTimeFinal =
+CASE @ParFrequency_Id
+	WHEN 1 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Período
+	WHEN 2 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Turno
+	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Diario
+	WHEN 4 THEN CAST(CONCAT(CAST(DATEADD(DAY, 7 - DATEPART(WEEKDAY, @DataColeta), @DataColeta) AS DATE), ' 23:59:59') AS DATETIME) -- Semanal
+	WHEN 5 THEN IIF(DATEPART(DAY, @DataColeta) <= 15, CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-15 23:59:59'), CONCAT(EOMONTH(@DataColeta), ' 23:59:59'))  -- Quinzenal
+	WHEN 6 THEN EOMONTH(@DataColeta)  -- Mensal
+	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Diario com Intervalo 
+END
+
+SELECT
+	*
+FROM CollectionPartial CP
+WHERE 1 = 1
+AND CP.CollectionDate BETWEEN @DateTimeInicio AND @DateTimeFinal
+AND CP.ParCompany_Id = @ParCompany_Id
+AND cp.Parfrequency_Id = @ParFrequency_Id";
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                coletasParciais = factory.SearchQuery<CollectionPartial>(sql).ToList();
+            }
+
+            return Ok(coletasParciais);
+        }
+
         #endregion
 
         public class GetResultsData

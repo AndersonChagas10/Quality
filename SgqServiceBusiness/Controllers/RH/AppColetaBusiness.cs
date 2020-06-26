@@ -131,6 +131,244 @@ namespace SgqServiceBusiness.Controllers.RH
             }
         }
 
+        public List<Collection> SaveCollectionPartial(List<Collection> listSimpleCollect, Guid guiid)
+        {
+            //Não salvar header field
+            listSimpleCollect = listSimpleCollect.Where(x => x.IsPartialSave).ToList();
+
+            for (int i = 0; i < listSimpleCollect.Count; i++)
+            {
+                listSimpleCollect[i] =  SaveCollectionPartial(listSimpleCollect[i], guiid);
+            }
+
+            return listSimpleCollect;
+
+        }
+
+        public Collection SaveCollectionPartial(Collection item, Guid guiid)
+        {
+            item.AddDate = DateTime.Now;
+            item.Shift_Id = 1;
+            item.Period_Id = 1;
+            item.IsProcessed = false;
+
+            try
+            {
+                string sql = $@"
+                INSERT INTO [CollectionPartial]
+                   ([CollectionDate]
+                   ,[AddDate]
+                   ,[UserSgq_Id]
+                   ,[Shift_Id]
+                   ,[Period_Id]
+                   ,[ParCargo_Id]
+                   ,[ParCompany_Id]
+                   ,[ParDepartment_Id]
+                   ,[ParCluster_Id]
+                   ,[ParLevel1_Id]
+                   ,[ParLevel2_Id]
+                   ,[ParLevel3_Id]
+                   ,[CollectionType]
+                   ,[Weigth]
+                   ,[IntervalMin]
+                   ,[IntervalMax]
+                   ,[Value]
+                   ,[ValueText]
+                   ,[IsNotEvaluate]
+                   ,[IsConform]
+                   ,[Defects]
+                   ,[PunishimentValue]
+                   ,[WeiEvaluation]
+                   ,[Evaluation]
+                   ,[WeiDefects]
+                   ,[HasPhoto]
+                   ,[Sample]
+                   ,[HaveCorrectiveAction]
+                   ,[Parfrequency_Id]
+                   ,[AlertLevel]
+                   ,[ParHeaderField_Id]
+                   ,[ParHeaderField_Value]
+                   ,[Outros]
+                   ,[IsProcessed])
+             VALUES
+                   (@CollectionDate
+                   ,@AddDate
+                   ,@UserSgq_Id
+                   ,@Shift_Id
+                   ,@Period_Id
+                   ,@ParCargo_Id
+                   ,@ParCompany_Id
+                   ,@ParDepartment_Id
+                   ,@ParCluster_Id
+                   ,@ParLevel1_Id
+                   ,@ParLevel2_Id
+                   ,@ParLevel3_Id
+                   ,@CollectionType
+                   ,@Weigth
+                   ,@IntervalMin
+                   ,@IntervalMax
+                   ,@Value
+                   ,@ValueText
+                   ,@IsNotEvaluate
+                   ,@IsConform
+                   ,@Defects
+                   ,@PunishimentValue
+                   ,@WeiEvaluation
+                   ,@Evaluation
+                   ,@WeiDefects
+                   ,@HasPhoto
+                   ,@Sample
+                   ,@HaveCorrectiveAction
+                   ,@Parfrequency_Id
+                   ,@AlertLevel
+                   ,@ParHeaderField_Id
+                   ,@ParHeaderField_Value
+                   ,@Outros
+                   ,@IsProcessed);
+                    SELECT @@IDENTITY AS 'Identity';";
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        UtilSqlCommand.AddParameterNullable(cmd, "@CollectionDate", item.CollectionDate);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@AddDate", item.AddDate);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@UserSgq_Id", item.UserSgq_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Shift_Id", item.Shift_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Period_Id", item.Period_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCargo_Id", item.ParCargo_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCompany_Id", item.ParCompany_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartment_Id", item.ParDepartment_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCluster_Id", item.ParCluster_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel1_Id", item.ParLevel1_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel2_Id", item.ParLevel2_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel3_Id", item.ParLevel3_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@CollectionType", item.CollectionType);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Weigth", item.Weigth);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@IntervalMin", item.IntervalMin);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@IntervalMax", item.IntervalMax);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Value", item.Value);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ValueText", item.ValueText);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@IsNotEvaluate", item.IsNotEvaluate);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@IsConform", item.IsConform);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Defects", item.Defects);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@PunishimentValue", item.PunishimentValue);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@WeiEvaluation", item.WeiEvaluation);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Evaluation", item.Evaluation);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@WeiDefects", item.WeiDefects);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@HasPhoto", item.HasPhoto);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Sample", item.Sample);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@HaveCorrectiveAction", item.HaveCorrectiveAction);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Parfrequency_Id", item.Parfrequency_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@AlertLevel", item.AlertLevel);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParHeaderField_Id", item.ParHeaderField_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParHeaderField_Value", item.ParHeaderField_Value);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@IsProcessed", item.IsProcessed);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Outros", item.Outros);
+                        var id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        item.Id = id;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                item.HasError = true;
+                item.GUIID = guiid.ToString();
+                LogSystem.LogErrorBusiness.Register(ex, item);
+            }
+
+            return item;
+        }
+
+        public void DeleteCollectionsPartialDuplicadas(List<Collection> listSimpleCollect, Guid guiid)
+        {
+            //Somente coleta sem header field
+            listSimpleCollect = listSimpleCollect.Where(x => x.ParHeaderField_Id == null).ToList();
+
+            foreach (var coleta in listSimpleCollect)
+            {
+                DeleteCollectionPartialDuplicada(coleta, guiid);
+            }
+        }
+
+        private void DeleteCollectionPartialDuplicada(Collection coleta, Guid guiid)
+        {
+            //Verificar quais coletas ja foram coletadas retornar e pagar as que já existem
+            try
+            {
+
+                var sql = $@"
+DECLARE @ParFrequency_Id INT = @@ParFrequency_Id;
+DECLARE @ParCompany_Id INT = @@ParCompany_Id;
+DECLARE @DataColeta DATETIME = @@CollectionDate;
+DECLARE @DateTimeInicio DATETIME;
+DECLARE @DateTimeFinal DATETIME;
+
+SET @DateTimeInicio =
+CASE @ParFrequency_Id
+	WHEN 1 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME)  -- Período
+	WHEN 2 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME)  -- Turno
+	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME)  -- Diario
+	WHEN 4 THEN CAST(DATEADD(DAY, -DATEPART(WEEKDAY, @DataColeta) + 1, @DataColeta) AS DATE)  -- Semanal
+	WHEN 5 THEN IIF(DATEPART(DAY, @DataColeta) <= 15, CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-01'), CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-16'))  -- Quinzenal
+	WHEN 6 THEN CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-01')  -- Mensal
+	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 00:00:00') AS DATETIME) -- Diario com Intervalo 
+END
+
+SET @DateTimeFinal =
+CASE @ParFrequency_Id
+	WHEN 1 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Período
+	WHEN 2 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Turno
+	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Diario
+	WHEN 4 THEN CAST(CONCAT(CAST(DATEADD(DAY, 7 - DATEPART(WEEKDAY, @DataColeta), @DataColeta) AS DATE), ' 23:59:59') AS DATETIME) -- Semanal
+	WHEN 5 THEN IIF(DATEPART(DAY, @DataColeta) <= 15, CONCAT(CONVERT(VARCHAR(7), @DataColeta, 120), '-15 23:59:59'), CONCAT(EOMONTH(@DataColeta), ' 23:59:59'))  -- Quinzenal
+	WHEN 6 THEN EOMONTH(@DataColeta)  -- Mensal
+	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10), @DataColeta, 120), ' 23:59:59') AS DATETIME) -- Diario com Intervalo 
+END
+
+DELETE CollectionPartial
+WHERE 1 = 1
+	AND ParCargo_Id = @@ParCargo_Id
+	AND ParCompany_Id = @ParCompany_Id
+	AND ParDepartment_Id = @@ParDepartment_Id
+	AND ParCluster_Id = @@ParCluster_Id
+	AND ((ParLevel1_Id = @@ParLevel1_Id AND ParLevel2_Id = @@ParLevel2_Id AND ParLevel3_Id = @@ParLevel3_Id) OR (ParHeaderField_Id IS NOT NULL))
+	AND Parfrequency_Id = @ParFrequency_Id
+	AND Evaluation = @@Evaluation
+	AND Sample = @@Sample
+	AND CollectionDate BETWEEN @DateTimeInicio AND @DateTimeFinal";
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParCargo_Id", coleta.ParCargo_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParCompany_Id", coleta.ParCompany_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParDepartment_Id", coleta.ParDepartment_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParCluster_Id", coleta.ParCluster_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParLevel1_Id", coleta.ParLevel1_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParLevel2_Id", coleta.ParLevel2_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParLevel3_Id", coleta.ParLevel3_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@ParFrequency_Id", coleta.Parfrequency_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@Evaluation", coleta.Evaluation);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@Sample", coleta.Sample);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@@CollectionDate", coleta.CollectionDate);
+                        var id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                coleta.HasError = true;
+                coleta.GUIID = guiid.ToString();
+                LogSystem.LogErrorBusiness.Register(ex, coleta);
+            }
+        }
+
         public void SaveCollection(Collection item)
         {
             try

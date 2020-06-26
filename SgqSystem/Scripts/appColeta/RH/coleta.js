@@ -2,6 +2,9 @@ var coletaJson = [];
 var interacaoComFormulario = 0;
 
 function openColeta(levels) {
+
+    readColetasParciais(desabilitaColetados);
+
     interacaoComFormulario = 0;
 
     coletaJson = [];
@@ -228,6 +231,7 @@ function getInputLevel3(level3, level2, level1, striped) {
         retorno += '<div class="col-xs-12" data-linha-coleta ';
         retorno += ' data-collapse-target="' + level1.Id + '-' + level2.Id + '"';
         retorno += ' data-conforme="' + conforme + '"';
+        retorno += ' data-input-type="' + level3.ParLevel3InputType.Id + '"';
         retorno += ' data-default-answer="' + level3.ParLevel3Value.IsDefaultAnswerInt + '"';
         retorno += ' data-min="' + level3.ParLevel3Value.IntervalMin + '"';
         retorno += ' data-max="' + level3.ParLevel3Value.IntervalMax + '"';
@@ -894,12 +898,15 @@ function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
 
             var qualificationGroupName = '';
 
+            if (parametrization.listaPargroupQualification.length == 0) {
+                return;
+            }
+
             if (parametrization.listaPargroupQualification[i] != undefined) {
                 qualificationGroupName = parametrization.listaPargroupQualification[i].Name;
             } else {
                 qualificationGroupName = parametrization.listaPargroupQualification[0].Name;
             }
-
 
             if ($(linhaLevel3).attr('data-conforme') == o.Value) {
                 var options = '';
@@ -1021,9 +1028,27 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         return false;
     }
 
-    if (!ColetasIsValid()) {
-        return false;
+    hasPartialSave = false;
+
+    if (currentIsPartialSave && hasOnlyTextField()) {
+
+        openMessageConfirm("Deseja finalizar a amostra?", "todos os campos não preenchidos serão salvos.", preparaColetaParcialFim, closeMensagemImediatamente, "orange", "white");
+
+    } else if (currentIsPartialSave) {
+
+        preparaColetaParcial();
+
+    } else {
+
+        if (ColetasIsValid()) {
+            PrepararColetas();
+        }
+
     }
+
+});
+
+function PrepararColetas() {
 
     //Verifica se existe coleta já realizada para este cargo.
     var coletaAgrupada = null;
@@ -1052,8 +1077,15 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     var collectionDate = getCurrentDate();
     //Insere valores da coleta
     $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
+
         var data = $(o);
         var isNA = $(data).attr('data-conforme-na') == "";
+
+        //se for coleta parcial e não tiver sido respondido, não é enviado
+        if (currentIsPartialSave && fieldIsEmpty(data)) {
+            return;
+        }
+
         coletaJson.push(
             {
                 Evaluation: coletaAgrupada.Evaluation,
@@ -1078,7 +1110,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
                 WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseFloat($(data).attr('data-peso')),
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
                 ParCluster_Id: currentParCluster_Id,
-                Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')) })
+                Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')) }),
+                IsPartialSave: hasPartialSave
                 /*
 				"Shift_Id":1,
 				"Period_Id":1,
@@ -1095,7 +1128,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         );
     });
 
-    processAlertRole(coletaJson);
+    if (!hasPartialSave)
+        processAlertRole(coletaJson);
 
     var cabecalhos = getCollectionHeaderFields(collectionDate);
 
@@ -1107,15 +1141,17 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     }
 
     //Se for a primeira, insere na lista de resultados
-    if (coletaAgrupada.Evaluation == 1 && coletaAgrupada.Sample == 1) {
+    if (coletaAgrupada.Evaluation == 1 && coletaAgrupada.Sample == 1 && !hasPartialSave) {
         coletasAgrupadas.push(coletaAgrupada);
     }
 
     //Salva a coleta realizada numa variavel global
     SalvarColetas(coletaJson);
+    addColetasParciais(coletaJson, coletaAgrupada.Sample == 1 ? undefined : desabilitaColetados);
 
     //Atualiza para a proxima coleta (se precisar adicionar amostra ou avaliação)
-    coletaAgrupada = AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada);
+    if(!hasPartialSave)
+        coletaAgrupada = AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada);
 
     //Mostra mensagem de que a coleta foi realizada com sucesso e fecha após 3 segundos
     openMensagem("Amostra salva com sucesso!", "blue", "white");
@@ -1128,7 +1164,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
         listarParLevels();
         $("html, body").animate({ scrollTop: 0 }, "fast");
     }
-});
+
+}
 
 function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {
     coletaAgrupada.Sample++; //Incrementa a amostra
@@ -1149,6 +1186,7 @@ function SalvarColetas(coletaJson) {
     }
 
     AtualizarArquivoDeColetas();
+
 }
 
 function OpenCorrectiveAction(coleta) {
@@ -1281,7 +1319,8 @@ function getCollectionHeaderFields(collectionDate) {
                 ParCompany_Id: currentParCompany_Id,
                 CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
-                Parfrequency_Id: parametrization.currentParFrequency_Id
+                Parfrequency_Id: parametrization.currentParFrequency_Id,
+                IsPartialSave: hasPartialSave
             });
 
     });
@@ -1305,7 +1344,8 @@ function getCollectionHeaderFields(collectionDate) {
                 CollectionDate: collectionDate,
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
+                Parfrequency_Id: parametrization.currentParFrequency_Id,
+                IsPartialSave: hasPartialSave
             });
 
     });
@@ -1331,7 +1371,8 @@ function getCollectionHeaderFields(collectionDate) {
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel2').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel2').attr('parLevel2Id'),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
+                Parfrequency_Id: parametrization.currentParFrequency_Id,
+                IsPartialSave: hasPartialSave
             });
 
     });
@@ -1358,7 +1399,8 @@ function getCollectionHeaderFields(collectionDate) {
                 ParLevel1_Id: $self.parents('#headerFieldLevel3').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel3').attr('parLevel2Id'),
                 ParLevel3_Id: $self.parents('#headerFieldLevel3').attr('parLevel3Id'),
-                Parfrequency_Id: parametrization.currentParFrequency_Id
+                Parfrequency_Id: parametrization.currentParFrequency_Id,
+                IsPartialSave: hasPartialSave
             });
 
     });
