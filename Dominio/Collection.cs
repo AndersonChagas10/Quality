@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Helper;
 
 namespace Dominio
 {
@@ -52,6 +53,7 @@ namespace Dominio
         //outros
         public bool? IsProcessed { get; set; }
         public string Outros { get; set; }
+        public string Hash { get { return (CollectionDate?.ToString("yyyy-MM-dd HH:mm:ss")+ParCompany_Id+UserSgq_Id+Evaluation+Parfrequency_Id).GetSHA256(); } }
 
         [NotMapped]
         public bool? HasError { get; set; }

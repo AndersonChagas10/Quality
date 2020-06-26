@@ -170,7 +170,8 @@ namespace SgqServiceBusiness.Controllers.RH
                    ,[ParHeaderField_Id]
                    ,[ParHeaderField_Value]
                    ,[Outros]
-                   ,[IsProcessed])
+                   ,[IsProcessed]
+                   ,[Hash])
              VALUES
                    (@CollectionDate
                    ,@AddDate
@@ -205,7 +206,8 @@ namespace SgqServiceBusiness.Controllers.RH
                    ,@ParHeaderField_Id
                    ,@ParHeaderField_Value
                    ,@Outros
-                   ,@IsProcessed);
+                   ,@IsProcessed
+                   ,@Hash);
                     SELECT @@IDENTITY AS 'Identity';";
 
                 using (Factory factory = new Factory("DefaultConnection"))
@@ -247,6 +249,7 @@ namespace SgqServiceBusiness.Controllers.RH
                         UtilSqlCommand.AddParameterNullable(cmd, "@ParHeaderField_Value", item.ParHeaderField_Value);
                         UtilSqlCommand.AddParameterNullable(cmd, "@IsProcessed", item.IsProcessed);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Outros", item.Outros);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Hash", item.Hash);
                         var id = Convert.ToInt32(cmd.ExecuteScalar());
 
                         item.Id = id;

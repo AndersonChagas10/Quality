@@ -62,13 +62,14 @@ namespace SgqSystem.Controllers.V2.Api
 
             AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
 
+            DateTime dataSetCollect = DateTime.Now;
             List<Collection> listaSimpleCollectDuplicadas = new List<Collection>();
             //Adiciona os arquivos na Collection
             foreach (var item in listSimpleCollect)
             {
                 try
                 {
-                    item.AddDate = DateTime.Now;
+                    item.AddDate = dataSetCollect;
                     item.Shift_Id = 1;
                     item.Period_Id = 1;
                     item.IsProcessed = false;
@@ -756,6 +757,7 @@ WHERE 1 = 1
         [Route("SetCollect123")]
         public IHttpActionResult SetCollect123(List<Collection> listSimpleCollect)
         {
+            DateTime dataSetCollect = DateTime.Now;
             using (var db = new SgqDbDevEntities())
             {
                 //Adiciona os arquivos na Collection
@@ -764,7 +766,7 @@ WHERE 1 = 1
 
                     try
                     {
-                        item.AddDate = DateTime.Now;
+                        item.AddDate = dataSetCollect;
                         item.Shift_Id = 1;
                         item.Period_Id = 1;
                         item.IsProcessed = false;
