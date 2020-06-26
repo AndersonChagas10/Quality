@@ -193,6 +193,8 @@ namespace SgqSystem.Controllers.CadastrosGerais
             {
                 return HttpNotFound();
             }
+
+            PreencheViewBags(reportLayoutXReportXUser.ReportXUserSgq_Id, reportLayoutXReportXUser.Level1_Id);
             return View(reportLayoutXReportXUser);
         }
 

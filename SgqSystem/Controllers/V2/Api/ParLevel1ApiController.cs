@@ -199,13 +199,13 @@ namespace SgqSystem.Controllers.V2.Api
             {
                 db.Configuration.LazyLoadingEnabled = false;
 
-                var ParDepartmentsPai = db.ParDepartment.Where(x => x.ParCompany_Id == id)
+                var ParDepartmentsPai = db.ParDepartment.Where(x => x.ParCompany_Id == id || (x.ParCompany_Id == null && x.Hash == null))
                     .Select(x => x.Parent_Id)
                     .ToList();
 
                 var ParDepartmentsFilhos = db.ParDepartment
-                    .Where(x => x.ParCompany_Id == id && x.Parent_Id != null && !ParDepartmentsPai.Any(y => y == x.Id))
-                    .Include(x => x.ParDepartmentPai).Where(x => x.ParCompany_Id == id && x.Parent_Id != null)
+                    .Where(x => (x.ParCompany_Id == id || x.ParCompany_Id == null) && x.Parent_Id != null && x.Parent_Id != 0 && !ParDepartmentsPai.Any(y => y == x.Id))
+                    .Include(x => x.ParDepartmentPai).Where(x => (x.ParCompany_Id == id || x.ParCompany_Id == null) && x.Parent_Id != null)
                     .ToList();
 
                 var departamentosIds = ParDepartmentsFilhos.Select(x => x.Id).ToList();

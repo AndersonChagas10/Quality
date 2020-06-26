@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label for="Name">Nome da tarefa:</label>
                 <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Nome da tarefa" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
-                <input type="text" class="form-control required" id="Name" name="Name">
+                <input type="text" class="form-control required" maxlength="500" id="Name" name="Name">
             </div>
 
         </div>
@@ -89,13 +89,18 @@
                     data: JSON.stringify(obj),
                     contentType: "application/json",
                     success: function (data) {
-                        lastIdL3 = parseInt(data);
-                        openMessageModal("Feito", "Dados Salvos");
-                        if (parseInt(hasId) <= 0 || isNaN(parseInt(hasId)))
-                            getGenericAjax('@Url.Action("Get", "api/ParLevel3Api")', 'Get', ParL3Geral.afterCreate);
-                        else
-                            $('#selectL3').trigger('change');
-                        closeLoader();
+                        if (data.mensagem != undefined) {
+                            openMessageModal("Alerta", data.mensagem);
+                            closeLoader();
+                        } else {
+                            lastIdL3 = parseInt(data);
+                            openMessageModal("Feito", "Dados Salvos");
+                            if (parseInt(hasId) <= 0 || isNaN(parseInt(hasId)))
+                                getGenericAjax('@Url.Action("Get", "api/ParLevel3Api")', 'Get', ParL3Geral.afterCreate);
+                            else
+                                $('#selectL3').trigger('change');
+                            closeLoader();
+                        }
 
                     },
                     error: function (request, error) {
@@ -123,7 +128,7 @@
                     obj = atualizaValoresDoObjeto(obj, formdata);
                 }
                 obj.ParRiskCharacteristicType_Id = parseInt($("#selectL3CaracteristicaDeRisco :selected").val());
-                debugger
+                
                 Save(obj);
             });
         },

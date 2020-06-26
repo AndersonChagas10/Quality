@@ -14,6 +14,7 @@ namespace SgqService.ViewModels
         }
 
         #region Retorno
+        
 
         public ResultSetRelatorioColeta result { get; set; }
         public ResultSetGetCorrectiveAction resultSetGetCorrectiveAction { get; set; }

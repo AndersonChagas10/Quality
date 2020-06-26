@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dominio;
+using Dominio.Enum;
+using static SgqSystem.Controllers.CadastrosGerais.ParReportXFiltersController;
 
 namespace SgqSystem.Controllers
 {
@@ -69,9 +71,18 @@ namespace SgqSystem.Controllers
             }
             ReportXUserSgq reportXUserSgq = db.ReportXUserSgq.Where(x => x.Id == id).Include(x => x.ParCompany).Include(X => X.ParLevel1).FirstOrDefault();
 
-            if(reportXUserSgq != null)
+            if (reportXUserSgq != null)
+            {
                 reportXUserSgq.ParReportLayoutXReportXUser = db.ParReportLayoutXReportXUser.Where(x => x.ReportXUserSgq_Id == reportXUserSgq.Id && x.IsActive).OrderByDescending(x => x.LayoutLevel).ToList();
+                reportXUserSgq.ParReportXFilter = db.ParReportXFilter.Where(x => x.ReportXUserSgq_Id == reportXUserSgq.Id && x.IsActive).ToList();
 
+                foreach (var item in reportXUserSgq.ParReportXFilter)
+                {
+                    FilterEnum enumFiltro = (FilterEnum)item.FilterLevel;
+
+                    item.FilterLevel_Name = enumFiltro.ToString();
+                }
+            }
             if (reportXUserSgq == null)
             {
                 return HttpNotFound();
@@ -118,6 +129,7 @@ namespace SgqSystem.Controllers
             if (ModelState.IsValid)
             {
                 reportXUserSgq.AlterDate = DateTime.Now;
+                reportXUserSgq.IsActive = true;
                 db.Entry(reportXUserSgq).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

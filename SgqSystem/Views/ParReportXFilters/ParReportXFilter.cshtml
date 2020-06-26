@@ -1,0 +1,73 @@
+﻿@model  Dominio.ReportXUserSgq
+
+
+@{
+    ViewBag.Title = "Cadastro de Relatório x Filtros";
+}
+
+<div class="portlet light bordered">
+    <div class="portlet-title tabbable-line">
+        <div class="caption">
+            <i class="icon-share font-dark"></i>
+            <span class="caption-subject font-dark bold uppercase">Relatório x Filtros</span>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="tab-content">
+            <div class="tab-pane active" id="setup_tab">
+
+                <p>
+                    @Html.ActionLink(Resources.Resource.create as string, "Create", "ParReportXFilters", new { reportXUserId = Model.Id, level1_Id = Model.ParLevel1_Id }, new { @class = "btn btn-primary" })
+                </p>
+
+                <table class="table table-striped" id="tabelaFiltros">
+                    <thead style="background-color: cornflowerblue;">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Ativo</th>
+                            <th>Obrigatório</th>
+                            <th>Multiplo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ParReportXFilter)
+                        {
+                            <tr>
+                                <td> @item.FilterLevel_Name</td>
+                                <td> @Html.DisplayFor(modelItem => item.IsActive)</td>
+                                <td> @Html.DisplayFor(modelItem => item.IsRequired)</td>
+                                <td> @Html.DisplayFor(modelItem => item.IsMultiple)</td>
+                                <td>
+                                    @Html.ActionLink("Editar", "Edit", "ParReportXFilters", new { id = item.Id, level1_Id = Model.ParLevel1_Id }, new { @class = "btn btn-success" })
+                                    @Html.ActionLink("Inativar", "Delete", "ParReportXFilters", new { id = item.Id }, new { @class = "btn btn-danger" })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar4");
+
+    $(document).ready(function () {
+        closeLeftSidebar();
+
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            null,
+            null,
+            { "bSearchable": false }
+        ];
+        $('#tabelaFiltros').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
+    });
+</script>

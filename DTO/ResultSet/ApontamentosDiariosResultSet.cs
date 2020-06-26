@@ -39,7 +39,9 @@ public class ApontamentosDiariosResultSet
     public string Turno { get; set; }
     public string Auditor { get; set; }
     public string ValueText { get; set; }
-    public string HeaderFieldList { get; set; }
+    public string HeaderFieldListL1 { get; set; }
+    public string HeaderFieldListL2 { get; set; }
+    public string HeaderFieldListL3 { get; set; }
 
     public System.DateTime AddDate { get; set; }
     public string _AddDate { get { return AddDate.ToShortDateString(); /*+ " " + Data.ToShortTimeString();*/ } }
@@ -1017,55 +1019,103 @@ public class ApontamentosDiariosResultSet
 						ON CL2.Id = CL2HF.CollectionLevel2_Id
  
 
-										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel_ID ON #CollectionLevel2XParHeaderFieldGeral (CollectionLevel2_Id);
+					CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel_ID ON #CollectionLevel2XParHeaderFieldGeral (CollectionLevel2_Id);
 
 					-- Concatenação da Fato de Cabeçalhos
 
-					SELECT
-						CL2HF.CollectionLevel2_Id
-					   ,STUFF((SELECT DISTINCT
-								', ' + CONCAT(HF.Name, ': ', CASE
-									WHEN CL2HF2.ParFieldType_Id = 1 OR
-										CL2HF2.ParFieldType_Id = 3 THEN PMV.Name
-									WHEN CL2HF2.ParFieldType_Id = 2 THEN CASE
-											WHEN HF.Description = 'Produto' THEN CAST(PRD.nCdProduto AS VARCHAR(500)) + ' - ' + PRD.cNmProduto
-											ELSE EQP.Nome
-										END
-									WHEN CL2HF2.ParFieldType_Id = 6 THEN CONVERT(VARCHAR, CL2HF2.Value, 103)
-									ELSE CL2HF2.Value
-								END)
-							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (NOLOCK)
-							LEFT JOIN #collectionlevel2 CL2 (NOLOCK)
-								ON CL2.Id = CL2HF2.CollectionLevel2_Id
-							LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
-								ON CL2HF2.ParHeaderFieldGeral_Id = HF.Id
-							LEFT JOIN ParLevel2 L2 (NOLOCK)
-								ON L2.Id = CL2.ParLevel2_Id
-							LEFT JOIN ParMultipleValuesGeral PMV (NOLOCK)
-								ON CL2HF2.Value = CAST(PMV.Id AS VARCHAR(500))
-								AND CL2HF2.ParFieldType_Id <> 2
-							LEFT JOIN Equipamentos EQP (NOLOCK)
-								ON CAST(EQP.Id AS VARCHAR(500)) = CL2HF2.Value
-								AND EQP.ParCompany_Id = CL2.UnitId
-								AND CL2HF2.ParFieldType_Id = 2
-							LEFT JOIN Produto PRD WITH (NOLOCK)
-								ON CAST(PRD.nCdProduto AS VARCHAR(500)) = CL2HF2.Value
-								AND CL2HF2.ParFieldType_Id = 2
+					SELECT                               
+						 CL2HF.CollectionLevel2_Id,        
+						 STUFF(   
+							(SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case 
+							when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
+							when CL2HF2.ParFieldType_Id = 2 then case when HF.Description = 'Produto' then cast(PRD.nCdProduto as varchar(500)) + ' - ' + PRD.cNmProduto else EQP.Nome end 
+							when CL2HF2.ParFieldType_Id = 6 then CONVERT(varchar,  CL2HF2.value, 103)
+							else CL2HF2.Value end)
+							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (nolock) 
+							left join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
+							left join ParHeaderFieldGeral HF (nolock)on CL2HF2.ParHeaderFieldGeral_Id = HF.Id
+							inner JOIN ParLevelHeaderField PLHF (NOLOCK) on PLHF.Id = HF.ParLevelHeaderField_Id
+							inner join ParLevelDefiniton PLD (NOLOCK) on pld.Id = PLHF.Id 
+							left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id
+							left join ParMultipleValuesGeral PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
+							left join Equipamentos EQP(nolock) on cast(EQP.Id as varchar(500)) = CL2HF2.Value and EQP.ParCompany_Id = CL2.UnitId and CL2HF2.ParFieldType_Id = 2
+							left join Produto PRD with(nolock) on cast(PRD.nCdProduto as varchar(500)) = CL2HF2.Value and CL2HF2.ParFieldType_Id = 2
 							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
-							FOR XML PATH (''))
-						, 1, 1, '') AS HeaderFieldList INTO #CollectionLevel2XParHeaderFieldGeral2
-					FROM #CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
-					INNER JOIN #Collectionlevel2 CL2 (NOLOCK)
-						ON CL2.Id = CL2HF.CollectionLevel2_Id
-					LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
-						ON CL2HF.ParHeaderFieldGeral_Id = HF.Id
-					LEFT JOIN ParLevel2 L2 (NOLOCK)
-						ON L2.Id = CL2.ParLevel2_Id
-					GROUP BY CL2HF.CollectionLevel2_Id
+							and pld.Id = 1
+							FOR XML PATH('')
+							), 1, 1, '')  AS HeaderFieldList1,
+							STUFF(   
+							(SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case 
+							when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
+							when CL2HF2.ParFieldType_Id = 2 then case when HF.Description = 'Produto' then cast(PRD.nCdProduto as varchar(500)) + ' - ' + PRD.cNmProduto else EQP.Nome end 
+							when CL2HF2.ParFieldType_Id = 6 then CONVERT(varchar,  CL2HF2.value, 103)
+							else CL2HF2.Value end)
+							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (nolock) 
+							left join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
+							left join ParHeaderFieldGeral HF (nolock)on CL2HF2.ParHeaderFieldGeral_Id = HF.Id
+							inner JOIN ParLevelHeaderField PLHF (NOLOCK) on PLHF.Id = HF.ParLevelHeaderField_Id
+							inner join ParLevelDefiniton PLD (NOLOCK) on pld.Id = PLHF.Id 
+							left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id
+							left join ParMultipleValuesGeral PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
+							left join Equipamentos EQP(nolock) on cast(EQP.Id as varchar(500)) = CL2HF2.Value and EQP.ParCompany_Id = CL2.UnitId and CL2HF2.ParFieldType_Id = 2
+							left join Produto PRD with(nolock) on cast(PRD.nCdProduto as varchar(500)) = CL2HF2.Value and CL2HF2.ParFieldType_Id = 2
+							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
+							and pld.Id = 2
+							FOR XML PATH('')
+							), 1, 1, '')  AS HeaderFieldList2
+						INTO #CollectionLevel2XParHeaderFieldGeral2
+						FROM #CollectionLevel2XParHeaderFieldGeral CL2HF (nolock) 
+						INNER join #Collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id 
+						LEFT JOIN ParHeaderFieldGeral HF (nolock) on CL2HF.ParHeaderFieldGeral_Id = HF.Id 
+						LEFT JOIN ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id
+                    GROUP BY CL2HF.CollectionLevel2_Id
 
-										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeral2 (CollectionLevel2_Id);
+                    CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeral2 (CollectionLevel2_Id);
 
-					-- Criação da Fato de Coleta x Cluster
+					 -- Criação da Fato de Cabeçalhos Tarefa
+						
+						SELECT 
+							CL2HF.Id
+							,CL2HF.ResultLevel3_Id 
+							,CL2HF.ParHeaderFieldGeral_Id
+							,CL2HF.ParFieldType_Id
+							,CL2HF.Value
+						INTO #Result_Level3XParHeaderFieldGeral
+						FROM #Result_Level3 R3 (nolock)
+						INNER JOIN Result_Level3XParHeaderFieldGeral CL2HF (nolock) 
+							ON R3.id = CL2HF.ResultLevel3_Id 
+
+                    CREATE INDEX IDX_Result_Level3XParHeaderFieldGeral_Result_Level3_Id ON #Result_Level3XParHeaderFieldGeral (ResultLevel3_Id);
+
+
+                   -- Concatenação da Fato de Cabeçalhos
+
+					SELECT                               
+						 CL2HF.ResultLevel3_Id,        
+						 STUFF(   
+							(SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case 
+							when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
+							when CL2HF2.ParFieldType_Id = 6 then CONVERT(varchar,  CL2HF2.value, 103)
+							else CL2HF2.Value end)
+							FROM #Result_Level3XParHeaderFieldGeral CL2HF2 (nolock) 
+							left join #Result_Level3 R3(nolock) on R3.id = CL2HF2.ResultLevel3_Id
+							left join ParHeaderFieldGeral HF (nolock)on CL2HF2.ParHeaderFieldGeral_Id = HF.Id
+							LEFT JOIN ParLevel3 L3 (nolock) on L3.Id = R3.Parlevel3_id
+							left join ParMultipleValuesGeral PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
+							WHERE CL2HF2.ResultLevel3_Id = CL2HF.ResultLevel3_Id
+							FOR XML PATH('')
+							), 1, 1, '')  AS HeaderFieldList
+						INTO #Result_Level3XParHeaderFieldGeral2
+						FROM #Result_Level3XParHeaderFieldGeral CL2HF (nolock) 
+						INNER join #Result_Level3 R3 (nolock) on R3.id = CL2HF.ResultLevel3_Id 
+						LEFT JOIN ParHeaderFieldGeral HF (nolock) on CL2HF.ParHeaderFieldGeral_Id = HF.Id 
+						LEFT JOIN ParLevel3 L3 (nolock) on L3.Id = R3.Parlevel3_id
+                    GROUP BY CL2HF.ResultLevel3_Id
+
+                    CREATE INDEX IDX_Result_Level3XParHeaderFieldGeral_Result_Level3_ID ON #Result_Level3XParHeaderFieldGeral2 (ResultLevel3_Id);
+					
+
+                    -- Criação da Fato de Coleta x Cluster
 
 					SELECT
 						C2XC.Id
@@ -1117,7 +1167,9 @@ public class ApontamentosDiariosResultSet
 					   ,R3.Id AS 'ResultLevel3Id'
 					   ,US.FullName AS 'Auditor'
 					   ,ISNULL(L1.HashKey, '') AS 'HashKey'
-					   ,ISNULL(HF.HeaderFieldList, '') AS 'HeaderFieldList'
+					   ,ISNULL(HF.HeaderFieldList1, '') AS 'HeaderFieldListL1'
+					   ,ISNULL(HF.HeaderFieldList2, '') AS 'HeaderFieldListL2'
+					   ,ISNULL(HF3.HeaderFieldList, '') AS 'HeaderFieldListL3'
 					   ,C2.AddDate AS AddDate
 					   ,CJ.AppVersion AS Platform
 					   ,CASE
@@ -1216,6 +1268,8 @@ public class ApontamentosDiariosResultSet
 						ON C2.AuditorId = US.Id
 					LEFT JOIN #CollectionLevel2XParHeaderFieldGeral2 HF with (NOLOCK)
 						ON C2.Id = HF.CollectionLevel2_Id
+                    LEFT JOIN  #Result_Level3XParHeaderFieldGeral2 HF3
+						ON HF3.ResultLevel3_Id = R3.ID	
 					LEFT JOIN #CollectionLevel2XCollectionJson CLCJ with (NOLOCK)
 						ON CLCJ.CollectionLevel2_Id = C2.Id
 					LEFT JOIN #CollectionJson CJ with (NOLOCK)
@@ -1263,6 +1317,8 @@ public class ApontamentosDiariosResultSet
 					DROP TABLE #CollectionLevel2XCluster
 					DROP TABLE #CollectionLevel2XCollectionJson
 					Drop TABLE #Qualification
+                    DROP TABLE #Result_Level3XParHeaderFieldGeral2					
+					DROP TABLE #Result_Level3XParHeaderFieldGeral
 
                 ";
 

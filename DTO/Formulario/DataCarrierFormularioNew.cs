@@ -9,6 +9,9 @@ namespace DTO
 {
     public class DataCarrierFormularioNew
     {
+        public int[] Evaluation { get; set; } = new int[] { };
+
+        public int[] Sample { get; set; } = new int[] { };
 
         public DateTime startDate { get; set; }
 
@@ -89,6 +92,8 @@ namespace DTO
         public int[] DesdobramentoPorDepartamento { get; set; } = new int[] { };
 
         public int DimensaoData { get; set; }
+
+        public int[] ReportXUserSgq_Id { get; set; }
 
         public bool ShowLinkedFilters { get; set; } = true;
 

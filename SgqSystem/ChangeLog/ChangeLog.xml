@@ -3090,7 +3090,7 @@
 
   <Card>
     <CardNumber>SGQ-705</CardNumber>
-    <Version>1.9.0</Version>
+    <Version>1.10.0</Version>
     <Description>[GQ] - FORMULÁRIOS - Cadastros do formulário.</Description>
     <Script>
       IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReportLayoutXReportXUser' AND xtype='U')
@@ -3374,7 +3374,7 @@
 
   <Card>
     <CardNumber>SGQ-630</CardNumber>
-    <Version>1.9.0</Version>
+    <Version>1.10.0</Version>
     <Description>[GQ] Laboratórios - Criar funcionalidade de alerda de e-mail HEP.</Description>
     <Script>
       IF COL_LENGTH('IntegracaoSistemica','LastExecution') IS NULL
@@ -3400,7 +3400,7 @@
 
   <Card>
     <CardNumber>SGQ-652</CardNumber>
-    <Version>1.9.0</Version>
+    <Version>1.10.0</Version>
     <Description>[PA] Criação de cruds para Diretoria, Missão, Visão e Tipo de Projeto.</Description>
     <Script>
       IF COL_LENGTH('Pa_Diretoria','IsActive') IS NULL
@@ -3577,7 +3577,7 @@
 
   <Card>
     <CardNumber>SGQ-716</CardNumber>
-    <Version>1.9.0</Version>
+    <Version>1.10.0</Version>
     <Description>[PA] Inativar Planejamentos e Ações </Description>
     <Script>
       IF COL_LENGTH('Pa_Planejamento','IsActive') IS NULL
@@ -3594,14 +3594,14 @@
 
   <Card>
     <CardNumber>SGQ-739</CardNumber>
-    <Version>1.9.0</Version>
+    <Version>1.10.0</Version>
     <Description>[GQ] Relatório de Análise Crítica Atualizar cubo automaticamente </Description>
     <Script></Script>
   </Card>
 
   <Card>
     <CardNumber>SGQ-750</CardNumber>
-    <Version>1.9.0</Version>
+    <Version>1.10.0</Version>
     <Description>[GQ][RH] Correção da tabela ParLevel3Value coluna IsNCTextRequired </Description>
     <Script>
       IF COLUMNPROPERTY(OBJECT_ID('ParLevel3Value', 'U'), 'IsNCTextRequired', 'AllowsNull') = 0
@@ -3621,7 +3621,7 @@
 
   <Card>
     <CardNumber>SGQ-764</CardNumber>
-    <Version>1.9.0</Version>
+    <Version>1.10.0</Version>
     <Description>[GQ] Relatório Análise Laboratoriais - Melhorria de performance do relatório.</Description>
     <Script>
     </Script>
@@ -3630,8 +3630,38 @@
 
   <Card>
     <CardNumber>SGQ-799</CardNumber>
-    <Version>1.9.0</Version>
+    <Version>1.10.0</Version>
     <Description>[GQ] FORMULÁRIOS - Campo de cabeçalho.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+
+  <Card>
+    <CardNumber>SGQ-824</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[GQ] FORMULÁRIOS - Criação e inserção das informações dos filtros no formulário</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ParReportXFilter' AND xtype='U')
+      CREATE TABLE [dbo].[ParReportXFilter](
+      [Id] [int] IDENTITY(1,1) NOT NULL primary key,
+      [FilterLevel] varchar(100) not null,
+      [AlterDate] [datetime] NULL,
+      [AddDate] [datetime] NULL,
+      [ReportXUserSgq_Id] [int] NULL,
+      [IsActive] bit not null,
+      [IsRequired] bit not null,
+      [IsMultiple] bit not null
+      )
+      GO
+    </Script>
+  </Card>
+  
+
+  <Card>
+    <CardNumber>SGQ-827</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[RH] Apontamentos Diários RH - Separação das colunas de cabeçalho por Indicador, Monitoramento e Tarefa.</Description>
     <Script>
     </Script>
   </Card>
@@ -3642,6 +3672,34 @@
     <Description> [RH] Coleta parcial</Description>
     <Script>
     </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-704</CardNumber>
+    <Version>1.9.0</Version>
+    <Description>[GQ] FORMULÁRIOS - Ajustes</Description>
+    <Script></Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-854</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[GQ] CADASTRO DE FORMULÁRIO - Criar tela que liste os relatórios.</Description>
+    <Script></Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-853</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[GQ] CADASTRO DE FORMULÁRIOS - Fazer a amarração da query no cubo</Description>
+    <Script></Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-802</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[RH] Permitir selecionar Todos para Unidade nos cadastro de Centro de Custo + Parametrização </Description>
+    <Script></Script>
   </Card>
 
 </Cards>

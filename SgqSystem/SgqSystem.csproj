@@ -397,6 +397,7 @@
     <Compile Include="Controllers\CadastrosGerais\ParDepartmentGroupsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReportLayoutXReportXUserController.cs" />
+    <Compile Include="Controllers\CadastrosGerais\ParReportXFiltersController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\CrudGenerico\ComponenteGenericoController.cs" />
     <Compile Include="Controllers\DicionarioEstaticoController.cs" />
@@ -2374,6 +2375,10 @@
     <Content Include="Views\ParReportLayoutXReportXUser\Create.cshtml" />
     <Content Include="Views\ParReportLayoutXReportXUser\Delete.cshtml" />
     <Content Include="Views\ParReportLayoutXReportXUser\Edit.cshtml" />
+    <Content Include="Views\ParReportXFilters\ParReportXFilter.cshtml" />
+    <Content Include="Views\ParReportXFilters\Create.cshtml" />
+    <Content Include="Views\ParReportXFilters\Edit.cshtml" />
+    <Content Include="Views\ParReportXFilters\Delete.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

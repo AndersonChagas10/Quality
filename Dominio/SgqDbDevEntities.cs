@@ -249,6 +249,7 @@ namespace Dominio
         public virtual DbSet<RotinaIntegracao> RotinaIntegracao { get; set; }
         public virtual DbSet<ReportXUserSgq> ReportXUserSgq { get; set; }
         public virtual DbSet<ParReportLayoutXReportXUser> ParReportLayoutXReportXUser { get; set; }
+        public virtual DbSet<ParReportXFilter> ParReportXFilter { get; set; }
         public virtual DbSet<ReportLayoutItens> ReportLayoutItens { get; set; }
         public virtual DbSet<ParInputTypeValues> ParInputTypeValues { get; set; }
         public System.Data.Entity.DbSet<Dominio.ParGroupParLevel1> ParGroupParLevel1 { get; set; }

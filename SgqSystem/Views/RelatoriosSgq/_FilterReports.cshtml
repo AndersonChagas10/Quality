@@ -20,6 +20,7 @@
                                 <h4><strong>Filtros</strong></h4>
                                 <input type="hidden" name="startDate" />
                                 <input type="hidden" name="endDate" />
+                                <input type="hidden" name="ReportXUserSgq_Id" value="@ViewBag.ReportXUserSgq_Id" />
                             </div>
 
                             @if (ViewBag.ShowCurrentDate == true)
@@ -247,7 +248,7 @@
                                                 data-filtroselect3-default-select="@ViewBag.ShowParCompanyDefault">
                                             Abrir
                                         </button>
-                                        <select class="form-control" name="parCompany_Ids" multiple></select>
+                                        <select class="form-control" name="parCompany_Ids" data-required="@ViewBag.ParCompanyIsrequired " @ViewBag.ShowParCompanyMultiple></select>
                                     </div>
                                 </div>
                             }
@@ -428,7 +429,7 @@
                                                 data-filtroselect3-default-select="@ViewBag.ShowParLevel1Default">
                                             Abrir
                                         </button>
-                                        <select class="form-control" name="parLevel1_Ids" multiple></select>
+                                        <select class="form-control" @ViewBag.ShowParLevel1GQMultiple data-required="@ViewBag.ParLevel1GQIsrequired" name="parLevel1_Ids"></select>
                                     </div>
                                 </div>
                             }
@@ -444,7 +445,7 @@
                                                 data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default">
                                             Abrir
                                         </button>
-                                        <select class="form-control" name="parLevel2_Ids" multiple></select>
+                                        <select class="form-control" name="parLevel2_Ids" data-required="@ViewBag.ParLevel2GQIsrequired" @ViewBag.ShowParLevel2GQMultiple></select>
                                     </div>
                                 </div>
                             }
@@ -460,7 +461,7 @@
                                                 data-filtroselect3-default-select="@ViewBag.ShowParLevel3Default">
                                             Abrir
                                         </button>
-                                        <select class="form-control" name="parLevel3_Ids" multiple></select>
+                                        <select class="form-control" name="parLevel3_Ids" data-required="@ViewBag.ParLevel3GQIsrequired" @ViewBag.ShowParLevel3GQMultiple></select>
                                     </div>
                                 </div>
                             }
@@ -698,6 +699,36 @@
 
                             }
 
+                            @if (ViewBag.ShowAvaliacao == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>
+                                                Avaliação
+                                            </strong>
+                                        </label>
+                                        <input type="text" class="form-control"
+                                               name="Evaluation" data-required="@ViewBag.AvaliacaoIsrequired" />
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowAmostra == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>
+                                            <strong>
+                                                Amostra
+                                            </strong>
+                                        </label>
+                                        <input type="text" class="form-control"
+                                               name="Sample" data-required="@ViewBag.AmostraIsrequired" />
+                                    </div>
+                                </div>
+                            }
+
 
                         </div>
                         <div class="col-sm-12">
@@ -749,6 +780,18 @@
     <script src="~/Scripts/Select3/select3.js"></script>
     <script>
 
+        function validaObrigatorios() {
+            var itemNames = [];
+            $("select").map(function (i, o) {
+                if ($(o).attr('data-required') == 1) {
+                    if ($(o).find('option:selected').text() == "" || $(o).find('option:selected').text() == null) {
+                        itemNames.push($(o).parent().find("label").text())
+                    }
+                }
+            });
+            return itemNames;
+        }
+
         function toggleDivFilterReports() {
             if ($('#divFilterReports').hasClass("hide")) {
                 $('#divFilterReports').removeClass('hide');
@@ -762,7 +805,7 @@
             }
         }
 
-        $('#filterReports select').on('change', function () {
+        $('#filterReports select, #filterReports input').on('change', function () {
             preencheFiltrosAjax();
         });
         
