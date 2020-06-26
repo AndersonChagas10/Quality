@@ -30,10 +30,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
             var indicador_Id = "0";
 
-            // if (form.ShowIndicador_Id.Length > 0)
-            // indicador_Id = form.ShowIndicador_Id[0].ToString();
-
-            indicador_Id = "1";
+             if (form.ShowIndicador_Id.Length > 0)
+             indicador_Id = form.ShowIndicador_Id[0].ToString();
 
             using (var db = new SgqDbDevEntities())
             {
@@ -610,6 +608,8 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
+                dbSgq.Database.CommandTimeout = 180;
+
                 retorno.Resultado = QueryNinja(dbSgq, query);
             }
             return Ok(retorno);
