@@ -36,21 +36,28 @@ function verificaIsPartialSave() {
         data = linhasDaColeta[i];
 
         if (typeof ($(data).find('[data-binario]').val()) != 'undefined') {
-            if ($(data).find('[data-binario]').text().trim() == "")
+            if ($(data).find('[data-binario]').text().trim() == "" && !isTarefaNA(data))
                 errorCount++;
 
         } else if (typeof ($(data).find('input[data-valor]').val()) != 'undefined') {
-            if ($(data).find('input[data-valor]').val() == "")
+            if ($(data).find('input[data-valor]').val() == "" && !isTarefaNA(data))
                 errorCount++;
 
         } else if (typeof ($(data).find('input[data-texto]').val()) != 'undefined') {
-            if ($(data).find('input[data-texto]').val() == "")
+            if ($(data).find('input[data-texto]').val() == "" && !isTarefaNA(data))
                 errorCount++
         } 
     }
     if (errorCount > 0) {
         hasPartialSave = true;
     } 
+}
+
+function isTarefaNA(linhaTarefa) {
+
+    var isNA = $(linhaTarefa).is('[data-conforme-na]');
+
+    return isNA;
 }
 
 function hasOnlyTextField() {
@@ -74,20 +81,20 @@ function hasOnlyTextField() {
         switch (inputType) {
             case 1:
             case 6:
-                if ($(data).find('[data-binario]').text().trim() == "")
+                if ($(data).find('[data-binario]').text().trim() == ""  && !isTarefaNA(data))
                     existeCampoVazio = true;
 
                 break;
 
             case 5:
             case 11:
-                if ($(data).find('input[data-texto]').val() == "" || $(data).find('input[data-valor]').val() == "")
+                if (($(data).find('input[data-texto]').val() == "" || $(data).find('input[data-valor]').val() == "")  && !isTarefaNA(data))
                     existeCampoTextoVazio = true;
 
                 break;
 
             default:
-                if ($(data).find('input[data-valor]').val() == "")
+                if ($(data).find('input[data-valor]').val() == ""  && !isTarefaNA(data))
                     existeCampoVazio = true;
 
                 break;
@@ -125,15 +132,15 @@ function fieldIsEmpty(campo) {
     var data = campo;
 
     if (typeof ($(data).find('[data-binario]').val()) != 'undefined') {
-        if ($(data).find('[data-binario]').text().trim() == "")
+        if ($(data).find('[data-binario]').text().trim() == "" && !isTarefaNA(data))
             return true;
 
     } else if (typeof ($(data).find('input[data-valor]').val()) != 'undefined') {
-        if ($(data).find('input[data-valor]').val() == "")
+        if ($(data).find('input[data-valor]').val() == "" && !isTarefaNA(data))
             return true;
 
     } else if (typeof ($(data).find('input[data-texto]').val()) != 'undefined') {
-        if ($(data).find('input[data-texto]').val() == "")
+        if ($(data).find('input[data-texto]').val() == "" && !isTarefaNA(data))
             return true;
     }
 
@@ -257,6 +264,7 @@ function desabilitaColetados() {
 
             if (typeof ($(data).find('input[data-valor]').val()) != 'undefined') {
                 $(data).find('input[data-valor]').val(coleta.Value);
+
             }
 
             if (typeof ($(data).find('input[data-texto]').val()) != 'undefined') {
@@ -267,6 +275,7 @@ function desabilitaColetados() {
                 setBinarioRespondido(data, coleta.IsConform);
             }
 
+            setLeve3IsNA(coleta, data);
             $(data).find('input, button').prop("disabled", true);
             $(data).css("background-color", "#999");
             validateShowQualification(data);
@@ -283,6 +292,14 @@ function desabilitaCamposCabecalho() {
     setHeaderFieldLevel2();
     setHeaderFieldLevel3();
     setQualificationField();
+}
+
+function setLeve3IsNA(coleta, linha) {
+
+    if (coleta.IsNotEvaluate) {
+        $(linha).find('[data-na]').trigger('click');
+    }
+
 }
 
 function setQualificationField(){
