@@ -120,19 +120,20 @@ namespace SgqSystem.Controllers.Api
         }
 
         [HttpPost]
-        [Route("GetRelatorioDeResultadoSeara")]
-        public List<ApontamentosDiariosResultSet> GetRelatorioDeResultadoSeara([FromBody] DataCarrierFormularioNew form)
+        [Route("TabelaColetasSeara")]
+        public List<RelatorioDeResultadoSearaResultsSet> TabelaColetasSeara([FromBody] DTO.DataCarrierFormularioNew form)
         {
 
-            var query = new RelatorioDeResultadoSearaResultsSet().SelectSeara(form, GetUserUnitsIds(form.ShowUserCompanies));
+            var query = new RelatorioDeResultadoSearaResultsSet().SelectSeara(form);
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = factory.SearchQuery<ApontamentosDiariosResultSet>(query).ToList();
+                _listaGrafico = factory.SearchQuery<RelatorioDeResultadoSearaResultsSet>(query).ToList();
 
-                return _list;
+                return _listaGrafico;
             }
         }
+
 
         [HttpPost]
         [Route("GraficoUnidades")]
