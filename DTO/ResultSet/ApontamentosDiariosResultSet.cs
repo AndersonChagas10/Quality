@@ -713,7 +713,7 @@ public class ApontamentosDiariosResultSet
 	            ,CASE WHEN MA.Motivo IS NULL THEN 0 ELSE 1 END AS IsLate
 	            ,CASE WHEN (SELECT TOP 1 Id FROM Result_Level3_Photos RL3P WHERE RL3P.Result_Level3_Id = R3.Id) IS NOT NULL THEN 1 ELSE 0 END AS HasPhoto
 	            ,CASE WHEN (SELECT TOP 1 Id FROM LogTrack LT WHERE LT.Tabela = 'Result_Level3' AND LT.Json_Id = R3.Id) IS NOT NULL THEN 1 ELSE 0 END AS HasHistoryResult_Level3
-	            ,CASE WHEN (SELECT TOP 1 Id FROM LogTrack LT WHERE LT.Tabela = 'CollectionLevel2XParHeaderField' AND LT.Json_Id IN (select CL2PHF_LT.ID from CollectionLevel2XParHeaderField CL2PHF_LT where CL2PHF_LT.collectionlevel2_ID = C2.ID)) IS NOT NULL THEN 1 ELSE 0 END AS HasHistoryHeaderField
+	            ,CASE WHEN (SELECT TOP 1 Id FROM LogTrack LT WHERE LT.Tabela = 'CollectionLevel2XParHeaderFieldGeral' AND LT.Json_Id IN (select CL2PHF_LT.ID from CollectionLevel2XParHeaderFieldGeral CL2PHF_LT where CL2PHF_LT.collectionlevel2_ID = C2.ID)) IS NOT NULL THEN 1 ELSE 0 END AS HasHistoryHeaderField
                 ,CASE WHEN (SELECT TOP 1 Id FROM LogTrack LT WHERE LT.Tabela = 'CollectionLevel2XParFamiliaProdutoXParProduto' AND LT.Json_Id IN (select CL2_PFP_PP.CollectionLevel2_Id from CollectionLevel2XParFamiliaProdutoXParProduto CL2_PFP_PP where CL2_PFP_PP.collectionlevel2_Id = C2.ID)) IS NOT NULL THEN 1 ELSE 0 END AS HasHistoryParProduto
                 ,ma.Motivo as ParReason
 	            ,PRT.Name as ParReasonType

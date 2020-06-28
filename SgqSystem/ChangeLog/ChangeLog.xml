@@ -2881,4 +2881,12 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-852</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Apontamentos Diários - Criação da edição de Cabeçalho com Log de rastreabilidade.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>
