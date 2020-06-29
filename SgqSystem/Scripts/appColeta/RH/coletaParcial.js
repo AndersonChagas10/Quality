@@ -158,8 +158,6 @@ function buscarColetasParciais() {
 
     pingLogado(urlPreffix, function () {
 
-        openMensagem("Aguarde, Carregando Coletas Parciais...", "blue", "white");
-
         $.ajax({
 
             data: JSON.stringify({
@@ -172,7 +170,7 @@ function buscarColetasParciais() {
             url: urlPreffix + '/api/AppColeta/GetColetaParcial',
             contentType: "application/json",
             success: function (data) {
-                atualizaArquivoColetaParciais(data, closeMensagem2s);
+                atualizaArquivoColetaParciais(data);
             },
             timeout: 600000,
             error: function () {
@@ -183,25 +181,21 @@ function buscarColetasParciais() {
     });
 }
 
-function closeMensagem2s() {
-    closeMensagem(3000);
-}
-
 function atualizaArquivoColetaParciais(data, callback) {
 
     _writeFile("coletasParciais.txt", JSON.stringify(data), function () {
 
-        atualizaVariavelColetaParciais(data);
-
-        if (callback)
-            callback();
+        atualizaVariavelColetaParciais(data, callback);
 
     });
 }
 
-function atualizaVariavelColetaParciais(data) {
+function atualizaVariavelColetaParciais(data, callback) {
 
     coletasParciais = data;
+
+    if (callback)
+        callback();
 }
 
 function addColetasParciais(data, callback) {

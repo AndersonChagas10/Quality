@@ -143,7 +143,7 @@ function getAppParametrization(frequencyId) {
 }
 
 function chamaGetAppParametrization() {
-	
+
 	openMensagem('Por favor, aguarde até que seja feito o download do planejamento', 'blue', 'white');
 
 	$.ajax({
@@ -169,6 +169,7 @@ function chamaGetAppParametrization() {
 				atualizaColetasParciais();
 				//closeMensagem();
 			});
+			
 			sincronizarResultado();
 		},
 		timeout: 600000,
