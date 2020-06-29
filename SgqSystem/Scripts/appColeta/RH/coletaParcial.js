@@ -110,7 +110,7 @@ function hasOnlyTextField() {
             if ($(o).find(":selected").val() == "")
                 existeCampoTextoVazio = true;
         } else {
-            if ($(o).text() == "") {
+            if ($(o).val() == "") {
                 existeCampoTextoVazio = true;
             }
         }
