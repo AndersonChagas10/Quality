@@ -176,10 +176,11 @@ function changeDate(that) {
     openMensagem("Alterando data...", "blue", "White");
 
     _writeFile("appParametrization.txt", '', function () {
-        var oldFrequency_Id = currentParFrequency_Id + 0;
-        currentParFrequency_Id = 0;
-        getAppParametrization(oldFrequency_Id);
-        openParFrequency();
+        // var oldFrequency_Id = currentParFrequency_Id + 0;
+        // currentParFrequency_Id = 0;
+        // getAppParametrization(oldFrequency_Id);
+        // openParFrequency();
+        chamaGetAppParametrization();
     });
 
     var horas = "00:00:00";

@@ -154,7 +154,7 @@ function atualizaColetasParciais(data){
 
 }
 
-function buscarColetasParciais(){
+function buscarColetasParciais() {
 
     pingLogado(urlPreffix, function () {
 
@@ -172,8 +172,7 @@ function buscarColetasParciais(){
             url: urlPreffix + '/api/AppColeta/GetColetaParcial',
             contentType: "application/json",
             success: function (data) {
-                atualizaArquivoColetaParciais(data);
-                closeMensagemImediatamente();
+                atualizaArquivoColetaParciais(data, closeMensagem2s);
             },
             timeout: 600000,
             error: function () {
@@ -182,6 +181,10 @@ function buscarColetasParciais(){
 
         });
     });
+}
+
+function closeMensagem2s() {
+    closeMensagem(3000);
 }
 
 function atualizaArquivoColetaParciais(data, callback) {
@@ -278,6 +281,7 @@ function desabilitaColetados() {
             setLeve3IsNA(coleta, data);
             $(data).find('input, button').prop("disabled", true);
             $(data).css("background-color", "#999");
+
             validateShowQualification(data);
 
         }
@@ -285,6 +289,7 @@ function desabilitaColetados() {
 
     desabilitaCamposCabecalho();
 }
+
 
 function desabilitaCamposCabecalho() {
     
@@ -521,11 +526,13 @@ function setBinarioRespondido(self, isConform) {
     if (isConform) {
 
         $(button).text($(button).attr('data-positivo'));
+        $(self).attr('data-conforme', 1);
 
     } else {
 
         $(button).text($(button).attr('data-negativo'));
-
+        $(self).attr('data-conforme', 0);
+        
     }
 
     $(self).addClass('btn-default');
