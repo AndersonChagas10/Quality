@@ -1089,7 +1089,7 @@
 
             let isValid = false;
 
-            let selectProduto = $('form#divEdit select')
+            let selectProduto = $('form#divEdit select:visible');
 
             let CollectionLevel2_Id = $(selectProduto).attr("CollectionLevel2_Id");
             let ParProduto_Id = $(selectProduto).val();

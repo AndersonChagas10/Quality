@@ -509,47 +509,33 @@ namespace SgqSystem.Controllers.Api
             var collectionLevel2 = db.CollectionLevel2
             .Where(x => x.Id == listCollectionLevel2XParProduto.CollectionLevel2_Id).FirstOrDefault();
 
+            var queryGetCollectionlevel2Ids = $@"SELECT ID FROM CollectionLevel2
+                                                 WHERE ParLevel1_Id = {collectionLevel2.ParLevel1_Id}
+                                                 AND ParLevel2_Id = {collectionLevel2.ParLevel2_Id}
+                                                 AND UnitId = {collectionLevel2.UnitId}
+                                                 AND AuditorId = {collectionLevel2.AuditorId}
+                                                 AND Shift = {collectionLevel2.Shift}
+                                                 AND CollectionDate = '{collectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss")}'
+                                                 AND EvaluationNumber = {collectionLevel2.EvaluationNumber}";
 
             var queryUpdateProdutoPorMonitoramento = $@"
                                 UPDATE CollectionLevel2XParFamiliaProdutoXParProduto
                                 SET ParProduto_Id = {listCollectionLevel2XParProduto.ParProduto_Id}
-                                WHERE CollectionLevel2_Id in (
-                                SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id = {collectionLevel2.ParLevel1_Id}
-                                AND ParLevel2_Id = {collectionLevel2.ParLevel2_Id}
-                                AND UnitId = {collectionLevel2.UnitId}
-                                AND Shift = {collectionLevel2.Shift}
-                                AND Period = {collectionLevel2.Period}
-                                AND CollectionDate = '{collectionLevel2.CollectionDate.ToString("yyyyMMdd HH:mm:ss")}'
-                                AND EvaluationNumber = {collectionLevel2.EvaluationNumber})";
+                                WHERE CollectionLevel2_Id in ({queryGetCollectionlevel2Ids})";
 
             db.Database.ExecuteSqlCommand(queryUpdateProdutoPorMonitoramento);
 
-            var queryGetCollectionlevel2Ids = $@"
-                                SELECT Id FROM CollectionLevel2 WHERE ParLevel1_Id = {collectionLevel2.ParLevel1_Id}
-                                AND ParLevel2_Id = {collectionLevel2.ParLevel2_Id}
-                                AND UnitId = {collectionLevel2.UnitId}
-                                AND Shift = {collectionLevel2.Shift}
-                                AND Period = {collectionLevel2.Period}
-                                AND CollectionDate = '{collectionLevel2.CollectionDate.ToString("yyyyMMdd HH:mm:ss")}'
-                                AND EvaluationNumber = {collectionLevel2.EvaluationNumber}";
-
-            List<JObject> listCollectionLevel2Ids = new List<JObject>();
-
-            using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
-            {
-                listCollectionLevel2Ids = QueryNinja(dbSgq, queryGetCollectionlevel2Ids);
-            }
-
-            var produto = db.ParProduto.Find(listCollectionLevel2XParProduto.ParProduto_Id);
-            collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto = produto.Name;
             var auditorId = db.CollectionLevel2.Where(x => x.Id == listCollectionLevel2XParProduto.CollectionLevel2_Id).Select(x => x.AuditorId).First();
 
+            var listCollectionLevel2Ids = QueryNinja(db, queryGetCollectionlevel2Ids);
             foreach (var item in listCollectionLevel2Ids)
-            {
                 LogSystem.LogTrackBusiness.RegisterIfNotExist(collectionLevel2xParFamiliaProdutoxParProdutoOld, Convert.ToInt32(item["Id"]), "CollectionLevel2XParFamiliaProdutoXParProduto", auditorId);
+            
+            var produto = db.ParProduto.Find(listCollectionLevel2XParProduto.ParProduto_Id);
+            collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto = produto.Name;
+            
+            foreach (var item in listCollectionLevel2Ids)
                 LogSystem.LogTrackBusiness.Register(collectionLevel2xParFamiliaProdutoxParProdutoOld, Convert.ToInt32(item["Id"]), "CollectionLevel2XParFamiliaProdutoXParProduto", listCollectionLevel2XParProduto.UserSgq_Id, listCollectionLevel2XParProduto.ParReason_Id, listCollectionLevel2XParProduto.Motivo);
-
-            }
 
             return true;
         }
@@ -721,7 +707,7 @@ namespace SgqSystem.Controllers.Api
                 || (x.ParLevelHeaderField_Id == 2 && x.Generic_Id == collectionLevel2.ParLevel2_Id)) && x.IsActive == true)
                 .OrderBy(r => r.ParLevelHeaderField_Id).ThenBy(r => r.Id).ToList();
 
-            var values = db.ParMultipleValuesGeral.ToList();
+            var values = db.ParMultipleValuesGeral.Where(x => x.IsActive == true).ToList();
 
             foreach (var headerField in headerFields)
             {
@@ -738,7 +724,7 @@ namespace SgqSystem.Controllers.Api
                 else
                 {
                     //pegar values dos campos de cabeçalho
-                    select.Values = values.Where(r => r.ParHeaderFieldGeral_Id == headerField.Id).ToList();
+                    select.Values = values.Where(r => r.ParHeaderFieldGeral_Id == headerField.Id && r.IsActive == true).ToList();
                 }
 
                 //Atribui o selecionado
