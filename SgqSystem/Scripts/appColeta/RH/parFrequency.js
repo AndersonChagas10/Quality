@@ -116,11 +116,11 @@ $('body').off('click', '[data-par-frequency-id]').on('click', '[data-par-frequen
 
 function getAppParametrization(frequencyId) {
 
-	if(!frequencyId){
+	if (!frequencyId) {
 		return;
 	}
 
-    if (frequencyId != currentParFrequency_Id || parametrization.currentParCluster_Id != currentParCluster_Id) {
+	if (frequencyId != currentParFrequency_Id || parametrization.currentParCluster_Id != currentParCluster_Id) {
 
 		currentParFrequency_Id = frequencyId;
 		chamaGetAppParametrization();
@@ -131,9 +131,9 @@ function getAppParametrization(frequencyId) {
 
 		_readFile("appParametrization.txt", function (data) {
 
-			if (data){
+			if (data) {
 				parametrization = JSON.parse(data);
-                atualizarVariaveisCurrent(parametrization);
+				atualizarVariaveisCurrent(parametrization);
 			}
 
 			openPlanejamentoColeta();
@@ -142,7 +142,8 @@ function getAppParametrization(frequencyId) {
 	}
 }
 
-function chamaGetAppParametrization(){
+function chamaGetAppParametrization() {
+
 	openMensagem('Por favor, aguarde até que seja feito o download do planejamento', 'blue', 'white');
 
 	$.ajax({
@@ -166,8 +167,9 @@ function chamaGetAppParametrization(){
 				parametrization = data;
 				openPlanejamentoColeta();
 				atualizaColetasParciais();
-				closeMensagem();
+				//closeMensagem();
 			});
+			
 			sincronizarResultado();
 		},
 		timeout: 600000,
@@ -175,6 +177,6 @@ function chamaGetAppParametrization(){
 			$(this).html($(this).attr('data-initial-text'));
 			closeMensagem();
 		}
-		
+
 	});
 }

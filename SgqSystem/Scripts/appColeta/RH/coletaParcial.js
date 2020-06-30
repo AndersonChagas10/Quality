@@ -110,7 +110,7 @@ function hasOnlyTextField() {
             if ($(o).find(":selected").val() == "")
                 existeCampoTextoVazio = true;
         } else {
-            if ($(o).text() == "") {
+            if ($(o).val() == "") {
                 existeCampoTextoVazio = true;
             }
         }
@@ -154,11 +154,9 @@ function atualizaColetasParciais(data){
 
 }
 
-function buscarColetasParciais(){
+function buscarColetasParciais() {
 
     pingLogado(urlPreffix, function () {
-
-        openMensagem("Aguarde, Carregando Coletas Parciais...", "blue", "white");
 
         $.ajax({
 
@@ -173,7 +171,6 @@ function buscarColetasParciais(){
             contentType: "application/json",
             success: function (data) {
                 atualizaArquivoColetaParciais(data);
-                closeMensagemImediatamente();
             },
             timeout: 600000,
             error: function () {
@@ -188,17 +185,17 @@ function atualizaArquivoColetaParciais(data, callback) {
 
     _writeFile("coletasParciais.txt", JSON.stringify(data), function () {
 
-        atualizaVariavelColetaParciais(data);
-
-        if (callback)
-            callback();
+        atualizaVariavelColetaParciais(data, callback);
 
     });
 }
 
-function atualizaVariavelColetaParciais(data) {
+function atualizaVariavelColetaParciais(data, callback) {
 
     coletasParciais = data;
+
+    if (callback)
+        callback();
 }
 
 function addColetasParciais(data, callback) {
@@ -278,6 +275,7 @@ function desabilitaColetados() {
             setLeve3IsNA(coleta, data);
             $(data).find('input, button').prop("disabled", true);
             $(data).css("background-color", "#999");
+
             validateShowQualification(data);
 
         }
@@ -285,6 +283,7 @@ function desabilitaColetados() {
 
     desabilitaCamposCabecalho();
 }
+
 
 function desabilitaCamposCabecalho() {
     
@@ -521,11 +520,13 @@ function setBinarioRespondido(self, isConform) {
     if (isConform) {
 
         $(button).text($(button).attr('data-positivo'));
+        $(self).attr('data-conforme', 1);
 
     } else {
 
         $(button).text($(button).attr('data-negativo'));
-
+        $(self).attr('data-conforme', 0);
+        
     }
 
     $(self).addClass('btn-default');
