@@ -77,6 +77,12 @@ namespace SgqSystem.Controllers.Api.Relatorios
                 whereSample = $"and CL2.Sample = {form.Sample[0]}";
             }
 
+            var whereShift = "";
+            if (form.Shift_Ids.Length > 0)
+            {
+                whereShift = $"and CL2.Shift = {form.Shift_Ids[0]}";
+            }
+
             var query = $@"
             	
 ---------------------------------------------------------------------------------------------------------------------------------	
@@ -253,6 +259,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
                         {whereParLevel2}
                         {whereEvaluation}
                         {whereSample}
+                        {whereShift}
 						AND CASE WHEN @UNITID = '0' THEN '0' ELSE cl2.unitid END = @UNITID
 						AND CASE WHEN @PARLEVEL1_ID = '0' THEN '0' ELSE cl2.ParLevel1_id END = @PARLEVEL1_ID
 
