@@ -526,14 +526,15 @@ namespace SgqSystem.Controllers.Api
             db.Database.ExecuteSqlCommand(queryUpdateProdutoPorMonitoramento);
 
             var auditorId = db.CollectionLevel2.Where(x => x.Id == listCollectionLevel2XParProduto.CollectionLevel2_Id).Select(x => x.AuditorId).First();
-
             var listCollectionLevel2Ids = QueryNinja(db, queryGetCollectionlevel2Ids);
+
+            var produtoOld = db.ParProduto.Find(collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto_Id);
+            collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto = produtoOld.Name;
             foreach (var item in listCollectionLevel2Ids)
                 LogSystem.LogTrackBusiness.RegisterIfNotExist(collectionLevel2xParFamiliaProdutoxParProdutoOld, Convert.ToInt32(item["ID"]), "CollectionLevel2XParFamiliaProdutoXParProduto", auditorId);
             
-            var produto = db.ParProduto.Find(listCollectionLevel2XParProduto.ParProduto_Id);
-            collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto = produto.Name;
-            
+            var produtoNew = db.ParProduto.Find(listCollectionLevel2XParProduto.ParProduto_Id);
+            collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto = produtoNew.Name;
             foreach (var item in listCollectionLevel2Ids)
                 LogSystem.LogTrackBusiness.Register(collectionLevel2xParFamiliaProdutoxParProdutoOld, Convert.ToInt32(item["ID"]), "CollectionLevel2XParFamiliaProdutoXParProduto", listCollectionLevel2XParProduto.UserSgq_Id, listCollectionLevel2XParProduto.ParReason_Id, listCollectionLevel2XParProduto.Motivo);
 
