@@ -529,13 +529,13 @@ namespace SgqSystem.Controllers.Api
 
             var listCollectionLevel2Ids = QueryNinja(db, queryGetCollectionlevel2Ids);
             foreach (var item in listCollectionLevel2Ids)
-                LogSystem.LogTrackBusiness.RegisterIfNotExist(collectionLevel2xParFamiliaProdutoxParProdutoOld, Convert.ToInt32(item["Id"]), "CollectionLevel2XParFamiliaProdutoXParProduto", auditorId);
+                LogSystem.LogTrackBusiness.RegisterIfNotExist(collectionLevel2xParFamiliaProdutoxParProdutoOld, Convert.ToInt32(item["ID"]), "CollectionLevel2XParFamiliaProdutoXParProduto", auditorId);
             
             var produto = db.ParProduto.Find(listCollectionLevel2XParProduto.ParProduto_Id);
             collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto = produto.Name;
             
             foreach (var item in listCollectionLevel2Ids)
-                LogSystem.LogTrackBusiness.Register(collectionLevel2xParFamiliaProdutoxParProdutoOld, Convert.ToInt32(item["Id"]), "CollectionLevel2XParFamiliaProdutoXParProduto", listCollectionLevel2XParProduto.UserSgq_Id, listCollectionLevel2XParProduto.ParReason_Id, listCollectionLevel2XParProduto.Motivo);
+                LogSystem.LogTrackBusiness.Register(collectionLevel2xParFamiliaProdutoxParProdutoOld, Convert.ToInt32(item["ID"]), "CollectionLevel2XParFamiliaProdutoXParProduto", listCollectionLevel2XParProduto.UserSgq_Id, listCollectionLevel2XParProduto.ParReason_Id, listCollectionLevel2XParProduto.Motivo);
 
             return true;
         }
