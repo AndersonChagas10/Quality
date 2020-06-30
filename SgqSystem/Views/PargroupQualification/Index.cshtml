@@ -1,0 +1,101 @@
+﻿@model System.Collections.Generic.List<Dominio.PargroupQualification>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Grupo de Qualificação";
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Grupo de Qualificação</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">Grupo de Qualificação</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <div class="col-md-5" style="padding:15px">
+                                    @Html.ActionLink(Resources.Resource.create as string, "Create", null, new { @class = "btn btn-primary" })
+                                </div>
+                                <div class="pull-right" style="padding:15px">
+                                    @using (Html.BeginForm("Index", "PargroupQualification", FormMethod.Get))
+                                    {
+                                        <label for="filtro">Buscar</label>
+                                        <input id="filtro" name="filtro" value="@ViewBag.filtro" />
+                                        <input type="submit" value="Pesquisar" class="btn btn-primary" />
+                                    }
+                                </div>
+                                <table class="table dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                @Resources.Resource.name
+                                            </th>
+                                            <th>
+                                                @Resources.Resource.is_active
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Name)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.IsActive)
+                                                </td>
+                                                <td>
+                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                    @Html.ActionLink(Resources.Resource.details as string, "Details", new { id = item.Id }, new { @class = "btn btn-info" })
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                                <div class="pull-right" style="padding: 25px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar4");
+
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
+
+</script>
