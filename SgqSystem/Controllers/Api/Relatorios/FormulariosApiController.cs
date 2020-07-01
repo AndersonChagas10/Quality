@@ -46,7 +46,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
                 retorno.Elaborador = reportXUserSgq.Elaborador;
                 retorno.RelatorioName = reportXUserSgq.NomeRelatorio;
 
-                retorno.CodigoRelatorio = getCodigoRelatorio(form, db);
+                retorno.CodigoRelatorio = reportXUserSgq.CodigoRelatorio;// getCodigoRelatorio(form, db);
 
 
                 retorno.ParReportLayoutXReportXUser = getRelatorioLayoutFormat(reportXUserSgq, db);
