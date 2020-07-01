@@ -1520,14 +1520,14 @@ function saveResultLevel3() {
 
             } else if (inputType == 2) { //Número de defeitos
 
-                if (parseFloat(value) > 0) {
-                    value = parseFloat(value);
+                if (converteParaFloat(value) > 0) {
+                    value = converteParaFloat(value);
                     conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
                 }
 
             } else if (inputType == 3) { //Intervalos
 
-                value = (level3).find('.levelValue').val();
+                value = converteParaFloat((level3).find('.levelValue').val());
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
 
             } else if (inputType == 4) { //Calcula valor do Campo Calculado
@@ -1559,18 +1559,18 @@ function saveResultLevel3() {
 
             } else if (inputType == 8) { //Escala Likert
 
-                value = (level3).find('.levelValue').val();
+                value = converteParaFloat((level3).find('.levelValue').val());
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
 
             } else if (inputType == 9) { //Intervalo com Observação
 
                 level3.attr('value', $(level3).find('.levelValueNotes').val());
-                value = (level3).find('.levelValue').val();
+                value = converteParaFloat((level3).find('.levelValue').val());
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
 
             } else if (inputType == 10) { //Resultado
 
-                value = (level3).find('.levelValue').val();
+                value = converteParaFloat((level3).find('.levelValue').val());
                 conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
 
             } else if (inputType == 11) { //Observação
@@ -1625,7 +1625,7 @@ function saveResultLevel3() {
                     temDefeito = 1;
                     value = 1;
                     conform = false;
-                } else if ((inputType == 7 || inputType == 6 || inputType == 10)) {
+                } else if ((inputType == 2 || inputType == 3 || inputType == 6 || inputType == 7 || inputType == 8 || inputType == 9 || inputType == 10)) {
                     temDefeito = 0;
                     if (conform == false) {
                         temDefeito = 1;
@@ -2100,6 +2100,11 @@ function saveResultLevel3() {
 
 }
 
+function converteParaFloat(item) {
+    var numeroConvertido = parseFloat(item.toString().replace(',', '.'));
+    return numeroConvertido;
+}
+
 function resetLevel3(level3Group) {
 
     var level2 = $('.level2.selected');
@@ -2118,6 +2123,7 @@ function resetLevel3(level3Group) {
     updateCounters(level2, level3Group);
 
     getPadraoNumero();
+    reiniciaComponente();
 }
 
 $(document).on('click', '.button-expand', function (e) {

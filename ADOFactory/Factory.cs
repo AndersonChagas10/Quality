@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Dynamic;
 using System.Reflection;
 using System.Security;
 
@@ -249,6 +250,39 @@ namespace ADOFactory
                 }
             }
             return items;
+        }
+        public dynamic QueryNinjaDataTable(string query)
+        {
+            List<JObject> items = new List<JObject>();
+            SqlCommand command = new SqlCommand(query, connection);
+            command.CommandTimeout = connectionTimeout; //3 minutos
+            List<JObject> datas = new List<JObject>();
+            List<JObject> columns = new List<JObject>();
+            dynamic retorno = new ExpandoObject();
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+
+                while (reader.Read())
+                {
+                    var row = new JObject();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                        row[reader.GetName(i)] = reader[i].ToString();
+
+                    datas.Add(row);
+                }
+
+
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    var col = new JObject();
+                    col["title"] = col["data"] = reader.GetName(i);
+                    columns.Add(col);
+                }
+
+                retorno.datas = datas;
+                retorno.columns = columns;
+            }
+            return retorno;
         }
 
         public int InsertUpdateData(SqlCommand cmd)

@@ -1003,8 +1003,11 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "appcoleta_corrective_action_modal_input", Value = "Correção" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "consistency_call", Value = "Consistency Call" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "product", Value = "Produto" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "select_product", Value = "Selecione o Produto/ SKU" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "edit_produto", Value = "Editar Produto/ SKU" });
 
                 ResourcesInserir.Add(new ResourcePT() { Key = "seara_Produto", Value = "Seara Produto" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "shift_c", Value = "Turno 3" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 

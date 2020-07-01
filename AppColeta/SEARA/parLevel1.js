@@ -4,7 +4,8 @@ function listarParLevel1(isVoltar) {
 	currentParLevel2_Id = null;
 	objCabecalhoLevel1 = {};
 
-	var listaParLevel1 = RetornarParLevel1(currentParCluster_Id);
+    var listaParLevel1 = RetornarParLevel1(currentParCluster_Id);
+    listaParLevel1.sort((a, b) => a.Name.localeCompare(b.Name))
 
 	var htmlLista = "";
 
@@ -32,7 +33,7 @@ function listarParLevel1(isVoltar) {
         '			      <div class="col-xs-9">                         ' +
         '				    <h3 class="panel-title">' + voltar + ' Selecione o Indicador</h3>' +
         '                 </div >                                          ' +
-        '                 <div class="col-xs-3">                           ' +
+        '                 <div class="col-md-3">                           ' +
         getBotaoBuscar()                                                     +
         '                 </div>                                           ' +
         '               </div>                                             ' +
