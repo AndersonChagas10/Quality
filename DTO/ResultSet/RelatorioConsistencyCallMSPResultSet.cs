@@ -125,6 +125,144 @@ namespace DTO.ResultSet
         public string Observations { get; set; }
 
 
+        public string Select (DataCarrierFormularioNew form)
+        {
+            var dtInit = form.startDate.ToString("yyyyMMdd");
+
+            var query = $@" 
+
+
+                    -- DROP TABLE #CollectionLevel2
+                     SELECT
+	                     id
+	                    ,ParLevel1_Id
+	                    ,ParLevel2_Id
+	                    ,UnitId
+	                    ,CollectionDate
+	                    ,EvaluationNumber
+	                    ,Sample
+	                    ,Sequential
+	                    ,Side
+	                    ,Shift
+	                    ,Period
+	                    ,AuditorId
+	                    ,AddDate
+	                    ,AlterDate
+                    INTO #CollectionLevel2
+                    FROM Collectionlevel2 CL2 WITH (NOLOCK)
+                        WHERE 1=1
+                         AND NotEvaluatedIs <> 999
+                         AND Duplicated <> 999
+                         AND CL2.CollectionDate BETWEEN '{dtInit} 00:00' AND '{dtInit}  23:59:59'
+                    CREATE INDEX IDX_CollectionLevel2_ID ON #CollectionLevel2(ID);
+                    CREATE INDEX IDX_CollectionLevel2_UnitId ON #CollectionLevel2(UnitId);
+                    CREATE INDEX IDX_CollectionLevel2_CollectionDate ON #CollectionLevel2(CollectionDate);
+                    CREATE INDEX IDX_CollectionLevel2_ParLevel1_Id ON #CollectionLevel2(ParLevel1_Id);
+                    CREATE INDEX IDX_CollectionLevel2_ParLevel2_Id ON #CollectionLevel2(ParLevel2_Id);
+                    CREATE INDEX IDX_CollectionLevel2_12345 ON #CollectionLevel2(ID,UnitId,CollectionDate,ParLevel1_Id,ParLevel2_Id);
+                    -- Result Level 3
+					SELECT
+						R3.ID
+						,R3.CollectionLevel2_Id
+						,R3.ParLevel3_Id
+						,R3.ParLevel3_Name
+						,R3.Weight
+						,R3.IntervalMin
+						,R3.IntervalMax
+						,R3.Value
+						,R3.ValueText
+						,R3.IsConform
+						,R3.IsNotEvaluate
+						,R3.WeiEvaluation
+						,R3.WeiDefects
+						INTO #Result_Level3
+						FROM Result_Level3 R3 WITH (NOLOCK)
+						INNER JOIN #CollectionLevel2 C2
+							ON R3.CollectionLevel2_Id = C2.Id	
+                    CREATE INDEX IDX_Result_Level3_CollectionLevel2_ID ON #Result_Level3(CollectionLevel2_Id);
+                    CREATE INDEX IDX_Result_Level3_CollectionLevel2_Lvl3_ID ON #Result_Level3(CollectionLevel2_Id,Parlevel3_Id);
+                    -- Criação da Fato de Cabeçalhos
+						
+						SELECT
+							CL2HF.Id
+							,CL2HF.CollectionLevel2_Id
+							,CL2HF.ParHeaderField_Id
+							,CL2HF.ParFieldType_Id
+							,CL2HF.Value
+						INTO #CollectionLevel2XParHeaderField
+						FROM CollectionLevel2XParHeaderField CL2HF (nolock)
+						INNER JOIN #Collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id
+                    CREATE INDEX IDX_CollectionLevel2XParHeaderField_CollectionLevel_ID ON #CollectionLevel2XParHeaderField (CollectionLevel2_Id);
+                    -- Concatenação da Fato de Cabeçalhos
+					SELECT
+						 CL2HF.CollectionLevel2_Id,
+						 STUFF(
+							(SELECT DISTINCT ', ' + CONCAT(HF.name, ': ', case
+							when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name
+							when CL2HF2.ParFieldType_Id = 2 then case when HF.Description = 'Produto' then cast(PRD.nCdProduto as varchar(500)) + ' - ' + PRD.cNmProduto else EQP.Nome end
+							when CL2HF2.ParFieldType_Id = 6 then CONVERT(varchar,  CL2HF2.value, 103)
+							else CL2HF2.Value end)
+							FROM #CollectionLevel2XParHeaderField CL2HF2 (nolock)
+							left join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
+							left join ParHeaderField HF (nolock)on CL2HF2.ParHeaderField_Id = HF.Id
+							left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id
+							left join ParMultipleValues PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
+							left join Equipamentos EQP(nolock) on cast(EQP.Id as varchar(500)) = CL2HF2.Value and EQP.ParCompany_Id = CL2.UnitId and CL2HF2.ParFieldType_Id = 2
+							left join Produto PRD with(nolock) on cast(PRD.nCdProduto as varchar(500)) = CL2HF2.Value and CL2HF2.ParFieldType_Id = 2
+							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
+							FOR XML PATH('')
+							), 1, 1, '')  AS HeaderFieldList
+						INTO #CollectionLevel2XParHeaderField2
+						FROM #CollectionLevel2XParHeaderField CL2HF (nolock)
+						INNER join #Collectionlevel2 CL2 (nolock) on CL2.id = CL2HF.CollectionLevel2_Id
+						LEFT JOIN ParHeaderField HF (nolock) on CL2HF.ParHeaderField_Id = HF.Id
+						LEFT JOIN ParLevel2 L2 (nolock) on L2.Id = CL2.Parlevel2_id
+                    GROUP BY CL2HF.CollectionLevel2_Id
+                    CREATE INDEX IDX_CollectionLevel2XParHeaderField_CollectionLevel2_ID ON #CollectionLevel2XParHeaderField2 (CollectionLevel2_Id);
+                 -- Cubo
+                 SELECT
+				  
+                 C2.CollectionDate AS Data
+                 ,L1.Id AS Indicador
+                 ,L2.Id AS Monitoramento
+				 ,L3.Id  AS Tarefa
+                 ,R3.Weight AS Peso
+                 ,R3.Value AS 'Value'
+                 ,R3.IsConform AS 'Conforme'
+                 ,R3.IsNotEvaluate AS 'NA'
+                 ,R3.WeiEvaluation AS 'AV_Peso'
+                 ,R3.WeiDefects AS 'NC_Peso'
+                 ,C2.EvaluationNumber AS 'Avaliacao'
+                 ,C2.Sample AS 'Amostra'
+                 ,STR(C2.[Shift]) as 'Turno'
+                 ,ISNULL(HF.HeaderFieldList, '') as 'HeaderFieldList'
+                 ,C2.AddDate as AddDate	
+                 FROM #CollectionLevel2 C2 (nolock)
+                 INNER JOIN #Result_Level3 R3  (nolock)
+                 ON R3.CollectionLevel2_Id = C2.Id
+                 INNER JOIN ParLevel3 L3 (nolock)
+                 ON L3.Id = R3.ParLevel3_Id
+                 INNER JOIN ParLevel2 L2 (nolock)
+                 ON L2.Id = C2.ParLevel2_Id
+                 INNER JOIN ParLevel1 L1 (nolock)
+                 ON L1.Id = C2.ParLevel1_Id
+                 INNER JOIN UserSgq US (nolock)
+                 ON C2.AuditorId = US.Id
+                 LEFT JOIN
+                 #CollectionLevel2XParHeaderField2 HF
+                 on c2.Id = HF.CollectionLevel2_Id
+                 WHERE 1=1
+                 AND R3.IsNotEvaluate = 0
+                     DROP TABLE #CollectionLevel2
+                     DROP TABLE #Result_Level3
+					 DROP TABLE #CollectionLevel2XParHeaderField
+					 DROP TABLE #CollectionLevel2XParHeaderField2
+
+                ";
+            return query;
+        }
+
+
         public string SelectFlavor(DataCarrierFormularioNew form)
         {
             var dtInit = form.startDate.ToString("yyyyMMdd");
