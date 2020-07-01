@@ -52,6 +52,22 @@
                                 </div>
                             }
 
+                            @if (ViewBag.ShowTurnoSeara == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Turno</strong></label>
+                                        <select class="form-control" name="ShowTurnoSeara" id="TurnoSeara">
+                                            <option value="-1">Selecione</option>
+                                            <option value="Turno 1">Turno 1</option>
+                                            <option value="Turno 2">Turno 2</option>
+                                            <option value="Turno 3">Turno 3</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            }
+
                             @RenderSection("NovoFiltro", required: false)
 
                             @if (ViewBag.ShowDimensaoGrafico == true)
@@ -213,10 +229,12 @@
                                                 data-filtroselect3-default-select="@ViewBag.ShowParStructureDefault">
                                             Abrir
                                         </button>
-                                        <select class="form-control" name="parStructure2_Ids"></select>
+                                        <select class="form-control" name="parStructure2_Ids" multiple></select>
                                     </div>
                                 </div>
                             }
+
+                          
 
                             @if (ViewBag.ShowParStructure3 == true)
                             {
