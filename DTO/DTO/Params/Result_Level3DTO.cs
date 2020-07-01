@@ -227,15 +227,32 @@ namespace DTO.DTO.Params
 
                     try
                     {
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 5
-                        || r.ParLevel3InputType_Id == 6)) != null
-                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//TEXTO
+                        if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6) != null) //TEXTO
 
                             return "1";
                     }
                     catch (Exception e)
                     {
                         throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 5", e); throw;
+                    }
+
+
+                    try
+                    {
+                        if (MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))
+                            if (string.IsNullOrEmpty(Value))
+                            {
+                                return "0";
+                            }
+                            else
+                            {
+                                Defects = decimal.Parse(Value);
+                                return Value;
+                            }
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 15", e); throw;
                     }
                 }
 
@@ -325,8 +342,7 @@ namespace DTO.DTO.Params
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
-                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//é um BINARIO
+                    if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6) != null)
                     {
                         defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                     }
@@ -345,6 +361,10 @@ namespace DTO.DTO.Params
                     else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 5) != null)//TEXTO 
                     {
                         return _IsConform.Equals("0") ? 1 : 0;
+
+                    }else if (MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))
+                    {
+                        return string.IsNullOrEmpty(Value) ? defects : decimal.Parse(Value);
                     }
                 }
 
@@ -386,8 +406,7 @@ namespace DTO.DTO.Params
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
-                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//é um BINARIO
+                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null) //é um BINARIO
                     {
                         defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                     }
@@ -404,6 +423,10 @@ namespace DTO.DTO.Params
                         defects = _Defects;
                     }
                     else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 5) != null)//TEXTO
+                    {
+                        defects = _Defects;
+                    }
+                    else if (MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))
                     {
                         defects = _Defects;
                     }
@@ -484,14 +507,14 @@ namespace DTO.DTO.Params
         public string mountHtmlNumeroDefeitos()
         {
             var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
-            
+
             return "<div>" +
                         "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" +
-                        "<span id='intervalMax'>" + double.Parse(IntervalMax.Replace(',', '.'), CultureInfo.InvariantCulture)+ 
-                        "</span>" + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                        "<span id='intervalMax'>" + double.Parse(IntervalMax.Replace(',', '.'), CultureInfo.InvariantCulture) +
+                        "</span>" +
                         "<br>" +
-                        "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + 
-                        Value + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                        "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" +
+                        Value +
                         "<br>" +
                         "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp" +
                     "<input type='text' id='numeroDeDefeitos' class='decimal' />" +
@@ -538,8 +561,10 @@ namespace DTO.DTO.Params
                 this.IndicadorVinculadoAFamiliaDeProduto = databaseSgq.ParLevel1XParFamiliaProduto
                     .Any(x => x.IsActive == true && x.ParLevel1_Id == this.CollectionLevel2.ParLevel1_Id);
             }
+
             if ((parLevel3ValueDTO.ParLevel3InputType_Id == 2 || parLevel3ValueDTO.ParLevel3InputType_Id == 15) && IndicadorVinculadoAFamiliaDeProduto)
                 return true;
+
             return false;
         }
 
