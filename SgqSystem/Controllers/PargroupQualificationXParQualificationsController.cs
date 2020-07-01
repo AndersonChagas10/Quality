@@ -10,7 +10,7 @@ using Dominio;
 
 namespace SgqSystem.Controllers
 {
-    public class PargroupQualificationXParQualificationsController : Controller
+    public class PargroupQualificationXParQualificationsController : BaseController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 

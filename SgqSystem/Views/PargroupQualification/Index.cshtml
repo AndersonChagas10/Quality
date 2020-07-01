@@ -35,15 +35,8 @@
                                 <div class="col-md-5" style="padding:15px">
                                     @Html.ActionLink(Resources.Resource.create as string, "Create", null, new { @class = "btn btn-primary" })
                                 </div>
-                                <div class="pull-right" style="padding:15px">
-                                    @using (Html.BeginForm("Index", "PargroupQualification", FormMethod.Get))
-                                    {
-                                        <label for="filtro">Buscar</label>
-                                        <input id="filtro" name="filtro" value="@ViewBag.filtro" />
-                                        <input type="submit" value="Pesquisar" class="btn btn-primary" />
-                                    }
-                                </div>
-                                <table class="table dataTable">
+                                
+                                <table class="table dataTable" id="tabelaPargroupQualification">
                                     <thead>
                                         <tr>
                                             <th>
@@ -53,23 +46,25 @@
                                                 @Resources.Resource.is_active
                                             </th>
                                             <th></th>
+                                            <th hidden></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
-                                            <tr>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.Name)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.IsActive)
-                                                </td>
-                                                <td>
-                                                    @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
-                                                    @Html.ActionLink(Resources.Resource.details as string, "Details", new { id = item.Id }, new { @class = "btn btn-info" })
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.IsActive)
+                                            </td>
+                                            <td>
+                                                @Html.ActionLink(Resources.Resource.edit as string, "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                @Html.ActionLink(Resources.Resource.details as string, "Details", new { id = item.Id }, new { @class = "btn btn-info" })
+                                            </td>
+                                            <td hidden></td>
+                                        </tr>
                                         }
                                     </tbody>
                                 </table>
@@ -96,6 +91,13 @@
 
     $(document).ready(function () {
         closeLeftSidebar();
+        DataTableComResourcesEpropriedadesjaSetadas.aoColumns = [
+            null,
+            null,
+            { "bSearchable": false },
+            null
+        ];
+        $('#tabelaPargroupQualification').dataTable(DataTableComResourcesEpropriedadesjaSetadas);
     });
 
 </script>
