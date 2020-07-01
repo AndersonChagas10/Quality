@@ -52,9 +52,18 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.PargroupQualification.Add(pargroupQualification);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var jaExiste = db.PargroupQualification.Where(
+                    x => x.Name == pargroupQualification.Name);
+                if (jaExiste.Count() > 0)
+                {
+                    ViewBag.JaExiste = Resources.Resource.register_already_exist as string;
+                }
+                else
+                {
+                    db.PargroupQualification.Add(pargroupQualification);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
 
             return View(pargroupQualification);
@@ -84,9 +93,19 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(pargroupQualification).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var jaExiste = db.PargroupQualification.Where(
+                    x => x.Name == pargroupQualification.Name
+                    && x.Id != pargroupQualification.Id);
+                if (jaExiste.Count() > 0)
+                {
+                    ViewBag.JaExiste = Resources.Resource.register_already_exist as string;
+                }
+                else
+                {
+                    db.Entry(pargroupQualification).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
             return View(pargroupQualification);
         }

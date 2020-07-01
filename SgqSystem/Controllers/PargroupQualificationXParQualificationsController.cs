@@ -56,9 +56,19 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.PargroupQualificationXParQualification.Add(pargroupQualificationXParQualification);
-                db.SaveChanges();
-                return RedirectToAction("Details", "PargroupQualification", new { Id = pargroupQualificationXParQualification.PargroupQualification_Id });
+                var jaExiste = db.PargroupQualificationXParQualification.Where(
+                    x => x.PargroupQualification_Id == pargroupQualificationXParQualification.PargroupQualification_Id
+                    && x.ParQualification_Id == pargroupQualificationXParQualification.ParQualification_Id);
+                if (jaExiste.Count() > 0)
+                {
+                    ViewBag.JaExiste = Resources.Resource.register_already_exist as string;
+                }
+                else
+                {
+                    db.PargroupQualificationXParQualification.Add(pargroupQualificationXParQualification);
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "PargroupQualification", new { Id = pargroupQualificationXParQualification.PargroupQualification_Id });
+                }
             }
 
             ViewBag.ParQualification_Id = new SelectList(db.ParQualification, "Id", "Name", pargroupQualificationXParQualification.ParQualification_Id);
@@ -77,6 +87,7 @@ namespace SgqSystem.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.PargroupQualification_Id = id;
             MontaLista(pargroupQualificationXParQualification.ParQualification_Id);
             return View(pargroupQualificationXParQualification);
         }
@@ -90,10 +101,22 @@ namespace SgqSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(pargroupQualificationXParQualification).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Details", "PargroupQualification", new { Id = pargroupQualificationXParQualification.PargroupQualification_Id });
+                var jaExiste = db.PargroupQualificationXParQualification.Where(
+                    x => x.PargroupQualification_Id == pargroupQualificationXParQualification.PargroupQualification_Id
+                    && x.ParQualification_Id == pargroupQualificationXParQualification.ParQualification_Id
+                    && x.Id != pargroupQualificationXParQualification.Id);
+                if (jaExiste.Count() > 0)
+                {
+                    ViewBag.JaExiste = Resources.Resource.register_already_exist as string;
+                }
+                else
+                {
+                    db.Entry(pargroupQualificationXParQualification).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Details", "PargroupQualification", new { Id = pargroupQualificationXParQualification.PargroupQualification_Id });
+                }
             }
+            MontaLista(pargroupQualificationXParQualification.ParQualification_Id);
             ViewBag.ParQualification_Id = new SelectList(db.ParQualification, "Id", "Name", pargroupQualificationXParQualification.ParQualification_Id);
             return View(pargroupQualificationXParQualification);
         }
