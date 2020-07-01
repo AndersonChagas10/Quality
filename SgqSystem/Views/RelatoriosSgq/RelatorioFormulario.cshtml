@@ -30,7 +30,7 @@
 }
 
 @section Content {
-    <style>
+        <style>
 
         footer {
             font-size: 12px;
@@ -98,12 +98,15 @@
             padding: 2px;
             height: 15px !important;
         }
-    </style>
+
+        </style>
 
     <div class="page-content-wrapper">
         <button class="btn btn-primary" id="btnPrint">@Resources.Resource.print</button>
         <br />
         <div class="page-content">
+
+            <input id="rodapeCodigo" class="hidden" />
 
             <div class="loader" hidden></div>
             <div class="alert alert-info" role="alert" id="mensagemSemDados" hidden> Sem dados. </div>
@@ -114,13 +117,13 @@
                     <table id="cabecalho" class="table table-bordered">
                         <tr>
                             <td rowspan="3" class="col-xs-2">
-                                <img height="90" class="img-responsive" src="~/Imagens/JBS_logo.jpg" />
+                                <img height="90" width="120" src="~/Imagens/novoLogoFriboi2.PNG" />
                             </td>
 
                             <td style="text-align:center; font-weight:bold;"><text id="tdNomeRelatorio"></text></td>
 
                             <td rowspan="3" class="col-xs-2">
-                                <img height="90" width="120" src="~/Imagens/novoLogoFriboi2.PNG" />
+                                <img height="90" class="img-responsive" src="~/Imagens/novoLogoFriboi.PNG" />
                             </td>
                         </tr>
                         <tr>
@@ -142,27 +145,22 @@
                     <br /><br /><br />
                     <footer id="rodape" hidden>
                         <div class="row">
-                            <div class="col-xs-4" style="text-align:center">
-                                _________________________________
-                                <br />
-                                Monitor da GQ
-                            </div>
-
-                            <div class="col-xs-4" style="text-align:center">
+                            <div class="col-xs-6" style="text-align:center">
                                 _________________________________
                                 <br />
                                 Supervisor do Setor
                             </div>
 
-                            <div class="col-xs-4" style="text-align:center">
+                            <div class="col-xs-6" style="text-align:center">
                                 _________________________________
                                 <br />
                                 Supervisor da GQ
                             </div>
                         </div>
-
                     </footer>
+
                 </div>
+                
             </div>
         </div>
     </div>
@@ -189,6 +187,7 @@
 
                 headerHtml: document.getElementById('cabecalhoDiv').innerHTML,
                 bodyHtml: document.getElementById('corpoPagina').innerHTML,
+                footerHtml: $("#rodapeCodigo").text(),
                 numberMarginRight: 25,
                 numberMarginBottom: 25,
                 renderTableMargin: 0,
@@ -241,11 +240,11 @@
                                 GuardJs.esconderMensagem();
                                 $("#rodape").show();
                                 $("#cabecalhoDiv").show();
-
-                        $("#tdElaborador").text(data.Elaborador);
-                        $("#tdAprovador").text(data.Aprovador);
-                        $("#tdNomeRelatorio").text(data.RelatorioName);
-                        $("#unidadeColeta").text(data.Resultado[0]["unidade"]);
+                                $("#tdAprovador").text(data.Aprovador);
+                                $("#tdElaborador").text(data.Elaborador);
+                                $("#rodapeCodigo").text(data.CodigoRelatorio);
+                                $("#tdNomeRelatorio").text(data.RelatorioName);
+                                $("#unidadeColeta").text(data.Resultado[0]["unidade"]);
 
                                 montaLayout(data.ParReportLayoutXReportXUser);
                                 montaTabelaDinamica(data.Resultado, data.ParReportLayoutXReportXUser);
@@ -311,11 +310,11 @@
 
                 var itemAtual = {};
                 itemAtual.nivel = nomeDoNivel;
-                itemAtual.titulo = valorCabecalho;
+                itemAtual.titulo = valorCabecalho.replace("'", "´");
                 itemAtual.lista = [];
 
                 if (matriz.lista) {
-                    itemDaLista = matriz.lista.filter((item) => item.titulo == valorCabecalho)
+                    itemDaLista = matriz.lista.filter((item) => item.titulo.replace("'", "´") == valorCabecalho.replace("'", "´"))
                     if (itemDaLista.length == 0) {
                         matriz.lista.push(itemAtual); //Adicionado como filho
                     } else {
@@ -464,7 +463,7 @@
 
             /***INICIO: MONTA LINHAS HTML **********************************************/
             var matrizHtmlLinhas = [];
-            function montaLinhas(itemMatriz, numeroLinha, indexAtual, indexMaximo, atributos) {
+            function montaLinhas(itemMatriz, numeroLinha, indexAtual, indexMaximo, atributos, qtdColunasAnterior) {
                 var html;
 
                 if (!atributos) {
@@ -474,18 +473,24 @@
 
                 if (indexAtual == indexMaximo) {
                     html = '<th ' + atributos + '>';
-                } else if (itemMatriz.span > 1) {
-                    html = '<th rowspan="' + itemMatriz.span + '">';
+                //} else if (itemMatriz.span > 1) {
+                  //  html = '<th rowspan="' + itemMatriz.span + '">';
                 } else {
                     html = '<th>';
                 }
                 html += itemMatriz.titulo + '</th>';
 
                 if (!matrizHtmlLinhas[numeroLinha]) {
-                    matrizHtmlLinhas.push(html);
+                    var htmlTemp = "";
+                    for (var p = 0; p < qtdColunasAnterior; p++) {
+                        htmlTemp += "<th>&nbsp;</th>";
+                    }
+                    matrizHtmlLinhas.push(htmlTemp + html);
                 } else {
                     matrizHtmlLinhas[numeroLinha] += html;
                 }
+
+                qtdColunasAnterior++;
 
                 if (indexAtual == indexMaximo) {
                     numeroLinha++;
@@ -493,7 +498,7 @@
                     ++indexAtual;
                     for (var i = 0; i < itemMatriz.lista.length; i++) {
                         var item = itemMatriz.lista[i];
-                        numeroLinha = montaLinhas(item, numeroLinha, indexAtual, indexMaximo, atributos);
+                        numeroLinha = montaLinhas(item, numeroLinha, indexAtual, indexMaximo, atributos, qtdColunasAnterior);
                     }
                 }
                 return numeroLinha;
@@ -503,7 +508,7 @@
             var numeroLinha = 0;
             for (var i = 0; i < matrizLinhas.lista.length; i++) {
                 var item = matrizLinhas.lista[i];
-                numeroLinha = montaLinhas(item, numeroLinha, 0, linhas.length - 1);
+                numeroLinha = montaLinhas(item, numeroLinha, 0, linhas.length - 1, undefined,0);
             }
 
             for (var i = 0; i < matrizHtmlLinhas.length; i++) {
@@ -562,7 +567,7 @@
                         td.innerHTML = ultimoObjeto[td.getAttribute("data-value")];
 
                         if (td.getAttribute("data-value") == "resultado"
-                            && parseFloat(ultimoObjeto["nc"]) > 0) {
+                            && parseFloat(ultimoObjeto["nc"]) > 0 && ultimoObjeto["resultado"] != "NA") {
                             td.style.backgroundColor = "black";
                             td.setAttribute('style', "background-color: black !important;  color: white !important; font-weight: bold !important;");
                         }

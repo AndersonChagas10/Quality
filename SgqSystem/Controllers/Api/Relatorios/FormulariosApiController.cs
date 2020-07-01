@@ -17,6 +17,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
         public Object Elaborador { get; set; }
 
         public Object RelatorioName { get; set; }
+        public Object CodigoRelatorio { get; set; }
 
         public List<ParReportLayoutXReportXUser> ParReportLayoutXReportXUser { get; set; }
     }
@@ -36,6 +37,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
             }
 
             ReportXUserSgq reportXUserSgq = null;
+
             using (var db = new SgqDbDevEntities())
             {
                 var reportXUserSgq_Id = form.ReportXUserSgq_Id[0];
@@ -43,6 +45,9 @@ namespace SgqSystem.Controllers.Api.Relatorios
                 retorno.Aprovador = reportXUserSgq.Aprovador;
                 retorno.Elaborador = reportXUserSgq.Elaborador;
                 retorno.RelatorioName = reportXUserSgq.NomeRelatorio;
+
+                retorno.CodigoRelatorio = getCodigoRelatorio(form, db);
+
 
                 retorno.ParReportLayoutXReportXUser = getRelatorioLayoutFormat(reportXUserSgq, db);
             }
@@ -64,6 +69,8 @@ namespace SgqSystem.Controllers.Api.Relatorios
             {
                 whereParLevel3 = $"and R3.ParLevel3_Id in ({ string.Join(",", form.ParLevel3_Ids)})";
             }
+
+
 
             var whereEvaluation = "";
             if (form.Evaluation.Length > 0)
@@ -645,6 +652,8 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
 
             using (SgqDbDevEntities dbSgq = new SgqDbDevEntities())
             {
+                dbSgq.Database.CommandTimeout = 180;
+
                 retorno.Resultado = QueryNinja(dbSgq, query);
             }
             return Ok(retorno);
@@ -665,6 +674,24 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             }
 
             return reportXUserXLayout;
+        }
+
+        private object getCodigoRelatorio(DataCarrierFormularioNew form, SgqDbDevEntities db)
+        {
+            var whereCompany = "";
+            if (form.ParCompany_Ids.Length > 0)
+            {
+                whereCompany = $"AND RXU.Parcompany_Id = { form.ParCompany_Ids[0]}";
+            }
+            var SQL = $@"SELECT top 1
+                    CodigoRelatorio
+                    FROM ReportXUserSgq RXU      
+                    WHERE RXU.ParLevel1_Id = {form.ShowIndicador_Id[0]}
+                    {whereCompany} 
+                    OR RXU.Parcompany_Id IS NULL
+                    Order by RXU.Parcompany_Id desc";
+
+            return QueryNinja(db, SQL)[0]["CodigoRelatorio"];
         }
     }
 }
