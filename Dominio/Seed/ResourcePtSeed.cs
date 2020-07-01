@@ -1007,6 +1007,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "edit_produto", Value = "Editar Produto/ SKU" });
 
                 ResourcesInserir.Add(new ResourcePT() { Key = "seara_Produto", Value = "Seara Produto" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "shift_c", Value = "Turno 3" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
