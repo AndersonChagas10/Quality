@@ -3120,4 +3120,63 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-740</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Appcoleta - Inserção do campo de busca na lista de SKUs.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-740</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Correção de bugs e adição de validações nos Cruds de FamiliaProduto, Produto e no vínculo FamiliaProdutoXProduto.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-800</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Appcoleta - Ordenar as listas de Clusters, Indicadores, Monitoramentos, Anomalias e SKUs em ordem alfabética.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-766</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Apontamentos Diários - Criação de um Apontamento Diário específico para Seara, com edição de Produto/ SKU e Log de rastreabilidade.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-826</CardNumber>
+    <Version>1.4.0</Version>
+    <Description> [MSP] Relatório Consistency Call - Substituição das queries por apenas uma, efetuando os cálculos do relatório via BackEnd 
+                  e substituição dos Ids mockados por dados inputáveis via Componente Genérico.</Description>
+    <Script>
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-872</CardNumber>
+    <Version>1.4.0</Version>
+    <Description> [MSP] AppColeta - Adição do Turno 3 ao banco. </Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM Shift WHERE id = 3)
+      INSERT INTO Shift values ('Turno 3', getdate(), getdate())
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-852</CardNumber>
+    <Version>1.5.0</Version>
+    <Description> [SEARA] Apontamentos Diários - Criação da edição de Cabeçalho com Log de rastreabilidade.</Description>
+    <Script>
+    </Script>
+  </Card>
+
 </Cards>

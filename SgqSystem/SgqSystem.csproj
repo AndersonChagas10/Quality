@@ -385,6 +385,7 @@
     <Compile Include="Controllers\Api\RelatoriosBrasil\VisaoGeralDaAreaApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\RoleApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\UserSgqApiController.cs" />
+    <Compile Include="Controllers\Api\Utilidades\UtilidadesApiController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
@@ -463,7 +464,9 @@
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
+    <Compile Include="Controllers\Utilidades\UtilController.cs" />
     <Compile Include="Controllers\V2\Api\AppColetaController.cs" />
+    <Compile Include="Controllers\V2\Api\ConsolidationSearaApiController.cs" />
     <Compile Include="Controllers\V2\Api\DepartmentXRotinaApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParClusterApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParCompanyApiController.cs" />
@@ -723,6 +726,9 @@
     </Content>
     <Content Include="..\AppColeta\SEARA\utils.js">
       <Link>Scripts\appColeta\SEARA\utils.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\version.js">
+      <Link>Scripts\appColeta\SEARA\version.js</Link>
     </Content>
     <Content Include="..\AppColeta\SEARA\zoom.js">
       <Link>Scripts\appColeta\SEARA\zoom.js</Link>
@@ -2358,6 +2364,9 @@
     <Content Include="Views\ParamsV2\ParL3Qualification.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioDeResultadoSeara.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioConsistencyCallMSP.cshtml" />
+    <Content Include="Views\Utilidades\SqlStudio.cshtml" />
+    <Content Include="Views\RelatoriosSgq\ApontamentosDiariosSeara.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_ProdutoEdit.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2448,7 +2457,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>false</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

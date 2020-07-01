@@ -34,23 +34,23 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td hidden>
-                                    @Html.DisplayFor(modelItem => item.ParFamiliaProduto_Id)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.ParProduto.Name)
-                                </td>
-                                <td hidden>
-                                    @Html.DisplayFor(modelItem => item.ParCompany.Name)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.IsActive)
-                                </td>
-                                <td>
-                                    @Html.ActionLink("Deletar", "Delete", "ParFamiliaProdutoXParProduto", new { id = item.Id }, new { @class = "btn btn-danger" })
-                                </td>
-                            </tr>
+                        <tr>
+                            <td hidden>
+                                @Html.DisplayFor(modelItem => item.ParFamiliaProduto_Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ParProduto.Name)
+                            </td>
+                            <td hidden>
+                                @Html.DisplayFor(modelItem => item.ParCompany.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsActive)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Editar", "Edit", "ParFamiliaProdutoXParProduto", new { id = item.Id }, new { @class = "btn btn-success" })
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
