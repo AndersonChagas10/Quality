@@ -3702,4 +3702,11 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-887</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[RH] Criação dos CRUDs para Grupo de Qualificação e Qualificação.</Description>
+    <Script></Script>
+  </Card>
+
 </Cards>
