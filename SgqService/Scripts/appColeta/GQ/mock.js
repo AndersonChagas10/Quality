@@ -104,7 +104,9 @@ $(document).ready(function () {
                     }
                     else
                     {
-                        var resultadoFormatado = resultado.split(",").join(".");
+                        var resultadoFormatado = resultado;
+                        if (resultado.indexOf("dif") == -1)
+                            resultadoFormatado = resultado.split(",").join(".");
                         resultado = eval(resultadoFormatado);
                     }
                     $(o).val(resultado == "" ? resultado : resultado.toFixed(2));
