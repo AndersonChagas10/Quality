@@ -3696,6 +3696,19 @@
   </Card>
 
   <Card>
+    <CardNumber>SGQ-870</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[RH] AppColeta - Criação da coluna 'Hash' para identificar as tarefas e cabeçalhos que pertencem a mesma coleta.</Description>
+    <Script>
+      IF COL_LENGTH('Collection','Hash') IS NULL
+      BEGIN
+      ALTER TABLE Collection
+      ADD Hash varchar(64);
+      END
+    </Script>
+  </Card>
+
+  <Card>
     <CardNumber>SGQ-802</CardNumber>
     <Version>1.10.0</Version>
     <Description>[RH] Permitir selecionar Todos para Unidade nos cadastro de Centro de Custo + Parametrização </Description>

@@ -408,7 +408,8 @@ WHERE 1 = 1
                    ,[ParHeaderField_Id]
                    ,[ParHeaderField_Value]
                    ,[Outros]
-                   ,[IsProcessed])
+                   ,[IsProcessed]
+                   ,[Hash])
              VALUES
                    (@CollectionDate
                    ,@AddDate
@@ -443,7 +444,8 @@ WHERE 1 = 1
                    ,@ParHeaderField_Id
                    ,@ParHeaderField_Value
                    ,@Outros
-                   ,@IsProcessed);
+                   ,@IsProcessed
+                   ,@Hash);
                     SELECT @@IDENTITY AS 'Identity';";
 
                 using (Factory factory = new Factory("DefaultConnection"))
@@ -485,6 +487,7 @@ WHERE 1 = 1
                         UtilSqlCommand.AddParameterNullable(cmd, "@ParHeaderField_Value", item.ParHeaderField_Value);
                         UtilSqlCommand.AddParameterNullable(cmd, "@IsProcessed", item.IsProcessed);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Outros", item.Outros);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Hash", item.Hash);
                         var id = Convert.ToInt32(cmd.ExecuteScalar());
 
                         item.Id = id;
