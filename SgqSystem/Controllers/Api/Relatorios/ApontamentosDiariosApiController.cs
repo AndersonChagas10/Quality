@@ -466,6 +466,10 @@ namespace SgqSystem.Controllers.Api
                                                     AND CollectionDate = '{collectionLevel2.CollectionDate.ToString("yyyy-MM-dd HH:mm:ss")}'
                                                     AND EvaluationNumber = {collectionLevel2.EvaluationNumber}";
 
+                            var queryCL2XPHFGIds = $@"SELECT ID FROM CollectionLevel2XParHeaderFieldGeral
+                                                      WHERE CollectionLevel2_Id IN ({queryCL2Ids})
+                                                      AND ParHeaderFieldGeral_Id = {item.ParHeaderFieldGeral_Id}";
+
 
                             var valueSelected = headerFieldsValues.Where(x => x.HeaderFieldGeral.Id == item.ParHeaderFieldGeral_Id).FirstOrDefault();
                             if (valueSelected != null)
@@ -473,7 +477,10 @@ namespace SgqSystem.Controllers.Api
 
                             var auditorId = dbEntities.CollectionLevel2.Where(x => x.Id == original.CollectionLevel2_Id).Select(x => x.AuditorId).First();
 
-                            LogSystem.LogTrackBusiness.RegisterIfNotExist(original, original.Id, "CollectionLevel2XParHeaderFieldGeral", auditorId);
+                            var listCL2XPHFGIds = QueryNinja(db, queryCL2XPHFGIds);
+
+                            foreach (var cl2id in listCL2XPHFGIds)
+                                LogSystem.LogTrackBusiness.RegisterIfNotExist(original, Convert.ToInt32(cl2id["ID"]), "CollectionLevel2XParHeaderFieldGeral", auditorId);
 
                             if (string.IsNullOrEmpty(item.Value))//Remover
                             {
@@ -493,7 +500,8 @@ namespace SgqSystem.Controllers.Api
                                     original.ParHeaderField_ValueName = valueSelected.Values.Where(x => x.Id == Convert.ToInt32(item.Value)).FirstOrDefault()?.Name;
 
                                 original.Value = item.Value;
-                                LogSystem.LogTrackBusiness.Register(original, original.Id, "CollectionLevel2XParHeaderFieldGeral", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
+                                foreach (var cl2id in listCL2XPHFGIds)
+                                    LogSystem.LogTrackBusiness.Register(original, Convert.ToInt32(cl2id["ID"]), "CollectionLevel2XParHeaderFieldGeral", Lsc2xhf.UserSgq_Id, Lsc2xhf.ParReason_Id, Lsc2xhf.Motivo);
                             }
                         }
                         else if (!string.IsNullOrEmpty(item.Value)) //Add
