@@ -188,7 +188,7 @@ namespace DTO.DTO.Params
                 var prop = i.Id;
                 var opt = new SelectListItem() { Text = i.Id.ToString() + " - " + i.Name, Value = i.Id.ToString() };
 
-                if (listParLevel3Level2Level1Dto.Where(r => r.ParLevel3Level2.ParLevel2_Id == i.Id).Count() > 0)
+                if (listParLevel3Level2Level1Dto.Where(r => r.ParLevel3Level2.ParLevel2_Id == i.Id && r.ParLevel3Level2.IsActive && r.Active == true).Count() > 0)
                 {
                     groupSelecionado.Name = (GlobalConfig.Eua || GlobalConfig.Canada) ? "Linked" : "Vinculado:";
                     opt.Group = groupSelecionado;
@@ -205,7 +205,7 @@ namespace DTO.DTO.Params
                 var prop = i.Id;
                 var opt = new SelectListItem() { Text = i.Id.ToString() + " - " + i.Name, Value = i.Id.ToString() };
 
-                if (listParLevel3Level2Level1Dto.Where(r => r.ParLevel3Level2.ParLevel2_Id == i.Id).Count() == 0)
+                if (listParLevel3Level2Level1Dto.Where(r => r.ParLevel3Level2.ParLevel2_Id == i.Id && r.ParLevel3Level2.IsActive && r.Active == true).Count() == 0)
                 {
                     opt.Group = group;
                     retorno.Insert(counter, opt);
