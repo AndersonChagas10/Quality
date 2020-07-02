@@ -1,0 +1,108 @@
+﻿@model Dominio.PargroupQualification
+
+@{
+    ViewBag.Title = "Editar - Grupo de Qualificação";
+}
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                    <a href="@Url.Action("Index", "PargroupQualification")">@Resources.Resource.Qualification_Group</a>
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>@Resources.Resource.edit</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">@Resources.Resource.edit @Resources.Resource.Qualification_Group</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-horizontal">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        @Html.HiddenFor(model => model.Id)
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Name, @Resources.Resource.name as string, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-6">
+                                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                <div class="text-danger">@ViewBag.JaExiste</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.IsActive, @Resources.Resource.is_active as string, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-6">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.IsActive)
+                                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-3 col-md-9">
+                                                <input type="submit" value="@Resources.Resource.save" class="btn btn-primary" />
+                                                @Html.ActionLink(Resources.Resource.back as string, "Index", null, new { @class = "btn btn-default" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<script src="~/Scripts/Select3/select3.js"></script>
+
+<style>
+    .ui-autocomplete {
+        max-height: 100px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-right: 20px;
+    }
+
+    * html .ui-autocomplete {
+        height: 100px;
+    }
+</style>
+<script>
+
+    $(".sidebar-toggler").removeClass("hide");
+    $(".page-sidebar-wrapper").removeClass("hide");
+    navbarSelect("navbar4");
+    $('select').select2();
+
+    $(document).ready(function () {
+        closeLeftSidebar();
+    });
+
+</script>

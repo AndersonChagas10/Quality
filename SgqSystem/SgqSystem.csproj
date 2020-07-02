@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -416,9 +416,12 @@
     <Compile Include="Controllers\ParConsolidationTypesController.cs" />
     <Compile Include="Controllers\ParFamiliaProdutoController.cs" />
     <Compile Include="Controllers\ParFamiliaProdutoXParProdutoController.cs" />
+    <Compile Include="Controllers\PargroupQualificationController.cs" />
+    <Compile Include="Controllers\PargroupQualificationXParQualificationsController.cs" />
     <Compile Include="Controllers\ParLevel3InputTypeController.cs" />
     <Compile Include="Controllers\ParLevel3XModuleController.cs" />
     <Compile Include="Controllers\ParProdutoController.cs" />
+    <Compile Include="Controllers\ParQualificationController.cs" />
     <Compile Include="Controllers\ParReasonTypesController.cs" />
     <Compile Include="Controllers\ParScoreTypesController.cs" />
     <Compile Include="Controllers\ParStructureGroupController.cs" />
@@ -2379,6 +2382,21 @@
     <Content Include="Views\ParReportXFilters\Create.cshtml" />
     <Content Include="Views\ParReportXFilters\Edit.cshtml" />
     <Content Include="Views\ParReportXFilters\Delete.cshtml" />
+    <Content Include="Views\PargroupQualification\Create.cshtml" />
+    <Content Include="Views\PargroupQualification\Delete.cshtml" />
+    <Content Include="Views\PargroupQualification\Details.cshtml" />
+    <Content Include="Views\PargroupQualification\Edit.cshtml" />
+    <Content Include="Views\PargroupQualification\Index.cshtml" />
+    <Content Include="Views\ParQualification\Create.cshtml" />
+    <Content Include="Views\ParQualification\Delete.cshtml" />
+    <Content Include="Views\ParQualification\Details.cshtml" />
+    <Content Include="Views\ParQualification\Edit.cshtml" />
+    <Content Include="Views\ParQualification\Index.cshtml" />
+    <Content Include="Views\PargroupQualificationXParQualifications\Create.cshtml" />
+    <Content Include="Views\PargroupQualificationXParQualifications\Delete.cshtml" />
+    <Content Include="Views\PargroupQualificationXParQualifications\Details.cshtml" />
+    <Content Include="Views\PargroupQualificationXParQualifications\Edit.cshtml" />
+    <Content Include="Views\PargroupQualificationXParQualifications\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

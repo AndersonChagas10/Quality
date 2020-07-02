@@ -1013,6 +1013,8 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "header_fields_l1", Value = "Cabeçalho Indicador" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "header_fields_l2", Value = "Cabeçalho Monitoramento" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "header_fields_l3", Value = "Cabeçalho Tarefa" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "qualification", Value = "Qualificação" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "register_already_exist", Value = "Este cadastro já existe!" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 

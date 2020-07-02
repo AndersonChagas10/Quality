@@ -21,6 +21,26 @@ namespace SgqSystem.Controllers.Api.Formulario
         }
 
         [HttpPost]
+        [Route("GetFilteredParQualification")]
+        public List<Select3ViewModel> GetFilteredParQualification(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT 
+                             PQ.Id
+                            ,PQ.Name
+                            FROM ParQualification PQ WITH (NOLOCK)
+                            WHERE 1=1
+                            AND PQ.IsActive = 1
+                            AND PQ.Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
         [Route("GetFilteredParProduto")]
         public List<Select3ViewModel> GetFilteredParProduto(string search, [FromBody] DataCarrierFormularioNew form)
         {
