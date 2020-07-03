@@ -18,8 +18,7 @@
         Secao = 14,
         Cargo = 15,
         Avaliacao = 16,
-        Amostra = 17,
-        Shift = 18,
+        Amostra = 17
 
     }
 }

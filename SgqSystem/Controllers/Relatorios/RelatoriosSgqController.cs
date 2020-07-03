@@ -368,7 +368,7 @@ namespace SgqSystem.Controllers
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult RelatorioLaboratorio()
         {
-            
+
 
             return View("~/Views/RelatoriosSgq/RelatorioLaboratorio.cshtml", form);
         }
@@ -411,7 +411,6 @@ namespace SgqSystem.Controllers
             //Cargo = 15,
             //Avaliacao = 16,
             //Amostra = 17,
-            //Shift = 18,
             foreach (var item in reportXFilter)
             {
                 switch (item.FilterLevel)
@@ -517,6 +516,19 @@ namespace SgqSystem.Controllers
                         else
                             ViewBag.ParCompanyIsrequired = 0;
                         break;
+                    case 12:
+                        ViewBag.ShowShift = true;
+
+                        if (item.IsMultiple)
+                            ViewBag.ShowAmostraMultiple = "multiple";
+                        else
+                            ViewBag.ShowAmostraMultiple = "";
+
+                        if (item.IsRequired == true)
+                            ViewBag.AmostraIsrequired = 1;
+                        else
+                            ViewBag.AmostraIsrequired = 0;
+                        break;
                     case 16:
                         ViewBag.ShowAvaliacao = true;
 
@@ -543,19 +555,7 @@ namespace SgqSystem.Controllers
                         else
                             ViewBag.AmostraIsrequired = 0;
                         break;
-                    case 18:
-                        ViewBag.ShowShift = true;
 
-                        if (item.IsMultiple)
-                            ViewBag.ShowAmostraMultiple = "multiple";
-                        else
-                            ViewBag.ShowAmostraMultiple = "";
-
-                        if (item.IsRequired == true)
-                            ViewBag.AmostraIsrequired = 1;
-                        else
-                            ViewBag.AmostraIsrequired = 0;
-                        break;
                 }
             }
         }
