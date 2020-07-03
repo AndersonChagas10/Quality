@@ -55,6 +55,7 @@ namespace DTO.DTO.Params
 
         public string CreateUpdate()
         {
+            var query = "";
             isQueryEdit = true;
             GetDataToEdit();
 
@@ -112,15 +113,14 @@ namespace DTO.DTO.Params
                     }
             }
 
-            var query = "UPDATE [dbo].[Result_Level3] SET ";
+            query = "UPDATE [dbo].[Result_Level3] SET ";
             query += "\n [IsConform] = " + _IsConform + ",";
             query += "\n [Defects] = " + _Defects + ",";
             query += "\n [WeiDefects] = " + _WeiDefects + ",";
             query += "\n [Value] = " + _Value + ",";
             query += "\n [IsNotEvaluate] = " + _IsNotEvaluate + ",";
             query += "\n [ValueText] = '" + texto + "',";
-            query += "\n [WeiEvaluation] = " + Decimal.ToInt32(_WeiEvaluation2) + ",";//+ " " + Decimal.ToInt32(_WeiEvaluation) + ",";
-            query = query.Remove(query.Length - 1);//Remove a ultima virgula antes do where.
+            query += "\n [WeiEvaluation] = " + Decimal.ToInt32(_WeiEvaluation2);//+ " " + Decimal.ToInt32(_WeiEvaluation) + ",";
             query += "\n WHERE Id = " + Id;
 
 
@@ -158,7 +158,6 @@ namespace DTO.DTO.Params
             "\n , TotalLevel3WithDefects = @TotalLevel3WithDefects                                                                        " +
             "\n , AlterDate = GETDATE()                                                                                                   " +
             "\n WHERE Id = @ID                                                                                                            ";
-
             return query;
         }
 
@@ -184,6 +183,24 @@ namespace DTO.DTO.Params
                         (CollectionLevel2.ParLevel2_Id == r.ParLevel2_Id || r.ParLevel2_Id == null))
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
+
+                    try
+                    {
+                        if (IsColetaDCA(filtroParLevel3Value.FirstOrDefault()))
+                            if (string.IsNullOrEmpty(Value))
+                            {
+                                return "0";
+                            }
+                            else
+                            {
+                                Defects = decimal.Parse(Value);
+                                return Value;
+                            }
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 15", e); throw;
+                    }
 
                     try
                     {
@@ -228,13 +245,15 @@ namespace DTO.DTO.Params
 
                     try
                     {
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6)) != null)//TEXTO
+                        if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6) != null) //TEXTO
+
                             return "1";
                     }
                     catch (Exception e)
                     {
                         throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 5", e); throw;
                     }
+
                 }
 
                 return string.Empty;
@@ -257,18 +276,16 @@ namespace DTO.DTO.Params
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
-                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//BINARIO
+                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//BINARIO
                     {
                         return IsConform.GetValueOrDefault() ? "1" : "0";
                     }
-                    else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2) != null)//NUMERO DEFEITOS
+                    else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2 || r.ParLevel3InputType_Id == 15) != null)//NUMERO DEFEITOS
                     {
-
+                        IntervalMax = IntervalMax.Replace(',', '.');
                         var vmax = Convert.ToDecimal(IntervalMax, System.Globalization.CultureInfo.InvariantCulture);
-                        var vmin = Convert.ToDecimal(IntervalMin, System.Globalization.CultureInfo.InvariantCulture);
                         var valorDefinido = Guard.ConverteValorCalculado(_Value);
-                        var dentroDoRange = (valorDefinido <= vmax && valorDefinido >= vmin);
+                        var dentroDoRange = (valorDefinido <= vmax);
                         return dentroDoRange ? "1" : "0";
                     }
                     else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 4) != null)//CALCULADO
@@ -325,7 +342,11 @@ namespace DTO.DTO.Params
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
+                    if (IsColetaDCA(filtroParLevel3Value.FirstOrDefault()))
+                    {
+                        return string.IsNullOrEmpty(Value) ? defects : decimal.Parse(Value);
+                    }
+                    else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6) != null)
                     {
                         defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                     }
@@ -384,8 +405,11 @@ namespace DTO.DTO.Params
                         (CollectionLevel2.ParLevel2_Id == r.ParLevel2_Id || r.ParLevel2_Id == null))
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
-
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)//é um BINARIO
+                    if (IsColetaDCA(filtroParLevel3Value.FirstOrDefault()))
+                    {
+                        defects = _Defects;
+                    }
+                    else if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null) //é um BINARIO
                     {
                         defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                     }
@@ -484,11 +508,12 @@ namespace DTO.DTO.Params
             var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
 
             return "<div>" +
-                        "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" + double.Parse(IntervalMax, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                        "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" +
+                        "<span id='intervalMax'>" + double.Parse(IntervalMax.Replace(',', '.'), CultureInfo.InvariantCulture) +
+                        "</span>" +
                         "<br>" +
-                        "<label for='Conforme: '> " + Resources.Resource.min_interval + ": </label>" + double.Parse(IntervalMin, CultureInfo.InvariantCulture) + //Convert.ToDecimal(IntervalMin) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMin)) +
-                        "<br>" +
-                        "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + double.Parse(Value, CultureInfo.InvariantCulture) + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                        "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" +
+                        Value +
                         "<br>" +
                         "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp" +
                     "<input type='text' id='numeroDeDefeitos' class='decimal' />" +
@@ -522,21 +547,28 @@ namespace DTO.DTO.Params
 
         public bool IndicadorVinculadoAFamiliaDeProduto { get; set; } = false;
 
-        private bool MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(ParLevel3ValueDTO parLevel3ValueDTO)
+        private bool IsColetaDCA(ParLevel3ValueDTO parLevel3ValueDTO)
         {
-            if(parLevel3ValueDTO == null)
+            if (parLevel3ValueDTO == null)
             {
                 return false;
             }
 
-            using (var databaseSgq = new SgqDbDevEntities())
+            if (parLevel3ValueDTO.ParLevel3InputType_Id == 2 || parLevel3ValueDTO.ParLevel3InputType_Id == 15)
             {
-                databaseSgq.Configuration.LazyLoadingEnabled = false;
-                this.IndicadorVinculadoAFamiliaDeProduto = databaseSgq.ParLevel1XParFamiliaProduto
-                    .Any(x => x.IsActive == true && x.ParLevel1_Id == this.CollectionLevel2.ParLevel1_Id);
+                using (var databaseSgq = new SgqDbDevEntities())
+                {
+                    databaseSgq.Configuration.LazyLoadingEnabled = false;
+                    IndicadorVinculadoAFamiliaDeProduto = databaseSgq.ParLevel1XParFamiliaProduto.Any(x => x.IsActive == true && x.ParLevel1_Id == CollectionLevel2.ParLevel1_Id);
+                }
+
+                if (IndicadorVinculadoAFamiliaDeProduto)
+                    return true;
+
+                return false;
+
             }
-            if (parLevel3ValueDTO.ParLevel3InputType_Id == 2 && IndicadorVinculadoAFamiliaDeProduto)
-                return true;
+
             return false;
         }
 
@@ -549,16 +581,15 @@ namespace DTO.DTO.Params
                     if (ParLevel3.ParLevel3Value.IsNotNull())
                     {
                         var filtroParLevel3Value = ParLevel3.ParLevel3Value
-                            .Where(r => (r.ParCompany_Id == CollectionLevel2.UnitId || r.ParCompany_Id == null) && 
-                            (CollectionLevel2.ParLevel1_Id == r.ParLevel1_Id || r.ParLevel1_Id == null) && 
+                            .Where(r => (r.ParCompany_Id == CollectionLevel2.UnitId || r.ParCompany_Id == null) &&
+                            (CollectionLevel2.ParLevel1_Id == r.ParLevel1_Id || r.ParLevel1_Id == null) &&
                             (CollectionLevel2.ParLevel2_Id == r.ParLevel2_Id || r.ParLevel2_Id == null))
                             .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                             .ToList();
 
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull()
-                            || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))
+                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)).IsNotNull())
                             return mountHtmlConform();
-                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2).IsNotNull())
+                        else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 2 || r.ParLevel3InputType_Id == 15).IsNotNull())
                             return mountHtmlNumeroDefeitos();
                         else if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 3 || r.ParLevel3InputType_Id == 8 || r.ParLevel3InputType_Id == 7 || r.ParLevel3InputType_Id == 9)).IsNotNull())
                             return mountHtmlIntervalos();

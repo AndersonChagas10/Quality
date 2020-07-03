@@ -160,6 +160,48 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true, parLevel1e2 = true)]
+        public ActionResult ApontamentosDiariosSeara()
+        {
+            //Retorna as Roles do usuário logado para filtrar o botão de edição
+            HttpCookie cookie = HttpContext.Request.Cookies.Get("webControlCookie");
+            var db = new SgqDbDevEntities();
+            List<string> Retorno = new List<string>();
+
+            int _userId = 0;
+            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            {
+                _userId = Convert.ToInt32(cookie.Values["userId"].ToString());
+            }
+
+            var roles = db.ParCompanyXUserSgq.Where(r => r.UserSgq_Id == _userId).ToList();
+
+            foreach (var role in roles)
+            {
+                Retorno.Add(role.Role);
+            }
+
+            ViewBag.Roles = Retorno;
+
+            //Produtos para edição de cabeçalhos
+            var conexao = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            var db2 = new SqlConnection(conexao);
+
+            SGQDBContext.Generico listaProdutos = new SGQDBContext.Generico(db2);
+
+            ViewBag.Produtos = listaProdutos.getProdutos();
+
+            //Fim da Role
+
+            using (var dbEntity = new Dominio.SgqDbDevEntities())
+            {
+                ViewBag.ParReasonEdit = dbEntity.ParReason.Where(x => x.IsActive && x.ParReasonType_Id == 3).ToList();
+            }
+
+            return View(form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true, parLevel1e2 = true)]
         public ActionResult ApontamentosDiariosRH()
         {
             //Retorna as Roles do usuário logado para filtrar o botão de edição

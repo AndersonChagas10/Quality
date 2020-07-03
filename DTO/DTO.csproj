@@ -201,6 +201,7 @@
     <Compile Include="ResultSet\AnaliseCriticaResultSet.cs" />
     <Compile Include="ResultSet\ApontamentosDiariosDomingoResultSet.cs" />
     <Compile Include="ResultSet\ApontamentosDiariosResultSet.cs" />
+    <Compile Include="ResultSet\ParProdutoResultSet.cs" />
     <Compile Include="ResultSet\RelatorioConsistencyCallMSPResultSet.cs" />
     <Compile Include="ResultSet\RelatorioDeResultadoSearaResultsSet.cs" />
     <Compile Include="ResultSet\RelatorioEdicaoResultSet.cs" />
