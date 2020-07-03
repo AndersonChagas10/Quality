@@ -366,7 +366,10 @@ namespace SgqSystem.Controllers
             //Turno = 12,
             //Departamento = 13,
             //Secao = 14,
-            //Cargo = 15
+            //Cargo = 15,
+            //Avaliacao = 16,
+            //Amostra = 17,
+            //Shift = 18,
             foreach (var item in reportXFilter)
             {
                 switch (item.FilterLevel)
@@ -487,6 +490,19 @@ namespace SgqSystem.Controllers
                         break;
                     case 17:
                         ViewBag.ShowAmostra = true;
+
+                        if (item.IsMultiple)
+                            ViewBag.ShowAmostraMultiple = "multiple";
+                        else
+                            ViewBag.ShowAmostraMultiple = "";
+
+                        if (item.IsRequired == true)
+                            ViewBag.AmostraIsrequired = 1;
+                        else
+                            ViewBag.AmostraIsrequired = 0;
+                        break;
+                    case 18:
+                        ViewBag.ShowShift = true;
 
                         if (item.IsMultiple)
                             ViewBag.ShowAmostraMultiple = "multiple";

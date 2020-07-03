@@ -3722,4 +3722,11 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-885</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[GQ] FORMULÁRIOS - Incluir filtro de "Turno" no cadastro de filtros.</Description>
+    <Script></Script>
+  </Card>
+
 </Cards>
