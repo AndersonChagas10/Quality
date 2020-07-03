@@ -8,6 +8,8 @@
     ViewBag.ShowDimensaoGrafico = true;
     ViewBag.ShowModeloGrafico = true;
 
+    ViewBag.ShowTurnoSeara = true;
+
     ViewBag.ShowParStructure2 = true;
 
     //ViewBag.ShowParStructure = false;
@@ -23,6 +25,7 @@
     var urlGetTabelaUnidades = Url.Action("GetTabelaUnidadesSeara", "api/ApontamentosDiarios");
     var @urlGetPorcCTotal = Url.Action("GetPorcCTotal", "api/ApontamentosDiarios");
     var urlGrafico = Url.Action("GraficoUnidades", "api/ApontamentosDiarios");
+    var urlTabelaColetas = Url.Action("TabelaColetasSeara", "api/ApontamentosDiarios");
 }
 
 @section Content {
@@ -44,6 +47,10 @@
         <hr />
         <div class="container" id="grafico1" style="height: auto; margin: 0 auto">
             <table id="tableGrafico1"></table>
+        </div>
+        <hr />
+        <div class="container" id="grafico1" style="height: auto; margin: 0 auto">
+            <table id="tableGrafico2"></table>
         </div>
         <hr />
 
@@ -68,10 +75,11 @@
 @section Scripts {
     @Scripts.Render("~/Scripts/heatmap.js")
 
-    <script>
+<script>
 
         var urlGet = '@Html.Raw(@urlGet)';
         var urlGrafico = '@Html.Raw(@urlGrafico)';
+        var urlTabelaColetas = '@Html.Raw(@urlTabelaColetas)';
         var urlGetTabelaUnidades = '@Html.Raw(@urlGetTabelaUnidades)'
         var urlGetPorcCTotal = '@Html.Raw(@urlGetPorcCTotal)'
 
@@ -165,6 +173,24 @@
                 closeLoader();
                 $('#tabela').show();
 
+		        $('#showCUnidade').text($('#totalMedia > tr > td').text() + '%')
+
+            	$('#showCUnidade').css('font-size', '40px')
+                $('#showCUnidade').css('padding', '40px')
+
+                $('#divTable').show();
+
+                setTimeout(function () {
+
+                    $('#showCUnidade').text($('#totalMedia > tr > td').text() + '%')
+
+                    $('#showCUnidade').css('font-size', '40px')
+                    $('#showCUnidade').css('padding', '40px')
+
+                    $('#showCUnidade').removeClass("hide")
+
+                }, 1000);
+
             })
             .fail(function (jqXHR, textStatus, msg) {
                 //console.log(msg);
@@ -172,6 +198,37 @@
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
             });
+
+            $.ajax({
+                url: urlTabelaColetas,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            })
+                .done(function (data) {
+                    //console.log(data);
+                    Tabela2(data);
+                    $btn.button('reset');
+                    closeLoader();
+                    $('#tabela').show();
+
+                    $('#showCUnidade').text($('#totalMedia > tr > td').text() + '%')
+
+                    $('#showCUnidade').css('font-size', '40px')
+                    $('#showCUnidade').css('padding', '40px')
+
+                    $('#divTable').show();
+
+                })
+                .fail(function (jqXHR, textStatus, msg) {
+                    //console.log(msg);
+                    $btn.button('reset');
+                    //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                    closeLoader();
+                });
 
             $('#divTable').hide();
             $('#divApontamentos').hide();
@@ -195,25 +252,25 @@
             //    closeLoader();
             //});
 
-            $.ajax({
-                url: urlGetPorcCTotal,
-                type: 'post',
-                data: JSON.stringify(objFiltro),
-                dataType: "JSON",
-                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
-                beforeSend: function () {
-                }
-            })
-            .done(function (data) {
-                GerarPorcCTotal(data);
-                closeLoader();
-                $('#divTable').show();
-            })
-            .fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
-                preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
-                closeLoader();
-            });
+            //$.ajax({
+            //    url: urlGetPorcCTotal,
+            //    type: 'post',
+            //    data: JSON.stringify(objFiltro),
+            //    dataType: "JSON",
+            //    contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+            //    beforeSend: function () {
+            //    }
+            //})
+            //.done(function (data) {
+            //    GerarPorcCTotal(data);
+            //    closeLoader();
+            //    $('#divTable').show();
+            //})
+            //.fail(function (jqXHR, textStatus, msg) {
+            //    console.log(msg);
+            //    preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+            //    closeLoader();
+            //});
 
             $("#PivotTable").css("display", "none");
             $('#RGTarefasPivotTable').hide();
@@ -248,6 +305,50 @@
                     { title: "Não conformidades", mData: "Nc" },
                     { title: "Percentual de Não Conformidades", mData: "PorcNc" },
                     { title: "Nota final", mData: "TOTAL" },
+                ],
+                numeroLinhasNaTabela: 25,
+                aplicarResponsividade: true,
+                tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                initComplete: function () { //Função que dispara quando a tabela termina de carregar
+                    $('#loading').hide(); //Se tiver load, ele esconde o mesmo
+
+                    setTimeout(function (e) { //função para a tabela ser ajustada
+                        var oTable = $('#idTabela').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                        }
+                    }, 100);
+
+                },
+                createdRow: function (row, data, index) {
+                }
+            });
+
+        }
+
+        //------------------------- Tabela -----------------------------------
+
+        function Tabela2(data) {
+
+            var arrDeObjetos = data;
+
+            var table = datatableGRT.Inicializar({
+                idTabela: "tableGrafico2", //Id da table no HTML
+                listaDeDados: arrDeObjetos, //seu Arr de objetos que vem da API
+                colunaDosDados: [
+                    { title: "Unidade", mData: "Empresa" },
+                    { title: "Data", mData: "Data" },
+                    { title: "Turno", mData: "Turno" },
+                    { title: "Familia", mData: "Familia" },
+                    { title: "Nota Familia", mData: "NotaFamilia" },
+                    { title: "SKU", mData: "SKU" },
+                    { title: "Cabeçalhos", mData: "CABECALHO" },
+                    { title: "Grupo", mData: "Grupo" },
+                    { title: "Nota Grupo", mData: "NotaGrupo" },
+         
                 ],
                 numeroLinhasNaTabela: 25,
                 aplicarResponsividade: true,
@@ -809,7 +910,12 @@
 
         function GerarPorcCTotal(retornoArray) {
             var PorcCTotal = retornoArray[0].PorcC;
-            $('#showCUnidade > h1').text(PorcCTotal.toFixed(2) + " %");
+            //$('#showCUnidade > h1').text(PorcCTotal.toFixed(2) + " %");
+            $('#showCUnidade').text($('#totalMedia > tr > td').text() + '%')
+
+            $('#showCUnidade').css('font-size', '40px')
+            $('#showCUnidade').css('padding', '40px')
+
             $('#showCUnidade').removeClass("hide")
         }
 
@@ -1032,6 +1138,6 @@
             }
         }
 
-    </script>
+</script>
 
 }

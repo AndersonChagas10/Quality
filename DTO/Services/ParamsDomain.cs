@@ -261,7 +261,7 @@ namespace DTO.Services
             var todasRotinas = _baseRotinaIntegracao.GetAllAsNoTracking().Where(x => x.IsActive);
             var goal = parlevel1.ParGoal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
             var cluster = parlevel1.ParLevel1XCluster.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
-            var listL3L2L1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").AsNoTracking().Where(r => r.Active == true && r.ParLevel1_Id == idParLevel1).ToList();
+            var listL3L2L1 = db.ParLevel3Level2Level1.Include("ParLevel3Level2").AsNoTracking().Where(r => r.Active == true && r.ParLevel1_Id == idParLevel1 && r.ParLevel3Level2.IsActive == true).ToList();
             var relapse = parlevel1.ParRelapse.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
             var notConformityrule = parlevel1.ParNotConformityRuleXLevel.Where(r => r.IsActive == true && r.ParLevel2_Id == null).OrderByDescending(r => r.IsActive).ToList();
             var cabecalhos = parlevel1.ParLevel1XHeaderField.Where(r => r.IsActive == true).OrderBy(r => r.IsActive).ToList();
@@ -449,7 +449,7 @@ namespace DTO.Services
 
             if (level1Id > 0)
             {
-                var possuiVinculoComLevel1 = db.ParLevel2Level1.Where(r => r.ParLevel1_Id == level1Id && r.ParLevel2_Id == level2.Id);
+                var possuiVinculoComLevel1 = db.ParLevel2Level1.Where(r => r.ParLevel1_Id == level1Id && r.ParLevel2_Id == level2.Id && r.IsActive);
                 if (possuiVinculoComLevel1 != null && possuiVinculoComLevel1.Count() > 0)
                     paramsDto.parLevel2Dto.isVinculado = true;
             }
@@ -931,7 +931,7 @@ namespace DTO.Services
             retorno.contadoresIncluidos = Mapper.Map<List<ParCounterXLocalDTO>>(_baseRepoParCounterXLocal.GetAll().Where(r => r.ParLevel1_Id == retorno.Id));
 
             /*Level 2 e 3 vinculados*/
-            retorno.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(_baseRepoParLevel3Level2Level1.GetAll().Where(r => r.ParLevel1_Id == retorno.Id).ToList());
+            retorno.listParLevel3Level2Level1Dto = Mapper.Map<List<ParLevel3Level2Level1DTO>>(_baseRepoParLevel3Level2Level1.GetAll().Where(r => r.ParLevel1_Id == retorno.Id && r.Active == true && r.ParLevel3Level2.IsActive == true).ToList());
             retorno.CreateSelectListParamsViewModelListLevel(Mapper.Map<List<ParLevel2DTO>>(_baseRepoParLevel2.GetAll()), retorno.listParLevel3Level2Level1Dto);
 
             retorno.listParLevel2Colleta = new List<ParLevel2DTO>();

@@ -39,5 +39,29 @@ namespace SgqSystem.Controllers.Api.Log
             return LogSystem.LogTrackBusiness.GetLogTrack(table_name, ids);
 
         }
+
+        // GET: LogTrack
+        [Route("GetHeaderFieldGeralByResult_Level3/{id}")]
+        public IEnumerable<object> GetHeaderFieldGeral([FromUri] int id)
+        {
+            var table_name = "CollectionLevel2XParHeaderFieldGeral";
+            var ids = new List<int>();
+            using (var db = new Dominio.SgqDbDevEntities())
+            {
+                var collectionLevel2_Id = db.Result_Level3
+                    .Where(x => x.Id == id)
+                    .ToList()
+                    .Select(x => x.CollectionLevel2_Id)
+                    .FirstOrDefault();
+
+                ids = db.CollectionLevel2XParHeaderFieldGeral
+                    .Where(x => x.CollectionLevel2_Id == collectionLevel2_Id)
+                    .Select(x => x.Id)
+                    .ToList();
+            }
+
+            return LogSystem.LogTrackBusiness.GetLogTrack(table_name, ids);
+
+        }
     }
 }

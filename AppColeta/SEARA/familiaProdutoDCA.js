@@ -79,10 +79,12 @@ function getParProdutoPorFamiliaDeProduto(){
 }
 
 function getSelectProdutosDCA() {
+    var htmlLista = '<input type="text" id="buscaProdutoDCA" class="form-control" style="height:50px;" placeholder="Buscar Produto/ SKU">';
+    htmlLista += '<select id="selectProdutoDCA" name="produtoDCA" class="form-control" style="height:50px;">';
 
-	var htmlLista = '<select name="produtoDCA" class="form-control" style="height:100px;">';
-
-	$(getParProdutoPorFamiliaDeProduto()).each(function (i, o) {
+    var listaParProdutoPorFamiliaDeProduto = getParProdutoPorFamiliaDeProduto();
+    listaParProdutoPorFamiliaDeProduto.sort((a, b) => a.Name.localeCompare(b.Name));
+    $(listaParProdutoPorFamiliaDeProduto).each(function (i, o) {
 		var selected = "";
 		if(currentProdutoDCA_Id == o.Id){
 			selected = " selected";
@@ -94,6 +96,22 @@ function getSelectProdutosDCA() {
 
 	return htmlLista;
 }
+
+$('body').off('keyup', '#buscaProdutoDCA').on('keyup', '#buscaProdutoDCA', function (e) {
+    var listaProdutosDCA = "";
+    $(getParProdutoPorFamiliaDeProduto()).each(function (i, o) {
+        
+        if (o.Name.toLowerCase().includes($('#buscaProdutoDCA').val().toLowerCase())) {
+            listaProdutosDCA += '<option value="' + o.Id + '">' + o.Name + '</option>';
+        }
+    });
+    if (listaProdutosDCA == "") {
+        listaProdutosDCA = "<option value='' disabled selected>Nenhum resultado encontrado.</option>"
+    }
+    $('#selectProdutoDCA').html(listaProdutosDCA);
+
+    currentProdutoDCA_Id = parseInt($('select[name="produtoDCA"]').val());
+});
 
 $('body').off('change', 'select[name="produtoDCA"]').on('change', 'select[name="produtoDCA"]', function (e) {
 
