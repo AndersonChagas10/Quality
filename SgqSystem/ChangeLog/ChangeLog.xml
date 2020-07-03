@@ -3788,4 +3788,11 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-884</CardNumber>
+    <Version>1.10.0</Version>
+    <Description>[GQ] RELATÓRIO DE FORMULÁRIOS - Remontar a tabela para na impressão não quebrar a largura</Description>
+    <Script></Script>
+  </Card>
+
 </Cards>

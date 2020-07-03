@@ -30,7 +30,7 @@
 }
 
 @section Content {
-        <style>
+    <style>
 
         footer {
             font-size: 12px;
@@ -99,7 +99,7 @@
             height: 15px !important;
         }
 
-        </style>
+    </style>
 
     <div class="page-content-wrapper">
         <button class="btn btn-primary" id="btnPrint">@Resources.Resource.print</button>
@@ -139,7 +139,8 @@
                 </div>
 
                 <div class="row" id="corpoPagina">
-                    <div id="pivot-table">
+                    <div id="print-table-pivot-table"></div>
+                    <div id="pivot-table" style="overflow-x:auto">
 
                     </div>
                     <br /><br /><br />
@@ -160,7 +161,7 @@
                     </footer>
 
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -178,10 +179,34 @@
 
        // $('[name="parCompany_Ids"]').parent().find('label strong').append('<span style="color:red;font-size:20px"> *</span>');
 
-        $('body').on('click', '#btnPrint', function () {
+        $('body').off('click').on('click', '#btnPrint', function () {
             $('#printTitulo').html($("#tdNomeRelatorio").text());
             $("#printElaborador").html($("#tdElaborador").text());
             $("#printAprovador").html($("#tdAprovador").text());
+
+            /*
+            dpi is the pixel density or dots per inch.
+            96 dpi means there are 96 pixels per inch.
+            1 inch is equal to 2.54 centimeters.
+
+            1 inch = 2.54 cm
+            dpi = 96 px / in
+            96 px / 2.54 cm
+            */
+            var idTabelaOriginal = 'table-pivot-table';
+            var idFormatadoParaImpressao = 'print-table-pivot-table';
+            var config = {
+	            startWidth: 0,
+	            startTHCount: -1,
+	            startTHRowsCount: -1,
+	            maxWidthInCentimeter: (96/2.54) * 21,
+	            startCells: [],
+	            valuesCells: []
+            }
+            remontarTabela(idTabelaOriginal,idFormatadoParaImpressao,config);
+            ajustarTabela(idFormatadoParaImpressao, idFormatadoParaImpressao, config);
+            $('#' + idTabelaOriginal).addClass('hide');
+            document.body.setAttribute("style", "background-color:#fff !important;");
 
             printGRT.Inicializar({
 
@@ -198,6 +223,12 @@
             });
 
             printGRT.Imprimir();
+
+            setTimeout(function () {
+                document.body.setAttribute("style", "");
+                $('#' + idTabelaOriginal).removeClass('hide');
+                document.getElementById(idFormatadoParaImpressao).innerHTML = "";
+            },100);
 
             $('#divRenderPrint').remove();
         });
@@ -369,7 +400,7 @@
             console.log(rowspanTotal);
 
             var htmlTable = "";
-            htmlTable += "<table class='table table-bordered table-striped'>";
+            htmlTable += "<table class='table table-bordered table-striped' id='table-pivot-table'>";
 
             /***INICIO: MONTA COLUNAS HTML **********************************************/
             var matrizHtmlColunas = [];
@@ -583,5 +614,149 @@
         }
         /***FIM: MONTA VALORES HTML **********************************************/
 
+        var tamanhoFonte = 8;
+        function remontarTabela(id,idParaRemontar,config){
+	        var pivotTable = document.getElementById(id);
+	        var linhas = pivotTable.getElementsByTagName("tr");
+	        var rowspanFim = 1;
+	        var rowspanInicio = 0;
+	        var htmlCellRowspan = "";
+
+	        var htmlTable = "<table class='table table-bordered'>";
+	        for(var i = 0; i < linhas.length; i++){
+		        htmlTable += "<tr>";
+		        var quantidadeColspan = 0;
+		        for(var j = 0; j < linhas[i].childNodes.length; j++){
+			        var celula = linhas[i].childNodes[j];
+
+			        if(i <= rowspanFim-1 && j == 0){
+				        htmlTable += htmlCellRowspan;
+                    }
+
+                    var style = ajustarEstiloDaCelula(celula);
+
+			        var htmlCell = "";
+			        if(celula.getAttribute("colspan")){
+				        var colspan = parseInt(celula.getAttribute("colspan"));
+                        quantidadeColspan += colspan
+
+                        for (var z = 0; z < colspan; z++){
+                            var width = 150;
+                            if (celula.offsetWidth < width) {
+                                width = celula.offsetWidth;
+                            }
+					        htmlCell += "<"+celula.tagName+" style='padding:2px;width:"+width+"px !important;"+style+";font-size:"+tamanhoFonte+"pt !important'>"+celula.innerHTML+"</"+celula.tagName+">";
+				        }
+
+				        if(config.startTHCount == -1){
+					        config.startTHCount = colspan;
+				        }
+			        }else{
+				        quantidadeColspan++;
+				        htmlCell += "<"+celula.tagName+" style='padding:2px;"+style+";font-size:"+tamanhoFonte+"pt !important;'>"+celula.innerHTML+"</"+celula.tagName+">";
+			        }
+			        htmlTable += htmlCell;
+
+			        if(celula.getAttribute("rowspan")){
+				        htmlCellRowspan = htmlCell;
+				        rowspanInicio = i;
+				        rowspanFim = rowspanInicio + parseInt(celula.getAttribute("rowspan"));
+				        if(config.startTHRowsCount == -1){
+					        config.startTHRowsCount = parseInt(celula.getAttribute("rowspan"));
+				        }
+			        }
+
+		        }
+		        htmlTable += "</tr>";
+	        }
+	        htmlTable += "</table>";
+	        document.getElementById(idParaRemontar).innerHTML = htmlTable;
+        }
+
+        function ajustarTabela(id,idParaRemontar,config){
+	        var isConfigured = false;
+	        var pivotTable = document.getElementById(id);
+	        var linhas = pivotTable.getElementsByTagName("tr");
+
+	        for(var i = 0; i < linhas.length; i++){
+		        var countTable = 0;
+		        var currentWidth = 0;
+		        for(var j = 0; j < linhas[i].childNodes.length; j++){
+                    var celula = linhas[i].childNodes[j];
+
+                    var style = ajustarEstiloDaCelula(celula);
+
+			        var htmlCelula = "";
+			        if((j+1) > config.startTHCount || (i+1) > config.startTHRowsCount){
+				        if(celula.tagName == "TH"){
+					        htmlCelula = "<"+celula.tagName+" style='font-size:9pt;padding:2px;width:"+celula.offsetWidth+"px !important;"+style+";font-size:"+tamanhoFonte+"pt !important;'>"+celula.innerHTML+"</"+celula.tagName+">";
+				        }else{
+					        htmlCelula = "<"+celula.tagName+" style='font-size:9pt;padding:2px;"+style+";font-size:"+tamanhoFonte+"pt !important;'>"+celula.innerHTML+"</"+celula.tagName+">";
+				        }
+			        //}else if(i == 0 && j == 0){
+				    //    htmlCelula = "<"+celula.tagName+" colspan='"+config.startTHCount+"' rowspan='"+config.startTHRowsCount+"'></"+celula.tagName+">";
+			        }else{
+				        htmlCelula = "<"+celula.tagName+" style='border:0px !important;"+style+";font-size:"+tamanhoFonte+"pt !important;'></"+celula.tagName+">";
+			        }
+
+			        if((j+1) <= config.startTHCount){
+				        currentWidth += celula.offsetWidth;
+				        //Registra qual a largura que inicialmente é utilizada
+				        if(!isConfigured && (j+1) == config.startTHCount){
+					        isConfigured = true;
+					        config.startWidth = currentWidth;
+				        }
+				        config.startCells[i] = (config.startCells[i] == undefined? '' : config.startCells[i])+htmlCelula;
+				        if(isConfigured){
+					        currentWidth = 0;
+				        }
+			        }else if((j+1) > config.startTHCount){
+				        //Calcula valores
+				        if((config.startWidth + currentWidth + celula.offsetWidth) > config.maxWidthInCentimeter){
+					        currentWidth = 0;
+					        countTable++;
+				        }
+				        currentWidth += celula.offsetWidth;
+
+				        if(!config.valuesCells[i]){
+					        config.valuesCells[i] = [];
+				        }
+
+				        config.valuesCells[i][countTable] = (config.valuesCells[i][countTable] == undefined? '' : config.valuesCells[i][countTable])+htmlCelula;
+			        }
+		        }
+	        }
+
+	        document.getElementById(idParaRemontar).innerHTML = "";
+	        var htmlTable = [];
+	        for(var i = 0; i < config.valuesCells.length; i++){
+		        for(var j = 0; j < config.valuesCells[i].length; j++){
+			        if(i == 0){ //avoid-break-page
+				        htmlTable[j] = "<table class='table table-bordered' style='font-size:"+tamanhoFonte+"pt !important;'>";
+			        }
+			        htmlTable[j] += "<tr>";
+			        htmlTable[j] += config.startCells[i];
+			        htmlTable[j] += config.valuesCells[i][j];
+			        htmlTable[j] += "</tr>";
+
+			        if((i+1) == config.valuesCells.length){
+				        htmlTable[j] += "</table>";
+				        document.getElementById(idParaRemontar).insertAdjacentHTML( 'beforeend', htmlTable[j]);
+			        }
+		        }
+	        }
+
+        }
+
+        function ajustarEstiloDaCelula(celula) {
+            var style = "";
+            if (!!celula.style.backgroundColor) {
+                style += "background-color:" + celula.style.backgroundColor + " !important;";
+            }
+            if (!!celula.style.color) {
+                style += "color:" + celula.style.color + " !important;";
+            }
+            return style;
+        }
     </script>
 }
