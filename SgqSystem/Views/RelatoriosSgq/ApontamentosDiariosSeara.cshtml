@@ -356,12 +356,14 @@
 
                         var data = table.row($(this).parents('tr')).data();
 
+                        debugger
+
                         $.post(urlEdit + "/" + data.ResultLevel3Id, function (r) {
 
                             if (r != null) {
                                 $('#myModal #estName').html(data.Unidade + " > " + data.Indicador + " > " + data.Monitoramento + " > " + data.Tarefa);
                                 $('#myModal #ResultLevel3_Id').val(r.Id);
-
+                                $('#myModal #correctiveActionModal').append('<span id="sample" class="sample" name="" value="' + data.Amostra + '" style=""></span>');
                                 $('#myModal #changeConform').empty();
                                 $('#myModal #changeConform').append($(r.showGeneric));
                                 $("#botaoSalvar").show();
@@ -797,7 +799,7 @@
                         escondeMensagemVazio();
 
                         $.post(urlEditProduto + "/" + data.ParFamiliaProduto_Id, function (r) {
-                            
+
                             $('#modalProduto #divEdit').empty();
 
                             $('#modalProduto #estName').html("");
@@ -891,10 +893,14 @@
         function SalvarResultLevel3() {
 
             var dadosResultLevel3 = {};
+            var isColetaDCA = (!!$('#numeroDeDefeitos').length && !!$('#sample').attr('value'));
 
-            if ($('#sample') != undefined) {
+            if (isColetaDCA) {
 
-                if ($('#sample').val() > $('#numeroDeDefeitos').val()) {
+                var sample = parseInt($('#sample').attr('value'));
+                var value = parseInt($('#numeroDeDefeitos').val());
+
+                if (value > sample) {
                     openMessageModal("O numero de defeitos não pode ser maior que o numero avaliado.")
                     return;
 
@@ -904,8 +910,6 @@
             }
 
             dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
-
-
 
             dadosResultLevel3["IsNotEvaluate"] = $('#IsEvaluated').is(':checked');
 
@@ -935,16 +939,15 @@
             var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
             dadosResultLevel3["Motivo"] = textareaParReasonEdit;
 
-            //$('select[name="selectParReasonEdit"]:visible').attr('style','border:0px;');
             $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
                 $('.alertParReasonEditIsRequired').addClass('hide');
 
             if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 1) {
                 $('.alertParReasonEditIsRequired').removeClass('hide');
-                //$('select[name="selectParReasonEdit"]:visible').attr('style','border:1px solid red;');
                 $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');
                 return;
             }
+
 
             $.post(urlSave + "/" + @Html.Raw(ViewBag.UserId) + "/" + selectParReasonEdit, dadosResultLevel3, function (r, x, e) {
 

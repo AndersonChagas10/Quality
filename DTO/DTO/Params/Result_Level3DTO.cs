@@ -186,6 +186,24 @@ namespace DTO.DTO.Params
 
                     try
                     {
+                        if (IsColetaDCA(filtroParLevel3Value.FirstOrDefault()))
+                            if (string.IsNullOrEmpty(Value))
+                            {
+                                return "0";
+                            }
+                            else
+                            {
+                                Defects = decimal.Parse(Value);
+                                return Value;
+                            }
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 15", e); throw;
+                    }
+
+                    try
+                    {
                         if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null)
                             return "0";
                     }
@@ -227,9 +245,7 @@ namespace DTO.DTO.Params
 
                     try
                     {
-                        if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 5
-                        || r.ParLevel3InputType_Id == 6)) != null
-                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//TEXTO
+                        if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 5 || r.ParLevel3InputType_Id == 6) != null) //TEXTO
 
                             return "1";
                     }
@@ -237,6 +253,7 @@ namespace DTO.DTO.Params
                     {
                         throw new Exception("Erro ao gerar valor na RN 45 para ParLevel3InputType_Id == 5", e); throw;
                     }
+
                 }
 
                 return string.Empty;
@@ -325,8 +342,11 @@ namespace DTO.DTO.Params
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
 
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
-                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//é um BINARIO
+                    if (IsColetaDCA(filtroParLevel3Value.FirstOrDefault()))
+                    {
+                        return string.IsNullOrEmpty(Value) ? defects : decimal.Parse(Value);
+                    }
+                    else if (filtroParLevel3Value.FirstOrDefault(r => r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6) != null)
                     {
                         defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                     }
@@ -385,9 +405,11 @@ namespace DTO.DTO.Params
                         (CollectionLevel2.ParLevel2_Id == r.ParLevel2_Id || r.ParLevel2_Id == null))
                         .OrderByDescending(r => r.ParCompany_Id).ThenBy(r => r.ParLevel1_Id).ThenBy(r => r.ParLevel2_Id)
                         .ToList();
-
-                    if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null
-                        || MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(filtroParLevel3Value.FirstOrDefault()))//é um BINARIO
+                    if (IsColetaDCA(filtroParLevel3Value.FirstOrDefault()))
+                    {
+                        defects = _Defects;
+                    }
+                    else if (filtroParLevel3Value.FirstOrDefault(r => (r.ParLevel3InputType_Id == 1 || r.ParLevel3InputType_Id == 6)) != null) //é um BINARIO
                     {
                         defects = IsConform.GetValueOrDefault() ? 0M : 1M;
                     }
@@ -484,14 +506,14 @@ namespace DTO.DTO.Params
         public string mountHtmlNumeroDefeitos()
         {
             var naoAvaliado = IsNotEvaluate.GetValueOrDefault() ? "checked='checked'" : "";
-            
+
             return "<div>" +
                         "<label for='Conforme: '> " + Resources.Resource.max_interval + ": </label>" +
-                        "<span id='intervalMax'>" + double.Parse(IntervalMax.Replace(',', '.'), CultureInfo.InvariantCulture)+ 
-                        "</span>" + //Convert.ToDecimal(IntervalMax) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(IntervalMax)) +
+                        "<span id='intervalMax'>" + double.Parse(IntervalMax.Replace(',', '.'), CultureInfo.InvariantCulture) +
+                        "</span>" +
                         "<br>" +
-                        "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" + 
-                        Value + //Convert.ToDecimal(Value) +//+ Guard.ConverteValorCalculado(Convert.ToDecimal(Value)) +
+                        "<label for='Conforme: '> " + Resources.Resource.current_value + ": </label>" +
+                        Value +
                         "<br>" +
                         "<label for='Conforme: '> " + Resources.Resource.new_value + ": </label> &nbsp" +
                     "<input type='text' id='numeroDeDefeitos' class='decimal' />" +
@@ -525,21 +547,28 @@ namespace DTO.DTO.Params
 
         public bool IndicadorVinculadoAFamiliaDeProduto { get; set; } = false;
 
-        private bool MontaBinarioSeForNumeroDeDefeitosComIndicadorVinculadoFamiliaDeProduto(ParLevel3ValueDTO parLevel3ValueDTO)
+        private bool IsColetaDCA(ParLevel3ValueDTO parLevel3ValueDTO)
         {
             if (parLevel3ValueDTO == null)
             {
                 return false;
             }
 
-            using (var databaseSgq = new SgqDbDevEntities())
+            if (parLevel3ValueDTO.ParLevel3InputType_Id == 2 || parLevel3ValueDTO.ParLevel3InputType_Id == 15)
             {
-                databaseSgq.Configuration.LazyLoadingEnabled = false;
-                this.IndicadorVinculadoAFamiliaDeProduto = databaseSgq.ParLevel1XParFamiliaProduto
-                    .Any(x => x.IsActive == true && x.ParLevel1_Id == this.CollectionLevel2.ParLevel1_Id);
+                using (var databaseSgq = new SgqDbDevEntities())
+                {
+                    databaseSgq.Configuration.LazyLoadingEnabled = false;
+                    IndicadorVinculadoAFamiliaDeProduto = databaseSgq.ParLevel1XParFamiliaProduto.Any(x => x.IsActive == true && x.ParLevel1_Id == CollectionLevel2.ParLevel1_Id);
+                }
+
+                if (IndicadorVinculadoAFamiliaDeProduto)
+                    return true;
+
+                return false;
+
             }
-            if ((parLevel3ValueDTO.ParLevel3InputType_Id == 2 || parLevel3ValueDTO.ParLevel3InputType_Id == 15) && IndicadorVinculadoAFamiliaDeProduto)
-                return true;
+
             return false;
         }
 
