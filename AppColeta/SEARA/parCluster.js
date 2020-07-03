@@ -2,6 +2,7 @@ function listarParCluster() {
 
     var htmlParCluster = "";
 
+    parametrization.listaParCluster.sort((a, b) => a.Name.localeCompare(b.Name));
     $(parametrization.listaParCluster).each(function (i, o) {
 
         htmlParCluster += '<button type="button" class="list-group-item col-xs-12" data-par-cluster-id="' + o.Id + '" '
@@ -21,7 +22,7 @@ function listarParCluster() {
         '			      <div class="col-xs-9">                         ' +
         '				<h3 class="panel-title">' + voltar + 'Qual cluster deseja realizar coleta?</h3>' +
         '                 </div >                                          ' +
-        '                 <div class="col-xs-3">                           ' +
+        '                 <div class="col-md-3">                           ' +
         getBotaoBuscar() +
         '                 </div>                                           ' +
         '               </div>                                             ' +

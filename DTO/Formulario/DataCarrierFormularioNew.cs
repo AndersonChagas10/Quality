@@ -35,6 +35,8 @@ namespace DTO
 
         public int[] ParCompany_Ids { get; set; } = new int[] { };
 
+        public string[] ShowTurnoSeara { get; set; } = new string[] { };
+
         public int[] Shift_Ids { get; set; } = new int[] { };
 
         public int[] ParDepartment_Ids { get; set; } = new int[] { };
