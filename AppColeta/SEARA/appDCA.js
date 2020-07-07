@@ -30,3 +30,25 @@ function setBreadcrumbsDCA() {
     $('.panel-heading').prepend(breadcrumb);
 
 }
+
+function validaParqualification(level1Id, level2Id, level3Id) {
+
+    var listaParLevel3ValueFiltrada = [];
+    var listaParQualificationxParLevel3Value = [];
+
+    parametrization.listaParLevel3Value.forEach(function (o, i) {
+        if (o.ParLevel1_Id == level1Id && o.ParLevel2_Id == level2Id && o.ParLevel3_Id == level3Id)
+            listaParLevel3ValueFiltrada.push(o);
+    });
+
+    if (listaParLevel3ValueFiltrada.length > 0) {
+
+        listaParQualificationxParLevel3Value =
+            $.grep(parametrization.listaPargroupQualificationXParLevel3Value, function (element, index) {
+                if (element.ParLevel3Value_Id == listaParLevel3ValueFiltrada[0].Id)
+                    return element;
+            });
+    }
+
+    return listaParQualificationxParLevel3Value;
+}

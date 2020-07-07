@@ -50,7 +50,7 @@
         {
             get
             {
-                return IsDefaultAnswer == false ? 0 : 1;
+                return IsDefaultAnswer == false || IsDefaultAnswer == null ? 0 : 1;
             }
         }
 
