@@ -222,7 +222,7 @@
 
                         {
                             title: "@Resources.Resource.edit_header", mData: null, mRender: function (data, type, full) {
-                                if (data.HeaderFieldList.length > 0) {
+                                if (data.HeaderFieldList != undefined && data.HeaderFieldList.length > 0) {
                                     return '<button id="editHeader" class="btn btn-link custom-button" data-toggle="modal" data-target="#modalHeaderField">' + "@Resources.Resource.edit_header" + '</button>';
                                 } else {
                                     return null;

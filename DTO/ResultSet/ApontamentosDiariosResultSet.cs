@@ -39,6 +39,7 @@ public class ApontamentosDiariosResultSet
     public string Turno { get; set; }
     public string Auditor { get; set; }
     public string ValueText { get; set; }
+    public string HeaderFieldList { get; set; }
     public string HeaderFieldListL1 { get; set; }
     public string HeaderFieldListL2 { get; set; }
     public string HeaderFieldListL3 { get; set; }

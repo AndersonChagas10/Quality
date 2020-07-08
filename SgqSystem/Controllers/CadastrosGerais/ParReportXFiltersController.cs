@@ -137,16 +137,16 @@ namespace SgqSystem.Controllers.CadastrosGerais
             AdicionaItemObjFiltro(FilterEnum.Monitoramento.ToString(), (int)FilterEnum.Monitoramento);
             AdicionaItemObjFiltro(FilterEnum.Tarefa.ToString(), (int)FilterEnum.Tarefa);
             AdicionaItemObjFiltro(FilterEnum.Modulo.ToString(), (int)FilterEnum.Modulo);
-            AdicionaItemObjFiltro(FilterEnum.GrupoDeCluster.ToString(), (int)FilterEnum.GrupoDeCluster);
-            AdicionaItemObjFiltro(FilterEnum.Cluster.ToString(), (int)FilterEnum.Cluster);
-            AdicionaItemObjFiltro(FilterEnum.Holding.ToString(), (int)FilterEnum.Holding);
-            AdicionaItemObjFiltro(FilterEnum.Negocio.ToString(), (int)FilterEnum.Negocio);
+            AdicionaItemObjFiltro(FilterEnum.GrupoDeProcesso.ToString(), (int)FilterEnum.GrupoDeProcesso);
+            AdicionaItemObjFiltro(FilterEnum.Processo.ToString(), (int)FilterEnum.Processo); // Cluster
+            //AdicionaItemObjFiltro(FilterEnum.Holding.ToString(), (int)FilterEnum.Holding);
+            //AdicionaItemObjFiltro(FilterEnum.Negocio.ToString(), (int)FilterEnum.Negocio);
             AdicionaItemObjFiltro(FilterEnum.Regional.ToString(), (int)FilterEnum.Regional);
             AdicionaItemObjFiltro(FilterEnum.Unidade.ToString(), (int)FilterEnum.Unidade);
             AdicionaItemObjFiltro(FilterEnum.Turno.ToString(), (int)FilterEnum.Turno);
             AdicionaItemObjFiltro(FilterEnum.Departamento.ToString(), (int)FilterEnum.Departamento);
-            AdicionaItemObjFiltro(FilterEnum.Secao.ToString(), (int)FilterEnum.Secao);
-            AdicionaItemObjFiltro(FilterEnum.Cargo.ToString(), (int)FilterEnum.Cargo);          
+            //AdicionaItemObjFiltro(FilterEnum.Secao.ToString(), (int)FilterEnum.Secao);
+            //AdicionaItemObjFiltro(FilterEnum.Cargo.ToString(), (int)FilterEnum.Cargo);          
             AdicionaItemObjFiltro(FilterEnum.Avaliacao.ToString(), (int)FilterEnum.Avaliacao);          
             AdicionaItemObjFiltro(FilterEnum.Amostra.ToString(), (int)FilterEnum.Amostra);          
 
