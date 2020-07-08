@@ -110,7 +110,7 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
 
     var retorno = "";
 
-    var htmlLinhaParQualification = getParQualification(level1, level2, level3);
+    var htmlLinhaParQualification = getParQualification(level1, level2, level3, striped);
 
     if (level3.ParLevel3InputType && level3.ParLevel3InputType.Id) {
 
@@ -864,7 +864,7 @@ function SalvarAnomalias(collectionDate) {
                 Evaluation: currentEvaluation,
                 WeiDefects: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')),
                 Sample: maxSample,
-                Outros: '{ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ', ParProduto_Id:' + currentProdutoDCA_Id + '}'
+                Outros: '{ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ', ParProduto_Id:' + currentProdutoDCA_Id + ', Qualification_Value:["' + getQualificationCollection($(linhaTarefa).attr('data-level1'), $(linhaTarefa).attr('data-level2'), $(linhaTarefa).attr('data-level3')) + '"]}'
             };
             coletaDCA.WeiDefects = isNA ? 0 : coletaDCA.Defects * coletaDCA.WeiDefects;
 
@@ -1486,9 +1486,7 @@ function getCollectionHeaderFieldsDCA(collectionDate) {
                 UserSgq_Id: currentLogin.Id,
                 ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
                 ParLevel2_Id: $self.parents('#headerFieldLevel1').attr('parLevel2Id'),
-                Outros: JSON.stringify({ParFamiliaProduto_Id: currentFamiliaProdutoDCA_Id, ParProduto_Id: currentProdutoDCA_Id,
-                    Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3'))
-                })
+                Outros: '{ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ', ParProduto_Id:' + currentProdutoDCA_Id + '}'
             });
     });
 
@@ -1635,25 +1633,26 @@ function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
 
         listaParQualificationxParLevel3Value.forEach(function (o, i) {
 
-            var qualificationGroupName = '';
+            var qualificationGroupName = parametrization.listaPargroupQualification.find(item => item.Id == o.PargroupQualification_Id).Name;
 
-            if (parametrization.listaPargroupQualification[i] != undefined) {
-                qualificationGroupName = parametrization.listaPargroupQualification[i].Name;
-            } else {
-                qualificationGroupName = parametrization.listaPargroupQualification[0].Name;
-            }
+            var listaParGroupQualificationXQualification = parametrization.listaPargroupQualificationXParQualification.filter(
+                element => element.PargroupQualification_Id == o.PargroupQualification_Id);
 
+            var parQualificationIds = listaParGroupQualificationXQualification.map(item => { return item.ParQualification_Id });
 
-            if ($(linhaLevel3).attr('data-conforme') == o.Value) {
+            var listaParQualificationFiltrada = parametrization.listaParQualification.filter(
+                item => parQualificationIds.includes(item.Id));
+
+            if ($(linhaLevel3).attr('data-conforme') == o.Value || (o.Value == "1" && $(linhaLevel3).attr('data-conforme') == "")) {
                 var options = '';
 
-                parametrization.listaParQualification.forEach(function (obj, i) {
+                listaParQualificationFiltrada.forEach(function (obj, i) {
                     options += '<option value="' + obj.Id + '" data-qualification>' + obj.Name + '</option >';
                 });
 
-                retorno += ' <div class="col-xs-3 no-gutters pull-right" data-ParQualificationLevel3Value="' + o.Value + '" data-qualification-required="' + o.IsRequired + '">';
-                retorno += ' <div class="col-xs-12"><small style="font-weight:550 !important">' + qualificationGroupName + '</small></div>';
-                retorno += ' <div class="col-xs-12">';
+                retorno += ' <div class="col-xs-4 no-gutters pull-right" data-ParQualificationLevel3Value="' + o.Value + '" data-qualification-required="' + o.IsRequired + '">';
+                retorno += ' <div class="col-xs-8"><small style="font-weight:550 !important">' + qualificationGroupName + '</small></div>';
+                retorno += ' <div class="col-xs-8">';
                 retorno += ' <select class="form-control input-sm ddl" data-qualificationSelect>';
                 retorno += ' <option value="">Selecione...</option>';
                 retorno += options;
