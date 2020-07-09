@@ -541,7 +541,26 @@ public class ApontamentosDiariosResultSet
                     CREATE INDEX IDX_CollectionLevel2_CollectionDate ON #CollectionLevel2(CollectionDate);
                     CREATE INDEX IDX_CollectionLevel2_ParLevel1_Id ON #CollectionLevel2(ParLevel1_Id);
                     CREATE INDEX IDX_CollectionLevel2_ParLevel2_Id ON #CollectionLevel2(ParLevel2_Id);
-                    CREATE INDEX IDX_CollectionLevel2_12345 ON #CollectionLevel2(ID,UnitId,CollectionDate,ParLevel1_Id,ParLevel2_Id);     
+                    CREATE INDEX IDX_CollectionLevel2_12345 ON #CollectionLevel2(ID,UnitId,CollectionDate,ParLevel1_Id,ParLevel2_Id); 
+
+                    -- Result Level 3 x Qualification
+						SELECT
+							r3.Id
+						   ,STUFF((SELECT DISTINCT
+									', ' + pq.Name
+								FROM ResultLevel3XParQualification r3q
+								INNER JOIN ParQualification pq
+									ON pq.Id = r3q.Qualification_Value
+								WHERE r3q.ResultLevel3_Id = r3.Id
+								FOR XML PATH (''))
+							, 1, 1, '') Qualification INTO #Qualification
+						FROM ResultLevel3XParQualification r3q
+						LEFT JOIN Result_Level3 r3
+							ON r3.Id = r3q.ResultLevel3_Id
+						LEFT JOIN ParQualification pq
+							ON pq.Id = r3q.Qualification_Value
+						GROUP BY r3.Id
+
                     -- Result Level 3
 
 					SELECT 
@@ -558,10 +577,13 @@ public class ApontamentosDiariosResultSet
 						,R3.IsNotEvaluate
 						,R3.WeiEvaluation
 						,R3.WeiDefects
+						,QL.Qualification
 						INTO #Result_Level3
 						FROM Result_Level3 R3 WITH (NOLOCK)
 						INNER JOIN #CollectionLevel2 C2
 							ON R3.CollectionLevel2_Id = C2.Id	
+						LEFT JOIN #Qualification QL 
+						ON QL.ID = R3.ID
 
                     CREATE INDEX IDX_Result_Level3_CollectionLevel2_ID ON #Result_Level3(CollectionLevel2_Id);
                     CREATE INDEX IDX_Result_Level3_CollectionLevel2_Lvl3_ID ON #Result_Level3(CollectionLevel2_Id,Parlevel3_Id);
@@ -732,6 +754,7 @@ public class ApontamentosDiariosResultSet
                 ,CL2_PFP_PP.ParFamiliaProduto_Id
                 ,PP.Id as ParProduto_Id
                 ,PP.Name as ParProduto
+                ,ISNULL( R3.qualification, 'Sem dados' )Qualification_Group
 				,CL2_PFP_PP.CollectionLevel2_Id
                  FROM #CollectionLevel2 C2 (nolock)     
                  INNER JOIN ParCompany UN (nolock)     
@@ -779,6 +802,7 @@ public class ApontamentosDiariosResultSet
 					 DROP TABLE #CollectionLevel2XParHeaderFieldGeral2
 					 DROP TABLE #CollectionLevel2XCluster
 					 DROP TABLE #CollectionLevel2XCollectionJson
+                     Drop TABLE #Qualification
 
                 ";
 
