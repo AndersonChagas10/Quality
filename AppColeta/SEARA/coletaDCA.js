@@ -1413,7 +1413,7 @@ function ConfirmarSalvar() {
 $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', function (e) {
     e.preventDefault();
 
-    if (ConfirmarSalvar()) {
+    if (ColetasIsValid() && ConfirmarSalvar()) {
 
         var collectionDate = getCurrentDate();
         //TODO: aplicar função para inserir arr de coletas no arr de salvar coletas

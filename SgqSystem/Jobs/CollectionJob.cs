@@ -213,7 +213,7 @@ INSERT INTO [Result_Level3]
                                             UtilSqlCommand.AddParameterNullable(cmd, "@CT4Eva3", resultLevel3.CT4Eva3);
                                             UtilSqlCommand.AddParameterNullable(cmd, "@Sampling", resultLevel3.Sampling);
                                             UtilSqlCommand.AddParameterNullable(cmd, "@HasPhoto", resultLevel3.HasPhoto);
-                                            var id = Convert.ToInt32(cmd.ExecuteScalar());
+                                            resultLevel3.Id = Convert.ToInt32(cmd.ExecuteScalar());
                                         }
                                         #endregion
 
@@ -279,6 +279,7 @@ INSERT INTO [Result_Level3]
                             DeleteHeaderFieldIfExists(collectionLevel2Consolidada);
 
                             RegisterHeaderField(collectionLevel2Consolidada);
+                            db.SaveChanges();
                         }
                     }
                     catch (Exception ex)

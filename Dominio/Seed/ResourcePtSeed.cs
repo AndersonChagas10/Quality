@@ -1014,6 +1014,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "one_required_field", Value = "É obrigatório preencher um dos campos:" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "seara_Produto", Value = "Seara Produto" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "shift_c", Value = "Turno 3" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "sensorial", Value = "Perfil Sensorial" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 
