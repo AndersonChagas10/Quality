@@ -1549,13 +1549,30 @@ QtdeTLNC > 0 ? 0 : 100
 								GROUP BY 
 								UN.Name
 								, C.ParCompany_Id
-								ORDER BY 10 DESC ";
+								ORDER BY 10 DESC 
+
+								";
                     break;
 
                 case 1: //INDICADORES
                     query += $@"-- INDICADOR
 								SELECT 
-									UN.Name as UnidadeName 
+									C1.UnidadeName 
+									, C1.UnidadeId 
+									, SUM(C1.NC) AS NC
+									, SUM(C1.AV) - SUM(C1.NC) AS C
+									, SUM(C1.AV) AS AV
+									, (SUM(C1.AV) - SUM(C1.NC)) / SUM(C1.AV) AS PORCC
+									, SUM(C1.NC) / SUM(C1.AV) AS PORCNC
+									, SUM(C1.PESO) AS [PESOTOTAL]
+									, SUM(C1.PESO) AS [PESO]
+									, avg(C1.Total) TOTAL 
+									, C1.UnidadeId
+								FROM
+								(
+								SELECT 
+									C.ParCompany_Id
+									, UN.Name as UnidadeName 
 									, C.ParLevel1_id as UnidadeId 
 									, SUM(C.AV) AS AV
 									, SUM(C.Defects) AS NC
@@ -1565,20 +1582,43 @@ QtdeTLNC > 0 ? 0 : 100
 									, SUM(C.PESO) AS [PESOTOTAL]
 									, SUM(C.PESO) AS [PESO]
 									, avg(C.Total) TOTAL 
-									, C.ParLevel1_id as UnidadeId
+									
 								FROM #CUBO1 C
 								LEFT JOIN ParLevel1 UN WITH (NOLOCK)
 								ON UN.ID = C.ParLevel1_id
 								GROUP BY 
 								UN.Name
 								, C.ParLevel1_id
+								, C.ParCompany_Id
+								) C1
+								GROUP BY 
+								C1.UnidadeName 
+								, C1.UnidadeId
 								ORDER BY 10 DESC ";
                     break;
 
                 case 2: //MONITORAMENTOS
                     query += $@"-- MONITORAMENTO
+								
+								 
+
 								SELECT 
-									UN.Name as UnidadeName 
+									C1.UnidadeName 
+									, C1.UnidadeId 
+									, SUM(C1.NC) AS NC
+									, SUM(C1.AV) - SUM(C1.NC) AS C
+									, SUM(C1.AV) AS AV
+									, (SUM(C1.AV) - SUM(C1.NC)) / SUM(C1.AV) AS PORCC
+									, SUM(C1.NC) / SUM(C1.AV) AS PORCNC
+									, SUM(C1.PESO) AS [PESOTOTAL]
+									, SUM(C1.PESO) AS [PESO]
+									, avg(C1.Total) TOTAL 
+									, C1.UnidadeId
+								FROM
+								(
+								SELECT 
+									C.ParCompany_Id
+									, UN.Name as UnidadeName 
 									, C.ParLevel2_id as UnidadeId 
 									, SUM(C.AV) AS AV
 									, SUM(C.Defects) AS NC
@@ -1588,14 +1628,19 @@ QtdeTLNC > 0 ? 0 : 100
 									, SUM(C.PESO) AS [PESOTOTAL]
 									, SUM(C.PESO) AS [PESO]
 									, avg(C.RESPOSTA2) TOTAL 
-									, C.ParLevel2_id as UnidadeId
+									
 								FROM #CUBO2 C
 								LEFT JOIN ParLevel2 UN WITH (NOLOCK)
 								ON UN.ID = C.ParLevel2_id
 								GROUP BY 
 								UN.Name
 								, C.ParLevel2_id
-								ORDER BY 10 DESC ";
+								, C.ParCompany_Id
+								) C1
+								GROUP BY 
+								C1.UnidadeName 
+								, C1.UnidadeId
+								ORDER BY 10 DESC";
                     break;
 
                 case 3: //TAREFAS
@@ -1629,8 +1674,26 @@ QtdeTLNC > 0 ? 0 : 100
 
                 case 5: //SKU
                     query += $@"-- SKU
+								
+								
+
 								SELECT 
-									C.SKU as UnidadeName 
+									C1.UnidadeName 
+									, C1.UnidadeId 
+									, SUM(C1.NC) AS NC
+									, SUM(C1.AV) - SUM(C1.NC) AS C
+									, SUM(C1.AV) AS AV
+									, (SUM(C1.AV) - SUM(C1.NC)) / SUM(C1.AV) AS PORCC
+									, SUM(C1.NC) / SUM(C1.AV) AS PORCNC
+									, SUM(C1.PESO) AS [PESOTOTAL]
+									, SUM(C1.PESO) AS [PESO]
+									, avg(C1.Total) TOTAL 
+									, C1.UnidadeId
+								FROM
+								(
+								SELECT 
+									C.ParCompany_Id
+									, C.SKU as UnidadeName 
 									, C.SKU as UnidadeId 
 									, SUM(C.AV) AS AV
 									, SUM(C.Defects) AS NC
@@ -1640,11 +1703,16 @@ QtdeTLNC > 0 ? 0 : 100
 									, SUM(C.PESO) AS [PESOTOTAL]
 									, SUM(C.PESO) AS [PESO]
 									, avg(C.Total) TOTAL 
-									, C.SKU as UnidadeId
+									
 								FROM #CUBO1 C
 								GROUP BY 
 								C.SKU
-								ORDER BY 10 DESC ";
+								, C.ParCompany_Id
+								) C1
+								GROUP BY 
+								C1.UnidadeName 
+								, C1.UnidadeId
+								ORDER BY 10 DESC";
 
 
                     break;
