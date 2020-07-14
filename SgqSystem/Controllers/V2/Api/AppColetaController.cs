@@ -1319,7 +1319,7 @@ INSERT INTO [dbo].[Collection]
                 var listaPargroupQualificationXParQualification_Ids = new List<int?>();
                 foreach (var item in listaPargroupQualificationXParQualification)
                 {
-                    listaPargroupQualificationXParQualification_Ids.Add(item.Id);
+                    listaPargroupQualificationXParQualification_Ids.Add(item.ParQualification_Id);
                 }
 
                 listaParQualification = db.ParQualification
