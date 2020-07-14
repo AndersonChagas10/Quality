@@ -1284,6 +1284,7 @@ INSERT INTO [dbo].[Collection]
                 }
 
                 listaPargroupQualificationXParLevel3Value = db.PargroupQualificationXParLevel3Value
+                     .ToList()
                      .Where(x => listaParLevel3_Ids.Any(y => y == x.ParLevel3Value_Id))
                      .Select(x => new PargroupQualificationXParLevel3ValueViewModel()
                      {
