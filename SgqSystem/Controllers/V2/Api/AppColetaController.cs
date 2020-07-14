@@ -585,7 +585,7 @@ namespace SgqSystem.Controllers.V2.Api
                 var listaPargroupQualification_Ids = new List<int?>();
                 foreach (var item in listaPargroupQualificationXParQualification)
                 {
-                    listaPargroupQualification_Ids.Add(item.Id);
+                    listaPargroupQualification_Ids.Add(item.PargroupQualification_Id);
                 }
 
                 listaPargroupQualification = db.PargroupQualification
