@@ -208,6 +208,7 @@
             $('#' + idTabelaOriginal).addClass('hide');
             document.body.setAttribute("style", "background-color:#fff !important;");
 
+         setTimeout(function () {
             printGRT.Inicializar({
 
                 headerHtml: document.getElementById('cabecalhoDiv').innerHTML,
@@ -224,10 +225,13 @@
 
             printGRT.Imprimir();
 
+        },150);
+
             setTimeout(function () {
                 document.body.setAttribute("style", "");
                 $('#' + idTabelaOriginal).removeClass('hide');
                 document.getElementById(idFormatadoParaImpressao).innerHTML = "";
+                $("#print-table-pivot-table").remove()
             },100);
 
             $('#divRenderPrint').remove();
