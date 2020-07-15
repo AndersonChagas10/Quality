@@ -1542,8 +1542,8 @@ function SalvarColetasAgrupadasDCA() {
 }
 
 $('body')
-    .off('change', '[data-linha-coleta] input[data-valor]')
-    .on('change', '[data-linha-coleta] input[data-valor]', function () {
+    .off('keyup change', '[data-linha-coleta] input[data-valor]')
+    .on('keyup change', '[data-linha-coleta] input[data-valor]', function () {
         var qtdNC = $(this).val() == "" ? 0 : $(this).val();
         $(this).parents('[data-linha-coleta]').attr('data-qtdeNc', qtdNC);
         $(this).parents('[data-linha-coleta]').find('.amostraNC').html(qtdNC);
