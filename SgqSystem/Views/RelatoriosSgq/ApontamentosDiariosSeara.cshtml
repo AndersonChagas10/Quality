@@ -1010,7 +1010,7 @@
             let objToSave = [];
             let isValid = false;
 
-            $('form#divEdit input, form#divEdit select').each(function (i, o) {
+            $('form#divEdit input, form#divEdit select:visible').each(function (i, o) {
 
                 let CollectionLevel2XParHeaderFieldGeral_Id = $(o).attr("CollectionLevel2XParHeaderField_Id");
                 let CollectionLevel2_Id = $(o).attr("CollectionLevel2_Id");
