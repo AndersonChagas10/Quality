@@ -35,7 +35,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
             {
                 return BadRequest("Não foi especificado um ID de relatório cadastrado");
             }
-
+            var unidadesDoUsuario = "";
             ReportXUserSgq reportXUserSgq = null;
 
             using (var db = new SgqDbDevEntities())
@@ -50,12 +50,24 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
 
                 retorno.ParReportLayoutXReportXUser = getRelatorioLayoutFormat(reportXUserSgq, db);
+
+
+                 unidadesDoUsuario = GetUserUnitsIds(); 
+
             }
 
             var whereParCompany = "";
             if (form.ParCompany_Ids.Length > 0)
             {
                 whereParCompany = $"and CL2.UnitId in ({ string.Join(",", form.ParCompany_Ids)})";
+            }
+            else if (reportXUserSgq.ParCompany_Id != null)
+            {
+                whereParCompany = $"and CL2.UnitId in ({string.Join(",", reportXUserSgq.ParCompany_Id)})";
+            }
+            else
+            {
+                whereParCompany = $"and CL2.UnitId in ({string.Join(",", unidadesDoUsuario)})"; 
             }
 
             var whereParLevel2 = "";
@@ -193,7 +205,6 @@ namespace SgqSystem.Controllers.Api.Relatorios
     
         DECLARE @DATEINI DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}';
         DECLARE @DATEFIM DATETIME = '{ form.endDate.ToString("yyyy-MM-dd") } {" 23:59:59"}';
-        DECLARE @UNITID VARCHAR(10) = '{reportXUserSgq.ParCompany_Id ?? form.ParCompany_Ids[0] }';
         DECLARE @PARLEVEL1_ID VARCHAR(10) = '{reportXUserSgq.ParLevel1_Id}';
         DECLARE @PARLEVEL2_ID VARCHAR(10) = '0';
 
@@ -267,7 +278,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
                         {whereEvaluation}
                         {whereSample}
                         {whereShift}
-						AND CASE WHEN @UNITID = '0' THEN '0' ELSE cl2.unitid END = @UNITID
+						--AND CASE WHEN @UNITID = '0' THEN '0' ELSE cl2.unitid END = @UNITID
 						AND CASE WHEN @PARLEVEL1_ID = '0' THEN '0' ELSE cl2.ParLevel1_id END = @PARLEVEL1_ID
 
  

@@ -238,11 +238,14 @@
         });
 
         function enviarFiltro() {
-
+            debugger
             var itensNaoRespondidos = validaObrigatorios();
             if (itensNaoRespondidos.length > 0) {
                 $(itensNaoRespondidos).map(function (i, o) {
                     GuardJs.exibirMensagemAlerta("o campo " + o + " é obrigatorio");
+                    $("#rodape").hide();
+                    $("#cabecalhoDiv").hide();
+                    $("#pivot-table").hide();
                 });
 
             } else {
@@ -253,8 +256,11 @@
 
                     $btn.button('loading');
                     $(".loader").show();
+
+                    GuardJs.exibirMensagemAlerta("Caso o relatório demore para ser carregado é devido a busca estar sendo realizada nas unidades vinculadas ao usuário!");
+
                     $("#mensagemSemDados").hide();
-                    GuardJs.esconderMensagem();
+                   // GuardJs.esconderMensagem();
 
                     $("#rodape").hide();
                     $("#cabecalhoDiv").hide();
@@ -279,7 +285,14 @@
                                 $("#tdElaborador").text(data.Elaborador);
                                 $("#rodapeCodigo").text(data.CodigoRelatorio);
                                 $("#tdNomeRelatorio").text(data.RelatorioName);
-                                $("#unidadeColeta").text(data.Resultado[0]["unidade"]);
+
+                                var arrayUnidadesNome = $.map(data.Resultado, function (o, i) {
+                                    return o.unidade;
+                                });
+
+                                var arrayUnidadesNomeFiltrada = arrayUnidadesNome.filter((item, index) => arrayUnidadesNome.indexOf(item) === index);
+
+                                $("#unidadeColeta").text(arrayUnidadesNomeFiltrada.join(','));
 
                                 montaLayout(data.ParReportLayoutXReportXUser);
                                 montaTabelaDinamica(data.Resultado, data.ParReportLayoutXReportXUser);
