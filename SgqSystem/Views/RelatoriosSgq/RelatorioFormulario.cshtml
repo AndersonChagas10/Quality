@@ -139,7 +139,7 @@
                 </div>
 
                 <div class="row" id="corpoPagina">
-                    <div id="print-table-pivot-table"></div>
+                    <div id="print-table-pivot-table" style="width: 790px !important;"></div>
                     <div id="pivot-table" style="overflow-x:auto">
 
                     </div>
@@ -231,8 +231,8 @@
                 document.body.setAttribute("style", "");
                 $('#' + idTabelaOriginal).removeClass('hide');
                 document.getElementById(idFormatadoParaImpressao).innerHTML = "";
-                $("#print-table-pivot-table").remove()
-            },100);
+                //$("#print-table-pivot-table").remove();
+            },300);
 
             $('#divRenderPrint').remove();
         });
@@ -714,10 +714,11 @@
 				        if(isConfigured){
 					        currentWidth = 0;
 				        }
-			        }else if((j+1) > config.startTHCount){
+			        }else if((j+1) >  config.startTHCount){
 				        //Calcula valores
 				        if((config.startWidth + currentWidth + celula.offsetWidth) > config.maxWidthInCentimeter){
-					        currentWidth = 0;
+                            currentWidth = 0;
+
 					        countTable++;
 				        }
 				        currentWidth += celula.offsetWidth;
