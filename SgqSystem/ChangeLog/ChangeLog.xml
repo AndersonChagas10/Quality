@@ -3741,6 +3741,61 @@
   </Card>
 
   <Card>
+    <CardNumber>SGQ-928</CardNumber>
+    <Version>1.9.0</Version>
+    <Description>[SEARA] Qualificação - Adição de Grupo de Qualificação e Qualificação no AppColeta DCA</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM PargroupQualification WHERE name='Perfil Sensorial')
+      BEGIN
+      INSERT INTO PargroupQualification VALUES ('Perfil Sensorial', GETDATE(), NULL, 1)
+      END
+      GO
+      IF NOT EXISTS (SELECT * FROM ParQualification WHERE name='0')
+      BEGIN
+      INSERT INTO ParQualification VALUES ('0', GETDATE(), NULL, 1)
+      END
+      GO
+      IF NOT EXISTS (SELECT * FROM ParQualification WHERE name='1')
+      BEGIN
+      INSERT INTO ParQualification VALUES ('1', GETDATE(), NULL, 1)
+      END
+      GO
+      IF NOT EXISTS (SELECT * FROM ParQualification WHERE name='-1')
+      BEGIN
+      INSERT INTO ParQualification VALUES ('-1', GETDATE(), NULL, 1)
+      END
+      GO
+      IF NOT EXISTS (SELECT * FROM ParQualification WHERE name='2')
+      BEGIN
+      INSERT INTO ParQualification VALUES ('2', GETDATE(), NULL, 1)
+      END
+      GO
+      IF NOT EXISTS (SELECT * FROM ParQualification WHERE name='-2')
+      BEGIN
+      INSERT INTO ParQualification VALUES ('-2', GETDATE(), NULL, 1)
+      END
+      GO
+      IF NOT EXISTS (SELECT * FROM ParQualification WHERE name='3')
+      BEGIN
+      INSERT INTO ParQualification VALUES ('3', GETDATE(), NULL, 1)
+      END
+      GO
+      IF NOT EXISTS (SELECT * FROM ParQualification WHERE name='-3')
+      BEGIN
+      INSERT INTO ParQualification VALUES ('-3', GETDATE(), NULL, 1)
+      END
+      GO
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-958</CardNumber>
+    <Version>1.9.0</Version>
+    <Description>[SEARA] AppColeta DCA - Listagem dos Clusters de acordo com o vínculo Company X Cluster.</Description>
+    <Script></Script>
+  </Card>
+
+  <Card>
     <CardNumber>SGQ-854</CardNumber>
     <Version>1.10.0</Version>
     <Description>[GQ] CADASTRO DE FORMULÁRIO - Criar tela que liste os relatórios.</Description>
