@@ -1,5 +1,6 @@
 ﻿using ADOFactory;
 using Dominio;
+using Dominio.Seara;
 using DTO;
 using DTO.Formulario;
 using System;
@@ -81,10 +82,26 @@ namespace SgqSystem.Controllers.Api.Formulario
             using (var factory = new Factory("DefaultConnection"))
             {
 
-                var query = $@" SELECT DISTINCT TOP 500
+                var query = $@" SELECT DISTINCT 
                         	Id, Name from ParGroupParLevel1 WITH (NOLOCK) Where IsActive = 1 AND Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<ParGroupParLevel1>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredParLevel3Group_Ids")]
+        public List<ParLevel3Group> GetFilteredParLevel3Group_Ids(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+
+                var query = $@" SELECT DISTINCT 
+                        	Id, Name from ParLevel3Group WITH (NOLOCK) Where IsActive = 1 AND Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<ParLevel3Group>(query).ToList();
 
                 return retorno;
             }
@@ -814,6 +831,21 @@ namespace SgqSystem.Controllers.Api.Formulario
                     WHERE IsActive = 1 AND Name like '%{search}%'";
 
                 var retorno = factory.SearchQuery<ParModule>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetFilteredSKU")]
+        public List<ParProduto> GetFilteredSKU(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                var query = $@"SELECT DISTINCT Id, Name FROM ParProduto WITH (NOLOCK)
+                    WHERE IsActive = 1 AND Name like '%{search}%'";
+
+                var retorno = factory.SearchQuery<ParProduto>(query).ToList();
 
                 return retorno;
             }

@@ -55,7 +55,10 @@ public class RelatorioDeResultadoSearaResultsSet
         var whereStructure = "";
         var whereUnit = "";
         var whereTurno = "";
-        var whereParLevel1 = "";
+		var whereSKU = "";
+		var whereGrupoAnomalias = "";
+		var whereGrupoFamilias = "";
+		var whereParLevel1 = "";
         var whereParLevel2 = "";
         var whereParLevel3 = "";
 
@@ -85,8 +88,22 @@ public class RelatorioDeResultadoSearaResultsSet
             whereTurno = $@"AND HFTURNO.HeaderFieldList LIKE '%{ form.ShowTurnoSeara[0] }%' ";
         }
 
+		if (form.SKU_Ids.Length > 0)
+        {
+            whereSKU = $@"AND pp.id in ({string.Join(",", form.SKU_Ids)})";
+		}
 
-        if (form.ParStructure2_Ids.Length > 0)
+		if (form.parGroupParLevel1_Ids.Length > 0)
+		{
+			whereGrupoAnomalias = $@"AND PGL1.id in ({string.Join(",", form.parGroupParLevel1_Ids)})";
+		}
+
+		if (form.ParLevel3Group_Ids.Length > 0)
+		{
+			whereGrupoFamilias = $@"AND PGL3.id in ({string.Join(",", form.ParLevel3Group_Ids)})";
+		}
+
+		if (form.ParStructure2_Ids.Length > 0)
         {
             whereStructure = $@"AND CS.ParStructure_Id in ({string.Join(",", form.ParStructure2_Ids)})";
         }
@@ -218,6 +235,7 @@ public class RelatorioDeResultadoSearaResultsSet
 				, VP.ParLevel3_Id
 				, VP.[Sample]
 				, VP.ParGroupParLevel1_Id
+				, VP.ParLevel3Group_Id
 				, ISNULL(P3V.LimiteNC,0) AS LimiteNC
 			INTO #VINCULO
 			FROM ParVinculoPeso VP WITH(NOLOCK)
@@ -246,6 +264,7 @@ public class RelatorioDeResultadoSearaResultsSet
 				PL2P.Peso as PESO_MON,
 				pp.Name as SKU,
 				PGL1.Name as GRUPOTAREFA,
+				PGL3.Name as GRUPOFAMILIA,
 				V.LimiteNC,
 				HF.HeaderFieldList AS CABECALHO,
 				HFTURNO.HeaderFieldList AS TURNO,
@@ -290,6 +309,8 @@ public class RelatorioDeResultadoSearaResultsSet
 			AND R3.ParLevel3_Id = V.ParLevel3_Id
 			LEFT JOIN ParGroupParLevel1 PGL1
 			ON PGL1.Id = V.ParGroupParLevel1_Id
+			LEFT JOIN ParLevel3Group PGL3
+			ON PGL3.Id = V.ParLevel3Group_Id
 			LEFT JOIN #CollectionLevel2XParHeaderFieldGeral2 HF 
 			ON HF.CollectionLevel2_Id = C2.ID
 			LEFT JOIN #CollectionLevel2XParHeaderFieldGeralTURNO HFTURNO
@@ -301,6 +322,9 @@ public class RelatorioDeResultadoSearaResultsSet
             {whereUnit}
 			{whereTurno}
             {whereParLevel3}
+			{whereSKU}
+			{whereGrupoAnomalias}
+			{whereGrupoFamilias}
 
 
 
@@ -537,6 +561,9 @@ public class RelatorioDeResultadoSearaResultsSet
 		var whereStructure = "";
 		var whereUnit = "";
 		var whereTurno = "";
+		var whereSKU = "";
+		var whereGrupoAnomalias = "";
+		var whereGrupoFamilias = "";
 		var whereParLevel1 = "";
 		var whereParLevel2 = "";
 		var whereParLevel3 = "";
@@ -566,6 +593,20 @@ public class RelatorioDeResultadoSearaResultsSet
 			whereTurno = $@"AND HFTURNO.HeaderFieldList LIKE '%{ form.ShowTurnoSeara[0] }%' ";
 		}
 
+		if (form.SKU_Ids.Length > 0)
+        {
+            whereSKU = $@"AND pp.id in ({string.Join(",", form.SKU_Ids)})";
+		}
+
+		if (form.parGroupParLevel1_Ids.Length > 0)
+		{
+			whereGrupoAnomalias = $@"AND PGL1.id in ({string.Join(",", form.parGroupParLevel1_Ids)})";
+		}
+
+		if (form.ParLevel3Group_Ids.Length > 0)
+		{
+			whereGrupoFamilias = $@"AND PGL3.id in ({string.Join(",", form.ParLevel3Group_Ids)})";
+		}
 
 		if (form.ParStructure2_Ids.Length > 0)
 		{
@@ -699,6 +740,7 @@ public class RelatorioDeResultadoSearaResultsSet
 				, VP.ParLevel3_Id
 				, VP.[Sample]
 				, VP.ParGroupParLevel1_Id
+				, VP.ParLevel3Group_Id
 				, ISNULL(P3V.LimiteNC,0) AS LimiteNC
 			INTO #VINCULO
 			FROM ParVinculoPeso VP WITH(NOLOCK)
@@ -727,6 +769,7 @@ public class RelatorioDeResultadoSearaResultsSet
 				PL2P.Peso as PESO_MON,
 				pp.Name as SKU,
 				PGL1.Name as GRUPOTAREFA,
+				PGL3.Name as GRUPOFAMILIA,
 				V.LimiteNC,
 				HF.HeaderFieldList AS CABECALHO,
 				HFTURNO.HeaderFieldList AS TURNO,
@@ -771,6 +814,8 @@ public class RelatorioDeResultadoSearaResultsSet
 			AND R3.ParLevel3_Id = V.ParLevel3_Id
 			LEFT JOIN ParGroupParLevel1 PGL1
 			ON PGL1.Id = V.ParGroupParLevel1_Id
+			LEFT JOIN ParLevel3Group PGL3
+			ON PGL3.Id = V.ParLevel3Group_Id
 			LEFT JOIN #CollectionLevel2XParHeaderFieldGeral2 HF 
 			ON HF.CollectionLevel2_Id = C2.ID
 			LEFT JOIN #CollectionLevel2XParHeaderFieldGeralTURNO HFTURNO
@@ -782,6 +827,9 @@ public class RelatorioDeResultadoSearaResultsSet
             {whereUnit}
 			{whereTurno}
             {whereParLevel3}
+			{whereSKU}
+			{whereGrupoAnomalias}
+			{whereGrupoFamilias}
 
 
 
@@ -1021,6 +1069,9 @@ QtdeTLNC > 0 ? 0 : 100
         var whereStructure = "";
         var whereUnit = "";
         var whereTurno = "";
+		var whereSKU = "";
+		var whereGrupoAnomalias = "";
+		var whereGrupoFamilias = "";
         var whereParLevel1 = "";
         var whereParLevel2 = "";
         var whereParLevel3 = "";
@@ -1050,8 +1101,22 @@ QtdeTLNC > 0 ? 0 : 100
             whereTurno = $@"AND HFTURNO.HeaderFieldList LIKE '%{ form.ShowTurnoSeara[0] }%' ";
         }
 
+		if (form.SKU_Ids.Length > 0)
+        {
+            whereSKU = $@"AND pp.id in ({string.Join(",", form.SKU_Ids)})";
+		}
 
-        if (form.ParStructure2_Ids.Length > 0)
+		if (form.parGroupParLevel1_Ids.Length > 0)
+		{
+			whereGrupoAnomalias = $@"AND PGL1.id in ({string.Join(",", form.parGroupParLevel1_Ids)})";
+		}
+
+		if (form.ParLevel3Group_Ids.Length > 0)
+		{
+			whereGrupoFamilias = $@"AND PGL3.id in ({string.Join(",", form.ParLevel3Group_Ids)})";
+		}
+
+		if (form.ParStructure2_Ids.Length > 0)
         {
             whereStructure = $@"AND CS.ParStructure_Id in ({string.Join(",", form.ParStructure2_Ids)})";
         }
@@ -1183,6 +1248,7 @@ QtdeTLNC > 0 ? 0 : 100
 				, VP.ParLevel3_Id
 				, VP.[Sample]
 				, VP.ParGroupParLevel1_Id
+				, VP.ParLevel3Group_Id
 				, ISNULL(P3V.LimiteNC,0) AS LimiteNC
 			INTO #VINCULO
 			FROM ParVinculoPeso VP WITH(NOLOCK)
@@ -1211,6 +1277,7 @@ QtdeTLNC > 0 ? 0 : 100
 				PL2P.Peso as PESO_MON,
 				pp.Name as SKU,
 				PGL1.Name as GRUPOTAREFA,
+				PGL3.Name as GRUPOFAMILIA,
 				V.LimiteNC,
 				HF.HeaderFieldList AS CABECALHO,
 				HFTURNO.HeaderFieldList AS TURNO,
@@ -1255,6 +1322,8 @@ QtdeTLNC > 0 ? 0 : 100
 			AND R3.ParLevel3_Id = V.ParLevel3_Id
 			LEFT JOIN ParGroupParLevel1 PGL1
 			ON PGL1.Id = V.ParGroupParLevel1_Id
+			LEFT JOIN ParLevel3Group PGL3
+			ON PGL3.Id = V.ParLevel3Group_Id
 			LEFT JOIN #CollectionLevel2XParHeaderFieldGeral2 HF 
 			ON HF.CollectionLevel2_Id = C2.ID
 			LEFT JOIN #CollectionLevel2XParHeaderFieldGeralTURNO HFTURNO
@@ -1266,6 +1335,9 @@ QtdeTLNC > 0 ? 0 : 100
             {whereUnit}
 			{whereTurno}
             {whereParLevel3}
+			{whereSKU}
+			{whereGrupoAnomalias}
+			{whereGrupoFamilias}
 
 
 
@@ -1331,6 +1403,7 @@ QtdeTLNC > 0 ? 0 : 100
 		CUBO2.DataTruncada,
 		CUBO2.CABECALHO,
 		CUBO2.TURNO,
+		CUBO2.GRUPOFAMILIA,
 		avg(PESO_MON) Peso,
 		COUNT(DISTINCT(CUBO2.PARLEVEL3_ID)) [NÚMERO DE TAREFAS],
 
@@ -1411,7 +1484,7 @@ QtdeTLNC > 0 ? 0 : 100
 	, CUBO2.CABECALHO
 	, CUBO2.TURNO
 	, CUBO2.EQUACAO
-
+	, CUBO2.GRUPOFAMILIA
 	ORDER BY 
 	CUBO2.UNITID
 	, CUBO2.PARLEVEL1_ID
@@ -1420,6 +1493,7 @@ QtdeTLNC > 0 ? 0 : 100
 	, CUBO2.COLLECTIONDATE 
 	, CUBO2.PARLEVEL2_ID
 	, CUBO2.SKU
+	
 
 	SELECT PL2P.ParLevel1_Id, SUM(PESO) AS PESO_MONITORAMENTO 
 	INTO #PESOTOTALMONITORAMENTOINDICADOR
@@ -1434,6 +1508,7 @@ QtdeTLNC > 0 ? 0 : 100
 		CUBO1.SKU, 
 		CUBO1.CABECALHO, 
 		CUBO1.TURNO,
+		CUBO1.GRUPOFAMILIA,
 		SUM(CUBO1.AV) AS AV,
 		SUM(CUBO1.Defects) AS Defects,
 		SUM(CUBO1.PESO) AS [PESOTOTAL],
@@ -1456,6 +1531,7 @@ QtdeTLNC > 0 ? 0 : 100
 	CUBO1.SKU, 
 	CUBO1.CABECALHO, 
 	CUBO1.TURNO,
+	CUBO1.GRUPOFAMILIA,
 	PMM.PESO_MONITORAMENTO
 
 
@@ -1741,7 +1817,96 @@ QtdeTLNC > 0 ? 0 : 100
 
                     break;
 
-                default:
+				case 7: //GRUPOFAMILIA
+					query += $@"-- INDICADOR
+								SELECT 
+									C1.UnidadeName 
+									, C1.UnidadeId 
+									, SUM(C1.NC) AS NC
+									, SUM(C1.AV) - SUM(C1.NC) AS C
+									, SUM(C1.AV) AS AV
+									, (SUM(C1.AV) - SUM(C1.NC)) / SUM(C1.AV) AS PORCC
+									, SUM(C1.NC) / SUM(C1.AV) AS PORCNC
+									, SUM(C1.PESO) AS [PESOTOTAL]
+									, SUM(C1.PESO) AS [PESO]
+									, avg(C1.Total) TOTAL 
+									, C1.UnidadeId
+								FROM
+								(
+								SELECT 
+									C.ParCompany_Id AS ParCompany_Id
+									, C.GRUPOFAMILIA as UnidadeName 
+									, C.GRUPOFAMILIA as UnidadeId 
+									, SUM(C.AV) AS AV
+									, SUM(C.Defects) AS NC
+									, SUM(C.AV) - SUM(C.Defects) AS C
+									, (SUM(C.AV) - SUM(C.Defects)) / SUM(C.AV) AS PORCC
+									, SUM(C.Defects) / SUM(C.AV) AS PORCNC
+									, SUM(C.PESO) AS [PESOTOTAL]
+									, SUM(C.PESO) AS [PESO]
+									, avg(C.Total) TOTAL 
+									
+								FROM #CUBO1 C
+								
+								GROUP BY 
+								C.ParCompany_Id
+								, C.GRUPOFAMILIA
+								, C.GRUPOFAMILIA
+								) C1
+								GROUP BY 
+								C1.UnidadeName 
+								, C1.UnidadeId
+								ORDER BY 10 DESC ";
+
+
+					break;
+
+				case 8: //Turno
+					query += $@"-- Turno
+								
+								
+
+								SELECT 
+									C1.UnidadeName 
+									, C1.UnidadeId 
+									, SUM(C1.NC) AS NC
+									, SUM(C1.AV) - SUM(C1.NC) AS C
+									, SUM(C1.AV) AS AV
+									, (SUM(C1.AV) - SUM(C1.NC)) / SUM(C1.AV) AS PORCC
+									, SUM(C1.NC) / SUM(C1.AV) AS PORCNC
+									, SUM(C1.PESO) AS [PESOTOTAL]
+									, SUM(C1.PESO) AS [PESO]
+									, avg(C1.Total) TOTAL 
+									, C1.UnidadeId
+								FROM
+								(
+								SELECT 
+									C.ParCompany_Id
+									, C.TURNO as UnidadeName 
+									, C.TURNO as UnidadeId 
+									, SUM(C.AV) AS AV
+									, SUM(C.Defects) AS NC
+									, SUM(C.AV) - SUM(C.Defects) AS C
+									, (SUM(C.AV) - SUM(C.Defects)) / SUM(C.AV) AS PORCC
+									, SUM(C.Defects) / SUM(C.AV) AS PORCNC
+									, SUM(C.PESO) AS [PESOTOTAL]
+									, SUM(C.PESO) AS [PESO]
+									, avg(C.Total) TOTAL 
+									
+								FROM #CUBO1 C
+								GROUP BY 
+								C.TURNO
+								, C.ParCompany_Id
+								) C1
+								GROUP BY 
+								C1.UnidadeName 
+								, C1.UnidadeId
+								ORDER BY 10 DESC";
+
+
+					break;
+
+				default:
                     break;
             }
 
