@@ -976,6 +976,7 @@ INSERT INTO [dbo].[Collection]
             List<RotinaIntegracaoViewModel> listaRotinaIntegracaoOffline;
             List<ParEvaluation> listaParEvaluation;
             List<ParCluster> listaParCluster;
+            List<ParCompanyCluster> listaParCompanyXCluster;
             List<ParLevel1XCluster> listaParLevel1XCluster;
             List<Dominio.Seara.ParVinculoPesoParLevel2> listaParVinculoPesoParLevel2;
             List<Dominio.Seara.ParLevel1XParFamiliaProduto> listaParLevel1XParFamiliaProduto;
@@ -1038,11 +1039,16 @@ INSERT INTO [dbo].[Collection]
                     .Where(x => x.IsActive)
                     .ToList();
 
+                listaParCompanyXCluster = db.ParCompanyCluster.AsNoTracking()
+                    .Where(x => x.Active)
+                    .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id)
+                    .ToList();
+
                 listaParCluster = db.ParCluster
                     .AsNoTracking()
                     .Where(x => x.IsActive)
                     .ToList()
-                    .Where(x => listaParLevel1XCluster.Any(y => y.ParCluster_Id == x.Id))
+                    .Where(x => listaParCompanyXCluster.Any(y => y.ParCluster_Id == x.Id))
                     .ToList();
 
                 listaParLevel2 = db.ParLevel2
