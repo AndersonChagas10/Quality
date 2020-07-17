@@ -232,13 +232,14 @@
                 $('#' + idTabelaOriginal).removeClass('hide');
                 document.getElementById(idFormatadoParaImpressao).innerHTML = "";
                 //$("#print-table-pivot-table").remove();
+
+                $('#divRenderPrint').remove();
             },300);
 
-            $('#divRenderPrint').remove();
+            
         });
 
         function enviarFiltro() {
-            debugger
             var itensNaoRespondidos = validaObrigatorios();
             if (itensNaoRespondidos.length > 0) {
                 $(itensNaoRespondidos).map(function (i, o) {
