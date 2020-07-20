@@ -100,6 +100,8 @@ var HeatMap = {
         this.Indicadores = [];
         this.Cabecalhos = [];
 
+        this.minMaxPorIndicador = [];
+
         this.Preparar();
     },
 
@@ -133,6 +135,7 @@ var HeatMap = {
     percentageMax: 0.95,
     colorMax: "",
 
+
     RecalculaMatrizPorcentagem: function () {
 
         //Recalcula totais para matriz com porcentagem de NC
@@ -150,10 +153,12 @@ var HeatMap = {
                 let valorCabecalho = RetornaTituloValor(z);
                 let identificador = HeatMap.idMedia + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
 
-                let amostragem = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.Amostragem).reduce((acumulador, valoratual) => acumulador += valoratual);
-                let qtdeNC = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.QtdeNC).reduce((acumulador, valoratual) => acumulador += valoratual);
+                let amostragem = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.Amostragem).reduce(sumReduce);
+                let qtdeNC = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.QtdeNC).reduce(sumReduce);
 
                 let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+
+                porcentagemNCTotal = isNaN(porcentagemNCTotal) ? 0 : porcentagemNCTotal;
 
                 let identificadorValores = HeatMap.idValores + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
 
@@ -179,10 +184,12 @@ var HeatMap = {
                 let valorCabecalho = RetornaTituloValor(z);
                 let identificador = HeatMap.idRodape + ' td[' + HeatMap.dataCabecalho + '="' + cabecalhoX + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
 
-                let amostragem = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.Amostragem).reduce((acumulador, valoratual) => acumulador += valoratual);
-                let qtdeNC = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.QtdeNC).reduce((acumulador, valoratual) => acumulador += valoratual);
+                let amostragem = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.Amostragem).reduce(sumReduce);
+                let qtdeNC = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.QtdeNC).reduce(sumReduce);
 
                 let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+
+                porcentagemNCTotal = isNaN(porcentagemNCTotal) ? 0 : porcentagemNCTotal;
 
                 $(identificador).html(porcentagemNCTotal.toFixed(2));
 
@@ -197,13 +204,15 @@ var HeatMap = {
 
             let identificador = HeatMap.idTotalMedia + ' td[' + HeatMap.dataValor + '="' + valorCabecalho + '"]'
 
-            let amostragem = this.jsonObject.map(x => x.Amostragem).reduce((acumulador, valoratual) => acumulador += valoratual);
-            let qtdeNC = this.jsonObject.map(x => x.QtdeNC).reduce((acumulador, valoratual) => acumulador += valoratual);
+            let amostragem = this.jsonObject.map(x => x.Amostragem).reduce(sumReduce);
+            let qtdeNC = this.jsonObject.map(x => x.QtdeNC).reduce(sumReduce);
 
             let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
 
+            porcentagemNCTotal = isNaN(porcentagemNCTotal) ? 0 : porcentagemNCTotal;
+
             $(identificador).html(porcentagemNCTotal.toFixed(2));
-            
+
         }
 
         PreencheCalorNasCelulasValores();
@@ -654,8 +663,10 @@ function PreencheCalorNasCelulasValores() {
 
                     let divsValores = $(identificadorValores + " :last-child");
 
-                    if (divsValores.length === 1)
-                        return;
+                    if (divsValores.length === 1 ||
+                        (HeatMap.minMaxPorIndicador[indicadorY] !== undefined &&
+                            (HeatMap.minMaxPorIndicador[indicadorY].max === HeatMap.minMaxPorIndicador[indicadorY].min)))
+                        continue;
 
                     $(divsValores).each(function (i, o) {
                         var valor = ValorNumerico($(o).text());
@@ -683,8 +694,8 @@ function PreencheCalorMedia() {
                 var valorCabecalho = RetornaTituloValor(z);
                 var identificador = HeatMap.idMedia + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
 
-                if (HeatMap.Indicadores.length === 1)
-                    return;
+                if (HeatMap.Indicadores.length === 1 || (HeatMap.minMedia === HeatMap.maxMedia))
+                    continue;
 
                 $(identificador).each(function (i, o) {
                     var valor = ValorNumerico($(o).text());
@@ -711,8 +722,8 @@ function PreencheCalorRodape() {
                 var valorCabecalho = RetornaTituloValor(z);
                 var identificador = HeatMap.idRodape + ' td[' + HeatMap.dataCabecalho + '="' + cabecalhoX + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
 
-                if (HeatMap.Cabecalhos.length === 1)
-                    return;
+                if (HeatMap.Cabecalhos.length === 1 || (HeatMap.minRodape === HeatMap.maxRodape))
+                    continue;
 
                 $(identificador).each(function (i, o) {
                     var valor = ValorNumerico($(o).text());
@@ -723,12 +734,24 @@ function PreencheCalorRodape() {
                         } else if (ratio != 0) {
                             ratio /= 100;
                         }
-                            $(o).attr("style", PreencheFundo(GetColor(ratio)));
+                        $(o).attr("style", PreencheFundo(GetColor(ratio)));
                     }
                 });
             }
         }
     }
+}
+
+function sumReduce(accumulator, currentValue) {
+
+    accumulator = parseInt(accumulator);
+    currentValue = parseInt(currentValue);
+
+    accumulator = isNaN(accumulator) ? 0 : accumulator;
+    currentValue = isNaN(currentValue) ? 0 : currentValue;
+
+
+    return accumulator += currentValue
 }
 
 /**INICIALIZAR**/

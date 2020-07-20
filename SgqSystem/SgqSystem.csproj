@@ -26,8 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>true</Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -484,6 +483,7 @@
     <Compile Include="Controllers\V2\Api\ParLevel1ApiController.cs" />
     <Compile Include="Controllers\V2\Params\ParAlertController.cs" />
     <Compile Include="Controllers\V2\Params\ParamsV2Controller.cs" />
+    <Compile Include="Controllers\V2\Reports\SGCOVID\RelatoriosCovidController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
     <Compile Include="Controllers\GlobalConfigController.cs" />
@@ -619,7 +619,6 @@
     <Compile Include="Services\SyncModel\ParLevel3XParDepartmentSyncModel.cs" />
     <Compile Include="Services\SyncServices.asmx.cs">
       <DependentUpon>SyncServices.asmx</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="ViewModels\AccountBindingModels.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
@@ -2377,6 +2376,7 @@
     <Content Include="Views\Utilidades\SqlStudio.cshtml" />
     <Content Include="Views\RelatoriosSgq\ApontamentosDiariosSeara.cshtml" />
     <Content Include="Views\RelatoriosSgq\_ProdutoEdit.cshtml" />
+    <Content Include="Views\RelatoriosCovid\RelatorioResultado.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2387,6 +2387,7 @@
     <Folder Include="obj\" />
     <Folder Include="Scripts\BootStrapRecravacao\" />
     <Folder Include="Scripts\i18n\" />
+    <Folder Include="Views\RelatorioResultadoCovid\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>
@@ -2467,7 +2468,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>false</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
