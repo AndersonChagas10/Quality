@@ -13,9 +13,10 @@ namespace SgqSystem.Controllers
         [CustomAuthorize]
         public ActionResult RelatorioResultado()
         {
-            ViewBag.ShowParClusterGroup = true;
+            ViewBag.ShowRangeDate = true;
             ViewBag.ShowParCluster = true;
             ViewBag.ShowParCompany = true;
+            ViewBag.ShowParStructure2 = true;
             ViewBag.ShowParStructure3 = true;
             return View();
         }
