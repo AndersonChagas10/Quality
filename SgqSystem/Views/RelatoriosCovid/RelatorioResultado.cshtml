@@ -129,7 +129,7 @@
 
     @Scripts.Render("~/Scripts/heatmap.js")
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/RelatorioResultadoCovid"))';
 
@@ -175,8 +175,8 @@
 
     function retornoAjax(data) {
 
-        let linha = "cNmVeiculos";
-        let coluna = "cNmRegional";
+        let linha = "Indicador";
+        let coluna = "Unidade";
 
         esconderLoader();
 
@@ -184,8 +184,8 @@
             showMessage("Sem dados.");
         } else {
 
-            appendChartFilter(Object.keys(data[0]), "cNmVeiculos");
-            gerarGrafico(data, "cNmVeiculos");
+            appendChartFilter(Object.keys(data[0]), "Unidade Sigla");
+            gerarGrafico(data, "Unidade Sigla");
             gerarMapaCalor(data, 0, linha, coluna, false);
         }
     }
@@ -193,7 +193,7 @@
     //Gráfico
     function gerarGrafico(data, serie) {
 
-        const categories = getCategories(data, "dColetaAmostra");
+        const categories = getCategories(data, "__Data");
         const series = getSeriesByCategories(data, categories, serie);
 
         chart = Highcharts.chart('container', {
@@ -287,7 +287,8 @@
             return [];
 
         //retornar mes e ano
-        const categoriesArr = [... new Set(data.map(x => convertDateToYearMouth(x[categoriesColumDataName])))]
+        const categoriesArr = [... new Set(data.map(x => x[categoriesColumDataName]))]
+        //const categoriesArr = [... new Set(data.map(x => convertDateToYearMouth(x[categoriesColumDataName])))]
 
         categoriesArr.sort();
 
@@ -308,7 +309,8 @@
 
             categories.forEach((o) => { //datas
 
-                let arrFiltrado = data.filter(x => convertDateToYearMouth(x['dColetaAmostra']) == o && x[serie] == serieName);
+                let arrFiltrado = data.filter(x => x['__Data'] == o && x[serie] == serieName);
+                //let arrFiltrado = data.filter(x => convertDateToYearMouth(x['__Data']) == o && x[serie] == serieName);
 
                 if (arrFiltrado.length == 0) {
 
@@ -317,9 +319,9 @@
                 } else {
 
                     let arrAv = arrFiltrado.map(x => x.AV);
-                    let amostragem = arrAv.reduce((accumulator, currentValue) => accumulator + currentValue);
+                    let amostragem = arrAv.reduce(sumReduce);
                     let arrNc = arrFiltrado.map(x => x.NC);
-                    let qtdNC = arrNc.reduce((accumulator, currentValue) => accumulator + currentValue)
+                    let qtdNC = arrNc.reduce(sumReduce)
 
                     obj.data.push(getPorcentagem(amostragem, qtdNC));
                 }
@@ -504,8 +506,8 @@
                     let percNC = null
 
                     if (arrFiltrados.length > 0) {
-                        qtdeNC = arrFiltrados.map(x => x.NC).reduce((accumulator, currentValue) => accumulator += currentValue);
-                        amostragem = arrFiltrados.map(x => x.AV).reduce((accumulator, currentValue) => accumulator += currentValue);
+                        qtdeNC = parseFloat(arrFiltrados.map(x => x.NC).reduce(sumReduce));
+                        amostragem = parseFloat(arrFiltrados.map(x => x.AV).reduce(sumReduce));
                         percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
                     }
 

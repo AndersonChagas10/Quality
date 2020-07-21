@@ -156,7 +156,7 @@ var HeatMap = {
                 let amostragem = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.Amostragem).reduce(sumReduce);
                 let qtdeNC = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.QtdeNC).reduce(sumReduce);
 
-                let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+                let porcentagemNCTotal = (parseFloat(qtdeNC) / parseFloat(amostragem)) * 100;
 
                 porcentagemNCTotal = isNaN(porcentagemNCTotal) ? 0 : porcentagemNCTotal;
 
@@ -187,7 +187,7 @@ var HeatMap = {
                 let amostragem = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.Amostragem).reduce(sumReduce);
                 let qtdeNC = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.QtdeNC).reduce(sumReduce);
 
-                let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+                let porcentagemNCTotal = (parseFloat(qtdeNC) / parseFloat(amostragem)) * 100;
 
                 porcentagemNCTotal = isNaN(porcentagemNCTotal) ? 0 : porcentagemNCTotal;
 
@@ -207,7 +207,7 @@ var HeatMap = {
             let amostragem = this.jsonObject.map(x => x.Amostragem).reduce(sumReduce);
             let qtdeNC = this.jsonObject.map(x => x.QtdeNC).reduce(sumReduce);
 
-            let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+            let porcentagemNCTotal = (parseFloat(qtdeNC) / parseFloat(amostragem)) * 100;
 
             porcentagemNCTotal = isNaN(porcentagemNCTotal) ? 0 : porcentagemNCTotal;
 
