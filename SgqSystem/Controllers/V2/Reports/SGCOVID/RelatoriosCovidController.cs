@@ -18,6 +18,7 @@ namespace SgqSystem.Controllers
             ViewBag.ShowParCompany = true;
             ViewBag.ShowParStructure2 = true;
             ViewBag.ShowParStructure3 = true;
+            ViewBag.showParFrequency = true;
             return View();
         }
     }

@@ -129,7 +129,7 @@
 
     @Scripts.Render("~/Scripts/heatmap.js")
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
     let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/RelatorioResultadoCovid"))';
 
@@ -137,6 +137,10 @@
     let arrTitulo = [];
 
     let chart = null;
+
+    $(document).ready(() => {
+        $('[name="ParFrequency_Ids"]').removeAttr('multiple');
+    });
 
     function buscarDados() {
 
@@ -760,6 +764,6 @@
         }
     }
 
-</script>
+    </script>
 
 }
