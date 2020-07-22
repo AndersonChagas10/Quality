@@ -849,6 +849,7 @@ function SalvarAnomalias(collectionDate) {
                 Shift_Id: 1,
                 Period_Id: 1,
                 ParCompany_Id: currentParCompany_Id,
+                ParCluster_Id: currentParCluster_Id,
                 ParLevel1_Id: currentParLevel1_Id,
                 ParLevel2_Id: currentParLevel2_Id,
                 ParLevel3_Id: parseInt($(linhaTarefa).attr('data-level3')),
