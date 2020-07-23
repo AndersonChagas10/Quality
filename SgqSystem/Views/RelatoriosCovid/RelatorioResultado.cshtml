@@ -138,11 +138,32 @@
 
     let chart = null;
 
+    let tituloChart = "";
+
     $(document).ready(() => {
         $('[name="ParFrequency_Ids"]').removeAttr('multiple');
+        $('[name="parCluster_Ids"]').removeAttr('multiple');
+        $('[name="dateRange"]').parent().find('label').after("<i style='color:red;font-size:20px;'>*</i>");
+        $('[name="parCluster_Ids"]').parent().find('button').after("<i style='color:red;font-size:20px;'>*</i>");
+        $('[name="parStructure3_Ids"]').select2('destroy');
+        $('[name="parStructure3_Ids"]').attr('multiple', 'multiple');
+        $('[name="parStructure3_Ids"]').select2();
     });
 
+    function filterIsValid() {
+ 
+        if (!$('[name="parCluster_Ids"] :selected').val()) {
+            openMessageModal("Selecione o Cluster!");
+            return false;
+        }
+
+        return true;
+    }
+
     function buscarDados() {
+
+        if (!filterIsValid())
+            return false;
 
         arrObjDados = [];
         arrTitulo = [];
@@ -158,6 +179,8 @@
 
         if (!$("#divFilterReports").is(":hidden"))
             toggleDivFilterReports();
+
+        tituloChart = ' - Cluster: ' + ($('[name="parCluster_Ids"] :selected').val() ? $('[name="parCluster_Ids"] :selected').text() : "Todos");
 
         $.ajax({
             data: JSON.stringify(objFiltro),
@@ -208,7 +231,7 @@
                 enabled: false
             },
             title: {
-                text: '% DE NC ANÁLISES MICROBIOLÓGICAS POR TIPO DE VEÍCULO'
+                text: '% DE NC POR ' + serie + tituloChart
             },
             subtitle: {
                 text: ''

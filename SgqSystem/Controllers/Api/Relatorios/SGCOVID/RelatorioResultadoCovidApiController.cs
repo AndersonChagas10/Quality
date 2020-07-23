@@ -21,19 +21,19 @@ namespace SgqSystem.Controllers.Api.Relatorios.SGCOVID
 
             string whereCluster = string.Empty;
             if (form.ParCluster_Ids.Length > 0)
-                whereCluster = $"C2xC.ParCluster_Id in ({string.Join(",", form.ParCluster_Ids)})";
+                whereCluster = $"AND C2xC.ParCluster_Id in ({string.Join(",", form.ParCluster_Ids)})";
 
             string whereStructure2 = string.Empty;
             if (form.ParStructure2_Ids.Length > 0)
-                whereStructure2 = $"S2.ID in ({string.Join(",", form.ParStructure2_Ids)})";
+                whereStructure2 = $"AND S2.ID in ({string.Join(",", form.ParStructure2_Ids)})";
 
             string whereStructure3 = string.Empty;
             if (form.ParStructure3_Ids.Length > 0)
-                whereStructure3 = $"S1.ID in ({string.Join(",", form.ParStructure3_Ids)})";
+                whereStructure3 = $"AND S1.ID in ({string.Join(",", form.ParStructure3_Ids)})";
 
             string whereUnidade = string.Empty;
             if (form.ParCompany_Ids.Length > 0)
-                whereUnidade = $"C2.UnitId in ({string.Join(",", form.ParCompany_Ids)}";
+                whereUnidade = $"AND C2.UnitId in ({string.Join(",", form.ParCompany_Ids)}";
 
             string parFrequency = "0";
             if (form.ParFrequency_Ids.Count() > 0)
