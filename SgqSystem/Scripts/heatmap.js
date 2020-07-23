@@ -744,8 +744,14 @@ function PreencheCalorRodape() {
 
 function sumReduce(accumulator, currentValue) {
 
-    accumulator = parseInt(accumulator);
-    currentValue = parseInt(currentValue);
+    if (typeof accumulator === 'string')
+        accumulator = accumulator.replace(",", ".");
+
+    if (typeof currentValue === 'string')
+        currentValue = currentValue.replace(",", ".");
+
+    accumulator = parseFloat(accumulator);
+    currentValue = parseFloat(currentValue);
 
     accumulator = isNaN(accumulator) ? 0 : accumulator;
     currentValue = isNaN(currentValue) ? 0 : currentValue;

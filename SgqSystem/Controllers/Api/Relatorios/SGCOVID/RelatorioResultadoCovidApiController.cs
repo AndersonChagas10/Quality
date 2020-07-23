@@ -92,7 +92,7 @@ FROM CollectionLevel2 C2 WITH (NOLOCK)
 INNER JOIN Result_Level3 R3 WITH (NOLOCK)
 	ON C2.ID = R3.CollectionLevel2_Id
 INNER JOIN CollectionLevel2XCluster C2xC WITH (NOLOCK)
-	ON C2.ID = C2xC.CollectionLevel2_Id
+	ON C2.ID = C2xC.CollectionLevel2_Id --AND C2xC.ParCluster_Id IN(13, 29, 31)
 INNER JOIN ParCluster xC WITH (NOLOCK)
 	ON C2xC.ParCluster_Id = xC.Id
 INNER JOIN ParClusterGroup xCG WITH (NOLOCK)
@@ -126,7 +126,6 @@ INNER JOIN ParStructure S2 WITH (NOLOCK)
 INNER JOIN ParStructure S3 WITH (NOLOCK)
 	ON S2.ParStructureParent_Id = S3.Id
 WHERE 1 = 1
---AND C2xC.ParCluster_Id IN(29, 31)
 {whereUnidade}
 {whereDate}
 {whereCluster}
