@@ -107,6 +107,8 @@
     <div class="page-content-wrapper">
         <div class="page-content">
 
+            @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
+
             <div class="loader" hidden></div>
 
             @*Grafico*@
@@ -151,9 +153,11 @@
     });
 
     function filterIsValid() {
+
+        $('#divMensagemAlerta').hide();
  
         if (!$('[name="parCluster_Ids"] :selected').val()) {
-            openMessageModal("Selecione o Cluster!");
+            GuardJs.exibirMensagemAlerta("Selecione o Cluster.");
             return false;
         }
 
