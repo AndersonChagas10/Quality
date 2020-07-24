@@ -33,7 +33,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.SGCOVID
 
             string whereUnidade = string.Empty;
             if (form.ParCompany_Ids.Length > 0)
-                whereUnidade = $"AND C2.UnitId in ({string.Join(",", form.ParCompany_Ids)}";
+                whereUnidade = $"AND C2.UnitId in ({string.Join(",", form.ParCompany_Ids)})";
 
             string parFrequency = "0";
             if (form.ParFrequency_Ids.Count() > 0)
