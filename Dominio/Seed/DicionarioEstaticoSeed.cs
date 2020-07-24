@@ -134,6 +134,9 @@ namespace Dominio.Seed
 
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "desdobrarAutomatico", Value = "false", ControllerName = "", Descricao = "Desdobramento automático no AppColeta de Gestão" });
 
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "idsClusterRelatorioResultadoCovid", Value = "", ControllerName = "RelatorioResultadoCovid", Descricao = "Ids de Clusters que serão retornados no relatório (separados por virguala)" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "queryRelatorioResultadoCovid", Value = "", ControllerName = "RelatorioResultadoCovid", Descricao = "Query do relatório de resultados RH Covid" });
+
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys).ToList();
 
                 if (add.Count > 0)
