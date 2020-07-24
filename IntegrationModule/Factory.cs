@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace IntegrationModule
         /// <param name="user">User.</param>
         public Factory(string dataSource, string catalog, string password, string user)
         {
+
             //var teste = System.Configuration.ConfigurationManager.AppSettings["SgqDbDev"];
             connectionString = new SqlConnectionStringBuilder();
             connectionString.DataSource = dataSource;//@"SERVERGRT\MSSQLSERVER2014";
@@ -64,7 +66,7 @@ namespace IntegrationModule
         /// 
         /// </summary>
         /// <param name="connectionStringDoWebConfig"></param>
-        /*public Factory(string connectionStringDoWebConfig)
+        public Factory(string connectionStringDoWebConfig)
         {
             try
             {
@@ -104,7 +106,7 @@ namespace IntegrationModule
                 closeConnection();
                 throw ex;
             }
-        }*/
+        }
 
         /// <summary>
         /// 

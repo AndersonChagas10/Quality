@@ -156,7 +156,7 @@ var HeatMap = {
                 let amostragem = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.Amostragem).reduce(sumReduce);
                 let qtdeNC = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.QtdeNC).reduce(sumReduce);
 
-                let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+                let porcentagemNCTotal = (parseFloat(qtdeNC) / parseFloat(amostragem)) * 100;
 
                 porcentagemNCTotal = isNaN(porcentagemNCTotal) ? 0 : porcentagemNCTotal;
 
@@ -187,7 +187,7 @@ var HeatMap = {
                 let amostragem = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.Amostragem).reduce(sumReduce);
                 let qtdeNC = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.QtdeNC).reduce(sumReduce);
 
-                let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+                let porcentagemNCTotal = (parseFloat(qtdeNC) / parseFloat(amostragem)) * 100;
 
                 porcentagemNCTotal = isNaN(porcentagemNCTotal) ? 0 : porcentagemNCTotal;
 
@@ -207,12 +207,12 @@ var HeatMap = {
             let amostragem = this.jsonObject.map(x => x.Amostragem).reduce(sumReduce);
             let qtdeNC = this.jsonObject.map(x => x.QtdeNC).reduce(sumReduce);
 
-            let porcentagemNCTotal = (qtdeNC / amostragem) * 100;
+            let porcentagemNCTotal = (parseFloat(qtdeNC) / parseFloat(amostragem)) * 100;
 
             porcentagemNCTotal = isNaN(porcentagemNCTotal) ? 0 : porcentagemNCTotal;
 
             $(identificador).html(porcentagemNCTotal.toFixed(2));
-            
+
         }
 
         PreencheCalorNasCelulasValores();
@@ -744,8 +744,14 @@ function PreencheCalorRodape() {
 
 function sumReduce(accumulator, currentValue) {
 
-    accumulator = parseInt(accumulator);
-    currentValue = parseInt(currentValue);
+    if (typeof accumulator === 'string')
+        accumulator = accumulator.replace(",", ".");
+
+    if (typeof currentValue === 'string')
+        currentValue = currentValue.replace(",", ".");
+
+    accumulator = parseFloat(accumulator);
+    currentValue = parseFloat(currentValue);
 
     accumulator = isNaN(accumulator) ? 0 : accumulator;
     currentValue = isNaN(currentValue) ? 0 : currentValue;

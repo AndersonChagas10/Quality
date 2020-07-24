@@ -37,6 +37,12 @@ namespace DTO
 
         public string[] ShowTurnoSeara { get; set; } = new string[] { };
 
+        public string[] SKU_Ids { get; set; } = new string[] { };
+
+        public string[] parGroupParLevel1_Ids { get; set; } = new string[] { };
+
+        public string[] ParLevel3Group_Ids { get; set; } = new string[] { };
+
         public int[] Shift_Ids { get; set; } = new int[] { };
 
         public int[] ParDepartment_Ids { get; set; } = new int[] { };
@@ -44,7 +50,7 @@ namespace DTO
         public int[] ShowModeloGrafico_Id { get; set; } = new int[] { };
 
         public int[] ShowDimensaoGrafico_Id { get; set; } = new int[] { };
-      
+
         public int[] ParSecao_Ids { get; set; } = new int[] { };
 
         public int[] ParCargo_Ids { get; set; } = new int[] { };
@@ -100,5 +106,6 @@ namespace DTO
         public bool ShowLinkedFilters { get; set; } = true;
 
         public JObject Param { get; set; }
+        public int[] ParFrequency_Ids { get; set; } = new int[] { };
     }
 }
