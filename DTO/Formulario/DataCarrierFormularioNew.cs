@@ -47,7 +47,7 @@ namespace DTO
         public int[] ShowModeloGrafico_Id { get; set; } = new int[] { };
 
         public int[] ShowDimensaoGrafico_Id { get; set; } = new int[] { };
-      
+
         public int[] ParSecao_Ids { get; set; } = new int[] { };
 
         public int[] ParCargo_Ids { get; set; } = new int[] { };
@@ -101,5 +101,6 @@ namespace DTO
         public bool ShowLinkedFilters { get; set; } = true;
 
         public JObject Param { get; set; }
+        public int[] ParFrequency_Ids { get; set; } = new int[] { };
     }
 }
