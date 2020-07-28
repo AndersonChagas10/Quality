@@ -110,6 +110,7 @@
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
             <div class="loader" hidden></div>
+            <div id="filtroGeral" class="select-filter"></div>
 
             @*Grafico*@
             <div id="filtroGrafico" class="select-filter"></div>
@@ -142,6 +143,8 @@
 
     let tituloChart = "";
 
+    const tiposAnalise = { NC: "NC", C: "C", PONTOS: "Pontos" };
+
     $(document).ready(() => {
         $('[name="ParFrequency_Ids"]').removeAttr('multiple');
         $('[name="parCluster_Ids"]').removeAttr('multiple');
@@ -152,10 +155,17 @@
         $('[name="parStructure3_Ids"]').select2();
     });
 
+    function getTipoAnalise() {
+
+        const tipoAnaliseSelecionado = $('#filtroGeral select :selected').val();
+
+        return tiposAnalise[tipoAnaliseSelecionado];
+    }
+
     function filterIsValid() {
 
         $('#divMensagemAlerta').hide();
- 
+
         if (!$('[name="parCluster_Ids"] :selected').val()) {
             GuardJs.exibirMensagemAlerta("Selecione o Cluster.");
             return false;
@@ -164,10 +174,20 @@
         return true;
     }
 
-    function buscarDados() {
+    function changeTipoAnalise() {
 
-        if (!filterIsValid())
-            return false;
+        const data = arrObjDados[0];
+
+        limparDados();
+        retornoAjax(data);
+
+    }
+
+    function limparFiltroGeral() {
+        $('#filtroGeral').html("");
+    }
+
+    function limparDados() {
 
         arrObjDados = [];
         arrTitulo = [];
@@ -177,14 +197,29 @@
         $('#filtroGrafico').html("");
 
         hideMessage();
-        exibirLoader();
 
         window.scrollTo(0, 0);
 
         if (!$("#divFilterReports").is(":hidden"))
             toggleDivFilterReports();
 
+    }
+
+    function setTituloGrafico() {
+
         tituloChart = ' - Cluster: ' + ($('[name="parCluster_Ids"] :selected').val() ? $('[name="parCluster_Ids"] :selected').text() : "Todos");
+
+    }
+
+    function buscarDados() {
+
+        if (!filterIsValid())
+            return false;
+
+        limparDados();
+        exibirLoader();
+
+        limparFiltroGeral();
 
         $.ajax({
             data: JSON.stringify(objFiltro),
@@ -213,19 +248,24 @@
 
         if (!data.length) {
             showMessage("Sem dados.");
+
         } else {
 
+            if (getTipoAnalise() == undefined)
+                appendFiltroGeral();
+
+            const tipoAnalise = getTipoAnalise();
             appendChartFilter(Object.keys(data[0]), "Unidade Sigla");
-            gerarGrafico(data, "Unidade Sigla");
-            gerarMapaCalor(data, 0, linha, coluna, false);
+            gerarGrafico(data, "Unidade Sigla", tipoAnalise);
+            gerarMapaCalor(data, 0, linha, coluna, tipoAnalise);
         }
     }
 
     //Gráfico
-    function gerarGrafico(data, serie) {
+    function gerarGrafico(data, serie, tipoAnalise) {
 
         const categories = getCategories(data, "__Data");
-        const series = getSeriesByCategories(data, categories, serie);
+        const series = getSeriesByCategories(data, categories, serie, tipoAnalise);
 
         chart = Highcharts.chart('container', {
             chart: {
@@ -271,7 +311,7 @@
     }
 
     //Matriz de calor
-    function gerarMapaCalor(data, numeroDesdobramento, linha, coluna) {
+    function gerarMapaCalor(data, numeroDesdobramento, linha, coluna, tipoAnalise) {
 
         let tituloDesdobramento = "Mapa de Calor " + linha + " por " + coluna + "</br>" + arrTitulo.slice(0, numeroDesdobramento).join(" | ");
 
@@ -279,7 +319,7 @@
         appendDiv(numeroDesdobramento, Object.keys(data[0]), tituloDesdobramento);
         appendDataArr(data, numeroDesdobramento);
         setTituloMatriz(numeroDesdobramento, tituloDesdobramento);
-        gerarMatriz(data, numeroDesdobramento, linha, coluna);
+        gerarMatriz(data, numeroDesdobramento, linha, coluna, tipoAnalise);
 
         $(`#selectLinha_${numeroDesdobramento}`).val(linha);
         $(`#selectColuna_${numeroDesdobramento}`).val(coluna);
@@ -326,7 +366,7 @@
         return categoriesArr;
     }
 
-    function getSeriesByCategories(data, categories, serie) {
+    function getSeriesByCategories(data, categories, serie, tipoAnalise) {
 
         const series = [];
 
@@ -341,7 +381,6 @@
             categories.forEach((o) => { //datas
 
                 let arrFiltrado = data.filter(x => x['__Data'] == o && x[serie] == serieName);
-                //let arrFiltrado = data.filter(x => convertDateToYearMouth(x['__Data']) == o && x[serie] == serieName);
 
                 if (arrFiltrado.length == 0) {
 
@@ -349,12 +388,21 @@
 
                 } else {
 
-                    let arrAv = arrFiltrado.map(x => x.AV);
-                    let amostragem = arrAv.reduce(sumReduce);
-                    let arrNc = arrFiltrado.map(x => x.NC);
-                    let qtdNC = arrNc.reduce(sumReduce)
+                    if (tipoAnalise == "NC" || tipoAnalise == "C") { //Porcentagem C ou NC
 
-                    obj.data.push(getPorcentagem(amostragem, qtdNC));
+                        const arrAv = arrFiltrado.map(x => x.AV);
+                        const amostragem = arrAv.reduce(sumReduce);
+                        const arrNc = arrFiltrado.map(x => x[tipoAnalise]);
+                        const qtdNC = arrNc.reduce(sumReduce);
+                        obj.data.push(getPorcentagem(amostragem, qtdNC));
+
+                    } else { //Soma de pontos
+
+                        const arrPontos = arrFiltrado.map(x => x.Pontos);
+                        const somaPontos = arrPontos.reduce(sumReduce);
+                        obj.data.push(somaPontos);
+
+                    }
                 }
 
             });
@@ -504,7 +552,7 @@
 
     }
 
-    function aplicarDistinctNaLista(lista, listaDePropriedades, listaDeValores) {
+    function aplicarDistinctNaLista(lista, listaDePropriedades, tipoAnalise) {
 
         return new Promise(async resolve => {
 
@@ -537,12 +585,21 @@
                     let percNC = null
 
                     if (arrFiltrados.length > 0) {
-                        qtdeNC = parseFloat(arrFiltrados.map(x => x.NC).reduce(sumReduce));
-                        amostragem = parseFloat(arrFiltrados.map(x => x.AV).reduce(sumReduce));
-                        percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
-                    }
 
-                    listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
+                        if (tipoAnalise == "C" || tipoAnalise == "NC") {
+
+                            qtdeNC = parseFloat(arrFiltrados.map(x => x[tipoAnalise]).reduce(sumReduce));
+                            amostragem = parseFloat(arrFiltrados.map(x => x.AV).reduce(sumReduce));
+                            percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
+                            listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
+
+                        } else {
+
+                            const pontos = parseFloat(arrFiltrados.map(x => x[tipoAnalise]).reduce(sumReduce)).toFixed(2);
+                            listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, Pontos: pontos, QtdeNC: qtdeNC, Amostragem: amostragem });
+                        }
+
+                    }
 
                 }
 
@@ -610,9 +667,9 @@
         }
     }
 
-    async function gerarMatriz(data, numeroDesdobramento, linha, coluna) {
+    async function gerarMatriz(data, numeroDesdobramento, linha, coluna, tipoAnalise) {
 
-        let dados = await aplicarDistinctNaLista(data, [linha, coluna]);
+        let dados = await aplicarDistinctNaLista(data, [linha, coluna], tipoAnalise);
 
         let w = $('#container').innerWidth();
         let idMatriz = "#placeholder_" + numeroDesdobramento;
@@ -642,12 +699,13 @@
         config.cellWidth = "150";
         config.heatmapType = "line";
         config.Valores = [
-            { "title": "% NC", "render": function () { return '<span>{PercNC}</span>'; }, "heatmap": true /*, "groupFunction": "AVG"*/ }
+            { "title": "% NC", "render": function () { return '<span>{' + (tipoAnalise != "Pontos" ? "PercNC" : "Pontos") + '}</span>'; }, "heatmap": true /*, "groupFunction": "AVG"*/ }
         ];
 
         HeatMap.Inicializar(config);
 
-        HeatMap.RecalculaMatrizPorcentagem();
+        if (tipoAnalise != "Pontos")
+            HeatMap.RecalculaMatrizPorcentagem();
 
         ajustaMatriz(idMatriz);
 
@@ -753,6 +811,20 @@
         if (elementLoading)
             $(elementLoading).button('reset');
 
+    }
+
+    function appendFiltroGeral() {
+
+        let html = `<div id="">
+                        <select id="select-filter-chart">
+                        <option value="NC">Percentual de Não Conformidades</option>
+                        <option value="C">Percentual de Conformidades</option>
+                        <option value="PONTOS">Pontuação</option>
+                        <select id="select-filter-chart">
+                        <button type="button" onclick="changeTipoAnalise();" class="btn btn-primary" id="btnChangeFilterGeral" title="Trocar Tipo de Análise">Aplicar</button>
+                    </div>`;
+
+        $("#filtroGeral").html(html);
     }
 
     function appendChartFilter(keys, preSelected) {
