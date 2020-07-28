@@ -1019,6 +1019,7 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourcePT() { Key = "header_fields_l3", Value = "Cabeçalho Tarefa" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "qualification", Value = "Qualificação" });
                 ResourcesInserir.Add(new ResourcePT() { Key = "register_already_exist", Value = "Este cadastro já existe!" });
+                ResourcesInserir.Add(new ResourcePT() { Key = "sensorial", Value = "Perfil Sensorial" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourcesKeys.Contains(x.Key));
 

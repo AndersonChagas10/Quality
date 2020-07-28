@@ -124,7 +124,47 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                    ,SUM(WeiEvaluation) AS AV
                    ,SUM(WeiDefects) AS NC
                    ,SUM(WeiDefects) / IIF(SUM(WeiEvaluation) > 0, SUM(WeiEvaluation),1 ) * 100 AS [PROC]
-                FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+                FROM (
+                                SELECT 
+                                    CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,         
+                                    C2.ParFrequency_Id ,         
+                                    S2.ParStructureParent_Id AS Holding ,         
+                                    S1.ParStructureParent_Id AS GrupoDeEmpresa ,         
+                                    CS.ParStructure_Id AS Regional ,         
+                                    C2.UnitId ,         
+                                    D.Parent_Id AS Centro_De_Custo_Id ,         
+                                    C2XDP.ParDepartment_Id AS Secao_Id ,         
+                                    C2XCG.ParCargo_Id AS Cargo_Id ,         
+                                    C2.ParLevel1_Id ,         
+                                    C2.ParLevel2_Id ,         
+                                    R3.ParLevel3_Id ,         
+                                    C2.AuditorId ,         
+                                    R3.WeiEvaluation ,         
+                                    R3.WeiDefects, 
+                                    CCC.ParCluster_Id,
+                                    cfpp.ParFamiliaProduto_Id,      
+                                    cfpp.ParProduto_Id  
+                                    FROM CollectionLevel2 C2 WITH (NOLOCK)  
+                                    LEFT JOIN CollectionLevel2XCluster CCC WITH (NOLOCK)
+                                    ON CCC.CollectionLevel2_Id = C2.Id
+                                    LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
+                                    ON C2.Id = R3.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) 
+                                    ON C2.ID = C2XDP.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) 
+                                    ON C2.ID = C2XCG.CollectionLevel2_Id  
+                                    LEFT JOIN ParDepartment D WITH (NOLOCK) 
+                                    ON C2XDP.ParDepartment_Id = D.Id  
+                                    LEFT JOIN ParCompanyXStructure CS 
+                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    LEFT JOIN ParStructure S1 
+                                    ON CS.ParStructure_Id = S1.Id  
+                                    LEFT JOIN ParStructure S2 
+                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
+                                    on cfpp.CollectionLevel2_Id = c2.Id  
+                                    WHERE 1=1    AND R3.IsNotEvaluate = 0
+                         ) CuboL3
                 INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.UnitId = C.Id
 				LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
                         AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
@@ -275,7 +315,47 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	                SUM(WeiEvaluation) AS AV,
 	                SUM(WeiDefects) AS NC,
 	                SUM(WeiDefects) / IIF(SUM(WeiEvaluation) > 0, SUM(WeiEvaluation),1 ) * 100 AS [PROC]
-	                FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+	                FROM (
+                                SELECT 
+                                    CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,         
+                                    C2.ParFrequency_Id ,         
+                                    S2.ParStructureParent_Id AS Holding ,         
+                                    S1.ParStructureParent_Id AS GrupoDeEmpresa ,         
+                                    CS.ParStructure_Id AS Regional ,         
+                                    C2.UnitId ,         
+                                    D.Parent_Id AS Centro_De_Custo_Id ,         
+                                    C2XDP.ParDepartment_Id AS Secao_Id ,         
+                                    C2XCG.ParCargo_Id AS Cargo_Id ,         
+                                    C2.ParLevel1_Id ,         
+                                    C2.ParLevel2_Id ,         
+                                    R3.ParLevel3_Id ,         
+                                    C2.AuditorId ,         
+                                    R3.WeiEvaluation ,         
+                                    R3.WeiDefects, 
+                                    CCC.ParCluster_Id,
+                                    cfpp.ParFamiliaProduto_Id,      
+                                    cfpp.ParProduto_Id  
+                                    FROM CollectionLevel2 C2 WITH (NOLOCK)  
+                                    LEFT JOIN CollectionLevel2XCluster CCC WITH (NOLOCK)
+                                    ON CCC.CollectionLevel2_Id = C2.Id
+                                    LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
+                                    ON C2.Id = R3.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) 
+                                    ON C2.ID = C2XDP.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) 
+                                    ON C2.ID = C2XCG.CollectionLevel2_Id  
+                                    LEFT JOIN ParDepartment D WITH (NOLOCK) 
+                                    ON C2XDP.ParDepartment_Id = D.Id  
+                                    LEFT JOIN ParCompanyXStructure CS 
+                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    LEFT JOIN ParStructure S1 
+                                    ON CS.ParStructure_Id = S1.Id  
+                                    LEFT JOIN ParStructure S2 
+                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
+                                    on cfpp.CollectionLevel2_Id = c2.Id  
+                                    WHERE 1=1    AND R3.IsNotEvaluate = 0
+                         ) CuboL3
 	                INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	                LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
                         AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
@@ -435,7 +515,47 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	                SUM(WeiEvaluation) AS AV,
 	                SUM(WeiDefects) AS NC,
 	                SUM(WeiDefects) / IIF(SUM(WeiEvaluation) > 0, SUM(WeiEvaluation),1 ) * 100 AS [PROC]
-	                FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+	                FROM (
+                                SELECT 
+                                    CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,         
+                                    C2.ParFrequency_Id ,         
+                                    S2.ParStructureParent_Id AS Holding ,         
+                                    S1.ParStructureParent_Id AS GrupoDeEmpresa ,         
+                                    CS.ParStructure_Id AS Regional ,         
+                                    C2.UnitId ,         
+                                    D.Parent_Id AS Centro_De_Custo_Id ,         
+                                    C2XDP.ParDepartment_Id AS Secao_Id ,         
+                                    C2XCG.ParCargo_Id AS Cargo_Id ,         
+                                    C2.ParLevel1_Id ,         
+                                    C2.ParLevel2_Id ,         
+                                    R3.ParLevel3_Id ,         
+                                    C2.AuditorId ,         
+                                    R3.WeiEvaluation ,         
+                                    R3.WeiDefects, 
+                                    CCC.ParCluster_Id,
+                                    cfpp.ParFamiliaProduto_Id,      
+                                    cfpp.ParProduto_Id  
+                                    FROM CollectionLevel2 C2 WITH (NOLOCK)  
+                                    LEFT JOIN CollectionLevel2XCluster CCC WITH (NOLOCK)
+                                    ON CCC.CollectionLevel2_Id = C2.Id
+                                    LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
+                                    ON C2.Id = R3.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) 
+                                    ON C2.ID = C2XDP.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) 
+                                    ON C2.ID = C2XCG.CollectionLevel2_Id  
+                                    LEFT JOIN ParDepartment D WITH (NOLOCK) 
+                                    ON C2XDP.ParDepartment_Id = D.Id  
+                                    LEFT JOIN ParCompanyXStructure CS 
+                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    LEFT JOIN ParStructure S1 
+                                    ON CS.ParStructure_Id = S1.Id  
+                                    LEFT JOIN ParStructure S2 
+                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
+                                    on cfpp.CollectionLevel2_Id = c2.Id  
+                                    WHERE 1=1    AND R3.IsNotEvaluate = 0
+                         ) CuboL3
 	                INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	                LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
                         AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
@@ -614,7 +734,48 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	                SUM(WeiEvaluation) AS AV,
 	                SUM(WeiDefects) AS NC,
 	                SUM(WeiDefects) / IIF(SUM(WeiEvaluation) > 0, SUM(WeiEvaluation),1 ) * 100 AS [PROC]
-	                FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+	                FROM 
+                        (
+                                SELECT 
+                                    CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,         
+                                    C2.ParFrequency_Id ,         
+                                    S2.ParStructureParent_Id AS Holding ,         
+                                    S1.ParStructureParent_Id AS GrupoDeEmpresa ,         
+                                    CS.ParStructure_Id AS Regional ,         
+                                    C2.UnitId ,         
+                                    D.Parent_Id AS Centro_De_Custo_Id ,         
+                                    C2XDP.ParDepartment_Id AS Secao_Id ,         
+                                    C2XCG.ParCargo_Id AS Cargo_Id ,         
+                                    C2.ParLevel1_Id ,         
+                                    C2.ParLevel2_Id ,         
+                                    R3.ParLevel3_Id ,         
+                                    C2.AuditorId ,         
+                                    R3.WeiEvaluation ,         
+                                    R3.WeiDefects, 
+                                    CCC.ParCluster_Id,
+                                    cfpp.ParFamiliaProduto_Id,      
+                                    cfpp.ParProduto_Id  
+                                    FROM CollectionLevel2 C2 WITH (NOLOCK)  
+                                    LEFT JOIN CollectionLevel2XCluster CCC WITH (NOLOCK)
+                                    ON CCC.CollectionLevel2_Id = C2.Id
+                                    LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
+                                    ON C2.Id = R3.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) 
+                                    ON C2.ID = C2XDP.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) 
+                                    ON C2.ID = C2XCG.CollectionLevel2_Id  
+                                    LEFT JOIN ParDepartment D WITH (NOLOCK) 
+                                    ON C2XDP.ParDepartment_Id = D.Id  
+                                    LEFT JOIN ParCompanyXStructure CS 
+                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    LEFT JOIN ParStructure S1 
+                                    ON CS.ParStructure_Id = S1.Id  
+                                    LEFT JOIN ParStructure S2 
+                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
+                                    on cfpp.CollectionLevel2_Id = c2.Id  
+                                    WHERE 1=1    AND R3.IsNotEvaluate = 0
+                         ) CuboL3 
 	                INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	                LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
                         AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
@@ -744,16 +905,56 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
 	            SUM(WeiDefects) / IIF(SUM(WeiEvaluation) > 0, SUM(WeiEvaluation),1 ) * 100 AS [PROC]
-	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+	            FROM (
+                                SELECT 
+                                    CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,         
+                                    C2.ParFrequency_Id ,         
+                                    S2.ParStructureParent_Id AS Holding ,         
+                                    S1.ParStructureParent_Id AS GrupoDeEmpresa ,         
+                                    CS.ParStructure_Id AS Regional ,         
+                                    C2.UnitId ,         
+                                    D.Parent_Id AS Centro_De_Custo_Id ,         
+                                    C2XDP.ParDepartment_Id AS Secao_Id ,         
+                                    C2XCG.ParCargo_Id AS Cargo_Id ,         
+                                    C2.ParLevel1_Id ,         
+                                    C2.ParLevel2_Id ,         
+                                    R3.ParLevel3_Id ,         
+                                    C2.AuditorId ,         
+                                    R3.WeiEvaluation ,         
+                                    R3.WeiDefects, 
+                                    CCC.ParCluster_Id,
+                                    cfpp.ParFamiliaProduto_Id,      
+                                    cfpp.ParProduto_Id  
+                                    FROM CollectionLevel2 C2 WITH (NOLOCK)  
+                                    LEFT JOIN CollectionLevel2XCluster CCC WITH (NOLOCK)
+                                    ON CCC.CollectionLevel2_Id = C2.Id
+                                    LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
+                                    ON C2.Id = R3.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) 
+                                    ON C2.ID = C2XDP.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) 
+                                    ON C2.ID = C2XCG.CollectionLevel2_Id  
+                                    LEFT JOIN ParDepartment D WITH (NOLOCK) 
+                                    ON C2XDP.ParDepartment_Id = D.Id  
+                                    LEFT JOIN ParCompanyXStructure CS 
+                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    LEFT JOIN ParStructure S1 
+                                    ON CS.ParStructure_Id = S1.Id  
+                                    LEFT JOIN ParStructure S2 
+                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
+                                    on cfpp.CollectionLevel2_Id = c2.Id  
+                                    WHERE 1=1    AND R3.IsNotEvaluate = 0
+                         ) CuboL3
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
                         AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
                         AND CuboL3.Cargo_Id = PVP.ParCargo_Id
                         AND CuboL3.ParFrequency_Id = PVP.ParFrequencyId
-	            INNER JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
-	            INNER JOIN ParLevel2 M WITH (NOLOCK) ON CuboL3.Parlevel2_Id = M.ID
-				INNER JOIN ParDepartment D ON CuboL3.Centro_De_Custo_Id = D.ID
-				INNER JOIN ParCargo CG ON CuboL3.Cargo_Id = CG.ID
+	            LEFT JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
+	            LEFT JOIN ParLevel2 M WITH (NOLOCK) ON CuboL3.Parlevel2_Id = M.ID
+				LEFT JOIN ParDepartment D ON CuboL3.Centro_De_Custo_Id = D.ID
+				LEFT JOIN ParCargo CG ON CuboL3.Cargo_Id = CG.ID
 				LEFT JOIN ParCluster PC ON CuboL3.ParCluster_Id = PC.Id
 		        LEFT JOIN ParClusterGroup PCG ON PC.ParClusterGroup_Id = PCG.Id
                 LEFT JOIN (select * from ParStructure where ParStructureGroup_Id = {DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.ParStructureGroup1 as string} ) Holding on CuboL3.Holding = Holding.Id
@@ -874,7 +1075,47 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
 	            SUM(WeiDefects) / IIF(SUM(WeiEvaluation) > 0, SUM(WeiEvaluation),1 ) * 100 AS [PROC]
-	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+	            FROM (
+                                SELECT 
+                                    CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,         
+                                    C2.ParFrequency_Id ,         
+                                    S2.ParStructureParent_Id AS Holding ,         
+                                    S1.ParStructureParent_Id AS GrupoDeEmpresa ,         
+                                    CS.ParStructure_Id AS Regional ,         
+                                    C2.UnitId ,         
+                                    D.Parent_Id AS Centro_De_Custo_Id ,         
+                                    C2XDP.ParDepartment_Id AS Secao_Id ,         
+                                    C2XCG.ParCargo_Id AS Cargo_Id ,         
+                                    C2.ParLevel1_Id ,         
+                                    C2.ParLevel2_Id ,         
+                                    R3.ParLevel3_Id ,         
+                                    C2.AuditorId ,         
+                                    R3.WeiEvaluation ,         
+                                    R3.WeiDefects, 
+                                    CCC.ParCluster_Id,
+                                    cfpp.ParFamiliaProduto_Id,      
+                                    cfpp.ParProduto_Id  
+                                    FROM CollectionLevel2 C2 WITH (NOLOCK)  
+                                    LEFT JOIN CollectionLevel2XCluster CCC WITH (NOLOCK)
+                                    ON CCC.CollectionLevel2_Id = C2.Id
+                                    LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
+                                    ON C2.Id = R3.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) 
+                                    ON C2.ID = C2XDP.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) 
+                                    ON C2.ID = C2XCG.CollectionLevel2_Id  
+                                    LEFT JOIN ParDepartment D WITH (NOLOCK) 
+                                    ON C2XDP.ParDepartment_Id = D.Id  
+                                    LEFT JOIN ParCompanyXStructure CS 
+                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    LEFT JOIN ParStructure S1 
+                                    ON CS.ParStructure_Id = S1.Id  
+                                    LEFT JOIN ParStructure S2 
+                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
+                                    on cfpp.CollectionLevel2_Id = c2.Id  
+                                    WHERE 1=1    AND R3.IsNotEvaluate = 0
+                         ) CuboL3
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
                         AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
@@ -1035,7 +1276,47 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
 	            SUM(WeiDefects) / IIF(SUM(WeiEvaluation) > 0, SUM(WeiEvaluation),1 ) * 100 AS [PROC]
-	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+	            FROM (
+                                SELECT 
+                                    CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,         
+                                    C2.ParFrequency_Id ,         
+                                    S2.ParStructureParent_Id AS Holding ,         
+                                    S1.ParStructureParent_Id AS GrupoDeEmpresa ,         
+                                    CS.ParStructure_Id AS Regional ,         
+                                    C2.UnitId ,         
+                                    D.Parent_Id AS Centro_De_Custo_Id ,         
+                                    C2XDP.ParDepartment_Id AS Secao_Id ,         
+                                    C2XCG.ParCargo_Id AS Cargo_Id ,         
+                                    C2.ParLevel1_Id ,         
+                                    C2.ParLevel2_Id ,         
+                                    R3.ParLevel3_Id ,         
+                                    C2.AuditorId ,         
+                                    R3.WeiEvaluation ,         
+                                    R3.WeiDefects, 
+                                    CCC.ParCluster_Id,
+                                    cfpp.ParFamiliaProduto_Id,      
+                                    cfpp.ParProduto_Id  
+                                    FROM CollectionLevel2 C2 WITH (NOLOCK)  
+                                    LEFT JOIN CollectionLevel2XCluster CCC WITH (NOLOCK)
+                                    ON CCC.CollectionLevel2_Id = C2.Id
+                                    LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
+                                    ON C2.Id = R3.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) 
+                                    ON C2.ID = C2XDP.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) 
+                                    ON C2.ID = C2XCG.CollectionLevel2_Id  
+                                    LEFT JOIN ParDepartment D WITH (NOLOCK) 
+                                    ON C2XDP.ParDepartment_Id = D.Id  
+                                    LEFT JOIN ParCompanyXStructure CS 
+                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    LEFT JOIN ParStructure S1 
+                                    ON CS.ParStructure_Id = S1.Id  
+                                    LEFT JOIN ParStructure S2 
+                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
+                                    on cfpp.CollectionLevel2_Id = c2.Id  
+                                    WHERE 1=1    AND R3.IsNotEvaluate = 0
+                         ) CuboL3
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            LEFT JOIN ParVinculoPeso PVP ON CuboL3.ParLevel2_Id = PVP.ParLevel2_Id
                         AND CuboL3.ParLevel1_Id = PVP.ParLevel1_Id
@@ -1714,7 +1995,47 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
 	            SUM(WeiDefects) / IIF(SUM(WeiEvaluation) > 0, SUM(WeiEvaluation),1 ) * 100 AS [PROC]
-	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+	            FROM (
+                                SELECT 
+                                    CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,         
+                                    C2.ParFrequency_Id ,         
+                                    S2.ParStructureParent_Id AS Holding ,         
+                                    S1.ParStructureParent_Id AS GrupoDeEmpresa ,         
+                                    CS.ParStructure_Id AS Regional ,         
+                                    C2.UnitId ,         
+                                    D.Parent_Id AS Centro_De_Custo_Id ,         
+                                    C2XDP.ParDepartment_Id AS Secao_Id ,         
+                                    C2XCG.ParCargo_Id AS Cargo_Id ,         
+                                    C2.ParLevel1_Id ,         
+                                    C2.ParLevel2_Id ,         
+                                    R3.ParLevel3_Id ,         
+                                    C2.AuditorId ,         
+                                    R3.WeiEvaluation ,         
+                                    R3.WeiDefects, 
+                                    CCC.ParCluster_Id,
+                                    cfpp.ParFamiliaProduto_Id,      
+                                    cfpp.ParProduto_Id  
+                                    FROM CollectionLevel2 C2 WITH (NOLOCK)  
+                                    LEFT JOIN CollectionLevel2XCluster CCC WITH (NOLOCK)
+                                    ON CCC.CollectionLevel2_Id = C2.Id
+                                    LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
+                                    ON C2.Id = R3.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) 
+                                    ON C2.ID = C2XDP.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) 
+                                    ON C2.ID = C2XCG.CollectionLevel2_Id  
+                                    LEFT JOIN ParDepartment D WITH (NOLOCK) 
+                                    ON C2XDP.ParDepartment_Id = D.Id  
+                                    LEFT JOIN ParCompanyXStructure CS 
+                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    LEFT JOIN ParStructure S1 
+                                    ON CS.ParStructure_Id = S1.Id  
+                                    LEFT JOIN ParStructure S2 
+                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
+                                    on cfpp.CollectionLevel2_Id = c2.Id  
+                                    WHERE 1=1    AND R3.IsNotEvaluate = 0
+                         ) CuboL3
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            INNER JOIN ParLevel1 L WITH (NOLOCK)  ON CuboL3.Parlevel1_Id = L.ID
 	            INNER JOIN ParDepartment D WITH (NOLOCK) ON CuboL3.Secao_Id = D.Id
@@ -2162,7 +2483,47 @@ DROP TABLE #AMOSTRATIPO4 ";
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
 	            SUM(WeiDefects) / IIF(SUM(WeiEvaluation) > 0, SUM(WeiEvaluation),1 ) * 100 AS [PROC]
-	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+	            FROM (
+                                SELECT 
+                                    CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,         
+                                    C2.ParFrequency_Id ,         
+                                    S2.ParStructureParent_Id AS Holding ,         
+                                    S1.ParStructureParent_Id AS GrupoDeEmpresa ,         
+                                    CS.ParStructure_Id AS Regional ,         
+                                    C2.UnitId ,         
+                                    D.Parent_Id AS Centro_De_Custo_Id ,         
+                                    C2XDP.ParDepartment_Id AS Secao_Id ,         
+                                    C2XCG.ParCargo_Id AS Cargo_Id ,         
+                                    C2.ParLevel1_Id ,         
+                                    C2.ParLevel2_Id ,         
+                                    R3.ParLevel3_Id ,         
+                                    C2.AuditorId ,         
+                                    R3.WeiEvaluation ,         
+                                    R3.WeiDefects, 
+                                    CCC.ParCluster_Id,
+                                    cfpp.ParFamiliaProduto_Id,      
+                                    cfpp.ParProduto_Id  
+                                    FROM CollectionLevel2 C2 WITH (NOLOCK)  
+                                    LEFT JOIN CollectionLevel2XCluster CCC WITH (NOLOCK)
+                                    ON CCC.CollectionLevel2_Id = C2.Id
+                                    LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
+                                    ON C2.Id = R3.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) 
+                                    ON C2.ID = C2XDP.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) 
+                                    ON C2.ID = C2XCG.CollectionLevel2_Id  
+                                    LEFT JOIN ParDepartment D WITH (NOLOCK) 
+                                    ON C2XDP.ParDepartment_Id = D.Id  
+                                    LEFT JOIN ParCompanyXStructure CS 
+                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    LEFT JOIN ParStructure S1 
+                                    ON CS.ParStructure_Id = S1.Id  
+                                    LEFT JOIN ParStructure S2 
+                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
+                                    on cfpp.CollectionLevel2_Id = c2.Id  
+                                    WHERE 1=1    AND R3.IsNotEvaluate = 0
+                         ) CuboL3
 	            INNER JOIN ParCompany C WITH (NOLOCK)  ON CuboL3.Unitid = C.ID
 	            INNER JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
 	            INNER JOIN ParLevel2 M WITH (NOLOCK) ON CuboL3.Parlevel2_Id = M.ID
@@ -2307,7 +2668,47 @@ DROP TABLE #AMOSTRATIPO4 ";
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
 	            SUM(WeiDefects) / IIF(SUM(WeiEvaluation) > 0, SUM(WeiEvaluation),1 ) * 100 AS [PROC]
-	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+	            FROM (
+                                SELECT 
+                                    CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,         
+                                    C2.ParFrequency_Id ,         
+                                    S2.ParStructureParent_Id AS Holding ,         
+                                    S1.ParStructureParent_Id AS GrupoDeEmpresa ,         
+                                    CS.ParStructure_Id AS Regional ,         
+                                    C2.UnitId ,         
+                                    D.Parent_Id AS Centro_De_Custo_Id ,         
+                                    C2XDP.ParDepartment_Id AS Secao_Id ,         
+                                    C2XCG.ParCargo_Id AS Cargo_Id ,         
+                                    C2.ParLevel1_Id ,         
+                                    C2.ParLevel2_Id ,         
+                                    R3.ParLevel3_Id ,         
+                                    C2.AuditorId ,         
+                                    R3.WeiEvaluation ,         
+                                    R3.WeiDefects, 
+                                    CCC.ParCluster_Id,
+                                    cfpp.ParFamiliaProduto_Id,      
+                                    cfpp.ParProduto_Id  
+                                    FROM CollectionLevel2 C2 WITH (NOLOCK)  
+                                    LEFT JOIN CollectionLevel2XCluster CCC WITH (NOLOCK)
+                                    ON CCC.CollectionLevel2_Id = C2.Id
+                                    LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
+                                    ON C2.Id = R3.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) 
+                                    ON C2.ID = C2XDP.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) 
+                                    ON C2.ID = C2XCG.CollectionLevel2_Id  
+                                    LEFT JOIN ParDepartment D WITH (NOLOCK) 
+                                    ON C2XDP.ParDepartment_Id = D.Id  
+                                    LEFT JOIN ParCompanyXStructure CS 
+                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    LEFT JOIN ParStructure S1 
+                                    ON CS.ParStructure_Id = S1.Id  
+                                    LEFT JOIN ParStructure S2 
+                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
+                                    on cfpp.CollectionLevel2_Id = c2.Id  
+                                    WHERE 1=1    AND R3.IsNotEvaluate = 0
+                         ) CuboL3
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            INNER JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
 	            INNER JOIN ParLevel2 M WITH (NOLOCK) ON CuboL3.Parlevel2_Id = M.ID
@@ -2468,7 +2869,47 @@ DROP TABLE #AMOSTRATIPO4 ";
 	            SUM(WeiEvaluation) AS AV,
 	            SUM(WeiDefects) AS NC,
 	            SUM(WeiDefects) / IIF(SUM(WeiEvaluation) > 0, SUM(WeiEvaluation),1 ) * 100 AS [PROC]
-	            FROM DW.Cubo_Coleta_L3 CuboL3 WITH (NOLOCK)
+	            FROM (
+                                SELECT 
+                                    CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,         
+                                    C2.ParFrequency_Id ,         
+                                    S2.ParStructureParent_Id AS Holding ,         
+                                    S1.ParStructureParent_Id AS GrupoDeEmpresa ,         
+                                    CS.ParStructure_Id AS Regional ,         
+                                    C2.UnitId ,         
+                                    D.Parent_Id AS Centro_De_Custo_Id ,         
+                                    C2XDP.ParDepartment_Id AS Secao_Id ,         
+                                    C2XCG.ParCargo_Id AS Cargo_Id ,         
+                                    C2.ParLevel1_Id ,         
+                                    C2.ParLevel2_Id ,         
+                                    R3.ParLevel3_Id ,         
+                                    C2.AuditorId ,         
+                                    R3.WeiEvaluation ,         
+                                    R3.WeiDefects, 
+                                    CCC.ParCluster_Id,
+                                    cfpp.ParFamiliaProduto_Id,      
+                                    cfpp.ParProduto_Id  
+                                    FROM CollectionLevel2 C2 WITH (NOLOCK)  
+                                    LEFT JOIN CollectionLevel2XCluster CCC WITH (NOLOCK)
+                                    ON CCC.CollectionLevel2_Id = C2.Id
+                                    LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
+                                    ON C2.Id = R3.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) 
+                                    ON C2.ID = C2XDP.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) 
+                                    ON C2.ID = C2XCG.CollectionLevel2_Id  
+                                    LEFT JOIN ParDepartment D WITH (NOLOCK) 
+                                    ON C2XDP.ParDepartment_Id = D.Id  
+                                    LEFT JOIN ParCompanyXStructure CS 
+                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    LEFT JOIN ParStructure S1 
+                                    ON CS.ParStructure_Id = S1.Id  
+                                    LEFT JOIN ParStructure S2 
+                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
+                                    on cfpp.CollectionLevel2_Id = c2.Id  
+                                    WHERE 1=1    AND R3.IsNotEvaluate = 0
+                         ) CuboL3
 	            INNER JOIN ParCompany C WITH (NOLOCK) ON CuboL3.Unitid = C.ID
 	            INNER JOIN ParLevel1 L WITH (NOLOCK) ON CuboL3.Parlevel1_Id = L.ID
 	            INNER JOIN ParLevel2 M WITH (NOLOCK) ON CuboL3.Parlevel2_Id = M.ID
@@ -2568,7 +3009,47 @@ SELECT
 	,SUM(WeiDefects) as NC
 	,SUM(WeiEvaluation) as AVComPeso
 	,SUM(WeiDefects) as NCComPeso
-FROM DW.Cubo_Coleta_L3 C3
+FROM (
+                                SELECT 
+                                    CAST(C2.CollectionDate AS DATETIME) AS CollectionDate ,         
+                                    C2.ParFrequency_Id ,         
+                                    S2.ParStructureParent_Id AS Holding ,         
+                                    S1.ParStructureParent_Id AS GrupoDeEmpresa ,         
+                                    CS.ParStructure_Id AS Regional ,         
+                                    C2.UnitId ,         
+                                    D.Parent_Id AS Centro_De_Custo_Id ,         
+                                    C2XDP.ParDepartment_Id AS Secao_Id ,         
+                                    C2XCG.ParCargo_Id AS Cargo_Id ,         
+                                    C2.ParLevel1_Id ,         
+                                    C2.ParLevel2_Id ,         
+                                    R3.ParLevel3_Id ,         
+                                    C2.AuditorId ,         
+                                    R3.WeiEvaluation ,         
+                                    R3.WeiDefects, 
+                                    CCC.ParCluster_Id,
+                                    cfpp.ParFamiliaProduto_Id,      
+                                    cfpp.ParProduto_Id  
+                                    FROM CollectionLevel2 C2 WITH (NOLOCK)  
+                                    LEFT JOIN CollectionLevel2XCluster CCC WITH (NOLOCK)
+                                    ON CCC.CollectionLevel2_Id = C2.Id
+                                    LEFT JOIN Result_Level3 R3 WITH (NOLOCK) 
+                                    ON C2.Id = R3.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParDepartment C2XDP WITH (NOLOCK) 
+                                    ON C2.ID = C2XDP.CollectionLevel2_Id  
+                                    LEFT JOIN CollectionLevel2XParCargo C2XCG WITH (NOLOCK) 
+                                    ON C2.ID = C2XCG.CollectionLevel2_Id  
+                                    LEFT JOIN ParDepartment D WITH (NOLOCK) 
+                                    ON C2XDP.ParDepartment_Id = D.Id  
+                                    LEFT JOIN ParCompanyXStructure CS 
+                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    LEFT JOIN ParStructure S1 
+                                    ON CS.ParStructure_Id = S1.Id  
+                                    LEFT JOIN ParStructure S2 
+                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
+                                    on cfpp.CollectionLevel2_Id = c2.Id  
+                                    WHERE 1=1    AND R3.IsNotEvaluate = 0
+                         )  C3
 	LEFT JOIN ParFrequency F
 		ON C3.ParFrequency_Id = F.ID
 	LEFT JOIN ParStructure S1

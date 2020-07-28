@@ -82,8 +82,10 @@
                                             <option value="2">Grupos / Monitoramentos</option>
                                             <option value="3">Anomalias / Tarefas</option>
                                             <option value="6">Grupo de Anomalias</option>
+                                            <option value="7">Grupo de Família</option>
                                             @*<option value="4">Família de produtos</option>*@
                                             <option value="5">SKU</option>
+                                            <option value="8">Turno</option>
                                         </select>
                                     </div>
                                 </div>
@@ -103,6 +105,24 @@
                                     </div>
                                 </div>
                             }
+
+                            @if (ViewBag.ShowSKU == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>SKU</strong></label>
+                                        <button type="button" data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=SKU_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredSKU", "api/Formulario")"
+                                                data-filtroselect3-default-select="@ViewBag.ShowSKUDefault">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="SKU_Ids" multiple></select>
+                                    </div>
+                                </div>
+
+                            }
+
 
                             @if (ViewBag.ShowParModule == true)
                             {
@@ -235,7 +255,7 @@
                                 </div>
                             }
 
-                          
+
 
                             @if (ViewBag.ShowParStructure3 == true)
                             {
@@ -292,15 +312,32 @@
                             {
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label><strong>Função</strong></label>
+                                        <label><strong>Grupo de Anomalia</strong></label>
                                         <button type="button"
                                                 data-filtroselect3-btn
                                                 data-filtroselect3-select="select[name=parGroupParLevel1_Ids]"
-                                                data-filtroselect3-url="@Url.Action("GetFilteredParGroupParLevel1s", "api/Formulario")"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParGroupParLevel1s", "api/Formulario")"                                         
                                                 data-filtroselect3-default-select="@ViewBag.ShowParGroupParLevel1Default">
                                             Abrir
                                         </button>
                                         <select class="form-control" name="parGroupParLevel1_Ids" multiple></select>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (ViewBag.ShowParLevel3Group == true)
+                            {
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label><strong>Grupo de Familia</strong></label>
+                                        <button type="button"
+                                                data-filtroselect3-btn
+                                                data-filtroselect3-select="select[name=ParLevel3Group_Ids]"
+                                                data-filtroselect3-url="@Url.Action("GetFilteredParLevel3Group_Ids", "api/Formulario")"
+                                                data-filtroselect3-default-select="@ViewBag.ShowParLevel3GroupDefault">
+                                            Abrir
+                                        </button>
+                                        <select class="form-control" name="ParLevel3Group_Ids" multiple></select>
                                     </div>
                                 </div>
                             }
@@ -703,13 +740,13 @@
                                         <button type="button" data-filtroselect3-btn
                                                 data-filtroselect3-select="select[name=ParFrequency_Ids]"
                                                 data-filtroselect3-url="@Url.Action("GetParFrequency", "api/Formulario")"
-                                                data-filtroselect3-default-select="@ViewBag.showParFrequency">
+                                                data-filtroselect3-default-select="@ViewBag.showParFrequencyDefault">
                                             Abrir
                                         </button>
                                         <select class="form-control" name="ParFrequency_Ids" multiple>
                                             @if (ViewBag.showParFrequency != null)
                                             {
-                                                <option value="">@ViewBag.showParFrequency</option>
+                                                <option value="">@ViewBag.showParFrequencyDefault</option>
                                             }
                                         </select>
                                     </div>
@@ -904,6 +941,9 @@
             $('select[name="userSgqAuditor_Ids"]').select2();
             $('select[name="ParFrequency_Ids"').select2();
             $('select[name="ShowIndicador_Id"').select2();
+
+            $('select[name="ParLevel3Group_Ids"]').select2();
+            $('select[name="SKU_Ids"]').select2();
         }
 
         inicializaSelect2();

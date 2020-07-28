@@ -78,6 +78,11 @@ function openColetaDCA(levels) {
         desabilitaBotaoSalvar();
     }
 
+    //chamar o metodo que valida e monta se pode criar a qualificação 
+    $('[data-valor]').parents('[data-conforme]').each(function (i, o) {
+        validateShowQualification(o);
+    });
+
     atualizaCorSePassarDoLimiteDeNC();
     atualizaPorcentagemDeTarefas();
     setBreadcrumbsDCA();
@@ -104,6 +109,8 @@ function getLevel3DCA(level3, level2, level1) {
 function getInputLevel3DCA(level3, level2, level1, striped) {
 
     var retorno = "";
+
+    var htmlLinhaParQualification = getParQualification(level1, level2, level3, striped);
 
     if (level3.ParLevel3InputType && level3.ParLevel3InputType.Id) {
 
@@ -185,6 +192,7 @@ function getInputLevel3DCA(level3, level2, level1, striped) {
         }
 
         retorno += '</div>';
+        retorno += htmlLinhaParQualification;
 
     }
 
@@ -788,8 +796,8 @@ $('body').off('click', '[data-info-limitenc]').on('click', '[data-info-limitenc]
 
 
 $('body')
-    .off('keyup', '[data-linha-coleta][data-parlevel3inputtype="2"] input')
-    .on('keyup', '[data-linha-coleta][data-parlevel3inputtype="2"] input', function () {
+    .off('change', '[data-linha-coleta][data-parlevel3inputtype="2"] input')
+    .on('change', '[data-linha-coleta][data-parlevel3inputtype="2"] input', function () {
         var quantidadeDeDefeitos = $(this).val();
         var linhaTarefa = $(this).parents('[data-linha-coleta]');
         var maxSample = parseInt($(linhaTarefa).attr('data-samplemax'));
@@ -841,6 +849,7 @@ function SalvarAnomalias(collectionDate) {
                 Shift_Id: 1,
                 Period_Id: 1,
                 ParCompany_Id: currentParCompany_Id,
+                ParCluster_Id: currentParCluster_Id,
                 ParLevel1_Id: currentParLevel1_Id,
                 ParLevel2_Id: currentParLevel2_Id,
                 ParLevel3_Id: parseInt($(linhaTarefa).attr('data-level3')),
@@ -856,7 +865,7 @@ function SalvarAnomalias(collectionDate) {
                 Evaluation: currentEvaluation,
                 WeiDefects: isNA ? 0 : parseInt($(linhaTarefa).attr('data-peso')),
                 Sample: maxSample,
-                Outros: '{ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ', ParProduto_Id:' + currentProdutoDCA_Id + '}'
+                Outros: '{ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ', ParProduto_Id:' + currentProdutoDCA_Id + ', Qualification_Value:["' + getQualificationCollection($(linhaTarefa).attr('data-level1'), $(linhaTarefa).attr('data-level2'), $(linhaTarefa).attr('data-level3')) + '"]}'
             };
             coletaDCA.WeiDefects = isNA ? 0 : coletaDCA.Defects * coletaDCA.WeiDefects;
 
@@ -874,6 +883,7 @@ function SalvarAnomalias(collectionDate) {
                 Shift_Id: 1,
                 Period_Id: 1,
                 ParCompany_Id: currentParCompany_Id,
+                ParCluster_Id: currentParCluster_Id,
                 ParLevel1_Id: currentParLevel1_Id,
                 ParLevel2_Id: currentParLevel2_Id,
                 ParLevel3_Id: parseInt($(linhaTarefa).attr('data-level3')),
@@ -1146,20 +1156,68 @@ function SalvarColetasDCA(coletaJson) {
 
 function ColetasIsValid() {
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
+    var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta] input[data-texto]');
+    var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value] div[data-qualification-required]');
+    var selectQualificationColeta = $('form[data-form-coleta] div[data-qualificationlevel3value] select[data-qualificationselect]');
+
+    var errorCount = 0;
+    var inputVal;
+    var data;
+    var linhaQualification;
+    var selectQualification;
+
+    for (var i = 0; i < qualification.length; i++) {
+        linhaQualification = qualification[i];
+        selectQualification = selectQualificationColeta[i];
+
+        if ($(linhaQualification).attr('data-qualification-required') == 'true' && $(selectQualification).length > 0) {
+            if ($(selectQualification).val() == null || $(selectQualification).val() == undefined || $(selectQualification).val() == "") {
+                $(selectQualification).css("background-color", "#ffc1c1");
+                errorCount++;
+            } else {
+                $(selectQualification).css("background-color", "white");
+            }
+        }
+    }
+
     for (var i = 0; i < linhasDaColeta.length; i++) {
-        var data = linhasDaColeta[i];
+        data = linhasDaColeta[i];
+        inputVal = inputsDaColeta[i];
+
+        if ($(inputVal).attr('data-required-text') == 'true') {
+
+            if ($(data).attr('data-conforme') == "0") {
+                if ($(inputVal).val() == null || $(inputVal).val() == undefined || $(inputVal).val() == "") {
+                    $(inputVal).css("background-color", "#ffc1c1");
+                    errorCount++;
+                } else {
+                    $(inputVal).css("background-color", "white");
+                }
+            } else {
+                $(inputVal).css("background-color", "white");
+            }
+
+        }
+
         if ($(data).attr('data-conforme-na') != "") {
             if ($(data).attr('data-conforme') == ""
                 || $(data).attr('data-conforme') == null
                 || $(data).attr('data-conforme') == "undefined") {
-                openMensagem("Obrigatório responder todas as Tarefas.", "blue", "white");
-                mostraPerguntasObrigatorias(data);
-                closeMensagem(2000);
-                return false;
+
+                $(data).find("[data-tarefa]").css("background-color", "#ffc1c1");
+                errorCount++;
+            } else {
+                $(data).find("[data-tarefa]").css("background-color", "white");
             }
         }
     }
-    return true;
+    if (errorCount > 0) {
+        openMensagem("Atenção! Obrigatório responder todas as Tarefas.", "yellow", "black");
+        mostraPerguntasObrigatorias(data);
+        closeMensagem(2000);
+        return false;
+    } else
+        return true;
 }
 
 function mostraPerguntasObrigatorias(data) {
@@ -1357,7 +1415,7 @@ function ConfirmarSalvar() {
 $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', function (e) {
     e.preventDefault();
 
-    if (ConfirmarSalvar()) {
+    if (ColetasIsValid() && ConfirmarSalvar()) {
 
         var collectionDate = getCurrentDate();
         //TODO: aplicar função para inserir arr de coletas no arr de salvar coletas
@@ -1432,7 +1490,6 @@ function getCollectionHeaderFieldsDCA(collectionDate) {
                 ParLevel2_Id: $self.parents('#headerFieldLevel1').attr('parLevel2Id'),
                 Outros: '{ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ', ParProduto_Id:' + currentProdutoDCA_Id + '}'
             });
-
     });
 
 
@@ -1487,12 +1544,13 @@ function SalvarColetasAgrupadasDCA() {
 }
 
 $('body')
-    .off('keyup', '[data-linha-coleta] input[data-valor]')
-    .on('keyup', '[data-linha-coleta] input[data-valor]', function () {
+    .off('keyup change', '[data-linha-coleta] input[data-valor]')
+    .on('keyup change', '[data-linha-coleta] input[data-valor]', function () {
         var qtdNC = $(this).val() == "" ? 0 : $(this).val();
         $(this).parents('[data-linha-coleta]').attr('data-qtdeNc', qtdNC);
         $(this).parents('[data-linha-coleta]').find('.amostraNC').html(qtdNC);
         atualizaCorSePassarDoLimiteDeNC();
+        validateShowQualification($(this).parents('[data-linha-coleta]'));
     });
 
 function atualizaCorSePassarDoLimiteDeNC() {
@@ -1542,4 +1600,97 @@ function atualizaPorcentagemDeTarefas() {
     var porcentagemTotalMonitoramento = ZeroSeForNaN($('span.porcentagemTotalMonitoramento').text());
 
     $('span.porcentagemMonitoramento').text(ZeroSeForNaN((ZeroSeForNaN(calculoPorMonitoramento.Porcentagem) / 100) * porcentagemTotalMonitoramento));
+}
+
+function getQualificationCollection(ParLevel1_Id, ParLevel2_Id, ParLevel3_Id) {
+
+    var collectionQualification = [];
+
+    $('[data-qualificationlevel3value] select').each(function () {
+
+        $self = $(this);
+
+        var level1Id = $self.parents('[data-level3]').attr('parlevel1id');
+        var level2Id = $self.parents('[data-level3]').attr('parlevel2id');
+        var level3Id = $self.parents('[data-level3]').attr('parlevel3id');
+
+        if (level1Id == ParLevel1_Id && level2Id == ParLevel2_Id && level3Id == ParLevel3_Id) {
+            //validar se o tem é referente aquela tarefa, para salvar
+            collectionQualification.push($self.val());
+        } else {
+            return "";
+        }
+    });
+
+    return collectionQualification;
+}
+
+function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
+
+    var retorno = '';
+
+    var listaParQualificationxParLevel3Value = validaParqualification(level1Id, level2Id, level3Id);
+
+    if (listaParQualificationxParLevel3Value.length > 0) {
+
+        listaParQualificationxParLevel3Value.forEach(function (o, i) {
+
+            var qualificationGroupName = parametrization.listaPargroupQualification.find(item => item.Id == o.PargroupQualification_Id).Name;
+
+            var listaParGroupQualificationXQualification = parametrization.listaPargroupQualificationXParQualification.filter(
+                element => element.PargroupQualification_Id == o.PargroupQualification_Id);
+
+            var parQualificationIds = listaParGroupQualificationXQualification.map(item => { return item.ParQualification_Id });
+
+            var listaParQualificationFiltrada = parametrization.listaParQualification.filter(
+                item => parQualificationIds.includes(item.Id));
+
+            if ($(linhaLevel3).attr('data-conforme') == o.Value || (o.Value == "1" && $(linhaLevel3).attr('data-conforme') == "")) {
+                var options = '';
+
+                listaParQualificationFiltrada.forEach(function (obj, i) {
+                    options += '<option value="' + obj.Id + '" data-qualification>' + obj.Name + '</option >';
+                });
+
+                retorno += ' <div class="col-xs-4 no-gutters pull-right" data-ParQualificationLevel3Value="' + o.Value + '" data-qualification-required="' + o.IsRequired + '">';
+                retorno += ' <div class="col-xs-8"><small style="font-weight:550 !important">' + qualificationGroupName + '</small></div>';
+                retorno += ' <div class="col-xs-8">';
+                retorno += ' <select class="form-control input-sm ddl" data-qualificationSelect>';
+                retorno += ' <option value="">Selecione...</option>';
+                retorno += options;
+                retorno += ' </select>';
+                retorno += ' </div>';
+                retorno += ' </div>';
+
+            }
+        });
+
+        retorno += ' <div class="clearfix"></div>';
+    } else
+        return '';
+
+    return retorno;
+}
+
+
+
+function validateShowQualification(linhaLevel3) {
+
+    $(linhaLevel3).siblings('[data-qualificationLevel3Value]').each(function (i, o) {
+
+        if ($(linhaLevel3).attr('data-level1') == $(o).attr('parlevel1Id')
+            && $(linhaLevel3).attr('data-level2') == $(o).attr('parlevel2Id')
+            && $(linhaLevel3).attr('data-level3') == $(o).attr('parlevel3Id')) {
+
+            var selectsQualificationHtml = criaLinhaParQualification($(o).attr('parlevel1Id'), $(o).attr('parlevel2Id'), $(o).attr('parlevel3Id'), linhaLevel3);
+
+            $(o).html('');
+            if (selectsQualificationHtml != "") {
+                $(o).append(selectsQualificationHtml);
+                $(o).removeClass('hidden');
+            } else {
+                $(o).AddClass('hidden');
+            }
+        }
+    });
 }
