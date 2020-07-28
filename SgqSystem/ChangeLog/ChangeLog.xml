@@ -3712,10 +3712,17 @@
       [IsRequired] bit not null,
       [IsMultiple] bit not null
       )
+
+      GO
+
+      IF COL_LENGTH('ParReportXFilter','FilterLevel') IS NOT NULL
+      BEGIN
+      ALTER table ParReportXFilter ALTER COLUMN FilterLevel int Not Null
+      END
+
       GO
     </Script>
   </Card>
-  
 
   <Card>
     <CardNumber>SGQ-827</CardNumber>
