@@ -515,7 +515,7 @@
 
         }
 
-        function desdobraMatriz(newData, numeroDesdobramento, linha, coluna) {
+        function desdobraMatriz(newData, numeroDesdobramento, linha, coluna, tipoAnalise) {
 
             let matrizAnterior = JSON.stringify(arrObjDados[numeroDesdobramento - 1]);
             let matrizAtual = JSON.stringify(newData);
@@ -529,7 +529,7 @@
                 return;
             }
 
-            gerarMapaCalor(newData, numeroDesdobramento, linha, coluna);
+            gerarMapaCalor(newData, numeroDesdobramento, linha, coluna, tipoAnalise);
 
         }
 
@@ -748,7 +748,7 @@
                 setTituloArr(property + ": " + value, numeroDesdobramento);
 
                 numeroDesdobramento = numeroDesdobramento + 1;
-                desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
+                desdobraMatriz(newData, numeroDesdobramento, linha, coluna, tipoAnalise);
 
             });
 
@@ -772,7 +772,7 @@
                 setTituloArr(property + ": " + value, numeroDesdobramento);
 
                 numeroDesdobramento = numeroDesdobramento + 1;
-                desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
+                desdobraMatriz(newData, numeroDesdobramento, linha, coluna, tipoAnalise);
 
             });
 
@@ -799,7 +799,7 @@
                 setTituloArr(propertyLinha + ": " + valueLinha + " | " + propertyColuna + ": " + valueColuna, numeroDesdobramento);
 
                 numeroDesdobramento = numeroDesdobramento + 1;
-                desdobraMatriz(newData, numeroDesdobramento, linha, coluna);
+                desdobraMatriz(newData, numeroDesdobramento, linha, coluna, tipoAnalise);
 
             });
 
