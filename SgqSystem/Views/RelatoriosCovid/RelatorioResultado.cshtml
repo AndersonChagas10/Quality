@@ -285,7 +285,7 @@
                     enabled: false
                 },
                 title: {
-                    text: getTitle(tipoAnalise) + ' POR ' + serie + tituloChart
+                    text: getTitle(tipoAnalise) + ' por ' + serie + tituloChart
                 },
                 subtitle: {
                     text: ''
@@ -849,8 +849,8 @@
 
             let html = `<div id="">
                             <select id="select-filter-chart">
-                            <option value="NC">Percentual de Não Conformidades</option>
-                            <option value="C">Percentual de Conformidades</option>
+                            <option value="NC">% Não Conformidade</option>
+                            <option value="C">% Conformidade</option>
                             <option value="PONTOS">Pontuação</option>
                             <select id="select-filter-chart">
                             <button type="button" onclick="changeTipoAnalise();" class="btn btn-primary" id="btnChangeFilterGeral" title="Trocar Tipo de Análise">Aplicar</button>
