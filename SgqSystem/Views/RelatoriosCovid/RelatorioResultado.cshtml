@@ -110,7 +110,7 @@
             @Html.Partial("~/Views/Shared/_mensagemObrigatorio.cshtml")
 
             <div class="loader" hidden></div>
-            <div id="filtroGeral" class="select-filter"></div>
+            <div id="filtroGeral" class="select-filter page-header" hidden></div>
 
             @*Grafico*@
             <div id="filtroGrafico" class="select-filter"></div>
@@ -185,6 +185,7 @@
 
         function limparFiltroGeral() {
             $('#filtroGeral').html("");
+            $('#filtroGeral').hide();
         }
 
         function limparDados() {
@@ -259,6 +260,8 @@
                 if (getTipoAnalise() == undefined)
                     appendFiltroGeral();
 
+                $('#filtroGeral').show();
+
                 const tipoAnalise = getTipoAnalise();
                 appendChartFilter(Object.keys(data[0]), "Unidade Sigla");
                 gerarGrafico(data, "Unidade Sigla", tipoAnalise);
@@ -323,7 +326,7 @@
             let tituloDesdobramento = "Mapa de Calor " + linha + " por " + coluna + "</br>" + arrTitulo.slice(0, numeroDesdobramento).join(" | ");
 
             removeDivs(numeroDesdobramento);
-            appendDiv(numeroDesdobramento, Object.keys(data[0]), tituloDesdobramento);
+            appendDiv(numeroDesdobramento, Object.keys(data[0]), tituloDesdobramento, tipoAnalise);
             appendDataArr(data, numeroDesdobramento);
             setTituloMatriz(numeroDesdobramento, tituloDesdobramento);
             gerarMatriz(data, numeroDesdobramento, linha, coluna, tipoAnalise);
@@ -434,11 +437,11 @@
 
         }
 
-        function appendDiv(numeroDesdobramento, keys, titulo = "") {
+        function appendDiv(numeroDesdobramento, keys, titulo = "", tipoAnalise) {
 
             let options = keys.reduce((accumulator, currentValue) => accumulator += `<option value="${currentValue}">${currentValue}</option>`);
 
-            let botaoTrocarEixos = `<button type="button" id-desdobramento="${numeroDesdobramento}" class="btnChangeEixos btn btn-primary" onclick="changeEixos(this);" title="Trocar eixos">Trocar</button>`;
+            let botaoTrocarEixos = `<button type="button" id-desdobramento="${numeroDesdobramento}" tipoAnalise="${tipoAnalise}" class="btnChangeEixos btn btn-primary" onclick="changeEixos(this);" title="Trocar eixos">Trocar</button>`;
             let botaoExibirEixos = `<button type="button" id-desdobramento="${numeroDesdobramento}" class="btnExibirEixos btn-sm btn-default" onclick="exibirBtnEixo(this);" title="Avançado"><i class="fa fa-cog"></i></button>`;
 
             let htmlDiv = `
@@ -634,13 +637,15 @@
             let linha = $('#selectLinha_' + numeroDesdobramento + ' :selected').val();
             let coluna = $('#selectColuna_' + numeroDesdobramento + ' :selected').val();
 
+            let tipoAnalise = $(thiss).attr('tipoAnalise');
+
             let data = arrObjDados[numeroDesdobramento];
 
             let tituloDesdobramento = "Mapa de Calor " + linha + " por " + coluna + "</br>" + arrTitulo.slice(0, numeroDesdobramento).join(" | ");
 
             setTituloMatriz(numeroDesdobramento, tituloDesdobramento);
 
-            gerarMatriz(data, numeroDesdobramento, linha, coluna);
+            gerarMatriz(data, numeroDesdobramento, linha, coluna, tipoAnalise);
 
         }
 
