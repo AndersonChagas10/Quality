@@ -104,9 +104,10 @@ $(document).ready(function () {
                     }
                     else
                     {
-                        resultado = eval(resultado);
+                        var resultadoFormatado = resultado.split(",").join(".");
+                        resultado = eval(resultadoFormatado);
                     }
-                    $(o).val(resultado);
+                    $(o).val(resultado == "" ? resultado : resultado.toFixed(2));
                     $(o).trigger('input');
 
                 }

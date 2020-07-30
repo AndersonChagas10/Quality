@@ -17,5 +17,8 @@ namespace Dominio.Seara
 
         public int ParFamiliaProduto_Id { get; set; }
         public int? ParProduto_Id { get; set; }
+
+        [NotMapped]
+        public string ParProduto { get; set; }
     }
 }

@@ -26,8 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>true</Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -145,7 +144,7 @@
       <HintPath>..\packages\Unofficial.Microsoft.SQLServer.SMO.2014.12.0.2000.8\lib\Microsoft.SqlServer.SqlEnum.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>Bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
@@ -371,6 +370,7 @@
     <Compile Include="Controllers\Api\Relatorios\RelatorioFormularioSIFApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RH\NaoConformidadeRHApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RH\RelatorioDeResultadosRHApiController.cs" />
+    <Compile Include="Controllers\Api\Relatorios\SGCOVID\RelatorioResultadoCovidApiController.cs" />
     <Compile Include="Controllers\Api\ResultLevel3PhotosApiController.cs" />
     <Compile Include="Controllers\Api\ReprocessoApiController.cs" />
     <Compile Include="Controllers\Api\RetornaQueryRotinaApiController.cs" />
@@ -389,6 +389,7 @@
     <Compile Include="Controllers\Api\RelatoriosBrasil\VisaoGeralDaAreaApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\RoleApiController.cs" />
     <Compile Include="Controllers\Api\UserAndRoles\UserSgqApiController.cs" />
+    <Compile Include="Controllers\Api\Utilidades\UtilidadesApiController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VerificacaoTipificacaoController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VerificacaoTipificacaoResultadosController.cs" />
     <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
@@ -467,7 +468,9 @@
     <Compile Include="Controllers\UserAndRoles\RoleController.cs" />
     <Compile Include="Controllers\UserAndRoles\RoleUserSgqController.cs" />
     <Compile Include="Controllers\UserAndRoles\UserSgqController.cs" />
+    <Compile Include="Controllers\Utilidades\UtilController.cs" />
     <Compile Include="Controllers\V2\Api\AppColetaController.cs" />
+    <Compile Include="Controllers\V2\Api\ConsolidationSearaApiController.cs" />
     <Compile Include="Controllers\V2\Api\DepartmentXRotinaApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParClusterApiController.cs" />
     <Compile Include="Controllers\V2\Api\ParCompanyApiController.cs" />
@@ -481,6 +484,7 @@
     <Compile Include="Controllers\V2\Api\ParLevel1ApiController.cs" />
     <Compile Include="Controllers\V2\Params\ParAlertController.cs" />
     <Compile Include="Controllers\V2\Params\ParamsV2Controller.cs" />
+    <Compile Include="Controllers\V2\Reports\SGCOVID\RelatoriosCovidController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepDesossasController.cs" />
     <Compile Include="Controllers\VolumeProducao\CepRecortesController.cs" />
     <Compile Include="Controllers\GlobalConfigController.cs" />
@@ -727,6 +731,9 @@
     </Content>
     <Content Include="..\AppColeta\SEARA\utils.js">
       <Link>Scripts\appColeta\SEARA\utils.js</Link>
+    </Content>
+    <Content Include="..\AppColeta\SEARA\version.js">
+      <Link>Scripts\appColeta\SEARA\version.js</Link>
     </Content>
     <Content Include="..\AppColeta\SEARA\zoom.js">
       <Link>Scripts\appColeta\SEARA\zoom.js</Link>
@@ -2368,6 +2375,10 @@
     <Content Include="Views\Relatorios\GQ\Laboratorio\_FilterReportsLaboratorio.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioLaboratorio.cshtml" />
     <Content Include="Views\RelatoriosSgq\RelatorioFormulario.cshtml" />
+    <Content Include="Views\Utilidades\SqlStudio.cshtml" />
+    <Content Include="Views\RelatoriosSgq\ApontamentosDiariosSeara.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_ProdutoEdit.cshtml" />
+    <Content Include="Views\RelatoriosCovid\RelatorioResultado.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2378,6 +2389,7 @@
     <Folder Include="obj\" />
     <Folder Include="Scripts\BootStrapRecravacao\" />
     <Folder Include="Scripts\i18n\" />
+    <Folder Include="Views\RelatorioResultadoCovid\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
   <ItemGroup>

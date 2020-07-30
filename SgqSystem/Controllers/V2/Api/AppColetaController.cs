@@ -668,7 +668,7 @@ CASE @ParFrequency_Id
 	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Diario
 	WHEN 4 THEN CAST(CONCAT(CAST(DATEADD(DAY,7-DATEPART(WEEKDAY,@DataColeta),@DataColeta) AS DATE),' 23:59:59') AS DATETIME) -- Semanal
 	WHEN 5 THEN IIF(DATEPART(DAY,@DataColeta)<=15,CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-15 23:59:59'), CONCAT(EOMONTH(@DataColeta),' 23:59:59'))  -- Quinzenal
-	WHEN 6 THEN EOMONTH(@DataColeta)  -- Mensal
+	WHEN 6 THEN CAST(CONCAT(CONVERT(VARCHAR(10), EOMONTH(@DataColeta), 120), ' 23:59:59') AS DATETIME)  -- Mensal
 	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Diario com Intervalo 
 END
 
@@ -737,64 +737,216 @@ WHERE 1 = 1
         [Route("SetCollect123")]
         public IHttpActionResult SetCollect123(List<Collection> listSimpleCollect)
         {
-            using (var db = new SgqDbDevEntities())
+            #region Gambi Log de Coletas
+            var guiid = Guid.NewGuid();
+            LogSystem.LogErrorBusiness.TryRegister(new Exception("Iniciado o registro das coletas (" + listSimpleCollect.Count + ")")
+                , new { GUIID = guiid.ToString() });
+            #endregion
+            foreach (var item in listSimpleCollect)
             {
-                //Adiciona os arquivos na Collection
-                foreach (var item in listSimpleCollect)
+
+                try
                 {
+                    item.AddDate = DateTime.Now;
+                    item.Shift_Id = 1;
+                    item.Period_Id = 1;
+                    item.IsProcessed = false;
 
-                    try
+                    List<Collection> collectionDuplicada = new List<Collection>();
+
+                    #region inserir collection
+                    string sql = $@"
+INSERT INTO [dbo].[Collection]
+           ([CollectionDate]
+           ,[AddDate]
+           ,[UserSgq_Id]
+           ,[Shift_Id]
+           ,[Period_Id]
+           ,[ParCargo_Id]
+           ,[ParCompany_Id]
+           ,[ParDepartment_Id]
+           ,[ParCluster_Id]
+           ,[ParLevel1_Id]
+           ,[ParLevel2_Id]
+           ,[ParLevel3_Id]
+           ,[CollectionType]
+           ,[Weigth]
+           ,[IntervalMin]
+           ,[IntervalMax]
+           ,[Value]
+           ,[ValueText]
+           ,[IsNotEvaluate]
+           ,[IsConform]
+           ,[Defects]
+           ,[PunishimentValue]
+           ,[WeiEvaluation]
+           ,[Evaluation]
+           ,[WeiDefects]
+           ,[HasPhoto]
+           ,[Sample]
+           ,[HaveCorrectiveAction]
+           ,[Parfrequency_Id]
+           ,[AlertLevel]
+           ,[ParHeaderField_Id]
+           ,[ParHeaderField_Value]
+           ,[Outros]
+           ,[IsProcessed])
+     VALUES
+           (@CollectionDate
+           ,@AddDate
+           ,@UserSgq_Id
+           ,@Shift_Id
+           ,@Period_Id
+           ,@ParCargo_Id
+           ,@ParCompany_Id
+           ,@ParDepartment_Id
+           ,@ParCluster_Id
+           ,@ParLevel1_Id
+           ,@ParLevel2_Id
+           ,@ParLevel3_Id
+           ,@CollectionType
+           ,@Weigth
+           ,@IntervalMin
+           ,@IntervalMax
+           ,@Value
+           ,@ValueText
+           ,@IsNotEvaluate
+           ,@IsConform
+           ,@Defects
+           ,@PunishimentValue
+           ,@WeiEvaluation
+           ,@Evaluation
+           ,@WeiDefects
+           ,@HasPhoto
+           ,@Sample
+           ,@HaveCorrectiveAction
+           ,@Parfrequency_Id
+           ,@AlertLevel
+           ,@ParHeaderField_Id
+           ,@ParHeaderField_Value
+           ,@Outros
+           ,@IsProcessed);
+            SELECT @@IDENTITY AS 'Identity';";
+
+                    using (Factory factory = new Factory("DefaultConnection"))
                     {
-                        item.AddDate = DateTime.Now;
-                        item.Shift_Id = 1;
-                        item.Period_Id = 1;
-                        item.IsProcessed = false;
+                        using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                        {
+                            cmd.CommandType = CommandType.Text;
+                            UtilSqlCommand.AddParameterNullable(cmd, "@CollectionDate", item.CollectionDate);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@AddDate", item.AddDate);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@UserSgq_Id", item.UserSgq_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Shift_Id", item.Shift_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Period_Id", item.Period_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParCargo_Id", item.ParCargo_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParCompany_Id", item.ParCompany_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartment_Id", item.ParDepartment_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParCluster_Id", item.ParCluster_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel1_Id", item.ParLevel1_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel2_Id", item.ParLevel2_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel3_Id", item.ParLevel3_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@CollectionType", item.CollectionType);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Weigth", item.Weigth);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@IntervalMin", item.IntervalMin);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@IntervalMax", item.IntervalMax);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Value", item.Value);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ValueText", item.ValueText);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@IsNotEvaluate", item.IsNotEvaluate);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@IsConform", item.IsConform);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Defects", item.Defects);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@PunishimentValue", item.PunishimentValue);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@WeiEvaluation", item.WeiEvaluation);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Evaluation", item.Evaluation);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@WeiDefects", item.WeiDefects);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@HasPhoto", item.HasPhoto);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Sample", item.Sample);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@HaveCorrectiveAction", item.HaveCorrectiveAction);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Parfrequency_Id", item.Parfrequency_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@AlertLevel", item.AlertLevel);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParHeaderField_Id", item.ParHeaderField_Id);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@ParHeaderField_Value", item.ParHeaderField_Value);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@IsProcessed", item.IsProcessed);
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Outros", item.Outros);
+                            var id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                            item.Id = id;
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        item.HasError = true;
-                        //Registrar LOG
-                    }
+                    #endregion
                 }
+                catch (Exception ex)
+                {
+                    item.HasError = true;
+                    item.GUIID = guiid.ToString();
 
-                db.Collection.AddRange(listSimpleCollect);
-                db.SaveChanges();
+                    LogSystem.LogErrorBusiness.TryRegister(ex, new { GUIID = guiid.ToString() });
+                }
             }
 
-            var lista = listSimpleCollect.Where(x => x.HasError == true).ToList();
-            if (lista.Count == listSimpleCollect.Count)
+
+            var listaDeColetasComErro = listSimpleCollect.Where(x => x.HasError == true).ToList();
+            var listaDeColetasSemErro = listSimpleCollect
+                .Where(x => x.HasError != true)
+                .ToList();
+
+            #region Gambi Log de Coletas
+            LogSystem.LogErrorBusiness.TryRegister(new Exception("Finalizou a inserção das coletas (" + listaDeColetasSemErro.Count + "/" + listSimpleCollect.Count + ")"),
+                new { GUIID = guiid.ToString(), ListaCollection = string.Join(",", listaDeColetasSemErro.Select(x => x.Id)) });
+            #endregion
+
+            if (listaDeColetasComErro.Count == listSimpleCollect.Count)
                 return BadRequest("Ocorreu erro em todas as tentativas de registrar as coletas.");
 
             var coletasRegistradas = listSimpleCollect.Where(x => x.HasError != true).ToList();
 
-            var coletasRegistradasPorCollectionLevel2 = coletasRegistradas
-                .Where(x => x.ParHeaderField_Id == null
-                && x.ParHeaderField_Value == null
-                && x.Evaluation != null
-                && x.Sample != null)
-                .Select(x => new CollectionLevel2()
-                {
-                    EvaluationNumber = (int)x.Evaluation,
-                    Sample = x.Sample.Value,
-                    ParLevel1_Id = x.ParLevel1_Id.Value,
-                    ParLevel2_Id = x.ParLevel2_Id.Value,
-                    Shift = x.Shift_Id.Value,
-                    Period = x.Period_Id.Value,
-                    UnitId = x.ParCompany_Id.Value,
-                    ParCargo_Id = x.ParCargo_Id,
-                    ParCluster_Id = x.ParCluster_Id,
-                    ParDepartment_Id = x.ParDepartment_Id,
-                    ParFrequency_Id = x.Parfrequency_Id,
-                    AuditorId = x.UserSgq_Id ?? 0,
-                    CollectionDate = x.CollectionDate.Value,
-                    Outros = x.Outros
-                })
-                .Distinct()
-                .ToList();
+            int intervalTimeCollectionJob = 0;
+            try
+            {
+                Int32.TryParse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.CollectionJobTime0IsDisabled, out intervalTimeCollectionJob);
+            }
+            catch (Exception)
+            {
+            }
 
-            CollectionJob.ConsolidarCollectionLevel2(coletasRegistradasPorCollectionLevel2);
+            if (intervalTimeCollectionJob == 0)
+            {
+                var coletasRegistradasPorCollectionLevel2 = coletasRegistradas
+                    .Where(x => x.ParHeaderField_Id == null
+                    && x.ParHeaderField_Value == null
+                    && x.Evaluation != null
+                    && x.Sample != null)
+                    .Select(x => new CollectionLevel2()
+                    {
+                        EvaluationNumber = (int)x.Evaluation,
+                        Sample = x.Sample.Value,
+                        ParLevel1_Id = x.ParLevel1_Id.Value,
+                        ParLevel2_Id = x.ParLevel2_Id.Value,
+                        Shift = x.Shift_Id.Value,
+                        Period = x.Period_Id.Value,
+                        UnitId = x.ParCompany_Id.Value,
+                        ParCargo_Id = x.ParCargo_Id,
+                        ParCluster_Id = x.ParCluster_Id,
+                        ParDepartment_Id = x.ParDepartment_Id,
+                        ParFrequency_Id = x.Parfrequency_Id,
+                        AuditorId = x.UserSgq_Id ?? 0,
+                        CollectionDate = x.CollectionDate.Value,
+                        Outros = x.Outros
+                    })
+                    .Distinct()
+                    .ToList();
 
-            return Ok(coletasRegistradas);
+                CollectionJob.ConsolidarCollectionLevel2(coletasRegistradasPorCollectionLevel2);
+            }
+
+            #region Gambi Log de Coletas
+            try
+            {
+                LogSystem.LogErrorBusiness.Register(new Exception("Finalizado sem nenhum problema"), new { GUIID = guiid.ToString() });
+            }
+            catch { }
+            #endregion
+
+            return Ok(listaDeColetasSemErro);
         }
 
         [HttpPost]
@@ -886,7 +1038,7 @@ WHERE 1 = 1
                     .AsNoTracking()
                     .Where(x => x.IsActive)
                     .ToList()
-                    .Where(x=>listaParLevel1XCluster.Any(y=> y.ParCluster_Id == x.Id))
+                    .Where(x => listaParLevel1XCluster.Any(y => y.ParCluster_Id == x.Id))
                     .ToList();
 
                 listaParLevel2 = db.ParLevel2
@@ -906,7 +1058,7 @@ WHERE 1 = 1
                     .AsNoTracking()
                     .Where(x => x.IsActive)
                     .ToList()
-                    .Where(x => 
+                    .Where(x =>
                         listaParLevel2.Any(y => y.Id == x.ParLevel2_Id)
                         && listaParLevel1.Any(y => y.Id == x.ParLevel1_Id))
                     .ToList();
@@ -1189,7 +1341,7 @@ CASE @ParFrequency_Id
 	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Diario
 	WHEN 4 THEN CAST(CONCAT(CAST(DATEADD(DAY,7-DATEPART(WEEKDAY,@DataColeta),@DataColeta) AS DATE),' 23:59:59') AS DATETIME) -- Semanal
 	WHEN 5 THEN IIF(DATEPART(DAY,@DataColeta)<=15,CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-15 23:59:59'), CONCAT(EOMONTH(@DataColeta),' 23:59:59'))  -- Quinzenal
-	WHEN 6 THEN EOMONTH(@DataColeta)  -- Mensal
+	WHEN 6 THEN CAST(CONCAT(CONVERT(VARCHAR(10), EOMONTH(@DataColeta), 120), ' 23:59:59') AS DATETIME)  -- Mensal
 	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Diario com Intervalo 
 END
 
@@ -1222,7 +1374,6 @@ SELECT
 		,CL2XSFP.ParFamiliaProduto_Id
     FROM CollectionLevel2 C2 WITH (NOLOCK)
     LEFT JOIN CollectionLevel2XCluster C2XC WITH (NOLOCK) ON C2XC.CollectionLevel2_Id = C2.Id
-	INNER JOIN ParEvaluationXDepartmentXCargo PEDC WITH(NOLOCK) ON C2.UnitId = PEDC.ParCompany_Id 
 	LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CL2XSFP ON CL2XSFP.CollectionLevel2_Id = c2.Id
 WHERE 1 = 1
 		AND C2.CollectionDate BETWEEN @DateTimeInicio AND @DateTimeFinal

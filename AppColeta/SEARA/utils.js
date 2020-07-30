@@ -50,19 +50,19 @@ function criaHtmlSelect(titulo,options){
 }
 
 function ZeroSeForNaN(valor){
-    return isNaN(valor) ? 0 : valor;
+    return parseFloat(isNaN(valor) || valor == null ? 0 : parseFloat(valor).toFixed(2));
 }
 
 function UmSeForNaN(valor){
-    return isNaN(valor) ? 1 : valor;
+    return parseFloat(isNaN(valor) ? 1 : parseFloat(valor).toFixed(2));
 }
 
 function UmSeForNaNOuNull(valor){
-    return isNaN(valor) || valor == null ? 1 : valor;
+    return parseFloat(isNaN(valor) || valor == null ? 1 : parseFloat(valor).toFixed(2));
 }
 
 function TracoSeForNaN(valor){
-    return isNaN(valor) ? '-' : valor;
+    return parseFloat(isNaN(valor) ? '-' : parseFloat(valor).toFixed(2));
 }
 
 function serializeFormToObject(divId){
@@ -161,31 +161,37 @@ function setInputBackGroundColorNone(input) {
 function getBotaoBuscar() {
     var botaoBuscar = '<div class="pull-right">                     ' +
         '                  <label style="padding-right:5px">Buscar</label> ' +
-        '                  <input type="text" onkeyup="buscarItemNaLista(this)"/>' +
+        '                  <input type="text" onkeyup="buscarItemNaLista(this)" style="height:35px;"/>' +
         '              </div>';
     return botaoBuscar;
 }
 
 function buscarItemNaLista(input) {
-    $('body').off('keyup', input).on('keyup', input, function () {
-        $('button.list-group-item').each(function (i, o) {
-            var mostrarItem = $(o).text().toLowerCase().includes($(input).val().toLowerCase());
-            if (mostrarItem) {
-                $(o).show();
-            } else {
-                $(o).hide();
-            }
-        })
-        if ($('button.list-group-item:visible').length == 0) {
-            if ($('span.list-group-item').length == 0) {
-                $('.list-group').append("<span class='list-group-item col-xs-12 text-center'>Nenhum resultado encontrado com o termo digitado.</span>");
-            } else {
-                $('span.list-group-item').show();
-            }
+    $('button.list-group-item').each(function (i, o) {
+        var mostrarItem = $(o).text().toLowerCase().includes($(input).val().toLowerCase());
+        if (mostrarItem) {
+            $(o).show();
         } else {
-            if ($('span.list-group-item').length > 0) {
-                $('span.list-group-item').hide();
-            }
+            $(o).hide();
         }
-    });
+    })
+    if ($('button.list-group-item:visible').length == 0) {
+        if ($('span.list-group-item').length == 0) {
+            $('.list-group').append("<span class='list-group-item col-xs-12 text-center'>Nenhum resultado encontrado com o termo digitado.</span>");
+        } else {
+            $('span.list-group-item').show();
+        }
+    } else {
+        if ($('span.list-group-item').length > 0) {
+            $('span.list-group-item').hide();
+        }
+    }
 }
+
+$(document).keypress(
+    function (event) {
+        if (event.which == '13') {
+            event.preventDefault();
+        }
+    }
+);
