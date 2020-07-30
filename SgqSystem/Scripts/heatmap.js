@@ -219,8 +219,6 @@ var HeatMap = {
         PreencheCalorMedia();
         PreencheCalorRodape();
     },
-
-
     RecalculaMatrizSoma: function () {
 
         //Recalcula totais para matriz com porcentagem de NC

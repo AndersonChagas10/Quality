@@ -409,7 +409,7 @@
                         } else { //Soma de pontos
 
                             const arrPontos = arrFiltrado.map(x => x[tipoAnalise]);
-                            const somaPontos = arrPontos.reduce(sumReduce);
+                            const somaPontos = parseFloat(arrPontos.reduce(sumReduce));
                             obj.data.push(parseFloat(somaPontos.toFixed(2)));
 
                         }
