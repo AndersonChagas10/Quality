@@ -913,7 +913,6 @@ namespace Dominio.Seed
                 ResourcesInserir.Add(new ResourceEN() { Key = "parStructure3", Value = "Regional" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "user", Value = "User" });
                 ResourcesInserir.Add(new ResourceEN() { Key = "appcoleta_corrective_action_modal_input", Value = "Correção" });
-                ResourcesInserir.Add(new ResourceEN() { Key = "pdca_menu_item", Value = "Exibir no PDCA" });
 
                 var resourcesParaInserir = ResourcesInserir.Where(x => !resourceKeys.Contains(x.Key));
 
