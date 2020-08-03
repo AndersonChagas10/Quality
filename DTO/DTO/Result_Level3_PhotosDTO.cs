@@ -11,8 +11,8 @@ namespace DTO.DTO
         public String Photo { get; set; }
         public Nullable<double> Latitude { get; set; }
         public Nullable<double> Longitude { get; set; }
-        public Nullable<int> Level1Id { get; set; }
-        public Nullable<int> Level2Id { get; set; }
+        public Nullable<long> Level1Id { get; set; }
+        public Nullable<long> Level2Id { get; set; }
         public Nullable<int> Level3Id { get; set; }
         public Nullable<int> Evaluation { get; set; }
         public Nullable<int> UnitId { get; set; }
