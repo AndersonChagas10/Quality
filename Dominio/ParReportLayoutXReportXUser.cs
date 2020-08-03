@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -15,6 +17,7 @@ namespace Dominio
 
         public string Value { get; set; }
 
+        [DisplayName("Nivel Layout")]
         public int LayoutLevel { get; set; }
 
         public int IdReference { get; set; }
@@ -25,6 +28,7 @@ namespace Dominio
 
         public string TableReference { get; set; }
 
+        [DisplayName("Ordenação")]
         public int Ordenacao { get; set; }
 
         [NotMapped]
