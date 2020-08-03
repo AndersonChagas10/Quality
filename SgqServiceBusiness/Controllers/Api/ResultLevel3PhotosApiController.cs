@@ -126,10 +126,15 @@ namespace SgqServiceBusiness.Api
 
                 string fileName = parLevel1_Id + parLevel2_Id + ResultPhoto.Level3Id + DateTime.Now.ToString("yyyyMMddHHssmm") + new Random().Next(1000, 9999) + ".png";
 
+                Exception exception;
+
                 FileHelper.SavePhoto(ResultPhoto.Photo, basePath, fileName
                     , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
                     , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
-                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot);
+                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot, out exception);
+
+                if (exception != null)
+                    LogSystem.LogErrorBusiness.Register(exception);
 
                 var path = Path.Combine(basePath, fileName);
                 ResultPhoto.Photo = path;

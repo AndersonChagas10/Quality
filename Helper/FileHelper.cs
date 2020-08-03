@@ -57,8 +57,10 @@ namespace Helper
         }
 
         public static bool SavePhoto(string base64Arquivo, string fileAddress, string fileName
-            , string usuarioServidor, string senhaServidor, string urlServidor)
+            , string usuarioServidor, string senhaServidor, string urlServidor, out Exception exception)
         {
+            exception = null;
+
             try
             {
                 var byteArquivo = Convert.FromBase64String(base64Arquivo);
@@ -79,6 +81,7 @@ namespace Helper
             }
             catch (Exception ex)
             {
+                exception = ex;
                 return false;
             }
         }
