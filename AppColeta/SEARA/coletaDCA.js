@@ -821,6 +821,25 @@ function SalvarAnomalias(collectionDate) {
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
     for (var i = 0; i < linhasDaColeta.length; i++) {
         var linhaTarefa = linhasDaColeta[i];
+        var maxSample = parseInt($(linhaTarefa).attr('data-samplemax'));
+
+        var coletaDCA = {};
+        var parParLevel3InputType_Id = $(linhaTarefa).attr('data-parlevel3inputtype');
+
+        if (parParLevel3InputType_Id == 2 || parParLevel3InputType_Id == 15) {
+
+            var quantidadeDeDefeitos = $(linhaTarefa).find('input[type="number"]').val();
+
+            if (maxSample < quantidadeDeDefeitos || quantidadeDeDefeitos < 0) {
+                openMensagem("O valor digitado não está de acordo com o número de amostra.", "yellow", "black");
+                setTimeout(closeMensagem, 3000);
+                return false;
+            }
+        }
+    }
+
+    for (var i = 0; i < linhasDaColeta.length; i++) {
+        var linhaTarefa = linhasDaColeta[i];
         var currentEvaluation = currentEvaluationDCA.Evaluation;
         var currentSample = parseInt($(linhaTarefa).attr('data-sample'));
         var isNA = $(linhaTarefa).attr('data-conforme-na') == "";
@@ -835,12 +854,6 @@ function SalvarAnomalias(collectionDate) {
         if (parParLevel3InputType_Id == 2 || parParLevel3InputType_Id == 15) {
 
             var quantidadeDeDefeitos = $(linhaTarefa).find('input[type="number"]').val();
-
-            if (maxSample < quantidadeDeDefeitos || quantidadeDeDefeitos < 0) {
-                openMensagem("O valor digitado não está de acordo com o número de amostra.", "yellow", "black");
-                setTimeout(closeMensagem, 3000);
-                return false;
-            }
 
             coletaDCA = {
                 Id: 0,
@@ -938,8 +951,8 @@ function SalvarAnomalias(collectionDate) {
         atualizaCorSePassarDoLimiteDeNC();
         atualizaPorcentagemDeTarefas();
     }
-
-};
+    return true;
+}
 
 function resetarLinha(linha) {
 
@@ -1419,50 +1432,51 @@ $('body').off('click', '[data-salvar-dca]').on('click', '[data-salvar-dca]', fun
 
         var collectionDate = getCurrentDate();
         //TODO: aplicar função para inserir arr de coletas no arr de salvar coletas
-        SalvarAnomalias(collectionDate);
-        var cabecalhosDCA = getCollectionHeaderFieldsDCA(collectionDate);
+        if (SalvarAnomalias(collectionDate)) {
+            var cabecalhosDCA = getCollectionHeaderFieldsDCA(collectionDate);
 
-        if (cabecalhosDCA) {
-            cabecalhosDCA.forEach(function (cabecalho) {
-                coletasDCA.unshift(cabecalho);
-            });
-        }
-
-        var coletasDoMonitoramentoSendoSalvo = $.grep(coletasDCA, function (coleta) {
-            return coleta.ParLevel1_Id == currentParLevel1_Id
-                && (coleta.ParLevel2_Id == currentParLevel2_Id || coleta.ParLevel2_Id == null)
-                && coleta.Outros != null
-                && coleta.Outros.indexOf('ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ',') > 0
-                && coleta.Synced != true
-        });
-
-        SalvarColetasDCA(coletasDoMonitoramentoSendoSalvo);
-
-        for (var i = coletasDCA.length - 1; i >= 0; i--) {
-            var coleta = coletasDCA[i];
-            var exist = $.grep(coletasDoMonitoramentoSendoSalvo, function (coletaSalva) {
-                return JSON.stringify(coletaSalva) == JSON.stringify(coleta);
-            });
-            if (exist.length > 0) {
-                coletasDCA[i].Synced = true;
-                //coletasDCA.splice(i, 1);
+            if (cabecalhosDCA) {
+                cabecalhosDCA.forEach(function (cabecalho) {
+                    coletasDCA.unshift(cabecalho);
+                });
             }
-        }
 
-        SalvarColetasAgrupadasDCA();
+            var coletasDoMonitoramentoSendoSalvo = $.grep(coletasDCA, function (coleta) {
+                return coleta.ParLevel1_Id == currentParLevel1_Id
+                    && (coleta.ParLevel2_Id == currentParLevel2_Id || coleta.ParLevel2_Id == null)
+                    && coleta.Outros != null
+                    && coleta.Outros.indexOf('ParFamiliaProduto_Id:' + currentFamiliaProdutoDCA_Id + ',') > 0
+                    && coleta.Synced != true
+            });
 
-        openMensagem("Avaliacao salva com sucesso!", "blue", "white");
-        closeMensagem(3000);
+            SalvarColetasDCA(coletasDoMonitoramentoSendoSalvo);
 
-        var desabilitarSalvar = true;
-
-        $('[data-linha-coleta]').each(function (i, o) {
-            if ($(o).attr('data-amostra-completa') == "0") {
-                desabilitarSalvar = false;
+            for (var i = coletasDCA.length - 1; i >= 0; i--) {
+                var coleta = coletasDCA[i];
+                var exist = $.grep(coletasDoMonitoramentoSendoSalvo, function (coletaSalva) {
+                    return JSON.stringify(coletaSalva) == JSON.stringify(coleta);
+                });
+                if (exist.length > 0) {
+                    coletasDCA[i].Synced = true;
+                    //coletasDCA.splice(i, 1);
+                }
             }
-        });
-        if (desabilitarSalvar) {
-            desabilitaBotaoSalvar();
+
+            SalvarColetasAgrupadasDCA();
+
+            openMensagem("Avaliacao salva com sucesso!", "blue", "white");
+            closeMensagem(3000);
+
+            var desabilitarSalvar = true;
+
+            $('[data-linha-coleta]').each(function (i, o) {
+                if ($(o).attr('data-amostra-completa') == "0") {
+                    desabilitarSalvar = false;
+                }
+            });
+            if (desabilitarSalvar) {
+                desabilitaBotaoSalvar();
+            }
         }
     }
 });
