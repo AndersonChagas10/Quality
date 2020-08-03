@@ -169,7 +169,7 @@ public class ApontamentosDiariosResultSet
                          { sqlUnidade } 
                          { sqlLevel1 } 
                          { sqlLevel2 }
-
+ 
  
                     CREATE INDEX IDX_CollectionLevel2_ID ON #CollectionLevel2(ID);
                     CREATE INDEX IDX_CollectionLevel2_UnitId ON #CollectionLevel2(UnitId);
@@ -243,7 +243,7 @@ public class ApontamentosDiariosResultSet
 					   ,CL2HF.ParFieldType_Id
 					   ,CL2HF.Value INTO #CollectionLevel2XParHeaderFieldGeral
 					FROM CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
-					INNER JOIN #Collectionlevel2 CL2 (NOLOCK)
+					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
 						ON CL2.Id = CL2HF.CollectionLevel2_Id
 										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel_ID ON #CollectionLevel2XParHeaderFieldGeral (CollectionLevel2_Id);
 					-- Concatenação da Fato de Cabeçalhos
@@ -290,54 +290,6 @@ public class ApontamentosDiariosResultSet
 					GROUP BY CL2HF.CollectionLevel2_Id
 										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeral2 (CollectionLevel2_Id);
 					
-					-- Concatenação da Fato de Cabeçalhos
-					SELECT
-						CL2HF.CollectionLevel2_Id
-					   ,STUFF((SELECT DISTINCT
-								', ' + CONCAT(HF.Name, ': ', CASE
-									WHEN CL2HF2.ParFieldType_Id = 1 OR
-										CL2HF2.ParFieldType_Id = 3 THEN PMV.Name
-									WHEN CL2HF2.ParFieldType_Id = 2 THEN CASE
-											WHEN HF.Description = 'Produto' THEN CAST(PRD.nCdProduto AS VARCHAR(500)) + ' - ' + PRD.cNmProduto
-											ELSE EQP.Nome
-										END
-									WHEN CL2HF2.ParFieldType_Id = 6 THEN CONVERT(VARCHAR, CL2HF2.Value, 103)
-									ELSE CL2HF2.Value
-								END)
-							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (NOLOCK)
-							LEFT JOIN collectionlevel2 CL2 (NOLOCK)
-								ON CL2.Id = CL2HF2.CollectionLevel2_Id
-							LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
-								ON CL2HF2.ParHeaderFieldGeral_Id = HF.Id 
-							LEFT JOIN ParLevel2 L2 (NOLOCK)
-								ON L2.Id = CL2.ParLevel2_Id
-							LEFT JOIN ParMultipleValuesGeral PMV (NOLOCK)
-								ON CL2HF2.Value = CAST(PMV.Id AS VARCHAR(500))
-								AND CL2HF2.ParFieldType_Id <> 2
-							LEFT JOIN Equipamentos EQP (NOLOCK)
-								ON CAST(EQP.Id AS VARCHAR(500)) = CL2HF2.Value
-								AND EQP.ParCompany_Id = CL2.UnitId
-								AND CL2HF2.ParFieldType_Id = 2
-							LEFT JOIN Produto PRD WITH (NOLOCK)
-								ON CAST(PRD.nCdProduto AS VARCHAR(500)) = CL2HF2.Value
-								AND CL2HF2.ParFieldType_Id = 2
-							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
-							and hf.name like '%turno%'
-							FOR XML PATH (''))
-						, 1, 1, '') AS HeaderFieldList
-						INTO #CollectionLevel2XParHeaderFieldGeralTURNO
-					FROM #CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
-					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
-						ON CL2.Id = CL2HF.CollectionLevel2_Id
-					LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
-						ON CL2HF.ParHeaderFieldGeral_Id = HF.Id
-					LEFT JOIN ParLevel2 L2 (NOLOCK)
-						ON L2.Id = CL2.ParLevel2_Id
-						WHERE HF.Name LIKE '%turno%'
-					GROUP BY CL2HF.CollectionLevel2_Id
-										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeralTURNO (CollectionLevel2_Id);
-
-
 
 					-- Criação da Fato de Coleta x Cluster
 
@@ -378,7 +330,7 @@ public class ApontamentosDiariosResultSet
                  ,C2.Sample AS 'Amostra'                
                  ,ISNULL(C2.Sequential,0) AS 'Sequencial'
                  ,ISNULL(C2.Side,0) as 'Banda'          
-                 ,ISNULL(HFTURNO.HeaderFieldList, '') as 'Turno'            
+                 ,STR(C2.[Shift]) as 'Turno'            
                  ,STR(C2.Period) as 'Periodo'           
                  ,UN.Name AS 'Unidade'                  
                  ,R3.Id AS 'ResultLevel3Id'             
@@ -427,9 +379,6 @@ public class ApontamentosDiariosResultSet
                  LEFT JOIN                             
                  #CollectionLevel2XParHeaderFieldGeral2 HF 
                  on c2.Id = HF.CollectionLevel2_Id
-				 LEFT JOIN                             
-                 #CollectionLevel2XParHeaderFieldGeralTURNO HFTURNO 
-                 on c2.Id = HFTURNO.CollectionLevel2_Id
                  LEFT JOIN #CollectionLevel2XCollectionJson CLCJ
                  ON CLCJ.CollectionLevel2_Id = C2.Id
                  LEFT JOIN #CollectionJson CJ
@@ -447,7 +396,7 @@ public class ApontamentosDiariosResultSet
                  WHERE 1=1 
                   
                   { sqlLevel3 } 
-                    
+                
                      DROP TABLE #CollectionLevel2 
                      DROP TABLE #CollectionJson
                      DROP TABLE #Result_Level3
@@ -680,6 +629,53 @@ public class ApontamentosDiariosResultSet
 					GROUP BY CL2HF.CollectionLevel2_Id
 										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeral2 (CollectionLevel2_Id);
 					
+                    -- Concatenação da Fato de Cabeçalhos
+					SELECT
+						CL2HF.CollectionLevel2_Id
+					   ,STUFF((SELECT DISTINCT
+								', ' + CONCAT(HF.Name, ': ', CASE
+									WHEN CL2HF2.ParFieldType_Id = 1 OR
+										CL2HF2.ParFieldType_Id = 3 THEN PMV.Name
+									WHEN CL2HF2.ParFieldType_Id = 2 THEN CASE
+											WHEN HF.Description = 'Produto' THEN CAST(PRD.nCdProduto AS VARCHAR(500)) + ' - ' + PRD.cNmProduto
+											ELSE EQP.Nome
+										END
+									WHEN CL2HF2.ParFieldType_Id = 6 THEN CONVERT(VARCHAR, CL2HF2.Value, 103)
+									ELSE CL2HF2.Value
+								END)
+							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (NOLOCK)
+							LEFT JOIN collectionlevel2 CL2 (NOLOCK)
+								ON CL2.Id = CL2HF2.CollectionLevel2_Id
+							LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
+								ON CL2HF2.ParHeaderFieldGeral_Id = HF.Id 
+							LEFT JOIN ParLevel2 L2 (NOLOCK)
+								ON L2.Id = CL2.ParLevel2_Id
+							LEFT JOIN ParMultipleValuesGeral PMV (NOLOCK)
+								ON CL2HF2.Value = CAST(PMV.Id AS VARCHAR(500))
+								AND CL2HF2.ParFieldType_Id <> 2
+							LEFT JOIN Equipamentos EQP (NOLOCK)
+								ON CAST(EQP.Id AS VARCHAR(500)) = CL2HF2.Value
+								AND EQP.ParCompany_Id = CL2.UnitId
+								AND CL2HF2.ParFieldType_Id = 2
+							LEFT JOIN Produto PRD WITH (NOLOCK)
+								ON CAST(PRD.nCdProduto AS VARCHAR(500)) = CL2HF2.Value
+								AND CL2HF2.ParFieldType_Id = 2
+							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
+							and hf.name like '%turno%'
+							FOR XML PATH (''))
+						, 1, 1, '') AS HeaderFieldList
+						INTO #CollectionLevel2XParHeaderFieldGeralTURNO
+					FROM #CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
+					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
+						ON CL2.Id = CL2HF.CollectionLevel2_Id
+					LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
+						ON CL2HF.ParHeaderFieldGeral_Id = HF.Id
+					LEFT JOIN ParLevel2 L2 (NOLOCK)
+						ON L2.Id = CL2.ParLevel2_Id
+						WHERE HF.Name LIKE '%turno%'
+					GROUP BY CL2HF.CollectionLevel2_Id
+										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeralTURNO (CollectionLevel2_Id);
+
 
 					-- Criação da Fato de Coleta x Cluster
 
@@ -720,7 +716,7 @@ public class ApontamentosDiariosResultSet
                  ,C2.Sample AS 'Amostra'                
                  ,ISNULL(C2.Sequential,0) AS 'Sequencial'
                  ,ISNULL(C2.Side,0) as 'Banda'          
-                 ,STR(C2.[Shift]) as 'Turno'            
+                 ,ISNULL(HFTURNO.HeaderFieldList, '') as 'Turno'             
                  ,STR(C2.Period) as 'Periodo'           
                  ,UN.Name AS 'Unidade'                  
                  ,R3.Id AS 'ResultLevel3Id'             
@@ -775,6 +771,9 @@ public class ApontamentosDiariosResultSet
                  LEFT JOIN                             
                  #CollectionLevel2XParHeaderFieldGeral2 HF 
                  on c2.Id = HF.CollectionLevel2_Id
+                 LEFT JOIN                             
+                 #CollectionLevel2XParHeaderFieldGeralTURNO HFTURNO 
+                 on c2.Id = HFTURNO.CollectionLevel2_Id
                  LEFT JOIN #CollectionLevel2XCollectionJson CLCJ
                  ON CLCJ.CollectionLevel2_Id = C2.Id
                  LEFT JOIN #CollectionJson CJ
