@@ -502,11 +502,14 @@ public class ApontamentosDiariosResultSet
 									ON pq.Id = r3q.Qualification_Value
 								WHERE r3q.ResultLevel3_Id = r3.Id
 								FOR XML PATH (''))
-							, 1, 1, '') Qualification INTO #Qualification
-						FROM ResultLevel3XParQualification r3q
-						LEFT JOIN Result_Level3 r3
+							, 1, 1, '') Qualification 
+						INTO #Qualification
+						FROM ResultLevel3XParQualification r3q with (nolock)
+						LEFT JOIN Result_Level3 r3 with (nolock)
 							ON r3.Id = r3q.ResultLevel3_Id
-						LEFT JOIN ParQualification pq
+						INNER JOIN #CollectionLevel2 C with (nolock)
+							ON R3.CollectionLevel2_Id = C.ID
+						LEFT JOIN ParQualification pq with (nolock)
 							ON pq.Id = r3q.Qualification_Value
 						GROUP BY r3.Id
 
@@ -544,10 +547,8 @@ public class ApontamentosDiariosResultSet
 						CollectionLevel2_Id
 						,CollectionJson_Id as CollectionJson_Id 
 						,ROW_NUMBER() OVER (PARTITION BY CollectionLevel2_Id ORDER BY CollectionJson_Id DESC) AS [ROW]
-
                     INTO #CollectionLevel2XCollectionJson
 					FROM CollectionLevel2XCollectionJson C2CJ WITH(NOLOCK)
-
                     INNER JOIN #CollectionLevel2 C2
 						ON C2.Id = C2CJ.CollectionLevel2_Id
 
@@ -577,12 +578,15 @@ public class ApontamentosDiariosResultSet
 					   ,CL2HF.CollectionLevel2_Id
 					   ,CL2HF.ParHeaderFieldGeral_Id
 					   ,CL2HF.ParFieldType_Id
-					   ,CL2HF.Value INTO #CollectionLevel2XParHeaderFieldGeral
+					   ,CL2HF.Value 
+                    INTO #CollectionLevel2XParHeaderFieldGeral
 					FROM CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
-					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
+					INNER JOIN #Collectionlevel2 CL2 (NOLOCK)
 						ON CL2.Id = CL2HF.CollectionLevel2_Id
-										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel_ID ON #CollectionLevel2XParHeaderFieldGeral (CollectionLevel2_Id);
-					-- Concatenação da Fato de Cabeçalhos
+					
+                    CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel_ID ON #CollectionLevel2XParHeaderFieldGeral (CollectionLevel2_Id);
+					
+                    -- Concatenação da Fato de Cabeçalhos
 					SELECT
 						CL2HF.CollectionLevel2_Id
 					   ,STUFF((SELECT DISTINCT
@@ -597,7 +601,7 @@ public class ApontamentosDiariosResultSet
 									ELSE CL2HF2.Value
 								END)
 							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (NOLOCK)
-							LEFT JOIN collectionlevel2 CL2 (NOLOCK)
+							LEFT JOIN #collectionlevel2 CL2 (NOLOCK)
 								ON CL2.Id = CL2HF2.CollectionLevel2_Id
 							LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
 								ON CL2HF2.ParHeaderFieldGeral_Id = HF.Id
@@ -617,14 +621,15 @@ public class ApontamentosDiariosResultSet
 							FOR XML PATH (''))
 						, 1, 1, '') AS HeaderFieldList INTO #CollectionLevel2XParHeaderFieldGeral2
 					FROM #CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
-					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
+					INNER JOIN #Collectionlevel2 CL2 (NOLOCK)
 						ON CL2.Id = CL2HF.CollectionLevel2_Id
 					LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
 						ON CL2HF.ParHeaderFieldGeral_Id = HF.Id
 					LEFT JOIN ParLevel2 L2 (NOLOCK)
 						ON L2.Id = CL2.ParLevel2_Id
 					GROUP BY CL2HF.CollectionLevel2_Id
-										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeral2 (CollectionLevel2_Id);
+
+                    CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeral2 (CollectionLevel2_Id);
 					
                     -- Concatenação da Fato de Cabeçalhos
 					SELECT
@@ -641,7 +646,7 @@ public class ApontamentosDiariosResultSet
 									ELSE CL2HF2.Value
 								END)
 							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (NOLOCK)
-							LEFT JOIN collectionlevel2 CL2 (NOLOCK)
+							LEFT JOIN #collectionlevel2 CL2 (NOLOCK)
 								ON CL2.Id = CL2HF2.CollectionLevel2_Id
 							LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
 								ON CL2HF2.ParHeaderFieldGeral_Id = HF.Id 
@@ -663,7 +668,7 @@ public class ApontamentosDiariosResultSet
 						, 1, 1, '') AS HeaderFieldList
 						INTO #CollectionLevel2XParHeaderFieldGeralTURNO
 					FROM #CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
-					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
+					INNER JOIN #Collectionlevel2 CL2 (NOLOCK)
 						ON CL2.Id = CL2HF.CollectionLevel2_Id
 					LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
 						ON CL2HF.ParHeaderFieldGeral_Id = HF.Id
@@ -671,7 +676,8 @@ public class ApontamentosDiariosResultSet
 						ON L2.Id = CL2.ParLevel2_Id
 						WHERE HF.Name LIKE '%turno%'
 					GROUP BY CL2HF.CollectionLevel2_Id
-										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeralTURNO (CollectionLevel2_Id);
+
+                    CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeralTURNO (CollectionLevel2_Id);
 
 
 					-- Criação da Fato de Coleta x Cluster
