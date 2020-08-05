@@ -308,7 +308,7 @@
                 let somaPontos = parseFloat(arrPontos.reduce(sumReduce));
                 let somaPontosAtingidos = parseFloat(arrPontosAtingidos.reduce(sumReduce));
 
-                porcengemPontos = somaPontos == 0 ? 0 : (somaPontos / somaPontosAtingidos);
+                porcengemPontos = somaPontos == 0 ? 0 : getPorcentagem(somaPontos, somaPontosAtingidos);
 
                 valor = parseFloat(porcengemPontos.toFixed(2));
                 valor += " %";
