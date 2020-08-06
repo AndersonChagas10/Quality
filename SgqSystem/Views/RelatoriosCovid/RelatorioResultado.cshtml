@@ -142,7 +142,7 @@
 
     @Scripts.Render("~/Scripts/heatmap.js")
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
         let urlBuscaDados = '@Html.Raw(Url.Action("Get", "api/RelatorioResultadoCovid"))';
 
@@ -164,6 +164,15 @@
             $('[name="parStructure3_Ids"]').attr('multiple', 'multiple');
             $('[name="parStructure3_Ids"]').select2();
         });
+
+        function filtraNA(data, tipoAnalise) {
+
+            if (tipoAnalise != "NA") {
+                return data.filter(x => parseInt(x.NA) == 0);
+            }
+
+            return data;
+        }
 
         function getTipoAnalise() {
 
@@ -285,6 +294,8 @@
             let valor = 0;
             let mensagem = "";
 
+            data = filtraNA(data, tipoAnalise);
+
             //fazer calculo de porcentagem ou de soma
             if (tipoAnalise == "NC" || tipoAnalise == "C" || tipoAnalise == "NA") { //Porcentagem C ou NC
 
@@ -327,6 +338,8 @@
 
         //Gráfico
         function gerarGrafico(data, serie, tipoAnalise) {
+
+            data = filtraNA(data, tipoAnalise);
 
             setTituloGrafico();
             const categories = getCategories(data, "__Data");
@@ -657,12 +670,12 @@
                                 qtdeNC = parseFloat(arrFiltrados.map(x => x[tipoAnalise]).reduce(sumReduce));
                                 amostragem = parseFloat(arrFiltrados.map(x => x.AV).reduce(sumReduce));
 
-                            } else if (tipoAnalise == "PONTOS") {
+                            } else if (tipoAnalise == "PontosTotais") {
 
                                 qtdeNC = parseFloat(arrFiltrados.map(x => x["PontosAtingidos"]).reduce(sumReduce));
                                 amostragem = parseFloat(arrFiltrados.map(x => x["PontosTotais"]).reduce(sumReduce));
 
-                            } 
+                            }
 
                             percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
                             listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
@@ -736,6 +749,8 @@
         }
 
         async function gerarMatriz(data, numeroDesdobramento, linha, coluna, tipoAnalise) {
+
+            data = filtraNA(data, tipoAnalise);
 
             let dados = await aplicarDistinctNaLista(data, [linha, coluna], tipoAnalise);
 
@@ -874,7 +889,7 @@
                 title = "% NC";
             else if (tipoAnalise == "C")
                 title = "% C";
-            else if (tipoAnalise == "Pontos")
+            else if (tipoAnalise == "PontosTotais")
                 title = "% Pontos";
             else
                 title = "% NA"
@@ -954,6 +969,6 @@
             }
         }
 
-</script>
+    </script>
 
 }
