@@ -215,6 +215,7 @@
             $('#container').html("");
             $('#placeholder').html("");
             $('#filtroGrafico').html("");
+            $('#showNCGeral').hide();
 
             hideMessage();
 
@@ -348,7 +349,8 @@
             chart = Highcharts.chart('container', {
                 chart: {
                     type: 'line',
-                    zoomType: 'xy'
+                    zoomType: 'xy',
+                    height: 400
                 },
                 credits: {
                     enabled: false
