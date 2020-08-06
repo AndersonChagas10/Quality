@@ -153,7 +153,7 @@
 
         let tituloChart = "";
 
-        const tiposAnalise = { NC: "NC", C: "C", PONTOS: "PontosTotais" };
+        const tiposAnalise = { NC: "NC", C: "C", PONTOS: "PontosTotais", NA: "NA" };
 
         $(document).ready(() => {
             $('[name="ParFrequency_Ids"]').removeAttr('multiple');
@@ -286,7 +286,7 @@
             let mensagem = "";
 
             //fazer calculo de porcentagem ou de soma
-            if (tipoAnalise == "NC" || tipoAnalise == "C") { //Porcentagem C ou NC
+            if (tipoAnalise == "NC" || tipoAnalise == "C" || tipoAnalise == "NA") { //Porcentagem C ou NC
 
                 const arrAv = data.map(x => x.AV);
                 const amostragem = arrAv.reduce(sumReduce);
@@ -297,8 +297,10 @@
 
                 if (tipoAnalise == "NC")
                     mensagem = "de Não Conformidades no Período";
-                else
+                else if (tipoAnalise == "C")
                     mensagem = "de Conformidades no Período";
+                else
+                    mensagem = "de Não Avaliados no Período";
 
             } else { //Percentual geral de pontos
 
@@ -353,7 +355,7 @@
                     },
                     labels: {
                         formatter: function () {
-                            return this.value + (tipoAnalise == "PontosTotais" ? "" : '%')
+                            return this.value + '%'
                         }
                     }
                 },
@@ -365,7 +367,7 @@
                     line: {
                         dataLabels: {
                             enabled: true,
-                            format: '{y} ' + (tipoAnalise == "PontosTotais" ? "" : '%')
+                            format: '{y} ' + '%'
                         },
                         enableMouseTracking: true
                     }
@@ -452,7 +454,7 @@
 
                     } else {
 
-                        if (tipoAnalise == "NC" || tipoAnalise == "C") { //Porcentagem C ou NC
+                        if (tipoAnalise == "NC" || tipoAnalise == "C" || tipoAnalise == "NA") { //Porcentagem C ou NC
 
                             const arrAv = arrFiltrado.map(x => x.AV);
                             const amostragem = arrAv.reduce(sumReduce);
@@ -650,25 +652,23 @@
 
                         if (arrFiltrados.length > 0) {
 
-                            if (tipoAnalise == "C" || tipoAnalise == "NC") {
+                            if (tipoAnalise == "C" || tipoAnalise == "NC" || tipoAnalise == "NA") {
 
                                 qtdeNC = parseFloat(arrFiltrados.map(x => x[tipoAnalise]).reduce(sumReduce));
                                 amostragem = parseFloat(arrFiltrados.map(x => x.AV).reduce(sumReduce));
-                                percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
-                                listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
 
-                            } else {
+                            } else if (tipoAnalise == "PONTOS") {
 
                                 qtdeNC = parseFloat(arrFiltrados.map(x => x["PontosAtingidos"]).reduce(sumReduce));
                                 amostragem = parseFloat(arrFiltrados.map(x => x["PontosTotais"]).reduce(sumReduce));
-                                percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
-                                listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
-                            }
+
+                            } 
+
+                            percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
+                            listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
 
                         }
-
                     }
-
                 }
 
                 resolve(listaDistinct);
@@ -742,8 +742,8 @@
             let w = $('#container').innerWidth();
             let idMatriz = "#placeholder_" + numeroDesdobramento;
 
-            const colorMax = tipoAnalise == "NC" ? "ff0000" : "00e600";
-            const colorMin = tipoAnalise == "NC" ? "00e600" : "ff0000";
+            const colorMax = tipoAnalise == "NC" || tipoAnalise == "NA" ? "ff0000" : "00e600";
+            const colorMin = tipoAnalise == "NC" || tipoAnalise == "NA" ? "00e600" : "ff0000";
 
             let config = {
                 maxWidth: "98%",
@@ -874,8 +874,10 @@
                 title = "% NC";
             else if (tipoAnalise == "C")
                 title = "% C";
-            else
+            else if (tipoAnalise == "Pontos")
                 title = "% Pontos";
+            else
+                title = "% NA"
 
             return title;
         }
@@ -908,6 +910,7 @@
                             <option value="NC">% Não Conformidade</option>
                             <option value="C">% Conformidade</option>
                             <option value="PONTOS">% Pontuação</option>
+                            <option value="NA">% NA</option>
                             <select id="select-filter-chart">
                             <button type="button" onclick="changeTipoAnalise();" class="btn btn-primary" id="btnChangeFilterGeral" title="Trocar Tipo de Análise">Aplicar</button>
                         </div>`;
