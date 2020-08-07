@@ -748,6 +748,15 @@
                     $(this).addClass("margin-left-6px");
                 });
             }
+
+            $(idMatriz).find('#listaInidicador tr').each((index, elem) => {
+
+                const altura = $(elem).height();
+
+                $($(idMatriz).find('#listaValores tr')[index]).height(altura);
+                $($(idMatriz).find('#listaMedia tr')[index]).height(altura);
+
+            });
         }
 
         async function gerarMatriz(data, numeroDesdobramento, linha, coluna, tipoAnalise) {
