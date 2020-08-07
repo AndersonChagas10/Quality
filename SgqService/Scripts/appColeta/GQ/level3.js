@@ -1537,6 +1537,8 @@ function saveResultLevel3() {
 
                 value = converteNotacaoBaseDezParaDecimal(valor1, valor2);
 
+                conform = (value >= parseFloat(level3.attr('intervalmin')) && value <= parseFloat(level3.attr('intervalmax')));
+
             } else if (inputType == 5) { //Texto
 
                 if ($(level3).find('input').val()) {

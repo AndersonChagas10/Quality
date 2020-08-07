@@ -314,7 +314,7 @@ function getCalculoPorMonitoramento(parLevel1_Id, parLevel2_Id, avaliacaoAtual) 
         for (i = 0; i < quantidadeDeColetasPorTarefa.length; i++) {
             if (quantidadeDeColetasPorTarefa[0].IsConform == false
                 && quantidadeDeColetasPorTarefa[0].WeiDefects > 1
-                && quantidadeDeColetasPorTarefa[0].Weight == 5) {
+                && quantidadeDeColetasPorTarefa[0].Weigth == 5) {
                 pesoCritico = 1;
             }
         }
