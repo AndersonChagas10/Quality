@@ -48,6 +48,14 @@ namespace SgqSystem.Controllers.Api.Relatorios.SGCOVID
             else
                 sqlQuery = sqlQuery.Replace("{idsClusterRelatorioResultadoCovid}", string.Empty);
 
+            var userSgq = GetUsuarioLogado();
+
+            if (form.ShowUserCompanies && 
+                userSgq != null && 
+                userSgq.ShowAllUnits != null && !userSgq.ShowAllUnits.Value && 
+                !userSgq.Role.Contains("Admin"))
+                whereDate += $@" AND C.Id IN(SELECT ParCompany_Id FROM ParCompanyXUserSgq WHERE UserSgq_Id = {userSgq.Id})";
+
             sqlQuery = sqlQuery.Replace("{parFrequency}", parFrequency);
             sqlQuery = sqlQuery.Replace("{whereUnidade}", whereUnidade);
             sqlQuery = sqlQuery.Replace("{whereDate}", whereDate);

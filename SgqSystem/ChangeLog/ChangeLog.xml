@@ -3629,4 +3629,18 @@
     <Script></Script>
   </Card>
 
+  <Card>
+    <CardNumber>SGQ-1049</CardNumber>
+    <Version>1.8.0</Version>
+    <Description> [COVID] Relatório de Resultados (% de Conformidade e Pontuação).</Description>
+    <Script></Script>
+  </Card>
+
+  <Card>
+    <CardNumber>SGQ-1077</CardNumber>
+    <Version>1.8.0</Version>
+    <Description> [COVID] Relatório de Resultados (Unidades usuario, % N Avaliados, Card Consolidação).</Description>
+    <Script></Script>
+  </Card>
+  
 </Cards>

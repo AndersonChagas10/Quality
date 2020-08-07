@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Newtonsoft.Json.Linq;
 using SgqSystem.Controllers.Api;
 using System;
 using System.Collections.Generic;
@@ -199,28 +200,64 @@ namespace SgqSystem.Controllers.V2.Api
             {
                 db.Configuration.LazyLoadingEnabled = false;
 
-                var ParDepartmentsPai = db.ParDepartment.Where(x => x.ParCompany_Id == id)
-                    .Select(x => x.Parent_Id)
+                string sql = $@"DECLARE @PARCOMPANY_ID INT = ${id};
+
+SELECT PD.*, PDPai.Name as ParDepartmentPaiName
+FROM PARDEPARTMENT PD
+LEFT JOIN PARDEPARTMENT PDPai on PD.Parent_Id = PDPai.Id
+WHERE 1=1
+AND PD.ParCompany_Id = @PARCOMPANY_ID
+AND PD.Parent_id IS NOT NULL
+AND PD.ACTIVE = 1
+AND PDPai.ACTIVE = 1
+AND PD.Id not in (
+	SELECT PARENT_ID
+	FROM PARDEPARTMENT
+	WHERE ParCompany_Id = @PARCOMPANY_ID
+    AND ACTIVE = 1
+	AND PARENT_ID IS NOT NULL)";
+
+                var parDepartmentsFilhos = new List<ParDepartment>();
+                List<JObject> listaDeParDepartamentos = QueryNinja(db, sql);
+                foreach(JObject parDepartment in listaDeParDepartamentos)
+                {
+                    parDepartmentsFilhos.Add(
+                        new ParDepartment
+                        {
+                            Id = Convert.ToInt32(parDepartment["Id"]),
+                            Parent_Id = Convert.ToInt32(parDepartment["Parent_Id"]),
+                            ParCompany_Id = Convert.ToInt32(parDepartment["ParCompany_Id"]),
+                            Name = parDepartment["Name"].ToString(),
+                            Description = parDepartment["Description"].ToString(),
+                            Hash = parDepartment["Hash"].ToString(),
+                            Active = true,
+                            ParDepartmentPai = new ParDepartment
+                            {
+                                Id = Convert.ToInt32(parDepartment["Parent_Id"]),
+                                Name = parDepartment["ParDepartmentPaiName"].ToString()
+                            }
+                        });
+                }
+
+                var departamentosIds = parDepartmentsFilhos.Select(x => x.Id).ToList();
+
+                var parCargoXDepartment = db.ParCargoXDepartment
+                    .Where(x => departamentosIds.Contains(x.ParDepartment_Id) && x.IsActive)
+                    .Select(x=> new { x.Id, x.ParCargo_Id, x.ParDepartment_Id})
                     .ToList();
 
-                var ParDepartmentsFilhos = db.ParDepartment
-                    .Where(x => x.ParCompany_Id == id && x.Parent_Id != null && !ParDepartmentsPai.Any(y => y == x.Id))
-                    .Include(x => x.ParDepartmentPai).Where(x => x.ParCompany_Id == id && x.Parent_Id != null)
+                var parCargoIds = parCargoXDepartment.Select(x => x.ParCargo_Id).ToList();
+
+                var parCargos = db.ParCargo
+                    .Where(x => parCargoIds.Contains(x.Id) && x.IsActive)
+                    .Select(x=>new {x.Id, x.Name})
                     .ToList();
-
-                var departamentosIds = ParDepartmentsFilhos.Select(x => x.Id).ToList();
-
-                var ParCargoXDepartment = db.ParCargoXDepartment.Where(x => departamentosIds.Contains(x.ParDepartment_Id)).ToList();
-
-                var ParCargoIds = ParCargoXDepartment.Select(x => x.ParCargo_Id).ToList();
-
-                var ParCargos = db.ParCargo.Where(x => ParCargoIds.Contains(x.Id)).ToList();
 
                 dynamic retorno = new ExpandoObject();
 
-                retorno.ParDepartments = ParDepartmentsFilhos;
-                retorno.ParCargos = ParCargos;
-                retorno.ParCargoXDepartments = ParCargoXDepartment;
+                retorno.ParDepartments = parDepartmentsFilhos;
+                retorno.ParCargos = parCargos;
+                retorno.ParCargoXDepartments = parCargoXDepartment;
 
                 return Ok(retorno);
             }

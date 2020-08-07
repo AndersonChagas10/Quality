@@ -218,6 +218,80 @@ var HeatMap = {
         PreencheCalorNasCelulasValores();
         PreencheCalorMedia();
         PreencheCalorRodape();
+    },
+    RecalculaMatrizSoma: function () {
+
+        //Recalcula totais para matriz com porcentagem de NC
+        HeatMap.minMaxPorIndicador = [];
+        HeatMap.minMedia = undefined;
+        HeatMap.minRodape = undefined;
+        HeatMap.maxMedia = undefined;
+        HeatMap.maxRodape = undefined;
+
+        //Total direita
+        for (var j = 0; j < HeatMap.Indicadores.length; j++) {
+            for (var z = 0; z < HeatMap.Valores.length; z++) {
+
+                let indicadorY = j;
+                let valorCabecalho = RetornaTituloValor(z);
+                let identificador = HeatMap.idMedia + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
+
+                let pontos = this.jsonObject.filter(x => x.IndicadorY === indicadorY).map(x => x.Pontos).reduce(sumReduce);
+
+                let identificadorValores = HeatMap.idValores + ' td[' + HeatMap.dataIndicador + '="' + indicadorY + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
+
+                $(identificadorValores).each(function (i, o) {
+                    var valor = ValorNumerico($(o).text());
+                    if (HeatMap.Valores[z]["heatmap"] == true && $(o).text() != HeatMap.valorVazio) {
+                        SetaMinimoMaximoPorIndicador(indicadorY, valor);
+                        SetaMinimoMaximo(valor);
+                    }
+                });
+
+                pontos = pontos ? pontos : 0;
+
+                $(identificador).html(pontos.toFixed(2));
+
+                SetaMinimoMaximoMedia(parseFloat($(identificador).html()));
+            }
+        }
+
+        //Total Rodapé
+        for (var i = 0; i < HeatMap.Cabecalhos.length; i++) {
+            for (var z = 0; z < HeatMap.Valores.length; z++) {
+
+                let cabecalhoX = i;
+                let valorCabecalho = RetornaTituloValor(z);
+                let identificador = HeatMap.idRodape + ' td[' + HeatMap.dataCabecalho + '="' + cabecalhoX + '"][' + HeatMap.dataValor + '="' + valorCabecalho + '"]';
+
+                let pontos = this.jsonObject.filter(x => x.CabecalhoX === cabecalhoX).map(x => x.Pontos).reduce(sumReduce);
+
+                pontos = pontos ? pontos : 0;
+
+                $(identificador).html(pontos.toFixed(2));
+
+                SetaMinimoMaximoRodape(parseFloat($(identificador).html()));
+            }
+        }
+
+        //Total total
+        for (var z = 0; z < HeatMap.Valores.length; z++) {
+
+            let valorCabecalho = RetornaTituloValor(z);
+
+            let identificador = HeatMap.idTotalMedia + ' td[' + HeatMap.dataValor + '="' + valorCabecalho + '"]'
+
+            let pontos = this.jsonObject.map(x => x.Pontos).reduce(sumReduce);
+
+            pontos = pontos ? pontos : 0;
+
+            $(identificador).html(pontos.toFixed(2));
+
+        }
+
+        PreencheCalorNasCelulasValores();
+        PreencheCalorMedia();
+        PreencheCalorRodape();
     }
 
 }
