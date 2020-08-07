@@ -680,6 +680,7 @@
                             }
 
                             percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
+                            percNC = isNaN(percNC) ? 0 : percNC;
                             listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
 
                         }
