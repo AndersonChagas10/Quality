@@ -290,15 +290,21 @@ namespace SgqSystem.Mail
                     {
                         foreach (var m in Mails)
                         {
-                            if (!(db.Deviation.FirstOrDefault(d => d.Id == m.Id)?.EmailContent_Id > 0))
+                            try
                             {
-                                EmailContent newMail = GetMailByDeviation(db, m, m.AlertNumber);
-                                newMail.To = DestinatariosSGQJBSBR(newMail, m.AlertNumber, m.ParCompany_Id);
-                                db.EmailContent.Add(newMail);
-                                db.SaveChanges();
+                                if (!(db.Deviation.FirstOrDefault(d => d.Id == m.Id)?.EmailContent_Id > 0))
+                                {
+                                    EmailContent newMail = GetMailByDeviation(db, m, m.AlertNumber);
+                                    newMail.To = DestinatariosSGQJBSBR(newMail, m.AlertNumber, m.ParCompany_Id);
+                                    db.EmailContent.Add(newMail);
+                                    db.SaveChanges();
 
-                                db.Database.ExecuteSqlCommand($"UPDATE Deviation SET sendMail = 1, EmailContent_Id = { newMail.Id } WHERE ID = { m.Id }");
-                                db.SaveChanges();
+                                    db.Database.ExecuteSqlCommand($"UPDATE Deviation SET sendMail = 1, EmailContent_Id = { newMail.Id } WHERE ID = { m.Id }");
+                                    db.SaveChanges();
+                                }
+                            }catch(Exception ex)
+                            {
+                                LogSystem.LogErrorBusiness.Register(new Exception($"Ocorreu um erro em: [CreateMailSgqAppDeviation_Envio do e-mail] --- {ex.ToClient()} ---", ex));
                             }
                         }
 
