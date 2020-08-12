@@ -98,7 +98,6 @@
             padding: 2px;
             height: 15px !important;
         }
-
     </style>
 
     <div class="page-content-wrapper">
@@ -196,36 +195,36 @@
             var idTabelaOriginal = 'table-pivot-table';
             var idFormatadoParaImpressao = 'print-table-pivot-table';
             var config = {
-	            startWidth: 0,
-	            startTHCount: -1,
-	            startTHRowsCount: -1,
-	            maxWidthInCentimeter: (96/2.54) * 21,
-	            startCells: [],
-	            valuesCells: []
+                startWidth: 0,
+                startTHCount: -1,
+                startTHRowsCount: -1,
+                maxWidthInCentimeter: (96 / 2.54) * 21,
+                startCells: [],
+                valuesCells: []
             }
-            remontarTabela(idTabelaOriginal,idFormatadoParaImpressao,config);
+            remontarTabela(idTabelaOriginal, idFormatadoParaImpressao, config);
             ajustarTabela(idFormatadoParaImpressao, idFormatadoParaImpressao, config);
             $('#' + idTabelaOriginal).addClass('hide');
             document.body.setAttribute("style", "background-color:#fff !important;");
 
-         setTimeout(function () {
-            printGRT.Inicializar({
+            setTimeout(function () {
+                printGRT.Inicializar({
 
-                headerHtml: document.getElementById('cabecalhoDiv').innerHTML,
-                bodyHtml: document.getElementById('corpoPagina').innerHTML,
-                footerHtml: $("#rodapeCodigo").text(),
-                numberMarginRight: 25,
-                numberMarginBottom: 25,
-                renderTableMargin: 0,
-                pageMarginHeader: "25px 25px 10px 25px",
-                pageMarginFooter: "10px 25px 25px 25px",
-                pageMarginBody: "0 25px 0 25px"
+                    headerHtml: document.getElementById('cabecalhoDiv').innerHTML,
+                    bodyHtml: document.getElementById('corpoPagina').innerHTML,
+                    footerHtml: $("#rodapeCodigo").text(),
+                    numberMarginRight: 25,
+                    numberMarginBottom: 25,
+                    renderTableMargin: 0,
+                    pageMarginHeader: "25px 25px 10px 25px",
+                    pageMarginFooter: "10px 25px 25px 25px",
+                    pageMarginBody: "0 25px 0 25px"
 
-            });
+                });
 
-            printGRT.Imprimir();
+                printGRT.Imprimir();
 
-        },150);
+            }, 150);
 
             setTimeout(function () {
                 document.body.setAttribute("style", "");
@@ -234,9 +233,7 @@
                 //$("#print-table-pivot-table").remove();
 
                 $('#divRenderPrint').remove();
-            },300);
-
-            
+            }, 300);
         });
 
         function enviarFiltro() {
@@ -255,63 +252,63 @@
                 if (!$("#divFilterReports").is(":hidden"))
                     toggleDivFilterReports();
 
-                    $btn.button('loading');
-                    $(".loader").show();
+                $btn.button('loading');
+                $(".loader").show();
 
-                    //GuardJs.exibirMensagemAlerta("Caso o relatório demore para ser carregado é devido a busca estar sendo realizada nas unidades vinculadas ao usuário!");
+                //GuardJs.exibirMensagemAlerta("Caso o relatório demore para ser carregado é devido a busca estar sendo realizada nas unidades vinculadas ao usuário!");
 
-                    $("#mensagemSemDados").hide();
-                   // GuardJs.esconderMensagem();
+                $("#mensagemSemDados").hide();
+                // GuardJs.esconderMensagem();
 
-                    $("#rodape").hide();
-                    $("#cabecalhoDiv").hide();
-                    $("#pivot-table").hide();
-                    $.ajax({
-                        data: JSON.stringify(objFiltro),
-                        url: urlBuscaDados,
-                        type: 'POST',
-                        contentType: "application/json",
-                        success: function (data) {
+                $("#rodape").hide();
+                $("#cabecalhoDiv").hide();
+                $("#pivot-table").hide();
+                $.ajax({
+                    data: JSON.stringify(objFiltro),
+                    url: urlBuscaDados,
+                    type: 'POST',
+                    contentType: "application/json",
+                    success: function (data) {
 
-                            $btn.button('reset');
-                            $(".loader").hide();
-                            if (data.Resultado.length > 0) {
+                        $btn.button('reset');
+                        $(".loader").hide();
+                        if (data.Resultado.length > 0) {
 
-                                $("#mensagemSemDados").hide();
-                                $("#pivot-table").show();
-                                GuardJs.esconderMensagem();
-                                $("#rodape").show();
-                                $("#cabecalhoDiv").show();
-                                $("#tdAprovador").text(data.Aprovador);
-                                $("#tdElaborador").text(data.Elaborador);
-                                $("#rodapeCodigo").text(data.CodigoRelatorio);
-                                $("#tdNomeRelatorio").text(data.RelatorioName);
+                            $("#mensagemSemDados").hide();
+                            $("#pivot-table").show();
+                            GuardJs.esconderMensagem();
+                            $("#rodape").show();
+                            $("#cabecalhoDiv").show();
+                            $("#tdAprovador").text(data.Aprovador);
+                            $("#tdElaborador").text(data.Elaborador);
+                            $("#rodapeCodigo").text(data.CodigoRelatorio);
+                            $("#tdNomeRelatorio").text(data.RelatorioName);
 
-                                var arrayUnidadesNome = $.map(data.Resultado, function (o, i) {
-                                    return o.unidade;
-                                });
+                            var arrayUnidadesNome = $.map(data.Resultado, function (o, i) {
+                                return o.unidade;
+                            });
 
-                                var arrayUnidadesNomeFiltrada = arrayUnidadesNome.filter((item, index) => arrayUnidadesNome.indexOf(item) === index);
+                            var arrayUnidadesNomeFiltrada = arrayUnidadesNome.filter((item, index) => arrayUnidadesNome.indexOf(item) === index);
 
-                                $("#unidadeColeta").text(arrayUnidadesNomeFiltrada.join(','));
+                            $("#unidadeColeta").text(arrayUnidadesNomeFiltrada.join(','));
 
-                                montaLayout(data.ParReportLayoutXReportXUser);
-                                montaTabelaDinamica(data.Resultado, data.ParReportLayoutXReportXUser);
-                            } else {
-                                $("#mensagemSemDados").show();
-                                GuardJs.esconderMensagem();
-                            }
-
-                        },
-                        timeout: 600000,
-                        contentType: "APPLICATION/JSON; CHARSET=UTF-8",
-                        error: function (a, b, c) {
-                            $(".loader").hide();
-                            console.log(a);
-                            console.log(b);
-                            console.log(c);
+                            montaLayout(data.ParReportLayoutXReportXUser);
+                            montaTabelaDinamica(data.Resultado, data.ParReportLayoutXReportXUser);
+                        } else {
+                            $("#mensagemSemDados").show();
+                            GuardJs.esconderMensagem();
                         }
-                    });
+
+                    },
+                    timeout: 600000,
+                    contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                    error: function (a, b, c) {
+                        $(".loader").hide();
+                        console.log(a);
+                        console.log(b);
+                        console.log(c);
+                    }
+                });
             }
         }
 
@@ -348,14 +345,16 @@
 
             var matrizColunas = { lista: [] };
             var matrizLinhas = { lista: [] };
+
             for (var i = 0; i < obj.length; i++) {
                 montarArvoreDeDados(obj[i], matrizColunas, cabecalhos, 0, cabecalhos.length - 1);
                 montarArvoreDeDados(obj[i], matrizLinhas, linhas, 0, linhas.length - 1);
             }
 
             function montarArvoreDeDados(objeto, matriz, lista, indexAtual, indexMaximo) {
+
                 var nomeDoNivel = lista[indexAtual];
-                var valorCabecalho = objeto[nomeDoNivel];
+                var valorCabecalho = objeto[nomeDoNivel] == undefined ? "" : objeto[nomeDoNivel];
 
                 var itemAtual = {};
                 itemAtual.nivel = nomeDoNivel;
@@ -364,12 +363,7 @@
 
                 if (matriz.lista) {
 
-                    itemDaLista = matriz.lista.filter((item) => {
-
-                        if (item.titulo)
-                            return item.titulo.replace("'", "´") == valorCabecalho.replace("'", "´");
-
-                    });
+                    itemDaLista = matriz.lista.filter((item) => btoa(item.titulo) == btoa(valorCabecalho));
 
                     if (itemDaLista.length == 0) {
                         matriz.lista.push(itemAtual); //Adicionado como filho
@@ -529,8 +523,8 @@
 
                 if (indexAtual == indexMaximo) {
                     html = '<th ' + atributos + '>';
-                //} else if (itemMatriz.span > 1) {
-                  //  html = '<th rowspan="' + itemMatriz.span + '">';
+                    //} else if (itemMatriz.span > 1) {
+                    //  html = '<th rowspan="' + itemMatriz.span + '">';
                 } else {
                     html = '<th>';
                 }
@@ -564,7 +558,7 @@
             var numeroLinha = 0;
             for (var i = 0; i < matrizLinhas.lista.length; i++) {
                 var item = matrizLinhas.lista[i];
-                numeroLinha = montaLinhas(item, numeroLinha, 0, linhas.length - 1, undefined,0);
+                numeroLinha = montaLinhas(item, numeroLinha, 0, linhas.length - 1, undefined, 0);
             }
 
             for (var i = 0; i < matrizHtmlLinhas.length; i++) {
@@ -609,7 +603,8 @@
                     var deuMatch = true;
                     if (!ultimoObjeto) {
                         for (var z = 0; z < objAtributos.length; z++) {
-                            if (listaObj[j][objAtributos[z].replace(/-/gi, ' ')] && atributos[objAtributos[z]].replace(/[^\w\s]/gi, '') != listaObj[j][objAtributos[z].replace(/-/gi, ' ')].replace(/[^\w\s]/gi, '')) {
+                            //if (listaObj[j][objAtributos[z].replace(/-/gi, ' ')] && atributos[objAtributos[z]].replace(/[^\w\s]/gi, '') != listaObj[j][objAtributos[z].replace(/-/gi, ' ')].replace(/[^\w\s]/gi, '')) {
+                            if (listaObj[j][objAtributos[z]] && btoa(atributos[objAtributos[z]]) != btoa(listaObj[j][objAtributos[z]])) {
                                 deuMatch = false;
                                 break;
                             }
@@ -640,137 +635,137 @@
         /***FIM: MONTA VALORES HTML **********************************************/
 
         var tamanhoFonte = 8;
-        function remontarTabela(id,idParaRemontar,config){
-	        var pivotTable = document.getElementById(id);
-	        var linhas = pivotTable.getElementsByTagName("tr");
-	        var rowspanFim = 1;
-	        var rowspanInicio = 0;
-	        var htmlCellRowspan = "";
+        function remontarTabela(id, idParaRemontar, config) {
+            var pivotTable = document.getElementById(id);
+            var linhas = pivotTable.getElementsByTagName("tr");
+            var rowspanFim = 1;
+            var rowspanInicio = 0;
+            var htmlCellRowspan = "";
 
-	        var htmlTable = "<table class='table table-bordered'>";
-	        for(var i = 0; i < linhas.length; i++){
-		        htmlTable += "<tr>";
-		        var quantidadeColspan = 0;
-		        for(var j = 0; j < linhas[i].childNodes.length; j++){
-			        var celula = linhas[i].childNodes[j];
+            var htmlTable = "<table class='table table-bordered'>";
+            for (var i = 0; i < linhas.length; i++) {
+                htmlTable += "<tr>";
+                var quantidadeColspan = 0;
+                for (var j = 0; j < linhas[i].childNodes.length; j++) {
+                    var celula = linhas[i].childNodes[j];
 
-			        if(i <= rowspanFim-1 && j == 0){
-				        htmlTable += htmlCellRowspan;
+                    if (i <= rowspanFim - 1 && j == 0) {
+                        htmlTable += htmlCellRowspan;
                     }
 
                     var style = ajustarEstiloDaCelula(celula);
 
-			        var htmlCell = "";
-			        if(celula.getAttribute("colspan")){
-				        var colspan = parseInt(celula.getAttribute("colspan"));
+                    var htmlCell = "";
+                    if (celula.getAttribute("colspan")) {
+                        var colspan = parseInt(celula.getAttribute("colspan"));
                         quantidadeColspan += colspan
 
-                        for (var z = 0; z < colspan; z++){
+                        for (var z = 0; z < colspan; z++) {
                             var width = 150;
                             if (celula.offsetWidth < width) {
                                 width = celula.offsetWidth;
                             }
-					        htmlCell += "<"+celula.tagName+" style='padding:2px;width:"+width+"px !important;"+style+";font-size:"+tamanhoFonte+"pt !important'>"+celula.innerHTML+"</"+celula.tagName+">";
-				        }
+                            htmlCell += "<" + celula.tagName + " style='padding:2px;width:" + width + "px !important;" + style + ";font-size:" + tamanhoFonte + "pt !important'>" + celula.innerHTML + "</" + celula.tagName + ">";
+                        }
 
-				        if(config.startTHCount == -1){
-					        config.startTHCount = colspan;
-				        }
-			        }else{
-				        quantidadeColspan++;
-				        htmlCell += "<"+celula.tagName+" style='padding:2px;"+style+";font-size:"+tamanhoFonte+"pt !important;'>"+celula.innerHTML+"</"+celula.tagName+">";
-			        }
-			        htmlTable += htmlCell;
+                        if (config.startTHCount == -1) {
+                            config.startTHCount = colspan;
+                        }
+                    } else {
+                        quantidadeColspan++;
+                        htmlCell += "<" + celula.tagName + " style='padding:2px;" + style + ";font-size:" + tamanhoFonte + "pt !important;'>" + celula.innerHTML + "</" + celula.tagName + ">";
+                    }
+                    htmlTable += htmlCell;
 
-			        if(celula.getAttribute("rowspan")){
-				        htmlCellRowspan = htmlCell;
-				        rowspanInicio = i;
-				        rowspanFim = rowspanInicio + parseInt(celula.getAttribute("rowspan"));
-				        if(config.startTHRowsCount == -1){
-					        config.startTHRowsCount = parseInt(celula.getAttribute("rowspan"));
-				        }
-			        }
+                    if (celula.getAttribute("rowspan")) {
+                        htmlCellRowspan = htmlCell;
+                        rowspanInicio = i;
+                        rowspanFim = rowspanInicio + parseInt(celula.getAttribute("rowspan"));
+                        if (config.startTHRowsCount == -1) {
+                            config.startTHRowsCount = parseInt(celula.getAttribute("rowspan"));
+                        }
+                    }
 
-		        }
-		        htmlTable += "</tr>";
-	        }
-	        htmlTable += "</table>";
-	        document.getElementById(idParaRemontar).innerHTML = htmlTable;
+                }
+                htmlTable += "</tr>";
+            }
+            htmlTable += "</table>";
+            document.getElementById(idParaRemontar).innerHTML = htmlTable;
         }
 
-        function ajustarTabela(id,idParaRemontar,config){
-	        var isConfigured = false;
-	        var pivotTable = document.getElementById(id);
-	        var linhas = pivotTable.getElementsByTagName("tr");
+        function ajustarTabela(id, idParaRemontar, config) {
+            var isConfigured = false;
+            var pivotTable = document.getElementById(id);
+            var linhas = pivotTable.getElementsByTagName("tr");
 
-	        for(var i = 0; i < linhas.length; i++){
-		        var countTable = 0;
-		        var currentWidth = 0;
-		        for(var j = 0; j < linhas[i].childNodes.length; j++){
+            for (var i = 0; i < linhas.length; i++) {
+                var countTable = 0;
+                var currentWidth = 0;
+                for (var j = 0; j < linhas[i].childNodes.length; j++) {
                     var celula = linhas[i].childNodes[j];
 
                     var style = ajustarEstiloDaCelula(celula);
 
-			        var htmlCelula = "";
-			        if((j+1) > config.startTHCount || (i+1) > config.startTHRowsCount){
-				        if(celula.tagName == "TH"){
-					        htmlCelula = "<"+celula.tagName+" style='font-size:9pt;padding:2px;width:"+celula.offsetWidth+"px !important;"+style+";font-size:"+tamanhoFonte+"pt !important;'>"+celula.innerHTML+"</"+celula.tagName+">";
-				        }else{
-					        htmlCelula = "<"+celula.tagName+" style='font-size:9pt;padding:2px;"+style+";font-size:"+tamanhoFonte+"pt !important;'>"+celula.innerHTML+"</"+celula.tagName+">";
-				        }
-			        //}else if(i == 0 && j == 0){
-				    //    htmlCelula = "<"+celula.tagName+" colspan='"+config.startTHCount+"' rowspan='"+config.startTHRowsCount+"'></"+celula.tagName+">";
-			        }else{
-				        htmlCelula = "<"+celula.tagName+" style='border:0px !important;"+style+";font-size:"+tamanhoFonte+"pt !important;'></"+celula.tagName+">";
-			        }
+                    var htmlCelula = "";
+                    if ((j + 1) > config.startTHCount || (i + 1) > config.startTHRowsCount) {
+                        if (celula.tagName == "TH") {
+                            htmlCelula = "<" + celula.tagName + " style='font-size:9pt;padding:2px;width:" + celula.offsetWidth + "px !important;" + style + ";font-size:" + tamanhoFonte + "pt !important;'>" + celula.innerHTML + "</" + celula.tagName + ">";
+                        } else {
+                            htmlCelula = "<" + celula.tagName + " style='font-size:9pt;padding:2px;" + style + ";font-size:" + tamanhoFonte + "pt !important;'>" + celula.innerHTML + "</" + celula.tagName + ">";
+                        }
+                        //}else if(i == 0 && j == 0){
+                        //    htmlCelula = "<"+celula.tagName+" colspan='"+config.startTHCount+"' rowspan='"+config.startTHRowsCount+"'></"+celula.tagName+">";
+                    } else {
+                        htmlCelula = "<" + celula.tagName + " style='border:0px !important;" + style + ";font-size:" + tamanhoFonte + "pt !important;'></" + celula.tagName + ">";
+                    }
 
-			        if((j+1) <= config.startTHCount){
-				        currentWidth += celula.offsetWidth;
-				        //Registra qual a largura que inicialmente é utilizada
-				        if(!isConfigured && (j+1) == config.startTHCount){
-					        isConfigured = true;
-					        config.startWidth = currentWidth;
-				        }
-				        config.startCells[i] = (config.startCells[i] == undefined? '' : config.startCells[i])+htmlCelula;
-				        if(isConfigured){
-					        currentWidth = 0;
-				        }
-			        }else if((j+1) >  config.startTHCount){
-				        //Calcula valores
-				        if((config.startWidth + currentWidth + celula.offsetWidth) > config.maxWidthInCentimeter){
+                    if ((j + 1) <= config.startTHCount) {
+                        currentWidth += celula.offsetWidth;
+                        //Registra qual a largura que inicialmente é utilizada
+                        if (!isConfigured && (j + 1) == config.startTHCount) {
+                            isConfigured = true;
+                            config.startWidth = currentWidth;
+                        }
+                        config.startCells[i] = (config.startCells[i] == undefined ? '' : config.startCells[i]) + htmlCelula;
+                        if (isConfigured) {
+                            currentWidth = 0;
+                        }
+                    } else if ((j + 1) > config.startTHCount) {
+                        //Calcula valores
+                        if ((config.startWidth + currentWidth + celula.offsetWidth) > config.maxWidthInCentimeter) {
                             currentWidth = 0;
 
-					        countTable++;
-				        }
-				        currentWidth += celula.offsetWidth;
+                            countTable++;
+                        }
+                        currentWidth += celula.offsetWidth;
 
-				        if(!config.valuesCells[i]){
-					        config.valuesCells[i] = [];
-				        }
+                        if (!config.valuesCells[i]) {
+                            config.valuesCells[i] = [];
+                        }
 
-				        config.valuesCells[i][countTable] = (config.valuesCells[i][countTable] == undefined? '' : config.valuesCells[i][countTable])+htmlCelula;
-			        }
-		        }
-	        }
+                        config.valuesCells[i][countTable] = (config.valuesCells[i][countTable] == undefined ? '' : config.valuesCells[i][countTable]) + htmlCelula;
+                    }
+                }
+            }
 
-	        document.getElementById(idParaRemontar).innerHTML = "";
-	        var htmlTable = [];
-	        for(var i = 0; i < config.valuesCells.length; i++){
-		        for(var j = 0; j < config.valuesCells[i].length; j++){
-			        if(i == 0){ //avoid-break-page
-				        htmlTable[j] = "<table class='table table-bordered' style='font-size:"+tamanhoFonte+"pt !important;'>";
-			        }
-			        htmlTable[j] += "<tr>";
-			        htmlTable[j] += config.startCells[i];
-			        htmlTable[j] += config.valuesCells[i][j];
-			        htmlTable[j] += "</tr>";
+            document.getElementById(idParaRemontar).innerHTML = "";
+            var htmlTable = [];
+            for (var i = 0; i < config.valuesCells.length; i++) {
+                for (var j = 0; j < config.valuesCells[i].length; j++) {
+                    if (i == 0) { //avoid-break-page
+                        htmlTable[j] = "<table class='table table-bordered' style='font-size:" + tamanhoFonte + "pt !important;'>";
+                    }
+                    htmlTable[j] += "<tr>";
+                    htmlTable[j] += config.startCells[i];
+                    htmlTable[j] += config.valuesCells[i][j];
+                    htmlTable[j] += "</tr>";
 
-			        if((i+1) == config.valuesCells.length){
-				        htmlTable[j] += "</table>";
-				        document.getElementById(idParaRemontar).insertAdjacentHTML( 'beforeend', htmlTable[j]);
-			        }
-		        }
-	        }
+                    if ((i + 1) == config.valuesCells.length) {
+                        htmlTable[j] += "</table>";
+                        document.getElementById(idParaRemontar).insertAdjacentHTML('beforeend', htmlTable[j]);
+                    }
+                }
+            }
 
         }
 
