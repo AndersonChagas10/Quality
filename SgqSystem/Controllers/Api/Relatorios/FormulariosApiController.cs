@@ -642,7 +642,7 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
                 UnidadeName as unidade,
                 Cast(AV as int) as av,
                 Cast(NC as int) as nc,
-				Resultado as ''resultado'',
+				IIF(AVComPeso = 0 and nCComPeso = 0, ''NA'' , Resultado) as ''resultado'',
                 CONVERT(VARCHAR(10), ConsolidationDate, 103) as ''data'',
 				CONVERT(CHAR(5),ConsolidationDate,108) as ''hora''
 
