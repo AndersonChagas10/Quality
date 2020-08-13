@@ -202,31 +202,43 @@ namespace SgqSystem.Controllers.V2.Api
 
                 string sql = $@"DECLARE @PARCOMPANY_ID INT = ${id};
 
-SELECT PD.*, PDPai.Name as ParDepartmentPaiName
-FROM PARDEPARTMENT PD
-LEFT JOIN PARDEPARTMENT PDPai on PD.Parent_Id = PDPai.Id
-WHERE 1=1
-AND PD.ParCompany_Id = @PARCOMPANY_ID
-AND PD.Parent_id IS NOT NULL
-AND PD.ACTIVE = 1
-AND PDPai.ACTIVE = 1
-AND PD.Id not in (
-	SELECT PARENT_ID
-	FROM PARDEPARTMENT
-	WHERE ParCompany_Id = @PARCOMPANY_ID
-    AND ACTIVE = 1
-	AND PARENT_ID IS NOT NULL)";
+                                SELECT
+                                	PD.*
+                                   ,PDPai.Name AS ParDepartmentPaiName
+                                FROM PARDEPARTMENT PD
+                                LEFT JOIN PARDEPARTMENT PDPai
+                                	ON PD.Parent_Id = PDPai.Id
+                                WHERE 1 = 1
+                                AND (PD.ParCompany_Id = @PARCOMPANY_ID OR PD.ParCompany_Id Is NULL)
+                                AND PD.Parent_id IS NOT NULL
+                                AND PD.ACTIVE = 1
+                                AND PDPai.ACTIVE = 1
+                                AND PD.Id NOT IN (SELECT
+                                		PARENT_ID
+                                	FROM PARDEPARTMENT
+                                	WHERE (ParCompany_Id = @PARCOMPANY_ID OR PD.ParCompany_Id Is NULL)
+                                	AND ACTIVE = 1
+                                	AND PARENT_ID IS NOT NULL)";
 
                 var parDepartmentsFilhos = new List<ParDepartment>();
                 List<JObject> listaDeParDepartamentos = QueryNinja(db, sql);
                 foreach(JObject parDepartment in listaDeParDepartamentos)
                 {
+
+                    JToken token = parDepartment["ParCompany_Id"];
+                    int? parCompanyId = null;
+
+                    if (!string.IsNullOrEmpty(token.ToString()))
+                    {
+                        parCompanyId = Convert.ToInt32(parDepartment["ParCompany_Id"]);
+                    }
+
                     parDepartmentsFilhos.Add(
                         new ParDepartment
                         {
                             Id = Convert.ToInt32(parDepartment["Id"]),
                             Parent_Id = Convert.ToInt32(parDepartment["Parent_Id"]),
-                            ParCompany_Id = Convert.ToInt32(parDepartment["ParCompany_Id"]),
+                            ParCompany_Id = parCompanyId,
                             Name = parDepartment["Name"].ToString(),
                             Description = parDepartment["Description"].ToString(),
                             Hash = parDepartment["Hash"].ToString(),
