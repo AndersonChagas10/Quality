@@ -311,7 +311,7 @@ function getBinario(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
-    if (level3.ParLevel3Value.IsRequiredInt) {
+    if (level3.ParLevel3Value.IsRequiredInt || currentIsPartialSave) {
         respostaPadrao = "&nbsp;";
         botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-required-answer="1" data-tarefa data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     } else {
@@ -351,7 +351,7 @@ function getBinarioComTexto(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
-    if (level3.ParLevel3Value.IsRequiredInt) {
+    if (level3.ParLevel3Value.IsRequiredInt  || currentIsPartialSave) {
         respostaPadrao = "&nbsp;";
         botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-tarefa data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '">' + respostaPadrao + '</button>';
     } else {

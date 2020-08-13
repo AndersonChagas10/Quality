@@ -218,7 +218,10 @@ function readColetasParciais(callback) {
 
     _readFile("coletasParciais.txt", function (data) {
 
-        atualizaVariavelColetaParciais(JSON.parse(data));
+        if (data != "")
+            data = JSON.parse(data);
+
+        atualizaVariavelColetaParciais(data);
 
         if (callback)
             callback();
