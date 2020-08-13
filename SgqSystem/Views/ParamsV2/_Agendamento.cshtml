@@ -72,7 +72,7 @@
     });
 
     function abrirModalAgendamento(linha) {
-        debugger
+        
         var obj = $(linha).parents('tr').data();
         parEvaluationXDepartmentXCargo_Id = obj.sgq.Id;
         //var obj = $("#ParL1Geral  [data-form]").data('sgq');
@@ -188,7 +188,7 @@
     }
 
     function MontaNovaLinhaAgendamentoIntervalo(data) {
-        debugger
+        
         if ($("#tabelaAgendamentoIntervalo tbody tr").length == 0) {
             $("#tabelaAgendamentoIntervalo thead tr:last").find("#acao").addClass('hidden');
             $("#tabelaAgendamentoIntervalo tbody").append("<tr>"
@@ -279,7 +279,7 @@
     }
 
     function SalvarAgendamentoIntervalo() {
-        debugger
+        
         var listaTabelaAgendamentoIntervalo = [];
         var contadorErros = 0;
         listaTabelaAgendamentoIntervalo = $("#tabelaAgendamentoIntervalo tbody tr");
@@ -352,7 +352,7 @@
         else if (listaTabelaAgendamento.length <= 0) {
             openMessageModal('@Resources.Resource.no_data_in_list', null);
         } else {
-            debugger
+            
                 listaTabelaAgendamento.each(function (index, item) {
                     form = {
                         Inicio: $(item).find("[data-column=inpInicio]").val(),
@@ -567,7 +567,7 @@
     });
 
     function frequenciaIsValid(formato, inicio, fim) {
-        debugger
+        
         switch (formato) {
             case "Diario":
                 if(fim < 0 || inicio < 0 || fim > 24 || inicio > 24)

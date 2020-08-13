@@ -447,8 +447,6 @@
     //Adicionar os dados no data-form
     $('#' + parL2Cabecalho.id).on('click', '[data-table-edit]', function (e) {
 
-        debugger
-
         scrollToForm();
         var obj = $(this).parents('tr').data('sgq');
 
@@ -503,8 +501,6 @@
 
     //Salvar o campo editado ou cria um novo
     $('#' + parL2Cabecalho.id).on('click', '[data-edit],[data-add]', function (e) {
-
-        debugger
 
         $('#ParL2Cabecalho #objMultiplaEscolha').hide();
         $('#ParL2Cabecalho #objBinario').hide();

@@ -85,7 +85,7 @@
 
     function abrirModalAgendamento(linha) {
         var obj = $(linha).parents('tr').data();
-        debugger
+        
         if (obj.ParFrequency_Id == 10) {
 
             $("#tabelaAgendamentoIntervalo").attr('style', '');
@@ -556,7 +556,7 @@
 
     $("#modalAgendamento").on('input', '[data-column="inpInicio"] , [data-column="inpTermino"]', function () {
 
-        debugger
+        
         var formato = $("#tabelaAgendamento tbody tr").find("[data-column=inpTipoAgendamento]").val();
 
         switch (formato) {

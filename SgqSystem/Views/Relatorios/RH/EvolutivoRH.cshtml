@@ -638,7 +638,7 @@
                 beforeSend: function () {
                 }
             }).done(function (data) {
-                debugger
+                
                 GerarGraficoSemUnidade(data);
                 $btn.button('reset');
                 closeLoader();
@@ -5177,7 +5177,7 @@
         });
 
         $("#Hsemana").on('click', function () {
-            debugger
+            
             enviar2["dimensaoData"] = 2;
             //EasyAjax(UrlGraficoHistorico, enviar2, function (r) {
             //    //console.log(r)
