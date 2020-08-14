@@ -3870,5 +3870,12 @@
     <Description> [COVID] Relatório de Resultados (Unidades usuario, % N Avaliados, Card Consolidação).</Description>
     <Script></Script>
   </Card>
+
+  <Card>
+    <CardNumber>SGQ-1046</CardNumber>
+    <Version>1.10.0</Version>
+    <Description> [RH COVID] Coleta Parcial - Binario/BinárioTexto transformar em Ternário</Description>
+    <Script></Script>
+  </Card>
   
 </Cards>
