@@ -238,59 +238,46 @@ public class ApontamentosDiariosResultSet
                     -- Criação da Fato de Cabeçalhos
 					SELECT
 						CL2HF.Id
-					   ,CL2HF.CollectionLevel2_Id
-					   ,CL2HF.ParHeaderFieldGeral_Id
-					   ,CL2HF.ParFieldType_Id
-					   ,CL2HF.Value INTO #CollectionLevel2XParHeaderFieldGeral
-					FROM CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
-					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
-						ON CL2.Id = CL2HF.CollectionLevel2_Id
-										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel_ID ON #CollectionLevel2XParHeaderFieldGeral (CollectionLevel2_Id);
-					-- Concatenação da Fato de Cabeçalhos
-					SELECT
-						CL2HF.CollectionLevel2_Id
-					   ,STUFF((SELECT DISTINCT
-								', ' + CONCAT(HF.Name, ': ', CASE
-									WHEN CL2HF2.ParFieldType_Id = 1 OR
-										CL2HF2.ParFieldType_Id = 3 THEN PMV.Name
-									WHEN CL2HF2.ParFieldType_Id = 2 THEN CASE
-											WHEN HF.Description = 'Produto' THEN CAST(PRD.nCdProduto AS VARCHAR(500)) + ' - ' + PRD.cNmProduto
-											ELSE EQP.Nome
-										END
-									WHEN CL2HF2.ParFieldType_Id = 6 THEN CONVERT(VARCHAR, CL2HF2.Value, 103)
-									ELSE CL2HF2.Value
-								END)
-							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (NOLOCK)
-							LEFT JOIN collectionlevel2 CL2 (NOLOCK)
-								ON CL2.Id = CL2HF2.CollectionLevel2_Id
-							LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
-								ON CL2HF2.ParHeaderFieldGeral_Id = HF.Id
-							LEFT JOIN ParLevel2 L2 (NOLOCK)
-								ON L2.Id = CL2.ParLevel2_Id
-							LEFT JOIN ParMultipleValuesGeral PMV (NOLOCK)
-								ON CL2HF2.Value = CAST(PMV.Id AS VARCHAR(500))
-								AND CL2HF2.ParFieldType_Id <> 2
-							LEFT JOIN Equipamentos EQP (NOLOCK)
-								ON CAST(EQP.Id AS VARCHAR(500)) = CL2HF2.Value
-								AND EQP.ParCompany_Id = CL2.UnitId
-								AND CL2HF2.ParFieldType_Id = 2
-							LEFT JOIN Produto PRD WITH (NOLOCK)
-								ON CAST(PRD.nCdProduto AS VARCHAR(500)) = CL2HF2.Value
-								AND CL2HF2.ParFieldType_Id = 2
-							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
-							FOR XML PATH (''))
-						, 1, 1, '') AS HeaderFieldList INTO #CollectionLevel2XParHeaderFieldGeral2
-					FROM #CollectionLevel2XParHeaderFieldGeral CL2HF (NOLOCK)
-					INNER JOIN Collectionlevel2 CL2 (NOLOCK)
-						ON CL2.Id = CL2HF.CollectionLevel2_Id
-					LEFT JOIN ParHeaderFieldGeral HF (NOLOCK)
-						ON CL2HF.ParHeaderFieldGeral_Id = HF.Id
-					LEFT JOIN ParLevel2 L2 (NOLOCK)
-						ON L2.Id = CL2.ParLevel2_Id
-					GROUP BY CL2HF.CollectionLevel2_Id
-										CREATE INDEX IDX_CollectionLevel2XParHeaderFieldGeral_CollectionLevel2_ID ON #CollectionLevel2XParHeaderFieldGeral2 (CollectionLevel2_Id);
-					
+						,CL2HF.CollectionLevel2_Id
+						,CL2HF.ParHeaderField_Id
+						,CL2HF.ParFieldType_Id
+						,CL2HF.Value INTO #CollectionLevel2XParHeaderField
+					FROM CollectionLevel2XParHeaderField CL2HF (NOLOCK)
+					INNER JOIN #Collectionlevel2 CL2 (NOLOCK) ON CL2.Id = CL2HF.CollectionLevel2_Id
 
+					CREATE INDEX IDX_CollectionLevel2XParHeaderField_CollectionLevel_ID ON #CollectionLevel2XParHeaderField (CollectionLevel2_Id);
+
+					-- Concatenação da Fato de Cabeçalhos
+
+					SELECT
+					CL2HF.CollectionLevel2_Id
+					,STUFF((SELECT DISTINCT
+					', ' + CONCAT(HF.Name, ': ', CASE
+							WHEN CL2HF2.ParFieldType_Id = 1 OR	CL2HF2.ParFieldType_Id = 3 THEN PMV.Name
+							WHEN CL2HF2.ParFieldType_Id = 2 THEN CASE
+							WHEN HF.Description = 'Produto' THEN CAST(PRD.nCdProduto AS VARCHAR(500)) + ' - ' + PRD.cNmProduto
+						ELSE EQP.Nome
+						END
+						WHEN CL2HF2.ParFieldType_Id = 6 THEN CONVERT(VARCHAR, CL2HF2.Value, 103)
+						ELSE CL2HF2.Value
+						END)
+					FROM #CollectionLevel2XParHeaderField CL2HF2 (NOLOCK)
+					LEFT JOIN #collectionlevel2 CL2 (NOLOCK) ON CL2.Id = CL2HF2.CollectionLevel2_Id
+					LEFT JOIN ParHeaderField HF (NOLOCK) ON CL2HF2.ParHeaderField_Id = HF.Id
+					LEFT JOIN ParLevel2 L2 (NOLOCK) ON L2.Id = CL2.ParLevel2_Id
+					LEFT JOIN ParMultipleValues PMV (NOLOCK) ON CL2HF2.Value = CAST(PMV.Id AS VARCHAR(500)) AND CL2HF2.ParFieldType_Id <> 2
+					LEFT JOIN Equipamentos EQP (NOLOCK) ON CAST(EQP.Id AS VARCHAR(500)) = CL2HF2.Value AND EQP.ParCompany_Id = CL2.UnitId AND CL2HF2.ParFieldType_Id = 2
+					LEFT JOIN Produto PRD WITH (NOLOCK) ON CAST(PRD.nCdProduto AS VARCHAR(500)) = CL2HF2.Value AND CL2HF2.ParFieldType_Id = 2
+					WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
+					FOR XML PATH (''))
+					, 1, 1, '') AS HeaderFieldList INTO #CollectionLevel2XParHeaderField2
+					FROM #CollectionLevel2XParHeaderField CL2HF (NOLOCK)
+					INNER JOIN #Collectionlevel2 CL2 (NOLOCK) ON CL2.Id = CL2HF.CollectionLevel2_Id
+					LEFT JOIN ParHeaderField HF (NOLOCK) ON CL2HF.ParHeaderField_Id = HF.Id
+					LEFT JOIN ParLevel2 L2 (NOLOCK) ON L2.Id = CL2.ParLevel2_Id
+					GROUP BY CL2HF.CollectionLevel2_Id
+					CREATE INDEX IDX_CollectionLevel2XParHeaderField_CollectionLevel2_ID ON #CollectionLevel2XParHeaderField2 (CollectionLevel2_Id);
+					
 					-- Criação da Fato de Coleta x Cluster
 
                     SELECT 
@@ -377,7 +364,7 @@ public class ApontamentosDiariosResultSet
                  INNER JOIN UserSgq US (nolock)        
                  ON C2.AuditorId = US.Id            
                  LEFT JOIN                             
-                 #CollectionLevel2XParHeaderFieldGeral2 HF 
+                 #CollectionLevel2XParHeaderField2 HF 
                  on c2.Id = HF.CollectionLevel2_Id
                  LEFT JOIN #CollectionLevel2XCollectionJson CLCJ
                  ON CLCJ.CollectionLevel2_Id = C2.Id
@@ -400,8 +387,8 @@ public class ApontamentosDiariosResultSet
                      DROP TABLE #CollectionLevel2 
                      DROP TABLE #CollectionJson
                      DROP TABLE #Result_Level3
-					 DROP TABLE #CollectionLevel2XParHeaderFieldGeral 
-					 DROP TABLE #CollectionLevel2XParHeaderFieldGeral2
+					 DROP TABLE #CollectionLevel2XParHeaderField 
+					 DROP TABLE #CollectionLevel2XParHeaderField2
 					 DROP TABLE #CollectionLevel2XCluster
 					 DROP TABLE #CollectionLevel2XCollectionJson
 
