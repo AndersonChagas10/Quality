@@ -680,6 +680,7 @@
                             }
 
                             percNC = parseFloat(((qtdeNC / amostragem) * 100).toFixed(2));
+                            percNC = isNaN(percNC) ? 0 : percNC;
                             listaDistinct.push({ [listaDePropriedades[0]]: linha, [listaDePropriedades[1]]: coluna, PercNC: percNC, QtdeNC: qtdeNC, Amostragem: amostragem });
 
                         }
@@ -748,6 +749,15 @@
                     $(this).addClass("margin-left-6px");
                 });
             }
+
+            $(idMatriz).find('#listaInidicador tr').each((index, elem) => {
+
+                const altura = $(elem).height();
+
+                $($(idMatriz).find('#listaValores tr')[index]).height(altura);
+                $($(idMatriz).find('#listaMedia tr')[index]).height(altura);
+
+            });
         }
 
         async function gerarMatriz(data, numeroDesdobramento, linha, coluna, tipoAnalise) {
