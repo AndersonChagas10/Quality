@@ -8,15 +8,17 @@ function processComponente(thiss) {
 
     showAllLevel3();
 
-    if (!headerIsValid($(thiss).attr('Componente_id'))) {
-        zeraLimitesComponentes();      
+    var componente_Id = parseInt($(thiss).attr('Componente_id'));
+
+    if (!headerIsValid(componente_Id)) {
+        zeraLimitesComponentes();
         return false;
     }
 
     var arrColumName = getColumNames($(thiss).attr('Componente_id'));
 
     //pegar os limites usando a função getLimits
-    var limites = getComponenteGenericoValor(arrColumName);
+    var limites = getComponenteGenericoValor(arrColumName, componente_Id);
 
     if (!limites) {
         zeraLimitesComponentes();
@@ -107,18 +109,19 @@ function trocarLimitesLinhaLevel3(tarefa_Id, limiteSuperior, limiteInferior) {
 
 }
 
-function getComponenteGenericoValor(arrColumName) {
+function getComponenteGenericoValor(arrColumName, componente_Id) {
 
     var where = $.map(arrColumName, function (obj) {
         return "(obj.Name == '"+obj.Name+"' && obj.Valor =='"+obj.Valor+"')";
     });
 
     var valor = $.grep(listComponenteGenericoValores, function (obj) {
-        return eval(where.join(" || "));
+		if(obj.ComponenteGenerico_Id == componente_Id)
+			return eval(where.join(" || "));
     });
 
     var saveIdDosObjetosFiltrados = $.map(valor, function (obj) {
-        return obj.SaveId
+        return obj.SaveId;
     });
 
     saveIdDosObjetosFiltrados = $.unique(saveIdDosObjetosFiltrados.sort());
