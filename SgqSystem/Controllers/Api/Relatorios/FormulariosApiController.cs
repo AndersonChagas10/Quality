@@ -102,6 +102,12 @@ namespace SgqSystem.Controllers.Api.Relatorios
                 whereShift = $"and CL2.Shift = {form.Shift_Ids[0]}";
             }
 
+            var whereParCluster = "";
+            if (form.ParCluster_Ids.Length > 0)
+            {
+                whereParCluster = $"and CL2C.ParCluster_Id in ({ string.Join(",", form.ParCluster_Ids)})";
+            }
+
             var query = $@"
             	
 ---------------------------------------------------------------------------------------------------------------------------------	
@@ -253,7 +259,7 @@ namespace SgqSystem.Controllers.Api.Relatorios
 
 
                     SELECT 
-	                     id
+	                     CL2.id
 	                    ,ParLevel1_Id
 	                    ,ParLevel2_Id
 	                    ,UnitId
@@ -269,10 +275,13 @@ namespace SgqSystem.Controllers.Api.Relatorios
 	                    ,AlterDate 
                     INTO #CollectionLevel2
                     FROM collectionlevel2 CL2
+                    INNER JOIN CollectionLevel2XCluster CL2C
+                        ON CL2C.collectionlevel2_Id = CL2.Id
                         WHERE 1=1
 						AND cl2.Collectiondate BETWEEN @DATEINI AND @DATEFIM
 						AND CL2.ParLevel1_Id != 43
 						AND CL2.ParLevel1_Id != 42
+                        {whereParCluster}
                         {whereParCompany}
                         {whereParLevel2}
                         {whereEvaluation}
@@ -628,9 +637,9 @@ DECLARE @DEFECTS VARCHAR(MAX) = '
             update #CUBO set Meta = iif(IsRuleConformity = 0,Meta, (100 - Meta)) 
 
 			SELECT 
-                IndicadorName as ''indicador'',
-                MonitoramentoName as ''monitoramento'',
-                TarefaName as ''tarefa'',
+                Replace(IndicadorName,'''''''',''´'')  as ''indicador'',
+                Replace(MonitoramentoName,'''''''',''´'')  as ''monitoramento'',
+                Replace(TarefaName,'''''''',''´'') as ''tarefa'',
 				AuditorId,
 				AuditorName as ''visto'',
 				EvaluationNumber as ''avaliação'',
