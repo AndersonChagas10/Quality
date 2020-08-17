@@ -257,7 +257,7 @@ namespace DTO.Services
 
             var parlevel1 = _baseRepoParLevel1.GetById(idParLevel1);
             var counter = parlevel1.ParCounterXLocal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
-            var rotina = parlevel1.ParLevel1XRotinaIntegracao.Where(x => x.IsActive).ToList();
+            var rotina = parlevel1.RotinaIntegracao == null ? null : parlevel1.ParLevel1XRotinaIntegracao.Where(x => x.IsActive).ToList();
             var todasRotinas = _baseRotinaIntegracao.GetAllAsNoTracking().Where(x => x.IsActive);
             var goal = parlevel1.ParGoal.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
             var cluster = parlevel1.ParLevel1XCluster.Where(r => r.IsActive == true).OrderByDescending(r => r.IsActive).ToList();
@@ -285,11 +285,11 @@ namespace DTO.Services
 
             foreach (var item in parlevel1Dto.cabecalhosInclusos)
             {
-                var abc = db.ParHeaderFieldXComponenteGenerico.Where(x => x.ParHeaderField_Id == item.ParHeaderField_Id).FirstOrDefault();
+                var parHeaderFieldXComponenteGenerico = db.ParHeaderFieldXComponenteGenerico.Where(x => x.ParHeaderField_Id == item.ParHeaderField_Id).FirstOrDefault();
 
-                if (abc != null)
+                if (parHeaderFieldXComponenteGenerico != null)
                 {
-                    item.ParHeaderField.ParHeaderFieldXComponenteGenerico = Mapper.Map<ParHeaderFieldXComponenteGenericoDTO>(abc);
+                    item.ParHeaderField.ParHeaderFieldXComponenteGenerico = Mapper.Map<ParHeaderFieldXComponenteGenericoDTO>(parHeaderFieldXComponenteGenerico);
                     item.ParHeaderField.ParHeaderFieldXComponenteGenerico.TextName = db.ComponenteGenericoColuna.Find(int.Parse(item.ParHeaderField.ParHeaderFieldXComponenteGenerico.Text)).Name;
                     item.ParHeaderField.ParHeaderFieldXComponenteGenerico.ValueName = db.ComponenteGenericoColuna.Find(int.Parse(item.ParHeaderField.ParHeaderFieldXComponenteGenerico.Value)).Name;
                 }

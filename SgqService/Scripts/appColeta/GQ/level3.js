@@ -733,20 +733,20 @@ function validaCamposLevel3(tipo) {
 
             function (index, self) {
 
-                if ($($('.level3:visible input')[index]).parents('.level3').hasClass('calculado')) {
+                if ($(self).parents('.level3').hasClass('calculado')) {
 
-                    if ($($('.level3:visible input')[index]).parents('li').attr('notavaliable')) {
+                    if ($(self).parents('li').attr('notavaliable')) {
 
-                        $($($('.level3:visible input')[index]).parents('li').find('input')[0]).val(0);
-                        $($($('.level3:visible input')[index]).parents('li').find('input')[1]).val(1);
+                        $($(self).parents('li').find('input')[0]).val(0);
+                        $($(self).parents('li').find('input')[1]).val(1);
 
                     } else {
 
-                        if ($($($('.level3:visible input')[index]).parents('li').find('input')[0]).val() != "" && $($($('.level3:visible input')[index]).parents('li').find('input')[1]).val() == "") {
+                        if ($($(self).parents('li').find('input')[0]).val() != "" && $($($('.level3:visible input')[index]).parents('li').find('input')[1]).val() == "") {
 
-                            $($($('.level3:visible input')[index]).parents('li').find('input')[1]).val(0);
+                            $($(self).parents('li').find('input')[1]).val(0);
 
-                        } else if ($($($('.level3:visible input')[index]).parents('li').find('input')[0]).val() == "" && $($($('.level3:visible input')[index]).parents('li').find('input')[1]).val() == "") {
+                        } else if ($($(self).parents('li').find('input')[0]).val() == "" && $($($('.level3:visible input')[index]).parents('li').find('input')[1]).val() == "") {
                             validacao++;
                             return;
                         }
@@ -757,7 +757,7 @@ function validaCamposLevel3(tipo) {
 
                     if ($(self).val() == "") {
 
-                        if ($($('.level3:visible input')[index]).parents('li').attr('notavaliable')) {
+                        if ($(self).parents('li').attr('notavaliable')) {
 
                             //console.log("Campo sem valor, porém é NA " + index);
 
