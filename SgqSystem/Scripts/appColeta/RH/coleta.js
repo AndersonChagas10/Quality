@@ -1031,12 +1031,13 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     hasPartialSave = false;
 
     if (currentIsPartialSave && hasOnlyTextField()) {
-
-        openMessageConfirm("Deseja finalizar a amostra?", "todos os campos não preenchidos serão salvos.", preparaColetaParcialFim, closeMensagemImediatamente, "orange", "white");
+        if (inputsTextIsValid())
+            openMessageConfirm("Deseja finalizar a amostra?", "todos os campos não preenchidos serão salvos.", preparaColetaParcialFim, closeMensagemImediatamente, "orange", "white");
 
     } else if (currentIsPartialSave) {
 
-        preparaColetaParcial();
+        if (inputsTextIsValid())
+            preparaColetaParcial();
 
     } else {
 
@@ -1472,6 +1473,45 @@ function ColetasIsValid() {
         return false;
     } else
         return true;
+}
+
+function inputsTextIsValid() {
+
+    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta][data-input-type="6"], form[data-form-coleta] div[data-linha-coleta][data-input-type="15"]');
+    var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta][data-input-type="6"] input[data-texto], form[data-form-coleta] div[data-linha-coleta][data-input-type="15"] input[data-texto]');
+
+    var errorCount = 0;
+    var inputVal;
+    var data;
+
+    for (var i = 0; i < linhasDaColeta.length; i++) {
+        data = linhasDaColeta[i];
+        inputVal = inputsDaColeta[i];
+
+        if ($(inputVal).attr('data-required-text') == 'true') {
+
+            if ($(data).attr('data-conforme') == "0") {
+                if ($(inputVal).val() == null || $(inputVal).val() == undefined || $(inputVal).val() == "") {
+                    $(inputVal).css("background-color", "#ffc1c1");
+                    errorCount++;
+                } else {
+                    $(inputVal).css("background-color", "white");
+                }
+            } else {
+                $(inputVal).css("background-color", "white");
+            }
+
+        }
+    }
+
+    if (errorCount > 0) {
+        openMensagem("Atenção! Obrigatório responder campos obrigatórios.", "yellow", "black");
+        mostraPerguntasObrigatorias(data);
+        closeMensagem(2000);
+        return false;
+    } else
+        return true;
+
 }
 
 function mostraPerguntasObrigatorias(data) {
