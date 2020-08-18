@@ -282,11 +282,22 @@ namespace SgqSystem.Controllers.Api
             resultlevel3Old.ValueText = resultLevel3.ValueText;
             resultlevel3Old.IsConform = resultLevel3.IsConform;
             resultlevel3Old.IsNotEvaluate = resultLevel3.IsNotEvaluate;
-            
+
+            if (resultlevel3Old.IsConform == true)
+                resultlevel3Old.WeiDefects = 0;
+            else if (resultlevel3Old.IsConform == false)
+                resultlevel3Old.WeiDefects = resultlevel3Old.Defects;
+
+            if (resultlevel3Old.IsNotEvaluate == true)
+                resultlevel3Old.WeiEvaluation = 0;
+            else if (resultlevel3Old.IsNotEvaluate == true)
+                resultlevel3Old.WeiEvaluation = resultlevel3Old.Defects;
+
             var auditorId = db.CollectionLevel2.Where(x => x.Id == resultlevel3Old.CollectionLevel2_Id).Select(x => x.AuditorId).First();
             db.Entry(resultlevel3Old).State = EntityState.Modified;
             db.SaveChanges();
 
+            LogSystem.LogTrackBusiness.RegisterIfNotExist(resultlevel3Old, resultlevel3Old.Id, "Result_Level3", auditorId);
             LogSystem.LogTrackBusiness.Register(resultlevel3Old, resultlevel3Old.Id, "Result_Level3", userSgq_Id, parReason_Id, resultLevel3.Motivo);
 
             ConsolidacaoEdicao(resultLevel3.Id);
