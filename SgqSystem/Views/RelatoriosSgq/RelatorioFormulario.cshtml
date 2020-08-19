@@ -354,16 +354,16 @@
             function montarArvoreDeDados(objeto, matriz, lista, indexAtual, indexMaximo) {
 
                 var nomeDoNivel = lista[indexAtual];
-                var valorCabecalho = objeto[nomeDoNivel] == undefined ? "" : objeto[nomeDoNivel];
+                var valorCabecalho = objeto[nomeDoNivel] == undefined ? "-" : objeto[nomeDoNivel];
 
                 var itemAtual = {};
                 itemAtual.nivel = nomeDoNivel;
-                itemAtual.titulo = valorCabecalho ? valorCabecalho.replace("'", "´") : valorCabecalho;
+                itemAtual.titulo = valorCabecalho ? valorCabecalho.replace("'", "´") : '-';
                 itemAtual.lista = [];
 
                 if (matriz.lista) {
 
-                    itemDaLista = matriz.lista.filter((item) => btoa(item.titulo) == btoa(valorCabecalho));
+                    itemDaLista = matriz.lista.filter((item) => item.titulo == itemAtual.titulo);
 
                     if (itemDaLista.length == 0) {
                         matriz.lista.push(itemAtual); //Adicionado como filho
@@ -591,11 +591,13 @@
                 var atributos = {};
                 var attrColuna = document.querySelector("#pivot-table  > table > tbody > tr:nth-child(" + cabecalhos.length + ") > th:nth-child(" + (1 + Math.floor(numeroObjeto / valores.length)) + ")").attributes;
                 for (var j = 0; j < attrColuna.length; j++) {
+                    if(attrColuna[j].name != 'colspan' && attrColuna[j].name != 'rowspan')
                     atributos[attrColuna[j].name] = attrColuna[j].value;
                 }
                 var linha = document.querySelector("#pivot-table > table > tbody > tr:nth-child(" + (rowIndex + 1) + ")").getElementsByTagName('th');
                 var attrLinha = linha[linha.length - 1].attributes;
                 for (var j = 0; j < attrLinha.length; j++) {
+                    if(attrLinha[j].name != 'colspan' && attrLinha[j].name != 'rowspan')
                     atributos[attrLinha[j].name] = attrLinha[j].value;
                 }
                 var objAtributos = Object.keys(atributos);
@@ -603,8 +605,9 @@
                     var deuMatch = true;
                     if (!ultimoObjeto) {
                         for (var z = 0; z < objAtributos.length; z++) {
+                            var valueItemObj = (!listaObj[j][objAtributos[z]] || listaObj[j][objAtributos[z]] == '') ? '-' : listaObj[j][objAtributos[z]];
                             //if (listaObj[j][objAtributos[z].replace(/-/gi, ' ')] && atributos[objAtributos[z]].replace(/[^\w\s]/gi, '') != listaObj[j][objAtributos[z].replace(/-/gi, ' ')].replace(/[^\w\s]/gi, '')) {
-                            if (listaObj[j][objAtributos[z]] && btoa(atributos[objAtributos[z]]) != btoa(listaObj[j][objAtributos[z]])) {
+                            if (atributos[objAtributos[z]] != valueItemObj) {
                                 deuMatch = false;
                                 break;
                             }
