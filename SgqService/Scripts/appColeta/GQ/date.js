@@ -149,8 +149,8 @@ function dateTimeFormat() {
 
     return mmddyyyyhhmm;
 }
-function dateTimeFormatCulture(date, time) {
-    if ($('.App').attr('culture') == "pt-br") {
+function dateTimeFormatCulture(date, time, padraoUS) {
+    if (!padraoUS && $('.App').attr('culture') == "pt-br") {
         var dia = date.substring(2, 4);
         var mes = date.substring(0, 2);
         var ano = date.substring(4, 8);
@@ -166,7 +166,7 @@ function dateTimeFormatCulture(date, time) {
 
     }
 }
-function dateTimeWithMinutes(relogio) {
+function dateTimeWithMinutes(relogio, padraoUS) {
 
     var date = new Date();
 
@@ -185,7 +185,7 @@ function dateTimeWithMinutes(relogio) {
     if ($('.App').attr('retroactivedata')) {
 
         var retroactivedata = $('.App').attr('retroactivedata');
-        return dateTimeFormatCulture(retroactivedata, time);
+        return dateTimeFormatCulture(retroactivedata, time, padraoUS);
     }
     else {
 
@@ -201,7 +201,7 @@ function dateTimeWithMinutes(relogio) {
         var day = date.getDate();
         var mmddyyyyhhmm = ("0" + month).slice(-2) + ("0" + day).slice(-2) + year;
 
-        return dateTimeFormatCulture(mmddyyyyhhmm, time);
+        return dateTimeFormatCulture(mmddyyyyhhmm, time, padraoUS);
     }
 }
 

@@ -71,39 +71,55 @@ namespace SgqServiceBusiness.Api
          */
         private DateTime DateCollectConvert(string collectionDate)
         {
-            //acerto para data yyyy-mm-dd
-            if (collectionDate.Contains("-"))
+
+            if (string.IsNullOrEmpty(collectionDate))
+                return DateTime.Now;
+
+            DateTime newData;
+
+            try
             {
-                collectionDate = collectionDate.Substring(5, 2) + "/" + collectionDate.Substring(8, 2) + "/" + collectionDate.Substring(0, 4) + " 00:00:00";
+
+                //acerto para data yyyy-mm-dd
+                if (collectionDate.Contains("-"))
+                {
+                    collectionDate = collectionDate.Substring(5, 2) + "/" + collectionDate.Substring(8, 2) + "/" + collectionDate.Substring(0, 4) + " 00:00:00";
+                }
+                else
+                //fim acerto data yyyy-mm-dd
+                if (!collectionDate.Contains("/"))
+                {
+                    collectionDate = collectionDate.Substring(0, 2) + "/" + collectionDate.Substring(2, 2) + "/" + collectionDate.Substring(4, 4) + " 00:00:00";
+                }
+                string[] data = collectionDate.Split('/');
+
+                string ano = data[2].Substring(0, 4);
+                string mes = data[0];
+                string dia = data[1];
+
+                string hora = data[2].Substring(4, (data[2].Length - 4));
+                hora = hora.Trim();
+                if (hora.Length == 5)
+                {
+                    hora += ":00";
+                }
+                string[] horaArray = hora.Split(':');
+
+
+                newData = new DateTime(
+                                                year: Convert.ToInt32(ano),
+                                                month: Convert.ToInt32(mes),
+                                                day: Convert.ToInt32(dia),
+                                                hour: Convert.ToInt32(horaArray[0]),
+                                                minute: Convert.ToInt32(horaArray[1]),
+                                                second: Convert.ToInt32(horaArray[2]));
+
             }
-            else
-            //fim acerto data yyyy-mm-dd
-            if (!collectionDate.Contains("/"))
+            catch (Exception)
             {
-                collectionDate = collectionDate.Substring(0, 2) + "/" + collectionDate.Substring(2, 2) + "/" + collectionDate.Substring(4, 4) + " 00:00:00";
+                insertLogJson("", "Erro ao tentar converter data: " + collectionDate, "N/A", "N/A", "DateCollectConvert");
+                newData = DateTime.Now;
             }
-            string[] data = collectionDate.Split('/');
-
-            string ano = data[2].Substring(0, 4);
-            string mes = data[0];
-            string dia = data[1];
-
-            string hora = data[2].Substring(4, (data[2].Length - 4));
-            hora = hora.Trim();
-            if (hora.Length == 5)
-            {
-                hora += ":00";
-            }
-            string[] horaArray = hora.Split(':');
-
-
-            DateTime newData = new DateTime(
-                                            year: Convert.ToInt32(ano),
-                                            month: Convert.ToInt32(mes),
-                                            day: Convert.ToInt32(dia),
-                                            hour: Convert.ToInt32(horaArray[0]),
-                                            minute: Convert.ToInt32(horaArray[1]),
-                                            second: Convert.ToInt32(horaArray[2]));
 
             return newData;
         }
@@ -1739,6 +1755,48 @@ namespace SgqServiceBusiness.Api
                         command.Parameters.Add(new SqlParameter("@DataInicio", dataInicio + " 00:00:00"));
                         command.Parameters.Add(new SqlParameter("@DataFim", dataFim + " 23:59:59"));
                         command.Parameters.Add(new SqlParameter("@ReauditNumber", reauditnumber));
+
+                        connection.Open();
+
+                        var i = Convert.ToInt32(command.ExecuteNonQuery());
+                        if (i > 0)
+                        {
+                            return i;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_Pl1");
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                int insertLog = insertLogJson(sql, ex.Message, "N/A", "N/A", "updateCorrectiveAction_CollectionLevel2_By_Pl1");
+                return 0;
+            }
+        }
+
+        protected int updateCorrectiveAction_CollectionLevel2_By_Id(string CollectionLevel2_Id)
+        {
+
+            string sql = $@"UPDATE CollectionLevel2 SET HaveCorrectiveAction = 0 WHERE Id=@CollectionLevel2_Id";
+            string conexao = this.conexao;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conexao))
+                {
+                    using (SqlCommand command = new SqlCommand(sql, connection))
+                    {
+
+                        command.CommandType = CommandType.Text;
+                        command.Parameters.Add(new SqlParameter("@CollectionLevel2_Id", CollectionLevel2_Id));
 
                         connection.Open();
 
@@ -8547,7 +8605,7 @@ namespace SgqServiceBusiness.Api
                     //Pega a data pela regra da frequencia
                     getFrequencyDate(Convert.ToInt32(ParFrequency_Id), dataAPP, ref dataInicio, ref dataFim);
                     phpDebug = 29;
-                    var idUpdate = updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim, reauditnumber);
+                    var idUpdate = updateCorrectiveAction_CollectionLevel2_By_Id(CollectionLevel2_Id); // updateCorrectiveAction_CollectionLevel2_By_ParLevel1(ParLevel1_Id, ParCompany_Id, dataInicio, dataFim, reauditnumber);
                     phpDebug = 30;
                     //transacao.complete();
                     return null;

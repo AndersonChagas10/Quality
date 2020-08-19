@@ -387,7 +387,7 @@ function getSignatureLogin(username, password, permission) {
                         $('.SlaugtherSignature').children('.name').text(data.Retorno.FullName);
                         $('.SlaugtherSignature').children('.date').text(dateTimeWithMinutes());
                         $('.SlaugtherSignature').attr('userid', data.Retorno.Id);
-                        $('.SlaugtherSignature').attr('datetime', dateTimeWithMinutes());
+                        $('.SlaugtherSignature').attr('datetime', dateTimeWithMinutes(false, true));
                         $('.btnSignature.btnSlaugtherSignature').addClass('hide');
                     } else if (permission.toLowerCase() == "technical") {
                         $('#btnSignatureLogin').siblings('.modal-close-signature').click();
@@ -395,7 +395,7 @@ function getSignatureLogin(username, password, permission) {
                         $('.TechinicalSignature').children('.name').text(data.Retorno.FullName);
                         $('.TechinicalSignature').children('.date').text(dateTimeWithMinutes());
                         $('.TechinicalSignature').attr('userid', data.Retorno.Id);
-                        $('.TechinicalSignature').attr('datetime', dateTimeWithMinutes());
+                        $('.TechinicalSignature').attr('datetime', dateTimeWithMinutes(false, true));
                         $('.btnSignature.btnTechinicalSignature').addClass('hide');
                     } else {
                         Geral.exibirMensagemErro(getResource("user_has_no_permission_fill_form"));
@@ -439,7 +439,7 @@ function slaugtherSignatureLogin(user) {
                     $('.SlaugtherSignature').children('.name').text(user.attr('username'));
                     $('.SlaugtherSignature').children('.date').text(dateTimeWithMinutes());
                     $('.SlaugtherSignature').attr('userid', user.attr('userid'));
-                    $('.SlaugtherSignature').attr('datetime', dateTimeWithMinutes());
+                    $('.SlaugtherSignature').attr('datetime', dateTimeWithMinutes(false, true));
                     $('.btnSignature.btnSlaugtherSignature').addClass('hide');
                 } else
                     Geral.exibirMensagemErro(getResource("user_has_no_permission_fill_form"));
@@ -462,7 +462,7 @@ function techinicalSignatureLogin(user) {
                     $('.TechinicalSignature').children('.name').text(user.attr('username'));
                     $('.TechinicalSignature').children('.date').text(dateTimeWithMinutes());
                     $('.TechinicalSignature').attr('userid', user.attr('userid'));
-                    $('.TechinicalSignature').attr('datetime', dateTimeWithMinutes());
+                    $('.TechinicalSignature').attr('datetime', dateTimeWithMinutes(false, true));
                     $('.btnSignature.btnTechinicalSignature').addClass('hide');
                 } else
                     Geral.exibirMensagemErro(getResource("user_has_no_permission_fill_form"));
@@ -645,19 +645,12 @@ function sendCorrectiveActionOnLine() {
 
             var correctiveAction = $(this);
 
-            var DateCorrectiveAction = dateTimeWithMinutes();
-            var AuditStartTime = dateTimeWithMinutes();
+            var DateCorrectiveAction = dateTimeWithMinutes(false, true);
+            var AuditStartTime = dateTimeWithMinutes(false, true);
 
+            correctiveAction.attr('datetimeslaughter', dateTimeWithMinutes(false, true));
+            correctiveAction.attr('datetimetechinical', dateTimeWithMinutes(false, true));
 
-            if (isEUA == false) {
-                correctiveAction.attr('datetimeslaughter', dateTimeWithMinutesBR());
-                correctiveAction.attr('datetimetechinical', dateTimeWithMinutesBR());
-                DateCorrectiveAction = dateTimeWithMinutesBR();
-                AuditStartTime = dateTimeWithMinutesBR();
-            }
-
-            // correctiveAction.attr('datetimeslaughter', dateTimeWithMinutes());
-            // correctiveAction.attr('datetimetechinical', dateTimeWithMinutes());
 
             var dados = {
                 "CollectionLevel2_Id": correctiveAction.attr('collectionlevel2_id') != undefined ? correctiveAction.attr('collectionlevel2_id') : 0,
