@@ -1077,7 +1077,7 @@ function PrepararColetas() {
 
     var collectionDate = getCurrentDate();
     //Insere valores da coleta
-    $($('form[data-form-coleta] div[data-linha-coleta]')).each(function (i, o) {
+    $($('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar')).each(function (i, o) {
 
         var data = $(o);
         var isNA = $(data).attr('data-conforme-na') == "";
@@ -1410,8 +1410,8 @@ function getCollectionHeaderFields(collectionDate) {
 }
 
 function ColetasIsValid() {
-    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]');
-    var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta] input[data-texto]');
+    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar');
+    var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar').find('input[data-texto]');
     var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value] div[data-qualification-required]');
     var selectQualificationColeta = $('form[data-form-coleta] div[data-qualificationlevel3value] select[data-qualificationselect]');
 

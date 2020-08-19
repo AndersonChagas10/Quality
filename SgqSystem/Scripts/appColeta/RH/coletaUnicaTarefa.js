@@ -5,11 +5,19 @@ $(document).off('click', 'form[data-form-coleta] div[data-linha-coleta]')
         if ($(this).find('input, button').prop('disabled'))
             return;
 
-        if ($(this).hasClass('alert-secundary')) {
-            $('form[data-form-coleta] div[data-linha-coleta]').css("background-color", "#FFFFFF")
-                .find('input, button').prop("disabled", false);
-        } else {
+        var isNA = $(this).attr('data-conforme-na') == "";
+
+        if ($(this).attr('data-conforme') != $(this).attr('data-default-answer') || isNA) {
+
             $('form[data-form-coleta] div[data-linha-coleta]').not(this).css("background-color", "#999")
                 .find('input, button').prop("disabled", true);
+            $('form[data-form-coleta] div[data-linha-coleta]').not(this).addClass('naoSalvar');
+
+        } else {
+
+            $('form[data-form-coleta] div[data-linha-coleta]').css("background-color", "#FFFFFF")
+                .find('input, button').prop("disabled", false);
+            $('form[data-form-coleta] div[data-linha-coleta]').removeClass('naoSalvar');
+            
         }
     })
