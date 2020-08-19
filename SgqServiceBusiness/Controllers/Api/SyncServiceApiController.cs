@@ -1,4 +1,5 @@
 ﻿using ADOFactory;
+using Dapper;
 using Dominio;
 using DTO;
 using DTO.Helpers;
@@ -7906,11 +7907,17 @@ namespace SgqServiceBusiness.Api
             string selectShit = null;
             if (configuracoes != null && configuracoes.HaveShitLogin == true)
             {
+                
+                var shifts = dbEf.Shift.Count();
+
                 inputsDesabilitados = true;
                 selectShit = html.option("0", CommonData.getResource("select_the_shift").Value.ToString()) +
                               html.option("1", CommonData.getResource("shift_a").Value.ToString()) +
-                              html.option("2", CommonData.getResource("shift_b").Value.ToString()) +
-                              html.option("3", CommonData.getResource("shift_c").Value.ToString());
+                              html.option("2", CommonData.getResource("shift_b").Value.ToString());
+
+
+                if (shifts > 2)
+                    selectShit += html.option("3", CommonData.getResource("shift_c").Value.ToString());
 
                 selectShit = html.select(selectShit, id: "shift");
             }
