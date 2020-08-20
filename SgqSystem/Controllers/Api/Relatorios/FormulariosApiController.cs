@@ -325,11 +325,11 @@ SELECT
 	DISTINCT 
 		 CL2.id CollectionLevel2_Id
 		,REPLACE(CL2HF2.ParHeaderField_Name, '' '',  '''') as ParHeaderField_Name
-		,CONCAT(HF.name, '': '', case 
+		,case 
 				when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
 				when CL2HF2.ParFieldType_Id = 2 then case when EQP.Nome is null then cast(PRD.nCdProduto as varchar(500)) + '' - '' + PRD.cNmProduto else EQP.Nome end 
 				when CL2HF2.ParFieldType_Id = 6 then CONVERT(varchar, CL2HF2.Value, 103)
-				else CL2HF2.Value end) as Valor
+				else CL2HF2.Value end as Valor
 FROM CollectionLevel2XParHeaderField CL2HF2 (nolock) 
 inner join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
 left join ParHeaderField HF (nolock)on CL2HF2.ParHeaderField_Id = HF.Id

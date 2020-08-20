@@ -437,16 +437,7 @@
                     html = '<th colspan="' + (itemMatriz.span * valores.length) + '">';
                 }
 
-                var apelido = $(layout).map(function (i, o) {
-                    if (itemMatriz.nivel == o.Value) {
-                        if (o.NickName != "" && o.NickName != null)
-                            return o.NickName;
-                        else
-                            return itemMatriz.titulo;
-                    }
-                });
-
-                html += apelido[0] + '</th>';
+                html += itemMatriz.titulo + '</th>';
 
                 if (!matrizHtmlColunas[indexAtual]) {
                     matrizHtmlColunas.push(html);
@@ -469,9 +460,20 @@
 
             for (var i = 0; i < matrizHtmlColunas.length; i++) {
                 htmlTable += "<tr>";
-                if (i == 0) {
-                    htmlTable += "<th colspan='" + linhas.length + "' rowspan='" + (cabecalhos.length) + "'></th>";
-                }
+                //if (i == 0) {
+                //    htmlTable += "<th colspan='" + linhas.length + "' rowspan='" + (cabecalhos.length) + "'></th>";
+                //}
+
+                var apelido = $(layout).map(function (oi, o) {
+                    if (o.LayoutLevel == 1 && cabecalhos[i] == o.Value) {
+                        if (o.NickName != "" && o.NickName != null)
+                            return o.NickName;
+                        else
+                            return cabecalhos[i];
+                    }
+                });
+                htmlTable += "<th colspan='" + linhas.length + "' style='text-align:right'>"+apelido[0]+"</th>";
+
                 htmlTable += matrizHtmlColunas[i];
                 htmlTable += "</tr>";
             }
@@ -482,7 +484,7 @@
 
                 //validação para trocar o value pelo nickname se for diferente de vazio
                 var apelido = $(layout).map(function (i, o) {
-                    if (linhas[j] == o.Value) {
+                    if (o.LayoutLevel == 2 && linhas[j] == o.Value) {
                         if (o.NickName != "" && o.NickName != null)
                             return o.NickName;
                         else
@@ -498,7 +500,7 @@
 
                     //validação para trocar o value pelo nickname se for diferente de vazio
                     var apelido = $(layout).map(function (i, o) {
-                        if (valores[j] == o.Value) {
+                        if (o.LayoutLevel == 3 && valores[j] == o.Value) {
                             if (o.NickName != "" && o.NickName != null)
                                 return o.NickName;
                             else
@@ -668,7 +670,11 @@
                             if (celula.offsetWidth < width) {
                                 width = celula.offsetWidth;
                             }
-                            htmlCell += "<" + celula.tagName + " style='padding:2px;width:" + width + "px !important;" + style + ";font-size:" + tamanhoFonte + "pt !important'>" + celula.innerHTML + "</" + celula.tagName + ">";
+                            if (j == 0 && z < colspan - 1) {
+                                htmlCell += "<" + celula.tagName + " style='padding:2px;width:" + width + "px !important;" + style + ";font-size:" + tamanhoFonte + "pt !important'></" + celula.tagName + ">";
+                            } else {
+                                htmlCell += "<" + celula.tagName + " style='padding:2px;width:" + width + "px !important;" + style + ";font-size:" + tamanhoFonte + "pt !important'>" + celula.innerHTML + "</" + celula.tagName + ">";
+                            }
                         }
 
                         if (config.startTHCount == -1) {
