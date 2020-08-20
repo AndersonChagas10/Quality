@@ -293,7 +293,7 @@ namespace SgqSystem.Controllers.Api
 
             if (resultlevel3Old.IsNotEvaluate == true)
                 resultlevel3Old.WeiEvaluation = 0;
-            else if (resultlevel3Old.IsNotEvaluate == true)
+            else if (resultlevel3Old.IsNotEvaluate == false)
                 resultlevel3Old.WeiEvaluation = resultlevel3Old.Weight;
 
             db.Entry(resultlevel3Old).State = EntityState.Modified;
