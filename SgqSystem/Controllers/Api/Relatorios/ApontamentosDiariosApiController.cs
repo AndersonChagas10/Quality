@@ -289,12 +289,12 @@ namespace SgqSystem.Controllers.Api
             if (resultlevel3Old.IsConform == true)
                 resultlevel3Old.WeiDefects = 0;
             else if (resultlevel3Old.IsConform == false)
-                resultlevel3Old.WeiDefects = resultlevel3Old.Defects;
+                resultlevel3Old.WeiDefects = resultlevel3Old.Weight;
 
             if (resultlevel3Old.IsNotEvaluate == true)
                 resultlevel3Old.WeiEvaluation = 0;
             else if (resultlevel3Old.IsNotEvaluate == true)
-                resultlevel3Old.WeiEvaluation = resultlevel3Old.Defects;
+                resultlevel3Old.WeiEvaluation = resultlevel3Old.Weight;
 
             db.Entry(resultlevel3Old).State = EntityState.Modified;
             db.SaveChanges();
