@@ -278,6 +278,9 @@ namespace SgqSystem.Controllers.Api
         public Result_Level3DTO SaveResultLevel3RH([FromUri] int userSgq_Id, int parReason_Id, [FromBody] Result_Level3DTO resultLevel3)
         {
             var resultlevel3Old = db.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
+            var auditorId = db.CollectionLevel2.Where(x => x.Id == resultlevel3Old.CollectionLevel2_Id).Select(x => x.AuditorId).First();
+            LogSystem.LogTrackBusiness.RegisterIfNotExist(resultlevel3Old, resultlevel3Old.Id, "Result_Level3", auditorId);
+            
             resultlevel3Old.Value = resultLevel3.Value;
             resultlevel3Old.ValueText = resultLevel3.ValueText;
             resultlevel3Old.IsConform = resultLevel3.IsConform;
@@ -293,11 +296,9 @@ namespace SgqSystem.Controllers.Api
             else if (resultlevel3Old.IsNotEvaluate == true)
                 resultlevel3Old.WeiEvaluation = resultlevel3Old.Defects;
 
-            var auditorId = db.CollectionLevel2.Where(x => x.Id == resultlevel3Old.CollectionLevel2_Id).Select(x => x.AuditorId).First();
             db.Entry(resultlevel3Old).State = EntityState.Modified;
             db.SaveChanges();
 
-            LogSystem.LogTrackBusiness.RegisterIfNotExist(resultlevel3Old, resultlevel3Old.Id, "Result_Level3", auditorId);
             LogSystem.LogTrackBusiness.Register(resultlevel3Old, resultlevel3Old.Id, "Result_Level3", userSgq_Id, parReason_Id, resultLevel3.Motivo);
 
             ConsolidacaoEdicao(resultLevel3.Id);
