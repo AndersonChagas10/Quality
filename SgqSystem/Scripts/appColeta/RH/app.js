@@ -1,6 +1,7 @@
 var currentParCompany_Id;
 var currentUserSgq_Id;
 var currentParFrequency_Id;
+var globalDicionarioEstatico = {};
 var parametrization = null;
 var currentParDepartment_Id;
 var currentParDepartmentParent_Id;

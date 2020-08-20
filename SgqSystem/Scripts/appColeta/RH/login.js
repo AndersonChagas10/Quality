@@ -197,6 +197,7 @@ function loginSuccess(data) {
     currentLogin = data;
     currentCollectDate = new Date();
     openLogado();
+    getDicionarioEstatico();
 }
 
 function cleanGlobalVarLogin() {
@@ -230,3 +231,37 @@ $(window).on('beforeunload', function () {
     //_writeFile("login.txt", '', function () { });
     currentLogin = null;
 });
+
+function getDicionarioEstatico() {
+
+    pingLogado(urlPreffix, function () {
+
+        $.ajax({
+            type: 'GET',
+            url: urlPreffix + '/api/AppParams/GetDicionarioEstatico',
+            contentType: "application/json",
+            success: function (data) {
+                globalDicionarioEstatico = JSON.parse(data);
+                _writeFile("dicionarioestatico.txt", JSON.stringify(data), function () {
+
+                });
+            },
+            timeout: 600000,
+            error: function () {
+            }
+        });
+
+    }, getLocalDicionarioEstatico);
+
+}
+
+function getLocalDicionarioEstatico() {
+
+    _readFile('dicionarioestatico.txt', function (data) {
+
+        if (data) {
+            globalDicionarioEstatico = JSON.parse(data)
+        }
+
+    });
+}

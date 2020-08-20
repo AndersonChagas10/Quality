@@ -143,7 +143,7 @@ function getAppParametrization(frequencyId) {
 }
 
 function chamaGetAppParametrization() {
-
+    getDicionarioEstatico();
 	openMensagem('Por favor, aguarde até que seja feito o download do planejamento', 'blue', 'white');
 
 	$.ajax({

@@ -418,11 +418,14 @@ function getIntervalo(level3) {
         '       <div class="col-xs-2" style="padding-right: 0;">' +
         '	        <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
         '       </div>' +
-        '       <div class="col-xs-8" style="padding: 0;">' +
+        '       <div class="col-xs-6" style="padding: 0 !important;">' +
         '	        <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor/>' +
         '       </div>' +
         '       <div class="col-xs-2" style="padding-left: 0;">' +
         '	        <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
+        '       </div>' +
+        '       <div class="col-xs-2" style="padding-left: 0;">' +
+        '	        <button type="button" class="btn btn-sm btn-danger btn-block" data-clear>x</button>' +
         '       </div>' +
         '   </div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +
@@ -441,34 +444,33 @@ function getIntervaloemMinutos(level3) {
         btnNA = '<button type="button" class="btn btn-warning pull-right btn-sm btn-block" data-na>N/A</button>';
     }
 
+    var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
+
     var html = '';
 
     if (level3.ParLevel3XHelp)
-        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' (Clique aqui)</small></div></a>';
+        html += '<a style="cursor: pointer;" l3id="' + level3.Id + '" data-info><div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' ' + level3LimitLabel + ' (Clique aqui)</small></div></a>';
 
     else
-        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
+        html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' ' + level3LimitLabel + '</small></div>';
 
-    var level3LimitLabel = !!level3.ParLevel3Value.ShowLevel3Limits ? ' MIN: ' + level3.ParLevel3Value.IntervalMin + ' | MAX: ' + level3.ParLevel3Value.IntervalMax : '';
-
+    
     html +=
         '<div class="col-xs-6 no-gutters">' +
-        '<div class="col-xs-2 input-sm" style="font-size: 8px;">' +
-        level3LimitLabel +
+        '<div class="col-xs-1" style="padding-right: 0;">' +
+        '	 <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
         '</div>' +
-        '<div class="col-xs-3">' +
+        '<div class="col-xs-2" style="padding: 0 !important;">' +
+        '	 <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor/>' +
+        '</div>' +
+        '<div class="col-xs-1" style="padding-left: 0;">' +
+        '	 <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
+        '</div>' +
+        '<div class="col-xs-1" style="padding-left: 0;">' +
+        '	 <button type="button" class="btn btn-sm btn-danger btn-block" data-clear>x</button>' +
+        '</div>' +
+        '<div class="col-xs-5">' +
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
-        '</div>' +
-        '<div class="col-xs-5 no-gutters">' +
-        '   <div class="col-xs-2" style="padding-right: 0;">' +
-        '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
-        '   </div>' +
-        '   <div class="col-xs-8" style="padding: 0;">' +
-        '	    <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor/>' +
-        '   </div>' +
-        '   <div class="col-xs-2" style="padding-left: 0;">' +
-        '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
-        '   </div>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -506,14 +508,17 @@ function getIntervaloComObservacao(level3) {
         '	<input type="text" class="col-xs-12 input-sm" data-texto/>' +
         '</div>' +
         '<div class="col-xs-5 no-gutters">' +
-        '   <div class="col-xs-2" style="padding-right: 0;">' +
+        '   <div class="col-xs-2" style="padding-right: 0 !important;">' +
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
         '   </div>' +
-        '   <div class="col-xs-8" style="padding: 0;">' +
+        '   <div class="col-xs-6" style="padding: 0;">' +
         '	    <input type="text" class="col-xs-12 input input-sm" data-tarefa data-valor/>' +
         '   </div>' +
         '   <div class="col-xs-2" style="padding-left: 0;">' +
         '	    <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
+        '   </div>' +
+        '   <div class="col-xs-2" style="padding-left: 0;">' +
+        '	    <button type="button" class="btn btn-sm btn-danger btn-block" data-clear>x</button>' +
         '   </div>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
@@ -653,8 +658,17 @@ function getNumerodeDefeitos(level3) {
 
     html +=
         '<div class="col-xs-6 no-gutters">' +
-        '<div class="col-xs-10">' +
+        '<div class="col-xs-1" style="padding-left: 0;">' +
+        '	 <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
+        '</div>' +
+        '<div class="col-xs-7" style="padding: 0 !important;">' +
         '	<input type="number" class="col-xs-12 input-sm" data-tarefa data-valor/>' +
+        '</div>' +
+        '<div class="col-xs-1" style="padding-left: 0;">' +
+        '	 <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
+        '</div>' +
+        '<div class="col-xs-1" style="padding-left: 0;">' +
+        '	 <button type="button" class="btn btn-sm btn-danger btn-block" data-clear>x</button>' +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
         // btnInfo +
@@ -690,10 +704,19 @@ function getNumerodeDefeitosComTexto(level3) {
 
     html +=
         '<div class="col-xs-6 no-gutters">' +
-        '<div class="col-xs-2">' +
+        '<div class="col-xs-1" style="padding-left: 0;">' +
+        '	 <button type="button" class="btn btn-sm btn-primary btn-block" data-minus>-</button>' +
+        '</div>' +
+        '<div class="col-xs-2" style="padding-left: 0 !important;">' +
         botao +
         '</div>' +
-        '<div class="col-xs-8">' +
+        '<div class="col-xs-1" style="padding-left: 0;">' +
+        '	 <button type="button" class="btn btn-sm btn-primary btn-block" data-plus>+</button>' +
+        '</div>' +
+        '<div class="col-xs-1" style="padding-left: 0;">' +
+        '	 <button type="button" class="btn btn-sm btn-danger btn-block" data-clear>x</button>' +
+        '</div>' +
+        '<div class="col-xs-5">' +
         input +
         '</div>' +
         '<div class="col-xs-2">' + btnNA + '</div>' +
@@ -738,25 +761,31 @@ function getLikert(level3) {
 }
 
 $('body').off('click', '[data-plus]').on('click', '[data-plus]', function (e) {
-    var value = parseInt($(this).parent().parent().find('input').val());
+    var value = parseInt($(this).parent().parent().find('input[data-valor]').val());
     if (isNaN(value))
         value = 1;
     else
         value += 1;
-    var input = $(this).parent().parent().find('input');
+    var input = $(this).parent().parent().find('input[data-valor]');
     input.val(value);
     input.trigger('change');
 
 });
 
 $('body').off('click', '[data-minus]').on('click', '[data-minus]', function (e) {
-    var value = parseInt($(this).parent().parent().find('input').val());
+    var value = parseInt($(this).parent().parent().find('input[data-valor]').val());
     if (isNaN(value))
         value = -1;
     else
         value -= 1;
-    var input = $(this).parent().parent().find('input');
+    var input = $(this).parent().parent().find('input[data-valor]');
     input.val(value);
+    input.trigger('change');
+});
+
+$('body').off('click', '[data-clear]').on('click', '[data-clear]', function (e) {
+    var input = $(this).parent().parent().find('input');
+    input.val('');
     input.trigger('change');
 });
 
