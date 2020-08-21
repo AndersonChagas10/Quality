@@ -80,7 +80,7 @@ function getParHeaderFieldGeralLevel3(parLevel1, parLevel2, parLevel3, striped) 
     if (lista.length > 0) {
         var retorno = '';
         var flagPullRight = 'pull-right';
-        retorno += ' <div class="col-xs-12 clearfix" id="headerFieldLevel3" data-collapse-target="' + parLevel1.Id + '-' + parLevel2.Id + '" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + ' data-level3 style="padding-left:10px;' + colorStriped + ' padding-bottom: 5px;">';
+        retorno += ' <div class="col-xs-12 headerFieldL3 clearfix" id="headerFieldLevel3" data-collapse-target="' + parLevel1.Id + '-' + parLevel2.Id + '" parLevel1Id=' + parLevel1.Id + ' parLevel2Id=' + parLevel2.Id + '  parLevel3Id=' + parLevel3.Id + ' data-level3 style="padding-left:10px;' + colorStriped + ' padding-bottom: 5px;">';
         lista.forEach(function (o, i) {
             retorno += getInputOrSelect(o, flagPullRight, "disabled");
         });

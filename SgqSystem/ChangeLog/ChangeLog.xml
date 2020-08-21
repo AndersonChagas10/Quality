@@ -3877,5 +3877,23 @@
     <Description> [RH COVID] Coleta Parcial - Binario/BinárioTexto transformar em Ternário</Description>
     <Script></Script>
   </Card>
+
+  <Card>
+    <CardNumber>SGQ-1192</CardNumber>
+    <Version>1.10.0</Version>
+    <Description> [RH COVID] AppColeta - Criação da coleta de uma única tarefa</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM ParLevel3BoolTrue WHERE Name='')
+      BEGIN
+      INSERT INTO ParLevel3BoolTrue VALUES ('', GETDATE(), NULL, 1)
+      END
+      GO
+      IF NOT EXISTS (SELECT * FROM ParLevel3BoolFalse WHERE Name='')
+      BEGIN
+      INSERT INTO ParLevel3BoolFalse VALUES ('', GETDATE(), NULL, 1)
+      END
+      GO
+    </Script>
+  </Card>
   
 </Cards>

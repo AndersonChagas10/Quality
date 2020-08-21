@@ -138,6 +138,7 @@ namespace Dominio.Seed
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "queryRelatorioResultadoCovid", Value = "", ControllerName = "RelatorioResultadoCovid", Descricao = "Query do relatório de resultados RH Covid" });
 
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "queryRelatorioLaboratorio", Value = "", ControllerName = "LaboratorioApiController", Descricao = "Query do relatório de Análise Laboratoriais" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "clustersIdsColetaUnicaTarefa", Value = "", ControllerName = "AppColetaController", Descricao = "Ids do(s) Cluster(s) que permitem coleta de única tarefa. Colocar entre || ex => |123|456|" });
 
 
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys).ToList();
