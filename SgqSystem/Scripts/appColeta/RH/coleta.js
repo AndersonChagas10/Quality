@@ -1561,7 +1561,7 @@ function HeaderFieldsIsValid() {
     $('#headerFieldDepartment input, #headerFieldDepartment select, '+ 
     '#headerFieldLevel1 input, #headerFieldLevel1 select, ' +
     '#headerFieldLevel2 input, #headerFieldLevel2 select, ' + 
-    '#headerFieldLevel3 input, #headerFieldLevel3 select').each(function () {
+    '#headerFieldLevel3 input, #headerFieldLevel3 select').not('.naoSalvar').each(function () {
 
         $self = $(this);
 

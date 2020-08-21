@@ -22,7 +22,7 @@ $(document).on('keyup click change', 'form[data-form-coleta] div[data-linha-cole
             .not(this)
             .addClass('naoSalvar');
             
-        $('.headerFieldL3').not('[parlevel1id="' + $(this).attr('data-level1') + '"][parlevel2id="' + $(this).attr('data-level2') + '"][parlevel3id="' + $(this).attr('data-level3') + '"]')
+        $('.headerFieldL3, .headerFieldL3 input, .headerFieldL3 select').not('[parlevel1id="' + $(this).attr('data-level1') + '"][parlevel2id="' + $(this).attr('data-level2') + '"][parlevel3id="' + $(this).attr('data-level3') + '"]')
             .addClass('naoSalvar')
             .not(this)
             .css("background-color", "#999")
@@ -37,7 +37,7 @@ $(document).on('keyup click change', 'form[data-form-coleta] div[data-linha-cole
         $('form[data-form-coleta] div[data-linha-coleta]')
             .removeClass('naoSalvar');
 
-        $('.headerFieldL3')
+        $('.headerFieldL3, .headerFieldL3 input, .headerFieldL3 select')
             .removeClass('naoSalvar')
             .css("background-color", "#FFFFFF")
             .find('input, button').prop("disabled", false);
