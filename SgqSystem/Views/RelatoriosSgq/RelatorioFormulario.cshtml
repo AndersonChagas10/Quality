@@ -591,15 +591,15 @@
                 var rowIndex = td.parentNode.rowIndex;
                 var numeroObjeto = (cellIndex - td.parentNode.getElementsByTagName('th').length);
                 var atributos = {};
-                var attrColuna = document.querySelector("#pivot-table  > table > tbody > tr:nth-child(" + cabecalhos.length + ") > th:nth-child(" + (1 + Math.floor(numeroObjeto / valores.length)) + ")").attributes;
+                var attrColuna = document.querySelector("#pivot-table  > table > tbody > tr:nth-child(" + cabecalhos.length + ") > th:nth-child(" + (2 + Math.floor(numeroObjeto / valores.length)) + ")").attributes;
                 for (var j = 0; j < attrColuna.length; j++) {
-                    if(attrColuna[j].name != 'colspan' && attrColuna[j].name != 'rowspan')
+                    if(attrColuna[j].name != 'colspan' && attrColuna[j].name != 'rowspan' && attrColuna[j].name != 'style')
                     atributos[attrColuna[j].name] = attrColuna[j].value;
                 }
                 var linha = document.querySelector("#pivot-table > table > tbody > tr:nth-child(" + (rowIndex + 1) + ")").getElementsByTagName('th');
                 var attrLinha = linha[linha.length - 1].attributes;
                 for (var j = 0; j < attrLinha.length; j++) {
-                    if(attrLinha[j].name != 'colspan' && attrLinha[j].name != 'rowspan')
+                    if(attrLinha[j].name != 'colspan' && attrLinha[j].name != 'rowspan' && attrLinha[j].name != 'style')
                     atributos[attrLinha[j].name] = attrLinha[j].value;
                 }
                 var objAtributos = Object.keys(atributos);
@@ -607,9 +607,11 @@
                     var deuMatch = true;
                     if (!ultimoObjeto) {
                         for (var z = 0; z < objAtributos.length; z++) {
-                            var valueItemObj = (!listaObj[j][objAtributos[z]] || listaObj[j][objAtributos[z]] == '') ? '-' : listaObj[j][objAtributos[z]];
+                            var valueAtributo = atributos[objAtributos[z]];
+                            var valueItemObj = listaObj[j][objAtributos[z]];
+                            valueItemObj = (!valueItemObj || valueItemObj == '') ? '-' : valueItemObj;
                             //if (listaObj[j][objAtributos[z].replace(/-/gi, ' ')] && atributos[objAtributos[z]].replace(/[^\w\s]/gi, '') != listaObj[j][objAtributos[z].replace(/-/gi, ' ')].replace(/[^\w\s]/gi, '')) {
-                            if (atributos[objAtributos[z]] != valueItemObj) {
+                            if (valueAtributo != valueItemObj) {
                                 deuMatch = false;
                                 break;
                             }
