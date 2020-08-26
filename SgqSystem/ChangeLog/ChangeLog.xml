@@ -3895,5 +3895,12 @@
       GO
     </Script>
   </Card>
+
+  <Card>
+    <CardNumber>SGQ-1238</CardNumber>
+    <Version>1.10.0</Version>
+    <Description> [RH COVID 5S] Apontamentos Diários - Criação da redistribuição de peso na edição de resultado.</Description>
+    <Script></Script>
+  </Card>
   
 </Cards>
