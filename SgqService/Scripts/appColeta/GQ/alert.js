@@ -116,11 +116,11 @@ function setValoresLevel3Alertas(level3, level2Resultado) {
     //    valor = converteNotacaoBaseDezParaDecimal(valor);
     //}
 
-    var peso = parseFloat(level3.attr('weight'));
+    var peso = parseFloat(ReplaceVirgula(level3.attr('weight')));
     var avaliacoesPonderadas = 0;
     var avaliacoes = 0;
-    var limiteInferior = parseFloat(level3.attr('intervalmin'));
-    var limiteSuperior = parseFloat(level3.attr('intervalmax'));
+    var limiteInferior = parseFloat(ReplaceVirgula(level3.attr('intervalmin')));
+    var limiteSuperior = parseFloat(ReplaceVirgula(level3.attr('intervalmax')));
 
     var defeitos = 0;
     var defeitosPonderados = 0;
