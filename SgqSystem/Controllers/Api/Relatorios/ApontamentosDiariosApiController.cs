@@ -1,6 +1,7 @@
 ﻿using ADOFactory;
 using AutoMapper;
 using Dominio;
+using Dominio.AppViewModel;
 using Dominio.Seara;
 using DTO;
 using DTO.DTO.Params;
@@ -277,33 +278,174 @@ namespace SgqSystem.Controllers.Api
         [Route("SaveRH/{userSgq_Id}/{parReason_Id}")]
         public Result_Level3DTO SaveResultLevel3RH([FromUri] int userSgq_Id, int parReason_Id, [FromBody] Result_Level3DTO resultLevel3)
         {
-            var resultlevel3Old = db.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
-            var auditorId = db.CollectionLevel2.Where(x => x.Id == resultlevel3Old.CollectionLevel2_Id).Select(x => x.AuditorId).First();
-            LogSystem.LogTrackBusiness.RegisterIfNotExist(resultlevel3Old, resultlevel3Old.Id, "Result_Level3", auditorId);
+            try
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+                var resultlevel3Old = db.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
+                var auditorId = db.CollectionLevel2.Where(x => x.Id == resultlevel3Old.CollectionLevel2_Id).Select(x => x.AuditorId).First();
+                LogSystem.LogTrackBusiness.RegisterIfNotExist(resultlevel3Old, resultlevel3Old.Id, "Result_Level3", auditorId);
 
-            resultlevel3Old.Value = resultLevel3.Value;
-            resultlevel3Old.ValueText = resultLevel3.ValueText;
-            resultlevel3Old.IsConform = resultLevel3.IsConform;
-            resultlevel3Old.IsNotEvaluate = resultLevel3.IsNotEvaluate;
+                resultlevel3Old.Value = resultLevel3.Value;
+                resultlevel3Old.ValueText = resultLevel3.ValueText;
+                resultlevel3Old.IsConform = resultLevel3.IsConform;
+                resultlevel3Old.IsNotEvaluate = resultLevel3.IsNotEvaluate;
 
-            if (resultlevel3Old.IsConform == true)
-                resultlevel3Old.WeiDefects = 0;
-            else if (resultlevel3Old.IsConform == false)
-                resultlevel3Old.WeiDefects = resultlevel3Old.Weight;
+                if (resultlevel3Old.IsConform == true)
+                    resultlevel3Old.WeiDefects = 0;
+                else if (resultlevel3Old.IsConform == false)
+                    resultlevel3Old.WeiDefects = resultlevel3Old.Weight;
 
-            if (resultlevel3Old.IsNotEvaluate == true)
-                resultlevel3Old.WeiEvaluation = 0;
-            else if (resultlevel3Old.IsNotEvaluate == false)
-                resultlevel3Old.WeiEvaluation = resultlevel3Old.Weight;
+                if (resultlevel3Old.IsNotEvaluate == true)
+                    resultlevel3Old.WeiEvaluation = 0;
+                else if (resultlevel3Old.IsNotEvaluate == false)
+                    resultlevel3Old.WeiEvaluation = resultlevel3Old.Weight;
 
-            db.Entry(resultlevel3Old).State = EntityState.Modified;
+                db.Entry(resultlevel3Old).State = EntityState.Modified;
+                db.SaveChanges();
+
+                LogSystem.LogTrackBusiness.Register(resultlevel3Old, resultlevel3Old.Id, "Result_Level3", userSgq_Id, parReason_Id, resultLevel3.Motivo);
+
+                var collectionLevel2 = db.CollectionLevel2.Where(x => x.Id == resultlevel3Old.CollectionLevel2_Id).FirstOrDefault();
+
+                var collectionLevel2XParCluster = db.CollectionLevel2XCluster.Where(x => x.CollectionLevel2_Id == collectionLevel2.Id).FirstOrDefault();
+                var collectionLevel2XParCargo = db.CollectionLevel2XParCargo.Where(x => x.CollectionLevel2_Id == collectionLevel2.Id).FirstOrDefault();
+                var collectionLevel2XParDepartment = db.CollectionLevel2XParDepartment.Where(x => x.CollectionLevel2_Id == collectionLevel2.Id).FirstOrDefault();
+
+                var redistributeWeight = db.ParEvaluationXDepartmentXCargo
+                    .AsNoTracking()
+                    .Where(x => x.ParCompany_Id == collectionLevel2.UnitId || x.ParCompany_Id == null)
+                    .Where(x => x.ParFrequencyId == collectionLevel2.ParFrequency_Id)
+                    .Where(x => x.ParCluster_Id == collectionLevel2XParCluster.ParCluster_Id || x.ParCluster_Id == null)
+                    .Where(x => x.ParCargo_Id == collectionLevel2XParCargo.ParCargo_Id || x.ParCargo_Id == null)
+                    .Where(x => x.ParDepartment_Id == collectionLevel2XParDepartment.ParDepartment_Id)
+                    .Where(x => x.IsActive)
+                    .Select(x => new ParEvaluationXDepartmentXCargoAppViewModel()
+                    {
+                        RedistributeWeight = x.RedistributeWeight
+                    })
+                    .ToList().First().RedistributeWeight;
+
+                if (redistributeWeight)
+                {
+                    RedistributeWeight(collectionLevel2);
+                }
+
+                ConsolidacaoEdicao(resultLevel3.Id);
+                return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public void RedistributeWeight(CollectionLevel2 collectionLevel2)
+        {
+            List<CollectionLevel2> collectionLevel2List = db.CollectionLevel2
+                    .Where(x => x.UnitId == collectionLevel2.UnitId)
+                    .Where(x => x.AuditorId == collectionLevel2.AuditorId)
+                    .Where(x => x.Shift == collectionLevel2.Shift)
+                    .Where(x => x.CollectionDate == collectionLevel2.CollectionDate)
+                    .Where(x => x.EvaluationNumber == collectionLevel2.EvaluationNumber)
+                    .Where(x => x.Sample == collectionLevel2.Sample)
+                    .ToList();
+
+            List<int> collectionLevel2Ids = collectionLevel2List.Select(x => x.Id).ToList();
+            List<Result_Level3> resultLevel3PorAmostra = db.Result_Level3.Where(x => collectionLevel2Ids.Contains(x.CollectionLevel2_Id)).ToList();
+            List<CollectionLevel2> l2ParaRedistribuir = new List<CollectionLevel2>();
+            List<CollectionLevel2> l1ParaRedistribuir = new List<CollectionLevel2>();
+            Boolean redisribuirMonitoramento = false;
+            Boolean redistribuirIndicador = false;
+
+            foreach (var rl3 in resultLevel3PorAmostra)
+            {
+                if (rl3.IsNotEvaluate == false)
+                {
+                    if (rl3.IsConform == true)
+                        rl3.WeiEvaluation = rl3.Weight;
+                    if (rl3.IsConform == false)
+                    {
+                        rl3.WeiEvaluation = rl3.Weight;
+                        rl3.WeiDefects = rl3.Weight;
+                    }
+                }
+            }
+
+            foreach (var cl2Id in collectionLevel2Ids)
+            {
+                decimal? pesoNaoAvaliado = resultLevel3PorAmostra.Where(x => x.CollectionLevel2_Id == cl2Id && x.IsNotEvaluate == true).Sum(x => x.Weight);
+                decimal? pesoTotal = resultLevel3PorAmostra.Where(x => x.CollectionLevel2_Id == cl2Id).Sum(x => x.Weight);
+                List<Result_Level3> resultLevel3Avaliado = resultLevel3PorAmostra.Where(x => x.CollectionLevel2_Id == cl2Id && x.IsNotEvaluate == false).ToList();
+
+                if (resultLevel3Avaliado.Count() > 0)
+                {
+                    redistribuir(resultLevel3Avaliado, pesoNaoAvaliado, pesoTotal);
+                }
+                else
+                {
+                    redisribuirMonitoramento = true;
+                    var cl2 = collectionLevel2List.Where(x => x.Id == cl2Id).FirstOrDefault();
+                    cl2.IsNotEvaluatedL2 = true;
+                    l2ParaRedistribuir.Add(cl2);
+                }
+            }
+            if (redisribuirMonitoramento)
+            {
+                List<int> level1Ids = l2ParaRedistribuir.Select(x => x.ParLevel1_Id).Distinct().ToList();
+                foreach (var l1Id in level1Ids)
+                {
+                    List<int> cl2Ids = collectionLevel2List.Where(x => x.ParLevel1_Id == l1Id).Select(x => x.Id).ToList();
+                    List<int> cl2NAIds = l2ParaRedistribuir.Where(x => x.ParLevel1_Id == l1Id && x.IsNotEvaluatedL2 == true).Select(x => x.Id).ToList();
+                    decimal? pesoNaoAvaliado = resultLevel3PorAmostra.Where(x => cl2NAIds.Contains(x.CollectionLevel2_Id) && x.IsNotEvaluate == true).Sum(x => x.Weight);
+                    decimal? pesoTotal = resultLevel3PorAmostra.Where(x => cl2Ids.Contains(x.CollectionLevel2_Id)).Sum(x => x.Weight);
+                    List<Result_Level3> resultLevel3Avaliado = resultLevel3PorAmostra.Where(x => cl2Ids.Contains(x.CollectionLevel2_Id) && x.IsNotEvaluate == false).ToList();
+
+                    if (resultLevel3Avaliado.Count() > 0)
+                    {
+                        redistribuir(resultLevel3Avaliado, pesoNaoAvaliado, pesoTotal);
+                    }
+                    else
+                    {
+                        redistribuirIndicador = true;
+                        List<CollectionLevel2> cl2List = collectionLevel2List.Where(x => x.ParLevel1_Id == l1Id).ToList();
+
+                        foreach (var cl2 in cl2List)
+                        {
+                            cl2.IsNotEvaluatedL1 = true;
+                            l1ParaRedistribuir.Add(cl2);
+                        }
+                    }
+                }
+            }
+
+            if (redistribuirIndicador)
+            {
+                List<int> cl2NAIds = collectionLevel2List.Where(x => x.IsNotEvaluatedL1 == true).Select(x => x.Id).ToList();
+                decimal? pesoNaoAvaliado = resultLevel3PorAmostra.Where(x => cl2NAIds.Contains(x.CollectionLevel2_Id) && x.IsNotEvaluate == true).Sum(x => x.Weight);
+                decimal? pesoTotal = resultLevel3PorAmostra.Sum(x => x.Weight);
+                List<Result_Level3> resultLevel3Avaliado = resultLevel3PorAmostra.Where(x => x.IsNotEvaluate == false).ToList();
+
+                if (resultLevel3Avaliado.Count() > 0)
+                {
+                    redistribuir(resultLevel3Avaliado, pesoNaoAvaliado, pesoTotal);
+                }
+            }
             db.SaveChanges();
+        }
 
-            LogSystem.LogTrackBusiness.Register(resultlevel3Old, resultlevel3Old.Id, "Result_Level3", userSgq_Id, parReason_Id, resultLevel3.Motivo);
-
-            ConsolidacaoEdicao(resultLevel3.Id);
-            return Mapper.Map<Result_Level3DTO>(Result_Level3DTO.GetById(resultLevel3.Id));
-
+        public void redistribuir(List<Result_Level3> resultLevel3Avaliado, decimal? pesoNaoAvaliado, decimal? pesoTotal)
+        {
+            foreach (var rl3 in resultLevel3Avaliado)
+            {
+                if (rl3.IsConform == true)
+                    rl3.WeiEvaluation += ((pesoNaoAvaliado * rl3.WeiEvaluation) / (pesoTotal - pesoNaoAvaliado));
+                if (rl3.IsConform == false)
+                {
+                    rl3.WeiEvaluation += ((pesoNaoAvaliado * rl3.WeiEvaluation) / (pesoTotal - pesoNaoAvaliado));
+                    rl3.WeiDefects += ((pesoNaoAvaliado * rl3.WeiDefects) / (pesoTotal - pesoNaoAvaliado));
+                }
+            }
         }
 
         [HttpPost]

@@ -10,9 +10,9 @@ namespace Dominio
     public class CollectionLevel2XParCargo : BaseModel
     {
         [Key]
-        public long Id { get; set; }
+        public int Id { get; set; }
 
-        public long CollectionLevel2_Id { get; set; }
+        public int CollectionLevel2_Id { get; set; }
 
         public int ParCargo_Id { get; set; }
     }

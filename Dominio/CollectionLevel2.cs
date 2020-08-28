@@ -133,5 +133,11 @@ namespace Dominio
 
         [NotMapped]
         public string Outros { get; set; }
+
+        [NotMapped]
+        public bool? IsNotEvaluatedL1 { get; set; }
+
+        [NotMapped]
+        public bool? IsNotEvaluatedL2 { get; set; }
     }
 }
