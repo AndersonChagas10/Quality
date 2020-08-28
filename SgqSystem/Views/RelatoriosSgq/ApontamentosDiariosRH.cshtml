@@ -428,21 +428,25 @@
         }
 
         function SalvarResultLevel3() {
+
             var dadosResultLevel3 = {};
 
             dadosResultLevel3["Id"] = $('#ResultLevel3_Id').val();
             dadosResultLevel3["IsNotEvaluate"] = $('#IsEvaluated').is(':checked');
 
             if ($('#inputValor').length)
-                dadosResultLevel3["Value"] = $('#inputValor').val().replace(',','.');
-            if ($('#texto').length){
+                dadosResultLevel3["Value"] = $('#inputValor').val().replace(',', '.');
+
+            if ($('#texto').length) {
                 dadosResultLevel3["ValueText"] = $('#texto').val();
             }
 
             //verifica se o valor inserido é maior que o permitido, se for, a flag isconform fica falsa e salva como nao conforme
-            if ((parseFloat($("#intervalMin").text().replace(',', '.')) != NaN && parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text().replace(',', '.')) && parseInt(dadosResultLevel3["Value"]) >= parseInt($("#intervalMin").text().replace(',', '.')))
+            if ((parseFloat($("#intervalMin").text().replace(',', '.')) != NaN
+                && parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text().replace(',', '.'))
+                && parseInt(dadosResultLevel3["Value"]) >= parseInt($("#intervalMin").text().replace(',', '.')))
                 || (parseInt(dadosResultLevel3["Value"]) <= parseInt($("#intervalMax").text().replace(',', '.')))
-            || dadosResultLevel3["Value"] == "")
+                || dadosResultLevel3["Value"] == "")
                 dadosResultLevel3["IsConform"] = true;
             else
                 dadosResultLevel3["IsConform"] = false;
@@ -451,26 +455,37 @@
                 dadosResultLevel3["IsConform"] = $('#conform').is(':checked');
 
             if (dataEdit.ParLevel3InputType_Id == 5) {
+
                 if ($('#texto').val() != "" && $('#texto').val() != null && $('#texto').val() != "undefined") {
+
                     dadosResultLevel3["IsConform"] = false;
+
                 } else {
+
                     dadosResultLevel3["IsConform"] = true;
                 }
             }
 
             if (dataEdit.IsNcTextRequired && !dadosResultLevel3["IsConform"] && !dadosResultLevel3["IsNotEvaluate"]) {
+
                 if ($('#texto').val() == "" || $('#texto').val() == null || $('#texto').val() == "undefined") {
+
                     $('.alertTextIsRequired').removeClass('hide');
                     $('#texto').attr('style', 'border:1px solid red;');
                     return;
+
                 } else {
+
                     $('.alertTextIsRequired').addClass('hide');
-                    $('#texto').attr('style','');
+                    $('#texto').attr('style', '');
+
                 }
-            }
-            else if (dataEdit.IsNcTextRequired && dadosResultLevel3["IsConform"]) {
+
+            } else if (dataEdit.IsNcTextRequired && dadosResultLevel3["IsConform"]) {
+
                 $('.alertTextIsRequired').addClass('hide');
-                $('#texto').attr('style','');
+                $('#texto').attr('style', '');
+
             }
 
             if (dataEdit.ParLevel3InputType_Id == 11 || dataEdit.ParLevel3InputType_Id == 13 || dataEdit.ParLevel3InputType_Id == 14)
@@ -478,15 +493,18 @@
 
             var selectParReasonEdit = $('select[name="selectParReasonEdit"]:visible').val();
             var textareaParReasonEdit = $('textarea[name="textareaParReasonEdit"]:visible').val();
+
             dadosResultLevel3["Motivo"] = textareaParReasonEdit;
 
-            $('textarea[name="textareaParReasonEdit"]:visible').attr('style','');
-                $('.alertParReasonEditIsRequired').addClass('hide');
+            $('textarea[name="textareaParReasonEdit"]:visible').attr('style', '');
+            $('.alertParReasonEditIsRequired').addClass('hide');
 
-            if (selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 1) {
+            if (selectParReasonEdit != null && selectParReasonEdit.length <= 0 || textareaParReasonEdit.length < 1) {
+
                 $('.alertParReasonEditIsRequired').removeClass('hide');
-                $('textarea[name="textareaParReasonEdit"]:visible').attr('style','border:1px solid red;');
+                $('textarea[name="textareaParReasonEdit"]:visible').attr('style', 'border:1px solid red;');
                 return;
+
             }
 
             $.post(urlSave + "/" + @Html.Raw(ViewBag.UserId) + "/" + selectParReasonEdit, dadosResultLevel3, function (r, x, e) {
