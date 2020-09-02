@@ -7,7 +7,9 @@
         return;
     }
 
-    if (parseInt($(level1).attr('volumealertaindicador')) == 0 && !$(level1).hasClass('VF') && $(level1).attr('hasalert') == "true") {
+    if ((parseInt($(level1).attr('volumealertaindicador')) == 0 && $(level1).attr('alertanivel3') != "a2"
+        && $(level1).attr('alertanivel3') != "a5" && $(level1).attr('alertanivel3') != "a6")
+        && !$(level1).hasClass('VF') && $(level1).attr('hasalert') == "true") {
         openMessageModal(getResource("warning"), getResource("no_volumn_level"));
         return;
     }
@@ -280,23 +282,33 @@
 
             avaliacaoAtual = isNaN(avaliacaoAtual) ? 0 : avaliacaoAtual;
             amostraAtual = isNaN(amostraAtual) ? 0 : amostraAtual;
-
-            var proximaAvaliacao = ((amostraAtual / parseInt(amostraTotal)) % 1 == 0) ? 1 : 0;
-            var avaliacaoColetaAtual = Math.ceil(amostraAtual / parseInt(amostraTotal)) + proximaAvaliacao;
-
+            debugger
+            var infinito = '∞';
+            var proximaAvaliacao = "";
+            var avaliacaoColetaAtual = "";
+            if ((amostraAtual / parseInt(amostraTotal)) != Infinity)
+                proximaAvaliacao = ((amostraAtual / parseInt(amostraTotal)) % 1 == 0) ? 1 : 0;
+            //else
+            //    proximaAvaliacao = infinito;
+            if (Math.ceil(amostraAtual / parseInt(amostraTotal)) != Infinity)
+                avaliacaoColetaAtual = Math.ceil(amostraAtual / parseInt(amostraTotal)) + proximaAvaliacao;
+            else
+                avaliacaoColetaAtual = avaliacaoAtual;
             if (!(level1.attr('islimitedevaluetionnumber') == "false")) {
-                level2.attr('evaluatecurrent', avaliacaoColetaAtual);
-                level2.parent().find('.evaluateCurrent').html(Math.ceil(amostraAtual / parseInt(amostraTotal)));
+                if (avaliacaoColetaAtual != Infinity && avaliacaoColetaAtual > 0) {
+                    level2.attr('evaluatecurrent', avaliacaoColetaAtual);
+                } else {
+                    level2.parent().find('.evaluateCurrent').html(Math.ceil(amostraAtual / parseInt(amostraTotal))); //coloca valor na Avaliação
+                }
             }
-
             level2.parent().find('.sampleCurrentTotal').html(amostraAtual);
-
             if (avaliacaoTotal > 0) {
-                level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal);
+                if (avaliacaoTotal * amostraTotal > 0)
+                    level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal);
             } else {
                 level2.parent().find('.sampleXEvaluateTotal').html(amostraTotal);
-
             }
+
 
         }
 
