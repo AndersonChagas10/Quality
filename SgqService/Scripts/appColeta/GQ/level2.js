@@ -281,18 +281,35 @@
             avaliacaoAtual = isNaN(avaliacaoAtual) ? 0 : avaliacaoAtual;
             amostraAtual = isNaN(amostraAtual) ? 0 : amostraAtual;
 
-            var proximaAvaliacao = ((amostraAtual / parseInt(amostraTotal)) % 1 == 0) ? 1 : 0;
-            var avaliacaoColetaAtual = Math.ceil(amostraAtual / parseInt(amostraTotal)) + proximaAvaliacao;
+            //var proximaAvaliacao = ((amostraAtual / parseInt(amostraTotal)) % 1 == 0) ? 1 : 0;
+            //var avaliacaoColetaAtual = Math.ceil(amostraAtual / parseInt(amostraTotal)) + proximaAvaliacao;
+
+            var infinito = '∞';
+            var proximaAvaliacao = "";
+            var avaliacaoColetaAtual = "";
+
+            if ((amostraAtual / parseInt(amostraTotal)) != Infinity)
+                proximaAvaliacao = ((amostraAtual / parseInt(amostraTotal)) % 1 == 0) ? 1 : 0;
+            else
+                proximaAvaliacao = infinito;
+
+            if (Math.ceil(amostraAtual / parseInt(amostraTotal)) != Infinity)
+                avaliacaoColetaAtual = Math.ceil(amostraAtual / parseInt(amostraTotal)) + proximaAvaliacao;
+            else
+                avaliacaoColetaAtual = avaliacaoAtual;
 
             if (!(level1.attr('islimitedevaluetionnumber') == "false")) {
-                level2.attr('evaluatecurrent', avaliacaoColetaAtual);
-                level2.parent().find('.evaluateCurrent').html(Math.ceil(amostraAtual / parseInt(amostraTotal)));
+                if (avaliacaoColetaAtual != infinito && avaliacaoColetaAtual > 0) {
+                    level2.attr('evaluatecurrent', avaliacaoColetaAtual);
+                } else {
+                    level2.parent().find('.evaluateCurrent').html(Math.ceil(amostraAtual / parseInt(amostraTotal))); //coloca valor na Avaliação
+                }
             }
 
             level2.parent().find('.sampleCurrentTotal').html(amostraAtual);
 
             if (avaliacaoTotal > 0) {
-                level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal);
+                level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal == 0 ? infinito : avaliacaoTotal * amostraTotal);
             } else {
                 level2.parent().find('.sampleXEvaluateTotal').html(amostraTotal);
 
