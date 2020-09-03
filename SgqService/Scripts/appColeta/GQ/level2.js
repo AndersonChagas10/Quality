@@ -7,7 +7,9 @@
         return;
     }
 
-    if (parseInt($(level1).attr('volumealertaindicador')) == 0 && !$(level1).hasClass('VF') && $(level1).attr('hasalert') == "true") {
+    if ((parseInt($(level1).attr('volumealertaindicador')) == 0 && $(level1).attr('alertanivel3') != "a2"
+        && $(level1).attr('alertanivel3') != "a5" && $(level1).attr('alertanivel3') != "a6")
+        && !$(level1).hasClass('VF') && $(level1).attr('hasalert') == "true") {
         openMessageModal(getResource("warning"), getResource("no_volumn_level"));
         return;
     }
@@ -305,16 +307,14 @@
                     level2.parent().find('.evaluateCurrent').html(Math.ceil(amostraAtual / parseInt(amostraTotal))); //coloca valor na Avaliação
                 }
             }
-
             level2.parent().find('.sampleCurrentTotal').html(amostraAtual);
-
             if (avaliacaoTotal > 0) {
                 if (avaliacaoTotal * amostraTotal > 0)
                     level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal);
             } else {
                 level2.parent().find('.sampleXEvaluateTotal').html(amostraTotal);
-
             }
+
 
         }
 
