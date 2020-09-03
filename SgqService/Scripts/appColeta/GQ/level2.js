@@ -288,12 +288,12 @@
             var proximaAvaliacao = "";
             var avaliacaoColetaAtual = "";
 
-            if ((amostraAtual / parseInt(amostraTotal)) != Infinity)
+            if ((amostraAtual / parseInt(amostraTotal)) != Infinity && isNan((amostraAtual / parseInt(amostraTotal))))
                 proximaAvaliacao = ((amostraAtual / parseInt(amostraTotal)) % 1 == 0) ? 1 : 0;
-            else
-                proximaAvaliacao = infinito;
+            //else
+            //    proximaAvaliacao = infinito;
 
-            if (Math.ceil(amostraAtual / parseInt(amostraTotal)) != Infinity)
+            if (Math.ceil(amostraAtual / parseInt(amostraTotal)) != Infinity && isNaN(Math.ceil(amostraAtual / parseInt(amostraTotal))))
                 avaliacaoColetaAtual = Math.ceil(amostraAtual / parseInt(amostraTotal)) + proximaAvaliacao;
             else
                 avaliacaoColetaAtual = avaliacaoAtual;
@@ -309,7 +309,8 @@
             level2.parent().find('.sampleCurrentTotal').html(amostraAtual);
 
             if (avaliacaoTotal > 0) {
-                level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal == 0 ? infinito : avaliacaoTotal * amostraTotal);
+                if (avaliacaoTotal * amostraTotal > 0)
+                    level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal);
             } else {
                 level2.parent().find('.sampleXEvaluateTotal').html(amostraTotal);
 
@@ -462,7 +463,7 @@ function level02Reset(level02) {
     $('.btnAreaSaveConfirm').addClass('hide');
 
     // $('.painel .labelPainel[level01id=' + level02Group.attr('level01id') + '] #inputChainSpeed, .labelPainel[level01id=' + level02Group.attr('level01id') + '] #inputLotNumber, .labelPainel[level01id=' + level02Group.attr('level01id') + '] #inputMudScore').val("");
-    $('.painel .labelPainel').removeClass('red');;
+    $('.painel .labelPainel').removeClass('red');
     //CFF
     $('.painel .labelPainel[level01id=' + level02Group.attr('level01id') + '] .setsDone').text('0');
     $('.painel .labelPainel[level01id=' + level02Group.attr('level01id') + '] .sideWithErrors').text('0').parents('.labelPainel').removeClass('red');
