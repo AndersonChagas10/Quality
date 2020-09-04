@@ -420,7 +420,17 @@ function setAvaliationAndSampleLvl2Line(level2) {
     var evaluatecurrent = $(level2).attr('evaluate');
     if (parseInt(evaluatecurrent) == 0)
         $(level2).next().find('.evaluateCurrent').html($(level2).attr('evaluatecurrent'));
-    var samplecurrent = parseInt($(level2).attr('samplecurrent'));
-    $(level2).next().find('.sampleCurrentTotal').html(samplecurrent);
+
+    var samplecurrent;
+    if (parseInt($(level2).attr("sample")) > 0) {
+        samplecurrent = parseInt($(level2).attr('samplecurrent'));
+        $(level2).next().find('.sampleCurrentTotal').html(samplecurrent);
+    } else {
+
+        //teste Marcos contador
+        $(level2).attr('samplecurrent', $(level2).next().find('.sampleCurrentTotal').text());
+        samplecurrent = parseInt($(level2).attr('samplecurrent'));
+        $(level2).next().find('.sampleCurrentTotal').html(samplecurrent);
+    }
 
 }

@@ -214,7 +214,8 @@ function openLevel3(level2) {
     var CurrentEvaluationL1 = parseInt(level3Group.find('.evaluateCurrent').text());
 
     var avalCorrente = parseInt($(_level1).attr('lastevaluate')) + 1;
-    var sampleAux = parseInt($($('.level2')[1]).attr('samplecurrent'));
+    //var sampleAux = parseInt($($('.level2')[1]).attr('samplecurrent'));
+    var sampleAux = $('.level2.selected').attr('samplecurrent');
 
     var smpCorr = parseInt($(_level1).attr('lastsample')) + 1;
     // if(sampleAux == parseInt($('.level2.selected').attr('sample')))

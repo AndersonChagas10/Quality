@@ -290,24 +290,24 @@
             var proximaAvaliacao = "";
             var avaliacaoColetaAtual = "";
 
-            if ((amostraAtual / parseInt(amostraTotal)) != Infinity && isNan((amostraAtual / parseInt(amostraTotal))))
+            if ((amostraAtual / parseInt(amostraTotal)) != Infinity && isNaN((amostraAtual / parseInt(amostraTotal))))
                 proximaAvaliacao = ((amostraAtual / parseInt(amostraTotal)) % 1 == 0) ? 1 : 0;
-            //else
-            //    proximaAvaliacao = infinito;
 
-            if (Math.ceil(amostraAtual / parseInt(amostraTotal)) != Infinity && isNaN(Math.ceil(amostraAtual / parseInt(amostraTotal))))
+            if (Math.ceil(amostraAtual / parseInt(amostraTotal)) != Infinity && !isNaN(Math.ceil(amostraAtual / parseInt(amostraTotal))))
                 avaliacaoColetaAtual = Math.ceil(amostraAtual / parseInt(amostraTotal)) + proximaAvaliacao;
             else
                 avaliacaoColetaAtual = avaliacaoAtual;
 
             if (!(level1.attr('islimitedevaluetionnumber') == "false")) {
-                if (avaliacaoColetaAtual != infinito && avaliacaoColetaAtual > 0) {
+                if (avaliacaoColetaAtual != Infinity && !isNaN(avaliacaoColetaAtual) && avaliacaoColetaAtual > 0) {
                     level2.attr('evaluatecurrent', avaliacaoColetaAtual);
                 } else {
                     level2.parent().find('.evaluateCurrent').html(Math.ceil(amostraAtual / parseInt(amostraTotal))); //coloca valor na Avaliação
                 }
             }
+
             level2.parent().find('.sampleCurrentTotal').html(amostraAtual);
+
             if (avaliacaoTotal > 0) {
                 if (avaliacaoTotal * amostraTotal > 0)
                     level2.parent().find('.sampleXEvaluateTotal').html(avaliacaoTotal * amostraTotal);
