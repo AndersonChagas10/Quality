@@ -161,10 +161,10 @@ $('body')
                     equacao = eval(equacao);
                 }
                 $(o).val(equacao);
-                $(o).trigger('input');
+                $(o).trigger('input').trigger('change');
             }
         });
-        $("input[data-valor]").trigger('change');
+        //$("input[data-valor]").trigger('change');
     });
 
 
@@ -1047,6 +1047,11 @@ function resetarLinha(linha) {
     linha.removeClass('alert-secundary');
     linha.removeClass('alert-warning');
     linha.removeAttr('data-conforme-na');
+    linha.find('input, select, button[data-binario]').css("background-color", "#FFFFFF");
+    $('.headerFieldL3').siblings('[parlevel1id="' + linha.attr('data-level1') + '"][parlevel2id="' + linha.attr('data-level2') + '"][parlevel3id="' + linha.attr('data-level3') + '"]')
+        .find('input, select').css("background-color", "#FFFFFF");
+
+    linha.find('[data-texto]').val('');
 }
 
 $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
