@@ -544,17 +544,14 @@
                 }
             })
                 .done(function (data) {
-                    closeLoader();
                     $btn.button('reset');
                     retorno(data);
-                    closeLoader();
                 })
                 .fail(function (jqXHR, textStatus, msg) {
                     closeLoader();
                     $btn.button('reset');
                     console.log(msg);
                     preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
-                    closeLoader();
                 });
         }
 
@@ -607,8 +604,10 @@
         //Graficos
         function GerarGraficoHistoricoUnidade(data) {
 
-            if (data.length > 0) {
+            closeLoader();
 
+            if (data.length > 0) {
+                
                 $('#reports').show();
 
                 let isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
@@ -817,7 +816,7 @@
         }
 
         function GerarRelatorios(dados) {
-
+            closeLoader();
             if (dados.length <= 0) {
                 return false;
             }
