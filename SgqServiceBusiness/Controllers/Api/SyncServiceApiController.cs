@@ -4830,11 +4830,13 @@ namespace SgqServiceBusiness.Api
                                     	WHERE ParCompany_id = @Company_Id
                                     	AND (Shift_Id = @Shift_Id
                                     	OR Shift_Id IS NULL)
+										AND Agendamento IS NOT NULL
                                     	AND CAST(DATA AS DATE) <= @Date)
                                     AND ParCompany_id = @Company_Id
                                     AND (Shift_Id = @Shift_Id
                                     OR Shift_Id IS NULL)
-                                    ORDER BY Shift_Id DESC";
+                                    ORDER BY Shift_Id DESC,
+                                    Data DESC";
                             using (Factory factory = new Factory("DefaultConnection"))
                             {
                                 using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
@@ -4876,11 +4878,13 @@ namespace SgqServiceBusiness.Api
                                     	WHERE ParCompany_id = @Company_Id
                                     	AND (Shift_Id = @Shift_Id
                                     	OR Shift_Id IS NULL)
+										AND Agendamento IS NOT NULL
                                     	AND CAST(DATA AS DATE) <= @Date)
                                     AND ParCompany_id = @Company_Id
                                     AND (Shift_Id = @Shift_Id
                                     OR Shift_Id IS NULL)
-                                    ORDER BY Shift_Id DESC";
+                                    ORDER BY Shift_Id DESC,
+                                    Data DESC";
 
                             using (Factory factory = new Factory("DefaultConnection"))
                             {
@@ -4923,11 +4927,13 @@ namespace SgqServiceBusiness.Api
                                     	WHERE ParCompany_id = @Company_Id
                                     	AND (Shift_Id = @Shift_Id
                                     	OR Shift_Id IS NULL)
+										AND Agendamento IS NOT NULL
                                     	AND CAST(DATA AS DATE) <= @Date)
                                     AND ParCompany_id = @Company_Id
                                     AND (Shift_Id = @Shift_Id
                                     OR Shift_Id IS NULL)
-                                    ORDER BY Shift_Id DESC";
+                                    ORDER BY Shift_Id DESC,
+                                    Data DESC";
 
                             using (Factory factory = new Factory("DefaultConnection"))
                             {

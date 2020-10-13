@@ -3903,4 +3903,12 @@
     <Script></Script>
   </Card>
   
+
+  <Card>
+    <CardNumber>SGQ-1329</CardNumber>
+    <Version>1.9.0</Version>
+    <Description> [GQ] ApontamentosDiarios e CartasCep - Não estavam desdobrando o monitoramento e tarefa a partir do indicador. </Description>
+    <Script></Script>
+  </Card>
+  
 </Cards>
