@@ -3639,12 +3639,12 @@
     <Version>1.10.0</Version>
     <Description>[PA] Inativar Planejamentos e Ações </Description>
     <Script>
-      IF COL_LENGTH('Pa_Planejamento','IsActive') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Pa_Planejamento' AND COLUMN_NAME = 'IsActive'), 0) = 0
       BEGIN
       ALTER table Pa_Planejamento Add IsActive Bit Not Null Default 1
       END
 
-      IF COL_LENGTH('Pa_Acao','IsActive') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Pa_Acao' AND COLUMN_NAME = 'IsActive'), 0) = 0
       BEGIN
       ALTER table Pa_Acao Add IsActive Bit Not Null Default 1
       END
@@ -3715,7 +3715,7 @@
 
       GO
 
-      IF COL_LENGTH('ParReportXFilter','FilterLevel') IS NOT NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ParReportXFilter' AND COLUMN_NAME = 'FilterLevel'), 0) = 0
       BEGIN
       ALTER table ParReportXFilter ALTER COLUMN FilterLevel int Not Null
       END
@@ -3821,7 +3821,7 @@
     <Version>1.10.0</Version>
     <Description>[RH] AppColeta - Criação da coluna 'Hash' para identificar as tarefas e cabeçalhos que pertencem a mesma coleta.</Description>
     <Script>
-      IF COL_LENGTH('Collection','Hash') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Collection' AND COLUMN_NAME = 'Hash'), 0) = 0
       BEGIN
       ALTER TABLE Collection
       ADD Hash varchar(64);
