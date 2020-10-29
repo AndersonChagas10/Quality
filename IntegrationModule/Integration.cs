@@ -103,13 +103,18 @@ namespace IntegrationModule
                     }
                     catch (Exception e)
                     {
-
+                        ex = e;
+                        factory.Dispose();
+                        return null;
                     }
                     finally
                     {
-                        factory.Dispose();
+                        
                     }
                 }
+
+                factory.Dispose();
+
             }
 
             return null;
