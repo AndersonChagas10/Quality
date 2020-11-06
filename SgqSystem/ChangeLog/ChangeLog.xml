@@ -3903,4 +3903,18 @@
     <Script></Script>
   </Card>
   
+  <Card>
+    <CardNumber>GRX-189</CardNumber>
+    <Version>1.10.0</Version>
+    <Description> [RH] Cabeçalho Auditor - Auditoria Comportamental (Parametrização)</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM ParFieldType WHERE Name='Auditor')
+      BEGIN
+      insert into ParFieldType
+      values (12,'Auditor', 'Auditor', GetDate(), null, 1)
+      END
+      GO
+    </Script>
+  </Card>
+  
 </Cards>
