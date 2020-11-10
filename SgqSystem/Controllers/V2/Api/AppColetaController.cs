@@ -613,9 +613,10 @@ namespace SgqSystem.Controllers.V2.Api
                    .Where(x => x.IsActive)
                    .ToList();
 
-                 var listaAuditor2 = db.UserSgq.Where(x => x.IsActive == true).ToList();
-                // var listaAuditor2 =  GetUsersByCompany(appParametrization.ParCompany_Id).ToList();  
+                AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
 
+                   var listaAuditor2 = appColetaBusiness.GetUsersByCompany(appParametrization.ParCompany_Id);
+                
                 foreach (var item in listaAuditor2)
                 {
                     // && item.Role.ToLower().Contains("Monitor Auditoria".ToLower()) - tirado para atender Liane em PROD
@@ -624,7 +625,7 @@ namespace SgqSystem.Controllers.V2.Api
                         listaAuditor.Add(listaAuditor2.Select(x => new UserSgqViewModel()
                         {
                             Id = item.Id,
-                            FullName = item.FullName
+                            Name = item.FullName
                         }).FirstOrDefault());
                     }
                 }
