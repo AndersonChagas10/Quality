@@ -92,3 +92,46 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade bd-example-modal-lg printable" id="myModalHeader" role="dialog">
+
+    <div id="printThisHeader">
+        @*This should BE printed!*@
+        <div class="modifyMe"></div>
+
+        <div class="modal-dialog modal-lg">
+
+            <!-- Modal content-->
+            <div class="modal-content" style="width:895px!important">
+
+
+                <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
+                    <div class="unitCode"><span id="estNameHeader"></span></div>
+                </div>
+
+                <div class="modal-body">
+                    <div id="correctiveActionModalHeader" class="modal-padrao" style="margin-left:10px;margin-right:10px;margin-top:15px;">
+                        <span id="Level3NameHeader" class="levelName" name="" style=""></span>
+                        <div id="paramsHeader" class="container-fluid">
+                            @Html.Hidden("ResultLevel3_Id")
+                            <div id="changeConformHeader" class="row"></div>
+                            <div class="col-sm-12 text-left" style="margin-top:10px;margin-bottom:10px;">
+                                <div class="alert alert-danger hide alertTextIsRequired">O preenchimento do Campo Texto é obrigatório para realizar a edição.</div>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <form id="divEditHeader" class="row"></form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+
+                    @Html.Partial("~/Views/RelatoriosSgq/_SelectTextAreaEditReason.cshtml")
+
+                    <button type="button" id="botaoFecharModalHeader" class="btn btn-default non-printable" data-dismiss="modal">@Resources.Resource.close</button>
+                    <button type="button" id="botaoSalvarHeader" onclick="SaveHeaderField()" class="btn btn-default non-printable">@Resources.Resource.save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
