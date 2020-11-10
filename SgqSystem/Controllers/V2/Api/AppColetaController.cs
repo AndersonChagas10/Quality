@@ -213,6 +213,7 @@ namespace SgqSystem.Controllers.V2.Api
             List<PargroupQualificationXParQualificationVewModel> listaPargroupQualificationXParQualification;
             List<PargroupQualificationXParLevel3ValueViewModel> listaPargroupQualificationXParLevel3Value;
             List<PargroupQualificationViewModel> listaPargroupQualification;
+            List<UserSgqViewModel> listaAuditor = new List<UserSgqViewModel>();
 
             GetAppParametrizationBusiness business = new GetAppParametrizationBusiness(appParametrization);
 
@@ -611,6 +612,22 @@ namespace SgqSystem.Controllers.V2.Api
                    .Where(x => listaPargroupQualification_Ids.Any(y => y == x.Id))
                    .Where(x => x.IsActive)
                    .ToList();
+
+                 var listaAuditor2 = db.UserSgq.Where(x => x.IsActive == true).ToList();
+                // var listaAuditor2 =  GetUsersByCompany(appParametrization.ParCompany_Id).ToList();  
+
+                foreach (var item in listaAuditor2)
+                {
+                    // && item.Role.ToLower().Contains("Monitor Auditoria".ToLower()) - tirado para atender Liane em PROD
+                    if (item.Role != null && item.Role.ToLower().Contains("Auditor".ToLower()))
+                    {
+                        listaAuditor.Add(listaAuditor2.Select(x => new UserSgqViewModel()
+                        {
+                            Id = item.Id,
+                            FullName = item.FullName
+                        }).FirstOrDefault());
+                    }
+                }
             }
 
             return Ok(new
@@ -644,7 +661,8 @@ namespace SgqSystem.Controllers.V2.Api
                 listaParQualification,
                 listaPargroupQualification,
                 listaPargroupQualificationXParQualification,
-                listaPargroupQualificationXParLevel3Value
+                listaPargroupQualificationXParLevel3Value,
+                listaAuditor
             });
         }
 

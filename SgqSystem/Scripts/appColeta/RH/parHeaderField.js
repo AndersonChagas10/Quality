@@ -211,11 +211,67 @@ function getInputOrSelect(parheaderField, flagPullRight, flagDisableRemoveDuplic
             html += '</div>';
             //input do tipo texto quando 
             break;
+        case 12:	//Auditor 
+            html += '<div id="" class="col-sm-3" name="" style="margin-bottom: 4px;">';
+            html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
+            html += '<input type="text" id="buscaAuditor" class="form-control col-sm-3" style="height:25px;" placeholder="Buscar Auditor">';
+            html += '<select class="form-control input-sm ddl" id="cb' + parheaderField.Id + '" name="cb" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldtype_Id + '" idpai="0" linknumberevaluetion="false" data-required="' + required + '" >';
+            html += getParMultipleValuesAuditor(parheaderField);
+            html += '</select>';
+            html += '</div>';
+            break;
         default:
             break;
     }
 
     return html;
+
+}
+
+$('body').off('keyup', '#buscaAuditor').on('keyup', '#buscaAuditor', function (e) {
+     
+    var listaAuditor = "";
+
+    listaAuditor += '<option value="">Selecione...</option>';
+
+    $(parametrization.listaAuditor).each(function (i, o) {
+
+        if (o.Name.toLowerCase().includes($('#buscaAuditor').val().toLowerCase())) {
+            listaAuditor += '<option value="' + o.Id + '">' + o.Name + '</option>';
+        }
+    });
+
+    if (listaAuditor == "" || listaAuditor == '<option value="">Selecione...</option>') {
+        listaAuditor = "<option value='' disabled selected>Nenhum resultado encontrado.</option>";
+    }
+
+    //limpa o campo
+    $(this).next().html('');
+
+    //monta com a nova lista 
+    $(this).next().html(listaAuditor);
+
+    //$($(this).next().attr('id')).html(listaAuditor);
+});
+
+function getParMultipleValuesAuditor() {
+
+    var parMultipleValues = parametrization.listaAuditor;
+
+    if (parMultipleValues && parMultipleValues.length > 0) {
+
+        var options = '<option value="">Selecione...</option>';
+
+        parMultipleValues.forEach(function (parMultipleValue) {
+            // options += '<option value="' + parMultipleValue.Id + '" punishmentvalue="' + parMultipleValue.PunishmentValue + '"' + (parMultipleValue.IsDefaultOption == 1 ? " selected" : "") + '>' + parMultipleValue.Name + '</option>';
+            options += '<option value="' + parMultipleValue.Id + '">' + parMultipleValue.Name + '</option>';
+        });
+
+        return options;
+
+    } else {
+        return "";
+    }
 
 }
 
