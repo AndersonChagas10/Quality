@@ -8,6 +8,7 @@ using DTO.DTO.Params;
 using DTO.ResultSet;
 using Newtonsoft.Json;
 using SgqService.ViewModels;
+using SgqServiceBusiness.Controllers.RH;
 using SgqSystem.Helpers;
 using System;
 using System.Collections.Generic;
@@ -948,6 +949,25 @@ namespace SgqSystem.Controllers.Api
                 {
                     SGQDBContext.ParFieldType ParFieldTypeDB = new SGQDBContext.ParFieldType();
                     //select.Values = ParFieldTypeDB.getIntegrationValues(headerField.Id, headerField.Description, collectionLevel2.UnitId).ToList();
+                }
+                else if(headerField.ParFieldType_Id == 12)
+                {
+                    List<ParMultipleValuesGeral> teste2 = new List<ParMultipleValuesGeral>();
+
+                    AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
+
+                    List<UserSgq> listaAuditor = appColetaBusiness.GetUsersByCompany(collectionLevel2.UnitId);
+
+                    foreach (var item in listaAuditor)
+                    {
+                        ParMultipleValuesGeral teste = new ParMultipleValuesGeral();
+                        teste.Name = item.FullName;
+                        teste.Id = item.Id;
+
+                        teste2.Add(teste);
+                    }
+
+                    select.Values = teste2;
                 }
                 else
                 {

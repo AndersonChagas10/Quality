@@ -722,6 +722,34 @@
 
                                 break;
 
+                            case 12:
+                                
+                                html = `<div id="" class="col-xs-6 col-sm-4 col-md-3 col-lg-3 itemHeaderField" name="">
+                                                      <div id="" class="form-group header" name="" style="margin-bottom: 4px;">
+                                                        <label class="font-small labelHeaderField">${o.HeaderFieldGeral.Name}</label>
+                                                        <select class="form-control input-sm" CollectionLevel2XParHeaderField_Id="${o.CollectionLevel2XParHeaderFieldGeral_Id}" CollectionLevel2_Id="${o.CollectionLevel2.Id}" ParHeaderField_Id="${o.HeaderFieldGeral.Id}" ParHeaderField_Name="${o.HeaderFieldGeral.Name}" ParHeaderField_Name="${o.HeaderFieldGeral.Id}" ParFieldType_Id="${o.HeaderFieldGeral.ParFieldType_Id}" Evaluation="${o.CollectionLevel2.EvaluationNumber}" Sample="${o.CollectionLevel2.Sample}" linknumberevaluetion="false" IsRequired="${o.HeaderFieldGeral.IsRequired}">`;
+
+                                if (o.Values) {
+
+                                    o.Values.forEach(function (oo) {
+
+                                        let selected = '';
+
+                                        if (oo.Id == o.ValueSelected)
+                                            selected = 'selected="selected"';
+
+                                        html += '<option value="' + oo.Id + '" ' + selected + '>' + oo.Name + '</option>';
+
+                                    });
+
+                                }
+
+                                html += `</select>
+                                                    </div>
+                                                </div>`;
+
+                                break;
+
                             default:
                         }
 

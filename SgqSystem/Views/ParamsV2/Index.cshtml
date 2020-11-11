@@ -558,6 +558,12 @@
 
     });
 
+    function removeAuditorHeaderField(lista) {
+        $(lista).filter(function (i, o) {
+            return o.Id != 12
+        });
+    }
+
     let preencheSelect = function (id, name, value, list, defaultText, callBack) {
 
         $(`select#${id}`).empty();
@@ -1116,10 +1122,10 @@
                 preencheSelect('selectL3GeralParFrequency', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
 
                 preencheSelect('selectL3CaracteristicaDeRisco', 'Name', 'Id', data.ParRiskCharacteristicTypes, 'Selecione a Caracteristica de Risco');
-
+           
                 preencheSelect('selectL2AvamCluster', 'Name', 'Id', data.ParClusters, 'Selecione o Cluster');
                 preencheSelect('selectL2AvamParCompany', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
-                preencheSelect('selectL2ParFieldType', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
+                preencheSelect('selectL2ParFieldType', 'Name', 'Id', removeAuditorHeaderField(data.ParFieldTypes),'Selecione o tipo');
 
                 parCompanysGlobal = data.ParCompanys
                 preencheSelect('selectParCompanyGeral', 'Name', 'Id', data.ParCompanys, 'Selecione a empresa');
@@ -1165,7 +1171,7 @@
 
                 preencheSelect('selectParFrequencyAV', 'Name', 'Id', data.ParFrequencies, 'Selecione o tipo de Frequência');
                 preencheSelect('selectRotina', 'Name', 'Id', data.RotinaIntegracao, 'Selecione a Rotina');
-                preencheSelect('selectL1ParFieldTypeDepartment', 'Name', 'Id', data.ParFieldTypes, 'Selecione o tipo');
+                preencheSelect('selectL1ParFieldTypeDepartment', 'Name', 'Id', removeAuditorHeaderField(data.ParFieldTypes), 'Selecione o tipo');
 
                 closeLoader();
                 verifyTabs('selectDCDepartment', 'dc');
