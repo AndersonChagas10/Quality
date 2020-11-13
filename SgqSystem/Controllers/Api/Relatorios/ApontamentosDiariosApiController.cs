@@ -961,10 +961,13 @@ namespace SgqSystem.Controllers.Api
                     foreach (var item in listaAuditor)
                     {
                         ParMultipleValuesGeral teste = new ParMultipleValuesGeral();
-                        teste.Name = item.FullName;
-                        teste.Id = item.Id;
+                        if (item.Role != null && item.Role.ToLower().Contains("Auditor".ToLower()))
+                        {
+                            teste.Name = item.FullName;
+                            teste.Id = item.Id;
 
-                        teste2.Add(teste);
+                            teste2.Add(teste);
+                        }
                     }
 
                     select.Values = teste2;

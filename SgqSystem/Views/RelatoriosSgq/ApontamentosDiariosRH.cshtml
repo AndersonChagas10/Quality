@@ -353,7 +353,7 @@
 
                         var tableLogTrack = $('#modalLogTrackHistory .modal-body');
                         $(tableLogTrack).html('');
-
+                        
                         $.get(urlLogTrackHeaderField + "/" + dataEdit.ResultLevel3Id, function (r) {
 
                             var htmlHead = "<thead><tr>";
@@ -389,7 +389,7 @@
                                 var html = "<td>" + o.addDate + "</td>";
                                 html += "<td>" + o.userSgq_Name + "</td>";
                                 html += "<td>" + o.obj.ParHeaderField_Name + "</td>";
-                                html += "<td>" + (!!o.obj.ParHeaderField_ValueName ? o.obj.ParHeaderField_ValueName : o.obj.Value) + "</td>";
+                                html += "<td>" + (!!o.obj.ParHeaderField_ValueName ? o.obj.ParHeaderField_ValueName : o.obj.Value) + " - " +o.obj.FullName + "</td>";
                                 html += "<td>" + o.parReason + "</td>";
                                 html += "<td>" + o.motivo + "</td>";
                                 return html;
