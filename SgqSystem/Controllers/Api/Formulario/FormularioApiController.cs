@@ -677,7 +677,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                                AND P2.Name like '%{search}%'
                                {sqlFilter}
                                ORDER BY p2.Id";
-
+ 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
                 return retorno;
