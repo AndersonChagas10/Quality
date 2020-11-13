@@ -573,6 +573,12 @@ namespace SgqSystem.Controllers
         }
 
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
+        public ActionResult AuditoriaComportamentalRH()
+        {
+            return View("~/Views/Relatorios/RH/AuditoriaComportamentalRH.cshtml", form);
+        }
+
+        [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult ExemploRelatorio()
         {
             return View(form);

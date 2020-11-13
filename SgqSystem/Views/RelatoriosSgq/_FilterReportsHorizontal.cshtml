@@ -1,0 +1,1595 @@
+﻿
+@using DTO
+@{ Layout = "../Shared/_LayoutReports.cshtml"; }
+
+
+<style>
+    .filter-list-buttons {
+        overflow-y: auto;
+        max-height: 350px;
+        padding: 0;
+    }
+
+    .daterangepicker .input-mini {
+        width: 100% !important;
+    }
+
+    .panel-body {
+        background-color: #eee;
+    }
+
+    .btn {
+        min-width: 60px;
+    }
+
+    .cor-fundo {
+        background-color: #eee;
+    }
+</style>
+
+<div class="page-content-wrapper">
+    <div class="page-content" style="padding:2px;">
+        <div class="col-sm-12 " id="divFilterReports">
+            <form id="filterReports">
+                <div>
+                    <div class="row">
+                        <div class="panel panel-default" style="margin-bottom:0px;">
+                            <div class="panel-heading" role="tab" id="collapseFiltros">
+                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFiltrosReference" aria-expanded="true" aria-controls="collapseFiltrosReference">
+                                    <h4 class="panel-title">
+                                        <i class="more-less glyphicon glyphicon-plus"></i> Filtros
+                                    </h4>
+                                </a>
+                            </div>
+                            <div id="collapseFiltrosReference" class="panel-body panel-collapse collapse" role="tabpanel" aria-labelledby="collapseFiltros">
+
+                                <input type="hidden" name="startDate" />
+                                <input type="hidden" name="endDate" />
+
+                                @if (ViewBag.ShowSelectDateMesAno == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <label class="col-sm-12 ">
+                                                        <strong>
+                                                            Data Inicio
+                                                        </strong>
+                                                    </label>
+                                                    <div class="col-sm-12 ">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <select class="form-control col-sm-6" id="selectMesInicio">
+                                                                    <option value="1">Janeiro</option>
+                                                                    <option value="2">Fevereiro</option>
+                                                                    <option value="3">Março</option>
+                                                                    <option value="4">Abril</option>
+                                                                    <option value="5">Maio</option>
+                                                                    <option value="6">Junho</option>
+                                                                    <option value="7">Julho</option>
+                                                                    <option value="8">Agosto</option>
+                                                                    <option value="9">Setembro</option>
+                                                                    <option value="10">Outubro</option>
+                                                                    <option value="11">Novembro</option>
+                                                                    <option value="12">Dezembro</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <select class="form-control col-sm-6" id="selectAnoInicio">
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <label class="col-sm-12 ">
+                                                        <strong>
+                                                            Data Final
+                                                        </strong>
+                                                    </label>
+                                                    <div class="col-sm-12 ">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <select class="form-control col-sm-6" id="selectMesFinal">
+                                                                    <option value="1">Janeiro</option>
+                                                                    <option value="2">Fevereiro</option>
+                                                                    <option value="3">Março</option>
+                                                                    <option value="4">Abril</option>
+                                                                    <option value="5">Maio</option>
+                                                                    <option value="6">Junho</option>
+                                                                    <option value="7">Julho</option>
+                                                                    <option value="8">Agosto</option>
+                                                                    <option value="9">Setembro</option>
+                                                                    <option value="10">Outubro</option>
+                                                                    <option value="11">Novembro</option>
+                                                                    <option value="12">Dezembro</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <select class="form-control col-sm-6" id="selectAnoFinal">
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowCurrentDate == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>
+                                                <strong>
+                                                    @Resources.Resource.date
+                                                </strong>
+                                            </label>
+                                            <input type="text" class="form-control"
+                                                   name="currentDate" />
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowRangeDate == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group" style="margin-bottom:0;padding-right: 15px;">
+                                            <label>
+                                                <strong>
+                                                    @Resources.Resource.date
+                                                </strong>
+                                            </label>
+                                            <input type="text" class="form-control"
+                                                   name="dateRange" />
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowRangeMonthDate == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>
+                                                <strong>
+                                                    @Resources.Resource.date
+                                                </strong>
+                                            </label>
+                                            <input type="text" class="form-control"
+                                                   name="dateMonthRange" />
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowTurnoSeara == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Turno</strong></label>
+                                            <select class="form-control" name="ShowTurnoSeara" id="TurnoSeara">
+                                                <option value="-1">Selecione</option>
+                                                <option value="Turno 1">Turno 1</option>
+                                                <option value="Turno 2">Turno 2</option>
+                                                <option value="Turno 3">Turno 3</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowDimensaoGrafico == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Dimensão Gráfico</strong></label>
+                                            <select class="form-control" name="ShowDimensaoGrafico_Id" id="dimensaoGrafico">
+                                                <option value="9">Processos</option>
+                                                <option value="1">Regionais</option>
+                                                <option value="2" selected>Unidades</option>
+                                                <option value="3">Departamentos</option>
+                                                <option value="4">Grupo de Indicadores</option>
+                                                <option value="5">Indicadores</option>
+                                                <option value="7">Grupo de Tarefas</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowModeloGrafico == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Modelo Gráfico</strong></label>
+                                            <select class="form-control" name="ShowModeloGrafico_Id" id="modeloGrafico">
+                                                <option value="1">Comparativo</option>
+                                                <option value="2">Evolutivo Mensal</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowSenso == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Senso</strong></label>
+                                            <select class="form-control" name="ShowSenso_Id" id="SensoDdl">
+                                                <option value="0">Todos</option>
+                                                <option value="1">Utilização</option>
+                                                <option value="2">Organização</option>
+                                                <option value="3">Limpeza</option>
+                                                <option value="4">Saúde</option>
+                                                <option value="5">Disciplina</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowCritico == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Crítico</strong></label>
+                                            <select class="form-control" name="ShowCritico_Id" id="CriticoDdl">
+                                                <option value="0">Todos</option>
+                                                <option value="1">Sim</option>
+                                                <option value="2">Não</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowTipoSenso == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Tipo</strong></label>
+                                            <select class="form-control" name="ShowTipoSenso_Id" id="TipoSensoDdl">
+                                                <option value="0">Todos</option>
+                                                <option value="1">Estrutural</option>
+                                                <option value="2">Comportamental</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowSKU == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong>SKU</strong></label>
+                                                <button type="button" data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=SKU_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredSKU", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowSKUDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12" style="padding-left:0px;">
+                                                <select class="form-control" name="SKU_Ids" multiple style="width:100%;"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                }
+
+
+                                @if (ViewBag.ShowParModule == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong>Módulo</strong></label>
+                                                <button type="button" data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parModule_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParModule", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParModuleDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12" style="padding-left:0px;">
+                                                <select class="form-control" name="parModule_Ids" style="width:100%;"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParClusterGroup == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong>@Resources.Resource.cluster_group</strong></label>
+                                                <button type="button" data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parClusterGroup_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParClustersGroup", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParClusterGroupDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12" style="padding-left:0px;">
+                                                <select class="form-control" name="parClusterGroup_Ids" multiple style="width:100%;"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParCluster == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong>@Resources.Resource.cluster</strong></label>
+                                                <button type="button" data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parCluster_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParClusters", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParClusterDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12" style="padding-left:0px;">
+                                                <select class="form-control" name="parCluster_Ids" multiple style="width:100%;"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParStructure == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong>Estruturas</strong></label>
+                                                <button type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parStructure_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParStructure", "api/Formulario")">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12" style="padding-left:0px;">
+                                                <select class="form-control" name="parStructure_Ids" multiple style="width:100%;"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                 
+
+                                @if (ViewBag.ShowParStructureGroup == true) //Grupo de estrutura
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong>Grupo de Empresa</strong></label>
+                                                <button type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parStructureGroup_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParStructureGroup", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParStructureGroupDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12" style="padding-left:0px;">
+                                                <select class="form-control" name="parStructureGroup_Ids" multiple style="width:100%;"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParStructure1 == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong>@Resources.Resource.parStructure1</strong></label>
+                                                <button type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parStructure1_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParStructure1", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParStructureDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12" style="padding-left:0px;">
+                                                <select class="form-control" name="parStructure1_Ids" style="width:100%;"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParStructure2ListButtons == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong class="margin-right-10">@Resources.Resource.parStructure2</strong></label>
+                                                <input type="checkbox" class="form-check-input" id="selecionarTodasParStructure2"
+                                                       data-filter-list-buttons-name="parStructure2_Ids">
+                                                <label class="form-check-label" for="selecionarTodasParStructure2">Selecionar todas</label>
+                                            </div>
+                                            <div class="col-sm-12 filter-list-buttons" style="padding-left:0px;"
+                                                 data-filter-list-buttons-url="@Url.Action("GetFilteredParStructure2", "api/Formulario")"
+                                                 data-filter-list-buttons-name="parStructure2_Ids">
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParStructure2 == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong>@Resources.Resource.parStructure2</strong></label>
+                                                <button type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parStructure2_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParStructure2", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParStructureDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12" style="padding-left:0px;">
+                                                <select class="form-control col-sm-12" name="parStructure2_Ids" multiple style="width:100%;"></select>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParStructure3ListButtons == true)
+                                {
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding: 5px 0px;">
+                                                <label><strong class="margin-right-10">@Resources.Resource.parStructure3</strong></label>
+                                                <button type="button" class="btn-sm btn-primary" id="selecionarTodasParStructure3"
+                                                        data-filter-list-buttons-name-selecionar-todas="parStructure3_Ids"
+                                                        onclick="selecionarTodosBotoes(this);">
+                                                    Selecionar todas
+                                                </button>
+                                                <button type="button" class="btn-sm btn-primary" id="limparTodasParStructure3"
+                                                        data-filter-list-buttons-name-limpar-todas="parStructure3_Ids"
+                                                        onclick="limparTodosBotoes(this);">
+                                                    Limpar todas
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12 filter-list-buttons" style="padding-left:0px;"
+                                                 data-filter-list-buttons-url="@Url.Action("GetFilteredParStructure3", "api/Formulario")"
+                                                 data-filter-list-buttons-name="parStructure3_Ids">
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParStructure3 == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong>@Resources.Resource.parStructure3</strong></label>
+                                                <button type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parStructure3_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParStructure3", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParStructureDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12" style="padding-left:0px;">
+                                                <select class="form-control" name="parStructure3_Ids" multiple style="width:100%;"></select>
+                                                <select class="form-control" name="parStructure3_Ids" style="width:100%;"></select>
+                                            </div> 
+                                        </div>
+
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParCompany == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group" style="margin-bottom:0">
+                                            <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                                <label><strong>@Resources.Resource.unit</strong></label>
+                                                <button type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parCompany_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParCompany", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParCompanyDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                                <select class="form-control " name="parCompany_Ids" multiple style="width:100%;"></select>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParCompanyListButtons == true)
+                                {
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding:5px 0px;">
+                                                <label><strong class="margin-right-10">@Resources.Resource.unit</strong></label>
+                                                <button type="button" class="btn-sm btn-primary" id="selecionarTodasCompany"
+                                                        data-filter-list-buttons-name-selecionar-todas="parCompany_Ids"
+                                                        onclick="selecionarTodosBotoes(this);">
+                                                    Selecionar todas
+                                                </button>
+                                                <button type="button" class="btn-sm btn-primary" id="limparTodasCompany"
+                                                        data-filter-list-buttons-name-limpar-todas="parCompany_Ids"
+                                                        onclick="limparTodosBotoes(this);">
+                                                    Limpar todas
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12 filter-list-buttons" style="padding-left:0px;"
+                                                 data-filter-list-buttons-url="@Url.Action("GetFilteredParCompanyInitials", "api/Formulario")"
+                                                 data-filter-list-buttons-name="parCompany_Ids">
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParDepartment == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>@Resources.Resource.departments</strong></label>
+                                            <button type="button"
+                                                    data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=parDepartment_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParDepartment", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowParDepartmentDefault">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="parDepartment_Ids" multiple style="width:100%;">
+                                                @if (ViewBag.ShowParDepartmentDefault != null)
+                                                {
+                                                    <option value="">@ViewBag.ShowParDepartmentDefault</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowShift == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>@Resources.Resource.shift</strong></label>
+                                            <button type="button"
+                                                    data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=shift_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredShift", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowShiftDefault">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="shift_Ids" multiple style="width:100%;"></select>
+                                        </div>
+                                    </div>
+
+                                }
+
+                                @if (ViewBag.ShowParGroupParLevel1 == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>Grupo de Indicadores</strong></label>
+                                            <button type="button"
+                                                    data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=parGroupParLevel1_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParGroupParLevel1s", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowParGroupParLevel1Default">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="parGroupParLevel1_Ids" multiple style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                }
+
+
+
+
+
+                                @if (ViewBag.ShowParSecao == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>Seção</strong></label>
+                                            <button type="button"
+                                                    data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=parSecao_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParDepartmentFilho", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowParSecaoDefault">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="parSecao_Ids" multiple style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParCargo == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>Cargo</strong></label>
+                                            <button type="button"
+                                                    data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=parCargo_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParCargo", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowParCargoDefault">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="parCargo_Ids" multiple style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParCriticalLevel == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>@Resources.Resource.criticalLevel</strong></label>
+                                            <button type="button"
+                                                    data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=parCriticalLevel_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParCriticalLevels", "api/Formulario")">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="parCriticalLevel_Ids" multiple style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParLevel1 == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>@Resources.Resource.level1</strong></label>
+                                            <button type="button" data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=parLevel1_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParLevel1", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowParLevel1Default">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="parLevel1_Ids" multiple style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParLevel2 == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>@Resources.Resource.level2</strong></label>
+                                            <button type="button" data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=parLevel2_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParLevel2", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="parLevel2_Ids" multiple style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParLevel3Group == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>Grupo de Tarefas</strong></label>
+                                            <button type="button"
+                                                    data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=ParLevel3Group_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParLevel3Group_Ids", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowParLevel3GroupDefault">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="ParLevel3Group_Ids" multiple style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParLevel3 == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>@Resources.Resource.level3</strong></label>
+                                            <button type="button" data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=parLevel3_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParLevel3", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowParLevel3Default">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="parLevel3_Ids" multiple style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                }
+
+                                <select class="form-control hidden" name="IsCascadeLevel2Level3">
+                                    @if (ViewBag.IsCascadeLevel2Level3 == 0)
+                                    {
+                                        <option value="0" selected></option>
+                                    }
+                                    else
+                                    {
+                                        <option value="1" selected></option>
+                                    }
+                                </select>
+
+                                @if (ViewBag.ShowParLevel1GQ == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>@Resources.Resource.level1</strong></label>
+                                            <button type="button" data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=parLevel1_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParLevel1GQ", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowParLevel1Default">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="parLevel1_Ids" multiple style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParLevel2GQ == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                                <label><strong>@Resources.Resource.level2Setor</strong></label>
+                                                <button type="button" data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parLevel2_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParLevel2GQ", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                                <select class="form-control" name="parLevel2_Ids" multiple style="width:100%;"></select>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParLevel3GQ == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>@Resources.Resource.level3</strong></label>
+                                            <button type="button" data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=parLevel3_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredParLevel3GQ", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowParLevel3Default">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="parLevel3_Ids" multiple style="width:100%;"></select>
+                                        </div>
+                                    </div>
+                                }
+
+
+                                @if (ViewBag.ShowParLevel1Status == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Status do Indicador</strong></label>
+                                            <select class="form-control" name="parLevel1Status_Ids">
+                                                <option value="0">Todos</option>
+                                                <option value="1">Dentro da meta</option>
+                                                <option value="2">Fora da meta</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+
+                                @if (ViewBag.ShowAcaoStatus == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Plano de Ação Concluído</strong></label>
+                                            <select class="form-control" name="acaoStatus">
+                                                @if (ViewBag.ShowAcaoStatusDefault != null)
+                                                {
+                                                    <option value="">@ViewBag.ShowAcaoStatusDefault</option>
+                                                }
+
+                                                <option value="1">Sim</option>
+                                                <option value="2">Não</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowPeriodo == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Periodo</strong></label>
+                                            <select class="form-control" name="periodo">
+                                                <option value="1">Dia</option>
+                                                <option value="2">Semana</option>
+                                                <option value="3">Mês</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowNCComPeso == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Exibe NC Com peso</strong></label>
+                                            <select class="form-control" name="ncComPeso">
+                                                <option value="1">Sim</option>
+                                                <option value="2">Não</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowPeso == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>Peso</strong></label>
+                                            <button type="button" data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=peso]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredPeso", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowPesoDefault">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="peso" style="width:100%;">
+                                                @if (ViewBag.ShowPesoDefault != null)
+                                                {
+                                                    <option value="">@ViewBag.ShowPesoDefault</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                }
+
+                                @if (ViewBag.ShowDesdobramentoTipo == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Desdobramento</strong></label>
+                                            <select class="form-control" name="desdobramento">
+                                                @if (ViewBag.ShowDesdobramentoTipoDefault != null)
+                                                {
+                                                    <option value="">@ViewBag.ShowDesdobramentoTipoDefault</option>
+                                                }
+                                                <option value="1">Monitoramento</option>
+                                                <option value="2">Tarefa</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowUserSgqSurpervisor == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <label><strong>Surpervisor</strong></label>
+                                            <button type="button" data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=userSgqSurpervisor_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredUserSgqSurpervisor", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowUserSgqSurpervisorDefault">
+                                                Abrir
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                            <select class="form-control" name="userSgqSurpervisor_Ids" multiple style="width:100%;">
+                                                @if (ViewBag.ShowUserSgqSurpervisorDefault != null)
+                                                {
+                                                    <option value="">@ViewBag.ShowUserSgqSurpervisorDefault</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowUserSgqMonitor == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Monitor</strong></label>
+                                            <button type="button" data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=userSgqMonitor_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetFilteredUserSgqMonitor", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowUserSgqMonitorDefault">
+                                                Abrir
+                                            </button>
+                                            <select class="form-control" name="userSgqMonitor_Ids" multiple>
+                                                @if (ViewBag.ShowUserSgqMonitorDefault != null)
+                                                {
+                                                    <option value="">@ViewBag.ShowUserSgqMonitorDefault</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowUserSgqAuditor == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                                <label><strong>@Resources.Resource.auditor</strong></label>
+                                                <button type="button" data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=userSgqAuditor_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredUserSgqAuditor", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowUserSgqAuditorDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                                <select class="form-control" name="userSgqAuditor_Ids" multiple style="width:100%;">
+                                                    @if (ViewBag.ShowUserSgqAuditorDefault != null)
+                                                    {
+                                                        <option value="">@ViewBag.ShowUserSgqAuditorDefault</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowTipoEdicao == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Tipo de Edição</strong></label>
+                                            <select class="form-control" name="tipoEdicao">
+                                                @*<option value="0">Todos</option>*@
+                                                <option value="1">Edição de Resultados</option>
+                                                <option value="2">Edição de Cabeçalho</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParReason == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Tipo de Motivos</strong></label>
+                                            <button type="button" data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=ParReason_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetParReason", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.ShowParReasonDefault">
+                                                Abrir
+                                            </button>
+                                            <select class="form-control" name="ParReason_Ids" multiple>
+                                                @if (ViewBag.ShowParReasonDefault != null)
+                                                {
+                                                    <option value="">@ViewBag.ShowParReasonDefault</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                }
+
+                                @if (ViewBag.showParFrequency == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label><strong>Frequência</strong></label>
+                                            <button type="button" data-filtroselect3-btn
+                                                    data-filtroselect3-select="select[name=ParFrequency_Ids]"
+                                                    data-filtroselect3-url="@Url.Action("GetParFrequency", "api/Formulario")"
+                                                    data-filtroselect3-default-select="@ViewBag.showParFrequency">
+                                                Abrir
+                                            </button>
+                                            <select class="form-control" name="ParFrequency_Ids" multiple>
+                                                @if (ViewBag.showParFrequency != null)
+                                                {
+                                                    <option value="">@ViewBag.showParFrequency</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                }
+
+                                <div class="col-sm-12" style="padding-top: 5px">
+                                    <button type="button" class="btn btn-primary  "
+                                            id="btnSend" onclick="enviarFiltro();">
+                                        Filtrar
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 " id="divReportContent">
+
+            <div class="row" style="padding-bottom:10px;padding-top:5px">
+                <div class="col-sm-12">
+                    @*<button type="button" class="btn btn-warning pull-left"
+                                id="btnToggleDivFilterReports"
+                                onclick="toggleDivFilterReports();">
+                            < Esconder Filtros
+                        </button>*@
+                    @if (ViewBag.pivotTable == true)
+                    {
+                        <button type="button" class="btn btn-primary pull-left"
+                                id="tabela">
+                            Tabela
+                        </button>
+                        <button type="button" class="btn btn-primary pull-left"
+                                id="pivot-table">
+                            Analítico
+                        </button>
+                    }
+                    <button type="button" class="btn btn-primary pull-right"
+                                id="btnSend" onclick="enviarFiltro();">
+                            @Resources.Resource.refresh
+                        </button>
+                    <h4 class="text-center"><strong>@ViewBag.Title</strong></h4>
+                </div>
+            </div>
+
+            @RenderSection("Content", required: true)
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/Select3/select3.js"></script>
+    <script>
+         $(document).ready(function () {
+            var dados =  atualizaObjFiltro();
+             refreshFilterListButtons();
+             getDataAtual();
+         });
+        function toggleDivFilterReports() {
+            if ($('#divFilterReports').hasClass("hide")) {
+                $('#divFilterReports').removeClass('hide');
+                $('#divReportContent').attr('class', 'col-sm-10');
+                $('#btnToggleDivFilterReports').text('< Esconder Filtros');
+
+            } else {
+                $('#divFilterReports').addClass('hide');
+                $('#divReportContent').attr('class', 'col-sm-12');
+                $('#btnToggleDivFilterReports').text('> Mostrar Filtros');
+            }
+        }
+
+
+        $('#filterReports select').on('change', function () {
+            preencheFiltrosAjax();
+        });
+
+        var objFiltroListButton = [];
+        var dataFiltro = [];
+        var objFiltro = {
+            Param: {}
+        };
+
+        function atualizaObjFiltro() {
+            var objFiltroParam = objFiltro.Param;
+            objFiltro = $('#filterReports').serializeObject();
+            $(Object.keys(objFiltro)).each(function (i, o) {
+                if (o.indexOf("Date") < 0) {
+                    objFiltro[o] = Array.isArray(objFiltro[o]) ? objFiltro[o] : [objFiltro[o]];
+                }
+            });
+            objFiltro.Param = objFiltroParam;
+            objFiltro.ShowUserCompanies = @Html.Raw(Json.Encode(ViewBag.ShowUserCompanies));
+            objFiltro.ShowLinkedFilters = @Html.Raw(Json.Encode(ViewBag.ShowLinkedFilters));
+
+            atualizaObjFiltroComBaseNoListButton();
+        }
+
+        function preencheFiltrosAjax() {
+            atualizaObjFiltro();
+            return;
+            openLoader('Carregando Filtros...');
+            $.ajax({
+                url: "@Html.Raw(Url.Action("GetForm", "api/Formulario"))",
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                    $("#resultado").html("ENVIANDO...");
+                }
+            })
+            .done(function (data) {
+                preencheFiltros(data);
+                inicializaSelect2();
+                closeLoader();
+            })
+            .fail(function (jqXHR, textStatus, msg) {
+                console.log(msg);
+                closeLoader();
+            });
+        }
+
+        function inicializaSelect2() {
+
+            $('select[name="parStructure_Ids"]').select2();
+            $('select[name="parCompany_Ids"]').select2();
+            $('select[name="shift_Ids"]').select2();
+            $('select[name="parDepartment_Ids"]').select2();
+            $('select[name="parSecao_Ids"]').select2();
+            $('select[name="parCargo_Ids"]').select2();
+            $('select[name="parGroupParLevel1_Ids"]').select2();
+            $('select[name="parLevel1_Ids"]').select2();
+            $('select[name="parLevel2_Ids"]').select2();
+            $('select[name="parLevel3_Ids"]').select2();
+            $('select[name="parCriticalLevel_Ids"]').select2();
+            $('select[name="parStructureGroup_Ids"]').select2();
+            $('select[name="parStructure1_Ids"]').select2();
+            $('select[name="parStructure2_Ids"]').select2();
+            $('select[name="parStructure3_Ids"]').select2();
+            $('select[name="parCluster_Ids"]').select2();
+            $('select[name="parClusterGroup_Ids"]').select2();
+            $('select[name="parLevel1Status_Ids"]').select2();
+            $('select[name="acaoStatus"]').select2();
+            $('select[name="periodo"]').select2();
+            $('select[name="parModule_Ids"]').select2();
+            $('select[name="ncComPeso"]').select2();
+            $('select[name="peso"]').select2();
+            $('select[name="desdobramento"]').select2();
+            $('select[name="userSgqSurpervisor_Ids"]').select2();
+            $('select[name="userSgqMonitor_Ids"]').select2();
+            $('select[name="ParReason_Ids"]').select2();
+            $('select[name="tipoEdicao"]').select2();
+            $('select[name="userSgqAuditor_Ids"]').select2();
+            $('select[name="ParFrequency_Ids"').select2();
+
+            $('select[name="ParLevel3Group_Ids"]').select2();
+            $('select[name="SKU_Ids"]').select2();
+        }
+
+        inicializaSelect2();
+        preencheFiltrosAjax();
+
+        function preencheFiltros(data) {
+
+            dataFiltro = data;
+
+            $('#filterReports select').off('change');
+
+            $('select[name="parStructure_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParStructures, "Id", "Name", objFiltro["parStructure_Ids"]));
+            $('select[name="parStructure2_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParStructuresRegional, "Id", "Name", objFiltro["parStructure2_Ids"]));
+            $('select[name="parCompany_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParCompanies, "Id", "Name", objFiltro["parCompany_Ids"]));
+            $('select[name="shift_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.Shifts, "Id", "Description", objFiltro["shift_Ids"]));
+            $('select[name="parDepartment_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParDepartments, "Id", "Name", objFiltro["parDepartment_Ids"]));
+            $('select[name="parSecao_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParSecoes, "Id", "Name", objFiltro["parSecao_Ids"]));
+            $('select[name="parGroupParLevel1_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParGroupParLevel1s, "Id", "Name", objFiltro["parGroupParLevel1_Ids"]));
+            $('select[name="parCargo_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParCargos, "Id", "Name", objFiltro["parCargo_Ids"]));
+            $('select[name="parLevel1_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParLevel1s, "Id", "Name", objFiltro["parLevel1_Ids"]));
+            $('select[name="parLevel2_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParLevel2s, "Id", "Name", objFiltro["parLevel2_Ids"]));
+            $('select[name="parLevel3_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParLevel3s, "Id", "Name", objFiltro["parLevel3_Ids"]));
+            $('select[name="parLevel1Status_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParLevel1Status, "Id", "Name", objFiltro["parLevel1Status_Ids"]));
+            $('select[name="acaoStatus"]').html(
+                retornaOptionsPeloArray(dataFiltro.AcaoStatus, "Id", "Name", objFiltro["acaoStatus"]));
+            $('select[name="periodo"]').html(
+                retornaOptionsPeloArray(dataFiltro.Periodo, "Id", "Name", objFiltro["periodo"]));
+            $('select[name="parModule_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.ParModules, "Id", "Name", objFiltro["parModule_Ids"]));
+            $('select[name="peso"]').html(
+                retornaOptionsPeloArray(dataFiltro.Pesos, "Id", "name", objFiltro["peso"]));
+            $('select[name="desdobramento"]').html(
+                retornaOptionsPeloArray(dataFiltro.Desdobramentos, "Id", "Name", objFiltro["desdobramento"]));
+            $('select[name="userSgqSurpervisor_Ids"]').html(
+                retornaOptionsPeloArray(dataFiltro.UserSgqSurpervisores, "Id", "Name", objFiltro["userSgqSurpervisor_Ids"]));
+
+            $('select[name="parStructure_Ids"]').trigger('change');
+            $('select[name="parCompany_Ids"]').trigger('change');
+            $('select[name="shift_Ids"]').trigger('change');
+            $('select[name="parDepartment_Ids"]').trigger('change');
+            $('select[name="parCargo_Ids"]').trigger('change');
+            $('select[name="parLevel1_Ids"]').trigger('change');
+            $('select[name="parLevel2_Ids"]').trigger('change');
+            $('select[name="parLevel3_Ids"]').trigger('change');
+            $('select[name="parCriticalLevel_Ids"]').trigger('change');
+            $('select[name="parStructure_Ids"]').trigger('change');
+            $('select[name="parStructure1_Ids"]').trigger('change');
+            $('select[name="parStructure2_Ids"]').trigger('change');
+            $('select[name="parStructure3_Ids"]').trigger('change');
+            $('select[name="parCluster_Ids"]').trigger('change');
+            $('select[name="parClusterGroup_Ids"]').trigger('change');
+            $('select[name="parGroupParLevel1_Ids"]').trigger('change');
+            $('select[name="parLevel1Status_Ids"]').trigger('change');
+            $('select[name="acaoStatus"]').trigger('change');
+            $('select[name="periodo"]').trigger('change');
+            $('select[name="parModule_Ids"]').trigger('change');
+            $('select[name="ncComPeso"]').trigger('change');
+            $('select[name="peso"]').trigger('change');
+            $('select[name="desdobramento"]').trigger('change');
+            $('select[name="userSgqSurpervisor_Ids"]').trigger('change');
+
+            $('#filterReports select').on('change', function () {
+                preencheFiltrosAjax();
+            });
+        }
+
+        function retornaOptionsPeloArray(lista, value, text, listaSelecionada, defaultText) {
+
+            var html = "";
+
+            if (typeof (defaultText) != 'undefined') {
+                html += '<option value="">' + defaultText + '</option>';
+            }
+
+            $(lista).each(function (i, o) {
+
+                var selecionado = listaSelecionada != null ?
+                    $.grep(Array.isArray(listaSelecionada) ? listaSelecionada : [listaSelecionada],
+                        function (obj) { return obj == o[value] }) : [];
+
+                var selected = "";
+
+                if (selecionado.length > 0)
+                    selected = "selected";
+
+                html += '<option value="' + o[value] + '" ' + selected + '>' + o[text] + '</option>';
+
+            });
+
+            return html;
+        }
+
+        /*DATE RANGE PICKER*/
+
+        var rangesEUA = {
+            '⊲ Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '⊲ Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            '⊲ Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            '⊲ Last 365 Days': [moment().subtract(12, 'month'), moment()],
+            '⬚ This Month': [moment().startOf('month'), moment().endOf('month')],
+            '⬚ Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            '⬚ This Year': [moment().startOf('year'), moment().endOf('year')],
+            '⬚ Last Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+        }
+
+        var rangesBR = {
+            '⊲ Ontem': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '⊲ Últimos 7 Dias': [moment().subtract(6, 'days'), moment()],
+            '⊲ Últimos 30 Dias': [moment().subtract(29, 'days'), moment()],
+            '⊲ Últimos 365 Dias': [moment().subtract(12, 'month'), moment()],
+            '⬚ Este Mês': [moment().startOf('month'), moment().endOf('month')],
+            '⬚ Último Mês': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            '⬚ Este Ano': [moment().startOf('year'), moment().endOf('year')],
+            '⬚ Último Ano': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+        }
+
+        var configLayout = @Html.Raw(Json.Encode(GlobalConfig.LanguageBrasil));
+        var rangesCalendar;
+
+        /*Configura date range picker para PT-BR*/
+        if (configLayout) {
+
+            moment.locale("Pt-Br");
+            moment.defaultFormat = "DD/MM/YYYY";
+
+            $.fn.daterangepicker('locale', {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "fromLabel": "de",
+                "toLabel": "até",
+                "customRangeLabel": "Customizado",
+                "weekLabel": "W",
+                "daysOfWeek": [
+                    "Dom",
+                    "Seg",
+                    "Ter",
+                    "Qua",
+                    "Qui",
+                    "Sex",
+                    "Sab"
+                ],
+                "monthNames": [
+                    "Janeiro",
+                    "Fevereiro",
+                    "Março",
+                    "Abril",
+                    "Maio",
+                    "Junho",
+                    "Julho",
+                    "Agosto",
+                    "Setembro",
+                    "Outubro",
+                    "Novembro",
+                    "Dezembro"
+                ],
+            });
+
+            rangesCalendar = rangesBR;
+
+        } else {
+
+            moment.defaultFormat = "MM/DD/YYYY";
+
+            $.fn.daterangepicker('locale', {
+                "format": "MM/DD/YYYY",
+                "separator": " - ",
+            });
+
+            rangesCalendar = rangesEUA;
+
+        }
+
+        $.fn.daterangepicker('ranges', rangesCalendar);
+
+        var start = moment();
+        var end = moment();
+
+        function callbackDateRange(start, end) {
+            $('input[name=startDate]').val(start.format("YYYY-MM-DD"));
+            $('input[name=endDate]').val(end.format("YYYY-MM-DD"));
+            atualizaObjFiltro();
+        }
+
+        var configCallendar = {};
+        moment.locale('pt-BR');
+        $('input[name=dateRange]').daterangepicker({
+            startDate: start,
+            endDate: end,
+            locale: {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "customRangeLabel": "Seleção",
+            },
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            linkedCalendars: false,
+            ranges: rangesCalendar
+        }, callbackDateRange);
+
+        $('input[name=dateMonthRange]').daterangepicker({
+            startDate: start,
+            endDate: end,
+            locale: {
+                "format": "MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "customRangeLabel": "Seleção",
+            },
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            linkedCalendars: false,
+            ranges: rangesCalendar
+        }, callbackDateRange);
+
+        /*SIMPLE DATE PICKER*/
+        $('input[name="currentDate"]').daterangepicker({
+            singleDatePicker: true,
+            startDate: start,
+            endDate: end,
+            locale: {
+                "format": "DD/MM/YYYY",
+                "separator": " - ",
+                "applyLabel": "Aplicar",
+                "cancelLabel": "Cancelar",
+                "customRangeLabel": "Seleção",
+            },
+            alwaysShowCalendars: true,
+            showDropdowns: true,
+            linkedCalendars: false
+        }, callbackDateRange);
+
+        setTimeout(function () {
+            callbackDateRange(start, end);
+        }, 500);
+
+        Select3.initialize(function () { return objFiltro });
+
+        $('#collapseFiltrosReference').on('hidden.bs.collapse', function () {
+            $(".more-less").addClass("glyphicon-plus");
+            $(".more-less").removeClass("glyphicon-minus");
+        })
+
+        $('#collapseFiltrosReference').on('shown.bs.collapse', function () {
+            $(".more-less").addClass("glyphicon-minus");
+            $(".more-less").removeClass("glyphicon-plus");
+        })
+
+        function refreshFilterListButtons() {
+            $('[data-filter-list-buttons-url]').each(function (i, o) {
+                var url = $(o).attr('data-filter-list-buttons-url');
+                var name = $(o).attr('data-filter-list-buttons-name');
+                if (!objFiltroListButton[name]) {
+                    objFiltroListButton[name] = [];
+                }
+
+                atualizaObjFiltro();
+
+                openLoader('Carregando Filtros...');
+                $.ajax({
+                    url: url + "?search=",
+                    type: 'post',
+                    data: JSON.stringify(objFiltro),
+                    dataType: "JSON",
+                    contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                    beforeSend: function () { }
+                })
+                    .done(function (data) {
+                        if (data) {
+                            $(o).empty();
+                            var tempFiltroListButton = [];
+                            for (var j = 0; j < data.length; j++) {
+                                var o1 = data[j];
+                                var buttonStateClass = "btn-default";
+                                if (objFiltroListButton[name].indexOf(o1.Id+"") >= 0) {
+                                    buttonStateClass = "btn-info";
+                                    tempFiltroListButton.push(o1.Id + "");
+                                }
+                                $(o).append(
+                                    `<button type='button' onclick='handleClickFilterButton(this)'
+                                    class='btn ${buttonStateClass}
+                                    btn-filter-button' data-id="${o1.Id}" data-name="${name}">${o1.Name}</button>`);
+                            }
+                            objFiltroListButton[name] = tempFiltroListButton;
+                        }
+                        closeLoader();
+                    })
+                    .fail(function (jqXHR, textStatus, msg) {
+                        console.log(msg);
+                        closeLoader();
+                    });
+            });
+        }
+
+        var isHandleClickExecuting = false;
+        function handleClickFilterButton(btn) {
+            if (!isHandleClickExecuting) {
+                isHandleClickExecuting = true;
+                var id = $(btn).attr('data-id');
+                var name = $(btn).attr('data-name');
+                var posicao = objFiltroListButton[name].indexOf(id);
+                if (posicao >= 0) {
+                    $(btn).addClass('btn-default').removeClass('btn-info');
+                    objFiltroListButton[name].splice(posicao, 1);
+                } else {
+                    $(btn).removeClass('btn-default').addClass('btn-info');
+                    objFiltroListButton[name].push(id);
+                }
+                isHandleClickExecuting = false;
+
+                setTimeout(function () {
+                    refreshFilterListButtons();
+                },1000);
+            }
+        }
+
+        function atualizaObjFiltroComBaseNoListButton() {
+            Object.keys(objFiltroListButton).map(function (o, i) {
+                objFiltro[o] = objFiltroListButton[o];
+            });
+        }
+
+        function selecionarTodosBotoes(botao) {
+            var dataFilterListButtonsName = $(botao).attr('data-filter-list-buttons-name-selecionar-todas');
+            marcarDesmarcaTodosBotoes(true, dataFilterListButtonsName)
+        }
+
+         function limparTodosBotoes(botao) {
+            var dataFilterListButtonsName = $(botao).attr('data-filter-list-buttons-name-limpar-todas');
+            marcarDesmarcaTodosBotoes(false, dataFilterListButtonsName)
+         }
+
+        function marcarDesmarcaTodosBotoes(isChecked, nomeDoFiltro) {
+             var arraysBotoesNaTela = $("[data-name='"+ nomeDoFiltro +"']");
+
+            for (var i = 0; i < arraysBotoesNaTela.length; i++) {
+                var button = arraysBotoesNaTela[i];
+                if (isChecked) {
+                    if ($(button).hasClass("btn-default")) {
+                        $(button).click();
+                    }
+                } else {
+                    if ($(button).hasClass("btn-info")) {
+                        $(button).click();
+                    }
+                }
+            }
+        }
+
+        function getDataAtual() {
+            var dataAtual = new Date();
+            var ano = dataAtual.getFullYear();
+            var mes = dataAtual.getMonth() + 1;
+
+            popularSelectDeAnoInicialFinal(ano);
+
+            setAnoCorrenteNoSelect(ano);
+
+            setMesCorrenteNoSelect(mes);
+
+        }
+
+        function popularSelectDeAnoInicialFinal(ano) {
+            var options='';
+            for(i= ano-3; i <= ano+5; i++){
+                 options+='<option value="'+i+'">'+i+'</option>';
+            }
+            $("#selectAnoInicio").append(options);
+            $("#selectAnoFinal").append(options);
+        }
+
+        function setAnoCorrenteNoSelect(ano) {
+             $('#selectAnoInicio').val(ano);
+             $('#selectAnoFinal').val(ano);
+        }
+
+         function setMesCorrenteNoSelect(mes) {
+            $("#selectMesInicio").val(mes);
+            $('#selectMesFinal').val(mes);
+        }
+
+    </script>
+
+}
+@RenderSection("Scripts", required: true)

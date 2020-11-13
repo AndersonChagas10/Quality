@@ -75,6 +75,13 @@ namespace SgqSystem.Controllers.Api.Formulario
         }
 
         [HttpPost]
+        [Route("GetFilteredParCompanyInitials")]
+        public List<Select3ViewModel> GetFilteredParCompanyInitials(string search, [FromBody] DataCarrierFormularioNew form)
+        {
+            return GetParCompanyInitials(search, form);
+        }
+
+        [HttpPost]
         [Route("GetFilteredParCriticalLevels")]
         public List<Select3ViewModel> GetFilteredParCriticalLevels(string search, [FromBody] DataCarrierFormularioNew form)
         {
@@ -1939,6 +1946,35 @@ namespace SgqSystem.Controllers.Api.Formulario
                             {whereCluster}
                             {whereStructParent}
                             AND PS.Name LIKE '%{search}%'";
+
+                var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
+
+                return retorno;
+            }
+        }
+
+        private List<Select3ViewModel> GetParCompanyInitials(string search, DataCarrierFormularioNew form)
+        {
+            var filtroStructure = "";
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+                if (form.ShowLinkedFilters)
+                {
+                    filtroStructure = form.ParStructure3_Ids.Length > 0 ? $@"AND PCXS.ParStructure_Id IN ({ string.Join(",", form.ParStructure3_Ids) })" : "";
+                }
+
+                var query = $@"SELECT DISTINCT TOP 500
+                        	PC.Id, PC.Initials as Name
+                        FROM ParCompany PC
+                        LEFT JOIN ParCompanyXStructure PCXS
+                        	ON PC.Id = PCXS.ParCompany_Id
+                        		AND PCXS.Active = 1
+                        WHERE 1 = 1
+                        AND PC.IsActive = 1
+                        --Filtros
+                        AND PC.Name like '%{search}%'
+                        {filtroStructure}";
 
                 var retorno = factory.SearchQuery<Select3ViewModel>(query).ToList();
 
