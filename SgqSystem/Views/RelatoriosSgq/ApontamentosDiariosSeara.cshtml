@@ -164,11 +164,15 @@
                 //Regra para habilitar o botão de edição somente para quem contiver as roles 366 e 346 e Admin
                 var regraEdit = false;
 
-                var roles = $.grep(getCookie('webControlCookie'), function (a, b) {
-                    return a.indexOf('roles') != -1;
-                })[0].split('=')[1].split(',');
+                //var roles = $.grep(getCookie('webControlCookie'), function (a, b) {
+                //    return a.indexOf('roles') != -1;
+                //})[0].split('=')[1].split(',');
 
-                var role = roles.find(function(e) {
+                var roles = @Html.Raw(Json.Encode(ViewBag.UserRoles))
+
+                roles = roles.split(",");
+
+                var role = roles.find(function (e) {
                     return e === 'Admin';
                 });
 

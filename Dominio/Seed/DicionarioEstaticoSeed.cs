@@ -145,8 +145,17 @@ namespace Dominio.Seed
 
                 if (add.Count > 0)
                 {
-                    db.DicionarioEstatico.AddRange(DicionariosInserir.Where(r => add.Contains(r.Key)));
-                    db.SaveChanges();
+                    try
+                    {
+                        System.Diagnostics.Debugger.Break();
+                        db.DicionarioEstatico.AddRange(DicionariosInserir.Where(r => add.Contains(r.Key)));
+                        db.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+
                 }
 
             }

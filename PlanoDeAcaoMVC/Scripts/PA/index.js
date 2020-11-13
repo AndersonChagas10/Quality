@@ -31,7 +31,6 @@ var campo1Panel5Selected = "";
 var filtrosDeColunas = [];
 
 var tableModalNovoApartirDe = {};
-var IsAdmin = getRole("Admin").length > 0;
 
 var counter = 0;
 var planejamentoCorrentId = 0;

@@ -126,7 +126,7 @@ namespace SgqSystem.Controllers
             List<string> Retorno = new List<string>();
 
             int _userId = 0;
-            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            if (!string.IsNullOrEmpty(cookie.Values["userId"]))
             {
                 _userId = Convert.ToInt32(cookie.Values["userId"].ToString());
             }
@@ -168,7 +168,7 @@ namespace SgqSystem.Controllers
             List<string> Retorno = new List<string>();
 
             int _userId = 0;
-            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            if (!string.IsNullOrEmpty(cookie.Values["userId"]))
             {
                 _userId = Convert.ToInt32(cookie.Values["userId"].ToString());
             }
@@ -210,7 +210,7 @@ namespace SgqSystem.Controllers
             List<string> Retorno = new List<string>();
 
             int _userId = 0;
-            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            if (!string.IsNullOrEmpty(cookie.Values["userId"]))
             {
                 _userId = Convert.ToInt32(cookie.Values["userId"].ToString());
             }
@@ -252,7 +252,7 @@ namespace SgqSystem.Controllers
             List<string> Retorno = new List<string>();
 
             int _userId = 0;
-            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            if (!string.IsNullOrEmpty(cookie.Values["userId"]))
             {
                 _userId = Convert.ToInt32(cookie.Values["userId"].ToString());
             }
@@ -289,7 +289,7 @@ namespace SgqSystem.Controllers
             List<string> Retorno = new List<string>();
 
             int _userId = 0;
-            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            if (!string.IsNullOrEmpty(cookie.Values["userId"]))
             {
                 _userId = Convert.ToInt32(cookie.Values["userId"].ToString());
             }
@@ -326,7 +326,7 @@ namespace SgqSystem.Controllers
             List<string> Retorno = new List<string>();
 
             int _userId = 0;
-            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            if (!string.IsNullOrEmpty(cookie.Values["userId"]))
             {
                 _userId = Convert.ToInt32(cookie.Values["userId"].ToString());
             }
@@ -8106,7 +8106,7 @@ namespace SgqSystem.Controllers
             List<string> Retorno = new List<string>();
 
             int _userId = 0;
-            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            if (!string.IsNullOrEmpty(cookie.Values["userId"]))
             {
                 _userId = Convert.ToInt32(cookie.Values["userId"].ToString());
             }

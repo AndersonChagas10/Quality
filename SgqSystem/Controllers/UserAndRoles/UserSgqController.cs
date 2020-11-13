@@ -335,19 +335,18 @@ namespace SgqSystem.Controllers
                     myCookie.Values.Add("addDate", userSgq.AddDate?.ToString("dd/MM/yyyy"));
 
                     
-
-                    if (userSgq.ParCompanyXUserSgq != null)
-                        myCookie.Values.Add("roles", userSgq.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
-                    else
-                        myCookie.Values.Add("roles", "");
+                    //if (userSgq.ParCompanyXUserSgq != null)
+                    //    myCookie.Values.Add("roles", userSgq.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
+                    //else
+                    //    myCookie.Values.Add("roles", "");
 
                     myCookie.Values.Add("CompanyId", userSgq.ParCompany_Id.ToString());
 
-                    if (userSgq.ParCompanyXUserSgq != null)
-                        if (userSgq.ParCompanyXUserSgq.Any(r => r.Role != null))
-                            myCookie.Values.Add("rolesCompany", string.Join(",", userSgq.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
-                        else
-                            myCookie.Values.Add("rolesCompany", "");
+                    //if (userSgq.ParCompanyXUserSgq != null)
+                    //    if (userSgq.ParCompanyXUserSgq.Any(r => r.Role != null))
+                    //        myCookie.Values.Add("rolesCompany", string.Join(",", userSgq.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
+                    //    else
+                    //        myCookie.Values.Add("rolesCompany", "");
 
                     //set cookie expiry date-time. Made it to last for next 12 hours.
                     myCookie.Expires = DateTime.Now.AddHours(48);

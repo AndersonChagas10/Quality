@@ -144,9 +144,14 @@ namespace SgqSystem.Secirity
                             var user = db.UserSgq.Find(userId);
                             if (user != null && user.ShowAllUnits != true)
                             {
-                                if (!string.IsNullOrEmpty(cookie.Values["rolesCompany"])) /*Se user possuir mais de uma unidade*/
+
+                                if (userLogado.ParCompanyXUserSgq.Any(r => r.Role != null))
+                                    rolesCompany = string.Join(",", userLogado.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray());
+                                else
+                                    rolesCompany = string.Join(",", userLogado.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray());
+
+                                if (!string.IsNullOrEmpty(rolesCompany)) /*Se user possuir mais de uma unidade*/
                                 {
-                                    rolesCompany = cookie.Values["rolesCompany"].ToString();
 
                                     #region Query Unidades
 

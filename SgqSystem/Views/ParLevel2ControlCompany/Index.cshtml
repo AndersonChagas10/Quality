@@ -104,7 +104,7 @@
 </div>
 
 
-@if (HttpContext.Current.Request.Cookies["webControlCookie"].Values["roles"].ToString().ToLower().Contains("admin"))
+@if (ViewBag.UserRoles.ToString().ToLower().Contains("admin"))
 {
     <script>
 

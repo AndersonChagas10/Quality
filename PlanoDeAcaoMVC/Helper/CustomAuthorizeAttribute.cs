@@ -1,4 +1,5 @@
-﻿using DTO;
+﻿using Dominio;
+using DTO;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -107,11 +108,16 @@ namespace Helper
 
                     #endregion
 
-                    //else
-                    //{
-                    if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+                    var userlogado = new UserSgq();
+
+                    using (var db = new SgqDbDevEntities())
                     {
-                        _userSgqRoles = cookie.Values["roles"].ToString();
+                        userlogado = db.UserSgq.Find(userId);
+                    }
+
+                    if (!string.IsNullOrEmpty(userlogado.Role))
+                    {
+                        _userSgqRoles = userlogado.Role.ToString();
                         filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
 
                     }
@@ -143,10 +149,16 @@ namespace Helper
                     filterContext.Controller.ViewBag.CompanyId = cookie.Values["CompanyId"].ToString();
                     filterContext.Controller.ViewBag.UserSgqId = userId;
 
-                    if (cookie.Values["LinkedCompanyIds"] != null)
+                    using (var db = new SgqDbDevEntities())
                     {
-                        filterContext.Controller.ViewBag.LinkedCompanyIds = cookie.Values["LinkedCompanyIds"].ToString();
+                        var linkedComapnyIds = db.ParCompanyXUserSgq.Where(c => c.UserSgq_Id == userId).Select(c => c.ParCompany_Id).ToList();
+                        filterContext.Controller.ViewBag.LinkedCompanyIds = System.Web.Helpers.Json.Encode(linkedComapnyIds);
                     }
+
+                    //if (cookie.Values["LinkedCompanyIds"] != null)
+                    //{
+                    //    filterContext.Controller.ViewBag.LinkedCompanyIds = cookie.Values["LinkedCompanyIds"].ToString();
+                    //}
 
                     Manutencao(filterContext);
 

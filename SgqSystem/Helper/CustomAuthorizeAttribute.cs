@@ -1,4 +1,5 @@
-﻿using DTO;
+﻿using Dominio;
+using DTO;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -62,95 +63,106 @@ namespace Helper
                 }
                 else
                 {
-
-                    var userId = 0;
-                    if (!string.IsNullOrEmpty(cookie.Values["userId"]))
+                    using (var db = new SgqDbDevEntities())
                     {
-                        int.TryParse(cookie.Values["userId"].ToString(), out userId);
-                        filterContext.Controller.ViewBag.KeepAlive = "KeepAlive/" + userId;
-                    }
 
-                    #region Vrificação Senha Expirada
-
-                    //var dataSenhaUsuario = new DateTime();
-
-                    //if (!string.IsNullOrEmpty(cookie.Values["passwordDate"]))
-                    //{
-                    //    dataSenhaUsuario = DateTime.ParseExact(cookie.Values["passwordDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    //}
-                    //else if (!string.IsNullOrEmpty(cookie.Values["alterDate"]))
-                    //{
-                    //    dataSenhaUsuario = DateTime.ParseExact(cookie.Values["alterDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    //}
-                    //else
-                    //{
-                    //    if (!string.IsNullOrEmpty(cookie.Values["addDate"]))
-                    //    {
-                    //        dataSenhaUsuario = DateTime.ParseExact(cookie.Values["addDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    //    }
-                    //}
-
-                    //TimeSpan timeSpan = DateTime.Today - dataSenhaUsuario;
-
-                    //TimeSpan timeSpanTwoMonths = dataSenhaUsuario.AddMonths(2) - dataSenhaUsuario;
-
-                    ////Mock Gabriel para parar de dar erro nas datas 2017-04-16
-
-                    ////if (timeSpan.Days >= timeSpanTwoMonths.Days)
-
-                    //if (1 >= 2)
-                    //{
-                    //    UrlHelper urlHelper = new UrlHelper(filterContext.RequestContext);
-                    //    filterContext.Result = new RedirectResult(urlHelper.Action("Perfil", "UserSgq", new { motivo = "passwordExpired" }));
-                    //    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "UserSgq", action = "Perfil" }));
-                    //}
-
-                    #endregion
-
-                    //else
-                    //{
-                    if (!string.IsNullOrEmpty(cookie.Values["roles"]))
-                    {
-                        _userSgqRoles = cookie.Values["roles"].ToString();
-                        filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
-
-                    }
-                    else
-                    {//NAO TEM ROLES
-                        filterContext.Controller.ViewBag.IsAdmin = false;
-                    }
-                    //Extends cookie ttl
-                    cookie.Expires = DateTime.Now.AddHours(48);
-                    filterContext.HttpContext.Response.Cookies.Set(cookie);
-                    //ok - cookie is found.
-                    //Gracefully check if the cookie has the key-value as expected.
-                    if (!string.IsNullOrEmpty(Roles))
-                    {
-                        if (!string.IsNullOrEmpty(_userSgqRoles))
+                        var userId = 0;
+                        if (!string.IsNullOrEmpty(cookie.Values["userId"]))
                         {
-                            //Yes userId is found. Mission accomplished.
-                            //CustomPrincipal cp = new CustomPrincipal(SessionPersister.Username);
-                            if (!IsInRole(_userSgqRoles))
-                                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
+                            int.TryParse(cookie.Values["userId"].ToString(), out userId);
+                            filterContext.Controller.ViewBag.KeepAlive = "KeepAlive/" + userId;
+                        }
+
+                        #region Vrificação Senha Expirada
+
+                        //var dataSenhaUsuario = new DateTime();
+
+                        //if (!string.IsNullOrEmpty(cookie.Values["passwordDate"]))
+                        //{
+                        //    dataSenhaUsuario = DateTime.ParseExact(cookie.Values["passwordDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        //}
+                        //else if (!string.IsNullOrEmpty(cookie.Values["alterDate"]))
+                        //{
+                        //    dataSenhaUsuario = DateTime.ParseExact(cookie.Values["alterDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        //}
+                        //else
+                        //{
+                        //    if (!string.IsNullOrEmpty(cookie.Values["addDate"]))
+                        //    {
+                        //        dataSenhaUsuario = DateTime.ParseExact(cookie.Values["addDate"], "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        //    }
+                        //}
+
+                        //TimeSpan timeSpan = DateTime.Today - dataSenhaUsuario;
+
+                        //TimeSpan timeSpanTwoMonths = dataSenhaUsuario.AddMonths(2) - dataSenhaUsuario;
+
+                        ////Mock Gabriel para parar de dar erro nas datas 2017-04-16
+
+                        ////if (timeSpan.Days >= timeSpanTwoMonths.Days)
+
+                        //if (1 >= 2)
+                        //{
+                        //    UrlHelper urlHelper = new UrlHelper(filterContext.RequestContext);
+                        //    filterContext.Result = new RedirectResult(urlHelper.Action("Perfil", "UserSgq", new { motivo = "passwordExpired" }));
+                        //    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "UserSgq", action = "Perfil" }));
+                        //}
+
+                        #endregion
+
+                        if (!string.IsNullOrEmpty(cookie.Values["userId"]))
+                        {
+                            _userSgqRoles = db.UserSgq.Find(int.Parse(cookie.Values["userId"])).Role.ToString();
+                            filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
 
                         }
                         else
                         {
-                            filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
+                            filterContext.Controller.ViewBag.IsAdmin = false;
                         }
+
+                        cookie.Expires = DateTime.Now.AddHours(48);
+                        filterContext.HttpContext.Response.Cookies.Set(cookie);
+
+                        if (!string.IsNullOrEmpty(Roles))
+                        {
+                            if (!string.IsNullOrEmpty(_userSgqRoles))
+                            {
+
+                                if (!IsInRole(_userSgqRoles))
+                                    filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
+                            }
+                            else
+                            {
+                                filterContext.Result = new RedirectToRouteResult(new RouteValueDictionary(new { controller = "AccesDenied", action = "Index" }));
+                            }
+                        }
+
+                        filterContext.Controller.ViewBag.CompanyId = cookie.Values["CompanyId"].ToString();
+                        filterContext.Controller.ViewBag.UserSgqId = userId;
+
+
+                        var userSgq = db.UserSgq.Find(userId);
+                        var linkedComapnyIds = db.ParCompanyXUserSgq.Where(c => c.UserSgq_Id == userId).Select(c => c.ParCompany_Id).ToList();
+                        filterContext.Controller.ViewBag.LinkedCompanyIds = System.Web.Helpers.Json.Encode(linkedComapnyIds);
+
+
+                        if (userSgq.ParCompanyXUserSgq.Any(x => x.Role != null))
+                        {
+                            filterContext.Controller.ViewBag.Roles = userSgq.Role.Replace(';', ',').ToString();
+                        }
+                        else
+                        {
+                            filterContext.Controller.ViewBag.Roles = "";
+                        }
+
+                        if (userSgq.ParCompanyXUserSgq != null && userSgq.ParCompanyXUserSgq.Any(r => r.Role != null))
+                            if (userSgq.ParCompanyXUserSgq.Any(r => r.Role != null))
+                                filterContext.Controller.ViewBag.RolesCompany = userSgq.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray();
+                            else
+                                filterContext.Controller.ViewBag.RolesCompany = userSgq.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray();
+
                     }
-
-                    filterContext.Controller.ViewBag.CompanyId = cookie.Values["CompanyId"].ToString();
-                    filterContext.Controller.ViewBag.UserSgqId = userId;
-
-                    if (cookie.Values["LinkedCompanyIds"] != null)
-                    {
-                        filterContext.Controller.ViewBag.LinkedCompanyIds = cookie.Values["LinkedCompanyIds"].ToString();
-                    }
-
-                    //Manutencao(filterContext);
-
-                    //}
 
                 }
             }

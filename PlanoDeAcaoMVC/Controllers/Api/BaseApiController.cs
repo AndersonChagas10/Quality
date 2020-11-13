@@ -147,16 +147,16 @@ namespace PlanoDeAcaoMVC.Controllers.Api
 
             values.Add("addDate", userDto.AddDate.ToString("dd/MM/yyyy"));
 
-            if (userDto.Role != null)
-                values.Add("roles", userDto.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
-            else
-                values.Add("roles", "");
+            //if (userDto.Role != null)
+            //    values.Add("roles", userDto.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
+            //else
+            //    values.Add("roles", "");
 
-            if (userDto.ParCompanyXUserSgq != null)
-                if (userDto.ParCompanyXUserSgq.Any(r => r.Role != null))
-                    values.Add("rolesCompany", string.Join(",", userDto.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
-                else
-                    values.Add("rolesCompany", string.Join(",", userDto.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray()));
+            //if (userDto.ParCompanyXUserSgq != null)
+            //    if (userDto.ParCompanyXUserSgq.Any(r => r.Role != null))
+            //        values.Add("rolesCompany", string.Join(",", userDto.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
+            //    else
+            //        values.Add("rolesCompany", string.Join(",", userDto.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray()));
 
 
             var cookie = new CookieHeaderValue("webControlCookie", values);

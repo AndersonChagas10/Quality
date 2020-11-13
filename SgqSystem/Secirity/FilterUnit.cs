@@ -20,8 +20,6 @@ namespace SgqSystem.Secirity
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            //filterContext.HttpContext.Trace.Write("(Logging Filter)Action Executing: " +
-            //    filterContext.ActionDescriptor.ActionName);
 
             using (var db = new SgqDbDevEntities())
             {
@@ -34,9 +32,7 @@ namespace SgqSystem.Secirity
                 {
                     var rolesCompany = "";
                     var userId = 0;
-
-                    
-
+                   
                     if (!string.IsNullOrEmpty(cookie.Values["userId"]))
                         int.TryParse(cookie.Values["userId"].ToString(), out userId);
 
@@ -47,13 +43,17 @@ namespace SgqSystem.Secirity
                     if (userId > 0)
                     {
 
+                        if (userLogado.ParCompanyXUserSgq.Any(r => r.Role != null))
+                            rolesCompany = string.Join(",", userLogado.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray());
+                        else
+                            rolesCompany = string.Join(",", userLogado.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray());
+
                         if (filtraUnidadeDoUsuario)
                         {
                             filterContext.Controller.ViewBag.UnidadeUsuario = Mapper.Map<IEnumerable<ParCompanyDTO>>(db.ParCompany.Where(r => r.Id == userLogado.ParCompany_Id));
                         }
-                        else if (!string.IsNullOrEmpty(cookie.Values["rolesCompany"])) /*Se user possuir mais de uma unidade*/
+                        else if (!string.IsNullOrEmpty(rolesCompany)) /*Se user possuir mais de uma unidade*/
                         {
-                            rolesCompany = cookie.Values["rolesCompany"].ToString();
 
                             #region Query Unidades
 
@@ -75,18 +75,12 @@ namespace SgqSystem.Secirity
 
                     }
                 }
-                //return retorno;
+                
             }
-            //return retorno;
+            
 
             base.OnActionExecuting(filterContext);
         }
 
-        //public override void OnActionExecuted(ActionExecutedContext filterContext)
-        //{
-        //  if (filterContext.Exception != null)
-        //      filterContext.HttpContext.Trace.Write("(Logging Filter)Exception thrown");
-        //  base.OnActionExecuted(filterContext);
-        //}
     }
 }

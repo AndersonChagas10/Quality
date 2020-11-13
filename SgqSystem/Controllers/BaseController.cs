@@ -156,11 +156,11 @@ namespace SgqSystem.Controllers
                 myCookie.Values.Add("userName", isAuthorized.Name);
                 myCookie.Values.Add("CompanyId", isAuthorized.ParCompany_Id.GetValueOrDefault().ToString());
 
-                using (var db = new SgqDbDevEntities())
-                {
-                    var linkedComapnyIds = db.ParCompanyXUserSgq.Where(c => c.UserSgq_Id == isAuthorized.Id).Select(c => c.ParCompany_Id).ToList();
-                    myCookie.Values.Add("LinkedCompanyIds", System.Web.Helpers.Json.Encode(linkedComapnyIds));
-                }
+                //using (var db = new SgqDbDevEntities())
+                //{
+                //    var linkedComapnyIds = db.ParCompanyXUserSgq.Where(c => c.UserSgq_Id == isAuthorized.Id).Select(c => c.ParCompany_Id).ToList();
+                //    myCookie.Values.Add("LinkedCompanyIds", System.Web.Helpers.Json.Encode(linkedComapnyIds));
+                //}
 
                 if (isAuthorized.AlterDate != null)
                 {
@@ -173,16 +173,16 @@ namespace SgqSystem.Controllers
 
                 myCookie.Values.Add("addDate", isAuthorized.AddDate.ToString("dd/MM/yyyy"));
 
-                if (isAuthorized.Role != null)
-                    myCookie.Values.Add("roles", isAuthorized.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
-                else
-                    myCookie.Values.Add("roles", "");
+                //if (isAuthorized.Role != null)
+                //    myCookie.Values.Add("roles", isAuthorized.Role.Replace(';', ',').ToString());//"admin, teste, operacional, 3666,344, 43434,...."
+                //else
+                //    myCookie.Values.Add("roles", "");
 
-                if (isAuthorized.ParCompanyXUserSgq != null)
-                    if (isAuthorized.ParCompanyXUserSgq.Any(r => r.Role != null))
-                        myCookie.Values.Add("rolesCompany", string.Join(",", isAuthorized.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
-                    else
-                        myCookie.Values.Add("rolesCompany", string.Join(",", isAuthorized.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray()));
+                //if (isAuthorized.ParCompanyXUserSgq != null)
+                //    if (isAuthorized.ParCompanyXUserSgq.Any(r => r.Role != null))
+                //        myCookie.Values.Add("rolesCompany", string.Join(",", isAuthorized.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray()));
+                //    else
+                //        myCookie.Values.Add("rolesCompany", string.Join(",", isAuthorized.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray()));
 
                 //set cookie expiry date-time. Made it to last for next 12 hours.
                 myCookie.Expires = DateTime.Now.AddHours(48);
@@ -229,13 +229,16 @@ namespace SgqSystem.Controllers
             if (webControlCookie != null)
             {
                 var UserId = webControlCookie.Values["userId"];
-                ViewBag.UserRoles = webControlCookie.Values["roles"];
+                ViewBag.UserRoles = "";
                 ViewBag.UserId = UserId;
 
                 if (UserId != null && UserId != "" && int.Parse(UserId) > 0)
                 {
                     using (var db = new SgqDbDevEntities())
                     {
+
+                        ViewBag.UserRoles = db.UserSgq.Find(int.Parse(UserId)).Role;
+
                         var rolesNames = db.UserSgq.Find(int.Parse(UserId)).Role.Split(',');
 
                         var roleUserSgqList = db.RoleUserSgq.Where(r => rolesNames.Contains(r.Name) && r.IsActive == true).ToList();
@@ -281,6 +284,53 @@ namespace SgqSystem.Controllers
 
             return 0;
 
+        }
+
+        protected void MontaViewBagsPermissaoUsuario()
+        {
+            ViewBag.PermiteCriar = false;
+            ViewBag.PermiteEditar = false;
+            ViewBag.PermiteVizualizar = false;
+            ViewBag.PermiteExcluir = false;
+            ViewBag.IsAdmin = false;
+
+            var userLogadoId = System.Web.HttpContext.Current.Request.Cookies["webControlCookie"]?.Values["userId"];
+
+            using (var db = new SgqDbDevEntities())
+            {
+                var regrasName = db.UserSgq.Find(userLogadoId).Role.Split(',');
+
+                if (regrasName != null && regrasName.Length > 0)
+                {
+                    if (regrasName.Contains("Admin"))
+                        ViewBag.IsAdmin = true;
+
+                    var rolesIds = db.RoleUserSgq.Where(x => regrasName.Contains(x.Name)).Select(x => x.Id);
+
+                    if (rolesIds.Count() > 0)
+                    {
+                        //Atualmente funciona para todos os relatórios (não é especifico)
+                        var roleUserSgqXReports = db.RoleUserSgqXReport.Where(x => rolesIds.Contains(x.RoleUserSgq_Id) &&
+                        x.IsActive &&
+                        x.ReportType == (int)Enums.ReportType.ReportXUserSgq).ToList();
+
+                        if (roleUserSgqXReports.Count() == 0)//Se não existir vinculo, permite vizualizar
+                        {
+                            ViewBag.PermiteVizualizar = true;
+                        }
+                        else
+                        {
+                            foreach (var roleUserSgqXReport in roleUserSgqXReports)
+                            {
+                                ViewBag.PermiteCriar = ViewBag.PermiteCriar ? true : roleUserSgqXReport.AllowCreate;
+                                ViewBag.PermiteEditar = ViewBag.PermiteEditar ? true : roleUserSgqXReport.AllowEdit;
+                                ViewBag.PermiteVizualizar = ViewBag.PermiteVizualizar ? true : roleUserSgqXReport.AllowOpen;
+                                ViewBag.PermiteExcluir = ViewBag.PermiteExcluir ? true : roleUserSgqXReport.AllowDelete;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

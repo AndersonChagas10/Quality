@@ -49,9 +49,9 @@ namespace SgqSystem.Controllers.Params
 
             string _userSgqRoles = "";
 
-            if (!string.IsNullOrEmpty(cookie.Values["roles"]))
+            if (!string.IsNullOrEmpty(cookie.Values["userId"]))
             {
-                _userSgqRoles = cookie.Values["roles"].ToString();
+                _userSgqRoles = db.UserSgq.Find(int.Parse(cookie.Values["userId"].ToString())).ToString(); //cookie.Values["roles"].ToString();
             }
 
             return _userSgqRoles;
@@ -68,10 +68,6 @@ namespace SgqSystem.Controllers.Params
             if (id == -1)/*Retorna View Vazia*/
                 return PartialView("_ParLevel1", ViewModel);
 
-            //if (!GlobalConfig.Eua)
-            //    return PartialView("_ParLevel1", ViewModel);
-            //else
-            //  return PartialView("Blank");
 
             ViewModel.paramsDto.parLevel1Dto = _paramDomain.GetLevel1(id);
             ViewModel.paramsDto.parLevel1Dto.listParLevel3Level2Level1Dto = null;
@@ -81,7 +77,6 @@ namespace SgqSystem.Controllers.Params
                 {
 
                     var valor = "";
-                    //ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name = CommonData.getResource(ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name).Value.ToString();
                     switch (ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name)
                     {
                         case "evaluation":
@@ -100,7 +95,6 @@ namespace SgqSystem.Controllers.Params
                     ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParCounter.Name = valor;
                     
                     ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name = CommonData.getResource(ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name).Value.ToString();
-                    //ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name = ViewModel.paramsDto.parLevel1Dto.listParCounterXLocal[i].ParLocal.Name;
                    
                 }
 

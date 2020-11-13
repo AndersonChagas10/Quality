@@ -304,14 +304,15 @@ function send(autoSend, callbackPCC1B, sendImediato) {
         objectSend += "<level02>" + level02Result + "</level02>";
 
     });
-    //createLog("Send Json Object");
+
+    var insertJsonData = { ObjResultJSon: objectSend, deviceId: (device.uuid == null ? '' : device.uuid), autoSend: autoSend, deviceMac: '' };
 
     $.ajax({
         type: 'POST'
         , url: urlPreffix + '/api/SyncServiceApi/InsertJson'
         , contentType: 'application/json; charset=utf-8'
         , dataType: 'json'
-        , data: '{' + "ObjResultJSon: '" + objectSend + "', deviceId: '" + device.uuid + "', autoSend: " + autoSend + ", deviceMac: ''" + '}'
+        , data: JSON.stringify(insertJsonData)
         , async: true //blocks window close
         , headers: token()
         , success: function (data, status) {

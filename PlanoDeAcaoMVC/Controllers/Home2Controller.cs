@@ -11,7 +11,7 @@ using System.Web.Mvc;
 namespace PlanoDeAcaoMVC.Controllers
 {
     [IntegraSgq]
-    public class Home2Controller : Controller
+    public class Home2Controller : BaseController
     {
         
         public Home2Controller()
@@ -35,28 +35,6 @@ namespace PlanoDeAcaoMVC.Controllers
         public ActionResult Index3()
         {
             return View();
-        }
-
-        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
-        {
-
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("pt-BR");
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo("pt-BR");
-
-            try
-            {
-
-                System.Resources.ResourceManager resourceManager = ResourcesPA.Resource.ResourceManager;
-
-                ViewBag.Resources = resourceManager.GetResourceSet(
-                    Thread.CurrentThread.CurrentUICulture, true, false).Cast<DictionaryEntry>();
-
-            }
-            catch (Exception ex)
-            {
-            }
-
-            base.Initialize(requestContext);
         }
 
     }

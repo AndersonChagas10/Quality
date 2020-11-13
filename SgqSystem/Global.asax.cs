@@ -110,7 +110,6 @@ namespace SgqSystem
         private static void SetGlobalConfigAmbient()
         {
             
-            //GlobalConfig.Ambient = System.Configuration.ConfigurationManager.AppSettings["BuildEm"];
             GlobalConfig.Ambient = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.BuildEm;
             GlobalConfig.Producao = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.Producao == "SIM";
 
