@@ -2937,7 +2937,7 @@
     <Version>1.7.0</Version>
     <Description>[MERGE] Realizado merge da versão do USA (03/2020)</Description>
     <Script>
-      IF COL_LENGTH('parlevel3level2','IsKnockout') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'parlevel3level2' AND COLUMN_NAME = 'IsKnockout'), 0) = 0
       BEGIN
       alter table parlevel3level2
       add IsKnockout bit null;
@@ -2947,7 +2947,7 @@
       update parlevel3level2 set IsKnockout = 0 where IsKnockout is null
       go
 
-      IF COL_LENGTH('ParNotConformityRuleXLevel','CorrectiveAction') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ParNotConformityRuleXLevel' AND COLUMN_NAME = 'CorrectiveAction'), 0) = 0
       BEGIN
       ALTER TABLE ParNotConformityRuleXLevel
       ADD CorrectiveAction BIT NULL
@@ -3008,7 +3008,7 @@
     <Version>1.7.0</Version>
     <Description>[RH SESMT] Alerta KO - Coleta</Description>
     <Script>
-      IF COL_LENGTH('CorrectiveAction','ParLevel3_Id') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'CorrectiveAction' AND COLUMN_NAME = 'ParLevel3_Id'), 0) = 0
       BEGIN
       alter table CorrectiveAction
       add ParLevel3_Id int null
@@ -3167,7 +3167,7 @@
     <Version>1.8.0</Version>
     <Description>[RH 5S] Parametrização/Coleta - Permitir tornar a qualificação obrigatória</Description>
     <Script>
-      IF COL_LENGTH('PargroupQualificationXParLevel3Value','IsRequired') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'PargroupQualificationXParLevel3Value' AND COLUMN_NAME = 'IsRequired'), 0) = 0
       BEGIN
       alter table PargroupQualificationXParLevel3Value
       add IsRequired bit not null default 0
@@ -3196,7 +3196,7 @@
     <Version>1.8.0</Version>
     <Description>[RH SESMT] Parametrização - Permitir redistribuir peso</Description>
     <Script>
-      IF COL_LENGTH('ParEvaluationXDepartmentXCargo','RedistributeWeight') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ParEvaluationXDepartmentXCargo' AND COLUMN_NAME = 'RedistributeWeight'), 0) = 0
       BEGIN
       alter table ParEvaluationXDepartmentXCargo
       add RedistributeWeight bit not null default 0
@@ -3209,7 +3209,7 @@
     <Version>1.8.0</Version>
     <Description>[RH SESMT] Parametrização - Permitir coleta parcial</Description>
     <Script>
-      IF COL_LENGTH('ParEvaluationXDepartmentXCargo','IsPartialCollection') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ParEvaluationXDepartmentXCargo' AND COLUMN_NAME = 'IsPartialCollection'), 0) = 0
       BEGIN
       ALTER TABLE ParEvaluationXDepartmentXCargo
       ADD IsPartialCollection bit not null default 0
@@ -3320,7 +3320,7 @@
     <Version>1.8.0</Version>
     <Description>[PA] Fullname no PA_Quem</Description>
     <Script>
-      IF COL_LENGTH('Pa_Quem','UserSgq_Id') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Pa_Quem' AND COLUMN_NAME = 'UserSgq_Id'), 0) = 0
       BEGIN
       alter table Pa_Quem add UserSgq_Id int null
       END
@@ -3377,12 +3377,12 @@
     <Version>1.10.0</Version>
     <Description>[GQ] Laboratórios - Criar funcionalidade de alerda de e-mail HEP.</Description>
     <Script>
-      IF COL_LENGTH('IntegracaoSistemica','LastExecution') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'IntegracaoSistemica' AND COLUMN_NAME = 'LastExecution'), 0) = 0
       BEGIN
       alter table IntegracaoSistemica add LastExecution datetime null
       END
       GO
-      IF COL_LENGTH('IntegracaoSistemica','ExecutionTime') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'IntegracaoSistemica' AND COLUMN_NAME = 'ExecutionTime'), 0) = 0
       BEGIN
       alter table IntegracaoSistemica add ExecutionTime varchar(10) null
       END
@@ -3403,17 +3403,17 @@
     <Version>1.10.0</Version>
     <Description>[PA] Criação de cruds para Diretoria, Missão, Visão e Tipo de Projeto.</Description>
     <Script>
-      IF COL_LENGTH('Pa_Diretoria','IsActive') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Pa_Diretoria' AND COLUMN_NAME = 'IsActive'), 0) = 0
       BEGIN
       alter table Pa_Diretoria add IsActive int not null default 1
       END
       GO
-      IF COL_LENGTH('Pa_Missao','IsActive') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Pa_Missao' AND COLUMN_NAME = 'IsActive'), 0) = 0
       BEGIN
       alter table Pa_Missao add IsActive int not null default 1
       END
       GO
-      IF COL_LENGTH('Pa_Visao','IsActive') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Pa_Visao' AND COLUMN_NAME = 'IsActive'), 0) = 0
       BEGIN
       alter table Pa_Visao add IsActive int not null default 1
       END
@@ -3639,12 +3639,12 @@
     <Version>1.10.0</Version>
     <Description>[PA] Inativar Planejamentos e Ações </Description>
     <Script>
-      IF COL_LENGTH('Pa_Planejamento','IsActive') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Pa_Planejamento' AND COLUMN_NAME = 'IsActive'), 0) = 0
       BEGIN
       ALTER table Pa_Planejamento Add IsActive Bit Not Null Default 1
       END
 
-      IF COL_LENGTH('Pa_Acao','IsActive') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Pa_Acao' AND COLUMN_NAME = 'IsActive'), 0) = 0
       BEGIN
       ALTER table Pa_Acao Add IsActive Bit Not Null Default 1
       END
@@ -3715,7 +3715,7 @@
 
       GO
 
-      IF COL_LENGTH('ParReportXFilter','FilterLevel') IS NOT NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ParReportXFilter' AND COLUMN_NAME = 'FilterLevel'), 0) = 0
       BEGIN
       ALTER table ParReportXFilter ALTER COLUMN FilterLevel int Not Null
       END
@@ -3821,7 +3821,7 @@
     <Version>1.10.0</Version>
     <Description>[RH] AppColeta - Criação da coluna 'Hash' para identificar as tarefas e cabeçalhos que pertencem a mesma coleta.</Description>
     <Script>
-      IF COL_LENGTH('Collection','Hash') IS NULL
+      IF ISNULL((SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'Collection' AND COLUMN_NAME = 'Hash'), 0) = 0
       BEGIN
       ALTER TABLE Collection
       ADD Hash varchar(64);
@@ -3915,6 +3915,14 @@
       END
       GO
     </Script>
+  </Card>
+  
+
+  <Card>
+    <CardNumber>SGQ-1329</CardNumber>
+    <Version>1.9.0</Version>
+    <Description> [GQ] ApontamentosDiarios e CartasCep - Não estavam desdobrando o monitoramento e tarefa a partir do indicador. </Description>
+    <Script></Script>
   </Card>
   
 </Cards>

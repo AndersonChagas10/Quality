@@ -486,8 +486,8 @@ namespace SgqSystem.Controllers.Api.Params
             using (var db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
-                //var result = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == level1Id).Select(r => r.ParLevel3Level2.ParLevel2).ToList().GroupBy(r => r.Id);
-                  var result = db.ParVinculoPeso.Where(r => r.ParLevel1_Id == level1Id).Select(r => r.ParLevel2).ToList().GroupBy(r => r.Id);
+                var result = db.ParLevel3Level2Level1.Where(r => r.ParLevel1_Id == level1Id).Select(r => r.ParLevel3Level2.ParLevel2).ToList().GroupBy(r => r.Id);
+                 // var result = db.ParVinculoPeso.Where(r => r.ParLevel1_Id == level1Id).Select(r => r.ParLevel2).ToList().GroupBy(r => r.Id);
                 list = Mapper.Map<List<ParLevel2DTO>>(result.Select(r => r.First()));
             }
 
@@ -519,8 +519,8 @@ namespace SgqSystem.Controllers.Api.Params
             using (var db = new SgqDbDevEntities())
             {
                 db.Configuration.LazyLoadingEnabled = false;
-                //var result = db.ParLevel3Level2.Where(r => r.ParLevel2_Id == level2Id).Select(r => r.ParLevel3).ToList().GroupBy(r => r.Id);
-                var result = db.ParVinculoPeso.Where(r => r.ParLevel2_Id == level2Id).Select(r => r.ParLevel3).ToList().GroupBy(r => r.Id);
+                var result = db.ParLevel3Level2.Where(r => r.ParLevel2_Id == level2Id).Select(r => r.ParLevel3).ToList().GroupBy(r => r.Id);
+                //var result = db.ParVinculoPeso.Where(r => r.ParLevel2_Id == level2Id).Select(r => r.ParLevel3).ToList().GroupBy(r => r.Id);
                 list = Mapper.Map<List<ParLevel3DTO>>(result.Select(r => r.First()));
             }
 

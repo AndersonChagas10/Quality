@@ -37,7 +37,7 @@
     ViewBag.ShowAcaoStatusDefault = "Todos";
     ViewBag.ShowParModuleDefault = "Selecione...";
     ViewBag.ShowPesoDefault = "Todos";
-    ViewBag.ShowDesdobramentoTipoDefault = "Selecione...";
+    //ViewBag.ShowDesdobramentoTipoDefault = "Selecione...";
     ViewBag.ShowParDepartmentDefault = "Todos";
     ViewBag.ShowUserSgqSurpervisorDefault = "Todos";
 }
@@ -527,9 +527,32 @@
 
             $('#reports').empty();
 
-            EasyAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade", toggle);
-            EasyAjax(urlGetAnaliseCritica, objFiltro, GerarRelatorios, "", false);
+            sendAjax(urlGetGraficoHistoricoUnidade, objFiltro, GerarGraficoHistoricoUnidade, "loaderNCUnidade", toggle);
+            sendAjax(urlGetAnaliseCritica, objFiltro, GerarRelatorios, "", false);
 
+        }
+
+        function sendAjax(url, obj, retorno) {
+            openLoader('Aguarde...');
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: JSON.stringify(obj),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            })
+                .done(function (data) {
+                    $btn.button('reset');
+                    retorno(data);
+                })
+                .fail(function (jqXHR, textStatus, msg) {
+                    closeLoader();
+                    $btn.button('reset');
+                    console.log(msg);
+                    preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                });
         }
 
         function ValidaDadosParaEnvio() {
@@ -581,8 +604,10 @@
         //Graficos
         function GerarGraficoHistoricoUnidade(data) {
 
-            if (data.length > 0) {
+            closeLoader();
 
+            if (data.length > 0) {
+                
                 $('#reports').show();
 
                 let isBrazil = @Html.Raw(Json.Encode(GlobalConfig.Brasil));
@@ -791,7 +816,7 @@
         }
 
         function GerarRelatorios(dados) {
-
+            closeLoader();
             if (dados.length <= 0) {
                 return false;
             }
