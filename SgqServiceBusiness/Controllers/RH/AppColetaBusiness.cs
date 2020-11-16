@@ -499,5 +499,34 @@ WHERE 1 = 1
                 LogSystem.LogErrorBusiness.Register(ex, item);
             }
         }
+
+        public List<UserSgq> GetUsersByCompany(int ParCompany_Id)
+        {
+            var query = $@"select* from usersgq
+                          where 1 = 1
+                          and isactive = 1
+                          and id in (
+                              SELECT
+                          
+                                  PCXU.UserSgq_Id
+                              FROM
+                          
+                                  ParCompanyXUserSgq PCXU WITH(NOLOCK)
+                          
+                              INNER JOIN UserSgq US ON PCXU.ParCompany_Id = {ParCompany_Id}
+                          UNION ALL
+                          
+                              SELECT US.Id
+                              FROM UserSgq US WITH(NOLOCK)
+                          
+                              WHERE US.ParCompany_Id = {ParCompany_Id})";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                var retorno = factory.SearchQuery<UserSgq>(query).ToList();
+            
+            return retorno;
+            }
+        }
     }
 }

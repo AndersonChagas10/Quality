@@ -1366,22 +1366,23 @@ function getCollectionHeaderFields(collectionDate) {
 
         //TODO: validar se os campos de cabeçalho obrigatórios foram preenchidos;
         if ($self.val())
-
-            collectionHeaderFied.push({
-                ParHeaderField_Id: $self.attr("parheaderfield_id"),
-                ParHeaderField_Value: $self.val(),
-                Evaluation: currentEvaluationSample.Evaluation,
-                Sample: currentEvaluationSample.Sample,
-                ParDepartment_Id: currentParDepartment_Id,
-                ParCargo_Id: currentParCargo_Id,
-                ParCluster_Id: currentParCluster_Id,
-                ParCompany_Id: currentParCompany_Id,
-                CollectionDate: collectionDate,
-                UserSgq_Id: currentLogin.Id,
-                ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
-                Parfrequency_Id: parametrization.currentParFrequency_Id,
-                IsPartialSave: hasPartialSave
-            });
+            if (!($self.attr("Id") == "buscaAuditor")) {
+                collectionHeaderFied.push({
+                    ParHeaderField_Id: $self.attr("parheaderfield_id"),
+                    ParHeaderField_Value: $self.val(),
+                    Evaluation: currentEvaluationSample.Evaluation,
+                    Sample: currentEvaluationSample.Sample,
+                    ParDepartment_Id: currentParDepartment_Id,
+                    ParCargo_Id: currentParCargo_Id,
+                    ParCluster_Id: currentParCluster_Id,
+                    ParCompany_Id: currentParCompany_Id,
+                    CollectionDate: collectionDate,
+                    UserSgq_Id: currentLogin.Id,
+                    ParLevel1_Id: $self.parents('#headerFieldLevel1').attr('parLevel1Id'),
+                    Parfrequency_Id: parametrization.currentParFrequency_Id,
+                    IsPartialSave: hasPartialSave
+                });
+            }
 
     });
 

@@ -1445,6 +1445,7 @@ public class ApontamentosDiariosResultSet
 							when CL2HF2.ParFieldType_Id = 1 or CL2HF2.ParFieldType_Id = 3 then PMV.Name 
 							when CL2HF2.ParFieldType_Id = 2 then case when HF.Description = 'Produto' then cast(PRD.nCdProduto as varchar(500)) + ' - ' + PRD.cNmProduto else EQP.Nome end 
 							when CL2HF2.ParFieldType_Id = 6 then CONVERT(varchar,  CL2HF2.value, 103)
+							when CL2HF2.ParFieldType_Id = 12 then US.FullName
 							else CL2HF2.Value end)
 							FROM #CollectionLevel2XParHeaderFieldGeral CL2HF2 (nolock) 
 							left join #collectionlevel2 CL2(nolock) on CL2.id = CL2HF2.CollectionLevel2_Id
@@ -1454,6 +1455,7 @@ public class ApontamentosDiariosResultSet
 							left join ParLevel2 L2(nolock) on L2.Id = CL2.Parlevel2_id
 							left join ParMultipleValuesGeral PMV(nolock) on CL2HF2.Value = cast(PMV.Id as varchar(500)) and CL2HF2.ParFieldType_Id <> 2
 							left join Equipamentos EQP(nolock) on cast(EQP.Id as varchar(500)) = CL2HF2.Value and EQP.ParCompany_Id = CL2.UnitId and CL2HF2.ParFieldType_Id = 2
+							left join UserSgq US (nolock) on  cast(US.Id as varchar(500)) = CL2HF2.Value and CL2HF2.ParFieldType_Id = 12
 							left join Produto PRD with(nolock) on cast(PRD.nCdProduto as varchar(500)) = CL2HF2.Value and CL2HF2.ParFieldType_Id = 2
 							WHERE CL2HF2.CollectionLevel2_Id = CL2HF.CollectionLevel2_Id
 							and pld.Id = 1
