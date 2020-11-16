@@ -5,22 +5,15 @@ using Dominio.AppViewModel;
 using Dominio.Seara;
 using DTO;
 using DTO.DTO.Params;
-using DTO.Helpers;
 using DTO.ResultSet;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SgqService.ViewModels;
-using SgqSystem.Handlres;
+using SgqServiceBusiness.Controllers.RH;
 using SgqSystem.Helpers;
-using SgqSystem.Services;
-using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.SqlClient;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -244,7 +237,7 @@ namespace SgqSystem.Controllers.Api
             {
                 databaseSgq.Configuration.LazyLoadingEnabled = false;
                 var resultlevel3 = databaseSgq.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
-                var auditorId = databaseSgq.CollectionLevel2.Where(x => x.Id == resultlevel3.CollectionLevel2_Id).Select(x=>x.AuditorId).First();
+                var auditorId = databaseSgq.CollectionLevel2.Where(x => x.Id == resultlevel3.CollectionLevel2_Id).Select(x => x.AuditorId).First();
 
                 LogSystem.LogTrackBusiness.RegisterIfNotExist(resultlevel3, resultlevel3.Id, "Result_Level3", auditorId);
                 var parLevel3 = databaseSgq.ParLevel3.Where(x => x.Id == resultlevel3.ParLevel3_Id).FirstOrDefault();
@@ -282,7 +275,7 @@ namespace SgqSystem.Controllers.Api
             {
                 db.Configuration.LazyLoadingEnabled = false;
                 var resultlevel3Old = db.Result_Level3.Where(x => x.Id == resultLevel3.Id).FirstOrDefault();
-                var auditorId = db.CollectionLevel2.Where(x => x.Id == resultlevel3Old.CollectionLevel2_Id).Select(x => x.AuditorId).First();
+                var auditorId = db.CollectionLevel2.Where(x => x.Id == resultlevel3Old.CollectionLevel2_Id).Select(x => x.AuditorId).FirstOrDefault();
                 LogSystem.LogTrackBusiness.RegisterIfNotExist(resultlevel3Old, resultlevel3Old.Id, "Result_Level3", auditorId);
 
                 resultlevel3Old.Value = resultLevel3.Value;
@@ -469,7 +462,7 @@ namespace SgqSystem.Controllers.Api
             var company_Id = level3.CollectionLevel2.UnitId;
             var level1_Id = level3.CollectionLevel2.ParLevel1_Id;
 
-            var service = new SgqServiceBusiness.Api.SyncServiceApiController(conexao,conexao);
+            var service = new SgqServiceBusiness.Api.SyncServiceApiController(conexao, conexao);
 
             service.ReconsolidationLevel3ByCollectionLevel2Id(level3.CollectionLevel2_Id.ToString());
 
@@ -495,6 +488,20 @@ namespace SgqSystem.Controllers.Api
         public string EditCabecalhoGeral(int ResultLevel3_Id)
         {
             var retorno = getSelectsGeral(ResultLevel3_Id);
+
+            var json = JsonConvert.SerializeObject(retorno, Formatting.None, new JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+
+            return json;
+        }
+
+        [HttpPost]
+        [Route("EditCabecalhoGeralRH/{ResultLevel3_Id}")]
+        public string EditCabecalhoGeralRH(int ResultLevel3_Id)
+        {
+            var retorno = getSelectsGeralRH(ResultLevel3_Id);
 
             var json = JsonConvert.SerializeObject(retorno, Formatting.None, new JsonSerializerSettings()
             {
@@ -732,7 +739,7 @@ namespace SgqSystem.Controllers.Api
             collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto = produtoOld.Name;
             foreach (var item in listCollectionLevel2Ids)
                 LogSystem.LogTrackBusiness.RegisterIfNotExist(collectionLevel2xParFamiliaProdutoxParProdutoOld, Convert.ToInt32(item["ID"]), "CollectionLevel2XParFamiliaProdutoXParProduto", auditorId);
-            
+
             var produtoNew = db.ParProduto.Find(listCollectionLevel2XParProduto.ParProduto_Id);
             collectionLevel2xParFamiliaProdutoxParProdutoOld.ParProduto = produtoNew.Name;
             foreach (var item in listCollectionLevel2Ids)
@@ -825,6 +832,26 @@ namespace SgqSystem.Controllers.Api
             return GetSelectsByHeaderFieldGeral(coletas, collectionLevel2);
         }
 
+        public List<SelectGeral> getSelectsGeralRH(int ResultLevel3_Id)
+        {
+            //pegar os cabeçalhos
+            var collectionLevel2 = getCollectionLevel2ByResultLevel3(ResultLevel3_Id);
+
+            var query = $@"SELECT *
+            FROM CollectionLevel2XParHeaderFieldGeral
+            WHERE CollectionLevel2_Id IN (SELECT
+            		Id
+            	FROM CollectionLevel2
+            	WHERE id IN (SELECT
+            			CollectionLevel2_Id
+            		FROM Result_Level3
+            		WHERE id = { ResultLevel3_Id }))";
+
+            var coletas = db.Database.SqlQuery<CollectionLevel2XParHeaderFieldGeral>(query).ToList();
+
+            return GetSelectsByHeaderFieldGeralRH(coletas, collectionLevel2);
+        }
+
         public List<Select> GetSelectsByHeaderField(List<CollectionLevel2XParHeaderField> coletas, CollectionLevel2 collectionLevel2)
         {
 
@@ -895,6 +922,95 @@ namespace SgqSystem.Controllers.Api
 
             //pegar os valor que está selecionado
             return resultHeaderField;
+        }
+
+
+        public List<SelectGeral> GetSelectsByHeaderFieldGeralRH(List<CollectionLevel2XParHeaderFieldGeral> coletas, CollectionLevel2 collectionLevel2)
+        {
+
+            var resultHeaderField = new List<SelectGeral>();
+
+            //Seleciona os cabeçalhos
+            var headerFields = db.ParHeaderFieldGeral
+                .Where(x => ((x.ParLevelHeaderField_Id == 1 && x.Generic_Id == collectionLevel2.ParLevel1_Id)
+                || (x.ParLevelHeaderField_Id == 2 && x.Generic_Id == collectionLevel2.ParLevel2_Id)) && x.IsActive == true)
+                .OrderBy(r => r.ParLevelHeaderField_Id).ThenBy(r => r.Id).ToList();
+
+            var values = db.ParMultipleValuesGeral.Where(x => x.IsActive == true).ToList();
+
+            foreach (var headerField in headerFields)
+            {
+                var select = new SelectGeral();
+
+                //Atribui o campo de cabeçalho
+                select.HeaderFieldGeral = headerField;
+
+                if (headerField.ParFieldType_Id == 2) //Se for campo integração
+                {
+                    SGQDBContext.ParFieldType ParFieldTypeDB = new SGQDBContext.ParFieldType();
+                    //select.Values = ParFieldTypeDB.getIntegrationValues(headerField.Id, headerField.Description, collectionLevel2.UnitId).ToList();
+                }
+                else if(headerField.ParFieldType_Id == 12)
+                {
+                    List<ParMultipleValuesGeral> teste2 = new List<ParMultipleValuesGeral>();
+
+                    AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
+
+                    List<UserSgq> listaAuditor = appColetaBusiness.GetUsersByCompany(collectionLevel2.UnitId);
+
+                    foreach (var item in listaAuditor)
+                    {
+                        ParMultipleValuesGeral teste = new ParMultipleValuesGeral();
+                        if (item.Role != null && item.Role.ToLower().Contains("Auditor".ToLower()))
+                        {
+                            teste.Name = item.FullName;
+                            teste.Id = item.Id;
+
+                            teste2.Add(teste);
+                        }
+                    }
+
+                    select.Values = teste2;
+                }
+                else
+                {
+                    //pegar values dos campos de cabeçalho
+                    select.Values = values.Where(r => r.ParHeaderFieldGeral_Id == headerField.Id && r.IsActive == true).ToList();
+                }
+
+                //Atribui o selecionado
+                //Se tiver mais do que um valor duplica a inserção
+                var resultados = coletas.Where(r => r.ParHeaderFieldGeral_Id == headerField.Id).ToList();
+
+                select.CollectionLevel2 = collectionLevel2;
+
+                //Quantidades de campos coletados
+                if (resultados.Count > 0)
+                {
+                    foreach (var resultado in resultados)
+                    {
+                        //Atribui a quantidade de cabeçalhos                       
+                        select.CollectionLevel2XParHeaderFieldGeral_Id = resultado.Id;
+                        select.ValueSelected = resultado.Value;
+                        resultHeaderField.Add(new SelectGeral()
+                        {
+                            CollectionLevel2 = select.CollectionLevel2,
+                            CollectionLevel2XParHeaderFieldGeral_Id = select.CollectionLevel2XParHeaderFieldGeral_Id,
+                            HeaderFieldGeral = select.HeaderFieldGeral,
+                            Values = select.Values,
+                            ValueSelected = select.ValueSelected
+                        });
+                    }
+                }
+                else
+                {
+                    //Somente atribui sem valor selecionado
+                    resultHeaderField.Add(select);
+                }
+            }
+
+            //pegar os valor que está selecionado
+            return resultHeaderField.Where(x => x.CollectionLevel2XParHeaderFieldGeral_Id != 0).ToList();
         }
 
         public List<SelectGeral> GetSelectsByHeaderFieldGeral(List<CollectionLevel2XParHeaderFieldGeral> coletas, CollectionLevel2 collectionLevel2)

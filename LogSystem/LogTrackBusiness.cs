@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -78,6 +79,9 @@ namespace LogSystem
         {
             using (var db = new Dominio.SgqDbDevEntities())
             {
+
+                List<object> logTrack = new List<object>();
+
                 var logs = db.LogTrack
                     .Include("UserSgq")
                     .Include("ParReason")
@@ -92,7 +96,34 @@ namespace LogSystem
                         motivo = x.Motivo ?? ""
                     })
                     .ToList();
-                return logs;
+
+                foreach (var item in logs)
+                {
+                    JObject json = item.obj as JObject;
+
+                    if (json != null && int.Parse(json.SelectToken("ParFieldType_Id").ToString()) == 12){
+
+                        var userId = int.Parse(json.SelectToken("Value").ToString());
+                        var user = db.UserSgq.Where(x => x.Id == userId).Select(x => x.FullName).FirstOrDefault();
+                        json.Add("FullName", user);
+
+                        logTrack.Add(new {
+                            obj = JsonConvert.DeserializeObject<object>(json.ToString()),
+                            addDate = item.addDate.ToString(),
+                            userSgq_Name = item.userSgq_Name ?? "",
+                            parReason = item.parReason ?? "",
+                            motivo = item.motivo ?? "",
+                        });
+
+                    }
+                    else
+                    {
+                        logTrack.Add(json);
+                    }
+
+                }
+
+                return logTrack;
             }
         }
 

@@ -1643,6 +1643,7 @@ public class ApontamentosDiariosResultSet
 							ORDER BY PL3V.Id DESC, PL3V.ParCompany_Id DESC, PL3V.ParLevel2_Id DESC, PL3V.ParLevel1_Id DESC)
 						AS IsAtiveNA
                         ,CASE WHEN (SELECT TOP 1 Id FROM LogTrack LT WHERE LT.Tabela = 'Result_Level3' AND LT.Json_Id = R3.Id) IS NOT NULL THEN 1 ELSE 0 END AS HasHistoryResult_Level3
+                        ,CASE WHEN (SELECT TOP 1 Id FROM LogTrack LT WHERE LT.Tabela = 'CollectionLevel2XParHeaderFieldGeral' AND LT.Json_Id IN (select CL2PHF_LT.ID from CollectionLevel2XParHeaderFieldGeral CL2PHF_LT where CL2PHF_LT.collectionlevel2_ID = C2.ID)) IS NOT NULL THEN 1 ELSE 0 END AS HasHistoryHeaderField               
 					   ,CASE
 							WHEN MA.Motivo IS NULL THEN 0
 							ELSE 1
