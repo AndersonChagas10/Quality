@@ -986,14 +986,106 @@ namespace SgqSystem.Controllers.Api.Formulario
         [Route("GetFilteredUserSgqAuditor")]
         public List<UserSgq> GetFilteredUserSgqAuditor(string search, [FromBody] DataCarrierFormularioNew form)
         {
+            var whereStructure = "";
+            var whereStructParent = "";
+            var whereUnidadesUsuario = "";
+            var whereClusterGroup = "";
+            var whereCluster = "";
+
+            var usuarioLogado = GetUsuarioLogado();
+
+            if (form.ShowUserCompanies && !usuarioLogado.ShowAllUnits.Value)
+                whereUnidadesUsuario = $@"AND PC.Id IN (SELECT
+                            		PCXU.ParCompany_Id
+                            	FROM ParCompanyXUserSgq PCXU WITH (NOLOCK)
+                            	INNER JOIN UserSgq US ON PCXU.UserSgq_Id = US.Id AND US.Id = {usuarioLogado.Id}
+                            	UNION 
+                            	SELECT US.ParCompany_Id 
+                            	FROM UserSgq US WITH (NOLOCK)
+                            	WHERE US.Id = {usuarioLogado.Id})";
+
+
+            if (form.ParClusterGroup_Ids.Length > 0)
+                whereClusterGroup = $" AND PCL.ParClusterGroup_Id IN ({string.Join(",", form.ParClusterGroup_Ids)})";
+
+            if (form.ParCluster_Ids.Length > 0)
+                whereCluster = $" AND PCL.Id IN ({string.Join(",", form.ParCluster_Ids)})";
+
+            if (form.ParStructure2_Ids.Length > 0)
+                whereStructure = $" AND PS.ParStructureParent_Id IN ({string.Join(",", form.ParStructure2_Ids)})";
+
+            if (form.ParStructure3_Ids.Length > 0)
+                whereStructParent = $" AND PS.Id IN ({string.Join(",", form.ParStructure3_Ids)})";
+
+
             using (var factory = new Factory("DefaultConnection"))
             {
-                var query = $@"SELECT DISTINCT TOP 500 Id, Name from UserSgq Where 1 = 1 AND Name like '%{search}%'";
+
+                var query = $@"
+                            SELECT DISTINCT TOP 500
+                            	US.Id
+                               ,US.Name
+                            FROM (SELECT DISTINCT
+                            		PVP.ParLevel1_Id
+                            	   ,PVP.ParLevel2_Id
+                            	   ,PVP.ParLevel3_Id
+                            	   ,PVP.ParCluster_Id
+                            	FROM ParVinculoPeso PVP WITH (NOLOCK)
+                            	WHERE PVP.IsActive = 1
+                            	GROUP BY PVP.ParLevel1_Id
+                            			,PVP.ParLevel2_Id
+                            			,PVP.ParLevel3_Id
+                            			,PVP.ParCluster_Id) PVPFIXOS
+                            OUTER APPLY (SELECT TOP 1
+                            		*
+                            	FROM ParVinculoPeso PVP WITH (NOLOCK)
+                            	WHERE PVP.ParLevel1_Id = PVPFIXOS.ParLevel1_Id
+                            	AND PVP.ParLevel2_Id = PVPFIXOS.ParLevel2_Id
+                            	AND PVP.ParLevel3_Id = PVPFIXOS.ParLevel3_Id
+                            	AND PVP.ParCluster_Id = PVPFIXOS.ParCluster_Id
+                            	AND PVP.IsActive = 1
+                            	ORDER BY CASE
+                            		WHEN PVP.ParDepartment_Id IS NULL THEN 1
+                            		ELSE 0
+                            	END, CASE
+                            		WHEN PVP.ParCargo_Id IS NULL THEN 1
+                            		ELSE 0
+                            	END, CASE
+                            		WHEN PVP.ParCompany_Id IS NULL THEN 1
+                            		ELSE 0
+                            	END) AS PVP
+                            --INNER JOIN ParDepartment Secao WITH (NOLOCK) ON (Secao.Id = PVP.ParDepartment_Id OR PVP.ParDepartment_Id IS NULL) AND Secao.Parent_Id IS NOT NULL
+                            --INNER JOIN ParDepartment CentroCusto ON (CentroCusto.Id = Secao.Parent_Id AND CentroCusto.Parent_Id IS NULL) 
+                            INNER JOIN ParCluster PCL WITH (NOLOCK) ON PCL.Id = PVP.ParCluster_Id
+                            INNER JOIN ParClusterGroup PCG WITH (NOLOCK) ON PCG.Id = PCL.ParClusterGroup_Id
+                            INNER JOIN ParCompany PC WITH (NOLOCK) ON (PC.Id = PVP.ParCompany_Id OR PVP.ParCompany_Id IS NULL) --Fixo
+                            inner join ParCompanyXUserSgq as PCUS
+									on PCUS.ParCompany_Id = PC.Id
+							inner join UserSgq as US
+									 on PCUS.UserSgq_Id = US.Id                            
+                            --INNER JOIN ParCargo Cargo WITH (NOLOCK) ON (Cargo.Id = PVP.ParCargo_Id OR PVP.ParCargo_Id IS NULL) 
+                            INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON PL1.Id = PVP.ParLevel1_Id --Fixo
+                            INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON PL2.Id = PVP.ParLevel2_Id --Fixo
+                            INNER JOIN ParLevel3 PL3 WITH (NOLOCK) ON PL3.Id = PVP.ParLevel3_Id --Fixo
+                            INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = PC.Id and PCXS.Active = 1
+                            INNER JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
+                            LEFT JOIN ParStructure PS1 WITH (NOLOCK) ON PS.ParStructureParent_Id = PS1.Id
+                            INNER JOIN ParStructureGroup PSG WITH (NOLOCK) ON PSG.Id = PS.ParStructureGroup_Id
+                            WHERE 1 = 1
+                            {whereStructure}
+                            {whereStructParent}
+                            {whereUnidadesUsuario}
+                            {whereClusterGroup}
+                            {whereCluster}
+                            AND US.Name LIKE '%{search}%'
+                            AND US.[Role] LIKE '%auditor%'
+                            ";
 
                 var retorno = factory.SearchQuery<UserSgq>(query).ToList();
 
                 return retorno;
-            }
+
+            } 
         }
 
         [HttpPost]
