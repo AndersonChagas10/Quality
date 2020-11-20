@@ -97,7 +97,8 @@ namespace SgqSystem.Controllers.Api
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                _list = factory.SearchQuery<ApontamentosDiariosResultSet>(query).ToList();
+                if(query != "")
+                    _list = factory.SearchQuery<ApontamentosDiariosResultSet>(query).ToList();
 
                 return _list;
             }

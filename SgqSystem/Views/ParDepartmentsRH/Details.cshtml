@@ -91,7 +91,15 @@
                                         </dt>
 
                                         <dd>
-                                            @Html.DisplayFor(model => model.ParCompany.FirstOrDefault() == null ? "Todas" : model.ParCompany.FirstOrDefault().Name)
+                                            @if (Model.ParCompany != null)
+                                            {
+                                                @Html.DisplayFor(model => model.ParCompany.FirstOrDefault().Name)
+                                            }
+                                            else
+                                            {
+                                                @Html.Display("Todas");
+                                            }
+
                                         </dd>
 
                                         <dt>

@@ -96,7 +96,7 @@
 
         function GerarTabela(retornoArray) {
             
-            if (retornoArray.length == 0) {
+            if (retornoArray == null || retornoArray.length == 0) {
 
                 preencheRetornoGrafico(@Html.Raw(Json.Encode(Resources.Resource.no_appointments_in_this_period)))
             }
@@ -384,12 +384,12 @@
                                     passado.push(o);
                                 }
                             });
-
+                            
                             var htmlCorpo = function (o) {
                                 var html = "<td>" + o.addDate + "</td>";
                                 html += "<td>" + o.userSgq_Name + "</td>";
                                 html += "<td>" + o.obj.ParHeaderField_Name + "</td>";
-                                html += "<td>" + (!!o.obj.ParHeaderField_ValueName ? o.obj.ParHeaderField_ValueName : o.obj.Value) + " - " +o.obj.FullName + "</td>";
+                                html += "<td>" + (!!o.obj.ParHeaderField_ValueName ? o.obj.ParHeaderField_ValueName : o.obj.Value) + (!!o.obj.FullName ? ( " - " + o.obj.FullName) : "")  + "</td>";
                                 html += "<td>" + o.parReason + "</td>";
                                 html += "<td>" + o.motivo + "</td>";
                                 return html;

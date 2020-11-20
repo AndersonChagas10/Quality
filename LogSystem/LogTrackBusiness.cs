@@ -107,19 +107,16 @@ namespace LogSystem
                         var user = db.UserSgq.Where(x => x.Id == userId).Select(x => x.FullName).FirstOrDefault();
                         json.Add("FullName", user);
 
-                        logTrack.Add(new {
-                            obj = JsonConvert.DeserializeObject<object>(json.ToString()),
-                            addDate = item.addDate.ToString(),
-                            userSgq_Name = item.userSgq_Name ?? "",
-                            parReason = item.parReason ?? "",
-                            motivo = item.motivo ?? "",
-                        });
+                    }
 
-                    }
-                    else
+                    logTrack.Add(new
                     {
-                        logTrack.Add(json);
-                    }
+                        obj = JsonConvert.DeserializeObject<object>(json.ToString()),
+                        addDate = item.addDate.ToString(),
+                        userSgq_Name = item.userSgq_Name ?? "",
+                        parReason = item.parReason ?? "",
+                        motivo = item.motivo ?? "",
+                    });
 
                 }
 

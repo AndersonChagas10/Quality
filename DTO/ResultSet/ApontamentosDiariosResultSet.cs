@@ -1303,6 +1303,11 @@ public class ApontamentosDiariosResultSet
 		if(form.userSgqAuditor_Ids.Length > 0)
 			sqlAuditor = $"AND C2.AuditorId IN({string.Join(",", form.userSgqAuditor_Ids)}) --Auditor";
 
+        var whereUnits = "";
+        if (userUnits != null && userUnits.Length > 0)
+            whereUnits = $"AND UnitId in ({ userUnits})";
+        else
+            return ""; 
 								  
 		var query = $@" 
 
@@ -1330,7 +1335,7 @@ public class ApontamentosDiariosResultSet
                          AND NotEvaluatedIs <> 999
                          AND Duplicated <> 999
                          AND CL2.CollectionDate BETWEEN '{ dtInit } 00:00' AND '{ dtF }  23:59:59'
-                         AND UnitId in ({userUnits})
+                         {whereUnits}
                          { sqlTurno } 
                          { sqlUnidade } 
                          { sqlLevel1 } 
