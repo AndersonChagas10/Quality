@@ -26,6 +26,7 @@ namespace Dominio
         public bool IsActive { get; set; }
         public bool IsRequired { get; set; }
         public bool Duplicate { get; set; }
+        public bool IsFooterHeaderField { get; set; }
 
         [ForeignKey("ParFieldType_Id")]
         public virtual ParFieldType ParFieldType { get; set; }

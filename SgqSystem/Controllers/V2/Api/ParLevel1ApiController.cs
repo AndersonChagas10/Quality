@@ -352,6 +352,7 @@ namespace SgqSystem.Controllers.V2.Api
                         parHeaderFieldToUpdate.IsActive = parHeaderFieldGeral.IsActive;
                         parHeaderFieldToUpdate.IsRequired = parHeaderFieldGeral.IsRequired;
                         parHeaderFieldToUpdate.Duplicate = parHeaderFieldGeral.Duplicate;
+                        parHeaderFieldToUpdate.IsFooterHeaderField = parHeaderFieldGeral.IsFooterHeaderField;
                         parHeaderFieldToUpdate.AlterDate = DateTime.Now;
                     }
                     else
