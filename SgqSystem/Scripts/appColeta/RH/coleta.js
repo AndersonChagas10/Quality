@@ -51,6 +51,7 @@ function openColeta(levels) {
                         }
                     });
             });
+        coleta += getParFooterFieldLevel1(level1);
     });
 
     html = getHeader() +

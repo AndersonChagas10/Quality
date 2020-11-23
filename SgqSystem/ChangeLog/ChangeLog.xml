@@ -3924,5 +3924,18 @@
     <Description> [GQ] ApontamentosDiarios e CartasCep - Não estavam desdobrando o monitoramento e tarefa a partir do indicador. </Description>
     <Script></Script>
   </Card>
+
+  <Card>
+    <CardNumber>GRX-275</CardNumber>
+    <Version>1.10.2</Version>
+    <Description>[RH] Parametrização | AppColeta - Criação da coluna 'IsFooterHeaderField' para exibir os campos de cabeçalho no rodapé da tela de coleta.</Description>
+    <Script>
+      IF NOT EXISTS (SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ParHeaderFieldGeral' AND COLUMN_NAME = 'IsFooterHeaderField')
+      BEGIN
+      ALTER TABLE ParHeaderFieldGeral
+      ADD IsFooterHeaderField BIT NOT NULL DEFAULT 0;
+      END
+    </Script>
+  </Card>
   
 </Cards>

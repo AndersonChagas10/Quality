@@ -27,6 +27,23 @@ function getParHeaderFieldLevel1(parLevel1) {
         return '';
 }
 
+function getParFooterFieldLevel1(parLevel1) {
+
+    var parLevelHeaderFiel_Id = 1; //ParLevel1
+
+    var cabecalhos = montarFooterFields(parLevelHeaderFiel_Id, parLevel1.Id)
+
+    if (cabecalhos)
+
+        return '<div id="headerFieldLevel1" data-collapse-target="' + parLevel1.Id + '" class="col-xs-12" parLevel1Id=' + parLevel1.Id + ' style="padding-top:10px;padding-bottom:10px;display:table;background-color:#edf5fc;">' +
+            montarBotoesRotinaIntegracao() +
+            cabecalhos +
+            '</div>';
+
+    else
+        return '';
+}
+
 function getParHeaderFieldLevel2(parLevel1, parLevel2) {
 
     var parLevelHeaderFiel_Id = 2; //ParLevel2
@@ -102,7 +119,25 @@ function montarHeaderFields(parLevelHeaderFiel_Id, Generic_Id) {
 
     if (headerFields && headerFields.length)
         headerFields.forEach(function (headerField) {
-            html += getInputOrSelect(headerField,flagPullRight, "disabled");
+            if (!headerField.IsFooterHeaderField)
+                html += getInputOrSelect(headerField,flagPullRight, "disabled");
+        });
+
+    return html;
+
+}
+
+function montarFooterFields(parLevelHeaderFiel_Id, Generic_Id) {
+
+    var html = "";
+    var flagPullRight = "";
+
+    var headerFields = getHeaderFileds(parLevelHeaderFiel_Id, Generic_Id);
+
+    if (headerFields && headerFields.length)
+        headerFields.forEach(function (headerField) {
+            if (headerField.IsFooterHeaderField)
+                html += getInputOrSelect(headerField, flagPullRight, "disabled");
         });
 
     return html;
@@ -161,8 +196,9 @@ function getInputOrSelect(parheaderField, flagPullRight, flagDisableRemoveDuplic
             break;
         case 4:	//Texto 
             html += '<div id="" class="col-sm-3 ' + flagPullRight + '" name="" style="margin-bottom: 4px;">';
-            html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
-            html += '<input class="form-control input-sm" type="text" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '" >';
+            html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '&nbsp</label>';
+            html += '<label class="font-small" style="height: 22px; color:red; display:none;" data-limite-char> - Limite de caracteres atingido!</label>';
+            html += '<input class="form-control input-sm" type="text" id="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '" maxlength="500" onkeyup="ValidateCharLimit(this)">';
             html += htmlDuplicate;
             html += '</div>';
             break;
@@ -226,6 +262,19 @@ function getInputOrSelect(parheaderField, flagPullRight, flagDisableRemoveDuplic
 
     return html;
 
+}
+
+function ValidateCharLimit(input) {
+    if ($(input).val().length >= 500) {
+
+        $(input).css('border-color', 'red');
+        $(input).parent().find('[data-limite-char]').show();
+
+    } else {
+
+        $(input).removeAttr('style');
+        $(input).parent().find('[data-limite-char]').hide();
+    }
 }
 
 $('body').off('keyup', '#buscaAuditor').on('keyup', '#buscaAuditor', function (e) {

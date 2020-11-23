@@ -311,6 +311,7 @@ namespace SgqSystem.Controllers.Api.Params
             public int Group_Id { get; set; }
             public int ParLevel1_Id { get; set; }
             public string HeaderFieldGroup { get; set; }
+            public bool IsFooterHeaderField { get; set; }
         }
 
         /*

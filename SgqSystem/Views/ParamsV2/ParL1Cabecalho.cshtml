@@ -41,13 +41,24 @@
 
         </div>
 
-        <div class="col-sm-4">
-            <label for="IsAgendamento">Permite Clonagem?</label>
+        <div class="col-sm-3">
+            <label for="Duplicate">Permite Clonagem?</label>
             <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Possibilita habilitar a clonagem de um campo de cabeçalho" aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
             <div class="form-group">
 
                 <label class="switch">
                     <input id="Duplicate" type="checkbox" name="Duplicate" value=""><span class="slider round"></span>
+                </label>
+            </div>
+
+        </div>
+        <div class="col-sm-2">
+            <label for="IsFooterHeaderField">Exibir no rodapé?</label>
+            <i class="fa fa-info-circle fa-lg text-primary popovers" data-container="body" data-trigger="hover" data-placement="bottom" data-content="Exibe o campo de cabeçalho no rodapé da tela de Coleta." aria-hidden="true" data-toggle="popover" data-original-title="" title=""></i>
+            <div class="form-group">
+
+                <label class="switch">
+                    <input id="IsFooterHeaderField" type="checkbox" name="IsFooterHeaderField" value=""><span class="slider round"></span>
                 </label>
             </div>
 
@@ -174,11 +185,14 @@
                         <th class="col-sm-2">
                             Nome
                         </th>
-                        <th class="col-sm-2">
+                        <th class="col-sm-1">
                             Tipo
                         </th>
                         <th class="col-sm-2">
                             Permite Clonagem
+                        </th>
+                        <th class="col-sm-2">
+                            Exibir no rodapé
                         </th>
                         <th class="col-sm-2">
                             Visualização
@@ -189,7 +203,7 @@
                         <th class="col-sm-1">
                             padrão
                         </th>
-                        <th class="col-sm-2">
+                        <th class="col-sm-1">
                             Ação
                         </th>
                     </tr>
@@ -233,10 +247,13 @@
                 
                 let duplicate = o.Duplicate ? "checked" : "";
 
+                let IsFooterHeaderField = o.IsFooterHeaderField ? "checked" : "";
+
                 var html = '<tr>';
                 html += '<td>' + o.Name + '</td>';
                 html += '<td>' + o.ParFieldType.Name + '</td>';
-                html += '<td><div class=""><label class="switch"><input type="checkbox" name="Duplicate"' + duplicate + ' ><span class="slider round"></span> </label></div></td>';
+                html += '<td><div class="" style="pointer-events: none;"><label class="switch"><input type="checkbox" name="Duplicate"' + duplicate + ' ><span class="slider round"></span> </label></div></td>';
+                html += '<td><div class="" style="pointer-events: none;"><label class="switch"><input type="checkbox" name="IsFooterHeaderField"' + IsFooterHeaderField + ' ><span class="slider round"></span> </label></div></td>';
                 html += '<td>' + previewHeaderField + '</td>';
                 html += '<td><div class=""><label class="switch"><input type="checkbox" name="IsRequired"' + isChecked + ' ><span class="slider round"></span> </label></div></td>';
                 html += '<td>' + defaultSelected + '</input></td>';
@@ -259,6 +276,7 @@
 
             obj['Name'] = formdata.Name;
             obj['Duplicate'] = formdata.Duplicate;
+            obj['IsFooterHeaderField'] = formdata.IsFooterHeaderField;
             obj['Description'] = formdata.Description;
             obj['ParLevelDefinition_Id'] = formdata.ParLevelDefinition_Id;
             obj['ParFieldType_Id'] = formdata.ParFieldType_Id;
