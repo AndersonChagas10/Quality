@@ -2412,6 +2412,8 @@
     <Content Include="Views\RelatoriosSgq\ApontamentosDiariosSeara.cshtml" />
     <Content Include="Views\RelatoriosSgq\_ProdutoEdit.cshtml" />
     <Content Include="Views\RelatoriosCovid\RelatorioResultado.cshtml" />
+    <Content Include="Views\Relatorios\RH\AuditoriaComportamentalRH.cshtml" />
+    <Content Include="Views\RelatoriosSgq\_FilterReportsHorizontal.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
