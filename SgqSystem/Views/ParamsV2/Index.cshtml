@@ -559,7 +559,7 @@
     });
 
     function removeAuditorHeaderField(lista) {
-        $(lista).filter(function (i, o) {
+        return $(lista).filter(function (i, o) {
             return o.Id != 12
         });
     }
