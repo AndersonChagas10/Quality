@@ -1,5 +1,6 @@
 ﻿using ADOFactory;
 using DTO;
+using DTO.ResultSet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,9 @@ using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.Api.Relatorios.RH
 {
+
+
+
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/AuditoriaComportamental")]
     public class AuditoriaComportamentalApiController : BaseApiController
@@ -17,19 +21,19 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
         [HttpPost]
         [Route("GetAuditoriaComportamental")]
-        public List<ApontamentosDiariosResultSet> GetApontamentosDiariosRH([FromBody] DataCarrierFormularioNew form)
+        public List<AuditoriaComportamentalResultSet> GetApontamentosDiariosRH([FromBody] DataCarrierFormularioNew form)
         {
+            var _list = new List<AuditoriaComportamentalResultSet>();
 
-            //var query = new ApontamentosDiariosResultSet().SelectRH(form, GetUserUnitsIds(form.ShowUserCompanies));
+            var query = new AuditoriaComportamentalResultSet().GetVisaoGeral();
 
-            //using (Factory factory = new Factory("DefaultConnection"))
-            //{
-            //    if (query != "")
-            //        _list = factory.SearchQuery<ApontamentosDiariosResultSet>(query).ToList();
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                if (query != "")
+                    _list = factory.SearchQuery<AuditoriaComportamentalResultSet>(query).ToList();
 
-            //    return _list;
-            //}
-            return null;
+                return _list;
+            }
         }
 
     }
