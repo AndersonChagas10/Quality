@@ -6,22 +6,10 @@
 
     Layout = "~\\Views\\RelatoriosSgq\\_FilterReportsHorizontal.cshtml";
 
-    //var url = Url.Action("Index", "Home");
-    //var urlGraficoUnidades = Url.Action("GraficoUnidades", "api/NaoConformidadeRH");
-    //var urlGraficoDepartamentos = Url.Action("GraficoDepartamentos", "api/NaoConformidadeRH");
-    //var urlGetPanelResultSet = Url.Action("GetPanelResultSet", "api/NaoConformidadeRH");
-    //var urlGraficoNcPorUnidadeIndicador = Url.Action("GraficoIndicador", "api/NaoConformidadeRH");
-    //var urlGraficoMonitoramento = Url.Action("GraficoMonitoramento", "api/NaoConformidadeRH");
-    //var urlGraficoTarefasAcumuladas = Url.Action("GraficoTarefasAcumuladas", "api/NaoConformidadeRH");
-    //var urlGraficoTarefa = Url.Action("GraficoTarefa", "api/NaoConformidadeRH");
-    //var urlFtaGet = Url.Action("GetUrl", "api/Fta");
-    //var UrlGraficoDepartamentosPorShift = Url.Action("GraficoDepartamentosPorShift", "api/NaoConformidadeRH");
-    //var UrlPivotTable = Url.Action("PivotTable", "api/NaoConformidadeRH");
-    //var UrlGraficoIndicadorPorShift = Url.Action("GraficoIndicadorPorShift", "api/NaoConformidadeRH");
-    //var UnidadeUsuario = ViewBag.UnidadeUsuario;
-    //ViewBag.UnitIdArr = true;
+
 
     var urlGet = Url.Action("GetAuditoriaComportamental", "api/AuditoriaComportamental");
+    var urlGetAcompanhamento = Url.Action("GetAuditoriaComportamentalAcompanhamento", "api/AuditoriaComportamental");
 
     ViewBag.ShowCurrentDate = false;
     ViewBag.ShowRangeDate = true;
@@ -258,7 +246,8 @@
 
 @section Scripts {
     <script>
-       var urlGet = '@Html.Raw(@urlGet)';
+        var urlGet = '@Html.Raw(@urlGet)';
+        var urlGetAcompanhamento = '@Html.Raw(@urlGetAcompanhamento)';
     </script>
 
     <script src="~/Scripts/relatoriosRH/AuditoriaComportamental/visaoGeral.js"></script>

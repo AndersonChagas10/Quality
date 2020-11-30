@@ -1,6 +1,7 @@
 ﻿using ADOFactory;
 using DTO;
 using DTO.ResultSet;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,6 @@ using System.Web.Http.Cors;
 namespace SgqSystem.Controllers.Api.Relatorios.RH
 {
 
-
-
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     [RoutePrefix("api/AuditoriaComportamental")]
     public class AuditoriaComportamentalApiController : BaseApiController
@@ -21,16 +20,33 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
         [HttpPost]
         [Route("GetAuditoriaComportamental")]
-        public List<AuditoriaComportamentalResultSet> GetApontamentosDiariosRH([FromBody] DataCarrierFormularioNew form)
+        public List<JObject> GetApontamentosDiariosRH([FromBody] DataCarrierFormularioNew form)
         {
-            var _list = new List<AuditoriaComportamentalResultSet>();
+            var _list = new List<JObject>();
 
             var query = new AuditoriaComportamentalResultSet().GetVisaoGeral();
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 if (query != "")
-                    _list = factory.SearchQuery<AuditoriaComportamentalResultSet>(query).ToList();
+                    _list = factory.QueryNinjaADO(query);
+
+                return _list;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetAuditoriaComportamentalAcompanhamento")]
+        public List<JObject> GetAuditoriaComportamentalAcompanhamento([FromBody] DataCarrierFormularioNew form)
+        {
+            var _list = new List<JObject>();
+
+            var query = new AuditoriaComportamentalResultSet().GetVisaoAcompanhamento();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                if (query != "")
+                    _list = factory.QueryNinjaADO(query);
 
                 return _list;
             }
