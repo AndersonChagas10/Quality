@@ -95,12 +95,32 @@ namespace DTO.ResultSet
         public int? ParProduto_Id { get; set; }
         public int? CollectionLevel2_Id { get; set; }
 
-        public string GetVisaoAcompanhamento()
+        public string GetVisaoAcompanhamento(DataCarrierFormularioNew form, string userUnits)
         {
+
+ 
+            var whereRegional = "";
+            if (form.ParStructure3_Ids.Length > 0)
+            {
+                whereRegional = $"AND CuboL3.ParLevel3_Id in ({ string.Join(",", form.ParStructure3_Ids)})";
+            }
+
+            var whereGrupoempresa = "";
+            if (form.ParStructure1_Ids.Length > 0)
+            {
+                whereGrupoempresa = $"AND CuboL3.ParLevel3_Id in ({ string.Join(",", form.ParStructure1_Ids)})";
+            }
+
+            var whereUnidade= "";
+            if (form.ParCompany_Ids.Length > 0)
+            {
+                whereUnidade = $"AND CuboL3.ParLevel3_Id in ({ string.Join(",", form.ParCompany_Ids)})";
+            }
+
             return $@"
 
-             DECLARE @DATAINICIAL DATETIME = '2020-11-19'
-            DECLARE @DATAFINAL   DATETIME = '2020-11-26'
+            DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+            DECLARE @DATAFINAL   DATETIME =  '{ form.endDate.ToString("yyyy-MM-dd")} {" 23:59:00"}'
 
             SELECT 
 	            id

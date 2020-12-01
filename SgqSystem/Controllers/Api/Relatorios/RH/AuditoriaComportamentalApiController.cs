@@ -41,7 +41,7 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
         {
             var _list = new List<JObject>();
 
-            var query = new AuditoriaComportamentalResultSet().GetVisaoAcompanhamento();
+            var query = new AuditoriaComportamentalResultSet().GetVisaoAcompanhamento(form, GetUserUnitsIds(form.ShowUserCompanies));
 
             using (Factory factory = new Factory("DefaultConnection"))
             {

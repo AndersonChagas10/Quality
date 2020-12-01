@@ -206,7 +206,7 @@ function montaCards(listaAuditoria) {
     $("#labelIps").text(parseInt(ips.toFixed(2)) + "%");
 }
 
-function montaCardsAcompanhamento(listaAuditoria) {
+function montaCardsAcompanhamento(listaAuditoria, totalRealizado, totalSemanas) {
 
     var totalAuditorias = agrupaPor(listaAuditoria, 'CollectionL2_Id');
 
@@ -215,29 +215,24 @@ function montaCardsAcompanhamento(listaAuditoria) {
     var totalAuditores = totalAuditorias.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Auditor") == true).length;
     $("#lblTotalAuditoresAcompanhamento").text(totalAuditores);
 
-    $("#lblTotalRealizadoAcompanhamento").text(); // esse cara faz o calculo com base nas semanas e no valor da meta que é 2
+    var totalPlanejado = totalRealizado * 2 * totalSemanas; //total de coletas * a meta * a quantidade de semanas  = total de coletas q representam 100%
+    if (totalRealizado / totalPlanejado * 100 == 100 )
+        $("#lblTotalRealizadoAcompanhamento").text(totalRealizado / totalPlanejado * 100 + "%").css('color', 'green');
+    else
+        $("#lblTotalRealizadoAcompanhamento").text(totalRealizado / totalPlanejado * 100 + "%").css('color', 'red');
 
     var totalTarefasConforme = listaAuditoria.filter((o, i) => o.Conforme == "C").length;
     var totalTarefasNaoConforme = listaAuditoria.filter((o, i) => o.Conforme == "NC").length;
 
     var totalTarefasAvalidas = totalTarefasConforme + totalTarefasNaoConforme;
-    $("#lblTotalConformeAcompanhamento").text(totalTarefasConforme / totalTarefasAvalidas * 100 + "%");
+    var porcentagemTotalConforme = totalTarefasConforme / totalTarefasAvalidas * 100;
+    $("#lblTotalConformeAcompanhamento").text(parseInt(porcentagemTotalConforme.toFixed(2)) + "%").css('color', 'green');
 
-  
-    $("#lblTotalNaoConformeAcompanhamento").text(totalTarefasNaoConforme / totalTarefasAvalidas * 100 + "%");
+
+    var porcentagemTotalNaoconforme = totalTarefasNaoConforme / totalTarefasAvalidas * 100;
+    $("#lblTotalNaoConformeAcompanhamento").text(parseInt(porcentagemTotalNaoconforme.toFixed(2)) + "%").css('color', 'red');
 
     var totalAuditoresObservados = totalAuditorias.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Nº de pessoas observadas") == true);
-
-    var somaObservados = 0;
-    totalAuditoresObservados.map(function (o, i) {
-        if (o.HeaderFieldListL1 != null) {
-            somaObservados += parseInt(o.HeaderFieldListL1["Nº de pessoas observadas"]);
-        }
-    });
-
-    $("#labelTotalAuditoresObservados").text(somaObservados);
-
-
 }
 
 function montaListaObjGenericosPorcentagem(lista, propriedadeName, propriedadeValue1, propriedadeValue2) {
@@ -582,16 +577,10 @@ function enviarFiltro() {
                     data[i]["HeaderFieldListL3"] = JSON.parse(data[i]["HeaderFieldListL3"]);
                 }
 
-                montaCardsAcompanhamento(data);
-
                 let acompanhamentoObj = JSON.parse(JSON.stringify(data));
                 var listaDeSemanas = [];
 
                 listaDeSemanas = montaListaSemanas(data);
-
-                //montaTotalSemanas(listaDeSemanas, acompanhamentoObj);
-                //montaTotalSemanas(listaDeSemanas, acompanhamentoObj);
-
 
                 var colunas = [
                     { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
@@ -603,12 +592,13 @@ function enviarFiltro() {
                             var total = 0;
 
                             for (var i = 0; i < listaDeSemanas.length; i++) {
-                                if (acompanhamentoObj.hasOwnProperty(listaDeSemanas[i].title)) {  // (2020-47 )
-                                    if (acompanhamentoObj[listaDeSemanas[i].title] != "")
+                                if (acompanhamentoObj.hasOwnProperty(listaDeSemanas[i].title)) {
+                                    if (acompanhamentoObj[listaDeSemanas[i].title] != "") {
                                         total += parseInt(acompanhamentoObj[listaDeSemanas[i].title]);
+                                      
+                                    }
                                 }
                             }
-
                             return total;
                         }
                     },
@@ -623,7 +613,9 @@ function enviarFiltro() {
                                 }
                             }
 
-                            return total / 2 * 100 + "%";
+                            var porcentagemTotal = total / (2 * listaDeSemanas.length) * 100;
+                            
+                            return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : parseInt(porcentagemTotal.toFixed(2))  + "%";
                         }
                     }
                 ];
@@ -632,8 +624,32 @@ function enviarFiltro() {
                  $('#tblAcompanhamento').DataTable({
                      data: acompanhamentoObj,
                     "scrollX": true,
-                     columns: colunas
+                     columns: colunas,
+                     createdRow: function (row, data, index) {
+
+                         for (var i = 0; i < row.cells.length; i++) {
+                             if (i == 5 && parseFloat(row.cells[i].innerHTML) <= 50)
+                                 $('td:eq(' + i + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold"); //vermelho
+                             else if (i == 5 && parseFloat(row.cells[i].innerHTML) == 100)
+                                 $('td:eq(' + i + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold"); //verde
+                             //else if (i > 3)
+                             //$('td:eq(' + i + ')', row).css("background-color", "yellow").css("font-weight", "bold");
+                         }
+                     }
                 });
+
+                var totalRealizado = 0;
+                for (var j = 0; j < acompanhamentoObj.length; j++) {
+                    for (var i = 0; i < listaDeSemanas.length; i++) {
+                        if (acompanhamentoObj[i].hasOwnProperty(listaDeSemanas[i].title)) {
+                            if (acompanhamentoObj[j][listaDeSemanas[i].title] != "") {
+                                totalRealizado += parseInt(acompanhamentoObj[j][listaDeSemanas[i].title]);
+                            }
+                        }
+                    }
+                }
+
+                montaCardsAcompanhamento(acompanhamentoObj, totalRealizado, listaDeSemanas.length);
 
                 closeLoader();
             }).fail(function (jqXHR, textStatus, msg) {
