@@ -102,19 +102,31 @@ namespace DTO.ResultSet
             var whereRegional = "";
             if (form.ParStructure3_Ids.Length > 0)
             {
-                whereRegional = $"AND CuboL3.ParLevel3_Id in ({ string.Join(",", form.ParStructure3_Ids)})";
+                  whereRegional = $"AND pg.Id in ({ string.Join(",", form.ParStructure3_Ids)})";
             }
 
             var whereGrupoempresa = "";
-            if (form.ParStructure1_Ids.Length > 0)
+            if (form.ParStructure2_Ids.Length > 0)
             {
-                whereGrupoempresa = $"AND CuboL3.ParLevel3_Id in ({ string.Join(",", form.ParStructure1_Ids)})";
+                  whereGrupoempresa = $"AND psg.Id in ({ string.Join(",", form.ParStructure2_Ids)})";
             }
 
             var whereUnidade= "";
             if (form.ParCompany_Ids.Length > 0)
             {
-                whereUnidade = $"AND CuboL3.ParLevel3_Id in ({ string.Join(",", form.ParCompany_Ids)})";
+                whereUnidade = $"AND C2.UnitId in ({ string.Join(",", form.ParCompany_Ids)})";
+            }
+
+            var whereMonitoramento = "";
+            if (form.ParLevel2_Ids.Length > 0)
+            {
+                whereMonitoramento = $"AND C2.ParLevel2_Id in ({ string.Join(",", form.ParLevel2_Ids)})";
+            }
+
+            var whereAuditor = "";
+            if (form.userSgqAuditor_Ids.Length > 0)
+            {
+                whereAuditor = $"and C2.AuditorId in ({ string.Join(",", form.userSgqAuditor_Ids)})";
             }
 
             return $@"
@@ -446,6 +458,11 @@ LEFT JOIN ParCargo PCargo with (NOLOCK)
 LEFT JOIN ParFrequency PF with (NOLOCK)
 	ON C2.ParFrequency_Id = PF.Id
 WHERE 1=1 
+    {whereRegional}
+    {whereAuditor}
+    {whereGrupoempresa}
+    {whereMonitoramento}
+    {whereUnidade}
 	group by C2.CollectionDate, C2.Id, L1.Name, 
 	L2.Name,R3.ParLevel3_Name,PC.Name,US.FullName,
 	C2.EvaluationNumber,C2.Sample,Centro.Name,Secao.Name,

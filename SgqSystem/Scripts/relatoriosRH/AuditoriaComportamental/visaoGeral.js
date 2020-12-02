@@ -216,10 +216,10 @@ function montaCardsAcompanhamento(listaAuditoria, totalRealizado, totalSemanas) 
     $("#lblTotalAuditoresAcompanhamento").text(totalAuditores);
 
     var totalPlanejado = totalRealizado * 2 * totalSemanas; //total de coletas * a meta * a quantidade de semanas  = total de coletas q representam 100%
-    if (totalRealizado / totalPlanejado * 100 == 100 )
-        $("#lblTotalRealizadoAcompanhamento").text(totalRealizado / totalPlanejado * 100 + "%").css('color', 'green');
+    if (totalRealizado / totalPlanejado * 100 == 100)
+        $("#lblTotalRealizadoAcompanhamento").text(parseInt(totalRealizado / totalPlanejado * 100).toFixed(2) + "%").css('color', 'green');
     else
-        $("#lblTotalRealizadoAcompanhamento").text(totalRealizado / totalPlanejado * 100 + "%").css('color', 'red');
+        $("#lblTotalRealizadoAcompanhamento").text(parseInt(totalRealizado / totalPlanejado * 100).toFixed(2) + "%").css('color', 'red');
 
     var totalTarefasConforme = listaAuditoria.filter((o, i) => o.Conforme == "C").length;
     var totalTarefasNaoConforme = listaAuditoria.filter((o, i) => o.Conforme == "NC").length;
@@ -571,86 +571,95 @@ function enviarFiltro() {
                 }
             }).done(function (data) {
 
-                for (var i = 0; i < data.length; i++) {
-                    data[i]["HeaderFieldListL1"] = JSON.parse(data[i]["HeaderFieldListL1"]);
-                    data[i]["HeaderFieldListL2"] = JSON.parse(data[i]["HeaderFieldListL2"]);
-                    data[i]["HeaderFieldListL3"] = JSON.parse(data[i]["HeaderFieldListL3"]);
-                }
+                if (data != null && data.length > 0) {
 
-                let acompanhamentoObj = JSON.parse(JSON.stringify(data));
-                var listaDeSemanas = [];
+                    openLoader('Aguarde...');
 
-                listaDeSemanas = montaListaSemanas(data);
+                 
 
-                var colunas = [
-                    { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
-                    { title: "Regional", mData: "GrupoEmpresa" },
-                    { title: "Unidade", mData: "Unidade" },
-                    { title: "Auditor", mData: "Auditor" },
-                    {
-                        title: "Total", mData: null, mRender: function (acompanhamentoObj, type, full) {
-                            var total = 0;
+                    for (var i = 0; i < data.length; i++) {
+                        data[i]["HeaderFieldListL1"] = JSON.parse(data[i]["HeaderFieldListL1"]);
+                        data[i]["HeaderFieldListL2"] = JSON.parse(data[i]["HeaderFieldListL2"]);
+                        data[i]["HeaderFieldListL3"] = JSON.parse(data[i]["HeaderFieldListL3"]);
+                    }
 
-                            for (var i = 0; i < listaDeSemanas.length; i++) {
-                                if (acompanhamentoObj.hasOwnProperty(listaDeSemanas[i].title)) {
-                                    if (acompanhamentoObj[listaDeSemanas[i].title] != "") {
-                                        total += parseInt(acompanhamentoObj[listaDeSemanas[i].title]);
-                                      
+                    let acompanhamentoObj = JSON.parse(JSON.stringify(data));
+                    var listaDeSemanas = [];
+
+                    listaDeSemanas = montaListaSemanas(data);
+
+                    var colunas = [
+                        { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
+                        { title: "Regional", mData: "GrupoEmpresa" },
+                        { title: "Unidade", mData: "Unidade" },
+                        { title: "Auditor", mData: "Auditor" },
+                        {
+                            title: "Total", mData: null, mRender: function (acompanhamentoObj, type, full) {
+                                var total = 0;
+
+                                for (var i = 0; i < listaDeSemanas.length; i++) {
+                                    if (acompanhamentoObj.hasOwnProperty(listaDeSemanas[i].title)) {
+                                        if (acompanhamentoObj[listaDeSemanas[i].title] != "") {
+                                            total += parseInt(acompanhamentoObj[listaDeSemanas[i].title]);
+
+                                        }
                                     }
                                 }
+                                return total;
                             }
-                            return total;
-                        }
-                    },
-                    {
-                        title: "% Realizado", mData: null, mRender: function (acompanhamentoObj, type, full) {
-                            var total = 0;
+                        },
+                        {
+                            title: "% Realizado", mData: null, mRender: function (acompanhamentoObj, type, full) {
+                                var total = 0;
 
-                            for (var i = 0; i < listaDeSemanas.length; i++) {
-                                if (acompanhamentoObj.hasOwnProperty(listaDeSemanas[i].title)) { 
-                                    if (acompanhamentoObj[listaDeSemanas[i].title] != "")
-                                        total += parseInt(acompanhamentoObj[listaDeSemanas[i].title]);
+                                for (var i = 0; i < listaDeSemanas.length; i++) {
+                                    if (acompanhamentoObj.hasOwnProperty(listaDeSemanas[i].title)) {
+                                        if (acompanhamentoObj[listaDeSemanas[i].title] != "")
+                                            total += parseInt(acompanhamentoObj[listaDeSemanas[i].title]);
+                                    }
+                                }
+
+                                var porcentagemTotal = total / (2 * listaDeSemanas.length) * 100;
+
+                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : parseInt(porcentagemTotal.toFixed(2)) + "%";
+                            }
+                        }
+                    ];
+                    listaDeSemanas.filter((o, i) => colunas.push(o));
+
+                    $('#tblAcompanhamento').empty();
+
+                    $('#tblAcompanhamento').DataTable({
+                        data: acompanhamentoObj,
+                        paging: false,
+                        "scrollX": true,
+                        columns: colunas,
+                        createdRow: function (row, data, index) {
+
+                            for (var i = 0; i < row.cells.length; i++) {
+                                if (i == 5 && parseFloat(row.cells[i].innerHTML) <= 50)
+                                    $('td:eq(' + i + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold"); //vermelho
+                                else if (i == 5 && parseFloat(row.cells[i].innerHTML) == 100)
+                                    $('td:eq(' + i + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold"); //verde
+                                //else if (i > 3)
+                                //$('td:eq(' + i + ')', row).css("background-color", "yellow").css("font-weight", "bold");
+                            }
+                        }
+                    });
+
+                    var totalRealizado = 0;
+                    for (var j = 0; j < acompanhamentoObj.length; j++) {
+                        for (var i = 0; i < listaDeSemanas.length; i++) {
+                            if (acompanhamentoObj[i].hasOwnProperty(listaDeSemanas[i].title)) {
+                                if (acompanhamentoObj[j][listaDeSemanas[i].title] != "") {
+                                    totalRealizado += parseInt(acompanhamentoObj[j][listaDeSemanas[i].title]);
                                 }
                             }
-
-                            var porcentagemTotal = total / (2 * listaDeSemanas.length) * 100;
-                            
-                            return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : parseInt(porcentagemTotal.toFixed(2))  + "%";
                         }
                     }
-                ];
-                listaDeSemanas.filter((o, i) => colunas.push(o));
 
-                 $('#tblAcompanhamento').DataTable({
-                     data: acompanhamentoObj,
-                    "scrollX": true,
-                     columns: colunas,
-                     createdRow: function (row, data, index) {
-
-                         for (var i = 0; i < row.cells.length; i++) {
-                             if (i == 5 && parseFloat(row.cells[i].innerHTML) <= 50)
-                                 $('td:eq(' + i + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold"); //vermelho
-                             else if (i == 5 && parseFloat(row.cells[i].innerHTML) == 100)
-                                 $('td:eq(' + i + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold"); //verde
-                             //else if (i > 3)
-                             //$('td:eq(' + i + ')', row).css("background-color", "yellow").css("font-weight", "bold");
-                         }
-                     }
-                });
-
-                var totalRealizado = 0;
-                for (var j = 0; j < acompanhamentoObj.length; j++) {
-                    for (var i = 0; i < listaDeSemanas.length; i++) {
-                        if (acompanhamentoObj[i].hasOwnProperty(listaDeSemanas[i].title)) {
-                            if (acompanhamentoObj[j][listaDeSemanas[i].title] != "") {
-                                totalRealizado += parseInt(acompanhamentoObj[j][listaDeSemanas[i].title]);
-                            }
-                        }
-                    }
+                    montaCardsAcompanhamento(acompanhamentoObj, totalRealizado, listaDeSemanas.length);
                 }
-
-                montaCardsAcompanhamento(acompanhamentoObj, totalRealizado, listaDeSemanas.length);
-
                 closeLoader();
             }).fail(function (jqXHR, textStatus, msg) {
                 console.log(msg);
