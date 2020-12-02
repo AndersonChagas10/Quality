@@ -112,9 +112,17 @@ namespace Helper
 
                         if (!string.IsNullOrEmpty(cookie.Values["userId"]))
                         {
-                            _userSgqRoles = db.UserSgq.Find(int.Parse(cookie.Values["userId"])).Role.ToString();
-                            filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
+                            var userid = int.Parse(cookie.Values["userId"]);
 
+                            if(userid == -1)
+                            {
+                                filterContext.Controller.ViewBag.IsAdmin = true;
+                            }
+                            else
+                            {
+                                _userSgqRoles = db.UserSgq.Find(userid).Role.ToString();
+                                filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
+                            }
                         }
                         else
                         {
@@ -147,7 +155,7 @@ namespace Helper
                         filterContext.Controller.ViewBag.LinkedCompanyIds = System.Web.Helpers.Json.Encode(linkedComapnyIds);
 
 
-                        if (userSgq.ParCompanyXUserSgq.Any(x => x.Role != null))
+                        if (userSgq != null && userSgq.ParCompanyXUserSgq.Any(x => x.Role != null))
                         {
                             filterContext.Controller.ViewBag.Roles = userSgq.Role.Replace(';', ',').ToString();
                         }
@@ -156,7 +164,7 @@ namespace Helper
                             filterContext.Controller.ViewBag.Roles = "";
                         }
 
-                        if (userSgq.ParCompanyXUserSgq != null && userSgq.ParCompanyXUserSgq.Any(r => r.Role != null))
+                        if (userSgq != null && userSgq.ParCompanyXUserSgq != null && userSgq.ParCompanyXUserSgq.Any(r => r.Role != null))
                             if (userSgq.ParCompanyXUserSgq.Any(r => r.Role != null))
                                 filterContext.Controller.ViewBag.RolesCompany = userSgq.ParCompanyXUserSgq.Select(n => n.Role).Distinct().ToArray();
                             else
