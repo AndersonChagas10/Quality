@@ -206,33 +206,46 @@ function montaCards(listaAuditoria) {
     $("#labelIps").text(parseInt(ips.toFixed(2)) + "%");
 }
 
-function montaCardsAcompanhamento(listaAuditoria, totalRealizado, totalSemanas) {
+function montaCardsAcompanhamento(listaAuditoria, totalSemanas) {
 
-    var totalAuditorias = agrupaPor(listaAuditoria, 'CollectionL2_Id');
+    var totalAuditorias = 0;
+    var totalAuditores = 0;
+    var totalConforme = 0;
+    var totalNaoConforme = 0;
+    listaAuditoria.map(function (o, i) {
 
-    $("#lblTotalAuditoriasAcompanhamento").text(totalAuditorias.length);
+        totalAuditorias += parseInt(o.total);
 
-    var totalAuditores = totalAuditorias.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Auditor") == true).length;
+        if (o['Auditor Cabecalho'] != "") {
+            totalAuditores++;
+        }
+
+        if (o['C'] != "") {
+            totalConforme += parseInt(o['C']);
+        }
+        if (o['NC'] != "") {
+            totalNaoConforme += parseInt(o['NC']);
+        }
+
+    });
+
+    $("#lblTotalAuditoriasAcompanhamento").text(totalAuditorias);
+
     $("#lblTotalAuditoresAcompanhamento").text(totalAuditores);
 
-    var totalPlanejado = totalRealizado * 2 * totalSemanas; //total de coletas * a meta * a quantidade de semanas  = total de coletas q representam 100%
-    if (totalRealizado / totalPlanejado * 100 == 100)
-        $("#lblTotalRealizadoAcompanhamento").text(parseInt(totalRealizado / totalPlanejado * 100).toFixed(2) + "%").css('color', 'green');
+    var totalPlanejado = totalAuditorias * 2 * totalSemanas; //total de coletas * a meta * a quantidade de semanas  = total de coletas q representam 100%
+    if (totalAuditorias / totalPlanejado * 100 == 100)
+        $("#lblTotalRealizadoAcompanhamento").text(parseInt(totalAuditorias / totalPlanejado * 100) + "%").css('color', 'green');
     else
-        $("#lblTotalRealizadoAcompanhamento").text(parseInt(totalRealizado / totalPlanejado * 100).toFixed(2) + "%").css('color', 'red');
+        $("#lblTotalRealizadoAcompanhamento").text(parseInt(totalAuditorias / totalPlanejado * 100) + "%").css('color', 'red');
 
-    var totalTarefasConforme = listaAuditoria.filter((o, i) => o.Conforme == "C").length;
-    var totalTarefasNaoConforme = listaAuditoria.filter((o, i) => o.Conforme == "NC").length;
-
-    var totalTarefasAvalidas = totalTarefasConforme + totalTarefasNaoConforme;
-    var porcentagemTotalConforme = totalTarefasConforme / totalTarefasAvalidas * 100;
+    var totalTarefasAvalidas = totalConforme + totalNaoConforme;
+    var porcentagemTotalConforme = totalConforme / totalTarefasAvalidas * 100;
     $("#lblTotalConformeAcompanhamento").text(parseInt(porcentagemTotalConforme.toFixed(2)) + "%").css('color', 'green');
 
 
-    var porcentagemTotalNaoconforme = totalTarefasNaoConforme / totalTarefasAvalidas * 100;
+    var porcentagemTotalNaoconforme = totalNaoConforme / totalTarefasAvalidas * 100;
     $("#lblTotalNaoConformeAcompanhamento").text(parseInt(porcentagemTotalNaoconforme.toFixed(2)) + "%").css('color', 'red');
-
-    var totalAuditoresObservados = totalAuditorias.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Nº de pessoas observadas") == true);
 }
 
 function montaListaObjGenericosPorcentagem(lista, propriedadeName, propriedadeValue1, propriedadeValue2) {
@@ -483,7 +496,7 @@ function montaListaSemanas(data) {
 
     var semanas = [];
     var semanasName = [];
-    var colunasRemover = ["GrupoEmpresa", "Regional", "Secao", "GrupoEmpresa", "Unidade", "Auditor", "Indicador", "Monitoramento", "Tarefa", "Conforme", "Cargo", "ValorDescricaoTarefa", "ClusterName", "HeaderFieldListL1", "HeaderFieldListL2", "HeaderFieldListL3"];
+    var colunasRemover = ["Seguro", "Inseguro","total", "C", "NC", "NA", "pessoas observadas","Auditor Cabecalho" ,"GrupoEmpresa", "Regional", "Secao", "GrupoEmpresa", "Unidade", "Auditor", "Indicador", "Monitoramento", "Tarefa", "Conforme", "Cargo", "ValorDescricaoTarefa", "ClusterName", "HeaderFieldListL1", "HeaderFieldListL2", "HeaderFieldListL3"];
 
     for (var i = 0; i < data.length; i++) {
         for (var j = 0; j < colunasRemover.length; j++) {
@@ -547,7 +560,6 @@ function enviarFiltro() {
             $("#divAcompanhamento").addClass('hidden');
             $("#conteudoGraficos").removeClass('hidden');
             $("#cardsVisaoGeralUnidade").removeClass('hidden');
-            //fazer a requisição geral
             break;
         case '2':
             $("#divTableUnidade").removeClass('hidden');
@@ -570,18 +582,10 @@ function enviarFiltro() {
                 beforeSend: function () {
                 }
             }).done(function (data) {
-
+                $("#collapseFiltrosReference").collapse('hide');
                 if (data != null && data.length > 0) {
 
                     openLoader('Aguarde...');
-
-                 
-
-                    for (var i = 0; i < data.length; i++) {
-                        data[i]["HeaderFieldListL1"] = JSON.parse(data[i]["HeaderFieldListL1"]);
-                        data[i]["HeaderFieldListL2"] = JSON.parse(data[i]["HeaderFieldListL2"]);
-                        data[i]["HeaderFieldListL3"] = JSON.parse(data[i]["HeaderFieldListL3"]);
-                    }
 
                     let acompanhamentoObj = JSON.parse(JSON.stringify(data));
                     var listaDeSemanas = [];
@@ -592,78 +596,105 @@ function enviarFiltro() {
                         { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
                         { title: "Regional", mData: "GrupoEmpresa" },
                         { title: "Unidade", mData: "Unidade" },
-                        { title: "Auditor", mData: "Auditor" },
+                        { title: "Auditor", mData: "Auditor Cabecalho" },
+                        { title: "Total", mData: "total" },
                         {
-                            title: "Total", mData: null, mRender: function (acompanhamentoObj, type, full) {
+                            title: "% Realizado", mData: null, mRender: function (acompanhamentoObj, type, full) {
+
+                                var semanasZeradas = 0;
+                                var meta = 2;
                                 var total = 0;
 
                                 for (var i = 0; i < listaDeSemanas.length; i++) {
-                                    if (acompanhamentoObj.hasOwnProperty(listaDeSemanas[i].title)) {
-                                        if (acompanhamentoObj[listaDeSemanas[i].title] != "") {
-                                            total += parseInt(acompanhamentoObj[listaDeSemanas[i].title]);
 
-                                        }
-                                    }
+                                    total = parseInt(total)
+                                        + parseInt(acompanhamentoObj[listaDeSemanas[i].title] > meta ? meta : acompanhamentoObj[listaDeSemanas[i].title]);
                                 }
-                                return total;
+
+                                var porcentagemTotal = total / (meta * listaDeSemanas.length) * 100;
+
+                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : parseInt(porcentagemTotal.toFixed(2)) + "%";
                             }
                         },
                         {
-                            title: "% Realizado", mData: null, mRender: function (acompanhamentoObj, type, full) {
-                                var total = 0;
+                            title: "% Seguro", mData: null, mRender: function (acompanhamentoObj, type, full) {
+                                var porcentagemTotal = acompanhamentoObj.C / acompanhamentoObj.total * 100;
 
-                                for (var i = 0; i < listaDeSemanas.length; i++) {
-                                    if (acompanhamentoObj.hasOwnProperty(listaDeSemanas[i].title)) {
-                                        if (acompanhamentoObj[listaDeSemanas[i].title] != "")
-                                            total += parseInt(acompanhamentoObj[listaDeSemanas[i].title]);
-                                    }
-                                }
-
-                                var porcentagemTotal = total / (2 * listaDeSemanas.length) * 100;
+                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : parseInt(porcentagemTotal.toFixed(2)) + "%";
+                            }
+                        },
+                        {
+                            title: "% Inseguro", mData: null, mRender: function (acompanhamentoObj, type, full) {
+                                var porcentagemTotal = acompanhamentoObj.NC / acompanhamentoObj.total * 100;
 
                                 return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : parseInt(porcentagemTotal.toFixed(2)) + "%";
                             }
                         }
                     ];
-                    listaDeSemanas.filter((o, i) => colunas.push(o));
+                    
+                    listaDeSemanas.filter((o, i) => colunas.splice(4, 0, o));
 
-                    $('#tblAcompanhamento').empty();
+                    $("#tblAcompanhamento").removeClass('hidden');
+                    var initDatatable = function () {
 
-                    $('#tblAcompanhamento').DataTable({
-                        data: acompanhamentoObj,
-                        paging: false,
-                        "scrollX": true,
-                        columns: colunas,
+                        $('#loading').hide();
+                        setTimeout(function (e) {
+                            var oTable = $('#tblAcompanhamento').dataTable();
+                            if (oTable.length > 0) {
+                                oTable.fnAdjustColumnSizing();
+                                tableEdit = $('.dataTable').DataTable();
+                            }
+                        }, 100);
+                    };
+
+                    var table = datatableGRT.Inicializar({
+                        idTabela: "tblAcompanhamento",
+                        listaDeDados: acompanhamentoObj,
+                        colunaDosDados: colunas,
+                        numeroLinhasNaTabela: 25,
+                        aplicarResponsividade: true,
+                        tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                        loadingRecords: true,
+                        destroy: true,
+                        info: true,
+                        initComplete: initDatatable,
                         createdRow: function (row, data, index) {
-
                             for (var i = 0; i < row.cells.length; i++) {
-                                if (i == 5 && parseFloat(row.cells[i].innerHTML) <= 50)
+                                if (i == row.cells.length - 3 && parseFloat(row.cells[i].innerHTML) <= 99)
                                     $('td:eq(' + i + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold"); //vermelho
-                                else if (i == 5 && parseFloat(row.cells[i].innerHTML) == 100)
+                                else if (i == row.cells.length - 3 && parseFloat(row.cells[i].innerHTML) == 100)
                                     $('td:eq(' + i + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold"); //verde
-                                //else if (i > 3)
-                                //$('td:eq(' + i + ')', row).css("background-color", "yellow").css("font-weight", "bold");
+
+                                //regra para pintar as duas ultimas colunas de meta de porcentagem 30 por 70
+                                if (i == row.cells.length - 3) {
+                                    var maximo = parseFloat(row.cells[i + 2].innerHTML);
+                                    var minimo = parseFloat(row.cells[i + 1].innerHTML);
+                                    if ((parseFloat(row.cells[i].innerHTML) <= minimo && parseFloat(row.cells[i].innerHTML) <= maximo)
+                                        || parseFloat(row.cells[i].innerHTML) >= minimo && parseFloat(row.cells[i].innerHTML) <= maximo) {
+                                        //verde
+                                        $('td:eq(' + (i + 2) + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold");
+                                        $('td:eq(' + (i + 1) + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold");
+                                    } else {
+                                        //vermelho
+                                        $('td:eq(' + (i + 2) + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold");
+                                        $('td:eq(' + (i + 1) + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold");
+                                    }
+                                }
                             }
                         }
                     });
 
-                    var totalRealizado = 0;
-                    for (var j = 0; j < acompanhamentoObj.length; j++) {
-                        for (var i = 0; i < listaDeSemanas.length; i++) {
-                            if (acompanhamentoObj[i].hasOwnProperty(listaDeSemanas[i].title)) {
-                                if (acompanhamentoObj[j][listaDeSemanas[i].title] != "") {
-                                    totalRealizado += parseInt(acompanhamentoObj[j][listaDeSemanas[i].title]);
-                                }
-                            }
-                        }
-                    }
-
-                    montaCardsAcompanhamento(acompanhamentoObj, totalRealizado, listaDeSemanas.length);
+                    montaCardsAcompanhamento(acompanhamentoObj, listaDeSemanas.length);
+                    $("#cardsAcompanhamento").show();
+                    $('#message').html('');
+                } else {
+                    $('#message').html("<div class='alert alert-info'>  Não existem dados no período selecionado.  </div>");
+                    $("#tblAcompanhamento").addClass('hidden');
+                    $("#cardsAcompanhamento").hide();
                 }
                 closeLoader();
             }).fail(function (jqXHR, textStatus, msg) {
                 console.log(msg);
-                //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
             });
 

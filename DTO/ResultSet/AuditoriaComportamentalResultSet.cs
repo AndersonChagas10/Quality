@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dominio;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DTO.ResultSet
 {
@@ -98,20 +96,20 @@ namespace DTO.ResultSet
         public string GetVisaoAcompanhamento(DataCarrierFormularioNew form, string userUnits)
         {
 
- 
+
             var whereRegional = "";
             if (form.ParStructure3_Ids.Length > 0)
             {
-                  whereRegional = $"AND pg.Id in ({ string.Join(",", form.ParStructure3_Ids)})";
+                whereRegional = $"AND pg.Id in ({ string.Join(",", form.ParStructure3_Ids)})";
             }
 
             var whereGrupoempresa = "";
             if (form.ParStructure2_Ids.Length > 0)
             {
-                  whereGrupoempresa = $"AND psg.Id in ({ string.Join(",", form.ParStructure2_Ids)})";
+                whereGrupoempresa = $"AND psg.Id in ({ string.Join(",", form.ParStructure2_Ids)})";
             }
 
-            var whereUnidade= "";
+            var whereUnidade = "";
             if (form.ParCompany_Ids.Length > 0)
             {
                 whereUnidade = $"AND C2.UnitId in ({ string.Join(",", form.ParCompany_Ids)})";
@@ -126,8 +124,19 @@ namespace DTO.ResultSet
             var whereAuditor = "";
             if (form.userSgqAuditor_Ids.Length > 0)
             {
-                whereAuditor = $"and C2.AuditorId in ({ string.Join(",", form.userSgqAuditor_Ids)})";
+                whereAuditor = $"AND C2.AuditorId in ({ string.Join(",", form.userSgqAuditor_Ids)})";
             }
+
+            var db = new SgqDbDevEntities();
+            var clusterId = "";
+            using (db)
+            {
+                clusterId = db.DicionarioEstatico.Where(x => x.Key == "clusterAuditoriaComportamental").Select(x => x.Value).FirstOrDefault();
+            }
+
+            var whereCluster = "";
+            if(clusterId != "")
+                whereCluster = $"AND PC.Id in ({clusterId})";
 
             return $@"
 
@@ -458,6 +467,7 @@ LEFT JOIN ParCargo PCargo with (NOLOCK)
 LEFT JOIN ParFrequency PF with (NOLOCK)
 	ON C2.ParFrequency_Id = PF.Id
 WHERE 1=1 
+    {whereCluster}
     {whereRegional}
     {whereAuditor}
     {whereGrupoempresa}
@@ -470,35 +480,64 @@ WHERE 1=1
 	HF.HeaderFieldList1,HF.HeaderFieldList2,HF3.HeaderFieldList,R3.ValueText	
 
 ----montagem da pivot de semanas--
-	Begin
+IF (select count(1) from #Coletas) > 0
+Begin
 
 			DECLARE @SQLStr VARCHAR(max)
+			DECLARE @SQLStrSum VARCHAR(max)
+			DECLARE @SQLStrTotal VARCHAR(max)
 			SET @SQLStr=''
-			SELECT @SQLStr = @SQLStr + '['+ a.DataColeta +'], '
+			SET @SQLStrSum=''
+			SET @SQLStrTotal='('
+			SELECT 
+				@SQLStr = @SQLStr + '['+ a.DataColeta +'], ',
+				@SQLStrSum = @SQLStrSum + 'ISNULL(SUM(['+ a.DataColeta +']),0) as ['+ a.DataColeta +'], ',
+				@SQLStrTotal = @SQLStrTotal + 'ISNULL(SUM(['+ a.DataColeta +']), 0) + '
 			FROM
 			(
 				SELECT DISTINCT c2.DataColeta FROM #COLETAS c2
 			) a
 
-
-
+			
 			SET @SQLStr = LEFT(@SQLStr,len(@SQLStr)-1)
+			SET @SQLStrSum = LEFT(@SQLStrSum,len(@SQLStrSum)-1)
+			SET @SQLStrTotal = LEFT(@SQLStrTotal,len(@SQLStrTotal)-1) + ') as total'
+
+            SET @SQLStr = 'SELECT GrupoEmpresa,Regional,Unidade, [Auditor Cabecalho],SUM(CAST(IIF(LEN([pessoas observadas]) > 0, [pessoas observadas], 0) as decimal)) as [pessoas observadas], '
+            + 'SUM(IIF(Conforme = ''C'', 1, 0)) as C, '
+            + 'SUM(IIF(Conforme = ''NC'', 1, 0)) as NC, '
+            + 'SUM(IIF(Conforme = ''NA'', 1, 0)) as NA, '
+            + @SQLStrSum
+            + ', ' + @SQLStrTotal + ' FROM ('
+            + 'SELECT  Indicador, ClusterName,  Unidade, Auditor,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional, '
+            + 'IIF(CHARINDEX(''""Auditor""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Auditor""'', HeaderFieldListL1)+LEN(''""Auditor"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Auditor""'', HeaderFieldListL1)+LEN(''""Auditor"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Auditor Cabecalho],'
+            + 'IIF(CHARINDEX(''""Avaliação da Atividade""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Avaliação da Atividade""'', HeaderFieldListL1)+LEN(''""Avaliação da Atividade"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Avaliação da Atividade""'', HeaderFieldListL1)+LEN(''""Avaliação da Atividade"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Avaliação da Atividade],'
+            + 'IIF(CHARINDEX(''pessoas observadas""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''pessoas observadas""'', HeaderFieldListL1)+LEN(''pessoas observadas"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''pessoas observadas""'', HeaderFieldListL1)+LEN(''pessoas observadas"":""''),LEN(HeaderFieldListL1)))-1), '''') as [pessoas observadas],'
+            + 'IIF(CHARINDEX(''""Pessoa avaliada""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Pessoa avaliada""'', HeaderFieldListL1)+LEN(''""Pessoa avaliada"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Pessoa avaliada""'', HeaderFieldListL1)+LEN(''""Pessoa avaliada"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Pessoa avaliada],'
+            + 'IIF(CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1)+LEN(''""Tipo de Tarefa Realizada"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1)+LEN(''""Tipo de Tarefa Realizada"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Tipo de Tarefa Realizada],'
+            + @SQLStr
+
+            + ' FROM ( SELECT Indicador, ClusterName, Unidade, Auditor, DataColeta,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, NUMERODECOLETAS FROM #COLETAS  
+
+                WHERE 1 = 1
+
+                GROUP BY DataColeta, Unidade, Auditor, Indicador, ClusterName, NUMERODECOLETAS,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3 '
+
+            + '         ) sq PIVOT (sum(NUMERODECOLETAS) FOR DataColeta IN ('
+            + @SQLStr + ')) AS pt ) AS ValoresSemAgrupamento'
+            + ' GROUP BY GrupoEmpresa,Regional,Unidade, [Auditor Cabecalho]'
+            + ' ORDER BY 1'
 
 
-			SET @SQLStr ='SELECT  Indicador, ClusterName,  Unidade, Auditor,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, '
-			+ @SQLStr
+            PRINT @SQLStr
 
-			+ ' FROM ( SELECT Indicador, ClusterName, Unidade, Auditor, DataColeta,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, NUMERODECOLETAS FROM #COLETAS  
-				WHERE 1=1 
-				GROUP BY DataColeta, Unidade, Auditor, Indicador, ClusterName, NUMERODECOLETAS,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3 '
-   
-			+ '         ) sq PIVOT (sum(NUMERODECOLETAS) FOR DataColeta IN ('
-			+ @SQLStr+')) AS pt ORDER BY 1'
+            EXEC(@SQLStr)
 
-			--PRINT @SQLStr
-			EXEC(@SQLStr)
 
-			End
+            End
+
+            ELSE
+            select* from  #Coletas
                 ----------------
 
                 DROP TABLE #CollectionLevel2
@@ -517,7 +556,7 @@ WHERE 1=1
 
         public string GetVisaoGeral()
         {
-                        return $@"
+            return $@"
 
              DECLARE @DATAINICIAL DATETIME = '2020-11-19'
             DECLARE @DATAFINAL   DATETIME = '2020-11-26'
