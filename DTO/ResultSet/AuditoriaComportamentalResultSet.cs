@@ -467,6 +467,7 @@ LEFT JOIN ParCargo PCargo with (NOLOCK)
 LEFT JOIN ParFrequency PF with (NOLOCK)
 	ON C2.ParFrequency_Id = PF.Id
 WHERE 1=1 
+AND PATINDEX('%Auditor%', HeaderFieldList1) > 0
     {whereCluster}
     {whereRegional}
     {whereAuditor}
@@ -517,11 +518,11 @@ Begin
             + 'IIF(CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1)+LEN(''""Tipo de Tarefa Realizada"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1)+LEN(''""Tipo de Tarefa Realizada"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Tipo de Tarefa Realizada],'
             + @SQLStr
 
-            + ' FROM ( SELECT Indicador, ClusterName, Unidade, Auditor, DataColeta,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, NUMERODECOLETAS FROM #COLETAS  
+            + ' FROM ( SELECT Indicador, Avaliacao, Amostra, ClusterName, Unidade, Auditor, DataColeta,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, NUMERODECOLETAS FROM #COLETAS  
 
                 WHERE 1 = 1
 
-                GROUP BY DataColeta, Unidade, Auditor, Indicador, ClusterName, NUMERODECOLETAS,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3 '
+                GROUP BY DataColeta, Unidade, Auditor, Indicador, ClusterName,Avaliacao,Amostra, NUMERODECOLETAS,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3 '
 
             + '         ) sq PIVOT (sum(NUMERODECOLETAS) FOR DataColeta IN ('
             + @SQLStr + ')) AS pt ) AS ValoresSemAgrupamento'

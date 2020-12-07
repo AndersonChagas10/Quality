@@ -233,19 +233,20 @@ function montaCardsAcompanhamento(listaAuditoria, totalSemanas) {
 
     $("#lblTotalAuditoresAcompanhamento").text(totalAuditores);
 
-    var totalPlanejado = totalAuditorias * 2 * totalSemanas; //total de coletas * a meta * a quantidade de semanas  = total de coletas q representam 100%
-    if (totalAuditorias / totalPlanejado * 100 == 100)
-        $("#lblTotalRealizadoAcompanhamento").text(parseInt(totalAuditorias / totalPlanejado * 100) + "%").css('color', 'green');
+   // var totalPlanejado = totalAuditorias * 2 * totalSemanas; //total de coletas * a meta * a quantidade de semanas  = total de coletas q representam 100%
+    var planejamentoColeta = totalSemanas * 2 * totalAuditores;
+    if (totalAuditorias / planejamentoColeta * 100 >= 100)
+        $("#lblTotalRealizadoAcompanhamento").text(100 + "%").css('color', 'green');
     else
-        $("#lblTotalRealizadoAcompanhamento").text(parseInt(totalAuditorias / totalPlanejado * 100) + "%").css('color', 'red');
+        $("#lblTotalRealizadoAcompanhamento").text(totalAuditorias / planejamentoColeta * 100 + "%").css('color', 'red');
 
     var totalTarefasAvalidas = totalConforme + totalNaoConforme;
     var porcentagemTotalConforme = totalConforme / totalTarefasAvalidas * 100;
-    $("#lblTotalConformeAcompanhamento").text(parseInt(porcentagemTotalConforme.toFixed(2)) + "%").css('color', 'green');
+    $("#lblTotalConformeAcompanhamento").text(porcentagemTotalConforme.toFixed(2) + "%").css('color', 'green');
 
 
     var porcentagemTotalNaoconforme = totalNaoConforme / totalTarefasAvalidas * 100;
-    $("#lblTotalNaoConformeAcompanhamento").text(parseInt(porcentagemTotalNaoconforme.toFixed(2)) + "%").css('color', 'red');
+    $("#lblTotalNaoConformeAcompanhamento").text(porcentagemTotalNaoconforme.toFixed(2) + "%").css('color', 'red');
 }
 
 function montaListaObjGenericosPorcentagem(lista, propriedadeName, propriedadeValue1, propriedadeValue2) {
@@ -613,21 +614,21 @@ function enviarFiltro() {
 
                                 var porcentagemTotal = total / (meta * listaDeSemanas.length) * 100;
 
-                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : parseInt(porcentagemTotal.toFixed(2)) + "%";
+                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
                             }
                         },
                         {
                             title: "% Seguro", mData: null, mRender: function (acompanhamentoObj, type, full) {
                                 var porcentagemTotal = acompanhamentoObj.C / acompanhamentoObj.total * 100;
 
-                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : parseInt(porcentagemTotal.toFixed(2)) + "%";
+                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
                             }
                         },
                         {
                             title: "% Inseguro", mData: null, mRender: function (acompanhamentoObj, type, full) {
                                 var porcentagemTotal = acompanhamentoObj.NC / acompanhamentoObj.total * 100;
 
-                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : parseInt(porcentagemTotal.toFixed(2)) + "%";
+                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
                             }
                         }
                     ];
