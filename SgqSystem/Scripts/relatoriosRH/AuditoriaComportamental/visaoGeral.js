@@ -1,5 +1,6 @@
-﻿$(document).ready(function () {
-   
+﻿
+
+$(document).ready(function () {
     Highcharts.chart('container2', {
         title: {
             text: 'Auditorias por Grupo de Empresa'
@@ -233,12 +234,10 @@ function montaCardsAcompanhamento(listaAuditoria, totalSemanas) {
 
     $("#lblTotalAuditoresAcompanhamento").text(totalAuditores);
 
-   // var totalPlanejado = totalAuditorias * 2 * totalSemanas; //total de coletas * a meta * a quantidade de semanas  = total de coletas q representam 100%
-    var planejamentoColeta = totalSemanas * 2 * totalAuditores;
-    if (totalAuditorias / planejamentoColeta * 100 >= 100)
+    if (globalTotalRealizado / totalAuditores >= 100)
         $("#lblTotalRealizadoAcompanhamento").text(100 + "%").css('color', 'green');
     else
-        $("#lblTotalRealizadoAcompanhamento").text(totalAuditorias / planejamentoColeta * 100 + "%").css('color', 'red');
+        $("#lblTotalRealizadoAcompanhamento").text((globalTotalRealizado / totalAuditores).toFixed(2) + "%").css('color', 'red');
 
     var totalTarefasAvalidas = totalConforme + totalNaoConforme;
     var porcentagemTotalConforme = totalConforme / totalTarefasAvalidas * 100;
@@ -587,7 +586,7 @@ function enviarFiltro() {
                 if (data != null && data.length > 0) {
 
                     openLoader('Aguarde...');
-
+                    globalTotalRealizado = 0;
                     let acompanhamentoObj = JSON.parse(JSON.stringify(data));
                     var listaDeSemanas = [];
 
@@ -602,7 +601,6 @@ function enviarFiltro() {
                         {
                             title: "% Realizado", mData: null, mRender: function (acompanhamentoObj, type, full) {
 
-                                var semanasZeradas = 0;
                                 var meta = 2;
                                 var total = 0;
 
@@ -661,17 +659,21 @@ function enviarFiltro() {
                         initComplete: initDatatable,
                         createdRow: function (row, data, index) {
                             for (var i = 0; i < row.cells.length; i++) {
-                                if (i == row.cells.length - 3 && parseFloat(row.cells[i].innerHTML) <= 99)
+                                if (i == row.cells.length - 3 && parseFloat(row.cells[i].innerHTML) <= 99) {
                                     $('td:eq(' + i + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold"); //vermelho
-                                else if (i == row.cells.length - 3 && parseFloat(row.cells[i].innerHTML) == 100)
+                                    globalTotalRealizado += parseFloat(row.cells[i].innerHTML);
+                                } else if (i == row.cells.length - 3 && parseFloat(row.cells[i].innerHTML) == 100) {
                                     $('td:eq(' + i + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold"); //verde
+                                    globalTotalRealizado += parseFloat(row.cells[i].innerHTML);
+                                }
 
                                 //regra para pintar as duas ultimas colunas de meta de porcentagem 30 por 70
                                 if (i == row.cells.length - 3) {
+
                                     var maximo = parseFloat(row.cells[i + 2].innerHTML);
                                     var minimo = parseFloat(row.cells[i + 1].innerHTML);
-                                    if ((parseFloat(row.cells[i].innerHTML) <= minimo && parseFloat(row.cells[i].innerHTML) <= maximo)
-                                        || parseFloat(row.cells[i].innerHTML) >= minimo && parseFloat(row.cells[i].innerHTML) <= maximo) {
+
+                                    if (minimo <= 30 && maximo >= 70) {
                                         //verde
                                         $('td:eq(' + (i + 2) + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold");
                                         $('td:eq(' + (i + 1) + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold");
