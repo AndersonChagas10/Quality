@@ -24,8 +24,25 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
         {
             var _list = new List<JObject>();
 
-            var query = new AuditoriaComportamentalResultSet().GetVisaoGeral();
+            var query = new AuditoriaComportamentalResultSet().GetVisaoGeral(form, GetUserUnitsIds(form.ShowUserCompanies));
 
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                if (query != "")
+                    _list = factory.QueryNinjaADO(query);
+
+                return _list;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetAuditoriaComportamentalUnidade")]
+        public List<JObject> GetAuditoriaComportamentalUnidade([FromBody] DataCarrierFormularioNew form)
+        {
+            var _list = new List<JObject>();
+
+            // var query = new AuditoriaComportamentalResultSet().GetVisaoUnidade(form, GetUserUnitsIds(form.ShowUserCompanies));
+            var query = new AuditoriaComportamentalResultSet().GetVisaoAcompanhamento(form, GetUserUnitsIds(form.ShowUserCompanies));
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 if (query != "")

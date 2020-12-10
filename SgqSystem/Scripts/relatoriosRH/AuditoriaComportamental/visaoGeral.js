@@ -425,7 +425,7 @@ function montaGraficosPizza(data) {
     });
 }
 
-function montaGraficos(data) {
+function formataListaObj(data) {
 
     var listaFormatada = [];
 
@@ -446,26 +446,32 @@ function montaGraficos(data) {
                     valorNCTotal++;
                 }
 
-                listaObjTarefa.push([{ name: listaAgrupada[j].Tarefa, nc: valorNC, color:'#f8cc9d' }]);
+                listaObjTarefa.push([{ name: listaAgrupada[j].Tarefa, nc: valorNC, color: '#f8cc9d' }]);
                 i += j;
             }
-        } 
+        }
 
         listaFormatada.push({
-            name: listaAgrupada[0].Monitoramento, totalNc: valorNCTotal, color: '#f08513', Tarefa: listaObjTarefa });
-
+            name: listaAgrupada[0].Monitoramento, totalNc: valorNCTotal, color: '#f08513', Tarefa: listaObjTarefa
+        });
     }
-
     var listaFinal = [];
     listaFormatada.forEach(function (o, i) {
 
         listaFinal.push({ name: o.name, y: o.totalNc, color: o.color });
 
         for (var j = 0; j < o.Tarefa.length; j++) {
-            listaFinal.push({ name: o.Tarefa[j][0].name.substring(0,10), y: o.Tarefa[j][0].nc, color: o.Tarefa[j][0].color });
+            listaFinal.push({ name: o.Tarefa[j][0].name.substring(0, 10), y: o.Tarefa[j][0].nc, color: o.Tarefa[j][0].color });
         }
 
     });
+
+    return listaFinal;
+}
+
+function montaGraficos(data) {
+
+    var listaFinal = formataListaObj(data);
 
     Highcharts.chart('container1', {
         chart: {
@@ -488,7 +494,127 @@ function montaGraficos(data) {
             data: listaFinal
         }]
     });
+}
 
+function montaGraficosUnidade(data) {
+
+    var listaFinal = formataListaObj(data);
+
+    var listaUnidades = data.map(function (o, i) {
+        return o.Unidade;
+    });
+
+    Highcharts.chart('container1Unidade', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Desvios - Total por Unidade'
+        },
+        subtitle: {
+            text: 'Unidade:' + listaUnidades.filter((x, i, a) => a.indexOf(x) == i)
+        },
+        xAxis: {
+            categories: listaFinal.map(function (i, o) { return i.name; })
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'nc'
+            }
+        },
+        series: [{
+            name: 'Total Desvios',
+            data: listaFinal
+        }]
+    });
+
+    var listaAgrupadaSetor = agrupaPor(data, "CentroCusto");
+
+    var listaSetorNames = listaAgrupadaSetor.map(function (o, i) {
+        return o.CentroCusto;
+    });
+
+    var x = [];
+    var y = [];
+
+    for (var j = 0; j < listaSetorNames.length; j++) {
+        var totalNC = 0;
+        var totalC = 0;
+
+        for (var i = 0; i < data.length; i++) {
+
+            if (data[i].CentroCusto == listaSetorNames[j]) {
+                if (data[i].Conforme == "C") {
+                    totalC++;
+                } else if (data[i].Conforme == "NC") {
+                    totalNC++;
+                }
+            }
+
+            if (i == data.length - 1) {
+                x.push({ name: listaSetorNames[j], y: totalC, color: 'green' });
+                y.push({ name: listaSetorNames[j], y: totalNC, color: 'red' });
+            }
+        }
+    }
+
+    Highcharts.chart('container2Unidade', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Auditorias por Setor'
+        },
+        xAxis: {
+            categories: x.map(function (i, o) { return i.name; })
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Total'
+            }
+        },
+        series: [{
+            name: 'Comportamento Seguro',
+            data: x
+        }, {
+            name: 'Total Desvios',
+            data: y
+            },
+        {
+            type: 'spline',
+            name: 'numero auditorias',
+            data: x
+        }]
+    });
+
+    var listaFinalSetor = formataListaObj(data);
+
+    Highcharts.chart('container3Unidade', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Desvios - Total por Setor'
+        },
+        subtitle: {
+            text: 'Unidade:' + listaUnidades.filter((x, i, a) => a.indexOf(x) == i)
+        },
+        xAxis: {
+            categories: listaSetorNames
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'nc'
+            }
+        },
+        series: [{
+            name: 'Total Desvios',
+            data: y
+        }]
+    });
 
 }
 
@@ -558,16 +684,86 @@ function enviarFiltro() {
 
             $("#divTableUnidade").addClass('hidden');
             $("#divAcompanhamento").addClass('hidden');
+            $("#divVisaoUnidade").addClass('hidden');
             $("#conteudoGraficos").removeClass('hidden');
             $("#cardsVisaoGeralUnidade").removeClass('hidden');
             break;
         case '2':
+            $.ajax({
+                url: urlGetUnidade,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            }).done(function (data) {
+
+                for (var i = 0; i < data.length; i++) {
+                    data[i]["HeaderFieldListL1"] = JSON.parse(data[i]["HeaderFieldListL1"]);
+                    data[i]["HeaderFieldListL2"] = JSON.parse(data[i]["HeaderFieldListL2"]);
+                    data[i]["HeaderFieldListL3"] = JSON.parse(data[i]["HeaderFieldListL3"]);
+                }
+
+                montaCards(data);
+                montaGraficosPizza(data);
+                montaGraficosUnidade(data);
+
+                var colunas = [
+                    { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
+                    { title: "Regional", mData: "regional" },
+                    { title: "Unidade", mData: "Unidade" },
+                    { title: "Setor", mData: "CentroCusto" },
+                    { title: "Data", mData: "Data" },
+                    { title: "Tipo de Tarefa Realizada", mData: "Tipo de Tarefa Realizada" },
+                    { title: "pessoas observadas", mData: "pessoas observadas" },
+                    { title: "Avaliação da Atividade", mData: "Avaliação da Atividade" },
+                    { title: "Auditor Cabecalho", mData: "Auditor Cabecalho" },
+                    { title: "Descrição do Desvio", mData: "ValorDescricaoTarefa" }
+                    
+                ];
+
+                var initDatatable = function () {
+
+                    $('#loading').hide();
+                    setTimeout(function (e) {
+                        var oTable = $('#tblVisaoUnidade').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                            tableEdit = $('.dataTable').DataTable();
+                        }
+                    }, 100);
+                };
+
+                var table = datatableGRT.Inicializar({
+                    idTabela: "tblVisaoUnidade",
+                    listaDeDados: data,
+                    colunaDosDados: colunas,
+                    numeroLinhasNaTabela: 25,
+                    aplicarResponsividade: true,
+                    tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                    loadingRecords: true,
+                    destroy: true,
+                    info: true,
+                    initComplete: initDatatable
+                });
+
+                closeLoader();
+            }).fail(function (jqXHR, textStatus, msg) {
+                console.log(msg);
+                //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                closeLoader();
+            });
+
             $("#divTableUnidade").removeClass('hidden');
+            $("#divVisaoUnidade").removeClass('hidden');
             $("#divAcompanhamento").addClass('hidden');
+
+            $("#divVisaoGeral").addClass('hidden');
+
             $("#conteudoGraficos").removeClass('hidden');
             $("#cardsVisaoGeralUnidade").removeClass('hidden');
 
-            $('#tblVisaoUnidade').DataTable();
             $('.dataTables_length').addClass('bs-select');
             //fazer a requisição por unidade
             break;
@@ -702,6 +898,7 @@ function enviarFiltro() {
             });
 
             $("#divTableUnidade").addClass('hidden');
+            $("#divVisaoUnidade").addClass('hidden');
             $("#divAcompanhamento").removeClass('hidden');
             $("#conteudoGraficos").addClass('hidden');
             $("#cardsVisaoGeralUnidade").addClass('hidden');
