@@ -926,22 +926,20 @@ function criaLinhaParQualification(level1Id, level2Id, level3Id, linhaLevel3) {
 
         listaParQualificationxParLevel3Value.forEach(function (o, i) {
 
-            var qualificationGroupName = '';
+            var qualificationGroupName = parametrization.listaPargroupQualification.find(item => item.Id == o.PargroupQualification_Id).Name;
 
-            if (parametrization.listaPargroupQualification.length == 0) {
-                return;
-            }
+            var listaParGroupQualificationXQualification = parametrization.listaPargroupQualificationXParQualification.filter(
+                element => element.PargroupQualification_Id == o.PargroupQualification_Id);
 
-            if (parametrization.listaPargroupQualification[i] != undefined) {
-                qualificationGroupName = parametrization.listaPargroupQualification[i].Name;
-            } else {
-                qualificationGroupName = parametrization.listaPargroupQualification[0].Name;
-            }
+            var parQualificationIds = listaParGroupQualificationXQualification.map(item => { return item.ParQualification_Id });
 
-            if ($(linhaLevel3).attr('data-conforme') == o.Value) {
+            var listaParQualificationFiltrada = parametrization.listaParQualification.filter(
+                item => parQualificationIds.includes(item.Id));
+
+            if ($(linhaLevel3).attr('data-conforme') == o.Value || (o.Value == "1" && $(linhaLevel3).attr('data-conforme') == "")) {
                 var options = '';
 
-                parametrization.listaParQualification.forEach(function (obj, i) {
+                listaParQualificationFiltrada.forEach(function (obj, i) {
                     options += '<option value="' + obj.Id + '" data-qualification>' + obj.Name + '</option >';
                 });
 
