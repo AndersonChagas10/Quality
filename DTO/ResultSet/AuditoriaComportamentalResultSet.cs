@@ -790,6 +790,7 @@ namespace DTO.ResultSet
 
             SELECT 
 	            C2.CollectionDate AS Data--data coleta
+                ,CAST(YEAR(C2.CollectionDate) AS VARCHAR) + '-' + RIGHT('0'+CAST(DATEPART(WEEK, C2.CollectionDate) AS VARCHAR),2) AS DataColeta
                 ,C2.Id as CollectionL2_Id
 	            ,L1.Name AS Indicador--indicador
 	            ,L2.Name AS Monitoramento--monitoramento
@@ -809,7 +810,7 @@ namespace DTO.ResultSet
 		            WHEN R3.IsConform = 1 THEN 'C'
 		            WHEN R3.IsConform = 0 THEN 'NC'
 	            END AS 'Conforme'--Isconform
-                ,Count(*) as totalColetas
+                ,Count(*) as NUMERODECOLETAS
 	            ,ISNULL(HF.HeaderFieldList1, '{{}}') AS 'HeaderFieldListL1'
 	            ,ISNULL(HF.HeaderFieldList2, '{{}}') AS 'HeaderFieldListL2'
 	            ,ISNULL(HF3.HeaderFieldList, '{{}}') AS 'HeaderFieldListL3'
@@ -847,7 +848,7 @@ namespace DTO.ResultSet
                Charindex('""', Substring(HF.HeaderFieldList1,
                Charindex('""Tipo de Tarefa Realizada""' ,HF.HeaderFieldList1)+ Len('""Tipo de Tarefa Realizada"":""'), 
                 Len( HF.HeaderFieldList1))) - 1), '') AS[Tipo de Tarefa Realizada]
-
+            INTO #Coletas
             FROM #CollectionLevel2 C2 (NOLOCK)
             INNER JOIN ParCompany UN with (NOLOCK)
 	            ON UN.Id = C2.UnitId
@@ -930,13 +931,13 @@ Begin
 			SET @SQLStrSum = LEFT(@SQLStrSum,len(@SQLStrSum)-1)
 			SET @SQLStrTotal = LEFT(@SQLStrTotal,len(@SQLStrTotal)-1) + ') as total'
 
-            SET @SQLStr = 'SELECT GrupoEmpresa,Regional,Unidade, [Auditor Cabecalho],SUM(CAST(IIF(LEN([pessoas observadas]) > 0, [pessoas observadas], 0) as decimal)) as [pessoas observadas], '
+            SET @SQLStr = 'Select indicador,secao, grupoempresa, collectionl2_id,monitoramento, tarefa, conforme, valordescricaotarefa, cargo, CentroCusto,regional, [Auditor Cabecalho],SUM(CAST(IIF(LEN([pessoas observadas]) > 0, [pessoas observadas], 0) as decimal)) as [pessoas observadas], '
             + 'SUM(IIF(Conforme = ''C'',  1 * numerodecoletas, 0)) as C,'
             + 'SUM(IIF(Conforme = ''NC'', 1 * numerodecoletas, 0)) as NC,'
             + 'SUM(IIF(Conforme = ''NA'', 1 * numerodecoletas, 0)) as NA,'
             + @SQLStrSum
             + ', ' + @SQLStrTotal + ' FROM ('
-            + 'SELECT  Indicador, ClusterName,  Unidade, Auditor,Secao,GrupoEmpresa,Monitoramento,totalColeta as numerodecoletas,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional, '
+            + 'SELECT  Indicador, ClusterName,centroCusto, Unidade,collectionl2_id, Auditor,Secao,GrupoEmpresa,Monitoramento,totalColeta as numerodecoletas,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional, '
             + 'IIF(CHARINDEX(''""Auditor""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Auditor""'', HeaderFieldListL1)+LEN(''""Auditor"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Auditor""'', HeaderFieldListL1)+LEN(''""Auditor"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Auditor Cabecalho],'
             + 'IIF(CHARINDEX(''""Avaliação da Atividade""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Avaliação da Atividade""'', HeaderFieldListL1)+LEN(''""Avaliação da Atividade"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Avaliação da Atividade""'', HeaderFieldListL1)+LEN(''""Avaliação da Atividade"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Avaliação da Atividade],'
             + 'IIF(CHARINDEX(''pessoas observadas""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''pessoas observadas""'', HeaderFieldListL1)+LEN(''pessoas observadas"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''pessoas observadas""'', HeaderFieldListL1)+LEN(''pessoas observadas"":""''),LEN(HeaderFieldListL1)))-1), '''') as [pessoas observadas],'
@@ -944,29 +945,28 @@ Begin
             + 'IIF(CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1)+LEN(''""Tipo de Tarefa Realizada"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1)+LEN(''""Tipo de Tarefa Realizada"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Tipo de Tarefa Realizada],'
             + @SQLStr
 
-             + ' FROM ( SELECT Indicador,CollectionL2_Id, Avaliacao, Amostra, ClusterName, Unidade, Auditor, DataColeta,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, NUMERODECOLETAS,  numerodecoletas as ''totalColeta'' FROM #COLETAS   
+             + ' FROM ( SELECT Indicador,CollectionL2_Id, Avaliacao, Amostra, ClusterName, Unidade, Auditor, DataColeta,Secao, centroCusto,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, NUMERODECOLETAS,  numerodecoletas as ''totalColeta'' FROM #COLETAS   
 
                 WHERE 1 = 1
 
-                GROUP BY DataColeta, Unidade, Auditor, Indicador,CollectionL2_Id ,ClusterName,Avaliacao,Amostra, NUMERODECOLETAS,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3 '
+                GROUP BY DataColeta, Unidade, Auditor,centroCusto, Indicador,CollectionL2_Id ,ClusterName,Avaliacao,Amostra, NUMERODECOLETAS,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,headerfieldlistl1, headerfieldlistl2, headerfieldlistl3'
 
             + '         ) sq PIVOT (sum(NUMERODECOLETAS) FOR DataColeta IN ('
             + @SQLStr + ')) AS pt ) AS ValoresSemAgrupamento'
-            + ' GROUP BY GrupoEmpresa,Regional,Unidade, [Auditor Cabecalho]'
+            + ' group by Indicador,	collectionl2_id,secao, grupoempresa, monitoramento, tarefa, conforme, valordescricaotarefa, cargo,centroCusto, regional,[Auditor Cabecalho]'
             + ' ORDER BY 1'
-
 
             PRINT @SQLStr
 
             EXEC(@SQLStr)
-
 
             End
 
             ELSE
             select* from  #Coletas
 
-					
+
+
 
             DROP TABLE #CollectionLevel2
             DROP TABLE #CollectionJson

@@ -699,12 +699,6 @@ function enviarFiltro() {
                 }
             }).done(function (data) {
 
-                for (var i = 0; i < data.length; i++) {
-                    data[i]["HeaderFieldListL1"] = JSON.parse(data[i]["HeaderFieldListL1"]);
-                    data[i]["HeaderFieldListL2"] = JSON.parse(data[i]["HeaderFieldListL2"]);
-                    data[i]["HeaderFieldListL3"] = JSON.parse(data[i]["HeaderFieldListL3"]);
-                }
-
                 montaCards(data);
                 montaGraficosPizza(data);
                 montaGraficosUnidade(data);
