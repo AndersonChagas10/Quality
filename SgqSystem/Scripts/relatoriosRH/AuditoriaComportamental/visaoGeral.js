@@ -180,27 +180,23 @@ function montaCards(listaAuditoria) {
 
     var totalAuditorias = agrupaPor(listaAuditoria, 'CollectionL2_Id');
 
-    $("#labelTotalAuditorias").text(totalAuditorias.length);
+    $("#labelTotalAuditorias").text(listaAuditoria.filter((o, i) => o.total).length);
 
-    var totalAuditores = totalAuditorias.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Auditor") == true).length;
+    var totalAuditores = listaAuditoria.filter((o, i) => o['Auditor Cabecalho']).length;
     $("#labelTotalAuditores").text(totalAuditores);
 
-    var totalTarefasConforme = listaAuditoria.filter((o, i) => o.Conforme == "C").length;
+    var totalTarefasConforme = listaAuditoria.filter((o, i) => o['C'] > '0').length;
     $("#labelTotalConforme").text(totalTarefasConforme);
 
-    var totalTarefasNaoConforme = listaAuditoria.filter((o, i) => o.Conforme == "NC").length;
+    var totalTarefasNaoConforme = listaAuditoria.filter((o, i) => o['NC'] > '0').length;
     $("#labelTotalNaoConforme").text(totalTarefasNaoConforme);
 
-    var totalAuditoresObservados = totalAuditorias.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Nº de pessoas observadas") == true);
-
     var somaObservados = 0;
-    totalAuditoresObservados.map(function (o, i) {
-        if (o.HeaderFieldListL1 != null) {
-            somaObservados += parseInt(o.HeaderFieldListL1["Nº de pessoas observadas"]);
+    listaAuditoria.map(function (o, i) {
+        if (o['pessoas observadas'] != null) {
+            somaObservados += parseInt(o['pessoas observadas']);
         }
     });
-    //var somaObservados = totalAuditoresObservados.reduce(function (a, b) { return parseInt(a.HeaderFieldListL1["Nº de pessoas observadas"]) + parseInt(b.HeaderFieldListL1["Nº de pessoas observadas"]); });
-
     $("#labelTotalAuditoresObservados").text(somaObservados);
 
     var ips = (1 - (totalTarefasNaoConforme / somaObservados)) * 100;
@@ -254,8 +250,16 @@ function montaListaObjGenericosPorcentagem(lista, propriedadeName, propriedadeVa
     var contPropriedadeValue1= 0;
     var contPropriedadeValue2 = 0;
 
+    //lista.forEach(function (o, i) {
+    //    if (o['HeaderFieldListL1'][propriedadeName] == propriedadeValue1) {
+    //        contPropriedadeValue1++;
+    //    } else {
+    //        contPropriedadeValue2++;
+    //    }
+    //});
+
     lista.forEach(function (o, i) {
-        if (o['HeaderFieldListL1'][propriedadeName] == propriedadeValue1) {
+        if (o[propriedadeName] == propriedadeValue1) {
             contPropriedadeValue1++;
         } else {
             contPropriedadeValue2++;
@@ -270,7 +274,7 @@ function montaListaObjGenericosPorcentagem(lista, propriedadeName, propriedadeVa
 
 function montaListaSeguroInseguro(lista) {
 
-    var listaAvaliacaoAtividade = lista.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Avaliação da Atividade") == true);
+    var listaAvaliacaoAtividade = lista.filter((o, i) => o["Avaliação da Atividade"] != "");
 
     return montaListaObjGenericosPorcentagem(listaAvaliacaoAtividade, "Avaliação da Atividade", "Insegura", "Segura");
 }
@@ -281,13 +285,13 @@ function montaListaPessoaAvaliada(lista) {
     var contFuncionario = 0;
     var contTerceiro = 0;
 
-    var listaPessoaAvaliada = lista.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Pessoa avaliada") == true);
+    var listaPessoaAvaliada = lista.filter((o, i) => o["Pessoa avaliada"] != "");
 
     listaPessoaAvaliada.forEach(function (o, i) {
-        if (o['HeaderFieldListL1']["Pessoa avaliada"] == "Funcionário") {
-            contFuncionario += parseInt(o['HeaderFieldListL1']["Nº de pessoas observadas"]);
+        if (o["Pessoa avaliada"] == "Funcionário") {
+            contFuncionario += parseInt(o["pessoas observadas"]);
         } else {
-            contTerceiro += parseInt(o['HeaderFieldListL1']["Nº de pessoas observadas"]);
+            contTerceiro += parseInt(o["pessoas observadas"]);
         }
     });
 
@@ -303,10 +307,10 @@ function montaListaTarefaRealizada(lista) {
     var contIndividual = 0;
     var contEquipe = 0;
 
-    var listaTarefaRealizada = lista.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Tipo de Tarefa Realizada") == true);
+    var listaTarefaRealizada = lista.filter((o, i) => o["Tipo de Tarefa Realizada"] == true);
 
     listaTarefaRealizada.forEach(function (o, i) {
-        if (o['HeaderFieldListL1']["Tipo de Tarefa Realizada"] == "Individual") {
+        if (o["Tipo de Tarefa Realizada"] == "Individual") {
             contIndividual++;
         } else {
             contEquipe++;
@@ -698,7 +702,7 @@ function enviarFiltro() {
                 beforeSend: function () {
                 }
             }).done(function (data) {
-
+                
                 montaCards(data);
                 montaGraficosPizza(data);
                 montaGraficosUnidade(data);

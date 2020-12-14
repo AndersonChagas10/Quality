@@ -931,7 +931,7 @@ Begin
 			SET @SQLStrSum = LEFT(@SQLStrSum,len(@SQLStrSum)-1)
 			SET @SQLStrTotal = LEFT(@SQLStrTotal,len(@SQLStrTotal)-1) + ') as total'
 
-            SET @SQLStr = 'Select indicador,secao, grupoempresa, collectionl2_id,monitoramento, tarefa, conforme, valordescricaotarefa, cargo, CentroCusto,regional, [Auditor Cabecalho],SUM(CAST(IIF(LEN([pessoas observadas]) > 0, [pessoas observadas], 0) as decimal)) as [pessoas observadas], '
+            SET @SQLStr = 'Select indicador,secao, grupoempresa, collectionl2_id,monitoramento, tarefa, conforme, valordescricaotarefa, cargo, CentroCusto,regional, [Auditor Cabecalho],SUM(CAST(IIF(LEN([pessoas observadas]) > 0, [pessoas observadas], 0) as decimal)) as [pessoas observadas], [Avaliação da Atividade], [Pessoa avaliada],[Tipo de Tarefa Realizada],'
             + 'SUM(IIF(Conforme = ''C'',  1 * numerodecoletas, 0)) as C,'
             + 'SUM(IIF(Conforme = ''NC'', 1 * numerodecoletas, 0)) as NC,'
             + 'SUM(IIF(Conforme = ''NA'', 1 * numerodecoletas, 0)) as NA,'
@@ -945,15 +945,15 @@ Begin
             + 'IIF(CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1)+LEN(''""Tipo de Tarefa Realizada"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1)+LEN(''""Tipo de Tarefa Realizada"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Tipo de Tarefa Realizada],'
             + @SQLStr
 
-             + ' FROM ( SELECT Indicador,CollectionL2_Id, Avaliacao, Amostra, ClusterName, Unidade, Auditor, DataColeta,Secao, centroCusto,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, NUMERODECOLETAS,  numerodecoletas as ''totalColeta'' FROM #COLETAS   
+              + ' FROM ( SELECT Indicador,CollectionL2_Id,[Avaliação da Atividade],[Pessoa avaliada],[Tipo de Tarefa Realizada], Avaliacao, Amostra, ClusterName, Unidade, Auditor, DataColeta,Secao, centroCusto,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, NUMERODECOLETAS,  numerodecoletas as ''totalColeta'' FROM #COLETAS     
 
                 WHERE 1 = 1
 
-                GROUP BY DataColeta, Unidade, Auditor,centroCusto, Indicador,CollectionL2_Id ,ClusterName,Avaliacao,Amostra, NUMERODECOLETAS,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,headerfieldlistl1, headerfieldlistl2, headerfieldlistl3'
+                    GROUP BY DataColeta, Unidade, Auditor,centroCusto, Indicador,CollectionL2_Id,[Avaliação da Atividade],[Pessoa avaliada],[Tipo de Tarefa Realizada] ,ClusterName,Avaliacao,Amostra, NUMERODECOLETAS,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,headerfieldlistl1, headerfieldlistl2, headerfieldlistl3'
 
             + '         ) sq PIVOT (sum(NUMERODECOLETAS) FOR DataColeta IN ('
             + @SQLStr + ')) AS pt ) AS ValoresSemAgrupamento'
-            + ' group by Indicador,	collectionl2_id,secao, grupoempresa, monitoramento, tarefa, conforme, valordescricaotarefa, cargo,centroCusto, regional,[Auditor Cabecalho]'
+            + ' group by Indicador,	collectionl2_id,[Avaliação da Atividade],[Pessoa avaliada],[Tipo de Tarefa Realizada],secao, grupoempresa, monitoramento, tarefa, conforme, valordescricaotarefa, cargo,centroCusto, regional,[Auditor Cabecalho]'
             + ' ORDER BY 1'
 
             PRINT @SQLStr
