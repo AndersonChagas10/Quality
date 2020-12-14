@@ -369,6 +369,7 @@
     <Compile Include="Controllers\Api\Relatorios\MSP\RelatorioMSPApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RelatorioEdicaoApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RelatorioFormularioSIFApiController.cs" />
+    <Compile Include="Controllers\Api\Relatorios\RH\AuditoriaComportamentalApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RH\NaoConformidadeRHApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\RH\RelatorioDeResultadosRHApiController.cs" />
     <Compile Include="Controllers\Api\Relatorios\SGCOVID\RelatorioResultadoCovidApiController.cs" />
@@ -1446,6 +1447,7 @@
     <Content Include="Content\gallery\package.json" />
     <Content Include="Content\gallery\README.md" />
     <Content Include="Scripts\mindmap.js" />
+    <Content Include="Scripts\relatoriosRH\AuditoriaComportamental\visaoGeral.js" />
     <Content Include="Scripts\Select3\select3.js" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
@@ -2414,6 +2416,8 @@
     <Content Include="Views\RelatoriosCovid\RelatorioResultado.cshtml" />
     <Content Include="Views\Relatorios\RH\AuditoriaComportamentalRH.cshtml" />
     <Content Include="Views\RelatoriosSgq\_FilterReportsHorizontal.cshtml" />
+    <Content Include="Views\Relatorios\RH\_AuditoriaComportamental.cshtml" />
+    <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalAcompanhamento.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

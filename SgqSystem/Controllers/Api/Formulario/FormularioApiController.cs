@@ -1024,7 +1024,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                 var query = $@"
                             SELECT DISTINCT TOP 500
                             	US.Id
-                               ,US.Name
+                               ,US.FullName as Name
                             FROM (SELECT DISTINCT
                             		PVP.ParLevel1_Id
                             	   ,PVP.ParLevel2_Id
@@ -1077,7 +1077,7 @@ namespace SgqSystem.Controllers.Api.Formulario
                             {whereUnidadesUsuario}
                             {whereClusterGroup}
                             {whereCluster}
-                            AND US.Name LIKE '%{search}%'
+                            AND US.FullName LIKE '%{search}%'
                             AND US.[Role] LIKE '%auditor%'
                             ";
 
