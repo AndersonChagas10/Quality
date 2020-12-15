@@ -931,7 +931,7 @@ Begin
 			SET @SQLStrSum = LEFT(@SQLStrSum,len(@SQLStrSum)-1)
 			SET @SQLStrTotal = LEFT(@SQLStrTotal,len(@SQLStrTotal)-1) + ') as total'
 
-            SET @SQLStr = 'Select indicador,secao, grupoempresa, collectionl2_id,monitoramento, tarefa, conforme, valordescricaotarefa, cargo, CentroCusto,regional, [Auditor Cabecalho],SUM(CAST(IIF(LEN([pessoas observadas]) > 0, [pessoas observadas], 0) as decimal)) as [pessoas observadas], [Avaliação da Atividade], [Pessoa avaliada],[Tipo de Tarefa Realizada],'
+            SET @SQLStr = 'Select indicador,secao, grupoempresa, Unidade,collectionl2_id,monitoramento, tarefa, conforme, valordescricaotarefa, cargo, CentroCusto,regional, [Auditor Cabecalho],SUM(CAST(IIF(LEN([pessoas observadas]) > 0, [pessoas observadas], 0) as decimal)) as [pessoas observadas], [Avaliação da Atividade], [Pessoa avaliada],[Tipo de Tarefa Realizada],'
             + 'SUM(IIF(Conforme = ''C'',  1 * numerodecoletas, 0)) as C,'
             + 'SUM(IIF(Conforme = ''NC'', 1 * numerodecoletas, 0)) as NC,'
             + 'SUM(IIF(Conforme = ''NA'', 1 * numerodecoletas, 0)) as NA,'
@@ -953,7 +953,7 @@ Begin
 
             + '         ) sq PIVOT (sum(NUMERODECOLETAS) FOR DataColeta IN ('
             + @SQLStr + ')) AS pt ) AS ValoresSemAgrupamento'
-            + ' group by Indicador,	collectionl2_id,[Avaliação da Atividade],[Pessoa avaliada],[Tipo de Tarefa Realizada],secao, grupoempresa, monitoramento, tarefa, conforme, valordescricaotarefa, cargo,centroCusto, regional,[Auditor Cabecalho]'
+            + ' group by Indicador,	collectionl2_id,[Avaliação da Atividade],[Pessoa avaliada],[Tipo de Tarefa Realizada],secao, grupoempresa, monitoramento, tarefa, conforme, valordescricaotarefa, cargo,centroCusto, regional,[Auditor Cabecalho],Unidade'
             + ' ORDER BY 1'
 
             PRINT @SQLStr

@@ -307,7 +307,7 @@ function montaListaTarefaRealizada(lista) {
     var contIndividual = 0;
     var contEquipe = 0;
 
-    var listaTarefaRealizada = lista.filter((o, i) => o["Tipo de Tarefa Realizada"] == true);
+    var listaTarefaRealizada = lista.filter((o, i) => o["Tipo de Tarefa Realizada"] != "");
 
     listaTarefaRealizada.forEach(function (o, i) {
         if (o["Tipo de Tarefa Realizada"] == "Individual") {
@@ -438,25 +438,25 @@ function formataListaObj(data) {
         var item = data[i];
         var listaObjTarefa = [];
 
-        var listaAgrupada = data.filter((o, i) => o.Monitoramento == item.Monitoramento);
+        var listaAgrupada = data.filter((o, i) => o.monitoramento == item.monitoramento);
 
         if (listaAgrupada != null) {
             var valorNCTotal = 0;
             for (var j = 0; j < listaAgrupada.length; j++) {
 
                 var valorNC = 0;
-                if (listaAgrupada[j].Conforme == 'C') {
-                    valorNC++;
+                if (listaAgrupada[j].NC > '0') {
+                    valorNC += parseInt(listaAgrupada[j].NC);
                     valorNCTotal++;
                 }
 
-                listaObjTarefa.push([{ name: listaAgrupada[j].Tarefa, nc: valorNC, color: '#f8cc9d' }]);
+                listaObjTarefa.push([{ name: listaAgrupada[j].tarefa, nc: valorNC, color: '#f8cc9d' }]);
                 i += j;
             }
         }
 
         listaFormatada.push({
-            name: listaAgrupada[0].Monitoramento, totalNc: valorNCTotal, color: '#f08513', Tarefa: listaObjTarefa
+            name: listaAgrupada[0].monitoramento, totalNc: valorNCTotal, color: '#f08513', Tarefa: listaObjTarefa
         });
     }
     var listaFinal = [];
@@ -708,7 +708,7 @@ function enviarFiltro() {
                 montaGraficosUnidade(data);
 
                 var colunas = [
-                    { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
+                    { title: "Grupo de Empresa", mData: "grupoempresa" },
                     { title: "Regional", mData: "regional" },
                     { title: "Unidade", mData: "Unidade" },
                     { title: "Setor", mData: "CentroCusto" },
