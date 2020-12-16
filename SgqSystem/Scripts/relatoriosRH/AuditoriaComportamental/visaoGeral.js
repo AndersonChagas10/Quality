@@ -429,43 +429,40 @@ function montaGraficosPizza(data) {
     });
 }
 
-function formataListaObj(data) {
+function formataListaObj(data, propriedadeAgrupadora, propriedadeAgrupada, listaMonitoramentoNames) {
 
     var listaFormatada = [];
 
-    for (var i = 0; i < data.length; i++) {
-
-        var item = data[i];
+    for (var i = 0; i < listaMonitoramentoNames.length; i++) {
         var listaObjTarefa = [];
+        var valorNCTotal = 0;
 
-        var listaAgrupada = data.filter((o, i) => o.monitoramento == item.monitoramento);
-
-        if (listaAgrupada != null) {
-            var valorNCTotal = 0;
-            for (var j = 0; j < listaAgrupada.length; j++) {
+        for (var j = 0; j < data.length; j++) {
+            var item = data[j];
+            if (listaMonitoramentoNames[i] == item[propriedadeAgrupadora]) {
 
                 var valorNC = 0;
-                if (listaAgrupada[j].NC > '0') {
-                    valorNC += parseInt(listaAgrupada[j].NC);
-                    valorNCTotal++;
+                if (item.NC > '0') {
+                    valorNC += parseInt(item.NC);
+                    valorNCTotal += valorNC;
                 }
 
-                listaObjTarefa.push([{ name: listaAgrupada[j].tarefa, nc: valorNC, color: '#f8cc9d' }]);
-                i += j;
+                listaObjTarefa.push([{ name: item[propriedadeAgrupada], nc: valorNC, color: '#f8cc9d' }]);
             }
         }
 
         listaFormatada.push({
-            name: listaAgrupada[0].monitoramento, totalNc: valorNCTotal, color: '#f08513', Tarefa: listaObjTarefa
+            name: listaMonitoramentoNames[i], totalNc: valorNCTotal, color: '#f08513', tarefa: listaObjTarefa
         });
     }
+
     var listaFinal = [];
     listaFormatada.forEach(function (o, i) {
 
         listaFinal.push({ name: o.name, y: o.totalNc, color: o.color });
 
-        for (var j = 0; j < o.Tarefa.length; j++) {
-            listaFinal.push({ name: o.Tarefa[j][0].name.substring(0, 10), y: o.Tarefa[j][0].nc, color: o.Tarefa[j][0].color });
+        for (var j = 0; j < o.tarefa.length; j++) {
+            listaFinal.push({ name: o.tarefa[j][0].name.substring(0, 10), y: o.tarefa[j][0].nc, color: o.tarefa[j][0].color });
         }
 
     });
@@ -502,7 +499,13 @@ function montaGraficos(data) {
 
 function montaGraficosUnidade(data) {
 
-    var listaFinal = formataListaObj(data);
+    var listaAgrupadaMonitoramento = agrupaPor(data, "monitoramento");
+
+    var listaMonitoramentoNames = listaAgrupadaMonitoramento.map(function (o, i) {
+        return o.monitoramento;
+    });
+
+    var listaFinal = formataListaObj(data, 'monitoramento', 'tarefa', listaMonitoramentoNames);
 
     var listaUnidades = data.map(function (o, i) {
         return o.Unidade;
@@ -549,9 +552,9 @@ function montaGraficosUnidade(data) {
         for (var i = 0; i < data.length; i++) {
 
             if (data[i].CentroCusto == listaSetorNames[j]) {
-                if (data[i].Conforme == "C") {
+                if (data[i].C > 0) {
                     totalC++;
-                } else if (data[i].Conforme == "NC") {
+                } else if (data[i].NC > 0) {
                     totalNC++;
                 }
             }
@@ -593,7 +596,7 @@ function montaGraficosUnidade(data) {
         }]
     });
 
-    var listaFinalSetor = formataListaObj(data);
+    var listaFinalSetor = formataListaObj(data, 'CentroCusto', 'tarefa', listaSetorNames);
 
     Highcharts.chart('container3Unidade', {
         chart: {
@@ -616,7 +619,7 @@ function montaGraficosUnidade(data) {
         },
         series: [{
             name: 'Total Desvios',
-            data: y
+            data: listaFinalSetor
         }]
     });
 
@@ -788,7 +791,7 @@ function enviarFiltro() {
 
                     var colunas = [
                         { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
-                        { title: "Regional", mData: "GrupoEmpresa" },
+                        { title: "Regional", mData: "Regional" },
                         { title: "Unidade", mData: "Unidade" },
                         { title: "Auditor", mData: "Auditor Cabecalho" },
                         { title: "Total", mData: "total" },
