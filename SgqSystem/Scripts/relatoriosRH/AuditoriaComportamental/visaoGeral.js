@@ -1,6 +1,11 @@
-﻿
+﻿$(document).ready(function () {
+    $('#visaoGeral').click();
+    graficosMocados();
+});
 
-$(document).ready(function () {
+function graficosMocados() {
+
+
     Highcharts.chart('container2', {
         title: {
             text: 'Auditorias por Grupo de Empresa'
@@ -152,8 +157,7 @@ $(document).ready(function () {
             data: [5, 7, 3]
         }]
     });
-
-});
+}
 
 function agrupaPor(array, propriedade) {
 
@@ -176,20 +180,20 @@ function agrupaPor(array, propriedade) {
     return arrayAgrupadoObjetos;
 }
 
-function montaCards(listaAuditoria) {
+function montaCardsVisaoUnidade(listaAuditoria) {
 
     var totalAuditorias = agrupaPor(listaAuditoria, 'CollectionL2_Id');
 
-    $("#labelTotalAuditorias").text(listaAuditoria.filter((o, i) => o.total).length);
+    $("#divVisaoUnidade #labelTotalAuditorias").text(listaAuditoria.filter((o, i) => o.total).length);
 
     var totalAuditores = listaAuditoria.filter((o, i) => o['Auditor Cabecalho']).length;
-    $("#labelTotalAuditores").text(totalAuditores);
+    $("#divVisaoUnidade #labelTotalAuditores").text(totalAuditores);
 
     var totalTarefasConforme = listaAuditoria.filter((o, i) => o['C'] > '0').length;
-    $("#labelTotalConforme").text(totalTarefasConforme);
+    $("#divVisaoUnidade #labelTotalConforme").text(totalTarefasConforme);
 
     var totalTarefasNaoConforme = listaAuditoria.filter((o, i) => o['NC'] > '0').length;
-    $("#labelTotalNaoConforme").text(totalTarefasNaoConforme);
+    $("#divVisaoUnidade #labelTotalNaoConforme").text(totalTarefasNaoConforme);
 
     var somaObservados = 0;
     listaAuditoria.map(function (o, i) {
@@ -197,10 +201,37 @@ function montaCards(listaAuditoria) {
             somaObservados += parseInt(o['pessoas observadas']);
         }
     });
-    $("#labelTotalAuditoresObservados").text(somaObservados);
+    $("#divVisaoUnidade #labelTotalAuditoresObservados").text(somaObservados);
 
     var ips = (1 - (totalTarefasNaoConforme / somaObservados)) * 100;
-    $("#labelIps").text(parseInt(ips.toFixed(2)) + "%");
+    $("#divVisaoUnidade #labelIps").text(parseInt(ips.toFixed(2)) + "%");
+}
+
+function montaCardsVisaoGeral(listaAuditoria) {
+
+    var totalAuditorias = agrupaPor(listaAuditoria, 'CollectionL2_Id');
+
+    $("#divVisaoGeral #labelTotalAuditorias").text(listaAuditoria.filter((o, i) => o.total).length);
+
+    var totalAuditores = listaAuditoria.filter((o, i) => o['Auditor Cabecalho']).length;
+    $("#divVisaoGeral #labelTotalAuditores").text(totalAuditores);
+
+    var totalTarefasConforme = listaAuditoria.filter((o, i) => o['C'] > '0').length;
+    $("#divVisaoGeral #labelTotalConforme").text(totalTarefasConforme);
+
+    var totalTarefasNaoConforme = listaAuditoria.filter((o, i) => o['NC'] > '0').length;
+    $("#divVisaoGeral #labelTotalNaoConforme").text(totalTarefasNaoConforme);
+
+    var somaObservados = 0;
+    listaAuditoria.map(function (o, i) {
+        if (o['pessoas observadas'] != null) {
+            somaObservados += parseInt(o['pessoas observadas']);
+        }
+    });
+    $("#divVisaoGeral #labelTotalAuditoresObservados").text(somaObservados);
+
+    var ips = (1 - (totalTarefasNaoConforme / somaObservados)) * 100;
+    $("#divVisaoUnidade #labelIps").text(parseInt(ips.toFixed(2)) + "%");
 }
 
 function montaCardsAcompanhamento(listaAuditoria, totalSemanas) {
@@ -646,18 +677,27 @@ function montaListaSemanas(data) {
     return lista;
 }
 
-function enviarFiltro() {
+function enviarFiltro(nivelVisao) {
+    if (!nivelVisao) {
+        $("#pills-tab li").each(function (i, o) {
+            if ($(o).hasClass('active'))
+                nivelVisao = $(o).children().attr('val');
+        });
+    }
 
-    //verificar o nivel para montar os items na tela
-    let nivelVisao;
+    $('#message').html('');
+    $("#divVisaoGeral").addClass('hidden');
+    $("#divVisaoUnidade").addClass('hidden');
+    $("#divAcompanhamento").addClass('hidden');
 
-    $("#pills-tab li").each(function (i, o) {
-        if ($(o).hasClass('active'))
-            nivelVisao = $(o).children().attr('val');
-    });
+    openLoader('Aguarde...');
 
     switch (nivelVisao) {
         case '1':
+
+            $('#message').html("<div class='alert alert-warning'>Tela em construção.</div>");
+            closeLoader();
+            return;
 
             $.ajax({
                 url: urlGet,
@@ -675,22 +715,17 @@ function enviarFiltro() {
                     data[i]["HeaderFieldListL3"] = JSON.parse(data[i]["HeaderFieldListL3"]);
                 }
 
-                montaCards(data);
+                montaCardsVisaoGeral(data);
                 montaGraficosPizza(data);
                 montaGraficos(data);
 
                 closeLoader();
+                $("#divVisaoGeral").removeClass('hidden');
             }).fail(function (jqXHR, textStatus, msg) {
                 console.log(msg);
-                //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
+                $("#divVisaoGeral").removeClass('hidden');
             });
-
-            $("#divTableUnidade").addClass('hidden');
-            $("#divAcompanhamento").addClass('hidden');
-            $("#divVisaoUnidade").addClass('hidden');
-            $("#conteudoGraficos").removeClass('hidden');
-            $("#cardsVisaoGeralUnidade").removeClass('hidden');
             break;
         case '2':
             $.ajax({
@@ -703,7 +738,7 @@ function enviarFiltro() {
                 }
             }).done(function (data) {
                 
-                montaCards(data);
+                montaCardsVisaoUnidade(data);
                 montaGraficosPizza(data);
                 montaGraficosUnidade(data);
 
@@ -712,12 +747,11 @@ function enviarFiltro() {
                     { title: "Regional", mData: "regional" },
                     { title: "Unidade", mData: "Unidade" },
                     { title: "Setor", mData: "CentroCusto" },
-                    { title: "Data", mData: "Data" },
                     { title: "Tipo de Tarefa Realizada", mData: "Tipo de Tarefa Realizada" },
                     { title: "pessoas observadas", mData: "pessoas observadas" },
                     { title: "Avaliação da Atividade", mData: "Avaliação da Atividade" },
                     { title: "Auditor Cabecalho", mData: "Auditor Cabecalho" },
-                    { title: "Descrição do Desvio", mData: "ValorDescricaoTarefa" }
+                    { title: "Descrição do Desvio", mData: "valordescricaotarefa" }
                     
                 ];
 
@@ -747,20 +781,14 @@ function enviarFiltro() {
                 });
 
                 closeLoader();
+                $("#divVisaoUnidade").removeClass('hidden');
             }).fail(function (jqXHR, textStatus, msg) {
                 console.log(msg);
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
+                $("#divVisaoUnidade").removeClass('hidden');
             });
 
-            $("#divTableUnidade").removeClass('hidden');
-            $("#divVisaoUnidade").removeClass('hidden');
-            $("#divAcompanhamento").addClass('hidden');
-
-            $("#divVisaoGeral").addClass('hidden');
-
-            $("#conteudoGraficos").removeClass('hidden');
-            $("#cardsVisaoGeralUnidade").removeClass('hidden');
 
             $('.dataTables_length').addClass('bs-select');
             //fazer a requisição por unidade
@@ -779,7 +807,6 @@ function enviarFiltro() {
                 $("#collapseFiltrosReference").collapse('hide');
                 if (data != null && data.length > 0) {
 
-                    openLoader('Aguarde...');
                     globalTotalRealizado = 0;
                     let acompanhamentoObj = JSON.parse(JSON.stringify(data));
                     var listaDeSemanas = [];
@@ -827,9 +854,7 @@ function enviarFiltro() {
                     
                     listaDeSemanas.filter((o, i) => colunas.splice(4, 0, o));
 
-                    $("#tblAcompanhamento").removeClass('hidden');
                     var initDatatable = function () {
-
                         $('#loading').hide();
                         setTimeout(function (e) {
                             var oTable = $('#tblAcompanhamento').dataTable();
@@ -882,24 +907,18 @@ function enviarFiltro() {
                     });
 
                     montaCardsAcompanhamento(acompanhamentoObj, listaDeSemanas.length);
-                    $("#cardsAcompanhamento").show();
-                    $('#message').html('');
+                    $("#divAcompanhamento").removeClass('hidden');
                 } else {
+                    $("#divAcompanhamento").addClass('hidden');
                     $('#message').html("<div class='alert alert-info'>  Não existem dados no período selecionado.  </div>");
-                    $("#tblAcompanhamento").addClass('hidden');
-                    $("#cardsAcompanhamento").hide();
                 }
                 closeLoader();
             }).fail(function (jqXHR, textStatus, msg) {
                 console.log(msg);
                 closeLoader();
+                $("#divAcompanhamento").removeClass('hidden');
             });
 
-            $("#divTableUnidade").addClass('hidden');
-            $("#divVisaoUnidade").addClass('hidden');
-            $("#divAcompanhamento").removeClass('hidden');
-            $("#conteudoGraficos").addClass('hidden');
-            $("#cardsVisaoGeralUnidade").addClass('hidden');
             break;
         default:
             break;
@@ -908,5 +927,6 @@ function enviarFiltro() {
 
 $("#visaoGeral, #visaoUnidade, #acompanhamentoAuditoria").on('click', function () {
     //chama o enviar para buscar pelo nivel selecionado
-    setTimeout(function () { enviarFiltro(); }, 1000);
+    var nivelVisao = $(this).attr('val');
+    enviarFiltro(nivelVisao);
 });
