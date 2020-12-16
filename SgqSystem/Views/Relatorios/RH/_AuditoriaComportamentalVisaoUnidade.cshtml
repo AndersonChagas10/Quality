@@ -1,26 +1,116 @@
-﻿<div id="conteudoGraficos">
+﻿<style>
+    #cardsUnidade {
+        margin: auto;
+    }
 
-    <div class="row" style="width:100%; height:400px;">
-        <div id="container1Unidade"></div>
+    @@media(min-width:768px) {
+        #cardsUnidade > div {
+            width: 16%;
+            margin: 5px 0.33%;
+            float: left;
+        }
+    }
+
+    @@media(max-width:768px) {
+        #cardsUnidade > div {
+            width: 49%;
+            margin: 5px 0.49%;
+            float: left;
+        }
+    }
+</style>
+
+<div class="row col-lg-12 col-md-12" id="cardsUnidade">
+
+    <div>
+        <div class="panel card-border">
+            <div class="panel-body bg-white">
+                <p class="panel-title" style="font-size: 15px;">Nº Auditorias</p>
+                <p class="card-text mar" style="font-size: 30px; font-weight: bold;" id="labelTotalAuditorias">0</p>
+            </div>
+        </div>
     </div>
 
-    <div class="row" style="width:100%; height:400px;">
-        <div id="container2Unidade"></div>
+    <div>
+        <div class="panel card-border">
+            <div class="panel-body bg-white">
+                <p class="panel-title" style="font-size: 15px;">Nº Auditores</p>
+                <p class="card-text mar" style="font-size: 30px; font-weight: bold;" id="labelTotalAuditores">0</p>
+            </div>
+        </div>
     </div>
 
-    <div class="row" style="width:100%; height:400px;">
-        <div id="container3Unidade"></div>
+    <div>
+        <div class="panel card-border">
+            <div class="panel-body bg-white">
+                <p class="panel-title" style="font-size: 15px;">Nº Comportamento Seguro</p>
+                <p class="card-text mar" style="font-size: 30px; font-weight: bold;" id="labelTotalConforme">0</p>
+            </div>
+        </div>
     </div>
 
-    <div class="row" style="width:100%; height:400px;">
-        <div id="container4"></div>
+    <div>
+        <div class="panel card-border">
+            <div class="panel-body bg-white">
+                <p class="panel-title" style="font-size: 15px;">Nº Desvios</p>
+                <p class="card-text mar" style="font-size: 30px; font-weight: bold;" id="labelTotalNaoConforme">0</p>
+            </div>
+        </div>
     </div>
 
-    <div class="row" style="width:100%; height:400px;">
-        <div id="container5"></div>
+    <div>
+        <div class="panel card-border">
+            <div class="panel-body bg-white">
+                <p class="panel-title" style="font-size: 15px;">Nº Pessoas Avaliadas</p>
+                <p class="card-text mar" style="font-size: 30px; font-weight: bold;" id="labelTotalAuditoresObservados">0</p>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="panel card-border">
+            <div class="panel-body bg-white">
+                <p class="panel-title" style="font-size: 15px;">IPS</p>
+                <p class="card-text mar" style="font-size: 30px; font-weight: bold;" id="labelIps">0</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="col-lg-12 col-md-12">
+    <div class="card-border">
+        <div id="container1Unidade" style="height:400px;width:100%"></div>
     </div>
 </div>
 
-<table id="tblVisaoUnidade" class="table" width="100%">
+<div class="col-lg-12 col-md-12">
+    <div class="card-border">
+        <div id="container2Unidade" style="height:400px;width:100%"></div>
+    </div>
+</div>
 
-</table>
+<div class="col-lg-12 col-md-12">
+    <div class="card-border">
+        <div id="container3Unidade" style="height:400px;width:100%"></div>
+    </div>
+</div>
+
+<div class="col-lg-12 col-md-12">
+    <div class="card-border">
+        <div id="container4" style="height:400px;width:100%"></div>
+    </div>
+</div>
+
+<div class="col-lg-12 col-md-12">
+    <div class="card-border">
+        <div id="container5" style="height:400px;width:100%"></div>
+    </div>
+</div>
+
+<div class="col-lg-12 col-md-12">
+    <div class="card-border">
+        <table id="tblVisaoUnidade" class="table">
+        </table>
+    </div>
+</div>
