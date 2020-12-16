@@ -445,9 +445,8 @@ function formataListaObj(data, propriedadeAgrupadora, propriedadeAgrupada, lista
                 if (item.NC > '0') {
                     valorNC += parseInt(item.NC);
                     valorNCTotal += valorNC;
+                    listaObjTarefa.push([{ name: item[propriedadeAgrupada], nc: valorNC, color: '#f8cc9d' }]);
                 }
-
-                listaObjTarefa.push([{ name: item[propriedadeAgrupada], nc: valorNC, color: '#f8cc9d' }]);
             }
         }
 
@@ -595,34 +594,6 @@ function montaGraficosUnidade(data) {
             data: x
         }]
     });
-
-    var listaFinalSetor = formataListaObj(data, 'CentroCusto', 'tarefa', listaSetorNames);
-
-    Highcharts.chart('container3Unidade', {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Desvios - Total por Setor'
-        },
-        subtitle: {
-            text: 'Unidade:' + listaUnidades.filter((x, i, a) => a.indexOf(x) == i)
-        },
-        xAxis: {
-            categories: listaSetorNames
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'nc'
-            }
-        },
-        series: [{
-            name: 'Total Desvios',
-            data: listaFinalSetor
-        }]
-    });
-
 }
 
 function montaListaSemanas(data) {
@@ -648,6 +619,48 @@ function montaListaSemanas(data) {
 
     return lista;
 }
+
+function montaGraficosDesviosPorSetor(data) {
+
+    var listaUnidades = data.map(function (o, i) {
+        return o.Unidade;
+    });
+
+    var listaAgrupadaMonitoramento = agrupaPor(data, "monitoramento");
+
+    var listaMonitoramentoNames = listaAgrupadaMonitoramento.map(function (o, i) {
+        return o.monitoramento;
+    });
+
+
+    var listaFinalSetor = formataListaObj(data, 'monitoramento', 'tarefa', listaMonitoramentoNames);
+
+    Highcharts.chart('container3Unidade', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Desvios - Total por Setor'
+        },
+        subtitle: {
+            text: 'Unidade:' + listaUnidades.filter((x, i, a) => a.indexOf(x) == i)
+        },
+        xAxis: {
+            categories: listaFinalSetor.map(function (i, o) { return i.name; })
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'nc'
+            }
+        },
+        series: [{
+            name: 'Total Desvios',
+            data: listaFinalSetor
+        }]
+    });
+}
+
 
 function enviarFiltro() {
 
@@ -750,6 +763,24 @@ function enviarFiltro() {
                 });
 
                 closeLoader();
+            }).fail(function (jqXHR, textStatus, msg) {
+                console.log(msg);
+                //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                closeLoader();
+            });
+
+            $.ajax({
+                url: urlGetUnidadePorSetor,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            }).done(function (retorno) {
+
+                montaGraficosDesviosPorSetor(retorno);
+
             }).fail(function (jqXHR, textStatus, msg) {
                 console.log(msg);
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);

@@ -518,16 +518,16 @@ namespace DTO.ResultSet
                 whereUnidade = $"AND C2.UnitId in ({ string.Join(",", form.ParCompany_Ids)})";
             }
 
-            var whereMonitoramento = "";
-            if (form.ParLevel2_Ids.Length > 0)
-            {
-                whereMonitoramento = $"AND C2.ParLevel2_Id in ({ string.Join(",", form.ParLevel2_Ids)})";
-            }
-
             var whereAuditor = "";
             if (form.userSgqAuditor_Ids.Length > 0)
             {
                 whereAuditor = $"AND C2.AuditorId in ({ string.Join(",", form.userSgqAuditor_Ids)})";
+            }
+
+            var whereCentroCusto = "";
+            if (form.ParDepartment_Ids != null && form.ParDepartment_Ids.Length > 0)
+            {
+                whereCentroCusto = $"AND Centro.Id in  ({ string.Join(",", form.ParDepartment_Ids)})";
             }
 
             var db = new SgqDbDevEntities();
@@ -902,6 +902,12 @@ namespace DTO.ResultSet
             LEFT JOIN ParFrequency PF with (NOLOCK)
 	            ON C2.ParFrequency_Id = PF.Id
             WHERE 1=1 
+            {whereCentroCusto}
+            {whereCluster}
+            {whereRegional}
+            {whereAuditor}
+            {whereGrupoempresa}
+            {whereUnidade}
 
             group by C2.CollectionDate, C2.Id, L1.Name, 
 			L2.Name,R3.ParLevel3_Name,PC.Name,US.FullName,
@@ -1001,12 +1007,6 @@ Begin
             if (form.ParCompany_Ids.Length > 0)
             {
                 whereUnidade = $"AND C2.UnitId in ({ string.Join(",", form.ParCompany_Ids)})";
-            }
-
-            var whereMonitoramento = "";
-            if (form.ParLevel2_Ids.Length > 0)
-            {
-                whereMonitoramento = $"AND C2.ParLevel2_Id in ({ string.Join(",", form.ParLevel2_Ids)})";
             }
 
             var whereAuditor = "";
@@ -1360,7 +1360,6 @@ AND PATINDEX('%Auditor%', HeaderFieldList1) > 0
     {whereRegional}
     {whereAuditor}
     {whereGrupoempresa}
-    {whereMonitoramento}
     {whereUnidade}
 	group by C2.CollectionDate, C2.Id, L1.Name, 
 	L2.Name,R3.ParLevel3_Name,PC.Name,US.FullName,

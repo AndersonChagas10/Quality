@@ -10,6 +10,7 @@
 
     var urlGet = Url.Action("GetAuditoriaComportamental", "api/AuditoriaComportamental");
     var urlGetUnidade = Url.Action("GetAuditoriaComportamentalUnidade", "api/AuditoriaComportamental");
+    var urlGetUnidadePorSetor = Url.Action("GetAuditoriaComportamentalUnidadePorSetor", "api/AuditoriaComportamental");
     var urlGetAcompanhamento = Url.Action("GetAuditoriaComportamentalAcompanhamento", "api/AuditoriaComportamental");
 
     ViewBag.ShowCurrentDate = false;
@@ -19,7 +20,8 @@
     ViewBag.ShowParLevel2GQ = false;
     ViewBag.ShowUserSgqAuditor = true;
     ViewBag.ShowParStructure3 = true;
-    ViewBag.ShowParLevel2 = true;
+    ViewBag.ShowParLevel2 = false;
+    ViewBag.ShowParDepartment = true;
 
 }
 
@@ -125,6 +127,7 @@
         var globalTotalRealizado = 0;
         var urlGet = '@Html.Raw(@urlGet)';
         var urlGetUnidade = '@Html.Raw(@urlGetUnidade)';
+        var urlGetUnidadePorSetor = '@Html.Raw(@urlGetUnidadePorSetor)';
         var urlGetAcompanhamento = '@Html.Raw(@urlGetAcompanhamento)';
     </script>
 
