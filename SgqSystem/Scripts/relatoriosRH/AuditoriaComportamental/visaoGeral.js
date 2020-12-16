@@ -572,8 +572,9 @@ function montaGraficosUnidade(data) {
         return o.CentroCusto;
     });
 
-    var x = [];
-    var y = [];
+    var conformidade = [];
+    var naoConformidade = [];
+    var totalColeta = [];
 
     for (var j = 0; j < listaSetorNames.length; j++) {
         var totalNC = 0;
@@ -590,8 +591,9 @@ function montaGraficosUnidade(data) {
             }
 
             if (i == data.length - 1) {
-                x.push({ name: listaSetorNames[j], y: totalC, color: 'green' });
-                y.push({ name: listaSetorNames[j], y: totalNC, color: 'red' });
+                conformidade.push({ name: listaSetorNames[j], y: totalC, color: '#B5F599' });
+                naoConformidade.push({ name: listaSetorNames[j], y: totalNC, color: '#F07573' });
+                totalColeta.push({ name: listaSetorNames[j], y: totalNC + totalC, color: '#070D0F' });
             }
         }
     }
@@ -604,7 +606,7 @@ function montaGraficosUnidade(data) {
             text: 'Auditorias por Setor'
         },
         xAxis: {
-            categories: x.map(function (i, o) { return i.name; })
+            categories: conformidade.map(function (i, o) { return i.name; })
         },
         yAxis: {
             min: 0,
@@ -614,15 +616,16 @@ function montaGraficosUnidade(data) {
         },
         series: [{
             name: 'Comportamento Seguro',
-            data: x
+            data: conformidade
         }, {
             name: 'Total Desvios',
-            data: y
+                data: naoConformidade
             },
         {
             type: 'spline',
             name: 'numero auditorias',
-            data: x
+            data: totalColeta,
+            color: '#070D0F'
         }]
     });
 }
@@ -823,7 +826,6 @@ function enviarFiltro(nivelVisao) {
             });
 
             $("#divTableUnidade").removeClass('hidden');
-           
 
             $('.dataTables_length').addClass('bs-select');
             //fazer a requisição por unidade
