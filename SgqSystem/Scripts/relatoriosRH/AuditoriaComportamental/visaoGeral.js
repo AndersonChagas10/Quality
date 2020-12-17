@@ -481,9 +481,28 @@ function formataListaObj(data, propriedadeAgrupadora, propriedadeAgrupada, lista
             }
         }
 
+        var listaObjTarefaAgrupada = [];
+        var totalNCAgrupado = 0;
+
+        for (var x = 0; x < listaObjTarefa.length; x++) {
+            var totalOcorrencias = data.filter(function (o) { return o.tarefa === listaObjTarefa[x][0].name; }).length;
+            var cont = 0;
+            for (var y = 0; y < data.length; y++) {
+                if (listaObjTarefa[x][0].name == data[y][propriedadeAgrupada]) {
+
+                    cont++;
+
+                    totalNCAgrupado += listaObjTarefa[x][0].nc;
+                }
+            }
+            if (cont == totalOcorrencias)
+                listaObjTarefaAgrupada.push([{ name: listaObjTarefa[x][0][propriedadeAgrupada], nc: totalNCAgrupado, color: '#f8cc9d' }]);
+        }
+
         listaFormatada.push({
-            name: listaMonitoramentoNames[i], totalNc: valorNCTotal, color: '#f08513', tarefa: listaObjTarefa
+            name: listaMonitoramentoNames[i], totalNc: valorNCTotal, color: '#f08513', tarefa: listaObjTarefaAgrupada
         });
+       
     }
 
     var listaFinal = [];
@@ -563,6 +582,7 @@ function montaGraficosUnidade(data) {
         },
         series: [{
             data: listaFinal,
+            name:'quantidade nc',
             showInLegend: false
         }]
     });
@@ -718,7 +738,7 @@ function enviarFiltro(nivelVisao) {
     switch (nivelVisao) {
         case '1':
 
-            $('#message').html("<div class='alert alert-warning'><marquee width='60%' direction='left' height='100px'><h3>Tela em construção.</h3></marquee></div>");
+            $('#message').html("<div class='alert alert-warning'>Tela em construção.</div>");
             closeLoader();
             return;
 
@@ -775,6 +795,7 @@ function enviarFiltro(nivelVisao) {
                     { title: "Tipo de Tarefa Realizada", mData: "Tipo de Tarefa Realizada" },
                     { title: "pessoas observadas", mData: "pessoas observadas" },
                     { title: "Avaliação da Atividade", mData: "Avaliação da Atividade" },
+                    { title: "Desvio", mData: "tarefa" },
                     { title: "Descrição do Desvio", mData: "valordescricaotarefa" }
                     
                 ];
