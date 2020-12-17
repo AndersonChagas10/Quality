@@ -543,6 +543,7 @@ function montaGraficosUnidade(data) {
 
     Highcharts.chart('container1Unidade', {
         chart: {
+            reflow: true,
             type: 'column'
         },
         title: {
@@ -557,12 +558,12 @@ function montaGraficosUnidade(data) {
         yAxis: {
             min: 0,
             title: {
-                text: 'nc'
+                text: ''
             }
         },
         series: [{
-            name: 'Total Desvios',
-            data: listaFinal
+            data: listaFinal,
+            showInLegend: false
         }]
     });
 
@@ -600,6 +601,7 @@ function montaGraficosUnidade(data) {
 
     Highcharts.chart('container2Unidade', {
         chart: {
+            reflow: true,
             type: 'column'
         },
         title: {
@@ -616,17 +618,19 @@ function montaGraficosUnidade(data) {
         },
         series: [{
             name: 'Comportamento Seguro',
-            data: conformidade
+            data: conformidade,
+            color: '#B5F599'
         }, {
-            name: 'Total Desvios',
-                data: naoConformidade
+                name: 'Total Desvios',
+                data: naoConformidade,
+                color: '#F07573'
             },
         {
             type: 'spline',
-            name: 'numero auditorias',
+            name: 'total auditorias',
             data: totalColeta,
             color: '#070D0F'
-        }]
+            }]
     });
 }
 
@@ -671,6 +675,7 @@ function montaGraficosDesviosPorSetor(data) {
 
     Highcharts.chart('container3Unidade', {
         chart: {
+            reflow: true,
             type: 'column'
         },
         title: {
@@ -689,7 +694,7 @@ function montaGraficosDesviosPorSetor(data) {
             }
         },
         series: [{
-            name: 'Total Desvios',
+            showInLegend: false,
             data: listaFinalSetor
         }]
     });
@@ -713,7 +718,7 @@ function enviarFiltro(nivelVisao) {
     switch (nivelVisao) {
         case '1':
 
-            $('#message').html("<div class='alert alert-warning'>Tela em construção.</div>");
+            $('#message').html("<div class='alert alert-warning'><marquee width='60%' direction='left' height='100px'><h3>Tela em construção.</h3></marquee></div>");
             closeLoader();
             return;
 
@@ -765,10 +770,11 @@ function enviarFiltro(nivelVisao) {
                     { title: "Regional", mData: "regional" },
                     { title: "Unidade", mData: "Unidade" },
                     { title: "Setor", mData: "CentroCusto" },
+                    { title: "Auditor Cabecalho", mData: "Auditor Cabecalho" },
+                    { title: "Data", mData: "Data" },
                     { title: "Tipo de Tarefa Realizada", mData: "Tipo de Tarefa Realizada" },
                     { title: "pessoas observadas", mData: "pessoas observadas" },
                     { title: "Avaliação da Atividade", mData: "Avaliação da Atividade" },
-                    { title: "Auditor Cabecalho", mData: "Auditor Cabecalho" },
                     { title: "Descrição do Desvio", mData: "valordescricaotarefa" }
                     
                 ];
@@ -823,7 +829,7 @@ function enviarFiltro(nivelVisao) {
                 console.log(msg);
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
-            });
+                });
 
             $("#divTableUnidade").removeClass('hidden');
 
