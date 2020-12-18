@@ -278,16 +278,10 @@ function montaCardsAcompanhamento(listaAuditoria, totalSemanas) {
 function montaListaObjGenericosPorcentagem(lista, propriedadeName, propriedadeValue1, propriedadeValue2) {
 
     var listaFormatada = [];
-    var contPropriedadeValue1= 0;
+    var contPropriedadeValue1 = 0;
     var contPropriedadeValue2 = 0;
 
-    //lista.forEach(function (o, i) {
-    //    if (o['HeaderFieldListL1'][propriedadeName] == propriedadeValue1) {
-    //        contPropriedadeValue1++;
-    //    } else {
-    //        contPropriedadeValue2++;
-    //    }
-    //});
+
 
     lista.forEach(function (o, i) {
         if (o[propriedadeName] == propriedadeValue1) {
@@ -326,8 +320,8 @@ function montaListaPessoaAvaliada(lista) {
         }
     });
 
-    listaFormatada.push({ name: 'Funcionários', y: contFuncionario, color:'#7f96ec' });
-    listaFormatada.push({ name: 'Terceiros', y: contTerceiro, color:'#c9a25c' });
+    listaFormatada.push({ name: 'Funcionários', y: contFuncionario, color: '#7f96ec' });
+    listaFormatada.push({ name: 'Terceiros', y: contTerceiro, color: '#c9a25c' });
 
     return listaFormatada;
 }
@@ -348,7 +342,7 @@ function montaListaTarefaRealizada(lista) {
         }
     });
 
-    listaFormatada.push({ name: 'Individual', y: contIndividual, color: '#7f96ec'  });
+    listaFormatada.push({ name: 'Individual', y: contIndividual, color: '#7f96ec' });
     listaFormatada.push({ name: 'Grupo/Equipe', y: contEquipe, color: '#c9a25c' });
 
     return listaFormatada;
@@ -455,10 +449,30 @@ function montaGraficosPizza(data) {
             }
         },
         series: [{
-            data:montaListaTarefaRealizada(data) 
+            data: montaListaTarefaRealizada(data)
         }]
     });
 }
+
+function ordenarListaNC(lista, propriedade, indice) {
+
+    lista.sort(function compare(a, b) {
+        if (indice != null) {
+            if (a[indice][propriedade] > b[indice][propriedade])
+                return -1;
+            if (a[indice][propriedade] < b[indice][propriedade])
+                return 1;
+            return 0;
+        } else {
+            if (a[propriedade] > b[propriedade])
+                return -1;
+            if (a[propriedade] < b[propriedade])
+                return 1;
+            return 0;
+        }
+    });
+}
+
 
 function formataListaObj(data, propriedadeAgrupadora, propriedadeAgrupada, listaMonitoramentoNames) {
 
@@ -476,34 +490,31 @@ function formataListaObj(data, propriedadeAgrupadora, propriedadeAgrupada, lista
                 if (item.NC > '0') {
                     valorNC += parseInt(item.NC);
                     valorNCTotal += valorNC;
-                    listaObjTarefa.push([{ name: item[propriedadeAgrupada], nc: valorNC, color: '#f8cc9d' }]);
+
+                    var tarefasRepetidas = listaObjTarefa.filter(function (o, i) {
+                        if (o[0].name == item[propriedadeAgrupada])
+                            return o[0];
+                    });
+
+                    if (tarefasRepetidas[0] != undefined && tarefasRepetidas.length > 0) {
+                        tarefasRepetidas[0][0].nc += valorNC;
+                    } else {
+                        listaObjTarefa.push([{ name: item[propriedadeAgrupada], nc: valorNC, color: '#f8cc9d' }]);
+                    }
+
                 }
             }
         }
 
-        var listaObjTarefaAgrupada = [];
-        var totalNCAgrupado = 0;
-
-        for (var x = 0; x < listaObjTarefa.length; x++) {
-            var totalOcorrencias = data.filter(function (o) { return o.tarefa === listaObjTarefa[x][0].name; }).length;
-            var cont = 0;
-            for (var y = 0; y < data.length; y++) {
-                if (listaObjTarefa[x][0].name == data[y][propriedadeAgrupada]) {
-
-                    cont++;
-
-                    totalNCAgrupado += listaObjTarefa[x][0].nc;
-                }
-            }
-            if (cont == totalOcorrencias)
-                listaObjTarefaAgrupada.push([{ name: listaObjTarefa[x][0][propriedadeAgrupada], nc: totalNCAgrupado, color: '#f8cc9d' }]);
-        }
+        ordenarListaNC(listaObjTarefa, 'nc', 0);
 
         listaFormatada.push({
-            name: listaMonitoramentoNames[i], totalNc: valorNCTotal, color: '#f08513', tarefa: listaObjTarefaAgrupada
+            name: listaMonitoramentoNames[i], totalNc: valorNCTotal, color: '#f08513', tarefa: listaObjTarefa
         });
-       
+
     }
+
+    ordenarListaNC(listaFormatada, 'totalNc', null);
 
     var listaFinal = [];
     listaFormatada.forEach(function (o, i) {
@@ -582,7 +593,7 @@ function montaGraficosUnidade(data) {
         },
         series: [{
             data: listaFinal,
-            name:'quantidade nc',
+            name: 'quantidade nc',
             showInLegend: false
         }]
     });
@@ -612,12 +623,25 @@ function montaGraficosUnidade(data) {
             }
 
             if (i == data.length - 1) {
+
                 conformidade.push({ name: listaSetorNames[j], y: totalC, color: '#B5F599' });
                 naoConformidade.push({ name: listaSetorNames[j], y: totalNC, color: '#F07573' });
                 totalColeta.push({ name: listaSetorNames[j], y: totalNC + totalC, color: '#070D0F' });
             }
         }
     }
+
+    var listaConformeAgrupada = [];
+    ordenarListaNC(naoConformidade, 'y', null);
+    ordenarListaNC(totalColeta, 'y', null);
+
+    for (var i = 0; i < naoConformidade.length; i++) {
+        for (var j = 0; j < conformidade.length; j++) {
+            if (naoConformidade[i].name == conformidade[j].name)
+                listaConformeAgrupada.push(conformidade[j]);
+        }
+    }
+
 
     Highcharts.chart('container2Unidade', {
         chart: {
@@ -638,19 +662,19 @@ function montaGraficosUnidade(data) {
         },
         series: [{
             name: 'Comportamento Seguro',
-            data: conformidade,
+            data: listaConformeAgrupada,
             color: '#B5F599'
         }, {
-                name: 'Total Desvios',
-                data: naoConformidade,
-                color: '#F07573'
-            },
+            name: 'Total Desvios',
+            data: naoConformidade,
+            color: '#F07573'
+        },
         {
             type: 'spline',
             name: 'total auditorias',
             data: totalColeta,
             color: '#070D0F'
-            }]
+        }]
     });
 }
 
@@ -658,7 +682,7 @@ function montaListaSemanas(data) {
 
     var semanas = [];
     var semanasName = [];
-    var colunasRemover = ["Seguro", "Inseguro","total", "C", "NC", "NA", "pessoas observadas","Auditor Cabecalho" ,"GrupoEmpresa", "Regional", "Secao", "GrupoEmpresa", "Unidade", "Auditor", "Indicador", "Monitoramento", "Tarefa", "Conforme", "Cargo", "ValorDescricaoTarefa", "ClusterName", "HeaderFieldListL1", "HeaderFieldListL2", "HeaderFieldListL3"];
+    var colunasRemover = ["Seguro", "Inseguro", "total", "C", "NC", "NA", "pessoas observadas", "Auditor Cabecalho", "GrupoEmpresa", "Regional", "Secao", "GrupoEmpresa", "Unidade", "Auditor", "Indicador", "Monitoramento", "Tarefa", "Conforme", "Cargo", "ValorDescricaoTarefa", "ClusterName", "HeaderFieldListL1", "HeaderFieldListL2", "HeaderFieldListL3"];
 
     for (var i = 0; i < data.length; i++) {
         for (var j = 0; j < colunasRemover.length; j++) {
@@ -780,7 +804,7 @@ function enviarFiltro(nivelVisao) {
                 beforeSend: function () {
                 }
             }).done(function (data) {
-                
+
                 montaCardsVisaoUnidade(data);
                 montaGraficosPizza(data);
                 montaGraficosUnidade(data);
@@ -797,7 +821,7 @@ function enviarFiltro(nivelVisao) {
                     { title: "Avaliação da Atividade", mData: "Avaliação da Atividade" },
                     { title: "Desvio", mData: "tarefa" },
                     { title: "Descrição do Desvio", mData: "valordescricaotarefa" }
-                    
+
                 ];
 
                 var initDatatable = function () {
@@ -850,7 +874,7 @@ function enviarFiltro(nivelVisao) {
                 console.log(msg);
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
-                });
+            });
 
             $("#divTableUnidade").removeClass('hidden');
 
@@ -915,7 +939,7 @@ function enviarFiltro(nivelVisao) {
                             }
                         }
                     ];
-                    
+
                     listaDeSemanas.filter((o, i) => colunas.splice(4, 0, o));
 
                     var initDatatable = function () {
