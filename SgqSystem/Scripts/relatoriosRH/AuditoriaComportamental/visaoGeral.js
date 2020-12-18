@@ -1,6 +1,11 @@
-﻿
+﻿$(document).ready(function () {
+    $('#visaoGeral').click();
+    graficosMocados();
+});
 
-$(document).ready(function () {
+function graficosMocados() {
+
+
     Highcharts.chart('container2', {
         title: {
             text: 'Auditorias por Grupo de Empresa'
@@ -152,8 +157,7 @@ $(document).ready(function () {
             data: [5, 7, 3]
         }]
     });
-
-});
+}
 
 function agrupaPor(array, propriedade) {
 
@@ -176,35 +180,58 @@ function agrupaPor(array, propriedade) {
     return arrayAgrupadoObjetos;
 }
 
-function montaCards(listaAuditoria) {
+function montaCardsVisaoUnidade(listaAuditoria) {
 
     var totalAuditorias = agrupaPor(listaAuditoria, 'CollectionL2_Id');
 
-    $("#labelTotalAuditorias").text(totalAuditorias.length);
+    $("#divVisaoUnidade #labelTotalAuditorias").text(listaAuditoria.filter((o, i) => o.total).length);
 
-    var totalAuditores = totalAuditorias.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Auditor") == true).length;
-    $("#labelTotalAuditores").text(totalAuditores);
+    var totalAuditores = listaAuditoria.filter((o, i) => o['Auditor Cabecalho']).length;
+    $("#divVisaoUnidade #labelTotalAuditores").text(totalAuditores);
 
-    var totalTarefasConforme = listaAuditoria.filter((o, i) => o.Conforme == "C").length;
-    $("#labelTotalConforme").text(totalTarefasConforme);
+    var totalTarefasConforme = listaAuditoria.filter((o, i) => o['C'] > '0').length;
+    $("#divVisaoUnidade #labelTotalConforme").text(totalTarefasConforme);
 
-    var totalTarefasNaoConforme = listaAuditoria.filter((o, i) => o.Conforme == "NC").length;
-    $("#labelTotalNaoConforme").text(totalTarefasNaoConforme);
-
-    var totalAuditoresObservados = totalAuditorias.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Nº de pessoas observadas") == true);
+    var totalTarefasNaoConforme = listaAuditoria.filter((o, i) => o['NC'] > '0').length;
+    $("#divVisaoUnidade #labelTotalNaoConforme").text(totalTarefasNaoConforme);
 
     var somaObservados = 0;
-    totalAuditoresObservados.map(function (o, i) {
-        if (o.HeaderFieldListL1 != null) {
-            somaObservados += parseInt(o.HeaderFieldListL1["Nº de pessoas observadas"]);
+    listaAuditoria.map(function (o, i) {
+        if (o['pessoas observadas'] != null) {
+            somaObservados += parseInt(o['pessoas observadas']);
         }
     });
-    //var somaObservados = totalAuditoresObservados.reduce(function (a, b) { return parseInt(a.HeaderFieldListL1["Nº de pessoas observadas"]) + parseInt(b.HeaderFieldListL1["Nº de pessoas observadas"]); });
-
-    $("#labelTotalAuditoresObservados").text(somaObservados);
+    $("#divVisaoUnidade #labelTotalAuditoresObservados").text(somaObservados);
 
     var ips = (1 - (totalTarefasNaoConforme / somaObservados)) * 100;
-    $("#labelIps").text(parseInt(ips.toFixed(2)) + "%");
+    $("#divVisaoUnidade #labelIps").text(parseInt(ips.toFixed(2)) + "%");
+}
+
+function montaCardsVisaoGeral(listaAuditoria) {
+
+    var totalAuditorias = agrupaPor(listaAuditoria, 'CollectionL2_Id');
+
+    $("#divVisaoGeral #labelTotalAuditorias").text(listaAuditoria.filter((o, i) => o.total).length);
+
+    var totalAuditores = listaAuditoria.filter((o, i) => o['Auditor Cabecalho']).length;
+    $("#divVisaoGeral #labelTotalAuditores").text(totalAuditores);
+
+    var totalTarefasConforme = listaAuditoria.filter((o, i) => o['C'] > '0').length;
+    $("#divVisaoGeral #labelTotalConforme").text(totalTarefasConforme);
+
+    var totalTarefasNaoConforme = listaAuditoria.filter((o, i) => o['NC'] > '0').length;
+    $("#divVisaoGeral #labelTotalNaoConforme").text(totalTarefasNaoConforme);
+
+    var somaObservados = 0;
+    listaAuditoria.map(function (o, i) {
+        if (o['pessoas observadas'] != null) {
+            somaObservados += parseInt(o['pessoas observadas']);
+        }
+    });
+    $("#divVisaoGeral #labelTotalAuditoresObservados").text(somaObservados);
+
+    var ips = (1 - (totalTarefasNaoConforme / somaObservados)) * 100;
+    $("#divVisaoUnidade #labelIps").text(parseInt(ips.toFixed(2)) + "%");
 }
 
 function montaCardsAcompanhamento(listaAuditoria, totalSemanas) {
@@ -251,11 +278,13 @@ function montaCardsAcompanhamento(listaAuditoria, totalSemanas) {
 function montaListaObjGenericosPorcentagem(lista, propriedadeName, propriedadeValue1, propriedadeValue2) {
 
     var listaFormatada = [];
-    var contPropriedadeValue1= 0;
+    var contPropriedadeValue1 = 0;
     var contPropriedadeValue2 = 0;
 
+
+
     lista.forEach(function (o, i) {
-        if (o['HeaderFieldListL1'][propriedadeName] == propriedadeValue1) {
+        if (o[propriedadeName] == propriedadeValue1) {
             contPropriedadeValue1++;
         } else {
             contPropriedadeValue2++;
@@ -270,7 +299,7 @@ function montaListaObjGenericosPorcentagem(lista, propriedadeName, propriedadeVa
 
 function montaListaSeguroInseguro(lista) {
 
-    var listaAvaliacaoAtividade = lista.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Avaliação da Atividade") == true);
+    var listaAvaliacaoAtividade = lista.filter((o, i) => o["Avaliação da Atividade"] != "");
 
     return montaListaObjGenericosPorcentagem(listaAvaliacaoAtividade, "Avaliação da Atividade", "Insegura", "Segura");
 }
@@ -281,18 +310,18 @@ function montaListaPessoaAvaliada(lista) {
     var contFuncionario = 0;
     var contTerceiro = 0;
 
-    var listaPessoaAvaliada = lista.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Pessoa avaliada") == true);
+    var listaPessoaAvaliada = lista.filter((o, i) => o["Pessoa avaliada"] != "");
 
     listaPessoaAvaliada.forEach(function (o, i) {
-        if (o['HeaderFieldListL1']["Pessoa avaliada"] == "Funcionário") {
-            contFuncionario += parseInt(o['HeaderFieldListL1']["Nº de pessoas observadas"]);
+        if (o["Pessoa avaliada"] == "Funcionário") {
+            contFuncionario += parseInt(o["pessoas observadas"]);
         } else {
-            contTerceiro += parseInt(o['HeaderFieldListL1']["Nº de pessoas observadas"]);
+            contTerceiro += parseInt(o["pessoas observadas"]);
         }
     });
 
-    listaFormatada.push({ name: 'Funcionários', y: contFuncionario, color:'#7f96ec' });
-    listaFormatada.push({ name: 'Terceiros', y: contTerceiro, color:'#c9a25c' });
+    listaFormatada.push({ name: 'Funcionários', y: contFuncionario, color: '#7f96ec' });
+    listaFormatada.push({ name: 'Terceiros', y: contTerceiro, color: '#c9a25c' });
 
     return listaFormatada;
 }
@@ -303,17 +332,17 @@ function montaListaTarefaRealizada(lista) {
     var contIndividual = 0;
     var contEquipe = 0;
 
-    var listaTarefaRealizada = lista.filter((o, i) => o.HeaderFieldListL1.hasOwnProperty("Tipo de Tarefa Realizada") == true);
+    var listaTarefaRealizada = lista.filter((o, i) => o["Tipo de Tarefa Realizada"] != "");
 
     listaTarefaRealizada.forEach(function (o, i) {
-        if (o['HeaderFieldListL1']["Tipo de Tarefa Realizada"] == "Individual") {
+        if (o["Tipo de Tarefa Realizada"] == "Individual") {
             contIndividual++;
         } else {
             contEquipe++;
         }
     });
 
-    listaFormatada.push({ name: 'Individual', y: contIndividual, color: '#7f96ec'  });
+    listaFormatada.push({ name: 'Individual', y: contIndividual, color: '#7f96ec' });
     listaFormatada.push({ name: 'Grupo/Equipe', y: contEquipe, color: '#c9a25c' });
 
     return listaFormatada;
@@ -420,52 +449,90 @@ function montaGraficosPizza(data) {
             }
         },
         series: [{
-            data:montaListaTarefaRealizada(data) 
+            data: montaListaTarefaRealizada(data)
         }]
     });
 }
 
-function montaGraficos(data) {
+function ordenarListaNC(lista, propriedade, indice) {
+
+    lista.sort(function compare(a, b) {
+        if (indice != null) {
+            if (a[indice][propriedade] > b[indice][propriedade])
+                return -1;
+            if (a[indice][propriedade] < b[indice][propriedade])
+                return 1;
+            return 0;
+        } else {
+            if (a[propriedade] > b[propriedade])
+                return -1;
+            if (a[propriedade] < b[propriedade])
+                return 1;
+            return 0;
+        }
+    });
+}
+
+
+function formataListaObj(data, propriedadeAgrupadora, propriedadeAgrupada, listaMonitoramentoNames) {
 
     var listaFormatada = [];
 
-    for (var i = 0; i < data.length; i++) {
-
-        var item = data[i];
+    for (var i = 0; i < listaMonitoramentoNames.length; i++) {
         var listaObjTarefa = [];
+        var valorNCTotal = 0;
 
-        var listaAgrupada = data.filter((o, i) => o.Monitoramento == item.Monitoramento);
-
-        if (listaAgrupada != null) {
-            var valorNCTotal = 0;
-            for (var j = 0; j < listaAgrupada.length; j++) {
+        for (var j = 0; j < data.length; j++) {
+            var item = data[j];
+            if (listaMonitoramentoNames[i] == item[propriedadeAgrupadora]) {
 
                 var valorNC = 0;
-                if (listaAgrupada[j].Conforme == 'C') {
-                    valorNC++;
-                    valorNCTotal++;
-                }
+                if (item.NC > '0') {
+                    valorNC += parseInt(item.NC);
+                    valorNCTotal += valorNC;
 
-                listaObjTarefa.push([{ name: listaAgrupada[j].Tarefa, nc: valorNC, color:'#f8cc9d' }]);
-                i += j;
+                    var tarefasRepetidas = listaObjTarefa.filter(function (o, i) {
+                        if (o[0].name == item[propriedadeAgrupada])
+                            return o[0];
+                    });
+
+                    if (tarefasRepetidas[0] != undefined && tarefasRepetidas.length > 0) {
+                        tarefasRepetidas[0][0].nc += valorNC;
+                    } else {
+                        listaObjTarefa.push([{ name: item[propriedadeAgrupada], nc: valorNC, color: '#f8cc9d' }]);
+                    }
+
+                }
             }
-        } 
+        }
+
+        ordenarListaNC(listaObjTarefa, 'nc', 0);
 
         listaFormatada.push({
-            name: listaAgrupada[0].Monitoramento, totalNc: valorNCTotal, color: '#f08513', Tarefa: listaObjTarefa });
+            name: listaMonitoramentoNames[i], totalNc: valorNCTotal, color: '#f08513', tarefa: listaObjTarefa
+        });
 
     }
+
+    ordenarListaNC(listaFormatada, 'totalNc', null);
 
     var listaFinal = [];
     listaFormatada.forEach(function (o, i) {
 
         listaFinal.push({ name: o.name, y: o.totalNc, color: o.color });
 
-        for (var j = 0; j < o.Tarefa.length; j++) {
-            listaFinal.push({ name: o.Tarefa[j][0].name.substring(0,10), y: o.Tarefa[j][0].nc, color: o.Tarefa[j][0].color });
+        for (var j = 0; j < o.tarefa.length; j++) {
+            listaFinal.push({ name: o.tarefa[j][0].name.substring(0, 10), y: o.tarefa[j][0].nc, color: o.tarefa[j][0].color });
         }
 
     });
+
+    return listaFinal;
+}
+
+function montaGraficos(data) {
+
+    var listaFinal = formataListaObj(data);
 
     Highcharts.chart('container1', {
         chart: {
@@ -488,15 +555,134 @@ function montaGraficos(data) {
             data: listaFinal
         }]
     });
+}
+
+function montaGraficosUnidade(data) {
+
+    var listaAgrupadaMonitoramento = agrupaPor(data, "monitoramento");
+
+    var listaMonitoramentoNames = listaAgrupadaMonitoramento.map(function (o, i) {
+        return o.monitoramento;
+    });
+
+    var listaFinal = formataListaObj(data, 'monitoramento', 'tarefa', listaMonitoramentoNames);
+
+    var listaUnidades = data.map(function (o, i) {
+        return o.Unidade;
+    });
+
+    Highcharts.chart('container1Unidade', {
+        chart: {
+            reflow: true,
+            type: 'column'
+        },
+        title: {
+            text: 'Desvios - Total por Unidade'
+        },
+        subtitle: {
+            text: 'Unidade:' + listaUnidades.filter((x, i, a) => a.indexOf(x) == i)
+        },
+        xAxis: {
+            categories: listaFinal.map(function (i, o) { return i.name; })
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: ''
+            }
+        },
+        series: [{
+            data: listaFinal,
+            name: 'quantidade nc',
+            showInLegend: false
+        }]
+    });
+
+    var listaAgrupadaSetor = agrupaPor(data, "CentroCusto");
+
+    var listaSetorNames = listaAgrupadaSetor.map(function (o, i) {
+        return o.CentroCusto;
+    });
+
+    var conformidade = [];
+    var naoConformidade = [];
+    var totalColeta = [];
+
+    for (var j = 0; j < listaSetorNames.length; j++) {
+        var totalNC = 0;
+        var totalC = 0;
+
+        for (var i = 0; i < data.length; i++) {
+
+            if (data[i].CentroCusto == listaSetorNames[j]) {
+                if (data[i].C > 0) {
+                    totalC++;
+                } else if (data[i].NC > 0) {
+                    totalNC++;
+                }
+            }
+
+            if (i == data.length - 1) {
+
+                conformidade.push({ name: listaSetorNames[j], y: totalC, color: '#B5F599' });
+                naoConformidade.push({ name: listaSetorNames[j], y: totalNC, color: '#F07573' });
+                totalColeta.push({ name: listaSetorNames[j], y: totalNC + totalC, color: '#070D0F' });
+            }
+        }
+    }
+
+    var listaConformeAgrupada = [];
+    ordenarListaNC(naoConformidade, 'y', null);
+    ordenarListaNC(totalColeta, 'y', null);
+
+    for (var i = 0; i < naoConformidade.length; i++) {
+        for (var j = 0; j < conformidade.length; j++) {
+            if (naoConformidade[i].name == conformidade[j].name)
+                listaConformeAgrupada.push(conformidade[j]);
+        }
+    }
 
 
+    Highcharts.chart('container2Unidade', {
+        chart: {
+            reflow: true,
+            type: 'column'
+        },
+        title: {
+            text: 'Auditorias por Setor'
+        },
+        xAxis: {
+            categories: conformidade.map(function (i, o) { return i.name; })
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Total'
+            }
+        },
+        series: [{
+            name: 'Comportamento Seguro',
+            data: listaConformeAgrupada,
+            color: '#B5F599'
+        }, {
+            name: 'Total Desvios',
+            data: naoConformidade,
+            color: '#F07573'
+        },
+        {
+            type: 'spline',
+            name: 'total auditorias',
+            data: totalColeta,
+            color: '#070D0F'
+        }]
+    });
 }
 
 function montaListaSemanas(data) {
 
     var semanas = [];
     var semanasName = [];
-    var colunasRemover = ["Seguro", "Inseguro","total", "C", "NC", "NA", "pessoas observadas","Auditor Cabecalho" ,"GrupoEmpresa", "Regional", "Secao", "GrupoEmpresa", "Unidade", "Auditor", "Indicador", "Monitoramento", "Tarefa", "Conforme", "Cargo", "ValorDescricaoTarefa", "ClusterName", "HeaderFieldListL1", "HeaderFieldListL2", "HeaderFieldListL3"];
+    var colunasRemover = ["Seguro", "Inseguro", "total", "C", "NC", "NA", "pessoas observadas", "Auditor Cabecalho", "GrupoEmpresa", "Regional", "Secao", "GrupoEmpresa", "Unidade", "Auditor", "Indicador", "Monitoramento", "Tarefa", "Conforme", "Cargo", "ValorDescricaoTarefa", "ClusterName", "HeaderFieldListL1", "HeaderFieldListL2", "HeaderFieldListL3"];
 
     for (var i = 0; i < data.length; i++) {
         for (var j = 0; j < colunasRemover.length; j++) {
@@ -516,18 +702,69 @@ function montaListaSemanas(data) {
     return lista;
 }
 
-function enviarFiltro() {
+function montaGraficosDesviosPorSetor(data) {
 
-    //verificar o nivel para montar os items na tela
-    let nivelVisao;
-
-    $("#pills-tab li").each(function (i, o) {
-        if ($(o).hasClass('active'))
-            nivelVisao = $(o).children().attr('val');
+    var listaUnidades = data.map(function (o, i) {
+        return o.Unidade;
     });
+
+    var listaAgrupadaMonitoramento = agrupaPor(data, "monitoramento");
+
+    var listaMonitoramentoNames = listaAgrupadaMonitoramento.map(function (o, i) {
+        return o.monitoramento;
+    });
+
+
+    var listaFinalSetor = formataListaObj(data, 'monitoramento', 'tarefa', listaMonitoramentoNames);
+
+    Highcharts.chart('container3Unidade', {
+        chart: {
+            reflow: true,
+            type: 'column'
+        },
+        title: {
+            text: 'Desvios - Total por Setor'
+        },
+        subtitle: {
+            text: 'Unidade:' + listaUnidades.filter((x, i, a) => a.indexOf(x) == i)
+        },
+        xAxis: {
+            categories: listaFinalSetor.map(function (i, o) { return i.name; })
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'nc'
+            }
+        },
+        series: [{
+            showInLegend: false,
+            data: listaFinalSetor
+        }]
+    });
+}
+
+function enviarFiltro(nivelVisao) {
+    if (!nivelVisao) {
+        $("#pills-tab li").each(function (i, o) {
+            if ($(o).hasClass('active'))
+                nivelVisao = $(o).children().attr('val');
+        });
+    }
+
+    $('#message').html('');
+    $("#divVisaoGeral").addClass('hidden');
+    $("#divVisaoUnidade").addClass('hidden');
+    $("#divAcompanhamento").addClass('hidden');
+
+    openLoader('Aguarde...');
 
     switch (nivelVisao) {
         case '1':
+
+            $('#message').html("<div class='alert alert-warning'>Tela em construção.</div>");
+            closeLoader();
+            return;
 
             $.ajax({
                 url: urlGet,
@@ -545,29 +782,102 @@ function enviarFiltro() {
                     data[i]["HeaderFieldListL3"] = JSON.parse(data[i]["HeaderFieldListL3"]);
                 }
 
-                montaCards(data);
+                montaCardsVisaoGeral(data);
                 montaGraficosPizza(data);
                 montaGraficos(data);
 
                 closeLoader();
+                $("#divVisaoGeral").removeClass('hidden');
+            }).fail(function (jqXHR, textStatus, msg) {
+                console.log(msg);
+                closeLoader();
+                $("#divVisaoGeral").removeClass('hidden');
+            });
+            break;
+        case '2':
+            $.ajax({
+                url: urlGetUnidade,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            }).done(function (data) {
+
+                montaCardsVisaoUnidade(data);
+                montaGraficosPizza(data);
+                montaGraficosUnidade(data);
+
+                var colunas = [
+                    { title: "Grupo de Empresa", mData: "grupoempresa" },
+                    { title: "Regional", mData: "regional" },
+                    { title: "Unidade", mData: "Unidade" },
+                    { title: "Setor", mData: "CentroCusto" },
+                    { title: "Auditor Cabecalho", mData: "Auditor Cabecalho" },
+                    { title: "Data", mData: "Data" },
+                    { title: "Tipo de Tarefa Realizada", mData: "Tipo de Tarefa Realizada" },
+                    { title: "pessoas observadas", mData: "pessoas observadas" },
+                    { title: "Avaliação da Atividade", mData: "Avaliação da Atividade" },
+                    { title: "Desvio", mData: "tarefa" },
+                    { title: "Descrição do Desvio", mData: "valordescricaotarefa" }
+
+                ];
+
+                var initDatatable = function () {
+
+                    $('#loading').hide();
+                    setTimeout(function (e) {
+                        var oTable = $('#tblVisaoUnidade').dataTable();
+                        if (oTable.length > 0) {
+                            oTable.fnAdjustColumnSizing();
+                            tableEdit = $('.dataTable').DataTable();
+                        }
+                    }, 100);
+                };
+
+                var table = datatableGRT.Inicializar({
+                    idTabela: "tblVisaoUnidade",
+                    listaDeDados: data,
+                    colunaDosDados: colunas,
+                    numeroLinhasNaTabela: 25,
+                    aplicarResponsividade: true,
+                    tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                    loadingRecords: true,
+                    destroy: true,
+                    info: true,
+                    initComplete: initDatatable
+                });
+
+                closeLoader();
+                $("#divVisaoUnidade").removeClass('hidden');
+            }).fail(function (jqXHR, textStatus, msg) {
+                console.log(msg);
+                //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                closeLoader();
+                $("#divVisaoUnidade").removeClass('hidden');
+            });
+
+            $.ajax({
+                url: urlGetUnidadePorSetor,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            }).done(function (retorno) {
+
+                montaGraficosDesviosPorSetor(retorno);
+
             }).fail(function (jqXHR, textStatus, msg) {
                 console.log(msg);
                 //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
                 closeLoader();
             });
 
-            $("#divTableUnidade").addClass('hidden');
-            $("#divAcompanhamento").addClass('hidden');
-            $("#conteudoGraficos").removeClass('hidden');
-            $("#cardsVisaoGeralUnidade").removeClass('hidden');
-            break;
-        case '2':
             $("#divTableUnidade").removeClass('hidden');
-            $("#divAcompanhamento").addClass('hidden');
-            $("#conteudoGraficos").removeClass('hidden');
-            $("#cardsVisaoGeralUnidade").removeClass('hidden');
 
-            $('#tblVisaoUnidade').DataTable();
             $('.dataTables_length').addClass('bs-select');
             //fazer a requisição por unidade
             break;
@@ -585,7 +895,6 @@ function enviarFiltro() {
                 $("#collapseFiltrosReference").collapse('hide');
                 if (data != null && data.length > 0) {
 
-                    openLoader('Aguarde...');
                     globalTotalRealizado = 0;
                     let acompanhamentoObj = JSON.parse(JSON.stringify(data));
                     var listaDeSemanas = [];
@@ -594,7 +903,7 @@ function enviarFiltro() {
 
                     var colunas = [
                         { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
-                        { title: "Regional", mData: "GrupoEmpresa" },
+                        { title: "Regional", mData: "Regional" },
                         { title: "Unidade", mData: "Unidade" },
                         { title: "Auditor", mData: "Auditor Cabecalho" },
                         { title: "Total", mData: "total" },
@@ -630,12 +939,10 @@ function enviarFiltro() {
                             }
                         }
                     ];
-                    
+
                     listaDeSemanas.filter((o, i) => colunas.splice(4, 0, o));
 
-                    $("#tblAcompanhamento").removeClass('hidden');
                     var initDatatable = function () {
-
                         $('#loading').hide();
                         setTimeout(function (e) {
                             var oTable = $('#tblAcompanhamento').dataTable();
@@ -688,23 +995,18 @@ function enviarFiltro() {
                     });
 
                     montaCardsAcompanhamento(acompanhamentoObj, listaDeSemanas.length);
-                    $("#cardsAcompanhamento").show();
-                    $('#message').html('');
+                    $("#divAcompanhamento").removeClass('hidden');
                 } else {
+                    $("#divAcompanhamento").addClass('hidden');
                     $('#message').html("<div class='alert alert-info'>  Não existem dados no período selecionado.  </div>");
-                    $("#tblAcompanhamento").addClass('hidden');
-                    $("#cardsAcompanhamento").hide();
                 }
                 closeLoader();
             }).fail(function (jqXHR, textStatus, msg) {
                 console.log(msg);
                 closeLoader();
+                $("#divAcompanhamento").removeClass('hidden');
             });
 
-            $("#divTableUnidade").addClass('hidden');
-            $("#divAcompanhamento").removeClass('hidden');
-            $("#conteudoGraficos").addClass('hidden');
-            $("#cardsVisaoGeralUnidade").addClass('hidden');
             break;
         default:
             break;
@@ -713,5 +1015,6 @@ function enviarFiltro() {
 
 $("#visaoGeral, #visaoUnidade, #acompanhamentoAuditoria").on('click', function () {
     //chama o enviar para buscar pelo nivel selecionado
-    setTimeout(function () { enviarFiltro(); }, 1000);
+    var nivelVisao = $(this).attr('val');
+    enviarFiltro(nivelVisao);
 });

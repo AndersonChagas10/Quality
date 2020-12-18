@@ -2418,6 +2418,7 @@
     <Content Include="Views\RelatoriosSgq\_FilterReportsHorizontal.cshtml" />
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamental.cshtml" />
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalAcompanhamento.cshtml" />
+    <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalVisaoUnidade.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
