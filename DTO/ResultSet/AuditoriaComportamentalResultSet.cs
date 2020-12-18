@@ -542,12 +542,9 @@ namespace DTO.ResultSet
                 whereCluster = $"AND PC.Id in ({clusterId})";
 
             return $@"
-           --DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
-            --DECLARE @DATAFINAL   DATETIME =  '{ form.endDate.ToString("yyyy-MM-dd")} {" 23:59:00"}'
+            DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+            DECLARE @DATAFINAL   DATETIME =  '{ form.endDate.ToString("yyyy-MM-dd")} {" 23:59:00"}'
              
-            DECLARE @DATAINICIAL DATETIME = '2020-05-04'
-            DECLARE @DATAFINAL   DATETIME = '2020-05-05'
-
             SELECT 
 	            id
 	            ,ParFrequency_Id
