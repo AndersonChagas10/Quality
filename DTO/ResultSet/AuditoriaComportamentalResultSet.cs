@@ -844,7 +844,15 @@ namespace DTO.ResultSet
                + Len('""Tipo de Tarefa Realizada"":""'),
                Charindex('""', Substring(HF.HeaderFieldList1,
                Charindex('""Tipo de Tarefa Realizada""' ,HF.HeaderFieldList1)+ Len('""Tipo de Tarefa Realizada"":""'), 
-                Len( HF.HeaderFieldList1))) - 1), '') AS[Tipo de Tarefa Realizada]
+                Len( HF.HeaderFieldList1))) - 1), '') AS[Tipo de Tarefa Realizada],
+             Iif(Charindex('""Data da Auditoria""', HF.HeaderFieldList1) > 0, 
+                           Substring(HF.HeaderFieldList1,
+                           Charindex('""Data da Auditoria""', HF.HeaderFieldList1)
+                           + Len('""Data da Auditoria"":""'), Charindex('""',
+                           Substring(HF.HeaderFieldList1,
+                           Charindex('""Data da Auditoria""', HF.HeaderFieldList1)
+                           + Len('""Data da Auditoria"":""'),
+                           Len(HF.HeaderFieldList1))) - 1), '') AS[Data Auditoria]
             INTO #Coletas
             FROM #CollectionLevel2 C2 (NOLOCK)
             INNER JOIN ParCompany UN with (NOLOCK)
@@ -934,7 +942,7 @@ Begin
 			SET @SQLStrSum = LEFT(@SQLStrSum,len(@SQLStrSum)-1)
 			SET @SQLStrTotal = LEFT(@SQLStrTotal,len(@SQLStrTotal)-1) + ') as total'
 
-            SET @SQLStr = 'Select indicador,secao, grupoempresa,Data, Unidade,collectionl2_id,monitoramento, tarefa, conforme, valordescricaotarefa, cargo, CentroCusto,regional, [Auditor Cabecalho],SUM(CAST(IIF(LEN([pessoas observadas]) > 0, [pessoas observadas], 0) as decimal)) as [pessoas observadas], [Avaliação da Atividade], [Pessoa avaliada],[Tipo de Tarefa Realizada],'
+            SET @SQLStr = 'Select indicador,secao, grupoempresa,Data, Unidade,collectionl2_id,monitoramento, tarefa, conforme, valordescricaotarefa, cargo, CentroCusto,regional, IIF([Data da Auditoria] <> '''', CONCAT(SUBSTRING([Data da Auditoria], 9,2),''/'',SUBSTRING([Data da Auditoria], 6,2 ),''/'', SUBSTRING([Data da Auditoria], 1,4 )),'''') as [Data da Auditoria] , [Auditor Cabecalho],SUM(CAST(IIF(LEN([pessoas observadas]) > 0, [pessoas observadas], 0) as decimal)) as [pessoas observadas], [Avaliação da Atividade], [Pessoa avaliada],[Tipo de Tarefa Realizada],'
             + 'SUM(IIF(Conforme = ''C'',  1 * numerodecoletas, 0)) as C,'
             + 'SUM(IIF(Conforme = ''NC'', 1 * numerodecoletas, 0)) as NC,'
             + 'SUM(IIF(Conforme = ''NA'', 1 * numerodecoletas, 0)) as NA,'
@@ -942,6 +950,7 @@ Begin
             + ', ' + @SQLStrTotal + ' FROM ('
             + 'SELECT  Indicador, ClusterName,centroCusto,Data,Unidade,collectionl2_id, Auditor,Secao,GrupoEmpresa,Monitoramento,totalColeta as numerodecoletas,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional, '
             + 'IIF(CHARINDEX(''""Auditor""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Auditor""'', HeaderFieldListL1)+LEN(''""Auditor"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Auditor""'', HeaderFieldListL1)+LEN(''""Auditor"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Auditor Cabecalho],'
+            + 'IIF(CHARINDEX(''""Data da Auditoria""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Data da Auditoria""'', HeaderFieldListL1)+LEN(''""Data da Auditoria"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Data da Auditoria""'', HeaderFieldListL1)+LEN(''""Data da Auditoria"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Data da Auditoria],'
             + 'IIF(CHARINDEX(''""Avaliação da Atividade""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Avaliação da Atividade""'', HeaderFieldListL1)+LEN(''""Avaliação da Atividade"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Avaliação da Atividade""'', HeaderFieldListL1)+LEN(''""Avaliação da Atividade"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Avaliação da Atividade],'
             + 'IIF(CHARINDEX(''pessoas observadas""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''pessoas observadas""'', HeaderFieldListL1)+LEN(''pessoas observadas"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''pessoas observadas""'', HeaderFieldListL1)+LEN(''pessoas observadas"":""''),LEN(HeaderFieldListL1)))-1), '''') as [pessoas observadas],'
             + 'IIF(CHARINDEX(''""Pessoa avaliada""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Pessoa avaliada""'', HeaderFieldListL1)+LEN(''""Pessoa avaliada"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Pessoa avaliada""'', HeaderFieldListL1)+LEN(''""Pessoa avaliada"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Pessoa avaliada],'
@@ -956,7 +965,7 @@ Begin
 
             + '         ) sq PIVOT (sum(NUMERODECOLETAS) FOR DataColeta IN ('
             + @SQLStr + ')) AS pt ) AS ValoresSemAgrupamento'
-            + ' group by Indicador,	Data, collectionl2_id,[Avaliação da Atividade],[Pessoa avaliada],[Tipo de Tarefa Realizada],secao, grupoempresa, monitoramento, tarefa, conforme, valordescricaotarefa, cargo,centroCusto, regional,[Auditor Cabecalho],Unidade'
+            + ' group by Indicador,	Data, collectionl2_id,[Avaliação da Atividade],[Pessoa avaliada],[Tipo de Tarefa Realizada],secao, grupoempresa, monitoramento, tarefa, conforme, valordescricaotarefa, cargo,centroCusto, regional,[Auditor Cabecalho],[Data da Auditoria],Unidade'
             + ' ORDER BY 1'
 
             PRINT @SQLStr

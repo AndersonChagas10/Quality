@@ -186,7 +186,7 @@ function montaCardsVisaoUnidade(listaAuditoria) {
 
     $("#divVisaoUnidade #labelTotalAuditorias").text(listaAuditoria.filter((o, i) => o.total).length);
 
-    var totalAuditores = listaAuditoria.filter((o, i) => o['Auditor Cabecalho']).length;
+    var totalAuditores = [...new Set(listaAuditoria.map(item => item['Auditor Cabecalho']))].length;
     $("#divVisaoUnidade #labelTotalAuditores").text(totalAuditores);
 
     var totalTarefasConforme = listaAuditoria.filter((o, i) => o['C'] > '0').length;
@@ -522,7 +522,7 @@ function formataListaObj(data, propriedadeAgrupadora, propriedadeAgrupada, lista
         listaFinal.push({ name: o.name, y: o.totalNc, color: o.color });
 
         for (var j = 0; j < o.tarefa.length; j++) {
-            listaFinal.push({ name: o.tarefa[j][0].name.substring(0, 10), y: o.tarefa[j][0].nc, color: o.tarefa[j][0].color });
+            listaFinal.push({ name: o.tarefa[j][0].name, y: o.tarefa[j][0].nc, color: o.tarefa[j][0].color });
         }
 
     });
@@ -592,6 +592,13 @@ function montaGraficosUnidade(data) {
             }
         },
         series: [{
+            dataLabels: {
+                inside: true,
+                enabled: true,
+                style: {
+                    color: 'black'
+                }
+            },
             data: listaFinal,
             name: 'quantidade nc',
             showInLegend: false
@@ -661,10 +668,24 @@ function montaGraficosUnidade(data) {
             }
         },
         series: [{
+            dataLabels: {
+                inside: true,
+                enabled: true,
+                style: {
+                    color: 'black'
+                }
+            },
             name: 'Comportamento Seguro',
             data: listaConformeAgrupada,
             color: '#B5F599'
         }, {
+            dataLabels: {
+                inside: true,
+                enabled: true,
+                style: {
+                    color: 'black'
+                }
+            },
             name: 'Total Desvios',
             data: naoConformidade,
             color: '#F07573'
@@ -738,6 +759,13 @@ function montaGraficosDesviosPorSetor(data) {
             }
         },
         series: [{
+            dataLabels: {
+                inside: true,
+                enabled: true,
+                style: {
+                    color: 'black'
+                }
+            },
             showInLegend: false,
             data: listaFinalSetor
         }]
@@ -804,59 +832,71 @@ function enviarFiltro(nivelVisao) {
                 beforeSend: function () {
                 }
             }).done(function (data) {
+                if (data != null && data.length > 0) {
+                    montaCardsVisaoUnidade(data);
+                    montaGraficosPizza(data);
+                    montaGraficosUnidade(data);
 
-                montaCardsVisaoUnidade(data);
-                montaGraficosPizza(data);
-                montaGraficosUnidade(data);
+                    var colunas = [
+                        { title: "Grupo de Empresa", mData: "grupoempresa" },
+                        { title: "Regional", mData: "regional" },
+                        { title: "Unidade", mData: "Unidade" },
+                        { title: "Setor", mData: "CentroCusto" },
+                        { title: "Auditor", mData: "Auditor Cabecalho" },
+                        { title: "Data", mData: "Data da Auditoria"},
+                        { title: "Pessoa avaliada", mData: "Pessoa avaliada" },
+                        { title: "Tipo de Tarefa Realizada", mData: "Tipo de Tarefa Realizada" },
+                        { title: "Nº pessoas observadas", mData: "pessoas observadas" },
+                        { title: "Avaliação da Atividade", mData: "Avaliação da Atividade" },
+                        { title: "Categoria", mData: "monitoramento" },
+                        { title: "Subcategoria", mData: "tarefa" },
+                        { title: "Descrição", mData: "valordescricaotarefa" }
+                    ];
 
-                var colunas = [
-                    { title: "Grupo de Empresa", mData: "grupoempresa" },
-                    { title: "Regional", mData: "regional" },
-                    { title: "Unidade", mData: "Unidade" },
-                    { title: "Setor", mData: "CentroCusto" },
-                    { title: "Auditor Cabecalho", mData: "Auditor Cabecalho" },
-                    { title: "Data", mData: "Data" },
-                    { title: "Tipo de Tarefa Realizada", mData: "Tipo de Tarefa Realizada" },
-                    { title: "pessoas observadas", mData: "pessoas observadas" },
-                    { title: "Avaliação da Atividade", mData: "Avaliação da Atividade" },
-                    { title: "Desvio", mData: "tarefa" },
-                    { title: "Descrição do Desvio", mData: "valordescricaotarefa" }
+                    var initDatatable = null;
+                    initDatatable = function () {
 
-                ];
+                        $('#loading').hide();
+                        setTimeout(function (e) {
+                            var oTable = $('#tblVisaoUnidade').dataTable();
+                            if (oTable.length > 0) {
+                                oTable.fnAdjustColumnSizing();
+                                tableEdit = $('.dataTable').DataTable();
+                            }
+                        }, 100);
+                    };
 
-                var initDatatable = function () {
-
-                    $('#loading').hide();
-                    setTimeout(function (e) {
-                        var oTable = $('#tblVisaoUnidade').dataTable();
-                        if (oTable.length > 0) {
-                            oTable.fnAdjustColumnSizing();
-                            tableEdit = $('.dataTable').DataTable();
+                    var table = null;
+                    table = datatableGRT.Inicializar({
+                        idTabela: "tblVisaoUnidade",
+                        listaDeDados: data,
+                        colunaDosDados: colunas,
+                        numeroLinhasNaTabela: 25,
+                        aplicarResponsividade: true,
+                        tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                        loadingRecords: true,
+                        destroy: true,
+                        info: true,
+                        initComplete: initDatatable,
+                        createdRow: function (row, data, index) {
+                            return row;
                         }
-                    }, 100);
-                };
+                    });
 
-                var table = datatableGRT.Inicializar({
-                    idTabela: "tblVisaoUnidade",
-                    listaDeDados: data,
-                    colunaDosDados: colunas,
-                    numeroLinhasNaTabela: 25,
-                    aplicarResponsividade: true,
-                    tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
-                    loadingRecords: true,
-                    destroy: true,
-                    info: true,
-                    initComplete: initDatatable
+                    closeLoader();
+                    $("#divVisaoUnidade").removeClass('hidden');
+                } else {
+                    closeLoader();
+                    $("#divVisaoUnidade").addClass('hidden');
+                    $('#message').html("<div class='alert alert-info'>  Não existem dados no período selecionado.  </div>");
+                }
+                   
+                }).fail(function (jqXHR, textStatus, msg) {
+                    console.log(msg);
+                    //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
+                    closeLoader();
+                    $("#divVisaoUnidade").removeClass('hidden');
                 });
-
-                closeLoader();
-                $("#divVisaoUnidade").removeClass('hidden');
-            }).fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
-                //preencheRetornoGrafico("Ocorreu um erro ao buscar os dados. Erro: " + msg);
-                closeLoader();
-                $("#divVisaoUnidade").removeClass('hidden');
-            });
 
             $.ajax({
                 url: urlGetUnidadePorSetor,
@@ -879,138 +919,139 @@ function enviarFiltro(nivelVisao) {
             $("#divTableUnidade").removeClass('hidden');
 
             $('.dataTables_length').addClass('bs-select');
-            //fazer a requisição por unidade
-            break;
+ 
+    //fazer a requisição por unidade
+    break;
         case '3':
 
-            $.ajax({
-                url: urlGetAcompanhamento,
-                type: 'post',
-                data: JSON.stringify(objFiltro),
-                dataType: "JSON",
-                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
-                beforeSend: function () {
+    $.ajax({
+        url: urlGetAcompanhamento,
+        type: 'post',
+        data: JSON.stringify(objFiltro),
+        dataType: "JSON",
+        contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+        beforeSend: function () {
+        }
+    }).done(function (data) {
+        $("#collapseFiltrosReference").collapse('hide');
+        if (data != null && data.length > 0) {
+
+            globalTotalRealizado = 0;
+            let acompanhamentoObj = JSON.parse(JSON.stringify(data));
+            var listaDeSemanas = [];
+
+            listaDeSemanas = montaListaSemanas(data);
+
+            var colunas = [
+                { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
+                { title: "Regional", mData: "Regional" },
+                { title: "Unidade", mData: "Unidade" },
+                { title: "Auditor", mData: "Auditor Cabecalho" },
+                { title: "Total", mData: "total" },
+                {
+                    title: "% Realizado", mData: null, mRender: function (acompanhamentoObj, type, full) {
+
+                        var meta = 2;
+                        var total = 0;
+
+                        for (var i = 0; i < listaDeSemanas.length; i++) {
+
+                            total = parseInt(total)
+                                + parseInt(acompanhamentoObj[listaDeSemanas[i].title] > meta ? meta : acompanhamentoObj[listaDeSemanas[i].title]);
+                        }
+
+                        var porcentagemTotal = total / (meta * listaDeSemanas.length) * 100;
+
+                        return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
+                    }
+                },
+                {
+                    title: "% Seguro", mData: null, mRender: function (acompanhamentoObj, type, full) {
+                        var porcentagemTotal = acompanhamentoObj.C / acompanhamentoObj.total * 100;
+
+                        return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
+                    }
+                },
+                {
+                    title: "% Inseguro", mData: null, mRender: function (acompanhamentoObj, type, full) {
+                        var porcentagemTotal = acompanhamentoObj.NC / acompanhamentoObj.total * 100;
+
+                        return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
+                    }
                 }
-            }).done(function (data) {
-                $("#collapseFiltrosReference").collapse('hide');
-                if (data != null && data.length > 0) {
+            ];
 
-                    globalTotalRealizado = 0;
-                    let acompanhamentoObj = JSON.parse(JSON.stringify(data));
-                    var listaDeSemanas = [];
+            listaDeSemanas.filter((o, i) => colunas.splice(4, 0, o));
 
-                    listaDeSemanas = montaListaSemanas(data);
+            var initDatatable = function () {
+                $('#loading').hide();
+                setTimeout(function (e) {
+                    var oTable = $('#tblAcompanhamento').dataTable();
+                    if (oTable.length > 0) {
+                        oTable.fnAdjustColumnSizing();
+                        tableEdit = $('.dataTable').DataTable();
+                    }
+                }, 100);
+            };
 
-                    var colunas = [
-                        { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
-                        { title: "Regional", mData: "Regional" },
-                        { title: "Unidade", mData: "Unidade" },
-                        { title: "Auditor", mData: "Auditor Cabecalho" },
-                        { title: "Total", mData: "total" },
-                        {
-                            title: "% Realizado", mData: null, mRender: function (acompanhamentoObj, type, full) {
+            var table = datatableGRT.Inicializar({
+                idTabela: "tblAcompanhamento",
+                listaDeDados: acompanhamentoObj,
+                colunaDosDados: colunas,
+                numeroLinhasNaTabela: 25,
+                aplicarResponsividade: true,
+                tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                initComplete: initDatatable,
+                createdRow: function (row, data, index) {
+                    for (var i = 0; i < row.cells.length; i++) {
+                        if (i == row.cells.length - 3 && parseFloat(row.cells[i].innerHTML) <= 99) {
+                            $('td:eq(' + i + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold"); //vermelho
+                            globalTotalRealizado += parseFloat(row.cells[i].innerHTML);
+                        } else if (i == row.cells.length - 3 && parseFloat(row.cells[i].innerHTML) == 100) {
+                            $('td:eq(' + i + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold"); //verde
+                            globalTotalRealizado += parseFloat(row.cells[i].innerHTML);
+                        }
 
-                                var meta = 2;
-                                var total = 0;
+                        //regra para pintar as duas ultimas colunas de meta de porcentagem 30 por 70
+                        if (i == row.cells.length - 3) {
 
-                                for (var i = 0; i < listaDeSemanas.length; i++) {
+                            var maximo = parseFloat(row.cells[i + 2].innerHTML);
+                            var minimo = parseFloat(row.cells[i + 1].innerHTML);
 
-                                    total = parseInt(total)
-                                        + parseInt(acompanhamentoObj[listaDeSemanas[i].title] > meta ? meta : acompanhamentoObj[listaDeSemanas[i].title]);
-                                }
-
-                                var porcentagemTotal = total / (meta * listaDeSemanas.length) * 100;
-
-                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
-                            }
-                        },
-                        {
-                            title: "% Seguro", mData: null, mRender: function (acompanhamentoObj, type, full) {
-                                var porcentagemTotal = acompanhamentoObj.C / acompanhamentoObj.total * 100;
-
-                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
-                            }
-                        },
-                        {
-                            title: "% Inseguro", mData: null, mRender: function (acompanhamentoObj, type, full) {
-                                var porcentagemTotal = acompanhamentoObj.NC / acompanhamentoObj.total * 100;
-
-                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
+                            if (minimo <= 30 && maximo >= 70) {
+                                //verde
+                                $('td:eq(' + (i + 2) + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold");
+                                $('td:eq(' + (i + 1) + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold");
+                            } else {
+                                //vermelho
+                                $('td:eq(' + (i + 2) + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold");
+                                $('td:eq(' + (i + 1) + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold");
                             }
                         }
-                    ];
-
-                    listaDeSemanas.filter((o, i) => colunas.splice(4, 0, o));
-
-                    var initDatatable = function () {
-                        $('#loading').hide();
-                        setTimeout(function (e) {
-                            var oTable = $('#tblAcompanhamento').dataTable();
-                            if (oTable.length > 0) {
-                                oTable.fnAdjustColumnSizing();
-                                tableEdit = $('.dataTable').DataTable();
-                            }
-                        }, 100);
-                    };
-
-                    var table = datatableGRT.Inicializar({
-                        idTabela: "tblAcompanhamento",
-                        listaDeDados: acompanhamentoObj,
-                        colunaDosDados: colunas,
-                        numeroLinhasNaTabela: 25,
-                        aplicarResponsividade: true,
-                        tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
-                        loadingRecords: true,
-                        destroy: true,
-                        info: true,
-                        initComplete: initDatatable,
-                        createdRow: function (row, data, index) {
-                            for (var i = 0; i < row.cells.length; i++) {
-                                if (i == row.cells.length - 3 && parseFloat(row.cells[i].innerHTML) <= 99) {
-                                    $('td:eq(' + i + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold"); //vermelho
-                                    globalTotalRealizado += parseFloat(row.cells[i].innerHTML);
-                                } else if (i == row.cells.length - 3 && parseFloat(row.cells[i].innerHTML) == 100) {
-                                    $('td:eq(' + i + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold"); //verde
-                                    globalTotalRealizado += parseFloat(row.cells[i].innerHTML);
-                                }
-
-                                //regra para pintar as duas ultimas colunas de meta de porcentagem 30 por 70
-                                if (i == row.cells.length - 3) {
-
-                                    var maximo = parseFloat(row.cells[i + 2].innerHTML);
-                                    var minimo = parseFloat(row.cells[i + 1].innerHTML);
-
-                                    if (minimo <= 30 && maximo >= 70) {
-                                        //verde
-                                        $('td:eq(' + (i + 2) + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold");
-                                        $('td:eq(' + (i + 1) + ')', row).css("background-color", "#abebae").css("color", "black").css("font-weight", "bold");
-                                    } else {
-                                        //vermelho
-                                        $('td:eq(' + (i + 2) + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold");
-                                        $('td:eq(' + (i + 1) + ')', row).css("background-color", "#e37f7f").css("color", "white").css("font-weight", "bold");
-                                    }
-                                }
-                            }
-                        }
-                    });
-
-                    montaCardsAcompanhamento(acompanhamentoObj, listaDeSemanas.length);
-                    $("#divAcompanhamento").removeClass('hidden');
-                } else {
-                    $("#divAcompanhamento").addClass('hidden');
-                    $('#message').html("<div class='alert alert-info'>  Não existem dados no período selecionado.  </div>");
+                    }
                 }
-                closeLoader();
-            }).fail(function (jqXHR, textStatus, msg) {
-                console.log(msg);
-                closeLoader();
-                $("#divAcompanhamento").removeClass('hidden');
             });
 
-            break;
+            montaCardsAcompanhamento(acompanhamentoObj, listaDeSemanas.length);
+            $("#divAcompanhamento").removeClass('hidden');
+        } else {
+            $("#divAcompanhamento").addClass('hidden');
+            $('#message').html("<div class='alert alert-info'>  Não existem dados no período selecionado.  </div>");
+        }
+        closeLoader();
+    }).fail(function (jqXHR, textStatus, msg) {
+        console.log(msg);
+        closeLoader();
+        $("#divAcompanhamento").removeClass('hidden');
+    });
+
+    break;
         default:
-            break;
-    }
+    break;
+}
 }
 
 $("#visaoGeral, #visaoUnidade, #acompanhamentoAuditoria").on('click', function () {
