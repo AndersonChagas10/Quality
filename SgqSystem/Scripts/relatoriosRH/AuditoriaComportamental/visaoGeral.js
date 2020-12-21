@@ -767,6 +767,7 @@ function montaGraficosDesviosPorSetor(data) {
                 }
             },
             showInLegend: false,
+            name: 'quantidade nc',
             data: listaFinalSetor
         }]
     });
@@ -842,15 +843,18 @@ function enviarFiltro(nivelVisao) {
                         { title: "Regional", mData: "regional" },
                         { title: "Unidade", mData: "Unidade" },
                         { title: "Setor", mData: "CentroCusto" },
+                        { title: "Atividade", mData: "Atividade" },
                         { title: "Auditor", mData: "Auditor Cabecalho" },
                         { title: "Data", mData: "Data da Auditoria"},
+                        { title: "Hora", mData: "Hora da Auditoria"},
                         { title: "Pessoa avaliada", mData: "Pessoa avaliada" },
                         { title: "Tipo de Tarefa Realizada", mData: "Tipo de Tarefa Realizada" },
                         { title: "Nº pessoas observadas", mData: "pessoas observadas" },
                         { title: "Avaliação da Atividade", mData: "Avaliação da Atividade" },
                         { title: "Categoria", mData: "monitoramento" },
                         { title: "Subcategoria", mData: "tarefa" },
-                        { title: "Descrição", mData: "valordescricaotarefa" }
+                        { title: "Descrição", mData: "valordescricaotarefa" },
+                        { title: "Medidas / Ação tomadas para correção ou incentivo do comportamento", mData: "Medidas / Ação tomadas para correção ou incentivo do comportamento" }
                     ];
 
                     var initDatatable = null;
