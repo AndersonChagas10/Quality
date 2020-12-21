@@ -1757,18 +1757,14 @@ namespace SgqSystem.Controllers.Api.Formulario
                                 		WHEN PVP.ParCompany_Id IS NULL THEN 1
                                 		ELSE 0
                                 	END) AS PVP
-                                --INNER JOIN ParDepartment Secao WITH (NOLOCK) ON (Secao.Id = PVP.ParDepartment_Id OR PVP.ParDepartment_Id IS NULL) AND Secao.Parent_Id IS NOT NULL
-                                --INNER JOIN ParDepartment CentroCusto ON (CentroCusto.Id = Secao.Parent_Id AND CentroCusto.Parent_Id IS NULL) 
-                                INNER JOIN ParCluster PCL WITH (NOLOCK) ON PCL.Id = PVP.ParCluster_Id
-                                INNER JOIN ParClusterGroup PCG WITH (NOLOCK) ON PCG.Id = PCL.ParClusterGroup_Id
-                                INNER JOIN ParCompany PC WITH (NOLOCK) ON (PC.Id = PVP.ParCompany_Id OR PVP.ParCompany_Id IS NULL) --Fixo
-                                --INNER JOIN ParCargo Cargo WITH (NOLOCK) ON (Cargo.Id = PVP.ParCargo_Id OR PVP.ParCargo_Id IS NULL) 
-                                INNER JOIN ParLevel1 PL1 WITH (NOLOCK) ON PL1.Id = PVP.ParLevel1_Id --Fixo
+                                INNER JOIN ParCluster PCL WITH (NOLOCK) ON PCL.Id = PVP.ParCluster_Id and PCL.IsActive = 1
+                                INNER JOIN ParClusterGroup PCG WITH (NOLOCK) ON PCG.Id = PCL.ParClusterGroup_Id and PCG.IsActive = 1
+                                INNER JOIN ParCompany PC WITH (NOLOCK) ON (PC.Id = PVP.ParCompany_Id OR PVP.ParCompany_Id IS NULL) and PC.IsActive = 1
                                 INNER JOIN ParLevel2 PL2 WITH (NOLOCK) ON PL2.Id = PVP.ParLevel2_Id --Fixo
                                 INNER JOIN ParLevel3 PL3 WITH (NOLOCK) ON PL3.Id = PVP.ParLevel3_Id --Fixo
-                                INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = PC.Id
-                                INNER JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id
-                                INNER JOIN ParStructureGroup PSG WITH (NOLOCK) ON PSG.Id = PS.ParStructureGroup_Id
+                                INNER JOIN ParCompanyXStructure PCXS WITH (NOLOCK) ON PCXS.ParCompany_Id = PC.Id and PCXS.Active = 1
+                                INNER JOIN ParStructure PS WITH (NOLOCK) ON PS.Id = PCXS.ParStructure_Id and PS.Active = 1
+                                INNER JOIN ParStructureGroup PSG WITH (NOLOCK) ON PSG.Id = PS.ParStructureGroup_Id and PSG.Active = 1
                                 WHERE 1 = 1
                                 {whereUnidadesUsuario}
                                 AND PCG.Name like '%{search}%'";
