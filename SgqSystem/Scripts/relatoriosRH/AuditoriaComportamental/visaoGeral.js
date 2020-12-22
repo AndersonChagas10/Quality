@@ -1,5 +1,9 @@
 ﻿$(document).ready(function () {
-    $('#visaoGeral').click();
+    //$('#visaoGeral').click();
+    setTimeout(function () {
+        $("#acompanhamentoAuditoria").click();
+    }, 1000);
+
     graficosMocados();
 });
 
