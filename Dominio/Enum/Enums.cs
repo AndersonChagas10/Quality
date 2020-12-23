@@ -13,6 +13,12 @@ namespace Dominio.Enum
             Plan = 1, Do, Check, Action
         }
 
+        public enum ReportType
+        {
+            ItemMenu = 1, ReportXUserSgq, ComponenteGenerico
+        }
+
+
         public static explicit operator int(Enums v)
         {
             throw new NotImplementedException();

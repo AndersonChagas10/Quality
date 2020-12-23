@@ -14,6 +14,7 @@ using AutoMapper;
 using DTO.DTO.Params;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Dominio.Enum;
 
 namespace SgqSystem.Controllers
 {
@@ -305,30 +306,32 @@ namespace SgqSystem.Controllers
                     if (regrasName.Contains("Admin"))
                         ViewBag.IsAdmin = true;
 
-                    var rolesIds = db.RoleUserSgq.Where(x => regrasName.Contains(x.Name)).Select(x => x.Id);
+                    // comentado para funcionar na versao 1.10.3 de prod do RH - descomentar da Versao 1.13.1 para frente
 
-                    if (rolesIds.Count() > 0)
-                    {
-                        //Atualmente funciona para todos os relatórios (não é especifico)
-                        var roleUserSgqXReports = db.RoleUserSgqXReport.Where(x => rolesIds.Contains(x.RoleUserSgq_Id) &&
-                        x.IsActive &&
-                        x.ReportType == (int)Enums.ReportType.ReportXUserSgq).ToList();
+                    //var rolesIds = db.RoleUserSgq.Where(x => regrasName.Contains(x.Name)).Select(x => x.Id);
 
-                        if (roleUserSgqXReports.Count() == 0)//Se não existir vinculo, permite vizualizar
-                        {
-                            ViewBag.PermiteVizualizar = true;
-                        }
-                        else
-                        {
-                            foreach (var roleUserSgqXReport in roleUserSgqXReports)
-                            {
-                                ViewBag.PermiteCriar = ViewBag.PermiteCriar ? true : roleUserSgqXReport.AllowCreate;
-                                ViewBag.PermiteEditar = ViewBag.PermiteEditar ? true : roleUserSgqXReport.AllowEdit;
-                                ViewBag.PermiteVizualizar = ViewBag.PermiteVizualizar ? true : roleUserSgqXReport.AllowOpen;
-                                ViewBag.PermiteExcluir = ViewBag.PermiteExcluir ? true : roleUserSgqXReport.AllowDelete;
-                            }
-                        }
-                    }
+                    //if (rolesIds.Count() > 0)
+                    //{
+                    //    //Atualmente funciona para todos os relatórios (não é especifico)
+                    //    var roleUserSgqXReports = db.RoleUserSgqXReport.Where(x => rolesIds.Contains(x.RoleUserSgq_Id) &&
+                    //    x.IsActive &&
+                    //    x.ReportType == (int)Enums.ReportType.ReportXUserSgq).ToList();
+
+                    //    if (roleUserSgqXReports.Count() == 0)//Se não existir vinculo, permite vizualizar
+                    //    {
+                    //        ViewBag.PermiteVizualizar = true;
+                    //    }
+                    //    else
+                    //    {
+                    //        foreach (var roleUserSgqXReport in roleUserSgqXReports)
+                    //        {
+                    //            ViewBag.PermiteCriar = ViewBag.PermiteCriar ? true : roleUserSgqXReport.AllowCreate;
+                    //            ViewBag.PermiteEditar = ViewBag.PermiteEditar ? true : roleUserSgqXReport.AllowEdit;
+                    //            ViewBag.PermiteVizualizar = ViewBag.PermiteVizualizar ? true : roleUserSgqXReport.AllowOpen;
+                    //            ViewBag.PermiteExcluir = ViewBag.PermiteExcluir ? true : roleUserSgqXReport.AllowDelete;
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }

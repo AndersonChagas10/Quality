@@ -50,7 +50,8 @@
 
 <script>
     var listaAvaliacaoInicioFim = [];
-    var perfilUsuario = getCookie('webControlCookie')[6].split("=")[1].split(",");
+    //var perfilUsuario = getCookie('webControlCookie')[6].split("=")[1].split(",");
+    var perfilUsuario = @Html.Raw(Json.Encode(ViewBag.UserRoles));
 
     //verifica se tem valor nos campos e habilita o botao de agendamento
     $("#ParCompany_id, #HorasTrabalhadasPorDia").on('input', function () {
