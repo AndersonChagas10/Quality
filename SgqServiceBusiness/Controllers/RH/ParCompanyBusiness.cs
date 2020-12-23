@@ -37,7 +37,7 @@ namespace SgqServiceBusiness.Controllers.RH
             var query = $@"
                     DECLARE @UserSgq_Id int = @ParamUserSgq_Id;
 
-		            select * from ParCompanyXUserSgq PCXU 
+		            select DISTINCT ParCompany.* from ParCompanyXUserSgq PCXU 
 			            inner join ParCompany on PCXU.ParCompany_Id = ParCompany.Id
 			            where PCXU.UserSgq_Id = @UserSgq_Id and Exists (
                         select * from ParClusterGroup where Id in(

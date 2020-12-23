@@ -414,13 +414,16 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => x.ParCargo_Id != null)
                     .Select(x => x.ParDepartment_Id)
                     .ToList();
+
                 var listaDepartamentoFiltradoSemCargo_Id = listaParEvaluationXDepartmentXCargoAppViewModel
                     .Where(x => x.ParCargo_Id == null)
                     .Select(x => x.ParDepartment_Id)
                     .ToList();
 
-                listaParDepartment = db.ParDepartment
-                    .AsNoTracking()
+
+                var listaDeDepartamento = db.ParDepartment.AsNoTracking(). Where(x => x.Active).ToList();
+
+                listaParDepartment = listaDeDepartamento
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                     .Where(x => x.Active)
                     .Where(x => listaDepartamentoFiltradoComCargo_Id.Any(y => y == x.Id)
@@ -436,7 +439,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .ToList();
 
                 var listaDepartamentoPaiFiltrado_Id = listaParDepartment.Select(x => x.Parent_Id).Distinct().ToList();
-                var listaDepartamentoPaiFiltrado = db.ParDepartment.Where(x => listaDepartamentoPaiFiltrado_Id.Any(y => y == x.Id))
+                var listaDepartamentoPaiFiltrado = listaDeDepartamento.Where(x => listaDepartamentoPaiFiltrado_Id.Any(y => y == x.Id))
                             .Select(x => new ParDepartmentAppViewModel()
                             {
                                 Id = x.Id,
@@ -447,18 +450,23 @@ namespace SgqSystem.Controllers.V2.Api
                             }).ToList();
                 listaParDepartment.AddRange(listaDepartamentoPaiFiltrado);
 
-                var listaCargoFiltrado_Id = listaParEvaluationXDepartmentXCargoAppViewModel.Select(x => x.ParCargo_Id).ToList();
+                var listaCargoFiltrado_Id = listaParEvaluationXDepartmentXCargoAppViewModel.Select(x => x.ParCargo_Id).Distinct().ToList();
 
+   
                 var listaCargoFiltradoPorDepartamento_Id = db.ParCargoXDepartment
                     .AsNoTracking()
                     .Where(x => x.IsActive)
+                    .ToList()
                     .Where(x => listaDepartamentoFiltradoSemCargo_Id.Any(y => y == x.ParDepartment_Id))
                     .Select(x => x.ParCargo_Id)
+                    .Distinct()
                     .ToList();
 
+   
                 listaParCargo = db.ParCargo
                     .AsNoTracking()
                     .Where(x => x.IsActive)
+                    .ToList()
                     .Where(x => listaCargoFiltrado_Id.Any(y => y == x.Id) || listaCargoFiltradoPorDepartamento_Id.Any(y => y == x.Id))
                     .Select(x => new ParCargoAppViewModel()
                     {
@@ -467,9 +475,11 @@ namespace SgqSystem.Controllers.V2.Api
                     })
                     .ToList();
 
+    
                 listaParCargoXDepartment = db.ParCargoXDepartment
                     .AsNoTracking()
                     .Where(x => x.IsActive)
+                    .ToList()
                     .Where(x =>
                         (listaCargoFiltrado_Id.Any(y => y == x.ParCargo_Id)
                         && listaDepartamentoFiltradoComCargo_Id.Any(y => y == x.ParDepartment_Id))
@@ -481,6 +491,7 @@ namespace SgqSystem.Controllers.V2.Api
                         ParDepartment_Id = x.ParDepartment_Id
                     })
                     .ToList();
+
 
                 listaParLevel3XHelp = db.ParLevel3XHelp
                     .AsNoTracking()
@@ -615,8 +626,8 @@ namespace SgqSystem.Controllers.V2.Api
 
                 AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
 
-                   var listaAuditor2 = appColetaBusiness.GetUsersByCompany(appParametrization.ParCompany_Id);
-                
+                var listaAuditor2 = appColetaBusiness.GetUsersByCompany(appParametrization.ParCompany_Id);
+
                 foreach (var item in listaAuditor2)
                 {
                     // && item.Role.ToLower().Contains("Monitor Auditoria".ToLower()) - tirado para atender Liane em PROD
