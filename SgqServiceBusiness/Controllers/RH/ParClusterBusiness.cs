@@ -42,6 +42,7 @@ namespace SgqServiceBusiness.Controllers.RH
 	                                INNER join ParCompanyCluster PCxC on PVP.ParCluster_Id = PCxC.ParCluster_Id and PCxC.Active = 1
                                     where ((PVP.ParCompany_Id = @ParCompany_Id OR PVP.ParCompany_Id is null) and PCxC.ParCompany_Id = @ParCompany_Id) and PVP.IsActive = 1 )
                             and PC.ParClusterGroup_Id = @ParClusterGroup_Id
+                            and PC.IsActive = 1
                             ";
 
             using (var factory = new Factory("DefaultConnection"))
