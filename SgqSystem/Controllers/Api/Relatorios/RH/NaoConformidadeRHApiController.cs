@@ -156,11 +156,11 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                                     LEFT JOIN ParDepartment D WITH (NOLOCK) 
                                     ON C2XDP.ParDepartment_Id = D.Id  
                                     LEFT JOIN ParCompanyXStructure CS 
-                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    ON CS.ParCompany_Id = c2.UnitId and CS.Active = 1
                                     LEFT JOIN ParStructure S1 
-                                    ON CS.ParStructure_Id = S1.Id  
+                                    ON CS.ParStructure_Id = S1.Id   and S1.Active = 1
                                     LEFT JOIN ParStructure S2 
-                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    ON S1.ParStructureParent_Id = S2.Id  and S2.Active = 1
                                     LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
                                     on cfpp.CollectionLevel2_Id = c2.Id  
                                     WHERE 1=1    AND R3.IsNotEvaluate = 0
@@ -347,11 +347,11 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                                     LEFT JOIN ParDepartment D WITH (NOLOCK) 
                                     ON C2XDP.ParDepartment_Id = D.Id  
                                     LEFT JOIN ParCompanyXStructure CS 
-                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    ON CS.ParCompany_Id = c2.UnitId  and CS.Active = 1
                                     LEFT JOIN ParStructure S1 
-                                    ON CS.ParStructure_Id = S1.Id  
+                                    ON CS.ParStructure_Id = S1.Id  and S1.Active = 1
                                     LEFT JOIN ParStructure S2 
-                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    ON S1.ParStructureParent_Id = S2.Id  and S2.Active = 1
                                     LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
                                     on cfpp.CollectionLevel2_Id = c2.Id  
                                     WHERE 1=1    AND R3.IsNotEvaluate = 0
@@ -547,11 +547,11 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                                     LEFT JOIN ParDepartment D WITH (NOLOCK) 
                                     ON C2XDP.ParDepartment_Id = D.Id  
                                     LEFT JOIN ParCompanyXStructure CS 
-                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    ON CS.ParCompany_Id = c2.UnitId  and CS.Active = 1
                                     LEFT JOIN ParStructure S1 
-                                    ON CS.ParStructure_Id = S1.Id  
+                                    ON CS.ParStructure_Id = S1.Id  and S1.Active = 1
                                     LEFT JOIN ParStructure S2 
-                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    ON S1.ParStructureParent_Id = S2.Id  and S2.Active = 1
                                     LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
                                     on cfpp.CollectionLevel2_Id = c2.Id  
                                     WHERE 1=1    AND R3.IsNotEvaluate = 0
@@ -767,11 +767,11 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                                     LEFT JOIN ParDepartment D WITH (NOLOCK) 
                                     ON C2XDP.ParDepartment_Id = D.Id  
                                     LEFT JOIN ParCompanyXStructure CS 
-                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    ON CS.ParCompany_Id = c2.UnitId  and CS.Active = 1
                                     LEFT JOIN ParStructure S1 
-                                    ON CS.ParStructure_Id = S1.Id  
+                                    ON CS.ParStructure_Id = S1.Id  and S1.Active = 1
                                     LEFT JOIN ParStructure S2 
-                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    ON S1.ParStructureParent_Id = S2.Id  and S2.Active = 1
                                     LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
                                     on cfpp.CollectionLevel2_Id = c2.Id  
                                     WHERE 1=1    AND R3.IsNotEvaluate = 0
@@ -937,11 +937,11 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                                     LEFT JOIN ParDepartment D WITH (NOLOCK) 
                                     ON C2XDP.ParDepartment_Id = D.Id  
                                     LEFT JOIN ParCompanyXStructure CS 
-                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    ON CS.ParCompany_Id = c2.UnitId and CS.Active = 1  
                                     LEFT JOIN ParStructure S1 
-                                    ON CS.ParStructure_Id = S1.Id  
+                                    ON CS.ParStructure_Id = S1.Id  and S1.Active = 1
                                     LEFT JOIN ParStructure S2 
-                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    ON S1.ParStructureParent_Id = S2.Id  and S2.Active = 1
                                     LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
                                     on cfpp.CollectionLevel2_Id = c2.Id  
                                     WHERE 1=1    AND R3.IsNotEvaluate = 0
@@ -1107,11 +1107,11 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                                     LEFT JOIN ParDepartment D WITH (NOLOCK) 
                                     ON C2XDP.ParDepartment_Id = D.Id  
                                     LEFT JOIN ParCompanyXStructure CS 
-                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    ON CS.ParCompany_Id = c2.UnitId  and CS.Active = 1
                                     LEFT JOIN ParStructure S1 
-                                    ON CS.ParStructure_Id = S1.Id  
+                                    ON CS.ParStructure_Id = S1.Id  and S1.Active = 1
                                     LEFT JOIN ParStructure S2 
-                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    ON S1.ParStructureParent_Id = S2.Id  and S2.Active = 1
                                     LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
                                     on cfpp.CollectionLevel2_Id = c2.Id  
                                     WHERE 1=1    AND R3.IsNotEvaluate = 0
@@ -1308,11 +1308,11 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                                     LEFT JOIN ParDepartment D WITH (NOLOCK) 
                                     ON C2XDP.ParDepartment_Id = D.Id  
                                     LEFT JOIN ParCompanyXStructure CS 
-                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    ON CS.ParCompany_Id = c2.UnitId  and CS.Active = 1
                                     LEFT JOIN ParStructure S1 
-                                    ON CS.ParStructure_Id = S1.Id  
+                                    ON CS.ParStructure_Id = S1.Id  and S1.Active = 1
                                     LEFT JOIN ParStructure S2 
-                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    ON S1.ParStructureParent_Id = S2.Id  and S2.Active = 1
                                     LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
                                     on cfpp.CollectionLevel2_Id = c2.Id  
                                     WHERE 1=1    AND R3.IsNotEvaluate = 0
@@ -2027,11 +2027,11 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                                     LEFT JOIN ParDepartment D WITH (NOLOCK) 
                                     ON C2XDP.ParDepartment_Id = D.Id  
                                     LEFT JOIN ParCompanyXStructure CS 
-                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    ON CS.ParCompany_Id = c2.UnitId  and CS.Active = 1
                                     LEFT JOIN ParStructure S1 
-                                    ON CS.ParStructure_Id = S1.Id  
+                                    ON CS.ParStructure_Id = S1.Id  and S1.Active = 1
                                     LEFT JOIN ParStructure S2 
-                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    ON S1.ParStructureParent_Id = S2.Id  and S2.Active = 1
                                     LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
                                     on cfpp.CollectionLevel2_Id = c2.Id  
                                     WHERE 1=1    AND R3.IsNotEvaluate = 0
@@ -2515,11 +2515,11 @@ DROP TABLE #AMOSTRATIPO4 ";
                                     LEFT JOIN ParDepartment D WITH (NOLOCK) 
                                     ON C2XDP.ParDepartment_Id = D.Id  
                                     LEFT JOIN ParCompanyXStructure CS 
-                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    ON CS.ParCompany_Id = c2.UnitId  and CS.Active = 1
                                     LEFT JOIN ParStructure S1 
-                                    ON CS.ParStructure_Id = S1.Id  
+                                    ON CS.ParStructure_Id = S1.Id  and S1.Active = 1
                                     LEFT JOIN ParStructure S2 
-                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    ON S1.ParStructureParent_Id = S2.Id  and S2.Active = 1
                                     LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
                                     on cfpp.CollectionLevel2_Id = c2.Id  
                                     WHERE 1=1    AND R3.IsNotEvaluate = 0
@@ -2700,11 +2700,11 @@ DROP TABLE #AMOSTRATIPO4 ";
                                     LEFT JOIN ParDepartment D WITH (NOLOCK) 
                                     ON C2XDP.ParDepartment_Id = D.Id  
                                     LEFT JOIN ParCompanyXStructure CS 
-                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    ON CS.ParCompany_Id = c2.UnitId  and CS.Active = 1
                                     LEFT JOIN ParStructure S1 
-                                    ON CS.ParStructure_Id = S1.Id  
+                                    ON CS.ParStructure_Id = S1.Id  and S1.Active = 1
                                     LEFT JOIN ParStructure S2 
-                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    ON S1.ParStructureParent_Id = S2.Id  and S2.Active = 1
                                     LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
                                     on cfpp.CollectionLevel2_Id = c2.Id  
                                     WHERE 1=1    AND R3.IsNotEvaluate = 0
@@ -2901,11 +2901,11 @@ DROP TABLE #AMOSTRATIPO4 ";
                                     LEFT JOIN ParDepartment D WITH (NOLOCK) 
                                     ON C2XDP.ParDepartment_Id = D.Id  
                                     LEFT JOIN ParCompanyXStructure CS 
-                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    ON CS.ParCompany_Id = c2.UnitId  and CS.Active = 1
                                     LEFT JOIN ParStructure S1 
-                                    ON CS.ParStructure_Id = S1.Id  
+                                    ON CS.ParStructure_Id = S1.Id  and S1.Active = 1
                                     LEFT JOIN ParStructure S2 
-                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    ON S1.ParStructureParent_Id = S2.Id  and S2.Active = 1
                                     LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
                                     on cfpp.CollectionLevel2_Id = c2.Id  
                                     WHERE 1=1    AND R3.IsNotEvaluate = 0
@@ -3041,11 +3041,11 @@ FROM (
                                     LEFT JOIN ParDepartment D WITH (NOLOCK) 
                                     ON C2XDP.ParDepartment_Id = D.Id  
                                     LEFT JOIN ParCompanyXStructure CS 
-                                    ON CS.ParCompany_Id = c2.UnitId  
+                                    ON CS.ParCompany_Id = c2.UnitId  and CS.Active = 1
                                     LEFT JOIN ParStructure S1 
-                                    ON CS.ParStructure_Id = S1.Id  
+                                    ON CS.ParStructure_Id = S1.Id  and S1.Active = 1
                                     LEFT JOIN ParStructure S2 
-                                    ON S1.ParStructureParent_Id = S2.Id  
+                                    ON S1.ParStructureParent_Id = S2.Id  and S2.Active = 1
                                     LEFT JOIN CollectionLevel2XParFamiliaProdutoXParProduto CFPP 
                                     on cfpp.CollectionLevel2_Id = c2.Id  
                                     WHERE 1=1    AND R3.IsNotEvaluate = 0
