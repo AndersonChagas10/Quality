@@ -138,29 +138,7 @@ function graficosMocados() {
         }]
     });
 
-    Highcharts.chart('container6', {
-        chart: {
-            type: 'line'
-        },
-        title: {
-            text: 'Evolução de Nº Desvios por Categoria '
-        },
-        xAxis: {
-            categories: ['Apples', 'Bananas', 'Oranges']
-        },
-        yAxis: {
-            title: {
-                text: 'Fruit eaten'
-            }
-        },
-        series: [{
-            name: 'Jane',
-            data: [1, 0, 4]
-        }, {
-            name: 'John',
-            data: [5, 7, 3]
-        }]
-    });
+  
 }
 
 function agrupaPor(array, propriedade) {
@@ -707,7 +685,9 @@ function montaListaSemanas(data) {
 
     var semanas = [];
     var semanasName = [];
-    var colunasRemover = ["Seguro", "Inseguro", "total", "C", "NC", "NA", "pessoas observadas", "Auditor Cabecalho", "GrupoEmpresa", "Regional", "Secao", "GrupoEmpresa", "Unidade", "Auditor", "Indicador", "Monitoramento", "Tarefa", "Conforme", "Cargo", "ValorDescricaoTarefa", "ClusterName", "HeaderFieldListL1", "HeaderFieldListL2", "HeaderFieldListL3"];
+    var colunasRemover = ["Seguro", "Inseguro", "total", "C", "NC", "NA", "pessoas observadas", "Auditor Cabecalho", "GrupoEmpresa", "Regional", "Secao", "GrupoEmpresa", "Unidade", "Auditor", "Indicador", "Monitoramento", "Tarefa", "Conforme", "Cargo", "ValorDescricaoTarefa", "ClusterName", "HeaderFieldListL1", "HeaderFieldListL2", "HeaderFieldListL3", "indicador", "secao", "grupoempresa", "Data", "collectionl2_id", "monitoramento", "tarefa",
+      "conforme", "valordescricaotarefa", "cargo", "CentroCusto", "regional", "Data da Auditoria", "Atividade", "Hora da Auditoria", "Avaliação da Atividade",
+      "Medidas / Ação tomadas para correção ou incentivo do comportamento", "Pessoa avaliada","Tipo de Tarefa Realizada"];
 
     for (var i = 0; i < data.length; i++) {
         for (var j = 0; j < colunasRemover.length; j++) {
@@ -777,6 +757,82 @@ function montaGraficosDesviosPorSetor(data) {
     });
 }
 
+function montaGraficoEvolutivoUnidade(data) {
+
+    let duplicateObj = JSON.parse(JSON.stringify(data));
+    var listaDeSemanas = [];
+
+    listaDeSemanas = montaListaSemanas(data);
+
+    var listaMonitoramentoNome = agrupaPor(duplicateObj, "monitoramento").map(function (i, o) { return i.monitoramento; });
+
+
+
+    //for (var i = 0; i < listaMonitoramentoNome.length; i++) {
+    //    var monitoramentoName = "";
+
+    //    var monitoramentoAgrupados = [];
+    //    monitoramentoAgrupados.push(duplicateObj.filter(function (o,i) {
+    //        if (o.monitoramento == listaMonitoramentoNome[i]) {
+    //            return o;
+    //        }
+    //    }));
+
+    //    for (var j = 0; j < monitoramentoAgrupados.length; j++) {
+    //        var totalSemana = 0;
+    //        var objSemana = [];
+    //        for (var k = 0; k < listaDeSemanas.length; k++) {
+
+    //            if (monitoramentoAgrupados[0][j].hasOwnProperty(listaDeSemanas[k].title)) {
+    //                totalSemana += parseInt(monitoramentoAgrupados[0][j][listaDeSemanas[k].title]);
+    //            }
+
+
+    //        }
+
+    //        objSemana.push({ name: listaDeSemanas[k].title, data: totalSemana });
+
+    //       // var m = [{ name: monitoramentoAgrupados[0][j].monitoramento, semanas: [objSemana] }];
+    //    }
+
+    //}
+
+    var monitoramento = [
+        { name: "Monitoramento 1", data: [ 5 , 8 ] }
+    ];
+
+    Highcharts.chart('container4Unidade', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Evolução de Nº Desvios por Categoria '
+        },
+        xAxis: {
+            categories: listaDeSemanas.map(function (i, o) { return i.title; })
+        },
+        yAxis: {
+            title: {
+                text: 'Fruit eaten'
+            }
+        },
+        series: monitoramento
+            //[{
+        //    name: 'Semana 40',
+        //    data: [5, 7, 2],
+        //    color: 'blue'
+        //}, {
+        //    name: 'Semana 41',
+        //        data: [10, 5, 3],
+        //        color: 'red'
+        //    }, {
+        //        name: 'Semana 42',
+        //        data: [1, 2, 4],
+        //        color: 'green'
+        //    }]
+    });
+}
+
 function enviarFiltro(nivelVisao) {
     if (!nivelVisao) {
         $("#pills-tab li").each(function (i, o) {
@@ -841,6 +897,9 @@ function enviarFiltro(nivelVisao) {
                     montaCardsVisaoUnidade(data);
                     montaGraficosPizza(data);
                     montaGraficosUnidade(data);
+
+                   
+                    montaGraficoEvolutivoUnidade(data);
 
                     var colunas = [
                         { title: "Grupo de Empresa", mData: "grupoempresa" },
