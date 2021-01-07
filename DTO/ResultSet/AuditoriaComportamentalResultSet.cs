@@ -108,16 +108,14 @@ namespace DTO.ResultSet
                 whereGrupoempresa = $"AND psg.Id in ({ string.Join(",", form.ParStructure2_Ids)})";
             }
 
-            var whereUnidadesUsuario = "";
-            if (userUnits != "" && userUnits.Length > 0)
-            {
-                whereUnidadesUsuario = $"AND C2.UnitId in ({userUnits})";
-            }
-
             var whereUnidade = "";
             if (form.ParCompany_Ids.Length > 0)
             {
                 whereUnidade = $"AND C2.UnitId in ({ string.Join(",", form.ParCompany_Ids)})";
+            }
+            else
+            {
+                whereUnidade = $@"AND C2.UnitId  in ({userUnits}) ";
             }
 
             var whereMonitoramento = "";
@@ -492,6 +490,25 @@ namespace DTO.ResultSet
             ";
         }
 
+        public string GetListaAuditores()
+        {
+            return $@"select
+	                    psg.Name as GrupoEmpresa,
+	                    pg.Name as Regional,
+	                    UN.Name as Unidade,
+	                    us.Fullname as [Auditor Cabecalho]
+                    from usersgq us with(nolock)
+                    INNER JOIN ParCompany UN with (NOLOCK)
+	                    ON UN.Id = us.parcompany_id
+                    left join ParCompanyXStructure PCXS with (NOLOCK)
+	                    on pcxs.ParCompany_Id = un.Id and pcxs.Active = 1
+                    left join ParStructure pg with (NOLOCK)
+	                    on pg.Id = pcxs.ParStructure_Id
+                    left join ParStructure psg with (NOLOCK)
+	                    on psg.Id = pg.ParStructureParent_Id
+                    where role like '%Auditor%'";
+        }
+
         public string GetVisaoUnidade(DataCarrierFormularioNew form, string userUnits)
         {
             var whereRegional = "";
@@ -506,16 +523,14 @@ namespace DTO.ResultSet
                 whereGrupoempresa = $"AND psg.Id in ({ string.Join(",", form.ParStructure2_Ids)})";
             }
 
-            var whereUnidadesUsuario = "";
-            if (userUnits != "" && userUnits.Length > 0)
-            {
-                whereUnidadesUsuario = $"AND C2.UnitId in ({userUnits})";
-            }
-
             var whereUnidade = "";
             if (form.ParCompany_Ids.Length > 0)
             {
                 whereUnidade = $"AND C2.UnitId in ({ string.Join(",", form.ParCompany_Ids)})";
+            }
+            else
+            {
+                whereUnidade = $@"AND C2.UnitId  in ({userUnits}) ";
             }
 
             var whereAuditor = "";
@@ -1016,6 +1031,10 @@ Begin
             if (form.ParCompany_Ids.Length > 0)
             {
                 whereUnidade = $"AND C2.UnitId in ({ string.Join(",", form.ParCompany_Ids)})";
+            }
+            else
+            {
+                whereUnidade = $@"AND C2.UnitId  in ({userUnits}) ";
             }
 
             var whereAuditor = "";
