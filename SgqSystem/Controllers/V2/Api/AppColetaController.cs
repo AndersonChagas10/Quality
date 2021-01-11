@@ -702,6 +702,10 @@ CASE @ParFrequency_Id
 	WHEN 5 THEN IIF(DATEPART(DAY,@DataColeta)<=15,CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-01'), CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-16'))  -- Quinzenal
 	WHEN 6 THEN CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-01')  -- Mensal
 	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 00:00:00') AS DATETIME) -- Diario com Intervalo 
+	WHEN 12 THEN CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-01')  -- Bimestral
+	WHEN 7 THEN CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-01')  -- Trimestral
+	WHEN 8 THEN CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-01')  -- Semestral
+	WHEN 13 THEN CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-01')  -- Anual
 END
 
 SET @DateTimeFinal = 
@@ -711,10 +715,13 @@ CASE @ParFrequency_Id
 	WHEN 3 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Diario
 	WHEN 4 THEN CAST(CONCAT(CAST(DATEADD(DAY,7-DATEPART(WEEKDAY,@DataColeta),@DataColeta) AS DATE),' 23:59:59') AS DATETIME) -- Semanal
 	WHEN 5 THEN IIF(DATEPART(DAY,@DataColeta)<=15,CONCAT(CONVERT(VARCHAR(7),@DataColeta,120),'-15 23:59:59'), CONCAT(EOMONTH(@DataColeta),' 23:59:59'))  -- Quinzenal
-	WHEN 6 THEN CAST(CONCAT(CONVERT(VARCHAR(10), EOMONTH(@DataColeta), 120), ' 23:59:59') AS DATETIME)  -- Mensal
+	WHEN 6  THEN CAST(CONCAT(CONVERT(VARCHAR(10), EOMONTH(@DataColeta), 120), ' 23:59:59') AS DATETIME)  -- Mensal
 	WHEN 10 THEN CAST(CONCAT(CONVERT(VARCHAR(10),@DataColeta,120),' 23:59:59') AS DATETIME) -- Diario com Intervalo 
+	WHEN 12 THEN  CAST(CONCAT(EOMONTH(@DataColeta, 2),' 23:59:00') as DATETIME) -- Bimestral
+	WHEN 7  THEN CAST(CONCAT(EOMONTH(@DataColeta, 3),' 23:59:00') as datetime) --Trimestral
+	WHEN 8  THEN CAST(CONCAT(EOMONTH(@DataColeta, 6),' 23:59:00') as datetime) -- Semestral
+	WHEN 13 THEN CAST(CONCAT(EOMONTH(@DataColeta, 12),' 23:59:00') as datetime) -- Semestral
 END
-
 --Id	Name
 --1		Período
 --2		Turno
@@ -765,7 +772,8 @@ WHERE 1 = 1
 		    ,C2XPD.ParDepartment_Id
 		    ,C2XPC.ParCargo_Id
 		    ,C2XC.ParCluster_Id
-		) A";
+		) A
+        order by A.Evaluation, a.Sample";
 
             using (var factory = new Factory("DefaultConnection"))
             {

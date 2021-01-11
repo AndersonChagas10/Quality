@@ -470,7 +470,7 @@ INSERT INTO [Result_Level3]
                         AND Evaluation is not null
 						AND Sample is not null
                         and ParCompany_Id is not null
-                        and adddate < '{DateTime.Now.AddMinutes(-2).ToString("yyyy-MM-dd HH:mm")}'";
+                        and adddate < '{DateTime.Now.AddSeconds(-20).ToString("yyyy-MM-dd HH:mm")}'";
 
             var collectionLevel2 = new List<CollectionLevel2>();
 
