@@ -86,6 +86,7 @@ function sincronizarResultado() {
             contentType: "application/json",
             success: function (data) {
                 coletasAgrupadas = data;
+                orderBySampleEvaluation();
                 AtualizarArquivoDeColetas();
                 closeMensagem();
             },
@@ -304,3 +305,16 @@ function validaParqualification(level1Id, level2Id, level3Id) {
 
     return listaParQualificationxParLevel3Value;
 }
+
+ function orderBySampleEvaluation(){
+	 
+	coletasAgrupadas = coletasAgrupadas.sort(function(a, b) {
+        var x = a['Sample']; var y = b['Sample'];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+	
+	coletasAgrupadas = coletasAgrupadas.sort(function(a, b) {
+        var x = a['Evaluation']; var y = b['Evaluation'];
+        return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+    });
+ }
