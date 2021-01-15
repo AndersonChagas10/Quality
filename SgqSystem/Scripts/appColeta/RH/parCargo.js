@@ -57,7 +57,10 @@ function listarParCargo(isVoltar) {
         }
 
     });
-    var voltar = '<a onclick="listarParDepartment(' + currentParDepartmentParent_Id + "," + isVoltar + ');" class="btn btn-warning">Voltar</a>';
+    //var voltar = '<a onclick="listarParDepartment(' + currentParDepartmentParent_Id + "," + isVoltar + ');" class="btn btn-warning">Voltar</a>';
+    var voltar = '<a onclick="validaRota(listarParDepartment,currentParDepartmentParent_Id);" class="btn btn-warning">Voltar</a>';
+
+
 
     html = getHeader() +
         '<div class="container-fluid">                                       ' +
