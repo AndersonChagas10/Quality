@@ -139,29 +139,7 @@ function graficosMocados() {
         }]
     });
 
-    Highcharts.chart('container6', {
-        chart: {
-            type: 'line'
-        },
-        title: {
-            text: 'Evolução de Nº Desvios por Categoria '
-        },
-        xAxis: {
-            categories: ['Apples', 'Bananas', 'Oranges']
-        },
-        yAxis: {
-            title: {
-                text: 'Fruit eaten'
-            }
-        },
-        series: [{
-            name: 'Jane',
-            data: [1, 0, 4]
-        }, {
-            name: 'John',
-            data: [5, 7, 3]
-        }]
-    });
+
 }
 
 function agrupaPor(array, propriedade) {
@@ -708,7 +686,9 @@ function montaListaSemanas(data) {
 
     var semanas = [];
     var semanasName = [];
-    var colunasRemover = ["Seguro", "Inseguro", "total", "C", "NC", "NA", "pessoas observadas", "Auditor Cabecalho", "GrupoEmpresa", "Regional", "Secao", "GrupoEmpresa", "Unidade", "Auditor", "Indicador", "Monitoramento", "Tarefa", "Conforme", "Cargo", "ValorDescricaoTarefa", "ClusterName", "HeaderFieldListL1", "HeaderFieldListL2", "HeaderFieldListL3"];
+    var colunasRemover = ["Seguro", "Inseguro", "total", "C", "NC", "NA", "pessoas observadas", "Auditor Cabecalho", "GrupoEmpresa", "Regional", "Secao", "GrupoEmpresa", "Unidade", "Auditor", "Indicador", "Monitoramento", "Tarefa", "Conforme", "Cargo", "ValorDescricaoTarefa", "ClusterName", "HeaderFieldListL1", "HeaderFieldListL2", "HeaderFieldListL3", "indicador", "secao", "grupoempresa", "Data", "collectionl2_id", "monitoramento", "tarefa",
+        "conforme", "valordescricaotarefa", "cargo", "CentroCusto", "regional", "Data da Auditoria", "Atividade", "Hora da Auditoria", "Avaliação da Atividade",
+        "Medidas / Ação tomadas para correção ou incentivo do comportamento", "Pessoa avaliada", "Tipo de Tarefa Realizada"];
 
     for (var i = 0; i < data.length; i++) {
         for (var j = 0; j < colunasRemover.length; j++) {
@@ -778,6 +758,58 @@ function montaGraficosDesviosPorSetor(data) {
     });
 }
 
+function montaGraficoEvolutivoUnidade(data) {
+
+    let duplicateObj = JSON.parse(JSON.stringify(data));
+    var listaDeSemanas = [];
+
+    listaDeSemanas = montaListaSemanas(duplicateObj);
+
+    var listaMonitoramentoNome = agrupaPor(data, "monitoramento").map(function (i, o) { return i.monitoramento; });
+
+    var monitoramento = [];
+    for (var i = 0; i < listaMonitoramentoNome.length; i++) {
+        var listaTotalSemanas = [];
+        for (var j = 0; j < listaDeSemanas.length; j++) {
+            var totalSomaSemana = 0;
+           
+            for (var k = 0; k < data.length; k++) {
+                if (data[k].monitoramento == listaMonitoramentoNome[i]) {
+                    totalSomaSemana += parseInt(data[k][listaDeSemanas[j].title]);
+                }
+            }
+            listaTotalSemanas.push(totalSomaSemana);
+        }
+        monitoramento.push({ name: listaMonitoramentoNome[i], data: listaTotalSemanas });
+    }
+
+    Highcharts.chart('container4Unidade', {
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Evolução de Nº Desvios por Categoria '
+        },
+        xAxis: {
+            categories: listaDeSemanas.map(function (i, o) { return i.title; })
+        },
+        yAxis: {
+            title: {
+                text: ''
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: true
+            }
+        },
+        series:  monitoramento
+    });
+}
+
 function enviarFiltro(nivelVisao) {
     if (!nivelVisao) {
         $("#pills-tab li").each(function (i, o) {
@@ -843,6 +875,9 @@ function enviarFiltro(nivelVisao) {
                     montaCardsVisaoUnidade(data);
                     montaGraficosPizza(data);
                     montaGraficosUnidade(data);
+
+
+                    montaGraficoEvolutivoUnidade(data);
 
                     var colunas = [
                         { title: "Grupo de Empresa", mData: "grupoempresa" },
