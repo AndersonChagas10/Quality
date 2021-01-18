@@ -56,6 +56,24 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
         }
 
         [HttpPost]
+        [Route("GetListaAuditores")]
+        public List<JObject> GetListaAuditores()
+        {
+
+            var _list = new List<JObject>();
+
+            var query = new AuditoriaComportamentalResultSet().GetListaAuditores();
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                if (query != "")
+                    _list = factory.QueryNinjaADO(query);
+
+                return _list;
+            }
+        }
+
+        [HttpPost]
         [Route("GetAuditoriaComportamentalUnidadePorSetor")]
         public List<JObject> GetAuditoriaComportamentalUnidadePorSetor([FromBody] DataCarrierFormularioNew form)
         {
