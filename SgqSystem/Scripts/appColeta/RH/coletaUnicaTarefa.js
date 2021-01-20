@@ -1,6 +1,10 @@
 ﻿
 $(document).on('keyup click change', 'form[data-form-coleta] div[data-linha-coleta]', function () {
 
+    if (globalDicionarioEstatico.clustersIdsColetaUnicaTarefa == undefined) {
+        globalDicionarioEstatico = JSON.parse(globalDicionarioEstatico);
+    }
+
     if ($(this).find('input, button').prop('disabled')
         || globalDicionarioEstatico.clustersIdsColetaUnicaTarefa.indexOf('|' + currentParCluster_Id + '|') < 0)
         return;

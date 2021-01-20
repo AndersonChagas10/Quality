@@ -60,7 +60,7 @@ function openColeta(levels) {
         '		<div class="col-xs-12">                                                                                                            ' +
         '			<div class="panel panel-primary">                                                                                              ' +
         '			  <div class="panel-heading">                                                                                                  ' +
-        '				<h3 class="panel-title"><a onclick="validaRota(listarParCargo,currentParCargo_Id);" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
+        '				<h3 class="panel-title"><a onclick="validaRota(listarParCargo,null);" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
         '			  </div>                                                                                                                       ' +
         '			  <div class="panel-body">                                                                                                     ' +
         getContador() +

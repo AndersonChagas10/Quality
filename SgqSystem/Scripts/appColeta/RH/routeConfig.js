@@ -19,10 +19,38 @@ function validaRota(callback, parameter) {
     } else {
         if (parameter != null) {
             parameterRota = parameter;
-            callback(parameterRota, true);
-        }else
-            callback(true);
+            if (validateSyncCount()) {
+                callback(parameterRota, true);
+            } else {
+                setMessageSyncNotFinished();
+            }
+        } else {
+            if (validateSyncCount()) {
+                callback(true);
+            } else {
+                setMessageSyncNotFinished();
+            }
+        }
     }
+}
+
+function setMessageSyncNotFinished() {
+    openMensagem("Aguarde enquanto as coletas são sincronizadas", "blue", "white");
+    setTimeout(function () {
+        closeMensagem();
+    }, 8000);
+}
+
+function validateSyncCount() {
+    if (appIsOnline) {
+        if (globalColetasRealizadas.length > 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    } else
+        return true;
 }
 
 function executeCallbackRota() {

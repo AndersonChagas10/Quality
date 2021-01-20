@@ -161,7 +161,7 @@ function AtualizarVariaveisDeColetas() {
 		if (typeof (content) == 'undefined' || content == "")
 			content = '[]';
 		coletasAgrupadas = JSON.parse(content);
-		
+		orderBySampleEvaluation();
 	});
 
 }
