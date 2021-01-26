@@ -111,8 +111,8 @@
                     break;
                 }
             }
-            for (var x in nivelSelecionado) {
-
+            //corrigido o for pois estava pegando todas as propriedades do Jquery prevObj e as abaixo dela
+            for (var x = 0; x < $(nivelSelecionado).length; x++) {
                 var linha = $(nivelSelecionado)[x];
                 var isNA = $(linha).attr('data-conforme-na') == "";
                 var peso = parseFloat($(linha).attr('data-peso'));
@@ -131,6 +131,26 @@
                     $(linha).attr('data-peso', peso);
                 }
             }
+
+            //for (var x in nivelSelecionado) {
+            //    var linha = $(nivelSelecionado)[x];
+            //    var isNA = $(linha).attr('data-conforme-na') == "";
+            //    var peso = parseFloat($(linha).attr('data-peso'));
+
+            //    if (!isNA && nivel[i].somaPesoNA > 0) {
+            //        if (nivel == nivelMonitoramento && nivel[i].indicador == $(linha).attr('data-level1')) {
+            //            peso += (peso * nivel[i].somaPesoNA) / nivel[i].somaPesoAv;
+            //        }
+            //        else if (nivel == nivelIndicador) {
+            //            peso += (peso * nivel[i].somaPesoNA) / (pesoTotalIndicador[nivel[i].indicador] - nivel[i].somaPesoNA);
+            //        }
+            //        else if (nivel == nivelSecao) {
+            //            peso += (peso * nivel[i].somaPesoNA) / (pesoTotalSecao - nivel[i].somaPesoNA);
+            //        }
+
+            //        $(linha).attr('data-peso', peso);
+            //    }
+            //}
         }
     }
 
