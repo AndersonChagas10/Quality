@@ -569,7 +569,7 @@
         $(`select#${id}`).empty();
         $(`select#${id}`).append(`<option value="0" selected>${defaultText}</option>`);
 
-        if (list && list.length > 0) {
+        if (list[0] != undefined && list && list.length > 0) {
 
             let listVinculados = $.grep(list, (item) => { return (item.GroupName != "" && item.GroupName != undefined) });
             let listNaoVinculados = $.grep(list, (item) => { return (item.GroupName == undefined || item.GroupName == "") });
