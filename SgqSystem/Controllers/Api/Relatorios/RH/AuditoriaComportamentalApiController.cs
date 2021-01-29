@@ -57,12 +57,12 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
 
         [HttpPost]
         [Route("GetListaAuditores")]
-        public List<JObject> GetListaAuditores()
+        public List<JObject> GetListaAuditores([FromBody] DataCarrierFormularioNew form)
         {
 
             var _list = new List<JObject>();
 
-            var query = new AuditoriaComportamentalResultSet().GetListaAuditores();
+            var query = new AuditoriaComportamentalResultSet().GetListaAuditores(form,GetUserUnitsIds(form.ShowUserCompanies));
 
             using (Factory factory = new Factory("DefaultConnection"))
             {

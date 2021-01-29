@@ -490,8 +490,19 @@ namespace DTO.ResultSet
             ";
         }
 
-        public string GetListaAuditores()
+        public string GetListaAuditores(DataCarrierFormularioNew form,string userUnits)
         {
+
+            var whereUnidade = "";
+            if (form.ParCompany_Ids.Length > 0)
+            {
+                whereUnidade = $"AND UN.Id in ({ string.Join(",", form.ParCompany_Ids)})";
+            }
+            else
+            {
+                whereUnidade = $@"AND UN.Id  in ({userUnits}) ";
+            }
+
             return $@"select
 	                    psg.Name as GrupoEmpresa,
 	                    pg.Name as Regional,
@@ -506,7 +517,8 @@ namespace DTO.ResultSet
 	                    on pg.Id = pcxs.ParStructure_Id
                     left join ParStructure psg with (NOLOCK)
 	                    on psg.Id = pg.ParStructureParent_Id
-                    where role like '%Auditor%'";
+                    where role like '%Auditor%'
+                    {whereUnidade}";
         }
 
         public string GetVisaoUnidade(DataCarrierFormularioNew form, string userUnits)
@@ -1014,7 +1026,6 @@ Begin
         public string GetVisaoAcompanhamento(DataCarrierFormularioNew form, string userUnits)
         {
 
-
             var whereRegional = "";
             if (form.ParStructure3_Ids.Length > 0)
             {
@@ -1028,13 +1039,16 @@ Begin
             }
 
             var whereUnidade = "";
+            var whereUnidadeCollection = "";
             if (form.ParCompany_Ids.Length > 0)
             {
                 whereUnidade = $"AND C2.UnitId in ({ string.Join(",", form.ParCompany_Ids)})";
+                whereUnidadeCollection = $"AND CL2.UnitId in ({ string.Join(",", form.ParCompany_Ids)})";
             }
             else
             {
                 whereUnidade = $@"AND C2.UnitId  in ({userUnits}) ";
+                whereUnidadeCollection = $@"AND CL2.UnitId  in ({userUnits}) ";
             }
 
             var whereAuditor = "";
@@ -1081,6 +1095,7 @@ Begin
                 AND NotEvaluatedIs <> 999
                 AND Duplicated <> 999
                 AND CL2.CollectionDate BETWEEN @DATAINICIAL AND @DATAFINAL
+                {whereUnidadeCollection}
                          
  
             CREATE INDEX IDX_CollectionLevel2_ID ON #CollectionLevel2(ID);

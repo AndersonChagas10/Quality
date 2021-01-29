@@ -972,7 +972,7 @@ function enviarFiltro(nivelVisao) {
             $.ajax({
                 url: urlGetListaAuditores,
                 type: 'post',
-                //data: JSON.stringify(objFiltro),
+                data: JSON.stringify(objFiltro),
                 dataType: "JSON",
                 contentType: "APPLICATION/JSON; CHARSET=UTF-8",
                 beforeSend: function () {
