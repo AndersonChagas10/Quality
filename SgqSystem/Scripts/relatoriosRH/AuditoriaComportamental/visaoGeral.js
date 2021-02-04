@@ -1006,14 +1006,17 @@ function enviarFiltro(nivelVisao) {
                     for (var i = 0; i < listaGlobalAuditores.length; i++) {
 
                         for (var j = 0; j < acompanhamentoObj.length; j++) {
-                            if (acompanhamentoObj[j]['Auditor Cabecalho'] == listaGlobalAuditores[i]['Auditor Cabecalho']) {
+                            if (listaGlobalAuditores[i] != undefined &&  acompanhamentoObj[j]['Auditor Cabecalho'] == listaGlobalAuditores[i]['Auditor Cabecalho']) {
                                 
                                 listaGlobalAuditores.splice(i, 1);
                             } 
-                            for (var k = 0; k < listaDeSemanas.length; k++) {
-                                listaGlobalAuditores[i][listaDeSemanas[k].title] = "0";
-                                listaGlobalAuditores[i]['total'] = "0";
-                            }
+                        }
+                    }
+
+                    for (var x = 0; x < listaGlobalAuditores.length; x++) {
+                        for (var k = 0; k < listaDeSemanas.length; k++) {
+                            listaGlobalAuditores[x][listaDeSemanas[k].title] = "0";
+                            listaGlobalAuditores[x]['total'] = "0";
                         }
                     }
 
