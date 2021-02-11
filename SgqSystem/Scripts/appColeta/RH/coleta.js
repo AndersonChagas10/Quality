@@ -159,7 +159,7 @@ $('body')
                     equacao = "";
                 }
                 else {
-                    equacao = eval(equacao);
+                    equacao = eval(equacao).toFixed(2);
                 }
                 $(o).val(equacao);
                 $(o).trigger('input').trigger('change');
