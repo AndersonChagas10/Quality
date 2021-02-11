@@ -43,7 +43,16 @@ namespace SgqSystem.Controllers.V2.Api
                 db.Configuration.LazyLoadingEnabled = false;
 
                 parLevel1Selects.ParCriticalLevels = db.ParCriticalLevel.Where(x => x.IsActive == true).ToList();
-                parLevel1Selects.ParClusters = db.ParCluster.Where(x => x.IsActive).ToList();
+                parLevel1Selects.ParClusters = db.ParCluster.ToList();
+
+                foreach (var parCluster in parLevel1Selects.ParClusters)
+                {
+                    if (parCluster.IsActive == false)
+                    {
+                        parCluster.Name += " (Inativo)";
+                    }
+                }
+
                 parLevel1Selects.ParConsolidationTypes = db.ParConsolidationType.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParScoreTypes = db.ParScoreType.Where(x => x.IsActive).ToList();
                 parLevel1Selects.ParFrequencies = db.ParFrequency.Where(x => x.IsActive).ToList();
