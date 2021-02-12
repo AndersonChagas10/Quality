@@ -264,7 +264,8 @@ function desabilitaColetados() {
 
             if (typeof ($(data).find('input[data-valor]').val()) != 'undefined') {
                 $(data).find('input[data-valor]').val(coleta.Value);
-
+                var conforme = coleta.IsConform ? 1 : 0;
+                $(data).attr('data-conforme', conforme);
             }
 
             if (typeof ($(data).find('input[data-texto]').val()) != 'undefined') {
