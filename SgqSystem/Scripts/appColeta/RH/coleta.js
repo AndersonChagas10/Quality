@@ -792,10 +792,24 @@ $('body').off('click', '[data-clear]').on('click', '[data-clear]', function (e) 
 
 $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
     var linha = $(this).parents('[data-conforme]');
+    var linhaCabecalho = $(linha).next();
+
     if (typeof (linha.attr('data-conforme-na')) == 'undefined') {
         resetarLinha(linha);
         linha.addClass('alert-warning');
         linha.attr('data-conforme-na', '');
+
+        if (linha.data('input-type') == 1) {
+            $('select[data-qualificationselect]').val('');
+            linha.find('button[data-tarefa]').prop('disabled', true).val('');
+            linhaCabecalho.addClass('hidden');
+        }
+
+        if (linha.data('input-type') == 10) {
+            linha.find('input[data-tarefa]').prop('disabled', true).val('');
+            linhaCabecalho.addClass('alert-warning');
+            linhaCabecalho.find('input').prop('disabled', true).val('');
+        }
 
         var botao = $(linha).find('button[data-required-answer]');
         if (botao.attr('data-required-answer') == "1") {
@@ -803,8 +817,13 @@ $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
             $(botao).text('');
             $(botao).html('&nbsp;');
         }
+
     } else {
         resetarLinha(linha);
+        linha.removeClass('alert-warning');
+        linhaCabecalho.removeClass('alert-warning');
+        linha.find('input[data-tarefa], button[data-tarefa]').prop('disabled', false).val('');
+        linhaCabecalho.find('input').prop('disabled', false);
         $(linha).find('input[data-valor]').trigger('change');
     }
 });
