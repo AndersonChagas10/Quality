@@ -799,13 +799,9 @@ $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
         resetarLinha(linha);
         linha.attr('data-conforme-na', '');
         linha.addClass('alert-warning');
-        cabecalhos.addClass('alert-warning');
         linha.find('[data-tarefa], [data-texto], [data-qualificationselect]').prop('disabled', true).val('');
-        cabecalhos.find('.form-control').prop('disabled', true).val('');
 
-        if (linha.data('input-type') == 1) {
-            cabecalhos.find('[data-qualificationselect]').parents('[data-level3]').addClass('hidden');
-        }
+        desabilitarCabecalhoEQualificacaoNaTarefa(linha, cabecalhos);
 
         var botao = $(linha).find('button[data-required-answer]'); 
         if (botao.attr('data-required-answer') == "1") {
@@ -815,12 +811,25 @@ $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
         }
     } else {
         resetarLinha(linha);
-        cabecalhos.removeClass('alert-warning');
         linha.find('[data-tarefa], [data-texto], [data-qualificationselect]').prop('disabled', false).val('');
-        cabecalhos.find('.form-control').prop('disabled', false).val('');
+        habilitarCabecalho(cabecalhos);
         $(linha).find('input[data-valor]').trigger('change');
     }
 });
+
+function desabilitarCabecalhoEQualificacaoNaTarefa(linha, cabecalhos) {
+    cabecalhos.find('[parheaderfield_id], [data-qualificationselect]').prop('disabled', true).val('');
+    cabecalhos.addClass('alert-warning');
+
+    if (linha.data('input-type') == 1) {
+        cabecalhos.find('[data-qualificationselect]').parents('[data-qualificationlevel3value]').addClass('hidden');
+    }
+}
+
+function habilitarCabecalho(cabecalhos) {
+    cabecalhos.find('[parheaderfield_id], [data-qualificationselect]').prop('disabled', false).val('');
+    cabecalhos.removeClass('alert-warning');
+}
 
 function validaCampoEmBrancoNA() {
     if (linha.attr('data-default-answer') == "1") {
