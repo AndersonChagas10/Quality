@@ -792,38 +792,32 @@ $('body').off('click', '[data-clear]').on('click', '[data-clear]', function (e) 
 
 $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
     var linha = $(this).parents('[data-conforme]');
-    var linhaCabecalho = $(linha).next();
+    var idTarefa = linha.data('level3');
+    var cabecalhos = $(`div[parlevel3id="${idTarefa}"]`);
 
     if (typeof (linha.attr('data-conforme-na')) == 'undefined') {
         resetarLinha(linha);
-        linha.addClass('alert-warning');
         linha.attr('data-conforme-na', '');
+        linha.addClass('alert-warning');
+        cabecalhos.addClass('alert-warning');
+        linha.find('[data-tarefa], [data-texto], [data-qualificationselect]').prop('disabled', true).val('');
+        cabecalhos.find('.form-control').prop('disabled', true).val('');
 
         if (linha.data('input-type') == 1) {
-            $('select[data-qualificationselect]').val('');
-            linha.find('button[data-tarefa]').prop('disabled', true).val('');
-            linhaCabecalho.addClass('hidden');
+            cabecalhos.find('[data-qualificationselect]').parents('[data-level3]').addClass('hidden');
         }
 
-        if (linha.data('input-type') == 10) {
-            linha.find('input[data-tarefa]').prop('disabled', true).val('');
-            linhaCabecalho.addClass('alert-warning');
-            linhaCabecalho.find('input').prop('disabled', true).val('');
-        }
-
-        var botao = $(linha).find('button[data-required-answer]');
+        var botao = $(linha).find('button[data-required-answer]'); 
         if (botao.attr('data-required-answer') == "1") {
             linha.attr('data-conforme', "");
             $(botao).text('');
             $(botao).html('&nbsp;');
         }
-
     } else {
         resetarLinha(linha);
-        linha.removeClass('alert-warning');
-        linhaCabecalho.removeClass('alert-warning');
-        linha.find('input[data-tarefa], button[data-tarefa]').prop('disabled', false).val('');
-        linhaCabecalho.find('input').prop('disabled', false);
+        cabecalhos.removeClass('alert-warning');
+        linha.find('[data-tarefa], [data-texto], [data-qualificationselect]').prop('disabled', false).val('');
+        cabecalhos.find('.form-control').prop('disabled', false).val('');
         $(linha).find('input[data-valor]').trigger('change');
     }
 });
