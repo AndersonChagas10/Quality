@@ -1144,7 +1144,7 @@ function PrepararColetas() {
                 WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseFloat($(data).attr('data-peso')),
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
                 ParCluster_Id: currentParCluster_Id,
-                Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')) }),
+                Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')), "Version": versionNumber }),
                 IsPartialSave: hasPartialSave
                 /*
 				"Shift_Id":1,
@@ -1443,7 +1443,7 @@ function getCollectionHeaderFields(collectionDate) {
     return collectionHeaderFied;
 }
 
-function ColetasIsValid() {
+function openMessageConfirmColetasIsValid() {
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar');
     var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar').find('input[data-texto]');
     var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value] div[data-qualification-required]');
