@@ -1443,7 +1443,7 @@ function getCollectionHeaderFields(collectionDate) {
     return collectionHeaderFied;
 }
 
-function openMessageConfirmColetasIsValid() {
+function ColetasIsValid() {
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar');
     var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar').find('input[data-texto]');
     var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value] div[data-qualification-required]');
