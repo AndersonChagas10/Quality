@@ -1,16 +1,18 @@
 ﻿
 $(document).on('keyup click change', 'form[data-form-coleta] div[data-linha-coleta]', function () {
 
-
     if (globalDicionarioEstatico) {
         if (globalDicionarioEstatico.clustersIdsColetaUnicaTarefa == undefined) {
             globalDicionarioEstatico = JSON.parse(globalDicionarioEstatico);
         }
     } else {
         getDicionarioEstatico();
+        if (globalDicionarioEstatico.clustersIdsColetaUnicaTarefa == undefined) {
+            globalDicionarioEstatico = JSON.parse(globalDicionarioEstatico);
+        }
     }
 
-    if (globalDicionarioEstatico) {
+    if (globalDicionarioEstatico == null || globalDicionarioEstatico == undefined) {
         openMessageConfirm(
             "Objeto de coleta inválido",
             "Entre em contato com o responsável do SESMT da sua Unidade! Não atualizar a página e tirar prints da tela por favor.",
