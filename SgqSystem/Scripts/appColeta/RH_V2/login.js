@@ -197,6 +197,7 @@ function loginSuccess(data) {
     currentLogin = data;
     currentCollectDate = new Date();
     openLogado();
+    openParCompany();
     getDicionarioEstatico();
 }
 

@@ -14,6 +14,29 @@ namespace SgqSystem.Controllers.V2.Api
     [RoutePrefix("api")]
     public class ParFrequencyXParLevel1APIController : BaseApiController
     {
+        public class ParLevel1GroupByParFrequency
+        {
+            public List<ParFrequencyAppViewModel> frequency {get;set;}
+        }
+
+        public class ParFrequencyAppViewModelV2
+        {
+            public string Name { get; set; }
+
+            public int? Id { get; set; }
+
+            public List<ParLevel1AppViewModel> Level1 { get; set; }
+        }
+
+        public class ParLevel1AppViewModelV2
+        {
+            public string Name { get; set; }
+
+            public int? Id { get; set; }
+
+            public List<ParLevel1AppViewModel> Level1 { get; set; }
+        }
+
 
         [HttpPost]
         [Route("GetParFrequencyXParLevel1")]
@@ -62,6 +85,36 @@ namespace SgqSystem.Controllers.V2.Api
                         Name = x.Name,
                     })
                     .ToList();
+                
+                ParLevel1GroupByParFrequency groupFrequencyParLevel1 = new ParLevel1GroupByParFrequency();
+
+                List<ParFrequencyAppViewModel> frequenciesv2 = new List<ParFrequencyAppViewModel>();
+
+                List<ParLevel1AppViewModel> parLevel1 = new List<ParLevel1AppViewModel>();
+
+                for (var i = 0; i < vinculosPeso.Count; i++)
+                {
+                    for (var j = 0; j < frequencies.Count; j++)
+                    {
+                        ParFrequencyAppViewModel frequencyV2 = new ParFrequencyAppViewModel();
+
+                        if (frequencies[j].Id == vinculosPeso[i].ParFrequency_Id)
+                        {
+                            frequencyV2 = frequencies[j];
+
+                            groupFrequencyParLevel1.frequency.Add(frequencyV2);
+
+                            for (var x = 0; x < levels1.Count; x++)
+                            {
+                                if (levels1[x].Id == vinculosPeso[i].ParLevel1_Id)
+                                {
+                                    parLevel1.Add(levels1[x]);
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
 
             return Ok(new
