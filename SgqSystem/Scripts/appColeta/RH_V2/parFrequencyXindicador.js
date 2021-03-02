@@ -44,6 +44,7 @@ function listarParFrequencyXindicador() {
     cleanGlobalVarParFrequency();
 
     currentParFrequency_Id = null;
+    currentParLevel1_Id = null;
 
 	_readFile("parFrequency.txt", function (data) {
 
@@ -54,6 +55,7 @@ function listarParFrequencyXindicador() {
 		var frequency = {};
 
         var htmlParFrequency = "";
+        var htmlParLevel1 = "";
 
         //if (listaParFrequency.length == 1) {
         //    getAppParametrization(listaParFrequency[0].Id);
@@ -62,12 +64,19 @@ function listarParFrequencyXindicador() {
 
         //data = data.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
-		$(data.frequencies).each(function (i, o) {
+		$(data).each(function (i, o) {
 
-			htmlParFrequency += '<button type="button" class="list-group-item col-xs-12" data-par-frequency-id="' + o.Id + '" ' +
-				((currentParFrequency_Id == o.Id || !(currentParFrequency_Id > 0)) ? '' : 'style="background-color:#eee;cursor:not-allowed"')
+			htmlParFrequency += '<button type="button" class="list-group-item col-xs-12" style="background-color:gray;cursor:not-allowed"'
 				+ '>' + o.Name +
-				'</button>';
+                '</button>';
+
+            $(data[i].ParLevel1).each(function (x, y) {
+
+                htmlParLevel1 += '<button type="button" class="list-group-item col-xs-6" data-par-frequency-id="' + o.Id + '" data-par-level1-id="' + y.Id + '" ' +
+                    ((currentParLevel1_Id == y.Id || !(currentParLevel1_Id > 0)) ? '' : 'style="padding: 20px;background-color:#eee;cursor:not-allowed"')
+                    + '>' + y.Name +
+                    '</button>';
+            });
 		});
 
         var voltar = '<a onclick="validaRota(openParCluster,null);"  style="margin-bottom:10px"  class="btn btn-warning col-xs-12">Voltar</a>';
@@ -84,14 +93,16 @@ function listarParFrequencyXindicador() {
             '				<h3 class="panel-title">Selecione o Indicador</h3>      ' +
             '                 </div >                                          ' +
             '                 <div class="col-sm-3">                           ' +
-            voltar +
+           
             getBotaoBuscar() +
             '                 </div>                                           ' +
             '               </div>                                             ' +
 			'			  </div>                                   ' +
 			'			  <div class="panel-body">                 ' +
-			'				<div class="list-group">               ' +
-			htmlParFrequency +
+            '				<div class="list-group">               ' +
+            voltar +
+            htmlParFrequency +
+            htmlParLevel1+
 			'				</div>                                 ' +
 			'			  </div>                                   ' +
 			'			</div>                                     ' +

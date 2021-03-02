@@ -11,5 +11,7 @@ namespace Dominio.AppViewModel
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public List<ParLevel1AppViewModel> ParLevel1 { get; set; } = new List<ParLevel1AppViewModel>();
     }
 }

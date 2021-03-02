@@ -2,11 +2,8 @@
 using Dominio.AppViewModel;
 using SgqSystem.Controllers.Api;
 using SgqSystem.ViewModels;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.V2.Api
@@ -14,29 +11,6 @@ namespace SgqSystem.Controllers.V2.Api
     [RoutePrefix("api")]
     public class ParFrequencyXParLevel1APIController : BaseApiController
     {
-        public class ParLevel1GroupByParFrequency
-        {
-            public List<ParFrequencyAppViewModel> frequency {get;set;}
-        }
-
-        public class ParFrequencyAppViewModelV2
-        {
-            public string Name { get; set; }
-
-            public int? Id { get; set; }
-
-            public List<ParLevel1AppViewModel> Level1 { get; set; }
-        }
-
-        public class ParLevel1AppViewModelV2
-        {
-            public string Name { get; set; }
-
-            public int? Id { get; set; }
-
-            public List<ParLevel1AppViewModel> Level1 { get; set; }
-        }
-
 
         [HttpPost]
         [Route("GetParFrequencyXParLevel1")]
@@ -49,10 +23,14 @@ namespace SgqSystem.Controllers.V2.Api
 
             List<ParVinculoPesoAppViewModel> vinculosPeso = new List<ParVinculoPesoAppViewModel>();
 
+            ParFrequencyAppViewModel frequenciaTemp = new ParFrequencyAppViewModel();
+
+            List<ParFrequencyAppViewModel> frequenciasViewModel = new List<ParFrequencyAppViewModel>();
+
             using (Dominio.SgqDbDevEntities db = new Dominio.SgqDbDevEntities())
             {
                 vinculosPeso = db.ParVinculoPeso
-                        .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id 
+                        .Where(x => x.ParCluster_Id == appParametrization.ParCluster_Id
                         && (x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
                         && x.IsActive)
                         .Select(x => new ParVinculoPesoAppViewModel()
@@ -67,7 +45,7 @@ namespace SgqSystem.Controllers.V2.Api
                         .ToList();
 
                 levels1 = db.ParLevel1
-                    .ToList()          
+                    .ToList()
                     .Where(x => vinculosPeso.Any(y => y.ParLevel1_Id == x.Id))
                     .Select(x => new ParLevel1AppViewModel()
                     {
@@ -85,44 +63,39 @@ namespace SgqSystem.Controllers.V2.Api
                         Name = x.Name,
                     })
                     .ToList();
-                
-                ParLevel1GroupByParFrequency groupFrequencyParLevel1 = new ParLevel1GroupByParFrequency();
 
-                List<ParFrequencyAppViewModel> frequenciesv2 = new List<ParFrequencyAppViewModel>();
-
-                List<ParLevel1AppViewModel> parLevel1 = new List<ParLevel1AppViewModel>();
-
-                for (var i = 0; i < vinculosPeso.Count; i++)
+                foreach (var vinculo in vinculosPeso)
                 {
-                    for (var j = 0; j < frequencies.Count; j++)
-                    {
-                        ParFrequencyAppViewModel frequencyV2 = new ParFrequencyAppViewModel();
-
-                        if (frequencies[j].Id == vinculosPeso[i].ParFrequency_Id)
+                    var frequenciaVinculada = frequencies.Where(x => x.Id == vinculo.ParFrequency_Id).FirstOrDefault();
+                    var indicadorVinculado = levels1.Where(x => x.Id == vinculo.ParLevel1_Id)
+                        .Select(x => new ParLevel1AppViewModel()
                         {
-                            frequencyV2 = frequencies[j];
+                            Id = x.Id,
+                            Name = x.Name
+                        })
+                        .FirstOrDefault();
+                    //Valido a frequencia na view model
+                    frequenciaTemp = frequenciasViewModel.Where(x => x.Id == frequenciaVinculada.Id).FirstOrDefault();
 
-                            groupFrequencyParLevel1.frequency.Add(frequencyV2);
+                    if (frequenciaTemp == null)
+                    { 
+                        //Cria se não existir e vincula na lista
+                        frequenciaTemp = new ParFrequencyAppViewModel() { Id = frequenciaVinculada.Id, Name = frequenciaVinculada.Name };
+                        frequenciasViewModel.Add(frequenciaTemp);
 
-                            for (var x = 0; x < levels1.Count; x++)
-                            {
-                                if (levels1[x].Id == vinculosPeso[i].ParLevel1_Id)
-                                {
-                                    parLevel1.Add(levels1[x]);
-                                }
-                            }
-                        }
+                       // frequencyXindicador.frequency.Add(frequenciaTemp);
+                    }
+                    //Valido o indicador dentro da frequencia
+                    if (frequenciaTemp.ParLevel1 != null &&  !frequenciaTemp.ParLevel1.Any(x => x.Id == indicadorVinculado.Id))
+                    {
+                        // Se não tiver algum indicador na lista do view model
+                        frequenciaTemp.ParLevel1.Add(indicadorVinculado);
                     }
                 }
 
             }
 
-            return Ok(new
-            {
-                frequencies,
-                levels1,
-                vinculosPeso
-            });
+            return Ok(frequenciasViewModel);
         }
     }
 }
