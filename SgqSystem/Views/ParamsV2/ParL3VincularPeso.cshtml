@@ -194,20 +194,25 @@
     $("#ParL3Peso #selectL3PesoParDepartment").on('change', function () {
         var departamentoSelecionado = parseInt($("#ParL3Peso #selectL3PesoParDepartment :selected").val());
         var cargosVinculado = [];
-
+        debugger
         if (departamentoSelecionado === 0) {
             preencheSelect('selectL3ParCargo', 'Name', 'Id', ParCargosGlobal, 'Todos');
             cargosVinculado = [];
         } else {
 
             if (ParCargoXDepartmentsGlobal) {
-            ParCargosGlobalFiltrado = jQuery.grep(ParCargoXDepartmentsGlobal, function (n, i) {
-                return (n.ParDepartment_Id === departamentoSelecionado);
-            });
+                ParCargosGlobalFiltrado = jQuery.grep(ParCargoXDepartmentsGlobal, function (n, i) {
+                    return (n.ParDepartment_Id === departamentoSelecionado);
+                });
 
-            ParCargosGlobalFiltrado.forEach(function (item) {
-                 cargosVinculado.push(item.ParCargo);
-            });
+                ParCargosGlobalFiltrado.forEach(function (item) {
+                    var cargo = jQuery.grep(ParCargosGlobal, function (n, i) {
+                        if (n.Id == item.ParCargo_Id) {
+                            cargosVinculado.push({ Id: n.Id, Name: n.Name });
+                        }
+                    });
+
+                });
 
                 preencheSelect('selectL3ParCargo', 'Name', 'Id', cargosVinculado, 'Todos');
             }
