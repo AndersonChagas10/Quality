@@ -33,7 +33,7 @@
     });
 }
 
-function listarParClusterGroup() {
+function listarParClusterGroup(isVoltar) {
     
     cleanGlobalVarParCluster();
 
@@ -96,6 +96,9 @@ function listarParClusterGroup() {
 
         $('div#app').html(html);
         setBreadcrumbs();
+        if ($(".list-group button").length == 1 && (isVoltar == false || isVoltar == undefined)) {
+            $("[data-par-cluster-group-id]").trigger('click');
+        }
     });
 }
 

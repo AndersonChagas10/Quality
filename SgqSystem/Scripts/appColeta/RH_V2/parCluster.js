@@ -97,6 +97,10 @@ function listarParCluster() {
 
         $('div#app').html(html);
         setBreadcrumbs();
+
+        if ($(".list-group button").length == 1 && (isVoltar == false || isVoltar == undefined)) {
+            $("[data-par-cluster-id]").trigger('click');
+        }
     });
 }
 
