@@ -194,7 +194,8 @@
     $("#ParL3Peso #selectL3PesoParDepartment").on('change', function () {
         var departamentoSelecionado = parseInt($("#ParL3Peso #selectL3PesoParDepartment :selected").val());
         var cargosVinculado = [];
-        
+        var cargo = [];
+
         if (departamentoSelecionado === 0) {
             preencheSelect('selectL3ParCargo', 'Name', 'Id', ParCargosGlobal, 'Todos');
             cargosVinculado = [];
@@ -206,12 +207,7 @@
                 });
 
                 ParCargosGlobalFiltrado.forEach(function (item) {
-                    var cargo = jQuery.grep(ParCargosGlobal, function (n, i) {
-                        if (n.Id == item.ParCargo_Id) {
-                            cargosVinculado.push({ Id: n.Id, Name: n.Name });
-                        }
-                    });
-
+                    cargosVinculado.push(ParCargosGlobal.find(x => x.Id === item.ParCargo_Id));
                 });
 
                 preencheSelect('selectL3ParCargo', 'Name', 'Id', cargosVinculado, 'Todos');
