@@ -194,7 +194,7 @@
     $("#ParL3Peso #selectL3PesoParDepartment").on('change', function () {
         var departamentoSelecionado = parseInt($("#ParL3Peso #selectL3PesoParDepartment :selected").val());
         var cargosVinculado = [];
-        debugger
+        
         if (departamentoSelecionado === 0) {
             preencheSelect('selectL3ParCargo', 'Name', 'Id', ParCargosGlobal, 'Todos');
             cargosVinculado = [];
