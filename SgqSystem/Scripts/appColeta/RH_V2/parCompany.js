@@ -71,9 +71,10 @@ function listarParCompany(isVoltar) {
             '<div class="container-fluid">                               ' +
             '	<div class="">                                  ' +
             '		<div class="col-xs-12">                        ' +
-            '			<div class="panel" style="background-color:#99ccff;">          ' +
-            '			  <div class="panel-heading">              ' +
-            '<img class="col-xs-12" src="' + globalLogo + '" height="60" >' +
+            '			<div class="panel">          ' +
+            '			  <div class="panel-heading" style="background-color:#DCE6F1;">              ' +
+            '<div style="height: 220px; text-align: center; background-repeat: no-repeat;background-size: auto 100%;background-position: center;height: 220px; ' + systemLogo + '">' +
+            '</div>' +
             '			    <div class="row">                          ' +
             '			      <div class="col-xs-9">                         ' +
             '				<h3 class="panel-title">Selecione uma Unidade</h3>' +

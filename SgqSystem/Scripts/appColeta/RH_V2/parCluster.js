@@ -53,13 +53,17 @@ function listarParCluster() {
 
         data = data.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
+
+        if (globalLogo)
+            systemLogo = 'background-image: url(' + globalLogo + ')';
+
+        htmlParCluster += '<div class="row">';
         $(data).each(function (i, o) {
 
-            htmlParCluster += '<button type="button" class="list-group-item col-xs-6" style="padding: 20px;" data-par-cluster-id="' + o.Id + '" ' +
-                ((currentParCluster_Id == o.Id || !(currentParCluster_Id > 0)) ? '' : 'style="background-color:#eee;cursor:not-allowed"')
-                + '>' + o.Name +
-                '</button>';
+            htmlParCluster += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important;"><button type="button" class="btn btn-lg btn-block"  style="color: #1F497D;background-color:#DCE6F1;" data-par-cluster-id="' + o.Id + '">' + o.Name +
+                '</button></div>';
         });
+        htmlParCluster += "</div>";
 
         var voltar = '<a onclick="validaRota(openParClusterGroup,null);" style="margin-bottom:10px"  class="btn btn-warning col-xs-12">Voltar</a>';
 
@@ -67,9 +71,10 @@ function listarParCluster() {
             '<div class="container-fluid">                               ' +
             '	<div class="">                                  ' +
             '		<div class="col-xs-12">                        ' +
-            '			<div class="panel" style="background-color:#99ccff;">          ' +
-            '			  <div class="panel-heading">              ' +
-            '<div class="col-xs-12" style="text-align:center;">Aqui vai uma imagem</div>' +
+            '			<div class="panel">          ' +
+            '			  <div class="panel-heading" style="background-color:#DCE6F1;">              ' +
+            '<div style="height: 220px; text-align: center; background-repeat: no-repeat;background-size: auto 100%;background-position: center;height: 220px; ' + systemLogo + '">' +
+            '</div>' +
             '			    <div class="row">                          ' +
             '			      <div class="col-xs-9">                         ' +
             '				<h3 class="panel-title">Selecione o Cluster</h3>' +

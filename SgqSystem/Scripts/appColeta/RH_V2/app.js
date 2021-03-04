@@ -197,18 +197,40 @@ function setBreadcrumbs() {
 
     if (currentParCompany_Id) {
 
-        breadcrumbLi = getBreadcrumb($.grep(currentLogin.ParCompanyXUserSgq, function (item) {
+        breadcrumbLi += getBreadcrumb($.grep(currentLogin.ParCompanyXUserSgq, function (item) {
             return item.ParCompany_Id == currentParCompany_Id;
-        })[0].ParCompany.Name, 'validaRota(listarParCompany,0)', false) + breadcrumbLi;
+        })[0].ParCompany.Name, 'validaRota(listarParCompany,0)', false);
 
         isCurrent = false;
     }
 
     if (currentParClusterGroup_Id) {
 
-        breadcrumbLi = getBreadcrumb($.grep(listaParClusterGroup, function (item) {
+        breadcrumbLi += getBreadcrumb($.grep(listaParClusterGroup, function (item) {
             return item.Id == currentParClusterGroup_Id;
-        })[0].Name, 'validaRota(listarParClusterGroup,0)', false) + breadcrumbLi;
+        })[0].Name, 'validaRota(listarParClusterGroup,0)', false);
+
+        isCurrent = false;
+    }
+
+    if (currentParCluster_Id) {
+        if (parametrization) {
+            breadcrumbLi += getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
+                return item.Id == currentParCluster_Id;
+            })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
+        } else {
+            breadcrumbLi += getBreadcrumb($.grep(listaParCluster, function (item) {
+                return item.Id == currentParCluster_Id;
+            })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
+        }
+
+        isCurrent = false;
+    }
+
+    if (currentParFrequency_Id) {
+        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
+            return item.Id == currentParFrequency_Id;
+        })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent) + breadcrumbLi;
 
         isCurrent = false;
     }
@@ -245,35 +267,10 @@ function setBreadcrumbs() {
         breadcrumbLi = deparment + breadcrumbLi;
         isCurrent = false;
     }
-    //var cluster = "";
-    //if (currentParCluster_Id) {
-    //    cluster = getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
-    //        return item.Id == currentParCluster_Id;
-    //    })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
-
-    //    breadcrumbLi = cluster + breadcrumbLi;
-    //    isCurrent = false;
-    //}
-
-    if (currentParFrequency_Id) {
-        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
-            return item.Id == currentParFrequency_Id;
-        })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent) + breadcrumbLi;
-
-        isCurrent = false;
-    }
-
-    if (currentParCluster_Id) {
-        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
-            return item.Id == currentParCluster_Id;
-        })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent) + breadcrumbLi;
-
-        isCurrent = false;
-    }
 
     breadcrumb += breadcrumbLi + '</ol>';
 
-    $('.panel-heading').prepend(breadcrumb);
+    $('.panel-heading').append(breadcrumb);
 
 }
 
