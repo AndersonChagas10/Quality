@@ -72,7 +72,7 @@ function listarParFrequencyXindicador() {
             data[i].ParLevel1 = data[i].ParLevel1.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
             $(data[i].ParLevel1).each(function (x, y) {
 
-                htmlParFrequency += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important;"><button type="button" class="btn btn-lg btn-block" style="color: #1F497D;background-color:#DCE6F1;" data-par-frequency-id="' + o.Id + '" data-par-level1-id="' + y.Id + '" >' + y.Name +
+                htmlParFrequency += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important;"><button type="button" class="list-group-item btn btn-lg btn-block" style="color: #1F497D;background-color:#DCE6F1;" data-par-frequency-id="' + o.Id + '" data-par-level1-id="' + y.Id + '" >' + y.Name +
                     '</button></div>';
             });
             htmlParFrequency += '</div>';
