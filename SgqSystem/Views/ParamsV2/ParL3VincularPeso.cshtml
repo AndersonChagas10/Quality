@@ -201,13 +201,14 @@
         } else {
 
             if (ParCargoXDepartmentsGlobal) {
-            ParCargosGlobalFiltrado = jQuery.grep(ParCargoXDepartmentsGlobal, function (n, i) {
-                return (n.ParDepartment_Id === departamentoSelecionado);
-            });
+                ParCargosGlobalFiltrado = jQuery.grep(ParCargoXDepartmentsGlobal, function (n, i) {
+                    return (n.ParDepartment_Id === departamentoSelecionado);
+                });
 
-            ParCargosGlobalFiltrado.forEach(function (item) {
-                 cargosVinculado.push(item.ParCargo);
-            });
+                ParCargosGlobalFiltrado.forEach(function (item) {
+                    var cargo = ParCargosGlobal.find(x => x.Id === item.ParCargo_Id);
+                    cargosVinculado.push(cargo);
+                });
 
                 preencheSelect('selectL3ParCargo', 'Name', 'Id', cargosVinculado, 'Todos');
             }
