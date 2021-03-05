@@ -1,4 +1,4 @@
-﻿function openParCluster() {
+﻿function openParCluster(isVoltar) {
 
     var html = '';
 
@@ -15,7 +15,7 @@
 
                     _writeFile("parCluster.txt", JSON.stringify(data), function () {
                         listaParCluster = data;
-                        listarParCluster();
+                        listarParCluster(isVoltar);
                     });
 
                     closeMensagem();
@@ -28,13 +28,13 @@
             });
 
         } else {
-            listarParCluster();
+            listarParCluster(isVoltar);
         }
 
     });
 }
 
-function listarParCluster() {
+function listarParCluster(isVoltar) {
 
     cleanGlobalVarParCluster();
 
@@ -65,7 +65,7 @@ function listarParCluster() {
         });
         htmlParCluster += "</div>";
 
-        var voltar = '<a onclick="validaRota(openParClusterGroup,null);" style="margin-bottom:10px"  class="btn btn-warning col-xs-12">Voltar</a>';
+        var voltar = '<a onclick="validaRota(openParClusterGroup,true);" style="margin-bottom:10px"  class="btn btn-warning col-xs-12">Voltar</a>';
 
         html = getHeader() +
             '<div class="container-fluid">                               ' +

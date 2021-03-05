@@ -52,11 +52,7 @@ function listarParFrequencyXindicador() {
 
         listaParFrequency = data;
 
-        var frequency = {};
-
         var htmlParFrequency = "";
-        var htmlParLevel1 = "";
-
 
         data = data.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
@@ -69,7 +65,9 @@ function listarParFrequencyXindicador() {
                 '</h3> </div> </div>';
 
             htmlParFrequency += '<div class="row">';
+
             data[i].ParLevel1 = data[i].ParLevel1.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
+
             $(data[i].ParLevel1).each(function (x, y) {
 
                 htmlParFrequency += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important;"><button type="button" class="list-group-item btn btn-lg btn-block" style="color: #1F497D;background-color:#DCE6F1;" data-par-frequency-id="' + o.Id + '" data-par-level1-id="' + y.Id + '" >' + y.Name +
@@ -77,7 +75,7 @@ function listarParFrequencyXindicador() {
             });
             htmlParFrequency += '</div>';
         });
-        var voltar = '<a onclick="validaRota(openParCluster,null);"  style="margin-bottom:10px"  class="btn btn-warning col-xs-12">Voltar</a>';
+        var voltar = '<a onclick="validaRota(openParCluster,true);"  style="margin-bottom:10px"  class="btn btn-warning col-xs-12">Voltar</a>';
 
         html = getHeader() +
             '<div class="container-fluid">                               ' +
@@ -145,12 +143,12 @@ function getAppParametrization(frequencyId) {
 
         _readFile("appParametrization.txt", function (data) {
 
-            if (data) {
-                parametrization = JSON.parse(data);
-                atualizarVariaveisCurrent(parametrization);
-            }
+            //if (data) {
+            //    parametrization = JSON.parse(data);
+            //    atualizarVariaveisCurrent(parametrization);
+            //}
 
-            openPlanejamentoColeta();
+           // openPlanejamentoColeta();
             closeMensagem();
         });
     }
@@ -178,7 +176,7 @@ function chamaGetAppParametrization() {
             data.currentParClusterGroup_Id = currentParClusterGroup_Id;
             data.currentParCompany_Id = currentParCompany_Id;
             _writeFile("appParametrization.txt", JSON.stringify(data), function () {
-                parametrization = data;
+               // parametrization = data;
                 openPlanejamentoColeta();
                 atualizaColetasParciais();
                 //closeMensagem();

@@ -1,4 +1,4 @@
-﻿function openParClusterGroup() {
+﻿function openParClusterGroup(isVoltar) {
 
     var html = '';
 
@@ -14,7 +14,7 @@
                 success: function (data) {
                     _writeFile("parClusterGroup.txt", JSON.stringify(data), function () {
                         listaParClusterGroup = data;
-                        listarParClusterGroup();
+                        listarParClusterGroup(isVoltar);
                     });
 
                     closeMensagem();
@@ -27,7 +27,7 @@
             });
 
         } else {
-            listarParClusterGroup();
+            listarParClusterGroup(isVoltar);
         }
 
     });
