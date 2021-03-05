@@ -1,0 +1,268 @@
+var token = function () {
+    return {
+        "token": currentLogin.Name + "|" + currentLogin.Password
+    };
+};
+
+function getImages() {
+
+    pingLogado(urlPreffix, function () {
+
+        $.ajax({
+            data: JSON.stringify({}),
+            type: 'POST',
+            url: urlPreffix + '/api/AppParams/GetImages',
+            contentType: "application/json",
+            success: function (data) {
+                globalLogo = data;
+                _writeFile("images.txt", JSON.stringify(data), function () {
+                    getLogo(setLogin);
+                });
+
+            },
+            timeout: 600000,
+            error: function () {
+                getLogo(setLogin);
+            }
+        });
+
+    }, getLogo(setLogin))
+
+}
+
+function getLogo(callback) {
+
+    _readFile('images.txt', function (data) {
+
+        if (data) {
+
+            data = JSON.parse(data)
+
+            if (data.logo) {
+
+                callback(data.logo);
+                globalLogo = data.logo;
+            } else {
+                callback();
+            }
+        }
+        else {
+
+            callback();
+        }
+
+    });
+}
+
+function openLogin() {
+
+    _readFile("login.txt", function (data) {
+
+        if (data)
+            currentLogin = JSON.parse(data);
+
+        getImages();
+
+    });
+}
+
+function setLogin(logo) {
+
+    cleanGlobalVarLogin();
+
+    var systemLogo = "";
+
+    if (logo)
+        systemLogo = 'background-image: url(' + logo + ')';
+
+    var html = '';
+
+    html = '<div id="" class="login" name="" style="">                                                                                                              ' +
+        '<div id="" class="head" name="" style="' + systemLogo + '"></div>                                                                                                            ' +
+        '    <form id="" class="form-signin" name="" style="">                                                                                                      ' +
+        '        <h2 id="" class="" name="" style="">Entrar</h2>                                                                                                                                     ' +
+        '        <label for="inputUserName" class="sr-only" style="">Usuário</label>                                                                                ' +
+        '        <input type="text" id="inputUserName" class=" form-control" placeholder="Usuário" required="" >                                                    ' +
+        '        <label for="inputPassword" class="sr-only" style="">Senha</label>                                                                                  ' +
+        '        <input type="password" id="inputPassword" class=" form-control" placeholder="Senha" required="" >                                                  ' +
+        '        <button type="submit" id="btnLogin" class="btn-lg btn-primary btn-block marginTop10 btn"                                                           ' +
+        '        data-loading-text="<i class=\'fa fa-spinner fa-spin\'></i> <span class=\'wMessage\' style=\'font-size:14px;\'>Validando...</span>"                       ' +
+        'data-initial-text="Entrar" style="" >Entrar</button>                                                                                                       ' +
+        '        <div id="messageError" class="alert alert-danger hide" name="" style="" role="alert"><span id="" class="icon-remove-sign" name="" style="">        ' +
+        '</span><strong>Erro! </strong><span id="mensagemErro" class="" name="" style=""></span></div>                                                              ' +
+        '        <div id="" class="divLoadFiles" name="" style=""><span id="" class="messageLoading" name="" style=""></span></div>                                 ' +
+        '        <div id="messageAlert" class="alert alert-info hide" name="" style="" role="alert">                                                                ' +
+        '<span id="mensagemAlerta" class="icon-info-sign" name="" style=""></span></div>                                                                            ' +
+        '        <div id="messageSuccess" class="alert alert-success hide" name="" style="" role="alert">                                                           ' +
+        '<span id="mensagemSucesso" class="icon-ok-circle" name="" style=""></span></div>                                                                           ' +
+        '    </form>                                                                                                                                                ' +
+        '    <div id="" class="" name="" style="max-width:320px; margin: 0 auto; padding-right:15px; padding-left:15px">                                            ' +
+        '        <button type="submit" id="btnChangeHost" class="btn-lg btn-default btn-sm btn-block btn" style="">Atualizar o APP</button>                         ' +
+        '    </div>                                                                                                                                                 ' +
+        '    <div id="" class="foot" name="" style="text-align:center">                                                                                             ' +
+        '        <br>                                                                                                                                               ' +
+        '        <br>                                                                                                                                               ' +
+        '        <br><span id="local" class="hide" name="" style="" empresa="jbs" local="brasil"></span>                                                            ' +
+        '<span id="versionLogin" class="" name="" style="">Versão<span id="" class="number" name="" style=""> ' + versao +'</span></span>                          ' +
+        '    <span id="ambienteLogin" class="" name="" style=""></span>                                       ' +
+        '    </div>                                                                                                                                                 ' +
+        '</div>';
+
+    $('div#app').html(html);
+}
+
+$('body').off('click', '#btnLogin').on('click', '#btnLogin', function (event) {
+
+    event.preventDefault();
+
+    $(this).html($(this).attr('data-loading-text'));
+
+    pingLogado(urlPreffix, loginOnline, loginOffline);
+
+});
+
+function loginOffline() {
+
+    if (currentLogin.Id > 0) {
+
+        if ($('#inputUserName').val() == currentLogin.Name
+            && AES.Encrypt($('#inputPassword').val()) == currentLogin.Password) {
+            globalLoginOnline = false;
+            loginSuccess(currentLogin);
+            return;
+        }
+    }
+
+    loginOnline();
+}
+
+function loginOnline() {
+
+    $.ajax({
+        data: {
+            app: true,
+            Name: $('#inputUserName').val(),
+            Password: AES.Encrypt($('#inputPassword').val()),
+        },
+        url: urlPreffix + '/api/User/AuthenticationLogin',
+        type: 'POST',
+        success: function (data) {
+
+            if (data && data.Retorno != null) {
+                //se for usuários diferentes ou unidade diferente, zera a parametrização
+                if (currentLogin){
+                    if (currentLogin.Id != data.Retorno.Id || currentLogin.ParCompany_Id != data.Retorno.ParCompany_Id) {
+
+                        parametrization = null;
+                        currentPlanejamento = [];
+
+                        _writeFile("appParametrization.txt", '', aposLimparDadosDaParametrizacao);
+
+                        _writeFile("planejamento.txt", '', function () { });
+                    }
+                }
+                
+                _writeFile("login.txt", JSON.stringify(data.Retorno), function () {
+                    globalLoginOnline = true;
+                    loginSuccess(data.Retorno);
+                });
+            } else {
+
+                var mensagem = "Usúario ou senha incorretos. Verificar os dados e tentar novamente!";
+
+                openMensagem(mensagem, "blue", "white");
+
+                closeMensagem(1400);
+                openLogin();
+            }
+
+            currentBaixarGetResultadoAposEnviarOsDadosColetados = true;
+            enviarColeta();
+        },
+        timeout: 600000,
+        error: function () {
+            $('#btnLogin').html($('#btnLogin').attr('data-initial-text'));
+        }
+    });
+
+}
+
+function loginSuccess(data) {
+    if(parametrization != null && parametrization.currentParCompany_Id > 0)
+    {
+        currentParCompany_Id = parametrization.currentParCompany_Id;
+    }else{
+        currentParCompany_Id = data.ParCompany_Id;
+    }
+    currentLogin = data;
+    currentCollectDate = new Date();
+    openLogado();
+    openParCompany();
+    getDicionarioEstatico();
+}
+
+function cleanGlobalVarLogin() {
+    
+    currentParCompany_Id = null;
+    currentParDepartment_Id = null;
+    currentParCargo_Id = null;
+
+}
+
+function logout() {
+    if (globalColetasRealizadas.length > 0) {
+
+        setTimeout(function () {
+            var titulo = "Há coletas que não foram sincronizadas.";
+            var mensagem = "Não é possivel sair até que todas as coletas tenham sido sincronizadas.<br/>";
+            mensagem += "[Não] Fecha a mensagem [Sim] Força sincronização das coletas (esteja online).";
+
+            openMessageConfirm(titulo, mensagem, sincronizarColeta, closeMensagemImediatamente, "orange", "white");
+        }, 500);
+        return false;
+    }
+
+    //_writeFile("login.txt", '', function () {
+    currentLogin = null;
+    openLogin();
+    // });
+}
+
+$(window).on('beforeunload', function () {
+    //_writeFile("login.txt", '', function () { });
+    currentLogin = null;
+});
+
+function getDicionarioEstatico() {
+
+    pingLogado(urlPreffix, function () {
+
+        $.ajax({
+            type: 'GET',
+            url: urlPreffix + '/api/AppParams/GetDicionarioEstatico',
+            contentType: "application/json",
+            success: function (data) {
+                globalDicionarioEstatico = JSON.parse(data);
+                _writeFile("dicionarioestatico.txt", JSON.stringify(data), function () {
+
+                });
+            },
+            timeout: 600000,
+            error: function () {
+            }
+        });
+
+    }, getLocalDicionarioEstatico);
+
+}
+
+function getLocalDicionarioEstatico() {
+
+    _readFile('dicionarioestatico.txt', function (data) {
+
+        if (data) {
+            globalDicionarioEstatico = JSON.parse(data)
+        }
+
+    });
+}
