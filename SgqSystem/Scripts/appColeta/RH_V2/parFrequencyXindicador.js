@@ -61,8 +61,13 @@ function listarParFrequencyXindicador() {
 
         $(data).each(function (i, o) {
 
-            htmlParFrequency += '<div class="row"> <div class="col-xs-12"> <h3 class="alert alert-secondary text-center" style="background-color:#CCC">' + o.Name +
-                '</h3> </div> </div>';
+            htmlParFrequency += `<div class="row"> 
+                 <div class="col-xs-12"> 
+                    <h3 class="alert alert-secondary text-center" style="background-color:#CCC">${o.Name}
+                        <button class="btn btn-sm btn-info pull-right" data-select-allLevel1="${o.Id}"> Selecionar todos</button>
+                    </h3>
+                    </div>
+                </div>`;
 
             htmlParFrequency += '<div class="row">';
 
@@ -70,7 +75,7 @@ function listarParFrequencyXindicador() {
 
             $(data[i].ParLevel1).each(function (x, y) {
 
-                htmlParFrequency += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important;"><button type="button" class="list-group-item btn btn-lg btn-block" style="color: #1F497D;background-color:#DCE6F1;" data-par-frequency-id="' + o.Id + '" data-par-level1-id="' + y.Id + '" >' + y.Name +
+                htmlParFrequency += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important;"><button type="button" class="list-group-item btn btn-lg btn-block" style="color: #1F497D;background-color:#DCE6F1;" data-selected="false" data-par-frequency-id="' + o.Id + '" data-par-level1-id="' + y.Id + '" >' + y.Name +
                     '</button></div>';
             });
             htmlParFrequency += '</div>';
@@ -100,6 +105,9 @@ function listarParFrequencyXindicador() {
             voltar +
             htmlParFrequency +
             '				</div>                                 ' +
+            '			  <div class="row">    <div class="col-xs-12">             ' +
+            '<button class="btn btn-success col-xs-12">Coletar</button>' +
+            '			   </div></div>' +
             '			  </div>                                   ' +
             '			</div>                                     ' +
             '		</div>                                         ' +
@@ -118,16 +126,77 @@ function cleanGlobalVarParFrequency() {
     currentsParDepartments_Ids = [];
 }
 
-$('body').off('click', '[data-par-frequency-id]').on('click', '[data-par-frequency-id]', function (e) {
+$('body').off('click', '[data-par-frequency-id]', '[data-par-level1-id]').on('click', '[data-par-frequency-id]','[data-par-level1-id]', function (e) {
 
     var frequencyId = parseInt($(this).attr('data-par-frequency-id'));
+    var parLevel1Id = parseInt($(this).attr('data-par-level1-id'));
 
-    getAppParametrization(frequencyId);
+    setListLevel1($(this));
+   
+
+    //getAppParametrization(frequencyId);
 
 });
 
-function getAppParametrization(frequencyId) {
+$('body').off('click', '[data-select-allLevel1]').on('click', '[data-select-allLevel1]', function () {
+    
+    var frequency = $(this).attr('data-select-allLevel1');
+    var level1List = $('body [data-par-frequency-id="' + frequency + '"]');
 
+    level1List.each(function (i, o) {
+        setListLevel1($(o));
+    });
+   
+});
+
+function setListLevel1(btn) {
+    
+    disableLevel1Button(btn);
+
+    if ($(btn).attr('data-selected') == 'false') {
+
+        $(btn).css({ "background-color": "#a0d3a0" });
+        $(btn).attr('data-selected', 'true');
+
+    } else {
+
+        $(btn).css({ "background-color": "#DCE6F1" });
+        $(btn).attr('data-selected', 'false');
+
+    }
+
+    if ($('body [data-selected="true"]').length == 0) {
+
+        $('body [data-selected]').removeClass('disabled');
+        $('body [data-select-allLevel1]').removeClass('disabled');
+
+    }
+
+}
+
+function disableLevel1Button(btn) {
+
+    $(".list-group-item").map(function (i, o) {
+        if ($(o).attr('data-par-frequency-id') != $(btn).attr('data-par-frequency-id')) {
+            $(o).addClass('disabled');
+        } else {
+            $(o).removeClass('disabled');
+        }
+    });
+
+    $("[data-select-allLevel1]").map(function (i, o) {
+        if ($(o).attr('data-select-allLevel1') != $(btn).attr('data-par-frequency-id')) {
+            $(o).addClass('disabled');
+        } else {
+            $(o).removeClass('disabled');
+        }
+    });
+    
+    
+}
+
+function getAppParametrization(frequencyId) {
+    return;
     if (!frequencyId) {
         return;
     }
@@ -155,6 +224,7 @@ function getAppParametrization(frequencyId) {
 }
 
 function chamaGetAppParametrization() {
+    return;
     getDicionarioEstatico();
     openMensagem('Por favor, aguarde até que seja feito o download do planejamento', 'blue', 'white');
 
