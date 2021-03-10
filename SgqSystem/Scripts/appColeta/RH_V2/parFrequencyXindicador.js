@@ -56,7 +56,7 @@ function listarParFrequencyXindicador() {
 
         data = data.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
-        if(globalLogo)
+        if (globalLogo)
             systemLogo = 'background-image: url(' + globalLogo + ')';
 
         $(data).each(function (i, o) {
@@ -126,52 +126,64 @@ function cleanGlobalVarParFrequency() {
     currentsParDepartments_Ids = [];
 }
 
-$('body').off('click', '[data-par-frequency-id]', '[data-par-level1-id]').on('click', '[data-par-frequency-id]','[data-par-level1-id]', function (e) {
-
-    var frequencyId = parseInt($(this).attr('data-par-frequency-id'));
-    var parLevel1Id = parseInt($(this).attr('data-par-level1-id'));
+$('body').off('click', '[data-par-frequency-id]', '[data-par-level1-id]').on('click', '[data-par-frequency-id]', '[data-par-level1-id]', function (e) {
 
     setListLevel1($(this));
-   
 
     //getAppParametrization(frequencyId);
-
 });
 
 $('body').off('click', '[data-select-allLevel1]').on('click', '[data-select-allLevel1]', function () {
-    
+
     var frequency = $(this).attr('data-select-allLevel1');
     var level1List = $('body [data-par-frequency-id="' + frequency + '"]');
+
+    var selectAll = 0;
+
+    level1List.filter(function (i, o) {
+        if ($(o).attr('data-selected') == 'true')
+            selectAll++;
+    });
+
+    level1List.filter(function (i, o) {
+
+        if (selectAll > 0) {
+            $(o).addClass('disabled');
+            $(o).css({ "background-color": "#a0d3a0" });
+            $(o).attr('data-selected', 'true');
+        } else {
+            $(o).removeClass('disabled');
+            $(o).css({ "background-color": "#DCE6F1" });
+            $(o).attr('data-selected', 'false');
+        }
+
+    });
 
     level1List.each(function (i, o) {
         setListLevel1($(o));
     });
-   
+
 });
 
 function setListLevel1(btn) {
-    
+
     disableLevel1Button(btn);
 
     if ($(btn).attr('data-selected') == 'false') {
 
         $(btn).css({ "background-color": "#a0d3a0" });
         $(btn).attr('data-selected', 'true');
-
     } else {
 
         $(btn).css({ "background-color": "#DCE6F1" });
         $(btn).attr('data-selected', 'false');
-
     }
 
     if ($('body [data-selected="true"]').length == 0) {
 
         $('body [data-selected]').removeClass('disabled');
         $('body [data-select-allLevel1]').removeClass('disabled');
-
     }
-
 }
 
 function disableLevel1Button(btn) {
@@ -191,8 +203,6 @@ function disableLevel1Button(btn) {
             $(o).removeClass('disabled');
         }
     });
-    
-    
 }
 
 function getAppParametrization(frequencyId) {
@@ -217,7 +227,7 @@ function getAppParametrization(frequencyId) {
             //    atualizarVariaveisCurrent(parametrization);
             //}
 
-           // openPlanejamentoColeta();
+            // openPlanejamentoColeta();
             closeMensagem();
         });
     }
@@ -246,7 +256,7 @@ function chamaGetAppParametrization() {
             data.currentParClusterGroup_Id = currentParClusterGroup_Id;
             data.currentParCompany_Id = currentParCompany_Id;
             _writeFile("appParametrization.txt", JSON.stringify(data), function () {
-               // parametrization = data;
+                // parametrization = data;
                 openPlanejamentoColeta();
                 atualizaColetasParciais();
                 //closeMensagem();
