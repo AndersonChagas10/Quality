@@ -146,18 +146,26 @@ function setParametrizationObj() {
     if ($('[data-selected=true]').length > 0) {
 
         $('[data-selected=true]').map(function (i, o) {
-            parLevel1List.push(parseInt($(o).attr('data-par-level1-id')));
+            parLevel1List.push({ level1_Id: parseInt($(o).attr('data-par-level1-id')), level1_Name: $(o).text() });
         });
 
         var frequency = parseInt($('[data-selected=true]').attr('data-par-frequency-id'));
-        getAppParametrization(frequency);
+        setPlanejamentoList(parLevel1List);
+        //getAppParametrization(frequency);
 
     } else {
         openMensagem("Selecione ao menos um Indicador!", 'yellow', 'black');
         closeMensagem(2000);
     }
+    
+}
 
-  
+function setCurrentPlanejamentoList(level1List) {
+
+    level1List.map(function (o, i) {
+        currentPlanejamento.push({ indicador_Id: o.level1_Id, indicador_Name: o.level1_Name });
+    });
+
 }
 
 $('body').off('click', '[data-select-allLevel1]').on('click', '[data-select-allLevel1]', function () {
