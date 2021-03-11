@@ -106,7 +106,7 @@ function listarParFrequencyXindicador() {
             htmlParFrequency +
             '				</div>                                 ' +
             '			  <div class="row">    <div class="col-xs-12">             ' +
-            '<button class="btn btn-success col-xs-12">Coletar</button>' +
+            '<button class="btn btn-success col-xs-12" data-coletar>Coletar</button>' +
             '			   </div></div>' +
             '			  </div>                                   ' +
             '			</div>                                     ' +
@@ -130,8 +130,35 @@ $('body').off('click', '[data-par-frequency-id]', '[data-par-level1-id]').on('cl
 
     setListLevel1($(this));
 
+});
+
+$('body').off('click', '[data-coletar]').on('click', '[data-coletar]', function (e) {
+
+    setParametrizationObj();
+
     //getAppParametrization(frequencyId);
 });
+
+function setParametrizationObj() {
+
+    parLevel1List = [];
+
+    if ($('[data-selected=true]').length > 0) {
+
+        $('[data-selected=true]').map(function (i, o) {
+            parLevel1List.push(parseInt($(o).attr('data-par-level1-id')));
+        });
+
+        var frequency = parseInt($('[data-selected=true]').attr('data-par-frequency-id'));
+        getAppParametrization(frequency);
+
+    } else {
+        openMensagem("Selecione ao menos um Indicador!", 'yellow', 'black');
+        closeMensagem(2000);
+    }
+
+  
+}
 
 $('body').off('click', '[data-select-allLevel1]').on('click', '[data-select-allLevel1]', function () {
 
@@ -206,7 +233,7 @@ function disableLevel1Button(btn) {
 }
 
 function getAppParametrization(frequencyId) {
-    return;
+
     if (!frequencyId) {
         return;
     }
@@ -222,19 +249,19 @@ function getAppParametrization(frequencyId) {
 
         _readFile("appParametrization.txt", function (data) {
 
-            //if (data) {
-            //    parametrization = JSON.parse(data);
-            //    atualizarVariaveisCurrent(parametrization);
-            //}
+            if (data) {
+                parametrization = JSON.parse(data);
+                atualizarVariaveisCurrent(parametrization);
+            }
 
-            // openPlanejamentoColeta();
+             openPlanejamentoColeta();
             closeMensagem();
         });
     }
 }
 
 function chamaGetAppParametrization() {
-    return;
+
     getDicionarioEstatico();
     openMensagem('Por favor, aguarde até que seja feito o download do planejamento', 'blue', 'white');
 
@@ -253,7 +280,7 @@ function chamaGetAppParametrization() {
             data.currentParFrequency_Id = currentParFrequency_Id;
             data.listaParFrequency = listaParFrequency;
             data.currentParCluster_Id = currentParCluster_Id;
-            data.currentParClusterGroup_Id = currentParClusterGroup_Id;
+            data.currentParClusterGroup_Id = currentParClusterGroup_Id; 
             data.currentParCompany_Id = currentParCompany_Id;
             _writeFile("appParametrization.txt", JSON.stringify(data), function () {
                 // parametrization = data;

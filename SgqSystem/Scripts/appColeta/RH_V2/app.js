@@ -21,6 +21,7 @@ var listaParClusterGroup = [];
 var currentsParDepartments_Ids = [];
 var currentPlanejamento = [];
 var globalLogo = null;
+var parLevel1List = [];
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
