@@ -1,5 +1,8 @@
 ﻿
-$(document).on('keyup click change', 'form[data-form-coleta] div[data-linha-coleta]', function () {
+$(document)
+.off('click', 'form[data-form-coleta] div[data-linha-coleta] button')
+.on('click', 'form[data-form-coleta] div[data-linha-coleta] button', function () {
+    var linhaColeta = $(this).parents('[data-linha-coleta]')[0];
 
     if (globalDicionarioEstatico) {
         if (globalDicionarioEstatico.clustersIdsColetaUnicaTarefa == undefined) {
@@ -8,53 +11,62 @@ $(document).on('keyup click change', 'form[data-form-coleta] div[data-linha-cole
     } else {
         openMessageConfirm(
             "Objeto de coleta inválido",
-            "Entre em contato com o responsável do SESMT da sua Unidade! Não atualizar a página e tirar prints da tela por favor.",
+            "Entre em contato com o responsável do SESMT da sua Unidade! Não atualizar a página e tirar print da tela por favor.",
             closeMensagemImediatamente,
             closeMensagemImediatamente,
             "red",
             "white");
     }
 
-    if ($(this).hasClass('naoSalvar')
+    if ($(linhaColeta).hasClass('naoSalvar')
         || globalDicionarioEstatico.clustersIdsColetaUnicaTarefa.indexOf('|' + currentParCluster_Id + '|') < 0)
         return;
 
-    var isNA = $(this).attr('data-conforme-na') == "";
+    var isNA = $(linhaColeta).attr('data-conforme-na') == "";
 
-    if (($(this).attr('data-input-type') == "11" && $(this).find('input[data-texto]').val() && $(this).find('input[data-texto]').val() != '')
-        || ($(this).find('input[data-valor]').length > 0 && $(this).find('input[data-valor]').val() && $(this).find('input[data-valor]').val() != '')
-        || ($(this).find('button[data-binario]').length > 0 && $(this).attr('data-conforme') != $(this).attr('data-default-answer'))
+    if (($(linhaColeta).attr('data-input-type') == "11" && $(linhaColeta).find('input[data-texto]').val() && $(linhaColeta).find('input[data-texto]').val() != '')
+        || ($(linhaColeta).find('input[data-valor]').length > 0 && $(linhaColeta).find('input[data-valor]').val() && $(linhaColeta).find('input[data-valor]').val() != '')
+        || ($(linhaColeta).find('button[data-binario]').length > 0 && $(linhaColeta).attr('data-conforme') != $(linhaColeta).attr('data-default-answer'))
         || isNA) {
 
         $('form[data-form-coleta] div[data-linha-coleta]')
-            .not(this)
+            .not(linhaColeta)
+            .addClass('naoSalvar');
+
+        $('form[data-form-coleta] div[data-linha-coleta]')
+            .not(linhaColeta)
+            .css("background-color", "#999")
+            
+        $('form[data-form-coleta] div[data-linha-coleta]')
+            .not(linhaColeta)
+            .find('input, button')
+            .prop("disabled", true);
+
+        $('.headerFieldL3, .headerFieldL3 input, .headerFieldL3 select')
+            .not('[parlevel1id="' + $(linhaColeta).attr('data-level1') + '"][parlevel2id="' + $(linhaColeta).attr('data-level2') + '"][parlevel3id="' + $(linhaColeta).attr('data-level3') + '"]')
+            .addClass('naoSalvar')
+            .not(linhaColeta)
             .css("background-color", "#999")
             .find('input, button')
             .prop("disabled", true);
 
-        $('form[data-form-coleta] div[data-linha-coleta]')
-            .not(this)
-            .addClass('naoSalvar');
-
-        $('.headerFieldL3, .headerFieldL3 input, .headerFieldL3 select').not('[parlevel1id="' + $(this).attr('data-level1') + '"][parlevel2id="' + $(this).attr('data-level2') + '"][parlevel3id="' + $(this).attr('data-level3') + '"]')
-            .addClass('naoSalvar')
-            .not(this)
-            .css("background-color", "#999")
-            .find('input, button').prop("disabled", true);
-
     } else {
-
-        $('form[data-form-coleta] div[data-linha-coleta]').css("background-color", "#FFFFFF")
-            .find('input, button')
-            .prop("disabled", false);
 
         $('form[data-form-coleta] div[data-linha-coleta]')
             .removeClass('naoSalvar');
 
+        $('form[data-form-coleta] div[data-linha-coleta]')
+            .css("background-color", "#FFFFFF")
+            
+        $('form[data-form-coleta] div[data-linha-coleta]')
+            .find('input, button')
+            .prop("disabled", false);
+
         $('.headerFieldL3, .headerFieldL3 input, .headerFieldL3 select')
             .removeClass('naoSalvar')
             .css("background-color", "#FFFFFF")
-            .find('input, button').prop("disabled", false);
+            .find('input, button')
+            .prop("disabled", false);
 
     }
 });
