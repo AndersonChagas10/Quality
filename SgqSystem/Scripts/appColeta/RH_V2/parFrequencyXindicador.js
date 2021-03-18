@@ -127,15 +127,15 @@ function cleanGlobalVarParFrequency() {
 }
 
 $('body').off('click', '[data-par-frequency-id]', '[data-par-level1-id]').on('click', '[data-par-frequency-id]', '[data-par-level1-id]', function (e) {
-
+    
     setListLevel1($(this));
 
 });
 
 $('body').off('click', '[data-coletar]').on('click', '[data-coletar]', function (e) {
-
+    
     setParametrizationObj();
-
+   
     //getAppParametrization(frequencyId);
 });
 
@@ -150,8 +150,10 @@ function setParametrizationObj() {
         });
 
         var frequency = parseInt($('[data-selected=true]').attr('data-par-frequency-id'));
-        setPlanejamentoList(parLevel1List);
-        //getAppParametrization(frequency);
+        setCurrentPlanejamentoList(parLevel1List);
+
+        getAppParametrization(frequency);
+       
 
     } else {
         openMensagem("Selecione ao menos um Indicador!", 'yellow', 'black');
@@ -292,8 +294,9 @@ function chamaGetAppParametrization() {
             data.currentParCompany_Id = currentParCompany_Id;
             _writeFile("appParametrization.txt", JSON.stringify(data), function () {
                 // parametrization = data;
-                openPlanejamentoColeta();
+                //openPlanejamentoColeta();
                 atualizaColetasParciais();
+                clickColetar(); 
                 //closeMensagem();
             });
 
