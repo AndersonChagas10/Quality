@@ -27,11 +27,6 @@ var currentRedistributeWeight = false;
 var currentIsPartialSave = false;
 var currentBaixarGetResultadoAposEnviarOsDadosColetados = false;
 
-//Script para exibir erros no Mobile
-// window.onerror = function (errorMsg, url, lineNumber) {
-//     alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
-// }
-
 function onOpenAppColeta() {
 
     _readFile("login.txt", function (data) {
