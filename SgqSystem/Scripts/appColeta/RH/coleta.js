@@ -54,6 +54,14 @@ function openColeta(levels) {
         coleta += getParFooterFieldLevel1(level1);
     });
 
+    var btnSalvar = "";
+    if (globalDicionarioEstatico.clustersIdsColetaUnicaTarefa.indexOf('|' + currentParCluster_Id + '|') < 0) {
+        btnSalvar += '<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>';
+    }
+    else {
+        btnSalvar += '<button class="btn btn-block btn-primary input-lg col-xs-12" disabled data-salvar style="margin-top:10px">Salvar</button>';
+    }
+
     html = getHeader() +
         '<div class="container-fluid">                                                                                                                   ' +
         '	<div class="">                                                                                                                      ' +
@@ -67,7 +75,7 @@ function openColeta(levels) {
         getParHeaderFieldDeparment() +
         '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
         coleta +
-        '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>       ' +
+        btnSalvar +
         '				</form>                                                                                                                    ' +
         '			  </div>                                                                                                                       ' +
         '       </div>                                                                                                                             ' +
@@ -840,42 +848,52 @@ function validaCampoEmBrancoNA() {
 
 }
 
-$('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
+function setBinaryFieldProperties(linha, btn) {
 
-    var linha = $(this).parents('[data-conforme]');
-
-    resetarLinha(linha);
     if (linha.attr('data-conforme') == "" || linha.attr('data-conforme') == null) {
         linha.attr('data-conforme', linha.attr('data-default-answer'));
-        setFieldColorGray($(this));
+        setFieldColorGray(btn);
+        $('[data-salvar]').prop('disabled', true);
     } else if (linha.attr('data-conforme') == linha.attr('data-default-answer')) {
         linha.attr('data-conforme', linha.attr('data-default-answer') == "0" ? "1" : "0");
-        setFieldColorGray($(this));
+        setFieldColorGray(btn);
+        $('[data-salvar]').prop('disabled', false);
     } else {
         linha.addClass('alert-secundary');
-        if ($(this).attr('data-required-answer') == "1") {
+        $('[data-salvar]').prop('disabled', true);
+        if (btn.attr('data-required-answer') == "1") {
             linha.attr('data-conforme', "");
-            setFieldColorWhite($(this));
+            setFieldColorWhite(btn);
 
         } else {
             linha.attr('data-conforme', linha.attr('data-default-answer'));
-            setFieldColorWhite($(this));
+            setFieldColorWhite(btn);
         }
     }
 
     validateShowQualification(linha);
 
     if (linha.attr('data-conforme') == "1") {
-        $(this).text($(this).attr('data-positivo'));
+        btn.text(btn.attr('data-positivo'));
     } else if (linha.attr('data-conforme') == "0") {
-        $(this).text($(this).attr('data-negativo'));
+        btn.text(btn.attr('data-negativo'));
     } else {
-        $(this).text('');
-        $(this).html('&nbsp;');
+        btn.text('');
+        btn.html('&nbsp;');
     }
 
-    $(this).addClass('btn-default');
-    $(this).removeClass('btn-secundary');
+    btn.addClass('btn-default');
+    btn.removeClass('btn-secundary');
+
+}
+
+$('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
+
+    var linha = $(this).parents('[data-conforme]');
+    
+    resetarLinha(linha);
+
+    setBinaryFieldProperties(linha, $(this));
 
 });
 
@@ -1626,8 +1644,3 @@ function HeaderFieldsIsValid() {
     return retorno;
 }
 
-
-//$('body').off('click', '.panel-body button, .panel-body input, .panel-body select')
-//         .on('click', '.panel-body button, .panel-body input, .panel-body select', function (e) {
-//    interacaoComFormulario++;
-//});
