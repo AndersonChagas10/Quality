@@ -1003,15 +1003,17 @@ function enviarFiltro(nivelVisao) {
 
                     listaDeSemanas = montaListaSemanas(data);
 
-                    for (var i = 0; i < listaGlobalAuditores.length; i++) {
+                    for (var j = 0; j < acompanhamentoObj.length; j++) {
 
-                        for (var j = 0; j < acompanhamentoObj.length; j++) {
-                            if (listaGlobalAuditores[i] != undefined && acompanhamentoObj[j]['Auditor Cabecalho'] == listaGlobalAuditores[i]['Auditor Cabecalho']) {
-                                
+                        listaGlobalAuditores.map(function (o,i) {
+
+                            if (o['Auditor Cabecalho'] == acompanhamentoObj[j]['Auditor Cabecalho']) {
                                 listaGlobalAuditores.splice(i, 1);
-                            } 
-                        }
+                            }
+
+                        });
                     }
+                  
 
                     for (var x = 0; x < listaGlobalAuditores.length; x++) {
                         for (var k = 0; k < listaDeSemanas.length; k++) {
