@@ -1099,7 +1099,7 @@ function resetarLinha(linha) {
 }
 
 $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
-
+    
     e.preventDefault();
 
     if (!HeaderFieldsIsValid()) {
@@ -1605,7 +1605,7 @@ function mostraPerguntasObrigatorias(data) {
 }
 
 function HeaderFieldsIsValid() {
-
+    
     retorno = true;
 
     $('#headerFieldDepartment input, #headerFieldDepartment select, '+ 
@@ -1617,7 +1617,9 @@ function HeaderFieldsIsValid() {
 
         $self.css("background-color", "");
 
-        if ($self.attr("data-required") == "true") {
+        var isHeaderFieldLevel3NA = validateHeaderFieldIsNA($self);
+
+        if ($self.attr("data-required") == "true" && isHeaderFieldLevel3NA == false) {
 
             if ($self.val() == null || $self.val() == undefined || $self.val() == "") {
                 $self.css("background-color", "#ffc1c1");
@@ -1642,5 +1644,22 @@ function HeaderFieldsIsValid() {
     });
 
     return retorno;
+}
+
+function validateHeaderFieldIsNA($self) {
+
+    var level1_id = $($self).parents('[data-level3]').attr('parlevel1id');
+    var level2_id = $($self).parents('[data-level3]').attr('parlevel2id');
+    var level3_id = $($self).parents('[data-level3]').attr('parlevel3id');
+
+    $('[data-linha-coleta]').map(function (i, o) {
+        if (level1_id == $(o).attr('data-level1')
+            && level2_id == $(o).attr('data-level2')
+            && level3_id == $(o).attr('data-level3')) {
+            if (typeof $(o).attr('data-conforme-na') != undefined) {
+                return true;
+            }
+        }
+    });
 }
 
