@@ -191,7 +191,7 @@ function changeDate(that) {
 
 function setBreadcrumbs() {
 
-    var breadcrumb = '<ol class="breadcrumb"><li><a onclick="validaRota(openMenu,null)">Inicio</a></li>';
+    var breadcrumb = '<ol class="breadcrumb"><li><a onclick="validaRota(openParcompany,null)">Inicio</a></li>';
     var breadcrumbLi = "";
     var isCurrent = true;
 
