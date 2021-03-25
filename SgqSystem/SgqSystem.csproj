@@ -343,6 +343,7 @@
     <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
     <Compile Include="Controllers\Api\ImportacaoExcelApiController.cs" />
     <Compile Include="Controllers\Api\Laboratorio\LaboratorioApiController.cs" />
+    <Compile Include="Controllers\Api\Log\LogErrorController.cs" />
     <Compile Include="Controllers\Api\ParDepartmentsApiController.cs" />
     <Compile Include="Controllers\Api\ParInputTypeValuesApiController.cs" />
     <Compile Include="Controllers\Api\ParReasonApiController.cs" />

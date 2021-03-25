@@ -54,6 +54,14 @@ function openColeta(levels) {
         coleta += getParFooterFieldLevel1(level1);
     });
 
+    var btnSalvar = "";
+    if (globalDicionarioEstatico.clustersIdsColetaUnicaTarefa.indexOf('|' + currentParCluster_Id + '|') < 0) {
+        btnSalvar += '<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>';
+    }
+    else {
+        btnSalvar += '<button class="btn btn-block btn-primary input-lg col-xs-12" disabled data-salvar style="margin-top:10px">Salvar</button>';
+    }
+
     html = getHeader() +
         '<div class="container-fluid">                                                                                                                   ' +
         '	<div class="">                                                                                                                      ' +
@@ -67,7 +75,7 @@ function openColeta(levels) {
         getParHeaderFieldDeparment() +
         '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
         coleta +
-        '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>       ' +
+        btnSalvar +
         '				</form>                                                                                                                    ' +
         '			  </div>                                                                                                                       ' +
         '       </div>                                                                                                                             ' +
@@ -840,42 +848,52 @@ function validaCampoEmBrancoNA() {
 
 }
 
-$('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
+function setBinaryFieldProperties(linha, btn) {
 
-    var linha = $(this).parents('[data-conforme]');
-
-    resetarLinha(linha);
     if (linha.attr('data-conforme') == "" || linha.attr('data-conforme') == null) {
         linha.attr('data-conforme', linha.attr('data-default-answer'));
-        setFieldColorGray($(this));
+        setFieldColorGray(btn);
+        $('[data-salvar]').prop('disabled', true);
     } else if (linha.attr('data-conforme') == linha.attr('data-default-answer')) {
         linha.attr('data-conforme', linha.attr('data-default-answer') == "0" ? "1" : "0");
-        setFieldColorGray($(this));
+        setFieldColorGray(btn);
+        $('[data-salvar]').prop('disabled', false);
     } else {
         linha.addClass('alert-secundary');
-        if ($(this).attr('data-required-answer') == "1") {
+        $('[data-salvar]').prop('disabled', true);
+        if (btn.attr('data-required-answer') == "1") {
             linha.attr('data-conforme', "");
-            setFieldColorWhite($(this));
+            setFieldColorWhite(btn);
 
         } else {
             linha.attr('data-conforme', linha.attr('data-default-answer'));
-            setFieldColorWhite($(this));
+            setFieldColorWhite(btn);
         }
     }
 
     validateShowQualification(linha);
 
     if (linha.attr('data-conforme') == "1") {
-        $(this).text($(this).attr('data-positivo'));
+        btn.text(btn.attr('data-positivo'));
     } else if (linha.attr('data-conforme') == "0") {
-        $(this).text($(this).attr('data-negativo'));
+        btn.text(btn.attr('data-negativo'));
     } else {
-        $(this).text('');
-        $(this).html('&nbsp;');
+        btn.text('');
+        btn.html('&nbsp;');
     }
 
-    $(this).addClass('btn-default');
-    $(this).removeClass('btn-secundary');
+    btn.addClass('btn-default');
+    btn.removeClass('btn-secundary');
+
+}
+
+$('body').off('click', '[data-binario]').on('click', '[data-binario]', function (e) {
+
+    var linha = $(this).parents('[data-conforme]');
+    
+    resetarLinha(linha);
+
+    setBinaryFieldProperties(linha, $(this));
 
 });
 
@@ -1081,7 +1099,7 @@ function resetarLinha(linha) {
 }
 
 $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e) {
-
+    
     e.preventDefault();
 
     if (!HeaderFieldsIsValid()) {
@@ -1137,7 +1155,7 @@ function PrepararColetas() {
 
     var collectionDate = getCurrentDate();
     //Insere valores da coleta
-    $($('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar')).each(function (i, o) {
+    $('form[data-form-coleta] div[data-linha-coleta]:not(.naoSalvar)').each(function (i, o) {
 
         var data = $(o);
         var isNA = $(data).attr('data-conforme-na') == "";
@@ -1171,7 +1189,7 @@ function PrepararColetas() {
                 WeiDefects: isNA ? 0 : ($(data).attr('data-conforme') == "1" ? 0 : 1) * parseFloat($(data).attr('data-peso')),
                 Parfrequency_Id: parametrization.currentParFrequency_Id,
                 ParCluster_Id: currentParCluster_Id,
-                Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')) }),
+                Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')), "Version": versionNumber }),
                 IsPartialSave: hasPartialSave
                 /*
 				"Shift_Id":1,
@@ -1471,8 +1489,8 @@ function getCollectionHeaderFields(collectionDate) {
 }
 
 function ColetasIsValid() {
-    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar');
-    var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar').find('input[data-texto]');
+    var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]:not(.naoSalvar)');
+    var inputsDaColeta = $(linhasDaColeta).find('input[data-texto]');
     var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value] div[data-qualification-required]');
     var selectQualificationColeta = $('form[data-form-coleta] div[data-qualificationlevel3value] select[data-qualificationselect]');
 
@@ -1587,7 +1605,7 @@ function mostraPerguntasObrigatorias(data) {
 }
 
 function HeaderFieldsIsValid() {
-
+    
     retorno = true;
 
     $('#headerFieldDepartment input, #headerFieldDepartment select, '+ 
@@ -1599,7 +1617,9 @@ function HeaderFieldsIsValid() {
 
         $self.css("background-color", "");
 
-        if ($self.attr("data-required") == "true") {
+        var isHeaderFieldLevel3NA = validateHeaderFieldIsNA($self);
+
+        if ($self.attr("data-required") == "true" && isHeaderFieldLevel3NA == false) {
 
             if ($self.val() == null || $self.val() == undefined || $self.val() == "") {
                 $self.css("background-color", "#ffc1c1");
@@ -1626,8 +1646,20 @@ function HeaderFieldsIsValid() {
     return retorno;
 }
 
+function validateHeaderFieldIsNA($self) {
 
-//$('body').off('click', '.panel-body button, .panel-body input, .panel-body select')
-//         .on('click', '.panel-body button, .panel-body input, .panel-body select', function (e) {
-//    interacaoComFormulario++;
-//});
+    var level1_id = $($self).parents('[data-level3]').attr('parlevel1id');
+    var level2_id = $($self).parents('[data-level3]').attr('parlevel2id');
+    var level3_id = $($self).parents('[data-level3]').attr('parlevel3id');
+
+    $('[data-linha-coleta]').map(function (i, o) {
+        if (level1_id == $(o).attr('data-level1')
+            && level2_id == $(o).attr('data-level2')
+            && level3_id == $(o).attr('data-level3')) {
+            if (typeof $(o).attr('data-conforme-na') != undefined) {
+                return true;
+            }
+        }
+    });
+}
+
