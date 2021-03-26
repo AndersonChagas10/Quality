@@ -367,6 +367,7 @@ function getParDepartmentPlanejado() {
 
     var todosParDepartments = parametrization.listaParDepartment;
 
+
     var ParDepartments_Ids = $.unique($.map(currentPlanejamento, function (o) {
 
         return o["parDepartment_Id"];
@@ -377,7 +378,7 @@ function getParDepartmentPlanejado() {
 
     $.each(ParDepartments_Ids, function (i, id) {
 
-        var teste = $.grep(todosParDepartments, function (o) {
+        var teste = $.grep(todosParDepartments, function (o) { 
 
             return o.Id == id;
 

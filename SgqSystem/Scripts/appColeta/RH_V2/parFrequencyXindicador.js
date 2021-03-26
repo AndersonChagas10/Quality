@@ -126,17 +126,16 @@ function cleanGlobalVarParFrequency() {
     currentsParDepartments_Ids = [];
 }
 
-$('body').off('click', '[data-par-frequency-id]', '[data-par-level1-id]').on('click', '[data-par-frequency-id]', '[data-par-level1-id]', function (e) {
-    
+$('body').off('click', '[data-par-level1-id]').on('click', '[data-par-level1-id]', function (e) {
+
     setListLevel1($(this));
 
 });
 
 $('body').off('click', '[data-coletar]').on('click', '[data-coletar]', function (e) {
-    
+
     setParametrizationObj();
-   
-    //getAppParametrization(frequencyId);
+
 });
 
 function setParametrizationObj() {
@@ -153,16 +152,17 @@ function setParametrizationObj() {
         setCurrentPlanejamentoList(parLevel1List);
 
         getAppParametrization(frequency);
-       
+
 
     } else {
         openMensagem("Selecione ao menos um Indicador!", 'yellow', 'black');
         closeMensagem(2000);
     }
-    
+
 }
 
 function setCurrentPlanejamentoList(level1List) {
+
 
     level1List.map(function (o, i) {
         currentPlanejamento.push({ indicador_Id: o.level1_Id, indicador_Name: o.level1_Name });
@@ -264,7 +264,7 @@ function getAppParametrization(frequencyId) {
                 atualizarVariaveisCurrent(parametrization);
             }
 
-             openPlanejamentoColeta();
+            openPlanejamentoColeta();
             closeMensagem();
         });
     }
@@ -290,13 +290,13 @@ function chamaGetAppParametrization() {
             data.currentParFrequency_Id = currentParFrequency_Id;
             data.listaParFrequency = listaParFrequency;
             data.currentParCluster_Id = currentParCluster_Id;
-            data.currentParClusterGroup_Id = currentParClusterGroup_Id; 
+            data.currentParClusterGroup_Id = currentParClusterGroup_Id;
             data.currentParCompany_Id = currentParCompany_Id;
             _writeFile("appParametrization.txt", JSON.stringify(data), function () {
-                // parametrization = data;
+                parametrization = data;
                 //openPlanejamentoColeta();
                 atualizaColetasParciais();
-                clickColetar(); 
+                clickColetar();
                 //closeMensagem();
             });
 
@@ -310,3 +310,4 @@ function chamaGetAppParametrization() {
 
     });
 }
+
