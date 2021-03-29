@@ -7,7 +7,9 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
 	var htmlParDepartment = "";
 
-	var department = {};
+    var department = {};
+
+    listaDepartamentos = listaDepartamentos.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
 	$(listaDepartamentos).each(function (i, o) {
 
@@ -44,15 +46,18 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 		return;
 	}
 
-	var voltar = "";
+    var voltar = "";
+
+    if (globalLogo)
+        systemLogo = 'background-image: url(' + globalLogo + ')';
 
 	if (parDepartmentId == 0 || parDepartmentId == undefined || parDepartmentId == null) 
 
-        voltar = '<a onclick="validaRota(openMenu,null);" class="btn btn-warning">Voltar</a>';
+        voltar = '<a onclick="validaRota(openMenu,null);" class="btn btn-warning col-xs-12" style="margin-bottom:10px;">Voltar</a>';
 
 	else {
 
-		voltar = '<a onclick="voltarDepartment(' + department.Parent_Id + ');" class="btn btn-warning">Voltar</a>';
+        voltar = '<a onclick="voltarDepartment(' + department.Parent_Id + ');" class="btn btn-warning col-xs-12" style="margin-bottom:10px;">Voltar</a>';
 	}
 
 	html = getHeader() +
@@ -60,11 +65,15 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 		'	<div class="">                                              ' +
 		'		<div class="col-xs-12">                                    ' +
 		'                                                                  ' +
-		'			<div class="panel panel-primary">                      ' +
-		'			  <div class="panel-heading">                          ' +
+        '			<div class="panel panel-primary">                      ' +
+        '			  <div class="panel-heading" style="background-color:#DCE6F1;">                          ' +
+
+        '<div style="height: 220px; text-align: center; background-repeat: no-repeat;background-size: auto 100%;background-position: center;height: 220px; ' + systemLogo + '">' +
+        '</div>' +
+
         '			    <div class="row">                          ' +
         '			      <div class="col-xs-9">                         ' +
-        '				      <h3 class="panel-title">' + voltar + ' Selecione o centro de custo desejado</h3>            ' +
+        '				      <h3 class="panel-title">Selecione o centro de custo desejado</h3>            ' +
         '                 </div >                                          ' +
         '                 <div class="col-sm-3">                           ' +
         getBotaoBuscar() +
@@ -73,7 +82,8 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
         '			  </div>                                               ' +
 		'			  <div class="panel-body">                             ' +
-		'				<div class="list-group">                           ' +
+        '				<div class="list-group">                           ' +
+
 		htmlParDepartment +
 		'				</div>                                             ' +
 		'			  </div>                                               ' +
