@@ -853,17 +853,11 @@ function setBinaryFieldProperties(linha, btn) {
     if (linha.attr('data-conforme') == "" || linha.attr('data-conforme') == null) {
         linha.attr('data-conforme', linha.attr('data-default-answer'));
         setFieldColorGray(btn);
-        if (globalDicionarioEstatico.clustersIdsColetaUnicaTarefa.indexOf('|' + currentParCluster_Id + '|') == 0)
-            $('[data-salvar]').prop('disabled', true);
     } else if (linha.attr('data-conforme') == linha.attr('data-default-answer')) {
         linha.attr('data-conforme', linha.attr('data-default-answer') == "0" ? "1" : "0");
         setFieldColorGray(btn);
-        if (globalDicionarioEstatico.clustersIdsColetaUnicaTarefa.indexOf('|' + currentParCluster_Id + '|') == 0)
-            $('[data-salvar]').prop('disabled', false);
     } else {
         linha.addClass('alert-secundary');
-        if (globalDicionarioEstatico.clustersIdsColetaUnicaTarefa.indexOf('|' + currentParCluster_Id + '|') == 0)
-            $('[data-salvar]').prop('disabled', true);
         if (btn.attr('data-required-answer') == "1") {
             linha.attr('data-conforme', "");
             setFieldColorWhite(btn);
