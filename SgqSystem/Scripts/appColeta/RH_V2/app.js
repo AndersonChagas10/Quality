@@ -192,7 +192,8 @@ function changeDate(that) {
 
 function setBreadcrumbs() {
 
-    var breadcrumb = '<ol class="breadcrumb"><li><a onclick="validaRota(openMenu,null)">Inicio</a></li>';
+    //<li><a onclick="validaRota(openMenu,null)">Inicio</a></li> removido para nao abrir a tela de planejar
+    var breadcrumb = '<ol class="breadcrumb">';
     var breadcrumbLi = "";
     var isCurrent = true;
 
@@ -229,17 +230,9 @@ function setBreadcrumbs() {
     }
 
     if (currentParFrequency_Id) {
-        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
+        breadcrumbLi += getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
             return item.Id == currentParFrequency_Id;
-        })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent) + breadcrumbLi;
-
-        isCurrent = false;
-    }
-
-    if (currentParCargo_Id) {
-        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParCargo, function (item) {
-            return item.Id == currentParCargo_Id;
-        })[0].Name, function () { }, isCurrent) + breadcrumbLi;
+        })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent);
 
         isCurrent = false;
     }
@@ -265,7 +258,15 @@ function setBreadcrumbs() {
 
         });
 
-        breadcrumbLi = deparment + breadcrumbLi;
+        breadcrumbLi = breadcrumbLi + deparment;
+        isCurrent = false;
+    }
+
+    if (currentParCargo_Id) {
+        breadcrumbLi += getBreadcrumb($.grep(parametrization.listaParCargo, function (item) {
+            return item.Id == currentParCargo_Id;
+        })[0].Name, function () { }, isCurrent);
+
         isCurrent = false;
     }
 

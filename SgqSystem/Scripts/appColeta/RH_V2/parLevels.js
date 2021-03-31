@@ -19,10 +19,15 @@ function GetLevels() {
 
 function montarLevel1(level1List) {
 
+    var level1PlanejadoList_Ids = [...new Set(currentPlanejamento.map(x => x.indicador_Id))];
+
     var parVinculos = $.grep(parametrization.listaParVinculoPeso, function (obj) {
         return (obj.ParDepartment_Id == currentParDepartment_Id || obj.ParDepartment_Id == null)
-            && (obj.ParCargo_Id == currentParCargo_Id || obj.ParCargo_Id == null);
+            && (obj.ParCargo_Id == currentParCargo_Id || obj.ParCargo_Id == null)
+            && level1PlanejadoList_Ids.filter(x => x == obj.ParLevel1_Id).length > 0;
     });
+
+    
 
     var level1_Ids_Aux = $.map(parVinculos, function (obj) {
         return obj.ParLevel1_Id;

@@ -104,8 +104,12 @@ function buscarItemNaLista(input) {
             } else {
                 $(o).hide();
             }
-        })
+        });
+
         if ($('button.list-group-item:visible').length == 0) {
+
+            var idDepartamentoCascata = searchSecaoXCargo(input);
+            debugger
             if ($('span.list-group-item').length == 0) {
                 $('.list-group').append("<span class='list-group-item col-xs-12 text-center'>Nenhum resultado encontrado com o termo digitado.</span>");
             } else {
@@ -116,5 +120,29 @@ function buscarItemNaLista(input) {
                 $('span.list-group-item').hide();
             }
         }
+    });
+}
+
+function searchSecaoXCargo(input) {
+
+    $('[data-par-department-id]').map(function (i, o) {
+        var parDepartmentId = $(o).attr('data-par-department-id');
+        var listaSecao = [];
+        var listaDepartamentos = retornaDepartamentos(parDepartmentId, true, parametrization.listaParDepartment);
+
+        $(listaDepartamentos).each(function (i, o) {
+            if ((parDepartmentId > 0 && parDepartmentId == o.Parent_Id) || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
+                listaSecao.push(o);
+            }
+        });
+
+        listaSecao.map(function (i, o) {
+            var possuiItem = o.text().toLowerCase().includes($(input).val().toLowerCase());
+
+            if (possuiItem) {
+                return parDepartmentId;
+            }
+        });
+
     });
 }

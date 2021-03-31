@@ -54,14 +54,32 @@ function openColeta(levels) {
         coleta += getParFooterFieldLevel1(level1);
     });
 
+    if (globalLogo)
+        systemLogo = 'background-image: url(' + globalLogo + ')';
+
+    var voltar = '<a onclick="validaRota(listarParCargo,null);" class="btn btn-warning col-xs-12" style="margin-bottom:10px;">Voltar</a>';
+
     html = getHeader() +
         '<div class="container-fluid">                                                                                                                   ' +
         '	<div class="">                                                                                                                      ' +
         '		<div class="col-xs-12">                                                                                                            ' +
-        '			<div class="panel panel-primary">                                                                                              ' +
-        '			  <div class="panel-heading">                                                                                                  ' +
-        '				<h3 class="panel-title"><a onclick="validaRota(listarParCargo,null);" class="btn btn-warning">Voltar</a> Questionario de Coleta</h3>                                   ' +
+        '			<div class="panel">                                                                                              ' +
+        '			  <div class="panel-heading" style="background-color:#DCE6F1;">                                                                                                  ' +
+
+        '<div style="height: 220px; text-align: center; background-repeat: no-repeat;background-size: auto 100%;background-position: center;height: 220px; ' + systemLogo + '">' +
+
+        '</div>' +
+        '				<h3 class="panel-title">Questionario de Coleta</h3>                                   ' +
         '			  </div>                                                                                                                       ' +
+        voltar +
+        
+            '<div class="row">' +
+                '<div class="col-md-6">' +
+                    ' <button class="btn btn-info" onclick="expandAll();">Expandir todos</button>' +
+                     '<button class="btn btn-info" onclick="hideAll();">Recolher todos</button>' +
+                ' </div>' +
+            '</div>' +
+        
         '			  <div class="panel-body">                                                                                                     ' +
         getContador() +
         getParHeaderFieldDeparment() +
@@ -90,6 +108,26 @@ function openColeta(levels) {
     setBreadcrumbs();
 }
 
+function expandAll() {
+    $('[data-level1-expand-hide]').map(function (i, o) {
+        if ($(o).attr('data-targeter-collapsed') == 'true') {
+            $(o).trigger('click');
+        }
+    });
+    
+}
+
+function hideAll() {
+
+    $('[data-level1-expand-hide]').map(function (i, o) {
+        if ($(o).attr('data-targeter-collapsed') == 'false'
+            || $(o).attr('data-targeter-collapsed') == undefined) {
+            $(o).trigger('click');
+        }
+    });
+    
+}
+
 $('body')
     .off('click', '[data-collapse-targeter]')
     .on('click', '[data-collapse-targeter]', function () {
@@ -106,19 +144,6 @@ $('body')
             $(this).find('[ data-toggle]').removeClass('fa fa-caret-down').addClass('fa fa-caret-right');
         }
     });
-
-//$('body')
-//    .off('change', '[data-level3] select:visible')
-//    .on('change', '[data-level3] select:visible', function () {
-
-//        var qualificationLevel3Value_Value = $(this).parents('[data-level3]').attr('data-ParQualificationLevel3Value');
-
-//        if (qualificationLevel3Value_Value != null || qualificationLevel3Value_Value != "") {
-//            var qualification_Id = $("[data-qualificationSelect] :selected").val();
-//        }
-
-//        $("input[data-valor]").trigger('change');
-//    });
 
 
 $('body')
@@ -197,7 +222,7 @@ function getContador() {
 }
 
 function getLevel1(level1) {
-    return '<div class="col-xs-12" style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="' + level1.Id + '"><i class="fa fa-caret-down" data-toggle style="margin-right: 5px;"></i><small>' + level1.Name + '</small></div>';
+    return '<div class="col-xs-12" data-level1-expand-hide style="padding-top:5px;padding-bottom:5px;background-color:#edf5fc;" data-collapse-targeter="' + level1.Id + '"><i class="fa fa-caret-down" data-toggle style="margin-right: 5px;"></i><small>' + level1.Name + '</small></div>';
 }
 
 function getLevel2(level2, level1) {

@@ -53,7 +53,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
 	if (parDepartmentId == 0 || parDepartmentId == undefined || parDepartmentId == null) 
 
-        voltar = '<a onclick="validaRota(openMenu,null);" class="btn btn-warning col-xs-12" style="margin-bottom:10px;">Voltar</a>';
+        voltar = '<a onclick="validaRota(openParFrequencyXindicador,null);" class="btn btn-warning col-xs-12" style="margin-bottom:10px;">Voltar</a>';
 
 	else {
 
@@ -65,7 +65,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 		'	<div class="">                                              ' +
 		'		<div class="col-xs-12">                                    ' +
 		'                                                                  ' +
-        '			<div class="panel panel-primary">                      ' +
+        '			<div class="panel">                      ' +
         '			  <div class="panel-heading" style="background-color:#DCE6F1;">                          ' +
 
         '<div style="height: 220px; text-align: center; background-repeat: no-repeat;background-size: auto 100%;background-position: center;height: 220px; ' + systemLogo + '">' +
@@ -83,7 +83,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
         '			  </div>                                               ' +
 		'			  <div class="panel-body">                             ' +
         '				<div class="list-group">                           ' +
-
+        voltar +
 		htmlParDepartment +
 		'				</div>                                             ' +
 		'			  </div>                                               ' +

@@ -3,7 +3,9 @@ function openParFrequencyXindicador() {
     var html = '';
 
     _readFile("parFrequency.txt", function (data) {
-        if (globalLoginOnline) {
+        if (appIsOnline) {
+            
+            //globalLoginOnline a variavel nao muda para false mesmo estando off
 
             openMensagem('Carregando lista de frequencia e indicador', 'blue', 'white');
 
@@ -33,7 +35,7 @@ function openParFrequencyXindicador() {
             });
 
         } else {
-            listarParFrequency();
+            listarParFrequencyXindicador();
         }
 
     });
@@ -80,6 +82,7 @@ function listarParFrequencyXindicador() {
             });
             htmlParFrequency += '</div>';
         });
+
         var voltar = '<a onclick="validaRota(openParCluster,true);"  style="margin-bottom:10px"  class="btn btn-warning col-xs-12">Voltar</a>';
 
         html = getHeader() +
@@ -116,6 +119,15 @@ function listarParFrequencyXindicador() {
 
         $('div#app').html(html);
         setBreadcrumbs();
+
+        if (currentPlanejamento) {
+            var level1PlanejadoList_Ids = [...new Set(currentPlanejamento.map(x => x.indicador_Id))];
+
+            level1PlanejadoList_Ids.map(function (o, i) {
+                $(`[data-par-level1-id=${o}]`).trigger('click');
+
+            });
+        }
     });
 }
 
@@ -163,6 +175,8 @@ function setParametrizationObj() {
 
 function setCurrentPlanejamentoList(level1List) {
 
+    if (currentPlanejamento.length > 0)
+        currentPlanejamento = [];
 
     level1List.map(function (o, i) {
         currentPlanejamento.push({ indicador_Id: o.level1_Id, indicador_Name: o.level1_Name });
