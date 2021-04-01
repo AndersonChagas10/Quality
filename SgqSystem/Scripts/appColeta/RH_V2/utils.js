@@ -95,6 +95,48 @@ function getBotaoBuscar() {
     return botaoBuscar;
 }
 
+function getBotaoBuscarSecaoXCargo() {
+    var botaoBuscar = '<div class="pull-right">                     ' +
+        '                  <label style="padding-right:5px">Buscar</label> ' +
+        '                  <input type="text" onkeyup="buscarItemNaListaSecaoXCargo(this)"/>' +
+        '              </div>';
+    return botaoBuscar;
+}
+
+function buscarItemNaListaSecaoXCargo(input) {
+    $('body').off('keyup', input).on('keyup', input, function () {
+        $('button.list-group-item').each(function (i, o) {
+            var mostrarItem = $(o).text().toLowerCase().includes($(input).val().toLowerCase());
+            if (mostrarItem) {
+                $(o).show();
+            } else {
+                $(o).hide(); 
+            }
+        });
+
+        var secaoCascateList = searchSecaoCascade(input);
+        
+        if ($('button.list-group-item:visible').length == 0 && secaoCascateList.length <= 0) {
+            if ($('span.list-group-item').length == 0) {
+                $('.list-group').append("<span class='list-group-item col-xs-12 text-center'>Nenhum resultado encontrado com o termo digitado.</span>");
+            } else {
+                $('span.list-group-item').show();
+            }
+        } else {
+            if ($('span.list-group-item').length > 0 && secaoCascateList.length <= 0) {
+                $('span.list-group-item').hide();
+            } else {
+                $(secaoCascateList).map(function (i, o) {
+                    if (o.Parent_Id)
+                        $(`[data-par-department-id=${o.Parent_Id}]`).show();
+                    else
+                        $(`[data-par-department-id=${o.Id}]`).show();
+                });
+            }
+        }
+    });
+}
+
 function buscarItemNaLista(input) {
     $('body').off('keyup', input).on('keyup', input, function () {
         $('button.list-group-item').each(function (i, o) {
@@ -107,9 +149,6 @@ function buscarItemNaLista(input) {
         });
 
         if ($('button.list-group-item:visible').length == 0) {
-
-            var idDepartamentoCascata = searchSecaoXCargo(input);
-            debugger
             if ($('span.list-group-item').length == 0) {
                 $('.list-group').append("<span class='list-group-item col-xs-12 text-center'>Nenhum resultado encontrado com o termo digitado.</span>");
             } else {
@@ -123,12 +162,15 @@ function buscarItemNaLista(input) {
     });
 }
 
-function searchSecaoXCargo(input) {
+function searchSecaoCascade(input) {
 
-    $('[data-par-department-id]').map(function (i, o) {
+    var list = [];
+    $('[data-par-department-id]').each(function (i, o) {
+
         var parDepartmentId = $(o).attr('data-par-department-id');
         var listaSecao = [];
         var listaDepartamentos = retornaDepartamentos(parDepartmentId, true, parametrization.listaParDepartment);
+        currentsParDepartments_Ids = [];
 
         $(listaDepartamentos).each(function (i, o) {
             if ((parDepartmentId > 0 && parDepartmentId == o.Parent_Id) || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
@@ -136,13 +178,34 @@ function searchSecaoXCargo(input) {
             }
         });
 
-        listaSecao.map(function (i, o) {
-            var possuiItem = o.text().toLowerCase().includes($(input).val().toLowerCase());
+        var possuiItem;
+        listaSecao.map(function (o,i) {
+            possuiItem = o.Name.toLowerCase().includes($(input).val().toLowerCase());
 
             if (possuiItem) {
-                return parDepartmentId;
+                list.push(o);
             }
         });
 
+        //se a lista de seções estiver vazia, busco na lista de cargos
+        if (list.length <= 0) {
+
+            var listaParCargo = retornaCargos(parDepartmentId);
+
+            listaParCargo = retornaCargosPlanejados(listaParCargo);
+
+            listaParCargo.map(function (o, i) {
+                possuiItem = o.Name.toLowerCase().includes($(input).val().toLowerCase());
+
+                if (possuiItem) {
+                    list.push(o);
+                }
+            });
+
+            if (possuiItem) {
+                list.push(o);
+            }
+        }
     });
+    return list;
 }

@@ -76,7 +76,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
         '				      <h3 class="panel-title">Selecione o centro de custo desejado</h3>            ' +
         '                 </div >                                          ' +
         '                 <div class="col-sm-3">                           ' +
-        getBotaoBuscar() +
+        getBotaoBuscarSecaoXCargo() +
         '                 </div>                                           ' +
         '               </div>                                             ' +
 
