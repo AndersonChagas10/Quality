@@ -49,8 +49,10 @@
                 .find('input, button')
                 .prop("disabled", true);
 
-            if ($(this).val().length > 0 && $(linhaColeta).attr('data-conforme') == $(linhaColeta).attr('data-default-answer'))
+            if ($(this).val().length > 0 && $(linhaColeta).attr('data-conforme') == $(linhaColeta).attr('data-default-answer')) {
                 setBinaryFieldProperties($(linhaColeta), $(linhaColeta).find('button[data-binario]'));
+                $('[data-salvar]').prop('disabled', false);
+            }
         }
         else {
             $('form[data-form-coleta] div[data-linha-coleta]')
@@ -66,7 +68,9 @@
                 .find('input, button')
                 .prop("disabled", false);
             
-            if ($(this).val().length == 0 && (tag == "INPUT" || tag == "BUTTON") && $(linhaColeta).attr('data-conforme') != $(linhaColeta).attr('data-default-answer'))
+            if ($(this).val().length == 0 && (tag == "INPUT" || tag == "BUTTON") && $(linhaColeta).attr('data-conforme') != $(linhaColeta).attr('data-default-answer')) {
                 $(linhaColeta).find('button[data-binario]').trigger('click');
+                $('[data-salvar]').prop('disabled', true);
+            }
         }
     });
