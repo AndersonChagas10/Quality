@@ -104,37 +104,28 @@ function getBotaoBuscarSecaoXCargo() {
 }
 
 function buscarItemNaListaSecaoXCargo(input) {
-    $('body').off('keyup', input).on('keyup', input, function () {
-        $('button.list-group-item').each(function (i, o) {
-            var mostrarItem = $(o).text().toLowerCase().includes($(input).val().toLowerCase());
-            if (mostrarItem) {
-                $(o).show();
-            } else {
-                $(o).hide(); 
-            }
-        });
+        var secaoCargoCascadeList = mostrarDepartamentoFiltrado(parametrization.listaParDepartment, $(input).val(), currentParDepartment_Id);
 
-        var secaoCascateList = searchSecaoCascade(input);
-        
-        if ($('button.list-group-item:visible').length == 0 && secaoCascateList.length <= 0) {
-            if ($('span.list-group-item').length == 0) {
-                $('.list-group').append("<span class='list-group-item col-xs-12 text-center'>Nenhum resultado encontrado com o termo digitado.</span>");
-            } else {
-                $('span.list-group-item').show();
-            }
-        } else {
-            if ($('span.list-group-item').length > 0 && secaoCascateList.length <= 0) {
-                $('span.list-group-item').hide();
-            } else {
-                $(secaoCascateList).map(function (i, o) {
-                    if (o.Parent_Id)
-                        $(`[data-par-department-id=${o.Parent_Id}]`).show();
-                    else
-                        $(`[data-par-department-id=${o.Id}]`).show();
+        if (secaoCargoCascadeList.length > 0) {
+            $('[data-par-department-id]').each(function (i, o) {
+
+                var id = $(o).attr('data-par-department-id');
+                var lista = $.grep(secaoCargoCascadeList, function (x, i) {
+                    if (x.parDepartmentParent_Id == id || x.parDepartment_Id == id)
+                        return x;
                 });
-            }
-        }
-    });
+
+                if (lista.length > 0) {
+                    $(o).show();
+                } else {
+                    $(o).hide();
+                }
+            });
+            
+        } else {
+            $('.list-group').append("<span class='list-group-item col-xs-12 text-center'>Nenhum resultado encontrado com o termo digitado.</span>");
+        }  
+ 
 }
 
 function buscarItemNaLista(input) {
@@ -162,50 +153,25 @@ function buscarItemNaLista(input) {
     });
 }
 
-function searchSecaoCascade(input) {
 
-    var list = [];
-    $('[data-par-department-id]').each(function (i, o) {
 
-        var parDepartmentId = $(o).attr('data-par-department-id');
-        var listaSecao = [];
-        var listaDepartamentos = retornaDepartamentos(parDepartmentId, true, parametrization.listaParDepartment);
-        currentsParDepartments_Ids = [];
+function mostrarDepartamentoFiltrado(listaDeDepartamento, busca, parDepartmentParent_Id) {
+    var desdobramento = retornarArvoreDesdobramentoDepartamentoCargo(listaDeDepartamento);
+    var listaDesdobramentosFiltrados = [];
+    $(desdobramento).each(function (i, o) {
+        if (!parDepartmentParent_Id
+            || (parDepartmentParent_Id && o["ParDepartmentParent_Id"] == parDepartmentParent_Id)) {
+            var nomesConcatenados = o["ParDepartmentParent_Name"] + o["ParDepartment_Name"] + o["ParCargo_Name"];
 
-        $(listaDepartamentos).each(function (i, o) {
-            if ((parDepartmentId > 0 && parDepartmentId == o.Parent_Id) || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
-                listaSecao.push(o);
-            }
-        });
-
-        var possuiItem;
-        listaSecao.map(function (o,i) {
-            possuiItem = o.Name.toLowerCase().includes($(input).val().toLowerCase());
-
-            if (possuiItem) {
-                list.push(o);
-            }
-        });
-
-        //se a lista de seções estiver vazia, busco na lista de cargos
-        if (list.length <= 0) {
-
-            var listaParCargo = retornaCargos(parDepartmentId);
-
-            listaParCargo = retornaCargosPlanejados(listaParCargo);
-
-            listaParCargo.map(function (o, i) {
-                possuiItem = o.Name.toLowerCase().includes($(input).val().toLowerCase());
-
-                if (possuiItem) {
-                    list.push(o);
-                }
-            });
-
-            if (possuiItem) {
-                list.push(o);
-            }
+            if (nomesConcatenados.toUpperCase().indexOf(busca.toUpperCase()) > -1)
+                listaDesdobramentosFiltrados.push(o);
         }
+
+
     });
-    return list;
+
+    return listaDesdobramentosFiltrados;
 }
+
+
+

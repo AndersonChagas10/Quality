@@ -2,7 +2,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
 	//listaDepartamentos = getParDepartmentPlanejado(); parametrization.listaParDepartment
 
-
+    
     var listaDepartamentos = retornaDepartamentos(parDepartmentId, true, parametrization.listaParDepartment);
 
 	var htmlParDepartment = "";
@@ -11,7 +11,19 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
     listaDepartamentos = listaDepartamentos.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
-	$(listaDepartamentos).each(function (i, o) {
+    var listaAvAmPorDepartamento = retornaListaContadorPorDepartamento(parDepartmentId);
+
+    $(listaDepartamentos).each(function (i, o) {
+
+        var objAvAm = $.grep(listaAvAmPorDepartamento, function (x, i) {
+            if (x.parDepartmentParent_Id == o.Id || x.parDepartment_Id == o.Id)
+                return x;
+        });
+
+        var contador = {};
+        if (objAvAm[0])
+            contador = objAvAm[0];
+            
 
 		var style = '';
 
@@ -28,7 +40,8 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 		} else
 			if ((parDepartmentId > 0 && parDepartmentId == o.Parent_Id) || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
 				htmlParDepartment += '<button type="button" '+style+' class="list-group-item col-xs-12" ' +
-					'data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name +
+                    'data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name +
+                    `<span> AV: ${contador.av}/${contador.avMax} | AM:  ${contador.am}/${contador.amMax} </span>` +
 					'<span class="badge">></span>' +
 					'</button>';
 			}
@@ -228,15 +241,105 @@ function bloqueiaCentroDeCustoParaColeta(departmentId){
 	return true;
 }
 
-function bloqueiaCargoParaColeta(c){
-	currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, c.Id);
-	
-	//FIX para trabalhar de forma correta os valores 
-	//que são recebidos do backend com os resultados
-	if (currentEvaluationSample.Sample > c.Evaluation.Sample){
-		currentEvaluationSample.Evaluation += 1;
-		currentEvaluationSample.Sample = 1;
-	}
-	
-	return !podeRealizarColeta(currentEvaluationSample.Evaluation, c.Evaluation.Evaluation);
+function retornarArvoreDesdobramentoDepartamentoCargo(listaDeDepartamentos) {
+    var listaDesdobramento = [];
+    $(listaDeDepartamentos).each(function (i_departamento, departamento) {
+        if (departamento["Parent_Id"]) {
+            return;
+        }
+        var listaFilho = retornaDepartamentos(departamento["Id"], true, parametrization.listaParDepartment);
+
+        $(listaFilho).each(function (i_secao, secao) {
+            if (!secao["Parent_Id"]) {
+                return;
+            }
+            var listaCargo = retornaCargos(secao["Id"]);
+
+            $(listaCargo).each(function (i_cargo, cargo) {
+                listaDesdobramento.push(
+                    {
+                        ParDepartmentParent_Id: departamento["Id"],
+                        ParDepartmentParent_Name: departamento["Name"],
+                        ParDepartment_Id: secao["Id"],
+                        ParDepartment_Name: secao["Name"],
+                        ParCargo_Id: cargo["Id"],
+                        ParCargo_Name: cargo["Name"],
+                    }
+                );
+            });
+        });
+    });
+
+    return listaDesdobramento;
+}
+function retornaContadorPorDepartamento(listaDeDepartamento, parDepartmentParent_Id, parDepartment_Id) {
+    var desdobramento = retornarArvoreDesdobramentoDepartamentoCargo(listaDeDepartamento);
+
+    var contador = {
+        av: 0,
+        am: 0,
+        avMax: 0,
+        amMax: 0,
+        parDepartmentParent_Id: parDepartmentParent_Id,
+        parDepartment_Id: parDepartment_Id
+    };
+    $(desdobramento).each(function (i, o) {
+        if (parDepartmentParent_Id != o["ParDepartmentParent_Id"])
+            return;
+
+        if (parDepartment_Id && parDepartment_Id != o["ParDepartment_Id"])
+            return;
+
+        //Regra para pegar AV e AM maximas
+        var listaParCargo = retornaCargos(o["ParDepartment_Id"]);
+        $(listaParCargo).each(function (i_cargo, cargo) {
+            contador["avMax"] += cargo["Evaluation"]["Evaluation"];
+            contador["amMax"] += cargo["Evaluation"]["Sample"];
+        });
+
+        //Regra para pegar AV e AM coletadas
+        $(coletasAgrupadas).each(function (i_coleta, coleta) {
+            if (coleta["ParDepartment_Id"] == o["ParDepartment_Id"]) {
+                contador["av"] += coleta["Evaluation"];
+                contador["am"] += coleta["Sample"];
+            }
+        });
+
+
+
+    });
+
+    return contador;
+}
+function retornaListaContadorPorDepartamento(parDepartmentParent_Id) {
+    //Retorna a lista de departamento, ou seção.
+    var listaDepartamento = retornaDepartamentos(parDepartmentParent_Id, true, parametrization.listaParDepartment);
+    var listaContador = [];
+
+    //Percorre a lista e retorna o contador, seja secao ou departamento
+    $(listaDepartamento).each(function (i, o) {
+        var contador;
+        if (parDepartmentParent_Id && o["Parent_Id"]) {
+            contador = retornaContadorPorDepartamento(parametrization.listaParDepartment, o["Parent_Id"], o["Id"]);
+            listaContador.push(contador);
+        } else if (!parDepartmentParent_Id) {
+            contador = retornaContadorPorDepartamento(parametrization.listaParDepartment, o["Id"]);
+            listaContador.push(contador);
+        }
+    });
+
+    return listaContador;
+}
+
+function bloqueiaCargoParaColeta(c) {
+    currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, c.Id);
+
+    //FIX para trabalhar de forma correta os valores 
+    //que são recebidos do backend com os resultados
+    if (currentEvaluationSample.Sample > c.Evaluation.Sample) {
+        currentEvaluationSample.Evaluation += 1;
+        currentEvaluationSample.Sample = 1;
+    }
+
+    return !podeRealizarColeta(currentEvaluationSample.Evaluation, c.Evaluation.Evaluation);
 }
