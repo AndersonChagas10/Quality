@@ -20,7 +20,7 @@ namespace Dominio
 
         public string Object
         {
-            get { return _object.Substring(0, _object.Length > 900 ? 900 : _object.Length); }
+            get { return _object?.Substring(0, _object.Length > 900 ? 900 : _object.Length); }
             set { _object = value; }
         }
 

@@ -171,10 +171,10 @@ function mostrarDepartamentoFiltrado(listaDeDepartamento, busca, parDepartmentPa
 			
 			if(nomesConcatenados.toUpperCase().indexOf(busca.toUpperCase()) > -1)
 				listaDesdobramentosFiltrados.push(o);
-		}
+        }
 		
 			
-	});
+    });
 	
 	currentParDepartment_Id = parDepartmentParent_Id;
 	return listaDesdobramentosFiltrados;

@@ -1,19 +1,16 @@
 function listarParDepartment(parDepartmentId, isVoltar) {
 
-	//listaDepartamentos = getParDepartmentPlanejado(); parametrization.listaParDepartment
-
-    
     var listaDepartamentos = retornaDepartamentos(parDepartmentId, true, parametrization.listaParDepartment);
 
 	var htmlParDepartment = "";
 
-    var department = {};
+	var department = {};
 
     listaDepartamentos = listaDepartamentos.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
     var listaAvAmPorDepartamento = retornaListaContadorPorDepartamento(parDepartmentId);
 
-    $(listaDepartamentos).each(function (i, o) {
+	$(listaDepartamentos).each(function (i, o) {
 
         var objAvAm = $.grep(listaAvAmPorDepartamento, function (x, i) {
             if (x.parDepartmentParent_Id == o.Id || x.parDepartment_Id == o.Id)
@@ -40,7 +37,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 		} else
 			if ((parDepartmentId > 0 && parDepartmentId == o.Parent_Id) || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
 				htmlParDepartment += '<button type="button" '+style+' class="list-group-item col-xs-12" ' +
-                    'data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name +
+					'data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name +
                     `<span> AV: ${contador.av}/${contador.avMax} | AM:  ${contador.am}/${contador.amMax} </span>` +
 					'<span class="badge">></span>' +
 					'</button>';
@@ -50,8 +47,6 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
 	currentParDepartment_Id = department.Id;
 
-	getCurrentPlanejamentoObj();
-
     //caso for "" quer dizer que não tem mais filhos, então abre o próximo	
     if (htmlParDepartment == "") {
         currentParDepartmentParent_Id = department.Parent_Id;
@@ -59,7 +54,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 		return;
 	}
 
-    var voltar = "";
+	var voltar = "";
 
     if (globalLogo)
         systemLogo = 'background-image: url(' + globalLogo + ')';
@@ -95,7 +90,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
         '			  </div>                                               ' +
 		'			  <div class="panel-body">                             ' +
-        '				<div class="list-group">                           ' +
+		'				<div class="list-group">                           ' +
         voltar +
 		htmlParDepartment +
 		'				</div>                                             ' +
@@ -226,11 +221,7 @@ function bloqueiaCentroDeCustoParaColeta(departmentId){
 			}
 		}
 	}else{
-		currentPlanejamentoArr = [];
-		getCurrentPlanejamentoObj();
-		
-		var listaParCargo = retornaCargos(currentParDepartment_Id);
-		listaParCargo = retornaCargosPlanejados(listaParCargo);
+        var listaParCargo = retornaCargos(currentParDepartment_Id);
 		
 		for(var i = 0; i < listaParCargo.length; i++){
 			if(bloqueiaCargoParaColeta(listaParCargo[i]) == false){
@@ -335,14 +326,14 @@ function retornaListaContadorPorDepartamento(parDepartmentParent_Id) {
 }
 
 function bloqueiaCargoParaColeta(c) {
-    currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, c.Id);
-
-    //FIX para trabalhar de forma correta os valores 
-    //que são recebidos do backend com os resultados
+	currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, c.Id);
+	
+	//FIX para trabalhar de forma correta os valores 
+	//que são recebidos do backend com os resultados
     if (currentEvaluationSample.Sample > c.Evaluation.Sample) {
-        currentEvaluationSample.Evaluation += 1;
-        currentEvaluationSample.Sample = 1;
-    }
-
-    return !podeRealizarColeta(currentEvaluationSample.Evaluation, c.Evaluation.Evaluation);
+		currentEvaluationSample.Evaluation += 1;
+		currentEvaluationSample.Sample = 1;
+	}
+	
+	return !podeRealizarColeta(currentEvaluationSample.Evaluation, c.Evaluation.Evaluation);
 }
