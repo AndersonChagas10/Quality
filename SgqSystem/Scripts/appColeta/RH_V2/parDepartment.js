@@ -272,45 +272,48 @@ function retornarArvoreDesdobramentoDepartamentoCargo(listaDeDepartamentos) {
 
     return listaDesdobramento;
 }
-function retornaContadorPorDepartamento(listaDeDepartamento, parDepartmentParent_Id, parDepartment_Id) {
-    var desdobramento = retornarArvoreDesdobramentoDepartamentoCargo(listaDeDepartamento);
-
-    var contador = {
-        av: 0,
-        am: 0,
-        avMax: 0,
-        amMax: 0,
-        parDepartmentParent_Id: parDepartmentParent_Id,
-        parDepartment_Id: parDepartment_Id
-    };
-    $(desdobramento).each(function (i, o) {
-        if (parDepartmentParent_Id != o["ParDepartmentParent_Id"])
-            return;
-
-        if (parDepartment_Id && parDepartment_Id != o["ParDepartment_Id"])
-            return;
-
-        //Regra para pegar AV e AM maximas
-        var listaParCargo = retornaCargos(o["ParDepartment_Id"]);
-        $(listaParCargo).each(function (i_cargo, cargo) {
-            contador["avMax"] += cargo["Evaluation"]["Evaluation"];
-            contador["amMax"] += cargo["Evaluation"]["Sample"];
-        });
-
-        //Regra para pegar AV e AM coletadas
-        $(coletasAgrupadas).each(function (i_coleta, coleta) {
-            if (coleta["ParDepartment_Id"] == o["ParDepartment_Id"]) {
-                contador["av"] += coleta["Evaluation"];
-                contador["am"] += coleta["Sample"];
-            }
-        });
-
-
-
-    });
-
-    return contador;
+function retornaContadorPorDepartamento(listaDeDepartamento, parDepartmentParent_Id,parDepartment_Id){
+	var desdobramento = retornarArvoreDesdobramentoDepartamentoCargo(listaDeDepartamento);
+	
+	var contador = {
+		av: 0, 
+		am: 0,
+		avMax: 0, 
+		amMax: 0,
+		parDepartmentParent_Id: parDepartmentParent_Id,
+		parDepartment_Id: parDepartment_Id
+	};
+	
+	$(desdobramento).each(function (i, o) {
+		if(parDepartmentParent_Id != o["ParDepartmentParent_Id"])
+			return;
+			
+		if(parDepartment_Id && parDepartment_Id != o["ParDepartment_Id"])
+			return;
+			
+		//Regra para pegar AV e AM maximas
+		var listaParCargo = retornaCargos(o["ParDepartment_Id"]);
+		$(listaParCargo).each(function (i_cargo, cargo) {
+			if(o["ParCargo_Id"] == cargo["Id"]){
+				contador["avMax"] += cargo["Evaluation"]["Evaluation"];
+				contador["amMax"] += cargo["Evaluation"]["Sample"];
+				return;
+			}
+		});
+			
+		//Regra para pegar AV e AM coletadas
+		$(coletasAgrupadas).each(function (i_coleta, coleta) {
+			if(coleta["ParDepartment_Id"] == o["ParDepartment_Id"] && o["ParCargo_Id"] == coleta["ParCargo_Id"]){
+				contador["av"] += coleta["Evaluation"];
+				contador["am"] += coleta["Sample"];
+			}
+		});
+		
+	});
+	
+	return contador;
 }
+
 function retornaListaContadorPorDepartamento(parDepartmentParent_Id) {
     //Retorna a lista de departamento, ou seção.
     var listaDepartamento = retornaDepartamentos(parDepartmentParent_Id, true, parametrization.listaParDepartment);

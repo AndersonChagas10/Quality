@@ -104,28 +104,31 @@ function getBotaoBuscarSecaoXCargo() {
 }
 
 function buscarItemNaListaSecaoXCargo(input) {
-        var secaoCargoCascadeList = mostrarDepartamentoFiltrado(parametrization.listaParDepartment, $(input).val(), currentParDepartment_Id);
+    var secaoCargoCascadeList = mostrarDepartamentoFiltrado(parametrization.listaParDepartment, $(input).val(), currentParDepartment_Id);
+    $('.nenhum-resultado').remove();
 
-        if (secaoCargoCascadeList.length > 0) {
-            $('[data-par-department-id]').each(function (i, o) {
+    if (secaoCargoCascadeList.length > 0) {
+        $('[data-par-department-id]').each(function (i, o) {
 
-                var id = $(o).attr('data-par-department-id');
-                var lista = $.grep(secaoCargoCascadeList, function (x, i) {
-                    if (x.parDepartmentParent_Id == id || x.parDepartment_Id == id)
-                        return x;
-                });
-
-                if (lista.length > 0) {
-                    $(o).show();
-                } else {
-                    $(o).hide();
-                }
+            var id = $(o).attr('data-par-department-id');
+            var lista = $.grep(secaoCargoCascadeList, function (x, i) {
+                if (x["ParDepartmentParent_Id"] == id || x["ParDepartment_Id"] == id)
+                    return x;
             });
-            
-        } else {
-            $('.list-group').append("<span class='list-group-item col-xs-12 text-center'>Nenhum resultado encontrado com o termo digitado.</span>");
-        }  
- 
+
+            if (lista.length > 0) {
+                $(o).show();
+            } else {
+                $(o).hide();
+            }
+        });
+        
+    } else {
+        $('[data-par-department-id]').hide();
+        if($('.nenhum-resultado').length == 0){
+            $('.list-group').append("<span class='list-group-item col-xs-12 text-center nenhum-resultado'>Nenhum resultado encontrado com o termo digitado.</span>");
+        }
+    }  
 }
 
 function buscarItemNaLista(input) {
@@ -154,23 +157,27 @@ function buscarItemNaLista(input) {
 }
 
 
+function mostrarDepartamentoFiltrado(listaDeDepartamento, busca, parDepartmentParent_Id){
+	var desdobramento = retornarArvoreDesdobramentoDepartamentoCargo(listaDeDepartamento);
 
-function mostrarDepartamentoFiltrado(listaDeDepartamento, busca, parDepartmentParent_Id) {
-    var desdobramento = retornarArvoreDesdobramentoDepartamentoCargo(listaDeDepartamento);
-    var listaDesdobramentosFiltrados = [];
-    $(desdobramento).each(function (i, o) {
-        if (!parDepartmentParent_Id
-            || (parDepartmentParent_Id && o["ParDepartmentParent_Id"] == parDepartmentParent_Id)) {
-            var nomesConcatenados = o["ParDepartmentParent_Name"] + o["ParDepartment_Name"] + o["ParCargo_Name"];
-
-            if (nomesConcatenados.toUpperCase().indexOf(busca.toUpperCase()) > -1)
-                listaDesdobramentosFiltrados.push(o);
-        }
-
-
-    });
-
-    return listaDesdobramentosFiltrados;
+	var listaDesdobramentosFiltrados = [];
+	$(desdobramento).each(function (i, o) {
+		if(!parDepartmentParent_Id
+		|| (parDepartmentParent_Id && o["ParDepartmentParent_Id"] == parDepartmentParent_Id)){
+			var nomesConcatenados = o["ParDepartment_Name"] + o["ParCargo_Name"];
+			if(!parDepartmentParent_Id){
+				nomesConcatenados = o["ParDepartmentParent_Name"] + nomesConcatenados
+			}
+			
+			if(nomesConcatenados.toUpperCase().indexOf(busca.toUpperCase()) > -1)
+				listaDesdobramentosFiltrados.push(o);
+		}
+		
+			
+	});
+	
+	currentParDepartment_Id = parDepartmentParent_Id;
+	return listaDesdobramentosFiltrados;
 }
 
 
