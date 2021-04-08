@@ -192,8 +192,7 @@ function changeDate(that) {
 
 function setBreadcrumbs() {
 
-    //<li><a onclick="validaRota(openMenu,null)">Inicio</a></li> removido para nao abrir a tela de planejar
-    var breadcrumb = '<ol class="breadcrumb">';
+    var breadcrumb = '<ol class="breadcrumb"><li><a onclick="validaRota(openParcompany,null)">Inicio</a></li>';
     var breadcrumbLi = "";
     var isCurrent = true;
 
@@ -216,16 +215,10 @@ function setBreadcrumbs() {
     }
 
     if (currentParCluster_Id) {
-        if (parametrization) {
-            breadcrumbLi += getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
-                return item.Id == currentParCluster_Id;
-            })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
-        } else {
-            breadcrumbLi += getBreadcrumb($.grep(listaParCluster, function (item) {
-                return item.Id == currentParCluster_Id;
-            })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
-        }
-
+        var listaCluster = $.merge(parametrization.listaParCluster,listaParCluster);
+        breadcrumbLi += getBreadcrumb($.grep(listaCluster, function (item) {
+            return item.Id == currentParCluster_Id;
+        })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
         isCurrent = false;
     }
 

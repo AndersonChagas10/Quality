@@ -37,7 +37,22 @@ namespace LogSystem
                 error.StackTrace = ex.ToClient();
                 error.StackTrace = error.StackTrace.Substring(0, error.StackTrace.Length > 900 ? 900 : error.StackTrace.Length);
 
-                string sql = $@"
+                SaveLogError(error);
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    Register(e);
+                }
+                catch { }
+            }
+
+        }
+
+        public static void SaveLogError(Dominio.LogError error)
+        {
+            string sql = $@"
 INSERT INTO [dbo].[LogError]
            ([ErrorMessage]
            ,[Line]
@@ -56,30 +71,21 @@ INSERT INTO [dbo].[LogError]
            ,@AddDate);
             SELECT @@IDENTITY AS 'Identity';";
 
-                using (Factory factory = new Factory("DefaultConnection"))
-                {
-                    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
-                    {
-                        cmd.CommandType = CommandType.Text;
-                        UtilSqlCommand.AddParameterNullable(cmd, "@ErrorMessage", error.ErrorMessage);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@Line", error.Line);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@Method", error.Method);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@Controller", error.Controller);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@Object", error.Object);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@StackTrace", error.StackTrace);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@AddDate", error.AddDate);
-                        var id = Convert.ToInt32(cmd.ExecuteScalar());
-                    }
-                }
-            }catch (Exception e)
+            using (Factory factory = new Factory("DefaultConnection"))
             {
-                try
+                using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
                 {
-                    Register(e);
+                    cmd.CommandType = CommandType.Text;
+                    UtilSqlCommand.AddParameterNullable(cmd, "@ErrorMessage", error.ErrorMessage);
+                    UtilSqlCommand.AddParameterNullable(cmd, "@Line", error.Line);
+                    UtilSqlCommand.AddParameterNullable(cmd, "@Method", error.Method);
+                    UtilSqlCommand.AddParameterNullable(cmd, "@Controller", error.Controller);
+                    UtilSqlCommand.AddParameterNullable(cmd, "@Object", error.Object);
+                    UtilSqlCommand.AddParameterNullable(cmd, "@StackTrace", error.StackTrace);
+                    UtilSqlCommand.AddParameterNullable(cmd, "@AddDate", error.AddDate);
+                    var id = Convert.ToInt32(cmd.ExecuteScalar());
                 }
-                catch { }
             }
-
         }
     }
 }

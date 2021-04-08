@@ -1,7 +1,5 @@
 function openMenu() {
-
-	preencheCurrentPPlanejamento(showMenu);
-
+	showMenu();
 }
 
 function showMenu() {

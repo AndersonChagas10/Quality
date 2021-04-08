@@ -8,8 +8,6 @@ function listarParCargo(isVoltar) {
 
     var listaParCargo = retornaCargos(currentParDepartment_Id);
 
-    listaParCargo = retornaCargosPlanejados(listaParCargo);
-
     var htmlParCargo = "";
 
     listaParCargo = listaParCargo.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
@@ -64,6 +62,7 @@ function listarParCargo(isVoltar) {
 
     if (globalLogo)
         systemLogo = 'background-image: url(' + globalLogo + ')';
+
 
     html = getHeader() +
         '<div class="container-fluid">                                       ' +

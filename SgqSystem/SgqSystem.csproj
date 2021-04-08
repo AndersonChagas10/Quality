@@ -343,6 +343,7 @@
     <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
     <Compile Include="Controllers\Api\ImportacaoExcelApiController.cs" />
     <Compile Include="Controllers\Api\Laboratorio\LaboratorioApiController.cs" />
+    <Compile Include="Controllers\Api\Log\LogErrorController.cs" />
     <Compile Include="Controllers\Api\ParDepartmentsApiController.cs" />
     <Compile Include="Controllers\Api\ParInputTypeValuesApiController.cs" />
     <Compile Include="Controllers\Api\ParReasonApiController.cs" />
@@ -1220,7 +1221,6 @@
     <Content Include="Scripts\appColeta\RH_V2\parFrequencyXindicador.js" />
     <Content Include="Scripts\appColeta\RH_V2\parHeaderField.js" />
     <Content Include="Scripts\appColeta\RH_V2\parLevels.js" />
-    <Content Include="Scripts\appColeta\RH_V2\planejamentoColeta.js" />
     <Content Include="Scripts\appColeta\RH\alert.js" />
     <Content Include="Scripts\appColeta\RH\app.js" />
     <Content Include="Scripts\appColeta\RH\coleta.js" />

@@ -145,7 +145,6 @@ $('body')
         }
     });
 
-
 $('body')
     .off('input', '[data-level3] input:visible')
     .on('input', '[data-level3] input:visible', function () {
