@@ -26,12 +26,15 @@ function listarParDepartment(parDepartmentId, isVoltar) {
             
 
 		var style = '';
+		var contadorHtml = '';
 
 		var temp_currentsParDepartments_Ids = $.grep(currentsParDepartments_Ids, function (o, i) {return true;});
 		var temp_currentParDepartment_Id = currentParDepartment_Id;
-		if(bloqueiaCentroDeCustoParaColeta(o.Id) == true){
-			style = 'style="background-color:#ddd;cursor:not-allowed"';
-		}
+        if (bloqueiaCentroDeCustoParaColeta(o.Id) == true) {
+            style = 'style="background-color:#ddd;cursor:not-allowed"';
+        } else {
+            contadorHtml = `<span> AV: ${contador.av}/${contador.avMax} | AM:  ${contador.am}/${contador.amMax} </span>`;
+        }
 		currentsParDepartments_Ids = temp_currentsParDepartments_Ids;
 		currentParDepartment_Id = temp_currentParDepartment_Id;
 
@@ -41,7 +44,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 			if ((parDepartmentId > 0 && parDepartmentId == o.Parent_Id) || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
 				htmlParDepartment += '<button type="button" '+style+' class="list-group-item col-xs-12" ' +
                     'data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name +
-                    `<span> AV: ${contador.av}/${contador.avMax} | AM:  ${contador.am}/${contador.amMax} </span>` +
+                    contadorHtml +
 					'<span class="badge">></span>' +
 					'</button>';
 			}
@@ -50,7 +53,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
 	currentParDepartment_Id = department.Id;
 
-	getCurrentPlanejamentoObj();
+	//getCurrentPlanejamentoObj();
 
     //caso for "" quer dizer que não tem mais filhos, então abre o próximo	
     if (htmlParDepartment == "") {
@@ -283,6 +286,7 @@ function retornaContadorPorDepartamento(listaDeDepartamento, parDepartmentParent
         parDepartmentParent_Id: parDepartmentParent_Id,
         parDepartment_Id: parDepartment_Id
     };
+
     $(desdobramento).each(function (i, o) {
         if (parDepartmentParent_Id != o["ParDepartmentParent_Id"])
             return;
@@ -290,27 +294,44 @@ function retornaContadorPorDepartamento(listaDeDepartamento, parDepartmentParent
         if (parDepartment_Id && parDepartment_Id != o["ParDepartment_Id"])
             return;
 
-        //Regra para pegar AV e AM maximas
         var listaParCargo = retornaCargos(o["ParDepartment_Id"]);
-        $(listaParCargo).each(function (i_cargo, cargo) {
-            contador["avMax"] += cargo["Evaluation"]["Evaluation"];
-            contador["amMax"] += cargo["Evaluation"]["Sample"];
-        });
+        for (var i_cargo = 0; i_cargo < listaParCargo.length; i_cargo++) {
+            var cargo = listaParCargo[i_cargo];
 
-        //Regra para pegar AV e AM coletadas
-        $(coletasAgrupadas).each(function (i_coleta, coleta) {
-            if (coleta["ParDepartment_Id"] == o["ParDepartment_Id"]) {
-                contador["av"] += coleta["Evaluation"];
-                contador["am"] += coleta["Sample"];
+            if ((parDepartment_Id == cargo["Evaluation"]['ParDepartment_Id'] || parDepartment_Id == undefined) && o["ParCargo_Id"] == cargo['Id']) {
+                var avMaxima = cargo["Evaluation"]["Evaluation"];
+                var amMaxima = cargo["Evaluation"]["Sample"];
+
+                contador["avMax"] += avMaxima;
+                contador["amMax"] += avMaxima * amMaxima;
+
+                if ((parDepartment_Id == o['ParDepartment_Id'] || parDepartment_Id == undefined)
+                    && parDepartmentParent_Id == o['ParDepartmentParent_Id']) {
+
+                    //Regra para pegar AV e AM coletadas
+                    for (var i_coleta = 0; i_coleta < coletasAgrupadas.length; i_coleta++) {
+                        var coleta = coletasAgrupadas[i_coleta];
+
+                        if ((parDepartment_Id == coleta["ParDepartment_Id"] || parDepartment_Id == undefined)
+                            && coleta['ParCargo_Id'] == o['ParCargo_Id']) {
+                            var avAtual = coleta["Evaluation"];
+                            var amAtual = coleta["Sample"];
+                            var avColetada = avMaxima > avAtual ? avAtual : avMaxima;
+                            contador["av"] += avColetada
+                            contador["am"] += (amAtual - 1) + ((avAtual - 1) * amMaxima);
+                            break;
+                        }
+                    }
+                    break;
+                }
+       
             }
-        });
-
-
-
+        }
     });
 
     return contador;
 }
+
 function retornaListaContadorPorDepartamento(parDepartmentParent_Id) {
     //Retorna a lista de departamento, ou seção.
     var listaDepartamento = retornaDepartamentos(parDepartmentParent_Id, true, parametrization.listaParDepartment);
