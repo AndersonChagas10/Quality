@@ -12,8 +12,6 @@ function GetLevels() {
 
     montarLevel1(level1List);
 
-    level1List = retornaLevels1Planejados(level1List);
-
     return level1List;
 }
 
@@ -21,7 +19,8 @@ function montarLevel1(level1List) {
 
     var parVinculos = $.grep(parametrization.listaParVinculoPeso, function (obj) {
         return (obj.ParDepartment_Id == currentParDepartment_Id || obj.ParDepartment_Id == null)
-            && (obj.ParCargo_Id == currentParCargo_Id || obj.ParCargo_Id == null);
+            && (obj.ParCargo_Id == currentParCargo_Id || obj.ParCargo_Id == null)
+            && currentPlanejamento.filter(x => x.indicador_Id == obj.ParLevel1_Id).length > 0;
     });
 
     var level1_Ids_Aux = $.map(parVinculos, function (obj) {

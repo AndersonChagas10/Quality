@@ -60,7 +60,7 @@ function listarParClusterGroup(isVoltar) {
         htmlParClusterGroup += '<div class="row">';
         $(data).each(function (i, o) {
 
-            htmlParClusterGroup += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important; width: auto"><button type="button" class="list-group-item btn btn-lg btn-block"  style="color: #1F497D;background-color:#DCE6F1;" data-par-cluster-group-id="' + o.Id + '">' + o.Name +
+            htmlParClusterGroup += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important"><button type="button" class="list-group-item btn btn-lg btn-block"  style="color: #1F497D;background-color:#DCE6F1;" data-par-cluster-group-id="' + o.Id + '" title="' + o.Name + '">' + o.Name +
                 '</button></div>';
         });
         htmlParClusterGroup += '</div>';

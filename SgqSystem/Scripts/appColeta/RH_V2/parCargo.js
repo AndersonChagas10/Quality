@@ -8,9 +8,9 @@ function listarParCargo(isVoltar) {
 
     var listaParCargo = retornaCargos(currentParDepartment_Id);
 
-    listaParCargo = retornaCargosPlanejados(listaParCargo);
-
     var htmlParCargo = "";
+
+    listaParCargo = listaParCargo.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
     $(listaParCargo).each(function (i, o) {
         currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, o.Id);
@@ -58,19 +58,25 @@ function listarParCargo(isVoltar) {
 
     });
 
-    var voltar = '<a onclick="validaRota(listarParDepartment,currentParDepartmentParent_Id);" class="btn btn-warning">Voltar</a>';
+    var voltar = '<a onclick="validaRota(listarParDepartment,currentParDepartmentParent_Id);" class="btn btn-warning col-xs-12" style="margin-bottom:10px;">Voltar</a>';
 
+    if (globalLogo)
+        systemLogo = 'background-image: url(' + globalLogo + ')';
 
 
     html = getHeader() +
         '<div class="container-fluid">                                       ' +
         '    <div class="">                                         ' +
         '        <div class="col-xs-12">                               ' +
-        '            <div class="panel panel-primary">                 ' +
-        '              <div class="panel-heading">                     ' +
+        '            <div class="panel">                 ' +
+        '              <div class="panel-heading" style="background-color:#DCE6F1;">                     ' +
+
+        '<div style="height: 220px; text-align: center; background-repeat: no-repeat;background-size: auto 100%;background-position: center;height: 220px; ' + systemLogo + '">' +
+        '</div>' +
+
         '			    <div class="row">                          ' +
         '			      <div class="col-xs-9">                         ' +
-        '                <h3 class="panel-title">' + voltar + ' Selecione o cargo que deseja coletar</h3>        ' +
+        '                <h3 class="panel-title"> Selecione o cargo que deseja coletar</h3>        ' +
         '                 </div >                                          ' +
         '                 <div class="col-sm-3">                           ' +
         getBotaoBuscar() +
@@ -79,6 +85,7 @@ function listarParCargo(isVoltar) {
         '              </div>                                          ' +
         '              <div class="panel-body">                        ' +
         '                <div class="list-group" id="divCargo">                      ' +
+        voltar +
         htmlParCargo +
         '                </div>                                        ' +
         '              </div>                                          ' +
