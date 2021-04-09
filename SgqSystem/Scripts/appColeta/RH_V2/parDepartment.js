@@ -301,17 +301,29 @@ function retornaContadorPorDepartamento(listaDeDepartamento, parDepartmentParent
 
                     //Regra para pegar AV e AM coletadas
                     for (var i_coleta = 0; i_coleta < coletasAgrupadas.length; i_coleta++) {
-                        var coleta = coletasAgrupadas[i_coleta];
 
-                        if ((parDepartment_Id == coleta["ParDepartment_Id"] || parDepartment_Id == undefined)
-                            && coleta['ParCargo_Id'] == o['ParCargo_Id']) {
-                            var avAtual = coleta["Evaluation"];
-                            var amAtual = coleta["Sample"];
-                            var avColetada = avMaxima > avAtual ? avAtual : avMaxima;
-                            contador["av"] += avColetada
-                            contador["am"] += (amAtual - 1) + ((avAtual - 1) * amMaxima);
-                            break;
+                        var coleta = coletasAgrupadas[i_coleta];
+                        var avAtual = 0;
+                        var amAtual = 0;
+                        var avColetada = 0;
+
+                        if (parDepartment_Id != undefined) {
+                            if (parDepartment_Id == coleta["ParDepartment_Id"]
+                                && coleta['ParCargo_Id'] == o['ParCargo_Id']) {
+
+                                retornaValoresContador(coleta, avAtual, amAtual, avColetada, contador, avMaxima, amMaxima);
+                                break;
+                            }
+                        } else {
+                            if (coleta["ParDepartment_Id"] == o['ParDepartment_Id']
+                                && coleta['ParCargo_Id'] == o['ParCargo_Id']) {
+
+                                retornaValoresContador(coleta, avAtual, amAtual, avColetada, contador, avMaxima, amMaxima);
+                                break;
+                            }
                         }
+
+                       
                     }
                     break;
                 }
@@ -321,6 +333,14 @@ function retornaContadorPorDepartamento(listaDeDepartamento, parDepartmentParent
     });
 
     return contador;
+}
+
+function retornaValoresContador(coleta, avAtual, amAtual, avColetada, contador, avMaxima, amMaxima) {
+    avAtual = coleta["Evaluation"];
+    amAtual = coleta["Sample"];
+    avColetada = avMaxima > avAtual ? avAtual : avMaxima;
+    contador["av"] += avColetada;
+    contador["am"] += (amAtual - 1) + ((avAtual - 1) * amMaxima);
 }
 
 function retornaListaContadorPorDepartamento(parDepartmentParent_Id) {
