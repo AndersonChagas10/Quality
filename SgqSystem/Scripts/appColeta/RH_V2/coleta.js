@@ -1213,8 +1213,10 @@ function PrepararColetas() {
         );
     });
 
-    if (!hasPartialSave)
+    if (!hasPartialSave) {
         processAlertRole(coletaJson);
+        processAction(coletaJson);
+    }
 
     var cabecalhos = getCollectionHeaderFields(collectionDate);
 

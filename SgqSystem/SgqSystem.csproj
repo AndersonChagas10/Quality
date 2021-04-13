@@ -1198,6 +1198,7 @@
     <Content Include="images\sort_asc.png" />
     <Content Include="images\sort_both.png" />
     <Content Include="images\sort_desc.png" />
+    <Content Include="Scripts\appColeta\RH_V2\acao.js" />
     <Content Include="Scripts\appColeta\RH_V2\alert.js" />
     <Content Include="Scripts\appColeta\RH_V2\app.js" />
     <Content Include="Scripts\appColeta\RH_V2\coleta.js" />
