@@ -1,4 +1,144 @@
-﻿function abreModalCorrectiveAction(coletasAgrupadas, index) {
+﻿function processAction(coletaJson) {
+
+    var htmlAcao = `<div id="bodyModalAcaoCorretiva" style="display:block;">
+   <h3 style="font-weight:bold;">Criar Ação</h3>
+   <hr>
+   <div class="form-group">
+      <div class="form-group col-xs-12" style="border: 2px;border-color: azure;border-style: groove;">
+         <label class="col-md-4">Data Emissão: 12/04/2021</label>
+         <label class="col-md-3">Hora Emissão: 10:00</label>
+         <label>Emissor: Marcos</label>
+      </div>
+      <div class="form-group col-xs-12" style="border: 2px;border-color: azure;border-style: groove;">
+         <p>Unidade: Unidade</p>
+         <p>Centro de Custo: centro de custo</p>
+         <p>Seção/Atividade: seção</p>
+         <p>Item/Tarefa: tarefa</p>
+         <p>Indicado/Origem: indicador</p>
+         <p>Monitoramento: monitoramento</p>
+         <p>Desvio: desvio</p>
+      </div>
+      <div class="form-group col-xs-12" style="">
+         <p>Não Conformidade/Ocorrencia</p>
+         <input class="form-control" type="text">
+         <p>Ação</p>
+         <input class="form-control">
+      </div>
+      <hr>
+      <div class="form-group col-xs-12">
+         <p><i class="fa fa-camera" aria-hidden="true"></i> Evidencias de Não conformidade</p>
+         <ul>
+            <li>Ver e agir</li>
+         </ul>
+         <p><i class="fa fa-camera" aria-hidden="true"></i> Evidencias da Ação Concluida</p>
+      </div>
+   </div>
+   <div class="form-group col-md-12">
+      <div class="col-md-4">
+         <label>Data da conclusão:</label>
+         <input type="date" class="form-control">
+      </div>
+      <div class="col-md-4">
+         <label>Hora da conclusão:</label>
+         <input type="time" class="form-control">
+      </div>
+      <div class="col-md-4">
+         <label>referencia:</label>
+         <input type="text" class="form-control">
+      </div>
+      <div class="col-md-4">
+         <label>Responsavel:</label>
+         <select class="form-control">
+            <option>Supervisor 1</option>
+            <option>Supervisor 2</option>
+            <option>Supervisor 3</option>
+         </select>
+      </div>
+      <div class="col-md-4">
+         <label>Responsavel:</label>
+         <select class="form-control">
+            <option>Supervisor 1</option>
+            <option>Supervisor 2</option>
+            <option>Supervisor 3</option>
+         </select>
+      </div>
+   </div>
+   <div class="col-md-12">
+      <div class="col-md-6">
+         <button class="btn btn-success">Salvar</button>
+      </div>
+   </div>
+</div>`;
+
+    openModal(htmlAcao, 'white', 'black');
+}
+
+//function processAction(coletaJson) {
+
+//    if (coletaJson.length == 0)
+//        return;
+
+//    var listaParAlertPreFiltrada = $.grep(parametrization.listaParAlert, function (o, i) {
+//        return (o.ParDepartment_Id == coletaJson[0].ParDepartment_Id || o.ParDepartment_Id == null)
+//            && (o.ParCargo_Id == coletaJson[0].ParCargo_Id || o.ParCargo_Id == null)
+//    });
+
+//    currentListaDeColetaComAlertaEAcaoCorretiva = [];
+//    for (var i = 0; i < coletaJson.length; i++) {
+
+//        var coleta = coletaJson[i];
+
+//        if (coleta.IsConform)
+//            continue;
+
+//        //retorna se existe algum alerta vigente para este cenario
+//        var listaAlertasVigente = $.grep(listaParAlertPreFiltrada, function (o, i) {
+//            return (o.ParCompany_Id == coleta.ParCompany_Id || o.ParCompany_Id == null)
+//                && (o.ParLevel1_Id == coleta.ParLevel1_Id || o.ParLevel1_Id == null)
+//                && (o.ParLevel2_Id == coleta.ParLevel2_Id || o.ParLevel2_Id == null)
+//                && o.ParLevel3_Id == coleta.ParLevel3_Id
+//                && o.ParAlertType_Id == 1
+//                && (o.ParSecao_Ids == currentParDepartment_Id || o.ParSecao_Ids == null);
+//        });
+
+//        //retorna todos os alertas para somar o numero do alerta
+//        var numeroDeAlertas = $.grep(currentAlertsAgrupados, function (o, i) {
+//            return (o.ParDepartment_Id == coleta.ParDepartment_Id || o.ParDepartment_Id == null)
+//                && (o.ParCargo_Id == coleta.ParCargo_Id || o.ParCargo_Id == null)
+//                && (o.ParCompany_Id == coleta.ParCompany_Id || o.ParCompany_Id == null)
+//                && (o.ParLevel1_Id == coleta.ParLevel1_Id || o.ParLevel1_Id == null)
+//                && (o.ParLevel2_Id == coleta.ParLevel2_Id || o.ParLevel2_Id == null)
+//                && o.ParLevel3_Id == coleta.ParLevel3_Id
+//        }).length;
+
+//        if (listaAlertasVigente.length > 0) {
+
+//            numeroDeAlertas++;
+
+//            currentListaDeColetaComAlertaEAcaoCorretiva.push({
+//                listaAlertasVigente: listaAlertasVigente,
+//                coleta: coleta,
+//                numberAlert: numeroDeAlertas
+//            });
+
+//            currentAlertsAgrupados.push({
+//                ParDepartment_Id: coleta.ParDepartment_Id,
+//                ParCargo_Id: coleta.ParCargo_Id,
+//                ParCompany_Id: coleta.ParCompany_Id,
+//                ParLevel1_Id: coleta.ParLevel1_Id,
+//                ParLevel2_Id: coleta.ParLevel2_Id,
+//                ParLevel3_Id: coleta.ParLevel3_Id,
+//                Number: numeroDeAlertas
+//            });
+//        }
+//    }
+
+//    if (currentListaDeColetaComAlertaEAcaoCorretiva.length > 0) {
+//        abreModalCorrectiveAction(currentListaDeColetaComAlertaEAcaoCorretiva, 0);
+//    }
+//}
+
+function abreModalCorrectiveAction(coletasAgrupadas, index) {
 
 
     var corpo = montaHtmlModalAcaoCorretiva(coletasAgrupadas, index);

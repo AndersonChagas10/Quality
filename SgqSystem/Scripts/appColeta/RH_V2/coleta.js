@@ -1214,7 +1214,7 @@ function PrepararColetas() {
     });
 
     if (!hasPartialSave) {
-        processAlertRole(coletaJson);
+        //processAlertRole(coletaJson);
         processAction(coletaJson);
     }
 
