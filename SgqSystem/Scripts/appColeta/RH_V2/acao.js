@@ -1,18 +1,24 @@
-﻿function processAction(coletaJson) {
+﻿function processAction() {
 
-    var htmlAcao = `<div id="bodyModalAcaoCorretiva" style="display:block;">
+    var options = '<option value="">Selecione...</option>';
+
+    parametrization.listaAuditor.forEach(function (parMultipleValue) {
+        options += '<option value="' + parMultipleValue.Id + '">' + parMultipleValue.Name + '</option>';
+    });
+
+    var htmlAcao = `<div class="container"><div id="bodyModalAcao" style="display:block;">
    <h3 style="font-weight:bold;">Criar Ação</h3>
    <hr>
    <div class="form-group">
       <div class="form-group col-xs-12" style="border: 2px;border-color: azure;border-style: groove;">
-         <label class="col-md-4">Data Emissão: 12/04/2021</label>
-         <label class="col-md-3">Hora Emissão: 10:00</label>
-         <label>Emissor: Marcos</label>
+         <label class="col-md-4">Data Emissão: ${ currentCollectDate.toLocaleDateString()}</label>
+         <label class="col-md-3">Hora Emissão: ${currentCollectDate.toLocaleTimeString()}</label>
+         <label>Emissor: ${currentLogin.Name}</label>
       </div>
       <div class="form-group col-xs-12" style="border: 2px;border-color: azure;border-style: groove;">
-         <p>Unidade: Unidade</p>
-         <p>Centro de Custo: centro de custo</p>
-         <p>Seção/Atividade: seção</p>
+         <p>Unidade: ${$.grep(currentLogin.ParCompanyXUserSgq, function (o, i) { return o.ParCompany.Id == currentParCompany_Id })[0].ParCompany.Name}</p>
+         <p>Centro de Custo: ${$.grep(parametrization.listaParDepartment, function (o, i) { return o.Id == currentParDepartment_Id })[0].Name}</p>
+         <p>Seção/Atividade: ${$.grep(parametrization.listaParDepartment, function (o, i) { return o.Parent_Id == currentParDepartmentParent_Id })[0].Name}</p>
          <p>Item/Tarefa: tarefa</p>
          <p>Indicado/Origem: indicador</p>
          <p>Monitoramento: monitoramento</p>
@@ -49,17 +55,13 @@
       <div class="col-md-4">
          <label>Responsavel:</label>
          <select class="form-control">
-            <option>Supervisor 1</option>
-            <option>Supervisor 2</option>
-            <option>Supervisor 3</option>
+            ${options}
          </select>
       </div>
       <div class="col-md-4">
          <label>Responsavel:</label>
          <select class="form-control">
-            <option>Supervisor 1</option>
-            <option>Supervisor 2</option>
-            <option>Supervisor 3</option>
+           ${options}
          </select>
       </div>
    </div>
@@ -68,7 +70,7 @@
          <button class="btn btn-success">Salvar</button>
       </div>
    </div>
-</div>`;
+</div></div>`;
 
     openModal(htmlAcao, 'white', 'black');
 }
