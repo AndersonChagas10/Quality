@@ -1,4 +1,32 @@
-﻿function processAction() {
+﻿function processAction(coletaJson) {
+
+    var listaLevel1Acao = [];
+    listaLevel1Acao.push(parametrization.listaParLevel1.forEach(function (o, i) {
+        if (o.GenerateActionOnNotConformity) {
+            return o;
+        }
+    }));
+
+
+    //if (listaLevel1Acao.length == 0)
+      //  return;
+
+    var listaAcoes = [];
+    for (var i = 0; i < coletaJson.length; i++) {
+        for (var j = 0; j < listaLevel1Acao.length; j++) {
+
+            if (!coletaJson[i].hasOwnProperty('ParHeaderField_Id')
+                && parseInt(listaLevel1Acao[j].Id) == parseInt(coletaJson[i].ParLevel1_Id)
+                && !coletaJson[i].IsConform
+                ) {
+                listaAcoes.push(coletaJson[i]);
+            }
+
+        }
+    }
+
+    //if (listaAcoes.length == 0)
+       // return;
 
     var options = '<option value="">Selecione...</option>';
 
@@ -6,6 +34,7 @@
         options += '<option value="' + parMultipleValue.Id + '">' + parMultipleValue.Name + '</option>';
     });
 
+   
     var htmlAcao = `<div class="container"><div id="bodyModalAcao" style="display:block;">
    <h3 style="font-weight:bold;">Criar Ação</h3>
    <hr>
@@ -20,7 +49,7 @@
          <p>Centro de Custo: ${$.grep(parametrization.listaParDepartment, function (o, i) { return o.Id == currentParDepartment_Id })[0].Name}</p>
          <p>Seção/Atividade: ${$.grep(parametrization.listaParDepartment, function (o, i) { return o.Parent_Id == currentParDepartmentParent_Id })[0].Name}</p>
          <p>Item/Tarefa: tarefa</p>
-         <p>Indicado/Origem: indicador</p>
+         <p>Indicador/Origem: indicador</p>
          <p>Monitoramento: monitoramento</p>
          <p>Desvio: desvio</p>
       </div>
