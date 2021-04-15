@@ -1057,14 +1057,14 @@ function enviarFiltro(nivelVisao) {
 
                                     var listaMetasEspecificas = listaGlobalMeta[1].split('|');
 
-                                    listaMetasEspecificas.forEach(function (o, i) {
-
-                                        if (o.split('=')[0] == acompanhamentoObj['GrupoEmpresaId']) {
-                                            meta = o.split('=')[1];
+                                    for (var i = 0; i < listaMetasEspecificas.length; i++) {
+                                        if (listaMetasEspecificas[i].split('=')[0] == acompanhamentoObj['GrupoEmpresaId']) {
+                                            meta = listaMetasEspecificas[i].split('=')[1];
+                                            break;
                                         } else {
                                             meta = metaGlobal;
                                         }
-                                    });
+                                    }
                                 }
 
                                 var total = 0;
