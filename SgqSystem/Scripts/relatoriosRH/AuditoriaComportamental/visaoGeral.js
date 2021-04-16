@@ -1,5 +1,6 @@
 ﻿$(document).ready(function () {
     var listaGlobalAuditores = [];
+    var listaGlobalMeta = [];
     //$('#visaoGeral').click();
     setTimeout(function () {
         $("#acompanhamentoAuditoria").click();
@@ -686,7 +687,7 @@ function montaListaSemanas(data) {
 
     var semanas = [];
     var semanasName = [];
-    var colunasRemover = ["Seguro", "Inseguro", "total", "C", "NC", "NA", "pessoas observadas", "Auditor Cabecalho", "GrupoEmpresa", "Regional", "Secao", "GrupoEmpresa", "Unidade", "Auditor", "Indicador", "Monitoramento", "Tarefa", "Conforme", "Cargo", "ValorDescricaoTarefa", "ClusterName", "HeaderFieldListL1", "HeaderFieldListL2", "HeaderFieldListL3", "indicador", "secao", "grupoempresa", "Data", "collectionl2_id", "monitoramento", "tarefa",
+    var colunasRemover = ["Seguro", "Inseguro", "total", "C", "NC", "NA", "pessoas observadas", "Auditor Cabecalho", "GrupoEmpresa", "Regional", "Secao", "GrupoEmpresa","GrupoEmpresaId", "Unidade", "Auditor", "Indicador", "Monitoramento", "Tarefa", "Conforme", "Cargo", "ValorDescricaoTarefa", "ClusterName", "HeaderFieldListL1", "HeaderFieldListL2", "HeaderFieldListL3", "indicador", "secao", "grupoempresa", "Data", "collectionl2_id", "monitoramento", "tarefa",
         "conforme", "valordescricaotarefa", "cargo", "CentroCusto", "regional", "Data da Auditoria", "Atividade", "Hora da Auditoria", "Avaliação da Atividade",
         "Medidas / Ação tomadas para correção ou incentivo do comportamento", "Pessoa avaliada", "Tipo de Tarefa Realizada"];
 
@@ -968,6 +969,20 @@ function enviarFiltro(nivelVisao) {
             //fazer a requisição por unidade
             break;
         case '3':
+            $.ajax({
+                url: urlGetListaMeta,
+                type: 'post',
+                data: JSON.stringify(objFiltro),
+                dataType: "JSON",
+                contentType: "APPLICATION/JSON; CHARSET=UTF-8",
+                beforeSend: function () {
+                }
+            }).done(function (listaMeta) {
+                listaGlobalMeta = listaMeta;
+            }).fail(function (jqXHR, textStatus, msg) {
+                console.log(msg);
+                closeLoader();
+            });
 
             $.ajax({
                 url: urlGetListaAuditores,
@@ -1024,6 +1039,7 @@ function enviarFiltro(nivelVisao) {
                     acompanhamentoObj = acompanhamentoObj.concat(listaGlobalAuditores);
 
                     var colunas = [
+                        { title: "Grupo de Empresa Id", mData: "GrupoEmpresaId" },
                         { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
                         { title: "Regional", mData: "Regional" },
                         { title: "Unidade", mData: "Unidade" },
@@ -1032,7 +1048,24 @@ function enviarFiltro(nivelVisao) {
                         {
                             title: "% Realizado", mData: null, mRender: function (acompanhamentoObj, type, full) {
 
-                                var meta = 2;
+                                var metaGlobal = 0;
+                                var meta = 0; 
+                                if (listaGlobalMeta) {
+
+                                    metaGlobal = listaGlobalMeta[0];
+
+                                    var listaMetasEspecificas = listaGlobalMeta[1].split('|');
+
+                                    for (var i = 0; i < listaMetasEspecificas.length; i++) {
+                                        if (listaMetasEspecificas[i].split('=')[0] == acompanhamentoObj['GrupoEmpresaId']) {
+                                            meta = listaMetasEspecificas[i].split('=')[1];
+                                            break;
+                                        } else {
+                                            meta = metaGlobal;
+                                        }
+                                    }
+                                }
+
                                 var total = 0;
 
                                 for (var i = 0; i < listaDeSemanas.length; i++) {

@@ -54,12 +54,29 @@ namespace SgqSystem.Controllers.Api.Relatorios.RH
                 return _list;
             }
         }
+        
+        [HttpPost]
+        [Route("GetListaMeta")]
+        public List<string> GetListaMeta([FromBody] DataCarrierFormularioNew form)
+        {
+            var metaGeral = (DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.metaAuditoriaComportamental as string)?.Split(';').ToList();
+
+            if (metaGeral.Count > 0)
+            {
+                return metaGeral;
+            }
+            else
+            {
+                return null;
+            }
+       
+        }
 
         [HttpPost]
         [Route("GetListaAuditores")]
         public List<JObject> GetListaAuditores([FromBody] DataCarrierFormularioNew form)
         {
-
+            
             var _list = new List<JObject>();
 
             var query = new AuditoriaComportamentalResultSet().GetListaAuditores(form,GetUserUnitsIds(form.ShowUserCompanies));

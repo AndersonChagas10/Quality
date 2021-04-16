@@ -13,6 +13,7 @@
     var urlGetUnidadePorSetor = Url.Action("GetAuditoriaComportamentalUnidadePorSetor", "api/AuditoriaComportamental");
     var urlGetAcompanhamento = Url.Action("GetAuditoriaComportamentalAcompanhamento", "api/AuditoriaComportamental");
     var urlGetListaAuditores = Url.Action("GetListaAuditores", "api/AuditoriaComportamental");
+    var urlGetListaMeta = Url.Action("GetListaMeta", "api/AuditoriaComportamental");
 
     ViewBag.ShowCurrentDate = false;
     ViewBag.ShowRangeDate = true;
@@ -91,6 +92,7 @@
         var urlGetUnidadePorSetor = '@Html.Raw(@urlGetUnidadePorSetor)';
         var urlGetAcompanhamento = '@Html.Raw(@urlGetAcompanhamento)';
         var urlGetListaAuditores = '@Html.Raw(@urlGetListaAuditores)';
+        var urlGetListaMeta = '@Html.Raw(@urlGetListaMeta)';
     </script>
 
     <script src="~/Scripts/relatoriosRH/AuditoriaComportamental/visaoGeral.js"></script>
