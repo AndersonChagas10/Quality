@@ -1,12 +1,10 @@
-﻿function processAction(coletaJson) {
+﻿var currentQtdAcoes = 1;
+var currentListaDeColetaComAcao = [];
+function processAction(coletaJson) {
 
-    var listaLevel1Acao = [];
-    listaLevel1Acao.push(parametrization.listaParLevel1.forEach(function (o, i) {
-        if (o.GenerateActionOnNotConformity) {
-            return o;
-        }
-    }));
-
+    var listaLevel1Acao = $.grep(parametrization.listaParLevel1, function (o, i) {
+        return o.GenerateActionOnNotConformity;
+    });
 
     //if (listaLevel1Acao.length == 0)
       //  return;
@@ -23,6 +21,20 @@
             }
 
         }
+    }
+
+    var date = getCurrentDate();
+
+    if (listaAcoes.length > 1) {
+
+        btnNext = '<div class="col-sm-3">' +
+            '<button class="btn btn-primary" id="next" onclick="proximoElementoDaListaDeAlertas(' + index + ')" style="float:right;">Próximo Alerta' +
+            ' (' + currentQtdAcoes+ "/" + currentListaDeColetaComAlertaEAcaoCorretiva.length + ')</button>' +
+            '</div>';
+
+        btnBack = '<div class="col-sm-3">' +
+            '<button class="btn btn-primary" id="back" onclick="elementoAnteriorDaListaDeAlertas(' + index + ')" style="float:left;">Voltar Alerta</button>' +
+            '</div>';
     }
 
     //if (listaAcoes.length == 0)
@@ -47,10 +59,10 @@
       <div class="form-group col-xs-12" style="border: 2px;border-color: azure;border-style: groove;">
          <p>Unidade: ${$.grep(currentLogin.ParCompanyXUserSgq, function (o, i) { return o.ParCompany.Id == currentParCompany_Id })[0].ParCompany.Name}</p>
          <p>Centro de Custo: ${$.grep(parametrization.listaParDepartment, function (o, i) { return o.Id == currentParDepartment_Id })[0].Name}</p>
-         <p>Seção/Atividade: ${$.grep(parametrization.listaParDepartment, function (o, i) { return o.Parent_Id == currentParDepartmentParent_Id })[0].Name}</p>
-         <p>Item/Tarefa: tarefa</p>
-         <p>Indicador/Origem: indicador</p>
-         <p>Monitoramento: monitoramento</p>
+         <p>Seção/Atividade: ${$.grep(parametrization.listaParDepartment, function (o, i) { return o.Parent_Id == currentParDepartmentParent_Id;})[0].Name}</p>
+         <p>Item/Tarefa: ${$.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == listaAcoes[0].ParLevel3_Id; })[0].Name }</p>
+         <p>Indicador/Origem:  ${$.grep(parametrization.listaParLevel1, function (o, i) { return o.Id == listaAcoes[0].ParLevel1_Id; })[0].Name }</p>
+         <p>Monitoramento:  ${$.grep(parametrization.listaParLevel2, function (o, i) { return o.Id == listaAcoes[0].ParLevel2_Id; })[0].Name }</p>
          <p>Desvio: desvio</p>
       </div>
       <div class="form-group col-xs-12" style="">
@@ -62,16 +74,15 @@
       <hr>
       <div class="form-group col-xs-12">
          <p><i class="fa fa-camera" aria-hidden="true"></i> Evidencias de Não conformidade</p>
-         <ul>
-            <li>Ver e agir</li>
-         </ul>
-         <p><i class="fa fa-camera" aria-hidden="true"></i> Evidencias da Ação Concluida</p>
+         <label>Ver e Agir</label>
+         <input type="checkbox" id="checkVerAgir" />
+         <p id="actionsEvidencies" hidden="hidden"><i class="fa fa-camera" aria-hidden="true"></i> Evidencias da Ação Concluida</p>
       </div>
    </div>
    <div class="form-group col-md-12">
       <div class="col-md-4">
          <label>Data da conclusão:</label>
-         <input type="date" class="form-control">
+         <input type="date" min="${date[0]}" class="form-control">
       </div>
       <div class="col-md-4">
          <label>Hora da conclusão:</label>
@@ -97,6 +108,7 @@
    <div class="col-md-12">
       <div class="col-md-6">
          <button class="btn btn-success">Salvar</button>
+         <button class="btn btn-info" id="btnCloseModal">Fechar</button>
       </div>
    </div>
 </div></div>`;
@@ -213,17 +225,17 @@ function montaHtmlModalAcaoCorretiva(listaDeColetaComAlertaEAcaoCorretiva, index
     }
     currentlistaSeExisteAlerta = listaAlertasVigente;
 
-    if (listaDeColetaComAlertaEAcaoCorretiva.length > 1) {
+    //if (listaDeColetaComAlertaEAcaoCorretiva.length > 1) {
 
-        btnNext = '<div class="col-sm-3">' +
-            '<button class="btn btn-primary" id="next" onclick="proximoElementoDaListaDeAlertas(' + index + ')" style="float:right;">Próximo Alerta' +
-            ' (' + currentQtdAlerta + "/" + listaDeColetaComAlertaEAcaoCorretiva.length + ')</button>' +
-            '</div>';
+    //    btnNext = '<div class="col-sm-3">' +
+    //        '<button class="btn btn-primary" id="next" onclick="proximoElementoDaListaDeAlertas(' + index + ')" style="float:right;">Próximo Alerta' +
+    //        ' (' + currentQtdAlerta + "/" + listaDeColetaComAlertaEAcaoCorretiva.length + ')</button>' +
+    //        '</div>';
 
-        btnBack = '<div class="col-sm-3">' +
-            '<button class="btn btn-primary" id="back" onclick="elementoAnteriorDaListaDeAlertas(' + index + ')" style="float:left;">Voltar Alerta</button>' +
-            '</div>';
-    }
+    //    btnBack = '<div class="col-sm-3">' +
+    //        '<button class="btn btn-primary" id="back" onclick="elementoAnteriorDaListaDeAlertas(' + index + ')" style="float:left;">Voltar Alerta</button>' +
+    //        '</div>';
+    //}
 
     modal = '<h3 style="font-weight:bold;">Ação Corretiva</h3>';
     body = '<div class="form-group">' +
@@ -307,3 +319,16 @@ function montaHtmlModalAlerta(listaAlertasVigente, coleta) {
         '</div>';
     return alerta;
 }
+
+$('body').off('click', '#btnCloseModal').on('click', '#btnCloseModal', function () {
+    closeModal();
+});
+
+$('body').off('click', '#checkVerAgir').on('click', '#checkVerAgir', function () {
+    if ($(this).is(":checked")) {
+        $("#actionsEvidencies").removeAttr('hidden');
+    } else {
+        $("#actionsEvidencies").attr('hidden', 'hidden');
+    }
+});
+
