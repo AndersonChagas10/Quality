@@ -1614,9 +1614,8 @@ function HeaderFieldsIsValid() {
 
         $self.css("background-color", "");
 
-        var isHeaderFieldLevel3NA = validateHeaderFieldIsNA($self);
 
-        if ($self.attr("data-required") == "true" && isHeaderFieldLevel3NA == false) {
+        if ($self.attr("data-required") == "true") {
 
             if ($self.val() == null || $self.val() == undefined || $self.val() == "") {
                 $self.css("background-color", "#ffc1c1");
