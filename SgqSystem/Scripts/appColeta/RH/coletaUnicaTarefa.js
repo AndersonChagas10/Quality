@@ -1,6 +1,7 @@
 ﻿$(document)
     .off('click change keyup blur', 'form[data-form-coleta] div[data-linha-coleta] button, form[data-form-coleta] div[data-linha-coleta] input')
     .on('click change keyup blur', 'form[data-form-coleta] div[data-linha-coleta] button, form[data-form-coleta] div[data-linha-coleta] input', function () {
+        
         var tag = $(this).prop("tagName");
         var linhaColeta = $(this).parents('[data-linha-coleta]')[0];
         if (globalDicionarioEstatico) {
@@ -49,9 +50,10 @@
                 .find('input, button')
                 .prop("disabled", true);
 
-            if ($(this).val().length > 0 && $(linhaColeta).attr('data-conforme') == $(linhaColeta).attr('data-default-answer')) {
-                setBinaryFieldProperties($(linhaColeta), $(linhaColeta).find('button[data-binario]'));
+            if ($(this).val().length > 0 && $(linhaColeta).attr('data-conforme') != $(linhaColeta).attr('data-default-answer')) {
                 $('[data-salvar]').prop('disabled', false);
+            } else if ($(this).val().length > 0 && $(linhaColeta).attr('data-conforme') == $(linhaColeta).attr('data-default-answer')) {
+                setBinaryFieldProperties($(linhaColeta), $(linhaColeta).find('button[data-binario]'));
             }
         }
         else {
@@ -70,7 +72,10 @@
             
             if ($(this).val().length == 0 && (tag == "INPUT" || tag == "BUTTON") && $(linhaColeta).attr('data-conforme') != $(linhaColeta).attr('data-default-answer')) {
                 $(linhaColeta).find('button[data-binario]').trigger('click');
+            } else {
+
                 $('[data-salvar]').prop('disabled', true);
+              
             }
         }
     });
