@@ -242,7 +242,7 @@ function setBreadcrumbs() {
                 isCurrent = true;
             }
 
-            if (department_Id) {
+            if (department_Id == currentParDepartment_Id) {
 
                 deparment += getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
                     return item.Id == department_Id;
