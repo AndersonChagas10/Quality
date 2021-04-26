@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SgqServiceBusiness.Controllers.RH
 {
@@ -19,7 +17,7 @@ namespace SgqServiceBusiness.Controllers.RH
 
             try
             {
- 
+
                 string sqlSelecionaCollectionDuplicada = $@"
                 DECLARE @Shift_Id int = @@Shift_Id;
                 DECLARE @Period_Id int = @@Period_Id;
@@ -138,7 +136,7 @@ namespace SgqServiceBusiness.Controllers.RH
 
             for (int i = 0; i < listSimpleCollect.Count; i++)
             {
-                listSimpleCollect[i] =  SaveCollectionPartial(listSimpleCollect[i], guiid);
+                listSimpleCollect[i] = SaveCollectionPartial(listSimpleCollect[i], guiid);
             }
 
             return listSimpleCollect;
@@ -369,6 +367,90 @@ WHERE 1 = 1
             }
         }
 
+
+        public void SaveAction(Collection item)
+        {
+            try
+            {
+                string sql = $@"INSERT INTO Pa.Acao(
+                                    ParLevel1_Id				
+                                    ,ParLevel2_Id				
+                                    ,ParLevel3_Id				
+                                    ,ParCompany_Id				
+                                    ,ParDepartment_Id			
+                                    ,ParDepartmentParent_Id	
+                                    ,ParCargo_Id				
+                                    ,Acao_Naoconformidade		
+                                    ,AcaoText					
+                                    ,DataConclusao				
+                                    ,HoraConclusao				
+                                    ,Referencia				
+                                    ,Responsavel				
+                                    ,Notificar					
+                                    ,DataEmissao				
+                                    ,HoraEmissao				
+                                    ,Emissor					
+                                    ,EvidenciaNaoConformidade	
+                                    ,EvidenciaAcaoConcluida)	
+                                    VALUES(
+                                          @ParLevel1_Id			
+                                         ,@ParLevel2_Id			
+                                         ,@ParLevel3_Id			
+                                         ,@ParCompany_Id			
+                                         ,@ParDepartment_Id		
+                                         ,@ParDepartmentParent_Id	
+                                         ,@ParCargo_Id			
+                                         ,@Acao_Naoconformidade	
+                                         ,@AcaoText				
+                                         ,@DataConclusao			
+                                         ,@HoraConclusao			
+                                         ,@Referencia				
+                                         ,@Responsavel			
+                                         ,@Notificar				
+                                         ,@DataEmissao			
+                                         ,@HoraEmissao			
+                                         ,@Emissor				
+                                         ,@EvidenciaNaoConformidade
+                                         ,@EvidenciaAcaoConcluida	
+                                        )";
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel1_Id",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel2_Id",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel3_Id",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParCompany_Id",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartment_Id",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartmentParent_Id",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParCargo_Id",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Naoconformidade",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@AcaoText",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@DataConclusao",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@HoraConclusao",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@Referencia",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@Responsavel",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@Notificar",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@DataEmissao",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@HoraEmissao",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@Emissor",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@EvidenciaNaoConformidade",);
+                        //UtilSqlCommand.AddParameterNullable(cmd, "@EvidenciaAcaoConcluida",);
+
+                        var id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        item.Id = id;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
         public void SaveCollection(Collection item)
         {
             try
@@ -524,8 +606,8 @@ WHERE 1 = 1
             using (Factory factory = new Factory("DefaultConnection"))
             {
                 var retorno = factory.SearchQuery<UserSgq>(query).ToList();
-            
-            return retorno;
+
+                return retorno;
             }
         }
     }

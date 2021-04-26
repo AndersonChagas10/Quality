@@ -24,20 +24,6 @@ function processAction(coletaJson) {
     montaCorpoFormularioAcao(listaAcoes, 0);
 }
 
-$('body').off('click', '#btnCloseModal').on('click', '#btnCloseModal', function () {
-    listaAcoes = [];
-    listaObjAcoes = [];
-    closeModal();
-});
-
-$('body').off('click', '#checkVerAgir').on('click', '#checkVerAgir', function () {
-    if ($(this).is(":checked")) {
-        $("#actionsEvidencies").removeAttr('hidden');
-    } else {
-        $("#actionsEvidencies").attr('hidden', 'hidden');
-    }
-});
-
 function montaCorpoFormularioAcao(listaAcoes, index) {
 
     var options = '<option value="">Selecione...</option>';
@@ -74,9 +60,7 @@ function montaCorpoFormularioAcao(listaAcoes, index) {
          <p id="actionParDepartment_Id">Centro de Custo: ${$.grep(parametrization.listaParDepartment, function (o, i) { return o.Id == currentParDepartment_Id })[0].Name}</p>
          <p id="actionParDepartmentParent_Id">Seção/Atividade: ${$.grep(parametrization.listaParDepartment, function (o, i) { return o.Parent_Id == currentParDepartmentParent_Id; })[0].Name}</p>
 
-         <p id="actionParLevel3_Id"
-            data-action-level3="${$.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == listaAcoes[index].ParLevel3_Id; })[0].Id}">
-            Item/Tarefa: ${$.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == listaAcoes[index].ParLevel3_Id; })[0].Name}</p>
+         <p id="actionParCargo_Id">Item/Cargo: ${$.grep(parametrization.listaParCargo, function (o, i) { return o.Id == currentParCargo_Id })[0].Name} </p>
 
          <p id="actionParLevel1_Id"
             data-action-level1="${$.grep(parametrization.listaParLevel1, function (o, i) { return o.Id == listaAcoes[index].ParLevel1_Id; })[0].Id}">
@@ -86,7 +70,8 @@ function montaCorpoFormularioAcao(listaAcoes, index) {
             data-action-level2="${$.grep(parametrization.listaParLevel2, function (o, i) { return o.Id == listaAcoes[index].ParLevel2_Id; })[0].Id}">
             Monitoramento: ${$.grep(parametrization.listaParLevel2, function (o, i) { return o.Id == listaAcoes[index].ParLevel2_Id; })[0].Name}</p>
 
-         <p>Desvio: desvio</p>
+         <p id="actionParLevel3_Id"
+            data-action-level3="${$.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == listaAcoes[index].ParLevel3_Id; })[0].Id}">Desvio/Tarefa: ${$.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == listaAcoes[index].ParLevel3_Id; })[0].Name}</p>
       </div>
 
       <div class="form-group col-xs-12" style="">
@@ -131,7 +116,7 @@ function montaCorpoFormularioAcao(listaAcoes, index) {
    </div>
    <div class="col-md-12">
       <div class="col-md-6">
-         <button class="btn btn-success">Salvar</button>
+         <button class="btn btn-success" id="btnSave">Salvar</button>
          <button class="btn btn-info" id="btnCloseModal">Fechar</button>
         ${btnNext}
         ${btnBack}
@@ -200,6 +185,7 @@ function setListaAcoesObj(indexDaListaDeAlerta, currentObjAction) {
             ParCompany_Id:           currentParCompany_Id,
             ParDepartment_Id:        currentParDepartment_Id,
             ParDepartmentParent_Id:  currentParDepartmentParent_Id,
+            ParCargo_Id:             currentParCargo_Id,
             ParLevel3_Id:            $("#actionParLevel3_Id").attr('data-action-level3'),
             ParLevel1_Id:            $("#actionParLevel1_Id").attr('data-action-level1'),
             ParLevel2_Id:            $("#actionParLevel2_Id").attr('data-action-level2'),
@@ -209,7 +195,10 @@ function setListaAcoesObj(indexDaListaDeAlerta, currentObjAction) {
             HoraConclusao:           $("#actionConclusionHour").val(),
             Referencia:              $('#actionReference').val(),
             Responsavel:             $('#actionResponsable :selected').val(),
-            Notificar:               $("#actionNotify :selected").val()
+            Notificar:               $("#actionNotify :selected").val(),
+            DataEmissao:             currentCollectDate.toLocaleDateString(),
+            HoraEmissao:             currentCollectDate.toLocaleTimeString(),
+            Emissor:                 currentLogin.Name
         };
 
         listaObjAcoes.push(actionObj);
@@ -218,17 +207,21 @@ function setListaAcoesObj(indexDaListaDeAlerta, currentObjAction) {
         listaObjAcoes[indexDaListaDeAlerta].Id                      = indexDaListaDeAlerta;
         listaObjAcoes[indexDaListaDeAlerta].ParCompany_Id           = currentParCompany_Id;
         listaObjAcoes[indexDaListaDeAlerta].ParDepartment_Id        = currentParDepartment_Id;
+        listaObjAcoes[indexDaListaDeAlerta].ParCargo_Id             = currentParCargo_Id;
         listaObjAcoes[indexDaListaDeAlerta].ParDepartmentParent_Id  = currentParDepartmentParent_Id;
         listaObjAcoes[indexDaListaDeAlerta].ParLevel3_Id            = $("#actionParLevel3_Id").attr('data-action-level3');
         listaObjAcoes[indexDaListaDeAlerta].ParLevel1_Id            = $("#actionParLevel1_Id").attr('data-action-level1');
         listaObjAcoes[indexDaListaDeAlerta].ParLevel2_Id            = $("#actionParLevel2_Id").attr('data-action-level2');
         listaObjAcoes[indexDaListaDeAlerta].Acao_Naoconformidade    = $("#txtActionNotConformity").val();
         listaObjAcoes[indexDaListaDeAlerta].Acao                    = $("#txtAction").val();
-        listaObjAcoes[indexDaListaDeAlerta].DataConclusao           = $("#actionConclusionDate").val(),;
+        listaObjAcoes[indexDaListaDeAlerta].DataConclusao           = $("#actionConclusionDate").val();
         listaObjAcoes[indexDaListaDeAlerta].HoraConclusao           = $("#actionConclusionHour").val();
         listaObjAcoes[indexDaListaDeAlerta].Referencia              = $('#actionReference').val();
         listaObjAcoes[indexDaListaDeAlerta].Responsavel             = $('#actionResponsable :selected').val();
         listaObjAcoes[indexDaListaDeAlerta].Notificar               = $("#actionNotify :selected").val();
+        listaObjAcoes[indexDaListaDeAlerta].DataEmissao             = currentCollectDate.toLocaleDateString();
+        listaObjAcoes[indexDaListaDeAlerta].HoraEmissao             = currentCollectDate.toLocaleTimeString();
+        listaObjAcoes[indexDaListaDeAlerta].Emissor                 = currentLogin.Name;
     }
 }
 
@@ -243,3 +236,24 @@ function setCurrentActionValues(currentAction) {
     $("#actionNotify").val(currentAction[0].Notificar);
 
 }
+
+
+$('body').off('click', '#btnSave').on('click', '#btnSave', function () {
+
+  
+    
+});
+
+$('body').off('click', '#btnCloseModal').on('click', '#btnCloseModal', function () {
+    listaAcoes = [];
+    listaObjAcoes = [];
+    closeModal();
+});
+
+$('body').off('click', '#checkVerAgir').on('click', '#checkVerAgir', function () {
+    if ($(this).is(":checked")) {
+        $("#actionsEvidencies").removeAttr('hidden');
+    } else {
+        $("#actionsEvidencies").attr('hidden', 'hidden');
+    }
+});

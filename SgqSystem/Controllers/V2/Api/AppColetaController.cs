@@ -48,6 +48,24 @@ namespace SgqSystem.Controllers.V2.Api
             public string HasError { get; set; }
         }
 
+        [Route("SetAction")]
+        public IHttpActionResult SetAction(List<Acao> listAcao)
+        {
+            AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
+
+            try
+            {
+                appColetaBusiness.SaveAction(listAcao);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+       
+
+            return null;
+        }
+
         #region Coleta Padrão RH
         [Route("SetCollect")]
         public IHttpActionResult SetCollect(List<Collection> listSimpleCollect)
