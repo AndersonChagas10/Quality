@@ -64,7 +64,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
 	if (parDepartmentId == 0 || parDepartmentId == undefined || parDepartmentId == null) 
 
-        voltar = '<a onclick="validaRota(openParFrequencyXindicador,null);" class="btn btn-warning col-xs-12" style="margin-bottom:10px;">Voltar</a>';
+        voltar = '<a onclick="validaRota(openParFrequencyXindicador,true);" class="btn btn-warning col-xs-12" style="margin-bottom:10px;">Voltar</a>';
 
 	else {
 

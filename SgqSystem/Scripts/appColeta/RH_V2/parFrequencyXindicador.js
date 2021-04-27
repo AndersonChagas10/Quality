@@ -1,4 +1,4 @@
-function openParFrequencyXindicador() {
+function openParFrequencyXindicador(isVoltar) {
 
     var html = '';
 
@@ -20,7 +20,7 @@ function openParFrequencyXindicador() {
 
                     _writeFile("parFrequency.txt", JSON.stringify(data), function () {
                         listaParFrequency = data;
-                        listarParFrequencyXindicador();
+                        listarParFrequencyXindicador(isVoltar);
                     });
 
                     closeMensagem();
@@ -33,13 +33,13 @@ function openParFrequencyXindicador() {
             });
 
         } else {
-            listarParFrequencyXindicador();
+            listarParFrequencyXindicador(isVoltar);
         }
 
     });
 }
 
-function listarParFrequencyXindicador() {
+function listarParFrequencyXindicador(isVoltar) {
 
     cleanGlobalVarParFrequency();
 
@@ -118,13 +118,21 @@ function listarParFrequencyXindicador() {
         $('div#app').html(html);
         setBreadcrumbs();
 
-        if (currentPlanejamento) {
+        if (currentPlanejamento.length > 0) {
             var level1PlanejadoList_Ids = [...new Set(currentPlanejamento.map(x => x.indicador_Id))];
 
             level1PlanejadoList_Ids.map(function (o, i) {
                 $(`[data-par-level1-id=${o}]`).trigger('click');
-
             });
+
+            if (level1PlanejadoList_Ids.length >= 1 && !isVoltar) {
+                $('[data-coletar]').trigger('click');
+            }
+        } else if (data.length == 1 & !isVoltar) {
+            
+            $(`[data-par-level1-id=${data[0].ParLevel1[0].Id}]`).trigger('click');
+
+            $('[data-coletar]').trigger('click');
         }
     });
 }
