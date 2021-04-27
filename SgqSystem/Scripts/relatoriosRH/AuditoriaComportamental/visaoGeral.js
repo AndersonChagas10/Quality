@@ -1038,7 +1038,7 @@ function enviarFiltro(nivelVisao) {
                     }
 
                     acompanhamentoObj = acompanhamentoObj.concat(listaGlobalAuditores);
-
+                    
                     var colunas = [
                         { title: "Grupo de Empresa Id", mData: "GrupoEmpresaId" },
                         { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
@@ -1113,7 +1113,7 @@ function enviarFiltro(nivelVisao) {
                         }
                     ];
 
-                    listaDeSemanas.filter((o, i) => colunas.splice(4, 0, o));
+                    listaDeSemanas.reverse().filter((o, i) => colunas.splice(4, 0, o));
 
                     var initDatatable = function () {
                         $('#loading').hide();
