@@ -215,7 +215,14 @@ function setBreadcrumbs() {
     }
 
     if (currentParCluster_Id) {
-        var listaCluster = $.merge(parametrization.listaParCluster,listaParCluster);
+
+        var listaCluster = [];
+
+        if (parametrization)
+             listaCluster = $.merge(parametrization.listaParCluster, listaParCluster);
+        else
+             listaCluster = listaParCluster;
+
         breadcrumbLi += getBreadcrumb($.grep(listaCluster, function (item) {
             return item.Id == currentParCluster_Id;
         })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);

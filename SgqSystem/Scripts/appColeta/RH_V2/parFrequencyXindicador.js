@@ -118,21 +118,27 @@ function listarParFrequencyXindicador(isVoltar) {
         $('div#app').html(html);
         setBreadcrumbs();
 
-        if (currentPlanejamento.length > 0) {
-            var level1PlanejadoList_Ids = [...new Set(currentPlanejamento.map(x => x.indicador_Id))];
+        //if (currentPlanejamento.length > 0) {
+        //    var level1PlanejadoList_Ids = [...new Set(currentPlanejamento.map(x => x.indicador_Id))];
+        //    var level1Selected = false;
+        //    level1PlanejadoList_Ids.map(function (o, i) {
+        //        if ($(`[data-par-level1-id=${o}]`).length > 0) {
+        //            $(`[data-par-level1-id=${o}]`).trigger('click');
+        //            level1Selected = true;
+        //        }
+        //    });
 
-            level1PlanejadoList_Ids.map(function (o, i) {
-                $(`[data-par-level1-id=${o}]`).trigger('click');
-            });
+        //    if (level1PlanejadoList_Ids.length >= 1 && !isVoltar && level1Selected) {
+        //    if (level1PlanejadoList_Ids.length >= 1 && !isVoltar && level1Selected) {
+        //        $('[data-coletar]').trigger('click');
+        //    }
+        //} 
+        if (data.length == 1 && !isVoltar) {
+            if (data[0].ParLevel1.length == 1) {
+                $(`[data-par-level1-id=${data[0].ParLevel1[0].Id}]`).trigger('click');
 
-            if (level1PlanejadoList_Ids.length >= 1 && !isVoltar) {
                 $('[data-coletar]').trigger('click');
             }
-        } else if (data.length == 1 & !isVoltar) {
-            
-            $(`[data-par-level1-id=${data[0].ParLevel1[0].Id}]`).trigger('click');
-
-            $('[data-coletar]').trigger('click');
         }
     });
 }
@@ -284,8 +290,13 @@ function getAppParametrization(frequencyId) {
                 atualizarVariaveisCurrent(parametrization);
             }
 
-            openPlanejamentoColeta();
-            closeMensagem();
+            if (parametrization.listaParDepartment.length > 0)
+                clickColetar();
+            else {
+                openMensagem('Nenhum Centro de Custo parametrizado.', 'yellow', 'black');
+                closeMensagem(6000);
+            }
+            //closeMensagem();
         });
     }
 }
@@ -313,9 +324,16 @@ function chamaGetAppParametrization() {
             data.currentParClusterGroup_Id = currentParClusterGroup_Id;
             data.currentParCompany_Id = currentParCompany_Id;
             _writeFile("appParametrization.txt", JSON.stringify(data), function () {
+                
                 parametrization = data;
-                atualizaColetasParciais();
-                clickColetar();
+
+                if (parametrization.listaParDepartment.length > 0) {
+                    atualizaColetasParciais();
+                    clickColetar();
+                } else {
+                    openMensagem('Nenhum Centro de Custo parametrizado.', 'yellow', 'black');
+                    closeMensagem(6000);
+                }
             });
 
             sincronizarResultado();
