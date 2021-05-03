@@ -1318,7 +1318,12 @@ Begin
             SELECT 
 	C2.CollectionDate AS Data--data coleta
 	,CAST(YEAR(C2.CollectionDate) AS VARCHAR) + '-' + RIGHT('0'+CAST(DATEPART(WEEK, C2.CollectionDate) AS VARCHAR),2) AS DATAColeta
-	,C2.Id as CollectionL2_Id
+
+,CAST(YEAR(ISNULL(IIF(CHARINDEX('""Data da Auditoria""', HF.HeaderFieldList1) > 0, SUBSTRING(HF.HeaderFieldList1, CHARINDEX('""Data da Auditoria""', HF.HeaderFieldList1)+LEN('""Data da Auditoria"":""'),CHARINDEX('""',SUBSTRING(HF.HeaderFieldList1, CHARINDEX('""Data da Auditoria""', HF.HeaderFieldList1)+LEN('""Data da Auditoria"":""'),LEN(HF.HeaderFieldList1)))-1), NULL),C2.CollectionDate) ) AS VARCHAR)
+	 +  '-' +
+	  RIGHT('0'+CAST(DATEPART(WEEK, ISNULL(IIF(CHARINDEX('""Data da Auditoria""', HF.HeaderFieldList1) > 0, SUBSTRING(HF.HeaderFieldList1, CHARINDEX('""Data da Auditoria""', HF.HeaderFieldList1)+LEN('""Data da Auditoria"":""'),CHARINDEX('""',SUBSTRING(HF.HeaderFieldList1, CHARINDEX('""Data da Auditoria""', HF.HeaderFieldList1)+LEN('""Data da Auditoria"":""'),LEN(HF.HeaderFieldList1)))-1), NULL),C2.CollectionDate) ) AS VARCHAR),2) AS DATAColetaCabecalho
+
+    , C2.Id as CollectionL2_Id
 	,L1.Name AS Indicador--indicador
 	,L2.Name AS Monitoramento--monitoramento
 	,R3.ParLevel3_Name AS Tarefa--tarefa
@@ -1423,12 +1428,12 @@ Begin
 			SET @SQLStrSum=''
 			SET @SQLStrTotal='('
 			SELECT 
-				@SQLStr = @SQLStr + '['+ a.DataColeta +'], ',
-				@SQLStrSum = @SQLStrSum + 'ISNULL(SUM(['+ a.DataColeta +']),0) as ['+ a.DataColeta +'], ',
-				@SQLStrTotal = @SQLStrTotal + 'ISNULL(SUM(['+ a.DataColeta +']), 0) + '
+				@SQLStr = @SQLStr + '['+ a.DATAColeta +'], ',
+				@SQLStrSum = @SQLStrSum + 'ISNULL(SUM(['+ a.DATAColeta +']),0) as ['+ a.DATAColeta +'], ',
+				@SQLStrTotal = @SQLStrTotal + 'ISNULL(SUM(['+ a.DATAColeta +']), 0) + '
 			FROM
 			(
-				SELECT DISTINCT c2.DataColeta FROM #COLETAS c2
+				SELECT DISTINCT c2.DATAColeta FROM #COLETAS c2
 			) a
 
 			
@@ -1450,13 +1455,13 @@ Begin
             + 'IIF(CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1)+LEN(''""Tipo de Tarefa Realizada"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1)+LEN(''""Tipo de Tarefa Realizada"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Tipo de Tarefa Realizada],'
             + @SQLStr
 
-             + ' FROM ( SELECT Indicador,CollectionL2_Id, Avaliacao, Amostra, ClusterName, Unidade, Auditor, DataColeta,Secao,GrupoEmpresa,GrupoEmpresaId,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, NUMERODECOLETAS,  numerodecoletas as ''totalColeta'' FROM #COLETAS   
+             + ' FROM ( SELECT Indicador,CollectionL2_Id, Avaliacao, Amostra, ClusterName, Unidade, Auditor, DATAColetaCabecalho,Secao,GrupoEmpresa,GrupoEmpresaId,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, NUMERODECOLETAS,  numerodecoletas as ''totalColeta'' FROM #COLETAS   
 
                 WHERE 1 = 1
 
-                GROUP BY DataColeta, Unidade, Auditor, Indicador,CollectionL2_Id ,ClusterName,Avaliacao,Amostra, NUMERODECOLETAS,Secao,GrupoEmpresa,GrupoEmpresaId,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3 '
+                GROUP BY DATAColetaCabecalho, Unidade, Auditor, Indicador,CollectionL2_Id ,ClusterName,Avaliacao,Amostra, NUMERODECOLETAS,Secao,GrupoEmpresa,GrupoEmpresaId,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3 '
 
-            + '         ) sq PIVOT (sum(NUMERODECOLETAS) FOR DataColeta IN ('
+            + '         ) sq PIVOT (sum(NUMERODECOLETAS) FOR DATAColetaCabecalho IN ('
             + @SQLStr + ')) AS pt ) AS ValoresSemAgrupamento'
             + ' GROUP BY GrupoEmpresa,GrupoEmpresaId,Regional,Unidade, [Auditor Cabecalho]'
             + ' ORDER BY 1'

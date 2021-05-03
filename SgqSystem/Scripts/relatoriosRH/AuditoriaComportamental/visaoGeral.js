@@ -1037,7 +1037,7 @@ function enviarFiltro(nivelVisao) {
                     }
 
                     acompanhamentoObj = acompanhamentoObj.concat(listaGlobalAuditores);
-
+                    
                     var colunas = [
                         { title: "Grupo de Empresa Id", mData: "GrupoEmpresaId" },
                         { title: "Grupo de Empresa", mData: "GrupoEmpresa" },
@@ -1085,7 +1085,6 @@ function enviarFiltro(nivelVisao) {
                         },
                         {
                             title: "% Seguro", mData: null, mRender: function (acompanhamentoObj, type, full) {
-
                                 var porcentagemTotal = 0;
 
                                 if (acompanhamentoObj.C != undefined) {
@@ -1094,7 +1093,11 @@ function enviarFiltro(nivelVisao) {
                                     porcentagemTotal = 0;
                                 }
 
-                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
+                                if (porcentagemTotal != Infinity && !isNaN(porcentagemTotal)) {
+                                    return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
+                                } else {
+                                    return "0.00%";
+                                }
                             }
                         },
                         {
@@ -1107,12 +1110,16 @@ function enviarFiltro(nivelVisao) {
                                     porcentagemTotal = 0;
                                 }
 
-                                return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
+                                if (porcentagemTotal != Infinity && !isNaN(porcentagemTotal)) {
+                                    return parseInt(porcentagemTotal.toFixed(2)) > 100 ? "100%" : porcentagemTotal.toFixed(2) + "%";
+                                } else {
+                                    return "0.00%";
+                                }
                             }
                         }
                     ];
 
-                    listaDeSemanas.filter((o, i) => colunas.splice(4, 0, o));
+                    listaDeSemanas.reverse().filter((o, i) => colunas.splice(4, 0, o));
 
                     var initDatatable = function () {
                         $('#loading').hide();
