@@ -50,8 +50,8 @@ function listarParCargo(isVoltar) {
                 'data-current-sample="' + currentEvaluationSample.Sample + '">                                                   ' +
                 '	<div class="col-xs-3">' + o.Name + '</div>                                                                  ' +
                 '	<div class="col-xs-1">&nbsp;</div>                                                                  ' +
-                '	<div class="col-xs-4">Av: ' + currentEvaluationSample.Evaluation + '/' + o.Evaluation.Evaluation + ' </div>      ' +
-                '	<div class="col-xs-4">Am: ' + currentEvaluationSample.Sample + '/' + o.Evaluation.Sample + ' </div>              ' +
+                '	<div class="col-xs-4">Av: ' + ((currentEvaluationSample.Evaluation >= 1 && currentEvaluationSample.Sample > 1) ? currentEvaluationSample.Evaluation : (currentEvaluationSample.Evaluation-1))+ '/' + o.Evaluation.Evaluation + ' </div>      ' +
+                '	<div class="col-xs-4">Am: ' + (currentEvaluationSample.Sample-1) + '/' + o.Evaluation.Sample + ' </div>              ' +
                 '</button>';
             atualizaCorAgendamento(o, currentEvaluationSample);
         }
