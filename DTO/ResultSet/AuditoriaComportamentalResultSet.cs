@@ -1428,12 +1428,12 @@ Begin
 			SET @SQLStrSum=''
 			SET @SQLStrTotal='('
 			SELECT 
-				@SQLStr = @SQLStr + '['+ a.DATAColetaCabecalho +'], ',
-				@SQLStrSum = @SQLStrSum + 'ISNULL(SUM(['+ a.DATAColetaCabecalho +']),0) as ['+ a.DATAColetaCabecalho +'], ',
-				@SQLStrTotal = @SQLStrTotal + 'ISNULL(SUM(['+ a.DATAColetaCabecalho +']), 0) + '
+				@SQLStr = @SQLStr + '['+ a.DATAColeta +'], ',
+				@SQLStrSum = @SQLStrSum + 'ISNULL(SUM(['+ a.DATAColeta +']),0) as ['+ a.DATAColeta +'], ',
+				@SQLStrTotal = @SQLStrTotal + 'ISNULL(SUM(['+ a.DATAColeta +']), 0) + '
 			FROM
 			(
-				SELECT DISTINCT c2.DATAColetaCabecalho FROM #COLETAS c2
+				SELECT DISTINCT c2.DATAColeta FROM #COLETAS c2
 			) a
 
 			
