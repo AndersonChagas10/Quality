@@ -24,31 +24,51 @@ function openColeta(levels) {
                 if (level2.ParLevel3 != undefined)
                     level2.ParLevel3.forEach(function (level3) {
 
-                        var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
+                        //percorrer para validar se os valores de AV e AM estão dentro do range
+                        parametrization.listaParVinculoPeso.forEach(function (obj) {
+                            if (obj.ParLevel3_Id == level3.Id) {
 
-                        if (inputLevel3.length > 0) {
+                                var ultimaColeta = $.grep(coletasAgrupadas, function (item) {
+                                    return item.ParCargo_Id == obj.ParCargo_Id;
+                                });
 
-                            if (hasLevel3 == false) {
+                                if (ultimaColeta.length > 0
+                                    && (ultimaColeta[0].Evaluation == obj.Evaluation || obj.Evaluation == null)
+                                    && (ultimaColeta[0].Sample <= obj.Sample || obj.Sample == null)
+                                    || ((currentEvaluationSample.Evaluation == obj.Evaluation || obj.Evaluation == null)
+                                    && (currentEvaluationSample.Sample <= obj.Sample || obj.Sample == null))) {
 
-                                if (hasLevel2 == false) {
-                                    coleta += getLevel1(level1);
-                                    coleta += getParHeaderFieldLevel1(level1);
-                                    hasLevel2 = true;
+                                    var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
+
+                                    if (inputLevel3.length > 0) {
+
+                                        if (hasLevel3 == false) {
+
+                                            if (hasLevel2 == false) {
+                                                coleta += getLevel1(level1);
+                                                coleta += getParHeaderFieldLevel1(level1);
+                                                hasLevel2 = true;
+                                            }
+
+                                            coleta += getLevel2(level2, level1);
+                                            coleta += getParHeaderFieldLevel2(level1, level2);
+                                            hasLevel3 = true;
+                                        }
+
+                                        coleta += inputLevel3;
+
+                                        if (inputLevel3)
+                                            if (striped)
+                                                striped = false;
+                                            else
+                                                striped = true;
+                                    }
                                 }
-
-                                coleta += getLevel2(level2, level1);
-                                coleta += getParHeaderFieldLevel2(level1, level2);
-                                hasLevel3 = true;
+  
                             }
+                        });
 
-                            coleta += inputLevel3;
-
-                            if (inputLevel3)
-                                if (striped)
-                                    striped = false;
-                                else
-                                    striped = true;
-                        }
+                        
                     });
             });
         coleta += getParFooterFieldLevel1(level1);
