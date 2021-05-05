@@ -24,31 +24,51 @@ function openColeta(levels) {
                 if (level2.ParLevel3 != undefined)
                     level2.ParLevel3.forEach(function (level3) {
 
-                        var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
+                        //percorrer para validar se os valores de AV e AM estão dentro do range
+                        parametrization.listaParVinculoPeso.forEach(function (obj) {
+                            if (obj.ParLevel3_Id == level3.Id) {
 
-                        if (inputLevel3.length > 0) {
+                                var ultimaColeta = $.grep(coletasAgrupadas, function (item) {
+                                    return item.ParCargo_Id == obj.ParCargo_Id;
+                                });
 
-                            if (hasLevel3 == false) {
+                                if (ultimaColeta.length > 0
+                                    && (ultimaColeta[0].Evaluation == obj.Evaluation || obj.Evaluation == null)
+                                    && (ultimaColeta[0].Sample <= obj.Sample || obj.Sample == null)
+                                    || ((currentEvaluationSample.Evaluation == obj.Evaluation || obj.Evaluation == null)
+                                        && (currentEvaluationSample.Sample <= obj.Sample || obj.Sample == null))) {
 
-                                if (hasLevel2 == false) {
-                                    coleta += getLevel1(level1);
-                                    coleta += getParHeaderFieldLevel1(level1);
-                                    hasLevel2 = true;
+                                    var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
+
+                                    if (inputLevel3.length > 0) {
+
+                                        if (hasLevel3 == false) {
+
+                                            if (hasLevel2 == false) {
+                                                coleta += getLevel1(level1);
+                                                coleta += getParHeaderFieldLevel1(level1);
+                                                hasLevel2 = true;
+                                            }
+
+                                            coleta += getLevel2(level2, level1);
+                                            coleta += getParHeaderFieldLevel2(level1, level2);
+                                            hasLevel3 = true;
+                                        }
+
+                                        coleta += inputLevel3;
+
+                                        if (inputLevel3)
+                                            if (striped)
+                                                striped = false;
+                                            else
+                                                striped = true;
+                                    }
                                 }
 
-                                coleta += getLevel2(level2, level1);
-                                coleta += getParHeaderFieldLevel2(level1, level2);
-                                hasLevel3 = true;
                             }
+                        });
 
-                            coleta += inputLevel3;
 
-                            if (inputLevel3)
-                                if (striped)
-                                    striped = false;
-                                else
-                                    striped = true;
-                        }
                     });
             });
         coleta += getParFooterFieldLevel1(level1);
@@ -72,14 +92,14 @@ function openColeta(levels) {
         '				<h3 class="panel-title">Questionario de Coleta</h3>                                   ' +
         '			  </div>                                                                                                                       ' +
         voltar +
-        
-            '<div class="row">' +
-                '<div class="col-md-6">' +
-                    ' <button class="btn btn-info" onclick="expandAllLevel1();">Expandir todos</button>' +
-                     '<button class="btn btn-info" onclick="hideAllLevel1();">Recolher todos</button>' +
-                ' </div>' +
-            '</div>' +
-        
+
+        '<div class="row">' +
+        '<div class="col-md-6">' +
+        ' <button class="btn btn-info" onclick="expandAllLevel1();">Expandir todos</button>' +
+        '<button class="btn btn-info" onclick="hideAllLevel1();">Recolher todos</button>' +
+        ' </div>' +
+        '</div>' +
+
         '			  <div class="panel-body">                                                                                                     ' +
         getContador() +
         getParHeaderFieldDeparment() +
@@ -114,7 +134,7 @@ function expandAllLevel1() {
             $(o).trigger('click');
         }
     });
-    
+
 }
 
 function hideAllLevel1() {
@@ -125,7 +145,7 @@ function hideAllLevel1() {
             $(o).trigger('click');
         }
     });
-    
+
 }
 
 $('body')
@@ -376,7 +396,7 @@ function getBinarioComTexto(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + '</small></div>';
 
-    if (level3.ParLevel3Value.IsRequiredInt  || currentIsPartialSave) {
+    if (level3.ParLevel3Value.IsRequiredInt || currentIsPartialSave) {
         respostaPadrao = "&nbsp;";
         botao = '<button type="button" class ="btn btn-default btn-sm btn-block" data-binario data-tarefa data-required-answer="1" data-positivo="' + level3.ParLevel3BoolTrue.Name + '" data-negativo="' + level3.ParLevel3BoolFalse.Name + '" style="height: 30px;">' + respostaPadrao + '</button>';
     } else {
@@ -479,7 +499,7 @@ function getIntervaloemMinutos(level3) {
     else
         html += '<div class="col-xs-6"><small style="font-weight:550 !important">' + level3.Name + ' ' + level3LimitLabel + '</small></div>';
 
-    
+
     html +=
         '<div class="col-xs-6 no-gutters">' +
         '<div class="col-xs-1" style="padding-right: 0;">' +
@@ -622,7 +642,7 @@ function getResultado(level3) {
         '<div class="col-xs-6 no-gutters">' +
         '   <div class="col-xs-12 no-gutters">' +
         '       <div class="col-xs-12" style="padding: 0;">' +
-                    htmlInputLevel3Resultado +
+        htmlInputLevel3Resultado +
         '       </div>' +
         '   </div>' +
         '   <div class="col-xs-2">' + btnNA + '</div>' +
@@ -826,7 +846,7 @@ $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
 
         desabilitarCabecalhoEGrupoQualificacao(parLevel3_Id);
 
-        var botao = $(linha).find('button[data-required-answer]'); 
+        var botao = $(linha).find('button[data-required-answer]');
         if (botao.attr('data-required-answer') == "1") {
             linha.attr('data-conforme', "");
             $(botao).text('');
@@ -1213,8 +1233,10 @@ function PrepararColetas() {
         );
     });
 
-    if (!hasPartialSave)
-        processAlertRole(coletaJson);
+    if (!hasPartialSave) {
+        //processAlertRole(coletaJson);
+        processAction(coletaJson);
+    }
 
     var cabecalhos = getCollectionHeaderFields(collectionDate);
 
@@ -1235,7 +1257,7 @@ function PrepararColetas() {
     addColetasParciais(coletaJson, coletaAgrupada.Sample == 1 ? undefined : desabilitaColetados);
 
     //Atualiza para a proxima coleta (se precisar adicionar amostra ou avaliação)
-    if(!hasPartialSave)
+    if (!hasPartialSave)
         coletaAgrupada = AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada);
 
     //Mostra mensagem de que a coleta foi realizada com sucesso e fecha após 3 segundos
@@ -1614,23 +1636,23 @@ function HeaderFieldsIsValid() {
 
     retorno = true;
 
-    $('#headerFieldDepartment input, #headerFieldDepartment select, '+ 
-    '#headerFieldLevel1 input, #headerFieldLevel1 select, ' +
-    '#headerFieldLevel2 input, #headerFieldLevel2 select, ' + 
-    '#headerFieldLevel3 input, #headerFieldLevel3 select').not('.naoSalvar').each(function () {
+    $('#headerFieldDepartment input, #headerFieldDepartment select, ' +
+        '#headerFieldLevel1 input, #headerFieldLevel1 select, ' +
+        '#headerFieldLevel2 input, #headerFieldLevel2 select, ' +
+        '#headerFieldLevel3 input, #headerFieldLevel3 select').not('.naoSalvar').each(function () {
 
-        $self = $(this);
+            $self = $(this);
 
-        $self.css("background-color", "");
+            $self.css("background-color", "");
 
-        if ($self.attr("data-required") == "true") {
+            if ($self.attr("data-required") == "true") {
 
-            if ($self.val() == null || $self.val() == undefined || $self.val() == "") {
-                $self.css("background-color", "#ffc1c1");
-                retorno = false;
+                if ($self.val() == null || $self.val() == undefined || $self.val() == "") {
+                    $self.css("background-color", "#ffc1c1");
+                    retorno = false;
+                }
             }
-        }
-    });
+        });
 
     if (!retorno) {
         openMensagem("Atenção! Campos de cabeçalho obrigatórios não preenchidos", "yellow", "black");
