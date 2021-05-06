@@ -1,4 +1,6 @@
-﻿namespace Dominio
+﻿using System;
+
+namespace Dominio
 {
     public class Acao
     {
@@ -10,16 +12,17 @@
         public int ParDepartment_Id { get; set; }
         public int ParDepartmentParent_Id { get; set; }
         public int ParCargo_Id { get; set; }
-        public int Acao_Naoconformidade { get; set; }
-        public int AcaoText { get; set; }
-        public int HoraConclusao { get; set; }
-        public int Referencia { get; set; }
-        public int Responsavel { get; set; }
-        public int Notificar { get; set; }
-        public int DataEmissao { get; set; }
-        public int HoraEmissao { get; set; }
+        public string Acao_Naoconformidade { get; set; }
+        public string AcaoText { get; set; }
+        public string HoraConclusao { get; set; }
+        public string DataConclusao { get; set; }
+        public string Referencia { get; set; }
+        public int? Responsavel { get; set; }
+        public int? Notificar { get; set; }
+        public string DataEmissao { get; set; }
+        public string HoraEmissao { get; set; }
         public int Emissor { get; set; }
-        public int EvidenciaNaoConformidade { get; set; }
-        public int EvidenciaAcaoConcluida { get; set; } 
+        public string EvidenciaNaoConformidade { get; set; }
+        public string EvidenciaAcaoConcluida { get; set; } 
     }
 }

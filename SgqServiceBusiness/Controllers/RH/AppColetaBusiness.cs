@@ -368,7 +368,7 @@ WHERE 1 = 1
         }
 
 
-        public void SaveAction(Collection item)
+        public void SaveAction(Acao item)
         {
             try
             {
@@ -414,30 +414,54 @@ WHERE 1 = 1
                                          ,@EvidenciaAcaoConcluida	
                                         )";
 
+                string dataEmissao = null;
+                if (!String.IsNullOrEmpty(item.DataEmissao))
+                {
+                    dataEmissao = DateTime.Parse(item.DataEmissao).ToString("yyyy-MM-dd");
+                }
+
+                string horaEmissao = null;
+                if (!String.IsNullOrEmpty(item.HoraEmissao))
+                {
+                    horaEmissao = DateTime.Parse(item.HoraEmissao).ToString("HH:mm");
+                }
+
+                string dataConclusao = null;
+                if (!String.IsNullOrEmpty(item.DataConclusao))
+                {
+                    dataConclusao = DateTime.Parse(item.DataConclusao).ToString("yyyy-MM-dd");
+                }
+
+                string horaConclusao = null;
+                if (!String.IsNullOrEmpty(item.HoraConclusao))
+                {
+                    horaConclusao = DateTime.Parse(item.HoraConclusao).ToString("HH:mm");
+                }
+
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
                     {
                         cmd.CommandType = CommandType.Text;
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel1_Id",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel2_Id",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel3_Id",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParCompany_Id",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartment_Id",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartmentParent_Id",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@ParCargo_Id",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Naoconformidade",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@AcaoText",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@DataConclusao",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@HoraConclusao",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@Referencia",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@Responsavel",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@Notificar",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@DataEmissao",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@HoraEmissao",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@Emissor",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@EvidenciaNaoConformidade",);
-                        //UtilSqlCommand.AddParameterNullable(cmd, "@EvidenciaAcaoConcluida",);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel1_Id", item.ParLevel1_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel2_Id", item.ParLevel2_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel3_Id", item.ParLevel3_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCompany_Id", item.ParCompany_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartment_Id", item.ParDepartment_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartmentParent_Id", item.ParDepartmentParent_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCargo_Id", item.ParCargo_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Naoconformidade", item.Acao_Naoconformidade);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@AcaoText", item.AcaoText);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@DataConclusao", dataConclusao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@HoraConclusao", horaConclusao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Referencia", item.Referencia);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Responsavel", item.Responsavel);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Notificar", item.Notificar);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@DataEmissao", dataEmissao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@HoraEmissao", horaEmissao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Emissor", item.Emissor);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@EvidenciaNaoConformidade", item.EvidenciaAcaoConcluida);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@EvidenciaAcaoConcluida", item.EvidenciaAcaoConcluida);
 
                         var id = Convert.ToInt32(cmd.ExecuteScalar());
 

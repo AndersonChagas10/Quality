@@ -3,6 +3,7 @@ var currentListaDeColetaComAcao = [];
 var index = 0;
 var listaAcoes = [];
 var listaObjAcoes = [];
+
 function processAction(coletaJson) {
 
     var listaLevel1Acao = $.grep(parametrization.listaParLevel1, function (o, i) {
@@ -128,7 +129,6 @@ function montaCorpoFormularioAcao(listaAcoes, index) {
 
     if (listaObjAcoes != undefined && listaObjAcoes <= 0) {
         listaAcoes.map(function (o, i) {
-            //setListaAcoesObj(o, null);
             createOrUpdateObj(i);
         });
     }
@@ -154,7 +154,7 @@ function elementoAnterior(indexDaListaDeAlerta) {
 }
 
 function proximoElemento(indexDaListaDeAlerta) {
-    if (currentQtdAcoes < listaAcoes.length) {
+    if (indexDaListaDeAlerta < currentQtdAcoes && currentQtdAcoes <= listaAcoes.length) {
 
         createOrUpdateObj(indexDaListaDeAlerta);
 
@@ -185,12 +185,12 @@ function setListaAcoesObj(indexDaListaDeAlerta, currentObjAction) {
             ParCompany_Id:           currentParCompany_Id,
             ParDepartment_Id:        currentParDepartment_Id,
             ParDepartmentParent_Id:  currentParDepartmentParent_Id,
-            ParCargo_Id:             currentParCargo_Id,
+            ParCargo_Id:             parCargo_Id,
             ParLevel3_Id:            $("#actionParLevel3_Id").attr('data-action-level3'),
             ParLevel1_Id:            $("#actionParLevel1_Id").attr('data-action-level1'),
             ParLevel2_Id:            $("#actionParLevel2_Id").attr('data-action-level2'),
             Acao_Naoconformidade:    $("#txtActionNotConformity").val(),
-            Acao:                    $("#txtAction").val(),
+            AcaoText:                    $("#txtAction").val(),
             DataConclusao:           $("#actionConclusionDate").val(),
             HoraConclusao:           $("#actionConclusionHour").val(),
             Referencia:              $('#actionReference').val(),
@@ -198,7 +198,7 @@ function setListaAcoesObj(indexDaListaDeAlerta, currentObjAction) {
             Notificar:               $("#actionNotify :selected").val(),
             DataEmissao:             currentCollectDate.toLocaleDateString(),
             HoraEmissao:             currentCollectDate.toLocaleTimeString(),
-            Emissor:                 currentLogin.Name
+            Emissor:                 currentLogin.Id
         };
 
         listaObjAcoes.push(actionObj);
@@ -207,13 +207,13 @@ function setListaAcoesObj(indexDaListaDeAlerta, currentObjAction) {
         listaObjAcoes[indexDaListaDeAlerta].Id                      = indexDaListaDeAlerta;
         listaObjAcoes[indexDaListaDeAlerta].ParCompany_Id           = currentParCompany_Id;
         listaObjAcoes[indexDaListaDeAlerta].ParDepartment_Id        = currentParDepartment_Id;
-        listaObjAcoes[indexDaListaDeAlerta].ParCargo_Id             = currentParCargo_Id;
+        listaObjAcoes[indexDaListaDeAlerta].ParCargo_Id             = parCargo_Id;
         listaObjAcoes[indexDaListaDeAlerta].ParDepartmentParent_Id  = currentParDepartmentParent_Id;
         listaObjAcoes[indexDaListaDeAlerta].ParLevel3_Id            = $("#actionParLevel3_Id").attr('data-action-level3');
         listaObjAcoes[indexDaListaDeAlerta].ParLevel1_Id            = $("#actionParLevel1_Id").attr('data-action-level1');
         listaObjAcoes[indexDaListaDeAlerta].ParLevel2_Id            = $("#actionParLevel2_Id").attr('data-action-level2');
         listaObjAcoes[indexDaListaDeAlerta].Acao_Naoconformidade    = $("#txtActionNotConformity").val();
-        listaObjAcoes[indexDaListaDeAlerta].Acao                    = $("#txtAction").val();
+        listaObjAcoes[indexDaListaDeAlerta].AcaoText                    = $("#txtAction").val();
         listaObjAcoes[indexDaListaDeAlerta].DataConclusao           = $("#actionConclusionDate").val();
         listaObjAcoes[indexDaListaDeAlerta].HoraConclusao           = $("#actionConclusionHour").val();
         listaObjAcoes[indexDaListaDeAlerta].Referencia              = $('#actionReference').val();
@@ -221,14 +221,14 @@ function setListaAcoesObj(indexDaListaDeAlerta, currentObjAction) {
         listaObjAcoes[indexDaListaDeAlerta].Notificar               = $("#actionNotify :selected").val();
         listaObjAcoes[indexDaListaDeAlerta].DataEmissao             = currentCollectDate.toLocaleDateString();
         listaObjAcoes[indexDaListaDeAlerta].HoraEmissao             = currentCollectDate.toLocaleTimeString();
-        listaObjAcoes[indexDaListaDeAlerta].Emissor                 = currentLogin.Name;
+        listaObjAcoes[indexDaListaDeAlerta].Emissor                 = currentLogin.Id;
     }
 }
 
 function setCurrentActionValues(currentAction) {
 
     $("#txtActionNotConformity").val(currentAction[0].Acao_Naoconformidade);
-    $("#txtAction").val(currentAction[0].Acao);
+    $("#txtAction").val(currentAction[0].AcaoText);
     $("#actionConclusionDate").val(currentAction[0].DataConclusao);
     $("#actionConclusionHour").val(currentAction[0].HoraConclusao);
     $("#actionReference").val(currentAction[0].Referencia);
@@ -237,16 +237,34 @@ function setCurrentActionValues(currentAction) {
 
 }
 
+function saveAction(){
+    $.ajax({
+        data: JSON.stringify(listaObjAcoes),
+        url: urlPreffix + '/api/AppColeta/SetAction',
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {
+            console.log('ações salvas');
+            currentQtdAcoes = 1;
+        },
+        timeout: 600000,
+        error: function () {
+            enviarColetaEmExecucao = false;
+        }
+    });
+
+}
 
 $('body').off('click', '#btnSave').on('click', '#btnSave', function () {
 
-  
-    
+    saveAction();
 });
 
 $('body').off('click', '#btnCloseModal').on('click', '#btnCloseModal', function () {
     listaAcoes = [];
     listaObjAcoes = [];
+    currentQtdAcoes = 1;
+    saveAction();
     closeModal();
 });
 

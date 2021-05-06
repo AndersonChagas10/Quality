@@ -49,13 +49,17 @@ namespace SgqSystem.Controllers.V2.Api
         }
 
         [Route("SetAction")]
-        public IHttpActionResult SetAction(List<Acao> listAcao)
+        public IHttpActionResult SetAction(List<Acao> listaObjAcoes)
         {
             AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
 
             try
             {
-                appColetaBusiness.SaveAction(listAcao);
+                foreach (var acao in listaObjAcoes)
+                {
+                    appColetaBusiness.SaveAction(acao);
+                }
+              
             }
             catch (Exception e)
             {
@@ -63,7 +67,7 @@ namespace SgqSystem.Controllers.V2.Api
             }
        
 
-            return null;
+            return Ok();
         }
 
         #region Coleta Padrão RH
