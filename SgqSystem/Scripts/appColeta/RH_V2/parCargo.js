@@ -192,11 +192,11 @@ $('body').off('click', '[data-par-cargo-id]').on('click', '[data-par-cargo-id]',
 
 });
 
-function atualizaCorAgendamento(cargo, currentEvaluationSample) { 
+function atualizaCorAgendamento(cargo, currentEvaluationSample) {
     setTimeout(function () {
 
         if (!$("#divCargo").is(':visible'))
-            return; 
+            return;
 
         if (cargo['Evaluation'].ParEvaluationScheduleAppViewModel.length > 0) {
 
@@ -363,18 +363,21 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
 
             if (situacao.indexOf("4") >= 0) {
                 $(elem).html("<div style='background-color:red; height: 20px;width: 25px; border: 1px; border-style:solid; border-color:grey;'></div>");
-            } else if (situacao.indexOf("3") >= 0) {
+            } else if (situacao.indexOf("3") >= 0 && currentEvaluationSample.Sample <= 1) {
                 $(elem).html("<div style='background-color:yellow; height: 20px;width: 25px; border: 1px; border-style:solid; border-color:grey;'></div>");
-            } else if (situacao.indexOf("2") >= 0) {
+            } else if (situacao.indexOf("2") >= 0 && currentEvaluationSample.Sample > 1) {
                 $(elem).html("<div style='background-color:green; height: 20px;width: 25px; border: 1px; border-style:solid; border-color:grey;'></div>");
+            } else if (situacao.indexOf("2") >= 0 && currentEvaluationSample.Sample <= 1) {
+                //adicionado para montar amarelo quando nao for realizada nenhuma coleta, somente a partir de uma aplica a regra
+                $(elem).html("<div style='background-color:yellow; height: 20px;width: 25px; border: 1px; border-style:solid; border-color:grey;'></div>");
             } else if (situacao.indexOf("1") >= 0) {
-                $(elem).html("<div style='background-color:transparent; height: 20px;width: 25px; border: 1px; border-style:solid; border-color:grey;'></div>");
+                $(elem).html("<div style='background-color:green; height: 20px;width: 25px; border: 1px; border-style:solid; border-color:grey;'></div>");
             }
         }
         setTimeout(function () {
             atualizaCorAgendamento(cargo, currentEvaluationSample);
         }, 500);
     }, 200);
-    
+
 
 }
