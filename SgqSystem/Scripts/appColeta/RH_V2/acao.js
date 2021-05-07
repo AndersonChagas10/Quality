@@ -29,8 +29,8 @@ function montaCorpoFormularioAcao(listaAcoes, index) {
 
     var options = '<option value="">Selecione...</option>';
 
-    parametrization.listaAuditor.forEach(function (parMultipleValue) {
-        options += '<option value="' + parMultipleValue.Id + '">' + parMultipleValue.Name + '</option>';
+    parametrization.listaAuditor.forEach(function (auditor) {
+        options += '<option value="' + auditor.Id + '">' + auditor.Name + " (" + auditor.SimpleDescription +")" + '</option>';
     });
 
     if (listaAcoes.length > 1) {
@@ -185,12 +185,12 @@ function setListaAcoesObj(indexDaListaDeAlerta, currentObjAction) {
             ParCompany_Id:           currentParCompany_Id,
             ParDepartment_Id:        currentParDepartment_Id,
             ParDepartmentParent_Id:  currentParDepartmentParent_Id,
-            ParCargo_Id:             parCargo_Id,
+            ParCargo_Id:             currentParCargo_Id,
             ParLevel3_Id:            $("#actionParLevel3_Id").attr('data-action-level3'),
             ParLevel1_Id:            $("#actionParLevel1_Id").attr('data-action-level1'),
             ParLevel2_Id:            $("#actionParLevel2_Id").attr('data-action-level2'),
             Acao_Naoconformidade:    $("#txtActionNotConformity").val(),
-            AcaoText:                    $("#txtAction").val(),
+            AcaoText:                $("#txtAction").val(),
             DataConclusao:           $("#actionConclusionDate").val(),
             HoraConclusao:           $("#actionConclusionHour").val(),
             Referencia:              $('#actionReference').val(),
@@ -207,13 +207,13 @@ function setListaAcoesObj(indexDaListaDeAlerta, currentObjAction) {
         listaObjAcoes[indexDaListaDeAlerta].Id                      = indexDaListaDeAlerta;
         listaObjAcoes[indexDaListaDeAlerta].ParCompany_Id           = currentParCompany_Id;
         listaObjAcoes[indexDaListaDeAlerta].ParDepartment_Id        = currentParDepartment_Id;
-        listaObjAcoes[indexDaListaDeAlerta].ParCargo_Id             = parCargo_Id;
+        listaObjAcoes[indexDaListaDeAlerta].ParCargo_Id             = currentParCargo_Id;
         listaObjAcoes[indexDaListaDeAlerta].ParDepartmentParent_Id  = currentParDepartmentParent_Id;
         listaObjAcoes[indexDaListaDeAlerta].ParLevel3_Id            = $("#actionParLevel3_Id").attr('data-action-level3');
         listaObjAcoes[indexDaListaDeAlerta].ParLevel1_Id            = $("#actionParLevel1_Id").attr('data-action-level1');
         listaObjAcoes[indexDaListaDeAlerta].ParLevel2_Id            = $("#actionParLevel2_Id").attr('data-action-level2');
         listaObjAcoes[indexDaListaDeAlerta].Acao_Naoconformidade    = $("#txtActionNotConformity").val();
-        listaObjAcoes[indexDaListaDeAlerta].AcaoText                    = $("#txtAction").val();
+        listaObjAcoes[indexDaListaDeAlerta].AcaoText                = $("#txtAction").val();
         listaObjAcoes[indexDaListaDeAlerta].DataConclusao           = $("#actionConclusionDate").val();
         listaObjAcoes[indexDaListaDeAlerta].HoraConclusao           = $("#actionConclusionHour").val();
         listaObjAcoes[indexDaListaDeAlerta].Referencia              = $('#actionReference').val();

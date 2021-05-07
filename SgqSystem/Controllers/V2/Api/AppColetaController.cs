@@ -658,7 +658,8 @@ namespace SgqSystem.Controllers.V2.Api
                         listaAuditor.Add(listaAuditor2.Select(x => new UserSgqViewModel()
                         {
                             Id = item.Id,
-                            Name = item.FullName
+                            Name = item.FullName,
+                            SimpleDescription = item.Name.Substring(0, 3)
                         }).FirstOrDefault());
                     }
                 }
