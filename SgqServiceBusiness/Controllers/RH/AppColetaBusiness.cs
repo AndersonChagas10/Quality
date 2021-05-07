@@ -415,9 +415,9 @@ WHERE 1 = 1
                                         )";
 
                 string dataEmissao = null;
-                if (!String.IsNullOrEmpty(item.DataEmissao))
+                if (!String.IsNullOrEmpty(item.DataEmissao.ToString()))
                 {
-                    dataEmissao = DateTime.Parse(item.DataEmissao).ToString("yyyy-MM-dd");
+                    dataEmissao = DateTime.Parse(item.DataEmissao.ToString()).ToString("yyyy-MM-dd");
                 }
 
                 string horaEmissao = null;
@@ -427,9 +427,9 @@ WHERE 1 = 1
                 }
 
                 string dataConclusao = null;
-                if (!String.IsNullOrEmpty(item.DataConclusao))
+                if (!String.IsNullOrEmpty(item.DataConclusao.ToString()))
                 {
-                    dataConclusao = DateTime.Parse(item.DataConclusao).ToString("yyyy-MM-dd");
+                    dataConclusao = DateTime.Parse(item.DataConclusao.ToString()).ToString("yyyy-MM-dd");
                 }
 
                 string horaConclusao = null;

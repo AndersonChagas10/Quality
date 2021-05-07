@@ -329,6 +329,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AcoesController.cs" />
     <Compile Include="Controllers\Api\AgendamentoApiController.cs" />
     <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
@@ -2452,6 +2453,7 @@
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamental.cshtml" />
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalAcompanhamento.cshtml" />
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalVisaoUnidade.cshtml" />
+    <Content Include="Views\Acoes\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
