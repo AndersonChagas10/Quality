@@ -47,16 +47,18 @@ function montaCorpoFormularioAcao(listaAcoes, index) {
 
     var date = getCurrentDate();
 
-    var htmlAcao = `<div class="container"><div id="bodyModalAcao" style="display:block;">
+    var htmlAcao = `<div class="container-fluid">
+    <div id="bodyModalAcao" style="display:block;">
    <h3 style="font-weight:bold;">Criar Ação</h3>
    <hr>
    <div class="form-group">
-      <div class="form-group col-xs-12" style="border: 2px;border-color: azure;border-style: groove;">
-         <label class="col-md-4">Data Emissão: ${currentCollectDate.toLocaleDateString()}</label>
-         <label class="col-md-3">Hora Emissão: ${currentCollectDate.toLocaleTimeString()}</label>
-         <label>Emissor: ${currentLogin.Name}</label>
+      <div class="row" style="border: 2px;border-color: azure;border-style: groove;">
+         <label class="col-xs-4">Data Emissão: ${currentCollectDate.toLocaleDateString()}</label>
+         <label class="col-xs-4">Hora Emissão: ${currentCollectDate.toLocaleTimeString()}</label>
+         <label class="col-xs-4">Emissor: ${currentLogin.Name}</label>
       </div>
-      <div class="form-group col-xs-12" style="border: 2px;border-color: azure;border-style: groove;">
+      <div class="form-group row" style="border: 2px;border-color: azure;border-style: groove;">
+        <div class="col-xs-12">
          <p id="actionParCompany_Id">Unidade: ${$.grep(currentLogin.ParCompanyXUserSgq, function (o, i) { return o.ParCompany.Id == currentParCompany_Id })[0].ParCompany.Name}</p>
          <p id="actionParDepartment_Id">Centro de Custo: ${$.grep(parametrization.listaParDepartment, function (o, i) { return o.Id == currentParDepartment_Id })[0].Name}</p>
          <p id="actionParDepartmentParent_Id">Seção/Atividade: ${$.grep(parametrization.listaParDepartment, function (o, i) { return o.Parent_Id == currentParDepartmentParent_Id; })[0].Name}</p>
@@ -73,23 +75,27 @@ function montaCorpoFormularioAcao(listaAcoes, index) {
 
          <p id="actionParLevel3_Id"
             data-action-level3="${$.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == listaAcoes[index].ParLevel3_Id; })[0].Id}">Desvio/Tarefa: ${$.grep(parametrization.listaParLevel3, function (o, i) { return o.Id == listaAcoes[index].ParLevel3_Id; })[0].Name}</p>
+        </div>
       </div>
-
-      <div class="form-group col-xs-12" style="">
-         <p>Não Conformidade/Ocorrencia</p>
-         <input id="txtActionNotConformity" class="form-control" type="text">
-         <p>Ação</p>
-         <input id="txtAction" class="form-control">
+      <div class="form-group row" style="">
+        <div class="col-xs-12">
+            <p>Não Conformidade/Ocorrencia</p>
+            <input id="txtActionNotConformity" class="form-control" type="text">
+            <p>Ação</p>
+            <input id="txtAction" class="form-control">
+        </div>
       </div>
       <hr>
-      <div class="form-group col-xs-12">
-         <p><i class="fa fa-camera" aria-hidden="true"></i> Evidencias de Não conformidade</p>
-         <label>Ver e Agir</label>
-         <input type="checkbox" id="checkVerAgir" />
-         <p id="actionsEvidencies" hidden="hidden"><i class="fa fa-camera" aria-hidden="true"></i> Evidencias da Ação Concluida</p>
+      <div class="form-group row">
+        <div class="col-xs-12">
+            <p><i class="fa fa-camera" aria-hidden="true"></i> Evidencias de Não conformidade</p>
+            <label>Ver e Agir</label>
+            <input type="checkbox" id="checkVerAgir" />
+            <p id="actionsEvidencies" hidden="hidden"><i class="fa fa-camera" aria-hidden="true"></i> Evidencias da Ação Concluida</p>
+        </div>
       </div>
    </div>
-   <div class="form-group col-md-12">
+   <div class="form-group row">
       <div class="col-md-4">
          <label>Data da conclusão:</label>
          <input id="actionConclusionDate" type="date" min="${date[0]}" class="form-control">
@@ -115,13 +121,13 @@ function montaCorpoFormularioAcao(listaAcoes, index) {
          </select>
       </div>
    </div>
-   <div class="col-md-12">
-      <div class="col-md-6">
-         <button class="btn btn-success" id="btnSave">Salvar</button>
-         <button class="btn btn-info" id="btnCloseModal">Fechar</button>
+   <div class="row">
         ${btnNext}
         ${btnBack}
-      </div>
+        <div class="col-md-6">
+            <button class="btn btn-success" id="btnSaveAction">Salvar</button>
+            <button class="btn btn-info" id="btnCloseModal">Fechar</button>
+        </div>
    </div>
 </div></div>`;
 
@@ -255,7 +261,7 @@ function saveAction(){
 
 }
 
-$('body').off('click', '#btnSave').on('click', '#btnSave', function () {
+$('body').off('click', '#btnSaveAction').on('click', '#btnSaveAction', function () {
 
     saveAction();
 });
