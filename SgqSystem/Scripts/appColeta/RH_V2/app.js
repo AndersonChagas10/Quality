@@ -192,7 +192,7 @@ function changeDate(that) {
 
 function setBreadcrumbs() {
 
-    var breadcrumb = '<ol class="breadcrumb"><li><a onclick="validaRota(openParcompany,null)">Inicio</a></li>';
+    var breadcrumb = '<ol class="breadcrumb">';
     var breadcrumbLi = "";
     var isCurrent = true;
 
@@ -215,31 +215,24 @@ function setBreadcrumbs() {
     }
 
     if (currentParCluster_Id) {
-        if (parametrization) {
-            breadcrumbLi += getBreadcrumb($.grep(parametrization.listaParCluster, function (item) {
-                return item.Id == currentParCluster_Id;
-            })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
-        } else {
-            breadcrumbLi += getBreadcrumb($.grep(listaParCluster, function (item) {
-                return item.Id == currentParCluster_Id;
-            })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
-        }
 
+        var listaCluster = [];
+
+        if (parametrization)
+             listaCluster = $.merge(parametrization.listaParCluster, listaParCluster);
+        else
+             listaCluster = listaParCluster;
+
+        breadcrumbLi += getBreadcrumb($.grep(listaCluster, function (item) {
+            return item.Id == currentParCluster_Id;
+        })[0].Name, 'validaRota(listarParCluster,0)', isCurrent);
         isCurrent = false;
     }
 
     if (currentParFrequency_Id) {
-        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
+        breadcrumbLi += getBreadcrumb($.grep(parametrization.listaParFrequency, function (item) {
             return item.Id == currentParFrequency_Id;
-        })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent) + breadcrumbLi;
-
-        isCurrent = false;
-    }
-
-    if (currentParCargo_Id) {
-        breadcrumbLi = getBreadcrumb($.grep(parametrization.listaParCargo, function (item) {
-            return item.Id == currentParCargo_Id;
-        })[0].Name, function () { }, isCurrent) + breadcrumbLi;
+        })[0].Name, 'validaRota(listarParDepartment,0)', isCurrent);
 
         isCurrent = false;
     }
@@ -256,7 +249,7 @@ function setBreadcrumbs() {
                 isCurrent = true;
             }
 
-            if (department_Id) {
+            if (department_Id == currentParDepartment_Id) {
 
                 deparment += getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
                     return item.Id == department_Id;
@@ -265,7 +258,15 @@ function setBreadcrumbs() {
 
         });
 
-        breadcrumbLi = deparment + breadcrumbLi;
+        breadcrumbLi = breadcrumbLi + deparment;
+        isCurrent = false;
+    }
+
+    if (currentParCargo_Id) {
+        breadcrumbLi += getBreadcrumb($.grep(parametrization.listaParCargo, function (item) {
+            return item.Id == currentParCargo_Id;
+        })[0].Name, function () { }, isCurrent);
+
         isCurrent = false;
     }
 

@@ -505,6 +505,7 @@ namespace DTO.ResultSet
 
             return $@"select
 	                    psg.Name as GrupoEmpresa,
+                        psg.Id as GrupoEmpresaId,
 	                    pg.Name as Regional,
 	                    UN.Name as Unidade,
 	                    us.Fullname as [Auditor Cabecalho]
@@ -1317,7 +1318,12 @@ Begin
             SELECT 
 	C2.CollectionDate AS Data--data coleta
 	,CAST(YEAR(C2.CollectionDate) AS VARCHAR) + '-' + RIGHT('0'+CAST(DATEPART(WEEK, C2.CollectionDate) AS VARCHAR),2) AS DATAColeta
-	,C2.Id as CollectionL2_Id
+
+,CAST(YEAR(ISNULL(IIF(CHARINDEX('""Data da Auditoria""', HF.HeaderFieldList1) > 0, SUBSTRING(HF.HeaderFieldList1, CHARINDEX('""Data da Auditoria""', HF.HeaderFieldList1)+LEN('""Data da Auditoria"":""'),CHARINDEX('""',SUBSTRING(HF.HeaderFieldList1, CHARINDEX('""Data da Auditoria""', HF.HeaderFieldList1)+LEN('""Data da Auditoria"":""'),LEN(HF.HeaderFieldList1)))-1), NULL),C2.CollectionDate) ) AS VARCHAR)
+	 +  '-' +
+	  RIGHT('0'+CAST(DATEPART(WEEK, ISNULL(IIF(CHARINDEX('""Data da Auditoria""', HF.HeaderFieldList1) > 0, SUBSTRING(HF.HeaderFieldList1, CHARINDEX('""Data da Auditoria""', HF.HeaderFieldList1)+LEN('""Data da Auditoria"":""'),CHARINDEX('""',SUBSTRING(HF.HeaderFieldList1, CHARINDEX('""Data da Auditoria""', HF.HeaderFieldList1)+LEN('""Data da Auditoria"":""'),LEN(HF.HeaderFieldList1)))-1), NULL),C2.CollectionDate) ) AS VARCHAR),2) AS DATAColetaCabecalho
+
+    , C2.Id as CollectionL2_Id
 	,L1.Name AS Indicador--indicador
 	,L2.Name AS Monitoramento--monitoramento
 	,R3.ParLevel3_Name AS Tarefa--tarefa
@@ -1330,7 +1336,8 @@ Begin
 	,UN.Name AS 'Unidade'--unidade
 	,PCargo.Name AS Cargo--Cargo
 	,pg.Name as regional--regional
-	,psg.Name as GrupoEmpresa--grupo de empresa
+	,psg.Name as GrupoEmpresa
+    ,psg.Id as GrupoEmpresaId
 	,CASE
 		WHEN R3.IsNotEvaluate = 1 THEN 'NA'
 		WHEN R3.IsConform = 1 THEN 'C'
@@ -1407,7 +1414,7 @@ AND PATINDEX('%Auditor%', HeaderFieldList1) > 0
 	group by C2.CollectionDate, C2.Id, L1.Name, 
 	L2.Name,R3.ParLevel3_Name,PC.Name,US.FullName,
 	C2.EvaluationNumber,C2.Sample,Centro.Name,Secao.Name,
-	UN.Name,PCargo.Name,pg.Name,psg.Name, R3.IsNotEvaluate,R3.IsConform, 
+	UN.Name,PCargo.Name,pg.Name,psg.Name,psg.Id, R3.IsNotEvaluate,R3.IsConform, 
 	HF.HeaderFieldList1,HF.HeaderFieldList2,HF3.HeaderFieldList,R3.ValueText	
 
 ----montagem da pivot de semanas--
@@ -1421,12 +1428,12 @@ Begin
 			SET @SQLStrSum=''
 			SET @SQLStrTotal='('
 			SELECT 
-				@SQLStr = @SQLStr + '['+ a.DataColeta +'], ',
-				@SQLStrSum = @SQLStrSum + 'ISNULL(SUM(['+ a.DataColeta +']),0) as ['+ a.DataColeta +'], ',
-				@SQLStrTotal = @SQLStrTotal + 'ISNULL(SUM(['+ a.DataColeta +']), 0) + '
+				@SQLStr = @SQLStr + '['+ a.DATAColeta +'], ',
+				@SQLStrSum = @SQLStrSum + 'ISNULL(SUM(['+ a.DATAColeta +']),0) as ['+ a.DATAColeta +'], ',
+				@SQLStrTotal = @SQLStrTotal + 'ISNULL(SUM(['+ a.DATAColeta +']), 0) + '
 			FROM
 			(
-				SELECT DISTINCT c2.DataColeta FROM #COLETAS c2
+				SELECT DISTINCT c2.DATAColeta FROM #COLETAS c2
 			) a
 
 			
@@ -1434,13 +1441,13 @@ Begin
 			SET @SQLStrSum = LEFT(@SQLStrSum,len(@SQLStrSum)-1)
 			SET @SQLStrTotal = LEFT(@SQLStrTotal,len(@SQLStrTotal)-1) + ') as total'
 
-            SET @SQLStr = 'SELECT GrupoEmpresa,Regional,Unidade, [Auditor Cabecalho],SUM(CAST(IIF(LEN([pessoas observadas]) > 0, [pessoas observadas], 0) as decimal)) as [pessoas observadas], '
+            SET @SQLStr = 'SELECT GrupoEmpresa,GrupoEmpresaId,Regional,Unidade, [Auditor Cabecalho],SUM(CAST(IIF(LEN([pessoas observadas]) > 0, [pessoas observadas], 0) as decimal)) as [pessoas observadas], '
             + 'SUM(IIF(Conforme = ''C'',  1 * numerodecoletas, 0)) as C,'
             + 'SUM(IIF(Conforme = ''NC'', 1 * numerodecoletas, 0)) as NC,'
             + 'SUM(IIF(Conforme = ''NA'', 1 * numerodecoletas, 0)) as NA,'
             + @SQLStrSum
             + ', ' + @SQLStrTotal + ' FROM ('
-            + 'SELECT  Indicador, ClusterName,  Unidade, Auditor,Secao,GrupoEmpresa,Monitoramento,totalColeta as numerodecoletas,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional, '
+            + 'SELECT  Indicador, ClusterName,  Unidade, Auditor,Secao,GrupoEmpresa,GrupoEmpresaId,Monitoramento,totalColeta as numerodecoletas,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional, '
             + 'IIF(CHARINDEX(''""Auditor""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Auditor""'', HeaderFieldListL1)+LEN(''""Auditor"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Auditor""'', HeaderFieldListL1)+LEN(''""Auditor"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Auditor Cabecalho],'
             + 'IIF(CHARINDEX(''""Avaliação da Atividade""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Avaliação da Atividade""'', HeaderFieldListL1)+LEN(''""Avaliação da Atividade"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Avaliação da Atividade""'', HeaderFieldListL1)+LEN(''""Avaliação da Atividade"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Avaliação da Atividade],'
             + 'IIF(CHARINDEX(''pessoas observadas""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''pessoas observadas""'', HeaderFieldListL1)+LEN(''pessoas observadas"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''pessoas observadas""'', HeaderFieldListL1)+LEN(''pessoas observadas"":""''),LEN(HeaderFieldListL1)))-1), '''') as [pessoas observadas],'
@@ -1448,15 +1455,15 @@ Begin
             + 'IIF(CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1) > 0, SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1)+LEN(''""Tipo de Tarefa Realizada"":""''),CHARINDEX(''""'',SUBSTRING(HeaderFieldListL1, CHARINDEX(''""Tipo de Tarefa Realizada""'', HeaderFieldListL1)+LEN(''""Tipo de Tarefa Realizada"":""''),LEN(HeaderFieldListL1)))-1), '''') as [Tipo de Tarefa Realizada],'
             + @SQLStr
 
-             + ' FROM ( SELECT Indicador,CollectionL2_Id, Avaliacao, Amostra, ClusterName, Unidade, Auditor, DataColeta,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, NUMERODECOLETAS,  numerodecoletas as ''totalColeta'' FROM #COLETAS   
+             + ' FROM ( SELECT Indicador,CollectionL2_Id, Avaliacao, Amostra, ClusterName, Unidade, Auditor, DATAColetaCabecalho,Secao,GrupoEmpresa,GrupoEmpresaId,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3, NUMERODECOLETAS,  numerodecoletas as ''totalColeta'' FROM #COLETAS   
 
                 WHERE 1 = 1
 
-                GROUP BY DataColeta, Unidade, Auditor, Indicador,CollectionL2_Id ,ClusterName,Avaliacao,Amostra, NUMERODECOLETAS,Secao,GrupoEmpresa,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3 '
+                GROUP BY DATAColetaCabecalho, Unidade, Auditor, Indicador,CollectionL2_Id ,ClusterName,Avaliacao,Amostra, NUMERODECOLETAS,Secao,GrupoEmpresa,GrupoEmpresaId,Monitoramento,Tarefa,Conforme,ValorDescricaoTarefa,Cargo,Regional,HeaderFieldListL1,HeaderFieldListL2,HeaderFieldListL3 '
 
-            + '         ) sq PIVOT (sum(NUMERODECOLETAS) FOR DataColeta IN ('
+            + '         ) sq PIVOT (sum(NUMERODECOLETAS) FOR DATAColetaCabecalho IN ('
             + @SQLStr + ')) AS pt ) AS ValoresSemAgrupamento'
-            + ' GROUP BY GrupoEmpresa,Regional,Unidade, [Auditor Cabecalho]'
+            + ' GROUP BY GrupoEmpresa,GrupoEmpresaId,Regional,Unidade, [Auditor Cabecalho]'
             + ' ORDER BY 1'
 
 

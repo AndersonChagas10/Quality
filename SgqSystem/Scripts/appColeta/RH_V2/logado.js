@@ -1,6 +1,5 @@
 function openLogado() {
     openParCompany();
-    //openParDepartment();
     AtualizarVariaveisDeColetas();
     AtualizarVariaveisDeAcoesCorretivas();
 

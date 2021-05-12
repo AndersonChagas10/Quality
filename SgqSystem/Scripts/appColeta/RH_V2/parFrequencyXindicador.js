@@ -1,9 +1,9 @@
-function openParFrequencyXindicador() {
+function openParFrequencyXindicador(isVoltar) {
 
     var html = '';
 
     _readFile("parFrequency.txt", function (data) {
-        if (globalLoginOnline) {
+        if (appIsOnline) {
 
             openMensagem('Carregando lista de frequencia e indicador', 'blue', 'white');
 
@@ -20,7 +20,7 @@ function openParFrequencyXindicador() {
 
                     _writeFile("parFrequency.txt", JSON.stringify(data), function () {
                         listaParFrequency = data;
-                        listarParFrequencyXindicador();
+                        listarParFrequencyXindicador(isVoltar);
                     });
 
                     closeMensagem();
@@ -33,13 +33,13 @@ function openParFrequencyXindicador() {
             });
 
         } else {
-            listarParFrequency();
+            listarParFrequencyXindicador(isVoltar);
         }
 
     });
 }
 
-function listarParFrequencyXindicador() {
+function listarParFrequencyXindicador(isVoltar) {
 
     cleanGlobalVarParFrequency();
 
@@ -75,11 +75,12 @@ function listarParFrequencyXindicador() {
 
             $(data[i].ParLevel1).each(function (x, y) {
 
-                htmlParFrequency += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important; width: auto"><button type="button" class="list-group-item btn btn-lg btn-block" style="color: #1F497D;background-color:#DCE6F1;" data-selected="false" data-par-frequency-id="' + o.Id + '" data-par-level1-id="' + y.Id + '" >' + y.Name +
+                htmlParFrequency += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important"><button type="button" class="list-group-item btn btn-lg btn-block" style="color: #1F497D;background-color:#DCE6F1;white-space: break-spaces;" data-selected="false" data-par-frequency-id="' + o.Id + '" data-par-level1-id="' + y.Id + '"  title="' + o.Name + '">' + y.Name +
                     '</button></div>';
             });
             htmlParFrequency += '</div>';
         });
+
         var voltar = '<a onclick="validaRota(openParCluster,true);"  style="margin-bottom:10px"  class="btn btn-warning col-xs-12">Voltar</a>';
 
         html = getHeader() +
@@ -116,6 +117,14 @@ function listarParFrequencyXindicador() {
 
         $('div#app').html(html);
         setBreadcrumbs();
+
+        if (data.length == 1 && !isVoltar) {
+            if (data[0].ParLevel1.length == 1) {
+                $(`[data-par-level1-id=${data[0].ParLevel1[0].Id}]`).trigger('click');
+
+                $('[data-coletar]').trigger('click');
+            }
+        }
     });
 }
 
@@ -126,15 +135,16 @@ function cleanGlobalVarParFrequency() {
     currentsParDepartments_Ids = [];
 }
 
-$('body').off('click', '[data-par-frequency-id]', '[data-par-level1-id]').on('click', '[data-par-frequency-id]', '[data-par-level1-id]', function (e) {
-    
+$('body').off('click', '[data-par-level1-id]').on('click', '[data-par-level1-id]', function (e) {
+
     setListLevel1($(this));
 
 });
 
 $('body').off('click', '[data-coletar]').on('click', '[data-coletar]', function (e) {
-    
+
     setParametrizationObj();
+
 });
 
 function setParametrizationObj() {
@@ -151,16 +161,19 @@ function setParametrizationObj() {
         setCurrentPlanejamentoList(parLevel1List);
 
         getAppParametrization(frequency);
-       
+
 
     } else {
         openMensagem("Selecione ao menos um Indicador!", 'yellow', 'black');
         closeMensagem(2000);
     }
-    
+
 }
 
 function setCurrentPlanejamentoList(level1List) {
+
+    if (currentPlanejamento.length > 0)
+        currentPlanejamento = [];
 
     level1List.map(function (o, i) {
         currentPlanejamento.push({ indicador_Id: o.level1_Id, indicador_Name: o.level1_Name });
@@ -262,8 +275,12 @@ function getAppParametrization(frequencyId) {
                 atualizarVariaveisCurrent(parametrization);
             }
 
-             openPlanejamentoColeta();
-            closeMensagem();
+            if (parametrization.listaParDepartment.length > 0)
+                clickColetar();
+            else {
+                openMensagem('Nenhum Centro de Custo parametrizado.', 'yellow', 'black');
+                closeMensagem(6000);
+            }
         });
     }
 }
@@ -288,11 +305,19 @@ function chamaGetAppParametrization() {
             data.currentParFrequency_Id = currentParFrequency_Id;
             data.listaParFrequency = listaParFrequency;
             data.currentParCluster_Id = currentParCluster_Id;
-            data.currentParClusterGroup_Id = currentParClusterGroup_Id; 
+            data.currentParClusterGroup_Id = currentParClusterGroup_Id;
             data.currentParCompany_Id = currentParCompany_Id;
             _writeFile("appParametrization.txt", JSON.stringify(data), function () {
-                atualizaColetasParciais();
-                clickColetar(); 
+                
+                parametrization = data;
+
+                if (parametrization.listaParDepartment.length > 0) {
+                    atualizaColetasParciais();
+                    clickColetar();
+                } else {
+                    openMensagem('Nenhum Centro de Custo parametrizado.', 'yellow', 'black');
+                    closeMensagem(6000);
+                }
             });
 
             sincronizarResultado();

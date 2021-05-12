@@ -8,9 +8,9 @@ function listarParCargo(isVoltar) {
 
     var listaParCargo = retornaCargos(currentParDepartment_Id);
 
-    listaParCargo = retornaCargosPlanejados(listaParCargo);
-
     var htmlParCargo = "";
+
+    listaParCargo = listaParCargo.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
     $(listaParCargo).each(function (i, o) {
         currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, o.Id);
@@ -50,27 +50,33 @@ function listarParCargo(isVoltar) {
                 'data-current-sample="' + currentEvaluationSample.Sample + '">                                                   ' +
                 '	<div class="col-xs-3">' + o.Name + '</div>                                                                  ' +
                 '	<div class="col-xs-1">&nbsp;</div>                                                                  ' +
-                '	<div class="col-xs-4">Av: ' + currentEvaluationSample.Evaluation + '/' + o.Evaluation.Evaluation + ' </div>      ' +
-                '	<div class="col-xs-4">Am: ' + currentEvaluationSample.Sample + '/' + o.Evaluation.Sample + ' </div>              ' +
+                '	<div class="col-xs-4">Av: ' + ((currentEvaluationSample.Evaluation >= 1 && currentEvaluationSample.Sample > 1) ? currentEvaluationSample.Evaluation : (currentEvaluationSample.Evaluation-1))+ '/' + o.Evaluation.Evaluation + ' </div>      ' +
+                '	<div class="col-xs-4">Am: ' + (currentEvaluationSample.Sample-1) + '/' + o.Evaluation.Sample + ' </div>              ' +
                 '</button>';
             atualizaCorAgendamento(o, currentEvaluationSample);
         }
 
     });
 
-    var voltar = '<a onclick="validaRota(listarParDepartment,currentParDepartmentParent_Id);" class="btn btn-warning">Voltar</a>';
+    var voltar = '<a onclick="validaRota(listarParDepartment,currentParDepartmentParent_Id);" class="btn btn-warning col-xs-12" style="margin-bottom:10px;">Voltar</a>';
 
+    if (globalLogo)
+        systemLogo = 'background-image: url(' + globalLogo + ')';
 
 
     html = getHeader() +
         '<div class="container-fluid">                                       ' +
         '    <div class="">                                         ' +
         '        <div class="col-xs-12">                               ' +
-        '            <div class="panel panel-primary">                 ' +
-        '              <div class="panel-heading">                     ' +
+        '            <div class="panel">                 ' +
+        '              <div class="panel-heading" style="background-color:#DCE6F1;">                     ' +
+
+        '<div style="height: 220px; text-align: center; background-repeat: no-repeat;background-size: auto 100%;background-position: center;height: 220px; ' + systemLogo + '">' +
+        '</div>' +
+
         '			    <div class="row">                          ' +
         '			      <div class="col-xs-9">                         ' +
-        '                <h3 class="panel-title">' + voltar + ' Selecione o cargo que deseja coletar</h3>        ' +
+        '                <h3 class="panel-title"> Selecione o cargo que deseja coletar</h3>        ' +
         '                 </div >                                          ' +
         '                 <div class="col-sm-3">                           ' +
         getBotaoBuscar() +
@@ -79,6 +85,7 @@ function listarParCargo(isVoltar) {
         '              </div>                                          ' +
         '              <div class="panel-body">                        ' +
         '                <div class="list-group" id="divCargo">                      ' +
+        voltar +
         htmlParCargo +
         '                </div>                                        ' +
         '              </div>                                          ' +
@@ -185,11 +192,11 @@ $('body').off('click', '[data-par-cargo-id]').on('click', '[data-par-cargo-id]',
 
 });
 
-function atualizaCorAgendamento(cargo, currentEvaluationSample) { 
+function atualizaCorAgendamento(cargo, currentEvaluationSample) {
     setTimeout(function () {
 
         if (!$("#divCargo").is(':visible'))
-            return; 
+            return;
 
         if (cargo['Evaluation'].ParEvaluationScheduleAppViewModel.length > 0) {
 
@@ -356,18 +363,21 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
 
             if (situacao.indexOf("4") >= 0) {
                 $(elem).html("<div style='background-color:red; height: 20px;width: 25px; border: 1px; border-style:solid; border-color:grey;'></div>");
-            } else if (situacao.indexOf("3") >= 0) {
+            } else if (situacao.indexOf("3") >= 0 && currentEvaluationSample.Sample <= 1) {
                 $(elem).html("<div style='background-color:yellow; height: 20px;width: 25px; border: 1px; border-style:solid; border-color:grey;'></div>");
-            } else if (situacao.indexOf("2") >= 0) {
+            } else if (situacao.indexOf("2") >= 0 && currentEvaluationSample.Sample > 1) {
                 $(elem).html("<div style='background-color:green; height: 20px;width: 25px; border: 1px; border-style:solid; border-color:grey;'></div>");
+            } else if (situacao.indexOf("2") >= 0 && currentEvaluationSample.Sample <= 1) {
+                //adicionado para montar amarelo quando nao for realizada nenhuma coleta, somente a partir de uma aplica a regra
+                $(elem).html("<div style='background-color:yellow; height: 20px;width: 25px; border: 1px; border-style:solid; border-color:grey;'></div>");
             } else if (situacao.indexOf("1") >= 0) {
-                $(elem).html("<div style='background-color:transparent; height: 20px;width: 25px; border: 1px; border-style:solid; border-color:grey;'></div>");
+                $(elem).html("<div style='background-color:green; height: 20px;width: 25px; border: 1px; border-style:solid; border-color:grey;'></div>");
             }
         }
         setTimeout(function () {
             atualizaCorAgendamento(cargo, currentEvaluationSample);
         }, 500);
     }, 200);
-    
+
 
 }
