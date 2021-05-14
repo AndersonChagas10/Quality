@@ -24,12 +24,8 @@ function openColeta(levels) {
                 if (level2.ParLevel3 != undefined)
                     level2.ParLevel3.forEach(function (level3) {
 
-                        //percorrer para validar se os valores de AV e AM estão dentro do range
-                        // parametrization.listaParVinculoPeso.forEach(function (obj) {
-                        //     if (obj.ParLevel3_Id == level3.Id) {
-
                         var ultimaColeta = $.grep(coletasAgrupadas, function (item) {
-                            return item.ParCargo_Id == level3.ParCargo_Id;
+                            return item.ParCargo_Id == currentParCargo_Id;
                         });
 
                         if (ultimaColeta.length > 0
@@ -65,11 +61,9 @@ function openColeta(levels) {
                             }
                         }
 
-                        // }
-                        // });
-
                     });
             });
+            
         coleta += getParFooterFieldLevel1(level1);
     });
 
