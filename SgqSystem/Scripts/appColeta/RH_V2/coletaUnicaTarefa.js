@@ -74,12 +74,10 @@ function enableAllInputs() {
 }
 
 function disableBtnSave() {
-    console.log("Botão salvar bloqueado");
     $('button[data-salvar]').prop("disabled", true);
 }
 
 function enableBtnSave() {
-    console.log("Botão salvar liberado");
     $('button[data-salvar]').prop("disabled", false);
 }
 
