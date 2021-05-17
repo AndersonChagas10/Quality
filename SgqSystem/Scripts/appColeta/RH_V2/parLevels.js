@@ -123,9 +123,9 @@ function montarLevel3(parLevel1, parLevel2, index) {
 
             level3["ParLevel3XHelp"] = getParLevel3XHelp(level3);
 
-            level3.Evaluation = vinculo.Evaluation;
+            level3.Evaluation = vinculo[0].Evaluation;
 
-            level3.Sample = vinculo.Sample;
+            level3.Sample = vinculo[0].Sample;
 
             level3List.push($.extend({},level3));
 
