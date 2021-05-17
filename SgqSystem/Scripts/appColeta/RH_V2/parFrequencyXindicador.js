@@ -236,7 +236,7 @@ function setListLevel1(btn) {
 
 function disableLevel1Button(btn) {
 
-    $(".list-group-item").map(function (i, o) {
+    $(".list-group-item").each(function (i, o) {
         if ($(o).attr('data-par-frequency-id') != $(btn).attr('data-par-frequency-id')) {
             $(o).addClass('disabled');
         } else {
@@ -244,7 +244,7 @@ function disableLevel1Button(btn) {
         }
     });
 
-    $("[data-select-allLevel1]").map(function (i, o) {
+    $("[data-select-allLevel1]").each(function (i, o) {
         if ($(o).attr('data-select-allLevel1') != $(btn).attr('data-par-frequency-id')) {
             $(o).addClass('disabled');
         } else {

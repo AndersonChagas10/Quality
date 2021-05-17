@@ -210,7 +210,6 @@ function getInputOrSelect(parheaderField, flagPullRight, flagDisableRemoveDuplic
             html += '</div>';
             break;
         case 6:	//Data 
-            debugger
             html += '<div id="" class="col-sm-3 ' + flagPullRight + '" name="" style="margin-bottom: 4px;">';
             html += '<label class="font-small" style="height: 22px;">' + parheaderField.Name + '</label>';
             html += '<input class="col-xs-12 input-sm" type="date" id="cb' + parheaderField.Id + '" data-cb="cb' + parheaderField.Id + '" parheaderfield_id="' + parheaderField.Id + '" parfieldtype_id="' + parheaderField.ParFieldType_Id + '" data-required="' + required + '" >';

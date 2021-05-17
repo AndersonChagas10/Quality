@@ -3940,7 +3940,7 @@
 
   <Card>
     <CardNumber>GRX-1464</CardNumber>
-    <Version>1.10.5</Version>
+    <Version>1.10.6</Version>
     <Description>[RH SESMT] Disponibilizar formulário de Ação e Relatório de Coleta - Parametrização</Description>
     <Script>
       IF NOT EXISTS (SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ParLevel1' AND COLUMN_NAME = 'GenerateActionOnNotConformity')
