@@ -24,33 +24,46 @@ function openColeta(levels) {
                 if (level2.ParLevel3 != undefined)
                     level2.ParLevel3.forEach(function (level3) {
 
-                        var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
+                        var ultimaColeta = $.grep(coletasAgrupadas, function (item) {
+                            return item.ParCargo_Id == currentParCargo_Id;
+                        });
 
-                        if (inputLevel3.length > 0) {
+                        if (ultimaColeta.length > 0
+                            && (ultimaColeta[0].Evaluation == level3.Evaluation || level3.Evaluation == null)
+                            && (ultimaColeta[0].Sample <= level3.Sample || level3.Sample == null)
+                            || ((currentEvaluationSample.Evaluation == level3.Evaluation || level3.Evaluation == null)
+                                && (currentEvaluationSample.Sample <= level3.Sample || level3.Sample == null))) {
 
-                            if (hasLevel3 == false) {
+                            var inputLevel3 = getInputLevel3(level3, level2, level1, striped);
 
-                                if (hasLevel2 == false) {
-                                    coleta += getLevel1(level1);
-                                    coleta += getParHeaderFieldLevel1(level1);
-                                    hasLevel2 = true;
+                            if (inputLevel3.length > 0) {
+
+                                if (hasLevel3 == false) {
+
+                                    if (hasLevel2 == false) {
+                                        coleta += getLevel1(level1);
+                                        coleta += getParHeaderFieldLevel1(level1);
+                                        hasLevel2 = true;
+                                    }
+
+                                    coleta += getLevel2(level2, level1);
+                                    coleta += getParHeaderFieldLevel2(level1, level2);
+                                    hasLevel3 = true;
                                 }
 
-                                coleta += getLevel2(level2, level1);
-                                coleta += getParHeaderFieldLevel2(level1, level2);
-                                hasLevel3 = true;
+                                coleta += inputLevel3;
+
+                                if (inputLevel3)
+                                    if (striped)
+                                        striped = false;
+                                    else
+                                        striped = true;
                             }
-
-                            coleta += inputLevel3;
-
-                            if (inputLevel3)
-                                if (striped)
-                                    striped = false;
-                                else
-                                    striped = true;
                         }
+
                     });
             });
+            
         coleta += getParFooterFieldLevel1(level1);
     });
 
@@ -60,37 +73,33 @@ function openColeta(levels) {
     var voltar = '<a onclick="validaRota(listarParCargo,null);" class="btn btn-warning col-xs-12" style="margin-bottom:10px;">Voltar</a>';
 
     html = getHeader() +
-        '<div class="container-fluid">                                                                                                                   ' +
-        '	<div class="">                                                                                                                      ' +
-        '		<div class="col-xs-12">                                                                                                            ' +
-        '			<div class="panel">                                                                                              ' +
-        '			  <div class="panel-heading" style="background-color:#DCE6F1;">                                                                                                  ' +
-
-        '<div style="height: 220px; text-align: center; background-repeat: no-repeat;background-size: auto 100%;background-position: center;height: 220px; ' + systemLogo + '">' +
-
-        '</div>' +
-        '				<h3 class="panel-title">Questionario de Coleta</h3>                                   ' +
-        '			  </div>                                                                                                                       ' +
-        voltar +
-
-        '<div class="row">' +
-        '<div class="col-md-6">' +
-        ' <button class="btn btn-info" onclick="expandAllLevel1();">Expandir todos</button>' +
-        '<button class="btn btn-info" onclick="hideAllLevel1();">Recolher todos</button>' +
-        ' </div>' +
-        '</div>' +
-
-        '			  <div class="panel-body">                                                                                                     ' +
-        getContador() +
-        getParHeaderFieldDeparment() +
-        '				<form data-form-coleta style="text-align:justify">                                                                                                    ' +
-        coleta +
-        '					<button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>       ' +
-        '				</form>                                                                                                                    ' +
-        '			  </div>                                                                                                                       ' +
-        '       </div>                                                                                                                             ' +
-        '    </div>                                                                                                                                ' +
-        '	</div>                                                                                                                                 ' +
+        '<div class="container-fluid">' +
+        '	<div class="">' +
+        '		<div class="col-xs-12">' +
+        '			<div class="panel">' +
+        '			  <div class="panel-heading" style="background-color:#DCE6F1;">' +
+        '               <div style="height: 220px; text-align: center; background-repeat: no-repeat;background-size: auto 100%;background-position: center;height: 220px; ' + systemLogo + '">' +
+        '               </div>' +
+        '				<h3 class="panel-title">Questionario de Coleta</h3>' +
+        '			  </div>' +
+        '             ' + voltar +
+        '           <div class="row">' +
+        '               <div class="col-md-6">' +
+        '                   <button class="btn btn-info" onclick="expandAllLevel1();">Expandir todos</button>' +
+        '                   <button class="btn btn-info" onclick="hideAllLevel1();">Recolher todos</button>' +
+        '               </div>' +
+        '           </div>' +
+        '			<div class="panel-body">' +
+        '             ' + getContador() +
+        '             ' + getParHeaderFieldDeparment() +
+        '           <form data-form-coleta style="text-align:justify">' +
+        '           ' + coleta +
+        '               <button class="btn btn-block btn-primary input-lg col-xs-12" data-salvar style="margin-top:10px">Salvar</button>' +
+        '           </form>' +
+        '           </div>' +
+        '       </div>' +
+        '    </div>' +
+        '	</div>' +
         '</div>';
 
     $('div#app').html(html);
@@ -106,6 +115,7 @@ function openColeta(levels) {
     });
 
     setBreadcrumbs();
+    initializeColetaUnica();
 }
 
 function expandAllLevel1() {
@@ -1198,17 +1208,17 @@ function PrepararColetas() {
                 Outros: JSON.stringify({ Qualification_Value: getQualificationCollection($(data).attr('data-level1'), $(data).attr('data-level2'), $(data).attr('data-level3')) }),
                 IsPartialSave: hasPartialSave
                 /*
-				"Shift_Id":1,
-				"Period_Id":1,
-				"ParCluster_Id":1,
-				"CollectionType":1,
-				"PunishimentValue":1,
-				"HasPhoto":"0",
-				"HaveCorrectiveAction":"0",
-				"AlertLevel":"0",
-				"ParHeaderField_Id":1,
-				"ParHeaderField_Value":""
-				*/
+                "Shift_Id":1,
+                "Period_Id":1,
+                "ParCluster_Id":1,
+                "CollectionType":1,
+                "PunishimentValue":1,
+                "HasPhoto":"0",
+                "HaveCorrectiveAction":"0",
+                "AlertLevel":"0",
+                "ParHeaderField_Id":1,
+                "ParHeaderField_Value":""
+                */
             }
         );
     });
@@ -1497,6 +1507,7 @@ function getCollectionHeaderFields(collectionDate) {
 }
 
 function ColetasIsValid() {
+
     var linhasDaColeta = $('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar');
     var inputsDaColeta = $('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar').find('input[data-texto]');
     var qualification = $('form[data-form-coleta] div[data-qualificationlevel3value] div[data-qualification-required]');
@@ -1545,7 +1556,6 @@ function ColetasIsValid() {
             if ($(data).attr('data-conforme') == ""
                 || $(data).attr('data-conforme') == null
                 || $(data).attr('data-conforme') == "undefined") {
-
                 $(data).find("[data-tarefa]").css("background-color", "#ffc1c1");
                 errorCount++;
             } else {
@@ -1554,9 +1564,11 @@ function ColetasIsValid() {
         }
     }
     if (errorCount > 0) {
+
         openMensagem("Atenção! Obrigatório responder todas as Tarefas.", "yellow", "black");
         mostraPerguntasObrigatorias(data);
         closeMensagem(2000);
+
         return false;
     } else
         return true;
@@ -1612,7 +1624,13 @@ function mostraPerguntasObrigatorias(data) {
     }
 }
 
-function HeaderFieldsIsValid() {
+function HeaderFieldsIsValid(pintaFundo, exibeMensagem) {
+
+    if (pintaFundo == undefined)
+        pintaFundo = true;
+
+    if (exibeMensagem == undefined)
+        exibeMensagem = true;
 
     retorno = true;
 
@@ -1628,26 +1646,28 @@ function HeaderFieldsIsValid() {
             if ($self.attr("data-required") == "true") {
 
                 if ($self.val() == null || $self.val() == undefined || $self.val() == "") {
-                    $self.css("background-color", "#ffc1c1");
+                    if (pintaFundo)
+                        $self.css("background-color", "#ffc1c1");
                     retorno = false;
                 }
             }
         });
 
-    if (!retorno) {
+    if (!retorno && exibeMensagem) {
         openMensagem("Atenção! Campos de cabeçalho obrigatórios não preenchidos", "yellow", "black");
         closeMensagem(2000);
     }
 
     //verifica se tem campos obrigatorios que nao estao preenchidos e realiza o focus neles
-    $.each($('[data-required=true]'), function (i, o) {
-        if ($(o).val() == 0 || $(o).val() == "") {
-            $('html, body').animate({
-                scrollTop: $(o).parent().offset().top
-            }, 300);
-            return false;
-        }
-    });
+    if (pintaFundo)
+        $.each($('[data-required=true]'), function (i, o) {
+            if ($(o).val() == 0 || $(o).val() == "") {
+                $('html, body').animate({
+                    scrollTop: $(o).parent().offset().top
+                }, 300);
+                return false;
+            }
+        });
 
     return retorno;
 }

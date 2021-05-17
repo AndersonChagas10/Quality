@@ -1,4 +1,4 @@
-function openParFrequencyXindicador() {
+function openParFrequencyXindicador(isVoltar) {
 
     var html = '';
 
@@ -20,7 +20,7 @@ function openParFrequencyXindicador() {
 
                     _writeFile("parFrequency.txt", JSON.stringify(data), function () {
                         listaParFrequency = data;
-                        listarParFrequencyXindicador();
+                        listarParFrequencyXindicador(isVoltar);
                     });
 
                     closeMensagem();
@@ -33,13 +33,13 @@ function openParFrequencyXindicador() {
             });
 
         } else {
-            listarParFrequencyXindicador();
+            listarParFrequencyXindicador(isVoltar);
         }
 
     });
 }
 
-function listarParFrequencyXindicador() {
+function listarParFrequencyXindicador(isVoltar) {
 
     cleanGlobalVarParFrequency();
 
@@ -75,7 +75,7 @@ function listarParFrequencyXindicador() {
 
             $(data[i].ParLevel1).each(function (x, y) {
 
-                htmlParFrequency += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important"><button type="button" class="list-group-item btn btn-lg btn-block" style="color: #1F497D;background-color:#DCE6F1;overflow-x:hidden" data-selected="false" data-par-frequency-id="' + o.Id + '" data-par-level1-id="' + y.Id + '"  title="' + o.Name + '">' + y.Name +
+                htmlParFrequency += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important"><button type="button" class="list-group-item btn btn-lg btn-block" style="color: #1F497D;background-color:#DCE6F1;white-space: break-spaces;" data-selected="false" data-par-frequency-id="' + o.Id + '" data-par-level1-id="' + y.Id + '"  title="' + o.Name + '">' + y.Name +
                     '</button></div>';
             });
             htmlParFrequency += '</div>';
@@ -118,13 +118,12 @@ function listarParFrequencyXindicador() {
         $('div#app').html(html);
         setBreadcrumbs();
 
-        if (currentPlanejamento) {
-            var level1PlanejadoList_Ids = [...new Set(currentPlanejamento.map(x => x.indicador_Id))];
+        if (data.length == 1 && !isVoltar) {
+            if (data[0].ParLevel1.length == 1) {
+                $(`[data-par-level1-id=${data[0].ParLevel1[0].Id}]`).trigger('click');
 
-            level1PlanejadoList_Ids.map(function (o, i) {
-                $(`[data-par-level1-id=${o}]`).trigger('click');
-
-            });
+                $('[data-coletar]').trigger('click');
+            }
         }
     });
 }
@@ -237,7 +236,7 @@ function setListLevel1(btn) {
 
 function disableLevel1Button(btn) {
 
-    $(".list-group-item").map(function (i, o) {
+    $(".list-group-item").each(function (i, o) {
         if ($(o).attr('data-par-frequency-id') != $(btn).attr('data-par-frequency-id')) {
             $(o).addClass('disabled');
         } else {
@@ -245,7 +244,7 @@ function disableLevel1Button(btn) {
         }
     });
 
-    $("[data-select-allLevel1]").map(function (i, o) {
+    $("[data-select-allLevel1]").each(function (i, o) {
         if ($(o).attr('data-select-allLevel1') != $(btn).attr('data-par-frequency-id')) {
             $(o).addClass('disabled');
         } else {
@@ -276,8 +275,12 @@ function getAppParametrization(frequencyId) {
                 atualizarVariaveisCurrent(parametrization);
             }
 
-            openPlanejamentoColeta();
-            closeMensagem();
+            if (parametrization.listaParDepartment.length > 0)
+                clickColetar();
+            else {
+                openMensagem('Nenhum Centro de Custo parametrizado.', 'yellow', 'black');
+                closeMensagem(6000);
+            }
         });
     }
 }
@@ -305,9 +308,16 @@ function chamaGetAppParametrization() {
             data.currentParClusterGroup_Id = currentParClusterGroup_Id;
             data.currentParCompany_Id = currentParCompany_Id;
             _writeFile("appParametrization.txt", JSON.stringify(data), function () {
+                
                 parametrization = data;
-                atualizaColetasParciais();
-                clickColetar();
+
+                if (parametrization.listaParDepartment.length > 0) {
+                    atualizaColetasParciais();
+                    clickColetar();
+                } else {
+                    openMensagem('Nenhum Centro de Custo parametrizado.', 'yellow', 'black');
+                    closeMensagem(6000);
+                }
             });
 
             sincronizarResultado();

@@ -139,6 +139,7 @@ namespace Dominio.Seed
 
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "queryRelatorioLaboratorio", Value = "", ControllerName = "LaboratorioApiController", Descricao = "Query do relatório de Análise Laboratoriais" });
                 DicionariosInserir.Add(new DicionarioEstatico() { Key = "clustersIdsColetaUnicaTarefa", Value = "", ControllerName = "AppColetaController", Descricao = "Ids do(s) Cluster(s) que permitem coleta de única tarefa. Colocar entre || ex => |123|456|" });
+                DicionariosInserir.Add(new DicionarioEstatico() { Key = "metaAuditoriaComportamental", Value = "2;5=1", ControllerName = "AppColetaController", Descricao = "utilizar para definir a meta de calculo da coleta semanal ( metaGenerica;IdGrupoEmpresa=meta|IdGrupoEmpresa=meta)" });
 
 
                 var add = DicionariosInserir.Select(r => r.Key).Except(dicionariosKeys).ToList();
