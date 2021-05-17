@@ -117,6 +117,15 @@ namespace Dominio
 
         public bool? ShowScorecard { get; set; }
 
+        [NotMapped]
+        public bool GenerateActionOnNotConformity { get; set; }
+
+        [NotMapped]
+        public bool OpenPhotoGallery { get; set; }
+
+        [NotMapped]
+        public bool HasCollectReport { get; set; }
+
         public virtual ICollection<CollectionLevel2> CollectionLevel2 { get; set; }
 
         public virtual ICollection<ConsolidationLevel1> ConsolidationLevel1 { get; set; }

@@ -3937,5 +3937,30 @@
       END
     </Script>
   </Card>
-  
+
+  <Card>
+    <CardNumber>GRX-1464</CardNumber>
+    <Version>1.10.6</Version>
+    <Description>[RH SESMT] Disponibilizar formulário de Ação e Relatório de Coleta - Parametrização</Description>
+    <Script>
+      IF NOT EXISTS (SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ParLevel1' AND COLUMN_NAME = 'GenerateActionOnNotConformity')
+      BEGIN
+      ALTER TABLE ParLevel1
+      ADD GenerateActionOnNotConformity BIT NOT NULL DEFAULT 0;
+      END
+
+      IF NOT EXISTS (SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ParLevel1' AND COLUMN_NAME = 'OpenPhotoGallery')
+      BEGIN
+      ALTER TABLE ParLevel1
+      ADD OpenPhotoGallery BIT NOT NULL DEFAULT 0;
+      END
+
+      IF NOT EXISTS (SELECT TOP 1 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'ParLevel1' AND COLUMN_NAME = 'HasCollectReport')
+      BEGIN
+      ALTER TABLE ParLevel1
+      ADD HasCollectReport BIT NOT NULL DEFAULT 0;
+      END
+    </Script>
+  </Card>
+
 </Cards>

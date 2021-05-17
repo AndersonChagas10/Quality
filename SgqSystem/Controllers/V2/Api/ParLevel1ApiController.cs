@@ -298,6 +298,9 @@ namespace SgqSystem.Controllers.V2.Api
                     {
                         parLevel1Old.IsLimitedEvaluetionNumber = parLevel1.IsLimitedEvaluetionNumber;
                         parLevel1Old.HasTakePhoto = parLevel1.HasTakePhoto;
+                        parLevel1Old.GenerateActionOnNotConformity = parLevel1.GenerateActionOnNotConformity;
+                        parLevel1Old.OpenPhotoGallery = parLevel1.OpenPhotoGallery;
+                        parLevel1Old.HasCollectReport = parLevel1.HasCollectReport;
                     }
                     else
                     {
