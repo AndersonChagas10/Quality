@@ -131,7 +131,7 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '<div class="form-group row">' +
         '   <div class="col-md-4">' +
         '       <label>Data da conclusão:</label>' +
-        '       <input id="actionConclusionDate" type="date" min="' + date[0] + '" class="form-control">' +
+        '       <input id="actionConclusionDate" type="date" min="' + date.split('T')[0] + '" class="form-control">' +
         '   </div>' +
         '   <div class="col-md-4">' +
         '       <label>Hora da conclusão:</label>' +
@@ -304,4 +304,23 @@ $('body').off('click', '#checkVerAgir').on('click', '#checkVerAgir', function ()
     } else {
         $("#actionsEvidencies").attr('hidden', 'hidden');
     }
+});
+
+$('body').off('keyup', '#actionConclusionDate').on('keyup', '#actionConclusionDate', function () {
+
+    var dataInput = $(this).val();
+
+    debugger
+
+    if (dataInput) {
+        dataInput = parseInt(dataInput.replace('-', '').replace('-', ''))
+
+        var dataHoje = parseInt(getCurrentDate().split('T')[0].replace('-', '').replace('-', ''));
+
+        if (dataInput < dataHoje) {
+            $(this).val(getCurrentDate().split('T')[0]);
+        }
+
+    }
+
 });
