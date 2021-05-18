@@ -89,6 +89,16 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         return o.Id == currentAction.ParLevel3_Id;
     })[0];
 
+    var usersNotfy = "";
+    currentAction.Notificar.forEach(function (auditor_Id) {
+        
+        var name = $.grep(parametrization.listaAuditor, function (auditor) {
+            return auditor.Id == auditor_Id;
+        })[0].Name
+
+        usersNotfy += '<tr><td>' + auditor_Id + '</td><td>' + name + '</td><td><button class="btn btn-danger" onclick="removeUserNotify(' + index + ',' + auditor_Id + ')">X</button></td></tr>';
+    });
+
     var htmlAcao = '<div class="container-fluid">' +
         '<div id="bodyModalAcao" style="display:block;">' +
         '<h3 style="font-weight:bold;">Criar Ação</h3>' +
@@ -147,13 +157,7 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '           ' + options +
         '       </select>' +
         '   </div>' +
-        '   <div class="col-xs-4">' +
-        '       <label>Notificar:</label>' +
-        '       <select id="actionNotify" class="form-control">' +
-        '           ' + options +
-        '       </select>' +
-        '   </div>' +
-        '   <div class="col-xs-4 divActionPriority" class="divActionPriority">' +
+        '   <div class="col-xs-4 divActionPriority">' +
         '       <label>Prioridade:</label>' +
         '       <select id="actionPriority" class="form-control">' +
         '           <option value="">Selecione...</option>' +
@@ -161,6 +165,28 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '           <option value="2">Média</option>' +
         '           <option value="3">Alta</option>' +
         '       </select>' +
+        '   </div>' +
+        '</div>' +
+        '<div class="form-group row">' +
+        '   <div class="col-xs-12 col-md-6">' +
+        '       <label>Notificar:</label>' + 
+        '       <div class="form-inline">' +
+        '           <div class="form-group" style="width:60%">' +
+        '               <select id="actionNotify" class="form-control">' +
+        '                   ' + options +
+        '               </select>' +
+        '           </div>' +
+        '           <button onclick="addUserNotify(0);" class="btn btn-primary">+</button>' +
+        '       </div>' +
+        '       <table id="tableActionNotify" class="table table-striped" style="font-size:14px;">' +
+        '           <thead>' +
+        '               <th>Id</th>' +
+        '               <th>Nome</th>' +
+        '               <th></th>' +
+        '           </tr>' +
+        '           </thead>' +
+        '         ' + usersNotfy +
+        '       </table>' +
         '   </div>' +
         '</div>' +
         '<hr>' +
@@ -226,10 +252,11 @@ function setListaAcoesObj(index, currentObjAction) {
             HoraConclusao: "",
             Referencia: "",
             Responsavel: "",
-            Notificar: "",
+            Notificar: [],
             DataEmissao: "",
             HoraEmissao: "",
             Prioridade: "",
+            VerEAgir: false,
             Emissor: currentLogin.Id
         };
 
@@ -242,11 +269,12 @@ function setListaAcoesObj(index, currentObjAction) {
         listaObjAcoes[index].HoraConclusao = $("#actionConclusionHour").val();
         listaObjAcoes[index].Referencia = $('#actionReference').val();
         listaObjAcoes[index].Responsavel = $('#actionResponsable :selected').val();
-        listaObjAcoes[index].Notificar = $("#actionNotify :selected").val();
+        //listaObjAcoes[index].Notificar = $("#actionNotify :selected").val();
         listaObjAcoes[index].DataEmissao = currentCollectDate.toLocaleDateString();
         listaObjAcoes[index].HoraEmissao = currentCollectDate.toLocaleTimeString();
         listaObjAcoes[index].Emissor = currentLogin.Id;
         listaObjAcoes[index].Prioridade = $('#actionPriority :selected').val();
+        listaObjAcoes[index].VerEAgir = $('#checkVerAgir').prop('checked');
     }
 
     return listaObjAcoes[index];
@@ -260,7 +288,8 @@ function setCurrentActionValues(currentAction) {
     $("#actionConclusionHour").val(currentAction.HoraConclusao);
     $("#actionReference").val(currentAction.Referencia);
     $("#actionResponsable").val(currentAction.Responsavel);
-    $("#actionNotify").val(currentAction.Notificar);
+    //$("#actionNotify").val(currentAction.Notificar);
+    $('#checkVerAgir').prop('checked', currentAction.VerEAgir).trigger('change');
 
 }
 
@@ -309,7 +338,29 @@ function getActionById(indexId) {
 
 }
 
-$('body').off('click', '#checkVerAgir').on('click', '#checkVerAgir', function () {
+function addUserNotify(index) {
+
+    var userNotify = $('#actionNotify :selected').val();
+
+    if (!userNotify)
+        return;
+
+    if (listaObjAcoes[index].Notificar.indexOf(userNotify) < 0) {
+        createOrUpdateObj(index);
+        listaObjAcoes[index].Notificar.push(userNotify);
+        montaCorpoFormularioAcao(listaObjAcoes, index);
+    }
+    else
+        alert("usuário já adicionado");
+}
+
+function removeUserNotify(index, user_Id) {
+    createOrUpdateObj(index);
+    listaObjAcoes[index].Notificar.splice(listaObjAcoes[index].Notificar.indexOf(user_Id), 1);
+    montaCorpoFormularioAcao(listaObjAcoes, index);
+}
+
+$('body').off('click, change', '#checkVerAgir').on('click, change', '#checkVerAgir', function () {
 
     var dataHoje = getCurrentDate().split('T');
 

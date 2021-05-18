@@ -21,13 +21,19 @@ namespace Dominio
         public DateTime? DataConclusao { get; set; }
         public string Referencia { get; set; }
         public int? Responsavel { get; set; }
-        public int? Notificar { get; set; }
+        public List<int> Notificar { get; set; }
         public DateTime? DataEmissao { get; set; }
         public string HoraEmissao { get; set; }
         public int Emissor { get; set; }
         public int Prioridade { get; set; }
-        //public string EvidenciaNaoConformidade { get; set; }
-        //public string EvidenciaAcaoConcluida { get; set; }
+        public int Status { get; set; }
+        
+
+        [NotMapped]
+        public List<string> EvidenciaNaoConformidade { get; set; }
+
+        [NotMapped]
+        public List<string> EvidenciaAcaoConcluida { get; set; }
 
         [ForeignKey("ParLevel1_Id")]
         public ParLevel1 ParLevel1 { get; set; }
@@ -47,10 +53,5 @@ namespace Dominio
         [ForeignKey("ParDepartment_Id")]
         public ParDepartment ParDepartment { get; set; }
 
-        [NotMapped]
-        public List<string> EvidenciaNaoConformidade { get; set; }
-
-        [NotMapped] 
-        public List<string> EvidenciaAcaoConcluida { get; set; }
     }
 }
