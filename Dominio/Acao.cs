@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Dominio
@@ -24,8 +25,9 @@ namespace Dominio
         public DateTime? DataEmissao { get; set; }
         public string HoraEmissao { get; set; }
         public int Emissor { get; set; }
-        public string EvidenciaNaoConformidade { get; set; }
-        public string EvidenciaAcaoConcluida { get; set; }
+        public int Prioridade { get; set; }
+        //public string EvidenciaNaoConformidade { get; set; }
+        //public string EvidenciaAcaoConcluida { get; set; }
 
         [ForeignKey("ParLevel1_Id")]
         public ParLevel1 ParLevel1 { get; set; }
@@ -44,5 +46,11 @@ namespace Dominio
 
         [ForeignKey("ParDepartment_Id")]
         public ParDepartment ParDepartment { get; set; }
+
+        [NotMapped]
+        public List<string> EvidenciaNaoConformidade { get; set; }
+
+        [NotMapped] 
+        public List<string> EvidenciaAcaoConcluida { get; set; }
     }
 }

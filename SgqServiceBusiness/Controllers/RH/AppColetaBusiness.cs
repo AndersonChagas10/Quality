@@ -389,9 +389,8 @@ WHERE 1 = 1
                                     ,Notificar					
                                     ,DataEmissao				
                                     ,HoraEmissao				
-                                    ,Emissor					
-                                    ,EvidenciaNaoConformidade	
-                                    ,EvidenciaAcaoConcluida)	
+                                    ,Emissor	
+                                    ,Prioridade)
                                     VALUES(
                                           @ParLevel1_Id			
                                          ,@ParLevel2_Id			
@@ -410,8 +409,7 @@ WHERE 1 = 1
                                          ,@DataEmissao			
                                          ,@HoraEmissao			
                                          ,@Emissor				
-                                         ,@EvidenciaNaoConformidade
-                                         ,@EvidenciaAcaoConcluida	
+                                         ,@Prioridade
                                         )";
 
                 string dataEmissao = null;
@@ -462,6 +460,7 @@ WHERE 1 = 1
                         UtilSqlCommand.AddParameterNullable(cmd, "@Emissor", item.Emissor);
                         UtilSqlCommand.AddParameterNullable(cmd, "@EvidenciaNaoConformidade", item.EvidenciaAcaoConcluida);
                         UtilSqlCommand.AddParameterNullable(cmd, "@EvidenciaAcaoConcluida", item.EvidenciaAcaoConcluida);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Prioridade", item.Prioridade);
 
                         var id = Convert.ToInt32(cmd.ExecuteScalar());
 

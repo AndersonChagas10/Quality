@@ -129,28 +129,37 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '   </div>' +
         '</div>' +
         '<div class="form-group row">' +
-        '   <div class="col-md-4">' +
+        '   <div class="col-xs-4 hide vereagir">' +
         '       <label>Data da conclusão:</label>' +
         '       <input id="actionConclusionDate" type="date" min="' + date.split('T')[0] + '" class="form-control">' +
         '   </div>' +
-        '   <div class="col-md-4">' +
+        '   <div class="col-xs-4 hide vereagir">' +
         '       <label>Hora da conclusão:</label>' +
         '       <input id="actionConclusionHour" type="time" class="form-control">' +
         '   </div>' +
-        '   <div class="col-md-4">' +
+        '   <div class="col-xs-4">' +
         '       <label>referencia:</label>' +
         '       <input id="actionReference" type="text" class="form-control">' +
         '   </div>' +
-        '   <div class="col-md-4">' +
+        '   <div class="col-xs-4">' +
         '       <label>Responsavel:</label>' +
         '       <select id="actionResponsable" class="form-control">' +
         '           ' + options +
         '       </select>' +
         '   </div>' +
-        '   <div class="col-md-4">' +
+        '   <div class="col-xs-4">' +
         '       <label>Notificar:</label>' +
         '       <select id="actionNotify" class="form-control">' +
         '           ' + options +
+        '       </select>' +
+        '   </div>' +
+        '   <div class="col-xs-4 divActionPriority" class="divActionPriority">' +
+        '       <label>Prioridade:</label>' +
+        '       <select id="actionPriority" class="form-control">' +
+        '           <option value="">Selecione...</option>' +
+        '           <option value="1">Baixa</option>' +
+        '           <option value="2">Média</option>' +
+        '           <option value="3">Alta</option>' +
         '       </select>' +
         '   </div>' +
         '</div>' +
@@ -220,6 +229,7 @@ function setListaAcoesObj(index, currentObjAction) {
             Notificar: "",
             DataEmissao: "",
             HoraEmissao: "",
+            Prioridade: "",
             Emissor: currentLogin.Id
         };
 
@@ -236,6 +246,7 @@ function setListaAcoesObj(index, currentObjAction) {
         listaObjAcoes[index].DataEmissao = currentCollectDate.toLocaleDateString();
         listaObjAcoes[index].HoraEmissao = currentCollectDate.toLocaleTimeString();
         listaObjAcoes[index].Emissor = currentLogin.Id;
+        listaObjAcoes[index].Prioridade = $('#actionPriority :selected').val();
     }
 
     return listaObjAcoes[index];
@@ -299,18 +310,30 @@ function getActionById(indexId) {
 }
 
 $('body').off('click', '#checkVerAgir').on('click', '#checkVerAgir', function () {
+
+    var dataHoje = getCurrentDate().split('T');
+
     if ($(this).is(":checked")) {
         $("#actionsEvidencies").removeAttr('hidden');
+        $('.vereagir').removeClass('hide');
+        $('.divActionPriority').addClass('hide');
+        $('#actionPriority').val("");
+        $('#actionConclusionDate').val(dataHoje[0]);
+        $('#actionConclusionHour').val(dataHoje[1].substring(0, 5));
     } else {
         $("#actionsEvidencies").attr('hidden', 'hidden');
+        $('.vereagir').addClass('hide');
+        $('.divActionPriority').removeClass('hide');
+        $('#actionConclusionDate').val("");
+        $('#actionConclusionHour').val("");
     }
 });
 
-$('body').off('keyup', '#actionConclusionDate').on('keyup', '#actionConclusionDate', function () {
+$('body')
+// .off('keyup', '#actionConclusionDate')
+.on('keyup', '#actionConclusionDate', function () {
 
     var dataInput = $(this).val();
-
-    debugger
 
     if (dataInput) {
         dataInput = parseInt(dataInput.replace('-', '').replace('-', ''))
@@ -320,7 +343,6 @@ $('body').off('keyup', '#actionConclusionDate').on('keyup', '#actionConclusionDa
         if (dataInput < dataHoje) {
             $(this).val(getCurrentDate().split('T')[0]);
         }
-
     }
 
 });

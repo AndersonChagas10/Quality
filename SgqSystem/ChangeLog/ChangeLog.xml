@@ -3988,8 +3988,7 @@
       [DataEmissao] [date] NULL,
       [HoraEmissao] [varchar](5) NULL,
       [Emissor] [int] NOT NULL,
-      [EvidenciaNaoConformidade] [varchar](max) NULL,
-      [EvidenciaAcaoConcluida] [varchar](max) NULL
+      [Prioridade] [int] NULL,
       )
 
       INSERT [Pa].[Acao] ([Id], [ParLevel1_Id], [ParLevel2_Id], [ParLevel3_Id], [ParCompany_Id], [ParDepartment_Id], [ParDepartmentParent_Id], [ParCargo_Id], [Acao_Naoconformidade], [AcaoText], [DataConclusao], [HoraConclusao], [Referencia], [Responsavel], [Notificar], [DataEmissao], [HoraEmissao], [Emissor], [EvidenciaNaoConformidade], [EvidenciaAcaoConcluida]) VALUES (1, 12, 32, 1121, 49, 42162, 42161, 2611, N'', N'', NULL, NULL, N'', NULL, N'', CAST(N'2021-05-06' AS Date), N'11:40', 1, NULL, NULL)
