@@ -131,11 +131,21 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '   <hr>' +
         '   <div class="form-group row">' +
         '       <div class="col-xs-12">' +
-        '           <p><i class="fa fa-camera" aria-hidden="true"></i> Evidencias de Não conformidade</p>' +
-        '           <label>Ver e Agir</label>' +
-        '           <input type="checkbox" id="checkVerAgir" />' +
-        '           <p id="actionsEvidencies" hidden="hidden"><i class="fa fa-camera" aria-hidden="true"></i> Evidencias da Ação Concluida</p>' +
+        '           <p>Evidencias de Não conformidade </p>' +
+        '           <div></div>' +
+        '           <button class="fa fa-camera btn btn-default" aria-hidden="true"></button>' +
+        '           <button class="fa fa-file btn btn-default" aria-hidden="true"></button>' +
         '       </div>' +
+        '       <hr>' +
+        '       <div class="col-xs-12">' +
+        '           <p>Ver e Agir <input type="checkbox" id="checkVerAgir"></p>' +
+        '           <div id="actionsEvidencies">' +
+        '               <p>Evidencias da Ação Concluida</p>' +
+        '               <button class="fa fa-camera btn btn-default" aria-hidden="true"></button>' +
+        '               <button class="fa fa-file btn btn-default" aria-hidden="true"></button>' +
+        '           </div>' +
+        '       </div>' +
+        '       <hr>' +
         '   </div>' +
         '</div>' +
         '<div class="form-group row">' +
