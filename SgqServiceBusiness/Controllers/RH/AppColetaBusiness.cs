@@ -385,8 +385,7 @@ WHERE 1 = 1
                                     ,DataConclusao				
                                     ,HoraConclusao				
                                     ,Referencia				
-                                    ,Responsavel				
-                                    ,Notificar					
+                                    ,Responsavel								
                                     ,DataEmissao				
                                     ,HoraEmissao				
                                     ,Emissor	
@@ -404,13 +403,14 @@ WHERE 1 = 1
                                          ,@DataConclusao			
                                          ,@HoraConclusao			
                                          ,@Referencia				
-                                         ,@Responsavel			
-                                         ,@Notificar				
+                                         ,@Responsavel							
                                          ,@DataEmissao			
                                          ,@HoraEmissao			
                                          ,@Emissor				
                                          ,@Prioridade
-                                        )";
+                                        );
+
+                SELECT CAST(scope_identity() AS int)";
 
                 string dataEmissao = null;
                 if (!String.IsNullOrEmpty(item.DataEmissao.ToString()))
@@ -454,7 +454,6 @@ WHERE 1 = 1
                         UtilSqlCommand.AddParameterNullable(cmd, "@HoraConclusao", horaConclusao);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Referencia", item.Referencia);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Responsavel", item.Responsavel);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@Notificar", item.Notificar);
                         UtilSqlCommand.AddParameterNullable(cmd, "@DataEmissao", dataEmissao);
                         UtilSqlCommand.AddParameterNullable(cmd, "@HoraEmissao", horaEmissao);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Emissor", item.Emissor);
@@ -462,9 +461,45 @@ WHERE 1 = 1
                         UtilSqlCommand.AddParameterNullable(cmd, "@EvidenciaAcaoConcluida", item.EvidenciaAcaoConcluida);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Prioridade", item.Prioridade);
 
-                        var id = Convert.ToInt32(cmd.ExecuteScalar());
+                        var id = (Int32) cmd.ExecuteScalar();
 
                         item.Id = id;
+                    } 
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        public void SaveAcaoXNotificarAcao(AcaoXNotificarAcao listAcaoXNotificarAcao)
+        {
+            try
+            {
+                string sql = $@"INSERT INTO Pa.AcaoXNotificarAcao(
+                                    Acao_Id				
+                                    ,UserSgq_Id				
+                                    ,AddDate)
+                                    VALUES(
+                                          @Acao_Id			
+                                         ,@UserSgq_Id			
+                                         ,@AddDate			
+                                        )";
+
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Id", listAcaoXNotificarAcao.Acao_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@UserSgq_Id", listAcaoXNotificarAcao.UserSgq_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@AddDate", DateTime.Now);
+
+                        var id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        listAcaoXNotificarAcao.Id = id;
                     }
                 }
             }

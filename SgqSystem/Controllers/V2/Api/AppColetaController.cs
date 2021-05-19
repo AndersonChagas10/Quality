@@ -58,6 +58,11 @@ namespace SgqSystem.Controllers.V2.Api
                 foreach (var acao in listaObjAcoes)
                 {
                     appColetaBusiness.SaveAction(acao);
+
+                    foreach(var usuarioNotificado in acao.Notificar)
+                    {
+                        appColetaBusiness.SaveAcaoXNotificarAcao(new AcaoXNotificarAcao() { Acao_Id = acao.Id, UserSgq_Id = usuarioNotificado });
+                    }
                 }
               
             }

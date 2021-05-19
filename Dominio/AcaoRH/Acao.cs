@@ -27,7 +27,7 @@ namespace Dominio
         public int Emissor { get; set; }
         public int Prioridade { get; set; }
         public int Status { get; set; }
-        
+        public int IsActive { get; set; }
 
         [NotMapped]
         public List<string> EvidenciaNaoConformidade { get; set; }

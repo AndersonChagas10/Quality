@@ -96,7 +96,7 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
             return auditor.Id == auditor_Id;
         })[0].Name
 
-        usersNotfy += '<tr><td>' + auditor_Id + '</td><td>' + name + '</td><td><button class="btn btn-danger" onclick="removeUserNotify(' + index + ',' + auditor_Id + ')">X</button></td></tr>';
+        usersNotfy += '<tr><td>' + auditor_Id + '</td><td>' + name + '</td><td><button class="btn btn-danger btn-sm" onclick="removeUserNotify(' + index + ',' + auditor_Id + ')">X</button></td></tr>';
     });
 
     var htmlAcao = '<div class="container-fluid">' +
@@ -191,11 +191,11 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '</div>' +
         '<hr>' +
         '<div class="row">' +
-        '   <div class="col-md-6">' +
+        '   <div class="col-xs-6">' +
         '   ' + btnBack +
         '   ' + btnNext +
         '   </div>' +
-        '   <div class="col-md-6">' +
+        '   <div class="col-xs-6">' +
         '       <button class="btn btn-success pull-right" style="margin-right: 10px;" onclick="saveAction(' + index + ');">Salvar esta ação</button>' +
         '   </div>' +
         '</div>' +
@@ -269,7 +269,6 @@ function setListaAcoesObj(index, currentObjAction) {
         listaObjAcoes[index].HoraConclusao = $("#actionConclusionHour").val();
         listaObjAcoes[index].Referencia = $('#actionReference').val();
         listaObjAcoes[index].Responsavel = $('#actionResponsable :selected').val();
-        //listaObjAcoes[index].Notificar = $("#actionNotify :selected").val();
         listaObjAcoes[index].DataEmissao = currentCollectDate.toLocaleDateString();
         listaObjAcoes[index].HoraEmissao = currentCollectDate.toLocaleTimeString();
         listaObjAcoes[index].Emissor = currentLogin.Id;
@@ -288,7 +287,6 @@ function setCurrentActionValues(currentAction) {
     $("#actionConclusionHour").val(currentAction.HoraConclusao);
     $("#actionReference").val(currentAction.Referencia);
     $("#actionResponsable").val(currentAction.Responsavel);
-    //$("#actionNotify").val(currentAction.Notificar);
     $('#checkVerAgir').prop('checked', currentAction.VerEAgir).trigger('change');
 
 }
@@ -360,7 +358,9 @@ function removeUserNotify(index, user_Id) {
     montaCorpoFormularioAcao(listaObjAcoes, index);
 }
 
-$('body').off('click, change', '#checkVerAgir').on('click, change', '#checkVerAgir', function () {
+$('body')
+//.off('click, change', '#checkVerAgir')
+.on('click, change', '#checkVerAgir', function () {
 
     var dataHoje = getCurrentDate().split('T');
 
