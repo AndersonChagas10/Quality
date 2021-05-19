@@ -1,0 +1,140 @@
+﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
+@{
+    ViewBag.Title = "Listagem de ações";
+
+
+}
+
+
+
+<div class="page-content-wrapper">
+    <div class="page-content">
+        <table id="tabelaDeResultados" class="table table-striped"></table>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            closeLeftSidebar();
+
+            setTimeout(() => {
+                var filtro = {};
+                buscarDados(filtro);
+            }, 2000);
+
+        });
+
+        function buscarDados(filtro) {
+            openLoader("...");
+            $.ajax({
+                data: JSON.stringify(filtro),
+                type: 'GET',
+                url:  '@Html.Raw(Url.Action("Get", "api/AcaoApi"))',
+                contentType: "application/json",
+                success: function (dados) {
+                    if (dados && dados.length > 0) {
+                        carregarTabela(dados);
+                    } else {
+                        //Não há valores
+                    }
+                    closeLoader();
+                },
+                error: function (e) {
+                    console.error(e);
+                    closeLoader();
+                }
+            });
+        }
+
+        function carregarTabela(dados) {
+            var colunas = montarColunasDaTabela();
+            //var colunas = montarColunasDaTabelaDinamico(dados);
+            //Outras configurações
+            montarTabela(dados, colunas);
+        }
+
+        function montarColunasDaTabela() {
+            var colunas = [
+                { "title": "Id", "mData": "Id", "visible": true },
+                { "title": "ParLevel1_Id", "mData": "ParLevel1_Id", "visible": false },
+                {
+                    "title": "ParLevel1_Name", "mData": "ParLevel1_Name", "visible": true, mRender: function (data, type, full, line) {
+                        var row = line.row;
+                        return `<label onclick="editarInput(${row},'${data}')">${data}</label>`;
+                    }
+                },
+                { "title": "ParLevel2_Id", "mData": "ParLevel2_Id", "visible": false },
+                { "title": "ParLevel2_Name", "mData": "ParLevel2_Name", "visible": true },
+                { "title": "ParLevel3_Id", "mData": "ParLevel3_Id", "visible": false },
+                { "title": "ParLevel3_Name", "mData": "ParLevel3_Name", "visible": true },
+                { "title": "ParCompany_Id", "mData": "ParCompany_Id", "visible": false },
+                { "title": "ParCompany_Name", "mData": "ParCompany_Name", "visible": true },
+                { "title": "ParDepartment_Id", "mData": "ParDepartment_Id", "visible": false },
+                { "title": "ParDepartment_Name", "mData": "ParDepartment_Name", "visible": true },
+                { "title": "ParDepartmentParent_Id", "mData": "ParDepartmentParent_Id", "visible": false },
+                { "title": "ParCargo_Id", "mData": "ParCargo_Id", "visible": false },
+                { "title": "ParCargo_Name", "mData": "ParCargo_Name", "visible": true },
+                { "title": "Acao_Naoconformidade", "mData": "Acao_Naoconformidade", "visible": true },
+                { "title": "AcaoText", "mData": "AcaoText", "visible": true },
+                { "title": "DataEmissao", "mData": "DataEmissao", "visible": true },
+                { "title": "DataConclusao", "mData": "DataConclusao", "visible": true },
+                { "title": "HoraEmissao", "mData": "HoraEmissao", "visible": true },
+                { "title": "HoraConclusao", "mData": "HoraConclusao", "visible": true },
+                { "title": "Referencia", "mData": "Referencia", "visible": true },
+                { "title": "Responsavel", "mData": "Responsavel", "visible": true },
+                { "title": "Notificar", "mData": "Notificar", "visible": true },
+                { "title": "EvidenciaNaoConformidade", "mData": "EvidenciaNaoConformidade", "visible": true },
+                { "title": "EvidenciaAcaoConcluida", "mData": "EvidenciaAcaoConcluida", "visible": true },
+                { "title": "Prioridade", "mData": "Prioridade", "visible": true },
+                { "title": "Status", "mData": "Status", "visible": true },
+                { "title": "IsActive", "mData": "IsActive", "visible": true }
+            ];
+            return colunas;
+        }
+
+        function editarInput(row,valor) {
+
+        }
+
+        function montarColunasDaTabelaDinamico(dados) {
+            var keys = Object.keys(dados[0]);
+            var colunas = [];
+            for (var i = 0; i < keys.length; i++) {
+                var nomeColuna = keys[i];
+                var coluna = {
+                    title: keys[i],
+                    mData: keys[i],
+                    mRender: function (data, type, full) {
+                        return data;
+                    },
+                    "visible": true
+                };
+                colunas.push(coluna);
+            }
+            return colunas;
+        }
+
+        function montarTabela(dados, colunas) {
+            var table = datatableGRT.Inicializar({
+                idTabela: "tabelaDeResultados",
+                listaDeDados: dados,
+                colunaDosDados: colunas,
+                numeroLinhasNaTabela: 25,
+                aplicarResponsividade: true,
+                tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                initComplete: () => { },
+                createdRow: function (row, data, index) {
+                }
+            });
+        }
+
+    </script>
+
+}

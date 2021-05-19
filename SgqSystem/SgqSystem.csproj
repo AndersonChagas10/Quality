@@ -456,6 +456,8 @@
     <Compile Include="Controllers\Params\ParCompany2XClusterController.cs" />
     <Compile Include="Controllers\Params\ParCompany2XStructureController.cs" />
     <Compile Include="Controllers\Params\ParStructuresController.cs" />
+    <Compile Include="Controllers\PlanoDeAcao\AcaoController.cs" />
+    <Compile Include="Controllers\PlanoDeAcao\Api\AcaoApiController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoJsonController.cs" />
     <Compile Include="Controllers\RelatoriosMD\RelatoriosMDController.cs" />
@@ -2454,6 +2456,7 @@
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalAcompanhamento.cshtml" />
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalVisaoUnidade.cshtml" />
     <Content Include="Views\Acoes\Index.cshtml" />
+    <Content Include="Views\PlanoDeAcao\Acao\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
