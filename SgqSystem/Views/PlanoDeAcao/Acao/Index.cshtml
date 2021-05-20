@@ -12,123 +12,120 @@
 <div class="modal fade" id="modalEditar" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
-                <h3 style="font-weight:bold;">Criar Ação</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-4">
-                        <strong>Data Emissão:</strong>
-                        <label id="dataEmissao"></label>
-                    </div>
-                    <div class="col-xs-4">
-                        <strong>Hora Emissão:</strong>
-                        <label id="horaEmissao"></label>
-                    </div>
-                    <div class="col-xs-4">
-                        <strong>Emissor:</strong>
-                        <label id="usuarioEmissor"></label>
-                    </div>
-                    <div class="col-sm-12">
-                        <strong>Unidade:</strong><label id="actionParCompany_Id"></label>
-                        <br />
-                        <strong>Centro de Custo:</strong><label id="actionParDepartment_Id"></label>
-                        <br />
-                        <strong>Seção/Atividade:</strong><label id="actionParDepartmentParent_Id"></label>
-                        <br />
-                        <strong>Item/Cargo:</strong><label id="actionParCargo_Id"></label>
-                        <br />
-                        <strong>Indicador/Origem:</strong><label id="actionParLevel1_Id"></label>
-                        <br />
-                        <strong>Monitoramento:</strong><label id="actionParLevel2_Id"></label>
-                        <br />
-                        <strong>Desvio/Tarefa:</strong><label id="actionParLevel3_Id"></label>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="txtActionNotConformity"><strong>Não Conformidade/Ocorrencia</strong></label>
-                            <textarea id="txtActionNotConformity" class="form-control" style="resize: none; height: 100px;"></textarea>
+            <form onsubmit="enviarFormularioEditarAcao(event)">
+                <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
+                    <h3 style="font-weight:bold;">Criar Ação</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <strong>Data Emissão:</strong>
+                            <label id="dataEmissao"></label>
                         </div>
-                    </div>
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="txtAction"><strong>Ação</strong></label>
-                            <textarea id="txtAction" class="form-control" style="resize: none; height: 100px;"></textarea>
+                        <div class="col-xs-4">
+                            <strong>Hora Emissão:</strong>
+                            <label id="horaEmissao"></label>
                         </div>
-                    </div>
-                    <hr /> 
-                    <div class="col-xs-12">
-                        <strong>Evidencias de Não conformidade</strong>
-                        <button class="fa fa-file btn btn-default" aria-hidden="true"></button>
-                    </div>
-                    <hr />
-                    
-                    <div class="col-xs-12">
-                        <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir"/>
-                    </div>
-                    <div class="col-xs-12">
-                        <div id="actionsEvidencies" hidden="hidden">
-                            <p>Evidencias da Ação Concluida</p>
+                        <div class="col-xs-4">
+                            <strong>Emissor:</strong>
+                            <label id="usuarioEmissor"></label>
+                        </div>
+                        <div class="col-sm-12">
+                            <strong>Unidade:</strong><label id="actionParCompany_Id"></label>
+                            <br />
+                            <strong>Centro de Custo:</strong><label id="actionParDepartment_Id"></label>
+                            <br />
+                            <strong>Seção/Atividade:</strong><label id="actionParDepartmentParent_Id"></label>
+                            <br />
+                            <strong>Item/Cargo:</strong><label id="actionParCargo_Id"></label>
+                            <br />
+                            <strong>Indicador/Origem:</strong><label id="actionParLevel1_Id"></label>
+                            <br />
+                            <strong>Monitoramento:</strong><label id="actionParLevel2_Id"></label>
+                            <br />
+                            <strong>Desvio/Tarefa:</strong><label id="actionParLevel3_Id"></label>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia</strong></label>
+                                <textarea id="txtAcao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="txtAcaoText"><strong>Ação</strong></label>
+                                <textarea id="txtAcaoText" class="form-control" style="resize: none; height: 100px;"></textarea>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="col-xs-12">
+                            <strong>Evidencias de Não conformidade</strong>
                             <button class="fa fa-file btn btn-default" aria-hidden="true"></button>
                         </div>
-                    </div>
-                    <div class="col-xs-4 hide vereagir">
-                        <label><strong>Data da conclusão:</strong></label>
-                        <input id="actionConclusionDate" type="date" min="2021-05-19" class="form-control">
-                    </div>
-                    <div class="col-xs-4 hide vereagir">
-                        <label><strong>Hora da conclusão:</strong></label>
-                        <input id="actionConclusionHour" type="time" class="form-control">
-                    </div>
-                    <div class="col-xs-4">
-                        <label><strong>Referencia:</strong></label>
-                        <input id="actionReference" type="text" class="form-control">
-                    </div>
-                    <div class="col-xs-4">
-                        <label><strong>Responsavel:</strong></label>
-                        <select id="actionResponsable" class="form-control">
-                            <option value="">Selecione...</option>
-                            <option value="1">Isabella Rosa (isa)</option>
-                            <option value="41">Bruno Sousa (bru)</option>
-                        </select>
-                    </div>
-                    <div class="col-xs-4 divActionPriority">
-                        <label><strong>Prioridade:</strong></label>
-                        <select id="actionPriority" class="form-control">
-                            <option value="">Selecione...</option>
-                            <option value="1">Baixa</option>
-                            <option value="2">Média</option>
-                            <option value="3">Alta</option>
-                        </select>
-                    </div>
-                    <div class="col-xs-12">
-                        <label><strong>Notificar:</strong></label>
-                        <div class="form-inline">
-                            <select id="actionNotify" class="form-control">
-                                <option value="">Selecione...</option>
-                                <option value="1">Isabella Rosa (isa)</option>
-                                <option value="41">Bruno Sousa (bru)</option>
+                        <div class="col-xs-12">
+                            <div id="divEvidencias" class="row"></div>
+                        </div>
+                        <hr />
+
+                        <div class="col-xs-12">
+                            <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
+                        </div>
+                        <div class="col-xs-12">
+                            <div id="actionsEvidencies" hidden="hidden">
+                                <p>Evidencias da Ação Concluida</p>
+                                <button class="fa fa-file btn btn-default" aria-hidden="true"></button>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 hide vereagir">
+                            <label><strong>Data da conclusão:</strong></label>
+                            <input id="actionConclusionDate" name="DataConclusao" type="date" min="2021-05-19" class="form-control">
+                        </div>
+                        <div class="col-xs-4 hide vereagir">
+                            <label><strong>Hora da conclusão:</strong></label>
+                            <input id="actionConclusionHour" name="HoraConclusao" type="time" class="form-control">
+                        </div>
+                        <div class="col-xs-4">
+                            <label><strong>Referencia:</strong></label>
+                            <input id="actionReference" name="Referencia" type="text" class="form-control">
+                        </div>
+                        <div class="col-xs-4">
+                            <label><strong>Responsavel:</strong></label>
+                            <select id="selectResponsavel" name="Responsavel" class="form-control">
                             </select>
-                            <button onclick="addUserNotify(0);" class="btn btn-primary">+</button>
+                        </div>
+                        <div class="col-xs-4 divActionPriority">
+                            <label><strong>Prioridade:</strong></label>
+                            <select id="selectPrioridade" name="Prioridade" class="form-control">
+                            </select>
+                        </div>
+                        <div class="col-xs-12">
+                            <label><strong>Notificar:</strong></label>
+                            <div class="form-inline">
+                                <select id="selectNotificar" class="form-control">
+                                </select>
+                                <button onclick="addUserNotify(0);" class="btn btn-primary">+</button>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <table id="tableNotificarAcao" class="table table-striped" style="font-size:14px;">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Nome</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div class="col-xs-12">
-                        <table id="tableActionNotify" class="table table-striped" style="font-size:14px;">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nome</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
-                <button type="button" onclick="SaveHeaderField()" class="btn btn-primary non-printable">@Resources.Resource.save</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
+                    <button type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -160,9 +157,9 @@
             openLoader("Carregando Dados");
 
             $.ajax({
-                data: JSON.stringify(filtro),
+                //data: JSON.stringify(filtro),
                 type: 'GET',
-                url:  '@Html.Raw(Url.Action("Get", "api/AcaoApi"))',
+                url:  '@Html.Raw(Url.Action("", "api/AcaoApi"))',
                 contentType: "application/json",
                 success: function (dados) {
                     if (dados && dados.length > 0) {
@@ -246,13 +243,15 @@
         }
 
         function abrirEditar(id) {
-            const url = '@Url.Action("Edit", "api/AcaoApi")';
+            openLoader("...");
+
+            const url = '@Url.Action("", "api/AcaoApi")';
             //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
             //Pegar as informações e mapear para um objeto
             //Com as propriedades, apresente na tela
-                $.ajax({
-                data: JSON.stringify(id),
-                type: 'get',
+            $.ajax({
+                //data: JSON.stringify(id),
+                type: 'GET',
                 url: `${url}/${id}`,
                 contentType: "application/json",
                 success: function (dados) {
@@ -264,7 +263,7 @@
                     //} else {
                     //    //Não há valores
                     //}
-                    //closeLoader();
+                    closeLoader();
                 },
                 error: function (e) {
                     console.error(e);
@@ -286,6 +285,25 @@
         }
 
         function preencherModal(dados) {
+
+            if (dados.ListaResponsavel) {
+                var html = `<option value="">Selecione...</option>`;
+                for (var i = 0; i < dados.ListaResponsavel.length; i++) {
+                    var responsavel = dados.ListaResponsavel[i];
+                    html += `<option value="${responsavel["Id"]}">${responsavel["Nome"]}</option>`;
+                }
+                $('#selectResponsavel').html(html);
+            }
+
+            if (dados.ListaPrioridade) {
+                var html = `<option value="">Selecione...</option>`;
+                for (var i = 0; i < dados.ListaPrioridade.length; i++) {
+                    var prioridade = dados.ListaPrioridade[i];
+                    html += `<option value="${prioridade["Id"]}">${prioridade["Nome"]}</option>`;
+                }
+                $('#selectPrioridade').html(html);
+            }
+
             $("#dataEmissao").text(dados.DataEmissao);
             $("#horaEmissao").text(dados.HoraEmissao);
             $("#usuarioEmissor").text(dados.Responsavel_Name);
@@ -296,6 +314,56 @@
             $("#actionParLevel1_Id").text(dados.ParLevel1_Name);
             $("#actionParLevel2_Id").text(dados.ParLevel2_Name);
             $("#actionParLevel3_Id").text(dados.ParLevel3_Name);
+            $("#selectPrioridade").val(dados.Prioridade);
+            $("#selectResponsavel").val(dados.Responsavel);
+
+            $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
+            $("#txtAcaoText").text(dados.AcaoText);
+
+            if (dados.ListaEvidencia) {
+                var html = "";
+                for (var i = 0; i < dados.ListaEvidencia.length; i++) {
+                    var evidencia = dados.ListaEvidencia[i];
+                    html += `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
+                }
+                $('#divEvidencias').html(html);
+            }
+
+            if (dados.ListaNotificarAcao) {
+                var html = "";
+                for (var i = 0; i < dados.ListaNotificarAcao.length; i++) {
+                    var notificarAcao = dados.ListaNotificarAcao[i];
+                    html += `<tr><td>${notificarAcao["Id"]}</td><td>${notificarAcao["Nome"]}</td><td><button class="btn btn-sm btn-danger">X</button></td></tr>`;
+                }
+                $('#tableNotificarAcao tbody').html(html);
+            }
+
+            if (dados.ListaNotificar) {
+                var html = `<option value="">Selecione...</option>`;
+                for (var i = 0; i < dados.ListaNotificar.length; i++) {
+                    var notificar = dados.ListaNotificar[i];
+                    html += `<option value="${notificar["Id"]}">${notificar["Nome"]}</option>`;
+                }
+                $('#selectNotificar').html(html);
+            }
+        }
+
+        function enviarFormularioEditarAcao(event) {
+            event.preventDefault();
+            var form = $(event.currentTarget).serializeObject();
+
+            form["ListaNotificarAcao"] = [];
+            var linhasNotificarAcao = $('#tableNotificarAcao tbody tr');
+            for (var i = 0; i < linhasNotificarAcao.length; i++) {
+                var colunas = $(linhasNotificarAcao[i]).find('td');
+                var obj = {
+                    Id: $(colunas[0]).text(),
+                    Nome: $(colunas[1]).text()
+                };
+                form["ListaNotificarAcao"].push(obj);
+            }
+
+            console.table(form);
         }
 
         function montarTabela(dados, colunas) {

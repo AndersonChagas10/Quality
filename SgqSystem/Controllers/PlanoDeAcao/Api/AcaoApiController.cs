@@ -96,9 +96,9 @@ SELECT
             return Ok();
         }*/
 
-        [Route("Edit/{id}")]
+        [Route("Get/{id}")]
         [HttpGet]
-        public AcaoViewModel Edit(int id)
+        public AcaoFormViewModel Get(int id)
         {
             var query = $@"
 SELECT
@@ -151,7 +151,7 @@ WHERE PAC.Id = {id}
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
-                var lista = factory.SearchQuery<AcaoViewModel>(query).FirstOrDefault();
+                var lista = factory.SearchQuery<AcaoFormViewModel>(query).FirstOrDefault();
                 return lista;
             }
         }
@@ -187,6 +187,73 @@ WHERE PAC.Id = {id}
             public string Status { get; set; }
             public bool IsActive { get; set; }
             public string Responsavel_Name { get; set; }
+        }
+        
+        public class AcaoFormViewModel
+        {
+            public int Id { get; set; }
+            public int ParLevel1_Id { get; set; }
+            public string ParLevel1_Name { get; set; }
+            public int ParLevel2_Id { get; set; }
+            public string ParLevel2_Name { get; set; }
+            public int ParLevel3_Id { get; set; }
+            public string ParLevel3_Name { get; set; }
+            public int ParCompany_Id { get; set; }
+            public string ParCompany_Name { get; set; }
+            public int ParDepartment_Id { get; set; }
+            public string ParDepartment_Name { get; set; }
+            public int ParDepartmentParent_Id { get; set; }
+            public int ParCargo_Id { get; set; }
+            public string ParCargo_Name { get; set; }
+            public string Acao_Naoconformidade { get; set; }
+            public string AcaoText { get; set; }
+            public string DataEmissao { get; set; }
+            public string DataConclusao { get; set; }
+            public string HoraEmissao { get; set; }
+            public string HoraConclusao { get; set; }
+            public string Referencia { get; set; }
+            public string Responsavel { get; set; }
+            public string Notificar { get; set; }
+            public string EvidenciaNaoConformidade { get; set; }
+            public string EvidenciaAcaoConcluida { get; set; }
+            public string Prioridade { get; set; }
+            public string Status { get; set; }
+            public bool IsActive { get; set; }
+            public string Responsavel_Name { get; set; }
+
+            public string Observacao { get; set; }
+            public string Acao { get; set; }
+            public List<NotificarViewModel> ListaEvidencia { get; set; } = new List<NotificarViewModel>()
+            {
+                new NotificarViewModel{ Id = 1, Nome = "Pedro"},
+                new NotificarViewModel{ Id = 2, Nome = "Leonardo"},
+            };
+            public List<NotificarViewModel> ListaResponsavel { get; set; } = new List<NotificarViewModel>()
+            {
+                new NotificarViewModel{ Id = 1, Nome = "Pedro"},
+                new NotificarViewModel{ Id = 2, Nome = "Leonardo"},
+            };
+            public List<NotificarViewModel> ListaPrioridade { get; set; } = new List<NotificarViewModel>()
+            {
+                new NotificarViewModel{ Id = 1, Nome = "Pedro"},
+                new NotificarViewModel{ Id = 2, Nome = "Leonardo"},
+            };
+            public List<NotificarViewModel> ListaNotificar { get; set; } = new List<NotificarViewModel>()
+            {
+                new NotificarViewModel{ Id = 1, Nome = "Pedro"},
+                new NotificarViewModel{ Id = 2, Nome = "Leonardo"},
+            };
+            public List<NotificarViewModel> ListaNotificarAcao { get; set; } = new List<NotificarViewModel>()
+            {
+                new NotificarViewModel{ Id = 1, Nome = "Pedro"},
+                new NotificarViewModel{ Id = 2, Nome = "Leonardo"},
+            };
+        }
+
+        public class NotificarViewModel
+        {
+            public int Id { get; set; }
+            public string Nome { get; set; }
         }
     }
 }
