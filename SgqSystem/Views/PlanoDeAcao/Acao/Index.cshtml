@@ -19,30 +19,30 @@
                 <div class="row">
                     <div class="col-xs-4">
                         <strong>Data Emissão:</strong>
-                        <label id="dataEmissao">19/05/2021</label>
+                        <label id="dataEmissao"></label>
                     </div>
                     <div class="col-xs-4">
                         <strong>Hora Emissão:</strong>
-                        <label id="horaEmissao">19/05/2021</label>
+                        <label id="horaEmissao"></label>
                     </div>
                     <div class="col-xs-4">
                         <strong>Emissor:</strong>
-                        <label id="usuarioEmissor">isabella-grt</label>
+                        <label id="usuarioEmissor"></label>
                     </div>
                     <div class="col-sm-12">
-                        <strong>Unidade:</strong><label id="actionParCompany_Id">ITAJAI - ADM (02.914.460/0003-12)</label>
+                        <strong>Unidade:</strong><label id="actionParCompany_Id"></label>
                         <br />
-                        <strong>Centro de Custo:</strong><label id="actionParDepartment_Id">Coleta Para Unidade</label>
+                        <strong>Centro de Custo:</strong><label id="actionParDepartment_Id"></label>
                         <br />
-                        <strong>Seção/Atividade:</strong><label id="actionParDepartmentParent_Id">Coleta Para Unidade</label>
+                        <strong>Seção/Atividade:</strong><label id="actionParDepartmentParent_Id"></label>
                         <br />
-                        <strong>Item/Cargo:</strong><label id="actionParCargo_Id">Coleta Para Unidade</label>
+                        <strong>Item/Cargo:</strong><label id="actionParCargo_Id"></label>
                         <br />
-                        <strong>Indicador/Origem:</strong><label id="actionParLevel1_Id">1. Mão de Obra (Check List Gestão)</label>
+                        <strong>Indicador/Origem:</strong><label id="actionParLevel1_Id"></label>
                         <br />
-                        <strong>Monitoramento:</strong><label id="actionParLevel2_Id">Monitoramento: 1.1 Auditoria Comportamental</label>
+                        <strong>Monitoramento:</strong><label id="actionParLevel2_Id"></label>
                         <br />
-                        <strong>Desvio/Tarefa:</strong><label id="actionParLevel3_Id">Os Gestores (Gerente, Coordenadores e Supervisores) e SESMT realizam Auditoria Comportamental semanalmente conforme PROC-RH-SESMT-0001 Auditoria Comportamental?</label>
+                        <strong>Desvio/Tarefa:</strong><label id="actionParLevel3_Id"></label>
                     </div>
                     <div class="col-sm-12">
                         <div class="form-group">
@@ -56,7 +56,7 @@
                             <textarea id="txtAction" class="form-control" style="resize: none; height: 100px;"></textarea>
                         </div>
                     </div>
-                    <hr />
+                    <hr /> 
                     <div class="col-xs-12">
                         <strong>Evidencias de Não conformidade</strong>
                         <button class="fa fa-file btn btn-default" aria-hidden="true"></button>
@@ -230,6 +230,7 @@
                 { "title": "HoraConclusao", "mData": "HoraConclusao", "visible": true },
                 { "title": "Referencia", "mData": "Referencia", "visible": true },
                 { "title": "Responsavel", "mData": "Responsavel", "visible": true },
+                { "title": "Nome do Responsavel", "mData": "Responsavel_Name", "visible": true },
                 { "title": "Notificar", "mData": "Notificar", "visible": true },
                 { "title": "EvidenciaNaoConformidade", "mData": "EvidenciaNaoConformidade", "visible": true },
                 { "title": "EvidenciaAcaoConcluida", "mData": "EvidenciaAcaoConcluida", "visible": true },
@@ -245,15 +246,56 @@
         }
 
         function abrirEditar(id) {
+            const url = '@Url.Action("Edit", "api/AcaoApi")';
             //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
             //Pegar as informações e mapear para um objeto
             //Com as propriedades, apresente na tela
+                $.ajax({
+                data: JSON.stringify(id),
+                type: 'get',
+                url: `${url}/${id}`,
+                contentType: "application/json",
+                success: function (dados) {
+                    preencherModal(dados);
+
+
+                    //if (dados && dados.length > 0) {
+                    //    carregarTabela(dados);
+                    //} else {
+                    //    //Não há valores
+                    //}
+                    //closeLoader();
+                },
+                error: function (e) {
+                    console.error(e);
+                    closeLoader();
+                }
+            });
+
+
             //Possibilitar Edição
             //Salvar
             //Fazer uma requisição, mapeando os dados da tela e enviar como um objeto
             //Localizar a pessoa como ID e alterar os dados que estão vindo da tela, possiveis de modificação.
             //Retorna OK
+
+            //pendencias:
+            //confirmar se a função preencher dados está pegando os dados corretos para preencher o HTML
+
             $("#modalEditar").modal();
+        }
+
+        function preencherModal(dados) {
+            $("#dataEmissao").text(dados.DataEmissao);
+            $("#horaEmissao").text(dados.HoraEmissao);
+            $("#usuarioEmissor").text(dados.Responsavel_Name);
+            $("#actionParCompany_Id").text(dados.ParCompany_Name);
+            $("#actionParDepartment_Id").text(dados.ParDepartment_Name);
+            $("#actionParDepartmentParent_Id").text(dados.ParDepartment_Name);
+            $("#actionParCargo_Id").text(dados.ParCargo_Name);
+            $("#actionParLevel1_Id").text(dados.ParLevel1_Name);
+            $("#actionParLevel2_Id").text(dados.ParLevel2_Name);
+            $("#actionParLevel3_Id").text(dados.ParLevel3_Name);
         }
 
         function montarTabela(dados, colunas) {
