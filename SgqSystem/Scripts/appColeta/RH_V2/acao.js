@@ -99,6 +99,50 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         usersNotfy += '<tr><td>' + auditor_Id + '</td><td>' + name + '</td><td><button class="btn btn-danger btn-sm" onclick="removeUserNotify(' + index + ',' + auditor_Id + ')">X</button></td></tr>';
     });
 
+
+    var btnPhoto = "";
+    var btnFile = "";
+
+    if (currentAction.EvidenciaNaoConformidade.length < 2) {
+        if (device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows") {
+            btnPhoto = '<button class="fa fa-camera btn btn-default" onclick="tirarFotoAcao(' + index + ');" aria-hidden="true"></button>';
+        }
+
+        if (device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows") {
+            btnFile = '<button class="fa fa-file btn btn-default" onclick="upoadFotoAcaoByLibrary(' + index + ')" aria-hidden="true"></button>';
+        }
+    }
+
+    var btnPhotoConcluida = "";
+    var btnFileConcluida = "";
+
+    if (currentAction.EvidenciaAcaoConcluida.length < 2) {
+        if (device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows") {
+            btnPhotoConcluida = '<button class="fa fa-camera btn btn-default" onclick="tirarFotoAcaoConcluida(' + index + ');" aria-hidden="true"></button>';
+        }
+
+        if (device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows") {
+            btnFileConcluida = '<button class="fa fa-file btn btn-default" onclick="upoadFotoAcaoConcluidaByLibrary(' + index + ')" aria-hidden="true"></button>';
+        }
+    }
+
+    var imagensNC = "";
+    var imagensEvidenciaConcluida = "";
+
+    currentAction.EvidenciaNaoConformidade.forEach(function (imagem, i) {
+        imagensNC += '<div class="col-xs-6 col-md-4">' +
+            '<img src="data:image/jpeg;base64,' + imagem + '" class="img-responsive" style="width:100%" alt="Responsive image">' +
+            '<button class="btn btn-danger btn-sm form-control" onclick="removePhotoAcao(' + index + ',' + i + ')">Excluir</button>' +
+            '</div>';
+    });
+    
+    currentAction.EvidenciaAcaoConcluida.forEach(function (imagem, i) {
+        imagensEvidenciaConcluida += '<div class="col-xs-6 col-md-4">' +
+            '<img src="data:image/jpeg;base64,' + imagem + '" class="img-responsive" style="width:100%" alt="Responsive image">' +
+            '<button class="btn btn-danger btn-sm form-control" onclick="removePhotoAcaoConcluida(' + index + ',' + i + ')">Excluir</button>' +
+            '</div>';
+    });
+    
     var htmlAcao = '<div class="container-fluid">' +
         '<div id="bodyModalAcao" style="display:block;">' +
         '<h3 style="font-weight:bold;">Criar Ação</h3>' +
@@ -132,17 +176,20 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '   <div class="form-group row">' +
         '       <div class="col-xs-12">' +
         '           <p>Evidencias de Não conformidade </p>' +
-        '           <div></div>' +
-        '           <button class="fa fa-camera btn btn-default" aria-hidden="true"></button>' +
-        '           <button class="fa fa-file btn btn-default" aria-hidden="true"></button>' +
+        '           ' + btnPhoto +
+        '           ' + btnFile +
+        '           <br><br> ' +
+        '           <div class="col-xs-12" style="display:table !important;">' + imagensNC + '</div>' +
         '       </div>' +
         '       <hr>' +
         '       <div class="col-xs-12">' +
-        '           <p>Ver e Agir <input type="checkbox" id="checkVerAgir"></p>' +
+        '           <p>Ver e Agir <input type="checkbox" onclick="createOrUpdateObj(' + index + ')" id="checkVerAgir"></p>' +
         '           <div id="actionsEvidencies">' +
         '               <p>Evidencias da Ação Concluida</p>' +
-        '               <button class="fa fa-camera btn btn-default" aria-hidden="true"></button>' +
-        '               <button class="fa fa-file btn btn-default" aria-hidden="true"></button>' +
+        '               ' + btnPhotoConcluida +
+        '               ' + btnFileConcluida +
+        '               <br><br> ' +
+        '               <div class="col-xs-12" style="display:table; !important">' + imagensEvidenciaConcluida + '</div>' +
         '           </div>' +
         '       </div>' +
         '       <hr>' +
@@ -150,25 +197,25 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '</div>' +
         '<div class="form-group row">' +
         '   <div class="col-xs-4 hide vereagir">' +
-        '       <label>Data da conclusão:</label>' +
+        '       <h4>Data da conclusão:</h4>' +
         '       <input id="actionConclusionDate" type="date" min="' + date.split('T')[0] + '" class="form-control">' +
         '   </div>' +
         '   <div class="col-xs-4 hide vereagir">' +
-        '       <label>Hora da conclusão:</label>' +
+        '       <h4>Hora da conclusão:</h4>' +
         '       <input id="actionConclusionHour" type="time" class="form-control">' +
         '   </div>' +
         '   <div class="col-xs-4">' +
-        '       <label>referencia:</label>' +
+        '       <h4>Referencia:</h4>' +
         '       <input id="actionReference" type="text" class="form-control">' +
         '   </div>' +
         '   <div class="col-xs-4">' +
-        '       <label>Responsavel:</label>' +
+        '       <h4>Responsavel:</h4>' +
         '       <select id="actionResponsable" class="form-control">' +
         '           ' + options +
         '       </select>' +
         '   </div>' +
         '   <div class="col-xs-4 divActionPriority">' +
-        '       <label>Prioridade:</label>' +
+        '       <h4>Prioridade:</h4>' +
         '       <select id="actionPriority" class="form-control">' +
         '           <option value="">Selecione...</option>' +
         '           <option value="1">Baixa</option>' +
@@ -179,7 +226,7 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '</div>' +
         '<div class="form-group row">' +
         '   <div class="col-xs-12 col-md-6">' +
-        '       <label>Notificar:</label>' + 
+        '       <h4>Notificar:</h4>' + 
         '       <div class="form-inline">' +
         '           <div class="form-group" style="width:60%">' +
         '               <select id="actionNotify" class="form-control">' +
@@ -201,11 +248,11 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '</div>' +
         '<hr>' +
         '<div class="row">' +
-        '   <div class="col-xs-6">' +
+        '   <div class="col-xs-8">' +
         '   ' + btnBack +
         '   ' + btnNext +
         '   </div>' +
-        '   <div class="col-xs-6">' +
+        '   <div class="col-xs-4">' +
         '       <button class="btn btn-success pull-right" style="margin-right: 10px;" onclick="saveAction(' + index + ');">Salvar esta ação</button>' +
         '   </div>' +
         '</div>' +
@@ -266,6 +313,8 @@ function setListaAcoesObj(index, currentObjAction) {
             DataEmissao: "",
             HoraEmissao: "",
             Prioridade: "",
+            EvidenciaNaoConformidade: [],
+            EvidenciaAcaoConcluida: [],
             VerEAgir: false,
             Emissor: currentLogin.Id
         };
@@ -291,12 +340,16 @@ function setListaAcoesObj(index, currentObjAction) {
 
 function setCurrentActionValues(currentAction) {
 
+    if (!currentAction.VerEAgir)
+        currentAction.EvidenciaAcaoConcluida = [];
+
     $("#txtActionNotConformity").val(currentAction.Acao_Naoconformidade);
     $("#txtAction").val(currentAction.AcaoText);
     $("#actionConclusionDate").val(currentAction.DataConclusao);
     $("#actionConclusionHour").val(currentAction.HoraConclusao);
     $("#actionReference").val(currentAction.Referencia);
     $("#actionResponsable").val(currentAction.Responsavel);
+    $("#actionPriority").val(currentAction.Prioridade);
     $('#checkVerAgir').prop('checked', currentAction.VerEAgir).trigger('change');
 
 }
@@ -366,6 +419,60 @@ function removeUserNotify(index, user_Id) {
     createOrUpdateObj(index);
     listaObjAcoes[index].Notificar.splice(listaObjAcoes[index].Notificar.indexOf(user_Id), 1);
     montaCorpoFormularioAcao(listaObjAcoes, index);
+}
+
+var indexAcaoFoto = 0;
+function tirarFotoAcao(index) {
+    indexAcaoFoto = index;
+    cameraOptions.sourceType = Camera.PictureSourceType.CAMERA;
+    abrirCamera(addPhotoAcao, cameraError, cameraOptions);
+}
+
+function tirarFotoAcaoConcluida(index) {
+    indexAcaoFoto = index;
+    cameraOptions.sourceType = Camera.PictureSourceType.CAMERA;
+    abrirCamera(addPhotoAcaoConcluida, cameraError, cameraOptions);
+}
+
+function upoadFotoAcaoByLibrary(index) {
+    cameraOptions.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
+    indexAcaoFoto = index;
+    abrirCamera(addPhotoAcao, cameraError, cameraOptions);
+
+}
+
+function upoadFotoAcaoConcluidaByLibrary(index) {
+    cameraOptions.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
+    indexAcaoFoto = index;
+    abrirCamera(addPhotoAcaoConcluida, cameraError, cameraOptions);
+}
+
+function addPhotoAcao(imageData) {
+    listaObjAcoes[indexAcaoFoto].EvidenciaNaoConformidade.push(imageData);
+    montaCorpoFormularioAcao(listaObjAcoes, indexAcaoFoto);
+}
+
+function addPhotoAcaoConcluida(imageData) {
+    listaObjAcoes[indexAcaoFoto].EvidenciaAcaoConcluida.push(imageData);
+    montaCorpoFormularioAcao(listaObjAcoes, indexAcaoFoto);
+}
+
+function removePhotoAcao(index, indexAcaoFoto) {
+    navigator.notification.confirm("Deseja realmente excluir a imagem?", function (number) {
+        if (number == 1) {
+            listaObjAcoes[index].EvidenciaNaoConformidade.splice(indexAcaoFoto, 1);
+            montaCorpoFormularioAcao(listaObjAcoes, index);
+        }
+    }, "Excluir ?", ["Sim", "Não"]);
+}
+
+function removePhotoAcaoConcluida(index, indexAcaoFoto) {
+    navigator.notification.confirm("Deseja realmente excluir a imagem?", function (number) {
+        if (number == 1) {
+            listaObjAcoes[index].EvidenciaAcaoConcluida.splice(indexAcaoFoto, 1);
+            montaCorpoFormularioAcao(listaObjAcoes, index);
+        }
+    }, "Excluir ?", ["Sim", "Não"]);
 }
 
 $('body')

@@ -33,6 +33,8 @@
   <ItemGroup>
     <Compile Include="AcaoRH\Acao.cs" />
     <Compile Include="AcaoRH\AcaoXNotificarAcao.cs" />
+    <Compile Include="AcaoRH\EvidenciaAcaoConcluida.cs" />
+    <Compile Include="AcaoRH\EvidenciaNaoConformidade.cs" />
     <Compile Include="AppScript.cs" />
     <Compile Include="AppViewModel\ComponenteGenericoValoresViewModel.cs" />
     <Compile Include="AppViewModel\ComponenteGenericoValorViewModel.cs" />
