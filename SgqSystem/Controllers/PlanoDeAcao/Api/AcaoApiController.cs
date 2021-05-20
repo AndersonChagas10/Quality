@@ -65,6 +65,34 @@ SELECT
             }
         }
 
+        /*[Route("Post")]
+        [HttpPost]
+        public IHttpActionResult SetAction(List<Acao> listaObjAcoes)
+        {
+            AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
+
+            try
+            {
+                foreach (var acao in listaObjAcoes)
+                {
+                    appColetaBusiness.SaveAction(acao);
+
+                    foreach (var usuarioNotificado in acao.Notificar)
+                    {
+                        appColetaBusiness.SaveAcaoXNotificarAcao(new AcaoXNotificarAcao() { Acao_Id = acao.Id, UserSgq_Id = usuarioNotificado });
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+
+            return Ok();
+        }*/
+
         public class AcaoViewModel
         {
             public int Id { get; set; }

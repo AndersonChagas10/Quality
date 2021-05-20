@@ -1,11 +1,137 @@
 ﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
 @{
     ViewBag.Title = "Listagem de ações";
-
-
 }
 
+<style>
+    table#tabelaDeResultados tr:hover {
+        background: #ff6a0099 !important;
+    }
+</style>
 
+<div class="modal fade" id="modalEditar" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
+                <h3 style="font-weight:bold;">Criar Ação</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <strong>Data Emissão:</strong>
+                        <label id="dataEmissao">19/05/2021</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <strong>Hora Emissão:</strong>
+                        <label id="horaEmissao">19/05/2021</label>
+                    </div>
+                    <div class="col-xs-4">
+                        <strong>Emissor:</strong>
+                        <label id="usuarioEmissor">isabella-grt</label>
+                    </div>
+                    <div class="col-sm-12">
+                        <strong>Unidade:</strong><label id="actionParCompany_Id">ITAJAI - ADM (02.914.460/0003-12)</label>
+                        <br />
+                        <strong>Centro de Custo:</strong><label id="actionParDepartment_Id">Coleta Para Unidade</label>
+                        <br />
+                        <strong>Seção/Atividade:</strong><label id="actionParDepartmentParent_Id">Coleta Para Unidade</label>
+                        <br />
+                        <strong>Item/Cargo:</strong><label id="actionParCargo_Id">Coleta Para Unidade</label>
+                        <br />
+                        <strong>Indicador/Origem:</strong><label id="actionParLevel1_Id">1. Mão de Obra (Check List Gestão)</label>
+                        <br />
+                        <strong>Monitoramento:</strong><label id="actionParLevel2_Id">Monitoramento: 1.1 Auditoria Comportamental</label>
+                        <br />
+                        <strong>Desvio/Tarefa:</strong><label id="actionParLevel3_Id">Os Gestores (Gerente, Coordenadores e Supervisores) e SESMT realizam Auditoria Comportamental semanalmente conforme PROC-RH-SESMT-0001 Auditoria Comportamental?</label>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="txtActionNotConformity"><strong>Não Conformidade/Ocorrencia</strong></label>
+                            <textarea id="txtActionNotConformity" class="form-control" style="resize: none; height: 100px;"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="txtAction"><strong>Ação</strong></label>
+                            <textarea id="txtAction" class="form-control" style="resize: none; height: 100px;"></textarea>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="col-xs-12">
+                        <strong>Evidencias de Não conformidade</strong>
+                        <button class="fa fa-file btn btn-default" aria-hidden="true"></button>
+                    </div>
+                    <hr />
+                    
+                    <div class="col-xs-12">
+                        <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir"/>
+                    </div>
+                    <div class="col-xs-12">
+                        <div id="actionsEvidencies" hidden="hidden">
+                            <p>Evidencias da Ação Concluida</p>
+                            <button class="fa fa-file btn btn-default" aria-hidden="true"></button>
+                        </div>
+                    </div>
+                    <div class="col-xs-4 hide vereagir">
+                        <label><strong>Data da conclusão:</strong></label>
+                        <input id="actionConclusionDate" type="date" min="2021-05-19" class="form-control">
+                    </div>
+                    <div class="col-xs-4 hide vereagir">
+                        <label><strong>Hora da conclusão:</strong></label>
+                        <input id="actionConclusionHour" type="time" class="form-control">
+                    </div>
+                    <div class="col-xs-4">
+                        <label><strong>Referencia:</strong></label>
+                        <input id="actionReference" type="text" class="form-control">
+                    </div>
+                    <div class="col-xs-4">
+                        <label><strong>Responsavel:</strong></label>
+                        <select id="actionResponsable" class="form-control">
+                            <option value="">Selecione...</option>
+                            <option value="1">Isabella Rosa (isa)</option>
+                            <option value="41">Bruno Sousa (bru)</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-4 divActionPriority">
+                        <label><strong>Prioridade:</strong></label>
+                        <select id="actionPriority" class="form-control">
+                            <option value="">Selecione...</option>
+                            <option value="1">Baixa</option>
+                            <option value="2">Média</option>
+                            <option value="3">Alta</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12">
+                        <label><strong>Notificar:</strong></label>
+                        <div class="form-inline">
+                            <select id="actionNotify" class="form-control">
+                                <option value="">Selecione...</option>
+                                <option value="1">Isabella Rosa (isa)</option>
+                                <option value="41">Bruno Sousa (bru)</option>
+                            </select>
+                            <button onclick="addUserNotify(0);" class="btn btn-primary">+</button>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <table id="tableActionNotify" class="table table-striped" style="font-size:14px;">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Nome</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
+                <button type="button" onclick="SaveHeaderField()" class="btn btn-primary non-printable">@Resources.Resource.save</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="page-content-wrapper">
     <div class="page-content">
@@ -19,17 +145,20 @@
 
         $(document).ready(function () {
 
+            openLoader("Aguarde");
             closeLeftSidebar();
 
             setTimeout(() => {
                 var filtro = {};
                 buscarDados(filtro);
+                closeLoader();
             }, 2000);
 
         });
 
         function buscarDados(filtro) {
-            openLoader("...");
+            openLoader("Carregando Dados");
+
             $.ajax({
                 data: JSON.stringify(filtro),
                 type: 'GET',
@@ -59,18 +188,33 @@
 
         function montarColunasDaTabela() {
             var colunas = [
+                {
+                    "title": "", "mData": null, "visible": true, mRender: function (data, type, full, cell) {
+                        var id = full["Id"];
+                        return `<button class="btn btn-sm btn-info" onclick="abrirEditar(${id})">Editar</button>`;
+                    }
+                },
                 { "title": "Id", "mData": "Id", "visible": true },
                 { "title": "ParLevel1_Id", "mData": "ParLevel1_Id", "visible": false },
                 {
-                    "title": "ParLevel1_Name", "mData": "ParLevel1_Name", "visible": true, mRender: function (data, type, full, line) {
-                        var row = line.row;
-                        return `<label onclick="editarInput(${row},'${data}')">${data}</label>`;
+                    "title": "ParLevel1_Name", "mData": "ParLevel1_Name", "visible": true,
+                    mRender: function (data, type, full, cell) {
+                        return montarCampo(data);
                     }
                 },
                 { "title": "ParLevel2_Id", "mData": "ParLevel2_Id", "visible": false },
-                { "title": "ParLevel2_Name", "mData": "ParLevel2_Name", "visible": true },
+                {
+                    "title": "ParLevel2_Name", "mData": "ParLevel2_Name", "visible": true,
+                    mRender: function (data, type, full, cell) {
+                        return montarCampo(data);
+                    } },
                 { "title": "ParLevel3_Id", "mData": "ParLevel3_Id", "visible": false },
-                { "title": "ParLevel3_Name", "mData": "ParLevel3_Name", "visible": true },
+                {
+                    "title": "ParLevel3_Name", "mData": "ParLevel3_Name", "visible": true,
+                    mRender: function (data, type, full, cell) {
+                        return montarCampo(data);
+                    }
+                },
                 { "title": "ParCompany_Id", "mData": "ParCompany_Id", "visible": false },
                 { "title": "ParCompany_Name", "mData": "ParCompany_Name", "visible": true },
                 { "title": "ParDepartment_Id", "mData": "ParDepartment_Id", "visible": false },
@@ -96,8 +240,37 @@
             return colunas;
         }
 
-        function editarInput(row,valor) {
+        function montarCampo(data) {
+            return `<label style="word-break: break-word;max-width: 200px;min-width: 200px;white-space: break-spaces;">${data}</label>`;
+        }
 
+        function abrirEditar(id) {
+            //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
+            //Pegar as informações e mapear para um objeto
+            //Com as propriedades, apresente na tela
+            //Possibilitar Edição
+            //Salvar
+            //Fazer uma requisição, mapeando os dados da tela e enviar como um objeto
+            //Localizar a pessoa como ID e alterar os dados que estão vindo da tela, possiveis de modificação.
+            //Retorna OK
+            $("#modalEditar").modal();
+        }
+
+        function montarTabela(dados, colunas) {
+            var table = datatableGRT.Inicializar({
+                idTabela: "tabelaDeResultados",
+                listaDeDados: dados,
+                colunaDosDados: colunas,
+                numeroLinhasNaTabela: 25,
+                aplicarResponsividade: true,
+                tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
+                loadingRecords: true,
+                destroy: true,
+                info: true,
+                initComplete: () => { },
+                createdRow: function (row, data, index) {
+                }
+            });
         }
 
         function montarColunasDaTabelaDinamico(dados) {
@@ -116,23 +289,6 @@
                 colunas.push(coluna);
             }
             return colunas;
-        }
-
-        function montarTabela(dados, colunas) {
-            var table = datatableGRT.Inicializar({
-                idTabela: "tabelaDeResultados",
-                listaDeDados: dados,
-                colunaDosDados: colunas,
-                numeroLinhasNaTabela: 25,
-                aplicarResponsividade: true,
-                tamanhosDoMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "-"]],
-                loadingRecords: true,
-                destroy: true,
-                info: true,
-                initComplete: () => { },
-                createdRow: function (row, data, index) {
-                }
-            });
         }
 
     </script>
