@@ -328,7 +328,7 @@ function setListaAcoesObj(index, currentObjAction) {
         listaObjAcoes[index].HoraConclusao = $("#actionConclusionHour").val();
         listaObjAcoes[index].Referencia = $('#actionReference').val();
         listaObjAcoes[index].Responsavel = $('#actionResponsable :selected').val();
-        listaObjAcoes[index].DataEmissao = currentCollectDate.toLocaleDateString();
+        listaObjAcoes[index].DataEmissao = currentCollectDate.toJSON();
         listaObjAcoes[index].HoraEmissao = currentCollectDate.toLocaleTimeString();
         listaObjAcoes[index].Emissor = currentLogin.Id;
         listaObjAcoes[index].Prioridade = $('#actionPriority :selected').val();

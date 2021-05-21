@@ -414,30 +414,6 @@ WHERE 1 = 1
 
                 SELECT CAST(scope_identity() AS int)";
 
-                string dataEmissao = null;
-                if (!String.IsNullOrEmpty(item.DataEmissao.ToString()))
-                {
-                    dataEmissao = DateTime.Parse(item.DataEmissao.ToString()).ToString("yyyy-MM-dd");
-                }
-
-                string horaEmissao = null;
-                if (!String.IsNullOrEmpty(item.HoraEmissao))
-                {
-                    horaEmissao = DateTime.Parse(item.HoraEmissao).ToString("HH:mm");
-                }
-
-                string dataConclusao = null;
-                if (!String.IsNullOrEmpty(item.DataConclusao.ToString()))
-                {
-                    dataConclusao = DateTime.Parse(item.DataConclusao.ToString()).ToString("yyyy-MM-dd");
-                }
-
-                string horaConclusao = null;
-                if (!String.IsNullOrEmpty(item.HoraConclusao))
-                {
-                    horaConclusao = DateTime.Parse(item.HoraConclusao).ToString("HH:mm");
-                }
-
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
@@ -452,16 +428,16 @@ WHERE 1 = 1
                         UtilSqlCommand.AddParameterNullable(cmd, "@ParCargo_Id", item.ParCargo_Id);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Naoconformidade", item.Acao_Naoconformidade);
                         UtilSqlCommand.AddParameterNullable(cmd, "@AcaoText", item.AcaoText);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@DataConclusao", dataConclusao);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@HoraConclusao", horaConclusao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@DataConclusao", item.DataConclusao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@HoraConclusao", item.HoraConclusao);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Referencia", item.Referencia);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Responsavel", item.Responsavel);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@DataEmissao", dataEmissao);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@HoraEmissao", horaEmissao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@DataEmissao", item.DataEmissao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@HoraEmissao", item.HoraEmissao);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Emissor", item.Emissor);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Prioridade", item.Prioridade);
 
-                        var id = (Int32)cmd.ExecuteScalar();
+                        var id = (int)cmd.ExecuteScalar();
 
                         item.Id = id;
                     }
