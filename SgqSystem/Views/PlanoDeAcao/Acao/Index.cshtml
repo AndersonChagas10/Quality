@@ -46,16 +46,17 @@
                             <br />
                             <strong>Desvio/Tarefa:</strong><label id="actionParLevel3_Id"></label>
                         </div>
+
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia</strong></label>
-                                <textarea id="txtAcao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></textarea>
+                                <textarea id="txtAcao_Naoconformidade" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></textarea>
                             </div>
                         </div>
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="txtAcaoText"><strong>Ação</strong></label>
-                                <textarea id="txtAcaoText" class="form-control" style="resize: none; height: 100px;"></textarea>
+                                <textarea id="txtAcaoText" name="AcaoText" class="form-control" style="resize: none; height: 100px;"></textarea>
                             </div>
                         </div>
                         <hr />
@@ -106,9 +107,9 @@
                         <div class="col-xs-12">
                             <label><strong>Notificar:</strong></label>
                             <div class="form-inline">
-                                <select id="selectNotificar" class="form-control">
+                                <select id="selectNotificarAcao" class="form-control">
                                 </select>
-                                <button onclick="addUserNotify(0);" class="btn btn-primary">+</button>
+                                <button onclick="inserirNaListaNotificarAcao();" class="btn btn-primary">+</button>
                             </div>
                         </div>
                         <div class="col-xs-12">
@@ -289,7 +290,9 @@
             $("#modalEditar").modal();
         }
 
+        var acaoEditar = {};
         function preencherModal(dados) {
+            acaoEditar = dados;
 
             if (dados.ListaResponsavel) {
                 var html = `<option value="">Selecione...</option>`;
@@ -326,23 +329,8 @@
             $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
             $("#txtAcaoText").text(dados.AcaoText);
 
-            if (dados.ListaEvidencia) {
-                var html = "";
-                for (var i = 0; i < dados.ListaEvidencia.length; i++) {
-                    var evidencia = dados.ListaEvidencia[i];
-                    html += `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
-                }
-                $('#divEvidencias').html(html);
-            }
-
-            if (dados.ListaNotificarAcao) {
-                var html = "";
-                for (var i = 0; i < dados.ListaNotificarAcao.length; i++) {
-                    var notificarAcao = dados.ListaNotificarAcao[i];
-                    html += `<tr><td>${notificarAcao["Id"]}</td><td>${notificarAcao["Nome"]}</td><td><button class="btn btn-sm btn-danger">X</button></td></tr>`;
-                }
-                $('#tableNotificarAcao tbody').html(html);
-            }
+            imprimirListaEvidencia(dados.ListaEvidencia);
+            imprimirListaNotificarAcao(dados.ListaNotificarAcao);
 
             if (dados.ListaNotificar) {
                 var html = `<option value="">Selecione...</option>`;
@@ -350,26 +338,81 @@
                     var notificar = dados.ListaNotificar[i];
                     html += `<option value="${notificar["Id"]}">${notificar["Nome"]}</option>`;
                 }
-                $('#selectNotificar').html(html);
+                $('#selectNotificarAcao').html(html);
             }
         }
 
+        //Evidencias
+        function imprimirListaEvidencia(lista) {
+            $('#divEvidencias').empty();
+            if (lista) {
+                for (var i = 0; i < lista.length; i++) {
+                    var evidencia = lista[i];
+                    imprimirEvidencia(evidencia);
+                }
+            }
+        }
+
+        function imprimirEvidencia(evidencia) {
+            var html;
+            if (evidencia["base64"]) {
+                html = `<div class="col-sm-4"><img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/></div>`;
+            } else {
+                html = `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
+            }
+            $('#divEvidencias').append(html);
+        }
+
+        function removerDaListaEvidencia(index) {
+            acaoEditar["ListaEvidencia"].splice(index, 1);
+            imprimirListaEvidencia(acaoEditar["ListaEvidencia"])
+        }
+
+        function inserirNaListaEvidencia(base64) {
+            var evidencia = {
+                base64: base64
+            };
+            acaoEditar["ListaEvidencia"].push(evidencia);
+            imprimirEvidencia(evidencia);
+        }
+
+        //Notificar ação
+        function imprimirListaNotificarAcao(lista) {
+            if (lista) {
+                var html = "";
+                for (var i = 0; i < lista.length; i++) {
+                    var notificarAcao = lista[i];
+                    html += `<tr><td>${notificarAcao["Id"]}</td><td>${notificarAcao["Nome"]}</td><td><button class="btn btn-sm btn-danger" onclick="removerDaListaNotificarAcao(${i})">X</button></td></tr>`;
+                }
+                $('#tableNotificarAcao tbody').html(html);
+            }
+        }
+
+        function removerDaListaNotificarAcao(index) {
+            acaoEditar["ListaNotificarAcao"].splice(index, 1);
+            imprimirListaNotificarAcao(acaoEditar["ListaNotificarAcao"])
+        }
+
+        function inserirNaListaNotificarAcao() {
+            if ($('#selectNotificarAcao').val() > 0) {
+                var obj = {
+                    Id: $('#selectNotificarAcao').val(),
+                    Nome: $('#selectNotificarAcao option:selected').text()
+                };
+                acaoEditar["ListaNotificarAcao"].push(obj);
+                imprimirListaNotificarAcao(acaoEditar["ListaNotificarAcao"])
+            }
+        }
+
+        //Formulário
         function enviarFormularioEditarAcao(event) {
             event.preventDefault();
             var form = $(event.currentTarget).serializeObject();
 
-            form["ListaNotificarAcao"] = [];
-            var linhasNotificarAcao = $('#tableNotificarAcao tbody tr');
-            for (var i = 0; i < linhasNotificarAcao.length; i++) {
-                var colunas = $(linhasNotificarAcao[i]).find('td');
-                var obj = {
-                    Id: $(colunas[0]).text(),
-                    Nome: $(colunas[1]).text()
-                };
-                form["ListaNotificarAcao"].push(obj);
-            }
+            form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
+            form["ListaEvidencia"] = acaoEditar["ListaEvidencia"];
 
-            console.table(form);
+            console.log(form);
         }
 
         function montarTabela(dados, colunas) {
@@ -421,8 +464,7 @@
                 //showing file converted to base64
                 //document.getElementsByName('imagefile')[0].value = base64String;
 
-                var html = `<div class="col-sm-4"><img src="data:image/png;base64,${base64String}" class="img-responsive"/></div>`;
-                $('#divEvidencias').append(html);
+                inserirNaListaEvidencia(base64String);
                 $('#uploadPhoto').val('');
             };
             // Read in the image file as a data URL.
