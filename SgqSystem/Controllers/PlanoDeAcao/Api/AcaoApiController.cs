@@ -170,14 +170,14 @@ WHERE PAC.Id = {id}
             public int ParDepartment_Id { get; set; }
             public string ParDepartment_Name { get; set; }
             public int ParDepartmentParent_Id { get; set; }
-            public int ParCargo_Id { get; set; }
             public string ParCargo_Name { get; set; }
+            public int ParCargo_Id { get; set; }
             public string Acao_Naoconformidade { get; set; }
             public string AcaoText { get; set; }
-            public string DataEmissao { get; set; }
-            public string DataConclusao { get; set; }
-            public string HoraEmissao { get; set; }
-            public string HoraConclusao { get; set; }
+            public DateTime DataEmissao { get; set; }
+            public DateTime DataConclusao { get; set; }
+            public TimeSpan HoraEmissao { get; set; }
+            public TimeSpan HoraConclusao { get; set; }
             public string Referencia { get; set; }
             public string Responsavel { get; set; }
             public string Notificar { get; set; }
@@ -207,10 +207,10 @@ WHERE PAC.Id = {id}
             public string ParCargo_Name { get; set; }
             public string Acao_Naoconformidade { get; set; }
             public string AcaoText { get; set; }
-            public string DataEmissao { get; set; }
-            public string DataConclusao { get; set; }
-            public string HoraEmissao { get; set; }
-            public string HoraConclusao { get; set; }
+            public DateTime DataEmissao { get; set; }
+            public DateTime DataConclusao { get; set; }
+            public TimeSpan HoraEmissao { get; set; }
+            public TimeSpan HoraConclusao { get; set; }
             public string Referencia { get; set; }
             public string Responsavel { get; set; }
             public string Notificar { get; set; }
