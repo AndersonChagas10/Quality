@@ -1,10 +1,12 @@
 ﻿using ADOFactory;
 using Dominio;
+using Helper;
 using SgqSystem.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 
 namespace SgqServiceBusiness.Controllers.RH
@@ -412,30 +414,6 @@ WHERE 1 = 1
 
                 SELECT CAST(scope_identity() AS int)";
 
-                string dataEmissao = null;
-                if (!String.IsNullOrEmpty(item.DataEmissao.ToString()))
-                {
-                    dataEmissao = DateTime.Parse(item.DataEmissao.ToString()).ToString("yyyy-MM-dd");
-                }
-
-                string horaEmissao = null;
-                if (!String.IsNullOrEmpty(item.HoraEmissao))
-                {
-                    horaEmissao = DateTime.Parse(item.HoraEmissao).ToString("HH:mm");
-                }
-
-                string dataConclusao = null;
-                if (!String.IsNullOrEmpty(item.DataConclusao.ToString()))
-                {
-                    dataConclusao = DateTime.Parse(item.DataConclusao.ToString()).ToString("yyyy-MM-dd");
-                }
-
-                string horaConclusao = null;
-                if (!String.IsNullOrEmpty(item.HoraConclusao))
-                {
-                    horaConclusao = DateTime.Parse(item.HoraConclusao).ToString("HH:mm");
-                }
-
                 using (Factory factory = new Factory("DefaultConnection"))
                 {
                     using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
@@ -450,21 +428,19 @@ WHERE 1 = 1
                         UtilSqlCommand.AddParameterNullable(cmd, "@ParCargo_Id", item.ParCargo_Id);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Naoconformidade", item.Acao_Naoconformidade);
                         UtilSqlCommand.AddParameterNullable(cmd, "@AcaoText", item.AcaoText);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@DataConclusao", dataConclusao);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@HoraConclusao", horaConclusao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@DataConclusao", item.DataConclusao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@HoraConclusao", item.HoraConclusao);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Referencia", item.Referencia);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Responsavel", item.Responsavel);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@DataEmissao", dataEmissao);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@HoraEmissao", horaEmissao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@DataEmissao", item.DataEmissao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@HoraEmissao", item.HoraEmissao);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Emissor", item.Emissor);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@EvidenciaNaoConformidade", item.EvidenciaAcaoConcluida);
-                        UtilSqlCommand.AddParameterNullable(cmd, "@EvidenciaAcaoConcluida", item.EvidenciaAcaoConcluida);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Prioridade", item.Prioridade);
 
-                        var id = (Int32) cmd.ExecuteScalar();
+                        var id = (int)cmd.ExecuteScalar();
 
                         item.Id = id;
-                    } 
+                    }
                 }
             }
             catch (Exception e)
@@ -500,6 +476,128 @@ WHERE 1 = 1
                         var id = Convert.ToInt32(cmd.ExecuteScalar());
 
                         listAcaoXNotificarAcao.Id = id;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        public string SaveFileEvidenciaNaoConformidade(int parLevel1_Id, int parLevel2_Id, int parLevel3_Id, string fileBase64)
+        {
+            var basePath = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot ?? "~";
+            if (basePath.Equals("~"))
+            {
+                basePath = @AppDomain.CurrentDomain.BaseDirectory;
+            }
+
+            string fileName = parLevel1_Id + parLevel2_Id + parLevel3_Id + DateTime.Now.GetHashCode() + new Random().Next(1000, 9999) + ".png";
+
+            Exception exception;
+
+            FileHelper.SavePhoto(fileBase64, basePath + "/Acao", fileName
+                , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
+                , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
+                , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot, out exception);
+
+            if (exception != null)
+                LogSystem.LogErrorBusiness.Register(exception);
+
+            var path = Path.Combine(basePath, fileName);
+
+            return path;
+        }
+
+        public void SaveEvidenciaNaoConformidade(EvidenciaNaoConformidade evidenciaNaoConformidade)
+        {
+            try
+            {
+                string sql = $@"INSERT INTO Pa.EvidenciaNaoConformidade(
+                                    Acao_Id				
+                                    ,Path
+                                    ,AddDate)
+                                    VALUES(
+                                          @Acao_Id			
+                                         ,@Path	
+                                         ,@AddDate			
+                                        )";
+
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Id", evidenciaNaoConformidade.Acao_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Path", evidenciaNaoConformidade.Path);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@AddDate", DateTime.Now);
+
+                        var id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        evidenciaNaoConformidade.Id = id;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        public string SaveFileEvidenciaAcaoConcluida(int parLevel1_Id, int parLevel2_Id, int parLevel3_Id, string fileBase64)
+        {
+            var basePath = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot ?? "~";
+            if (basePath.Equals("~"))
+            {
+                basePath = @AppDomain.CurrentDomain.BaseDirectory;
+            }
+
+            string fileName = parLevel1_Id + parLevel2_Id + parLevel3_Id + DateTime.Now.GetHashCode() + new Random().Next(1000, 9999) + ".png";
+
+            Exception exception;
+
+            FileHelper.SavePhoto(fileBase64, basePath + "\\Acao", fileName
+                      , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
+                      , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
+                      , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot, out exception);
+
+            if (exception != null)
+                LogSystem.LogErrorBusiness.Register(exception);
+
+            var path = Path.Combine(basePath, fileName);
+
+            return path;
+        }
+
+        public void SaveEvidenciaAcaoConcluida(EvidenciaAcaoConcluida evidenciaAcaoConcluida)
+        {
+            try
+            {
+                string sql = $@"INSERT INTO Pa.EvidenciaNaoConformidade(
+                                    Acao_Id				
+                                    ,Path
+                                    ,AddDate)
+                                    VALUES(
+                                          @Acao_Id			
+                                         ,@Path	
+                                         ,@AddDate			
+                                        )";
+
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Id", evidenciaAcaoConcluida.Acao_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Path", evidenciaAcaoConcluida.Path);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@AddDate", DateTime.Now);
+
+                        var id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        evidenciaAcaoConcluida.Id = id;
                     }
                 }
             }

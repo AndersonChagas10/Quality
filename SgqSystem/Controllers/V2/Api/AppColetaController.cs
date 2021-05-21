@@ -63,6 +63,20 @@ namespace SgqSystem.Controllers.V2.Api
                     {
                         appColetaBusiness.SaveAcaoXNotificarAcao(new AcaoXNotificarAcao() { Acao_Id = acao.Id, UserSgq_Id = usuarioNotificado });
                     }
+
+
+                    foreach (var evidenciaNaoConformidade in acao.EvidenciaNaoConformidade)
+                    {
+                        var filePath = appColetaBusiness.SaveFileEvidenciaNaoConformidade(acao.ParLevel1_Id, acao.ParLevel2_Id, acao.ParLevel3_Id, evidenciaNaoConformidade);
+                        appColetaBusiness.SaveEvidenciaNaoConformidade(new EvidenciaNaoConformidade() { Acao_Id = acao.Id, Path = filePath });
+                    }
+
+
+                    foreach (var evidenciaAcaoConcluida in acao.EvidenciaAcaoConcluida)
+                    {
+                        var filePath = appColetaBusiness.SaveFileEvidenciaAcaoConcluida(acao.ParLevel1_Id, acao.ParLevel2_Id, acao.ParLevel3_Id, evidenciaAcaoConcluida);
+                        appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = acao.Id, Path = filePath });
+                    }
                 }
               
             }
