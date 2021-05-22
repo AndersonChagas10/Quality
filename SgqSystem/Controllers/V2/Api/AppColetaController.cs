@@ -420,8 +420,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .Select(x => x.ParDepartment_Id)
                     .ToList();
 
-
-                var listaDeDepartamento = db.ParDepartment.AsNoTracking(). Where(x => x.Active).ToList();
+                var listaDeDepartamento = db.ParDepartment.AsNoTracking().Where(x => x.Active).ToList();
 
                 listaParDepartment = listaDeDepartamento
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
@@ -452,7 +451,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 var listaCargoFiltrado_Id = listaParEvaluationXDepartmentXCargoAppViewModel.Select(x => x.ParCargo_Id).Distinct().ToList();
 
-   
+
                 var listaCargoFiltradoPorDepartamento_Id = db.ParCargoXDepartment
                     .AsNoTracking()
                     .Where(x => x.IsActive)
@@ -462,7 +461,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .Distinct()
                     .ToList();
 
-   
+
                 listaParCargo = db.ParCargo
                     .AsNoTracking()
                     .Where(x => x.IsActive)
@@ -475,7 +474,7 @@ namespace SgqSystem.Controllers.V2.Api
                     })
                     .ToList();
 
-    
+
                 listaParCargoXDepartment = db.ParCargoXDepartment
                     .AsNoTracking()
                     .Where(x => x.IsActive)
@@ -1585,13 +1584,6 @@ AND cp.Parfrequency_Id = @ParFrequency_Id";
         }
 
         #endregion
-
-        public class GetResultsData
-        {
-            public int ParCompany_Id { get; set; }
-            public DateTime CollectionDate { get; set; }
-            public int ParFrequency_Id { get; set; }
-        }
 
         public class ColetaAgrupadaViewModel
         {
