@@ -1,6 +1,6 @@
-﻿
-var listaAcoes = [];
+﻿var listaColetaComAcoes = [];
 var listaObjAcoes = [];
+var listaAcoesToSend = [];
 
 function processAction(coletaJson) {
 
@@ -17,21 +17,29 @@ function processAction(coletaJson) {
             });
 
             if (parlevel1.length)
-                listaAcoes.push(coleta);
+                listaColetaComAcoes.push(coleta);
         }
     });
 
-    montaObjAcao(listaAcoes);
+    montaObjAcao(listaColetaComAcoes); //Filtrar as acoes de um determinado Cluster
 
     montaCorpoFormularioAcao(listaObjAcoes, 0);
 }
 
-function montaObjAcao(listaAcoes) {
+function montaObjAcao(listaColetaComAcoes) {
+
+    listaObjAcoes = [];
 
     if (listaObjAcoes != undefined && listaObjAcoes <= 0) {
-        listaAcoes.forEach(function (o, i) {
+
+        var index = listaObjAcoes.length
+        var novoIndex = listaColetaComAcoes.length;
+        
+        for (i = index; i <= novoIndex; i++) {
             createOrUpdateObj(i);
-        });
+        }
+
+        writeActionFile();
     }
 
 }
@@ -296,13 +304,13 @@ function setListaAcoesObj(index, currentObjAction) {
     if (currentObjAction == null) {
 
         var actionObj = {
-            ParCompany_Id: listaAcoes[index].ParCompany_Id,
-            ParDepartment_Id: listaAcoes[index].ParDepartment_Id,
+            ParCompany_Id: listaColetaComAcoes[index].ParCompany_Id,
+            ParDepartment_Id: listaColetaComAcoes[index].ParDepartment_Id,
             ParDepartmentParent_Id: currentParDepartmentParent_Id,
-            ParCargo_Id: listaAcoes[index].ParCargo_Id,
-            ParLevel1_Id: parseInt(listaAcoes[index].ParLevel1_Id),
-            ParLevel2_Id: parseInt(listaAcoes[index].ParLevel2_Id),
-            ParLevel3_Id: parseInt(listaAcoes[index].ParLevel3_Id),
+            ParCargo_Id: listaColetaComAcoes[index].ParCargo_Id,
+            ParLevel1_Id: parseInt(listaColetaComAcoes[index].ParLevel1_Id),
+            ParLevel2_Id: parseInt(listaColetaComAcoes[index].ParLevel2_Id),
+            ParLevel3_Id: parseInt(listaColetaComAcoes[index].ParLevel3_Id),
             Acao_Naoconformidade: "",
             AcaoText: "",
             DataConclusao: "",
@@ -358,29 +366,20 @@ function saveAction(index) {
 
     var objCriado = createOrUpdateObj(index);
 
-    $.ajax({
-        data: JSON.stringify([objCriado]),
-        url: urlPreffix + '/api/AppColeta/SetAction',
-        type: 'POST',
-        contentType: "application/json",
-        success: function (data) {
-            console.log('ações salvas');
-            removeActionList(index);
-            montaCorpoFormularioAcao(listaObjAcoes, index);
-        },
-        timeout: 600000,
-        error: function () {
-            console.log('erro ao salvar ações');
-        }
-    });
+    listaAcoesToSend.push(objCriado);
+
+    console.log('ações salvas');
+
+    removeActionList(index);
+    montaCorpoFormularioAcao(listaObjAcoes, index);
 
 }
 
-function fecharModalAcao() {
-    listaAcoes = [];
-    listaObjAcoes = [];
-    closeModal();
-}
+// function fecharModalAcao() {
+//     listaAcoes = [];
+//     listaObjAcoes = [];
+//     closeModal();
+// }
 
 function removeActionList(index) {
     listaObjAcoes.splice(index, 1);
@@ -514,3 +513,89 @@ $('body')
     }
 
 });
+
+
+//Ler o arquivo
+function readActonFromFile() {
+
+    _readFile("listaObjAcoes.txt", function (data) {
+        if (data)
+            listaObjAcoes = JSON.parse(data);
+
+    });
+
+}
+
+//Escrever no arquivo
+function writeActionFile() {
+
+    _writeFile("listaObjAcoes.txt", JSON.stringify(listaObjAcoes));
+
+}
+
+function readActonToSendFromFile() {
+
+    _readFile("listaAcoesToSend.txt", function (data) {
+        if (data)
+            listaAcoesToSend = JSON.parse(data);
+
+    });
+
+}
+
+//Escrever no arquivo
+function writeActonToSendFile() {
+
+    _writeFile("listaAcoesToSend.txt", JSON.stringify(listaAcoesToSend));
+
+}
+
+/**
+ * SetInterval para enviar acao 
+ * 
+ * Se tiver coleta para ser enviada, sair da função
+ * 
+ * se não tiver envia as acoes
+ */
+
+function sendActions() {
+
+    //verificar também coletas para serem enviadas <= 0
+    if (listaAcoesToSend && listaAcoesToSend.length <= 0) {
+        return;
+    }
+
+    listaAcoesToSend.forEach(function (acaoToSend) {
+
+        $.ajax({
+            data: JSON.stringify([acaoToSend]),
+            url: urlPreffix + '/api/AppColeta/SetAction',
+            type: 'POST',
+            contentType: "application/json",
+            success: function (data) {
+                //remover acao da lista de acoesToSend
+                if (data)
+                    removeListAcaoToSend(acaoToSend);
+                else
+                    console.log("Erro ao salvar ação");
+            },
+            timeout: 600000,
+            error: function () {
+                console.log('erro ao salvar ação');
+            }
+        });
+
+    });
+
+    //writeActonToSendFromFile();
+
+}
+
+
+function removeListAcaoToSend(data) {
+
+    listaAcoesToSend = $.grep(listaAcoesToSend, function (acao) {
+        return JSON.stringify(acao) !== JSON.stringify(data)
+    });
+
+}
