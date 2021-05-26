@@ -15,6 +15,8 @@ namespace Dominio
         public int ParDepartment_Id { get; set; }
         public int ParDepartmentParent_Id { get; set; }
         public int ParCargo_Id { get; set; }
+        public int ParCluster_Id { get; set; }
+        public int ParClusterGroup_Id { get; set; }
         public string Acao_Naoconformidade { get; set; }
         public string AcaoText { get; set; }
         public string HoraConclusao { get; set; }

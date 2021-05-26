@@ -391,7 +391,10 @@ WHERE 1 = 1
                                     ,DataEmissao				
                                     ,HoraEmissao				
                                     ,Emissor	
-                                    ,Prioridade)
+                                    ,Prioridade
+                                    ,ParCluster_Id
+                                    ,ParClusterGroup_Id
+                                    ,Status)
                                     VALUES(
                                           @ParLevel1_Id			
                                          ,@ParLevel2_Id			
@@ -410,6 +413,9 @@ WHERE 1 = 1
                                          ,@HoraEmissao			
                                          ,@Emissor				
                                          ,@Prioridade
+                                         ,@ParCluster_Id
+                                         ,@ParClusterGroup_Id
+                                         ,@Status
                                         );
 
                 SELECT CAST(scope_identity() AS int)";
@@ -436,6 +442,9 @@ WHERE 1 = 1
                         UtilSqlCommand.AddParameterNullable(cmd, "@HoraEmissao", item.HoraEmissao);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Emissor", item.Emissor);
                         UtilSqlCommand.AddParameterNullable(cmd, "@Prioridade", item.Prioridade);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCluster_Id", item.ParCluster_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParClusterGroup_Id", item.ParClusterGroup_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Status", item.Status);
 
                         var id = (int)cmd.ExecuteScalar();
 
