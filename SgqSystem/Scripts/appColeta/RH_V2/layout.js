@@ -37,7 +37,7 @@ function getHeader() {
         '(' + globalColetasRealizadas.length + ') Não sincronizadas' +
         '</div>' +
         '<div class="col-xs-4 nav-btn" data-falta-sincronizar-ca>' +
-        '(' + globalAcoesCorretivasRealizadas.length + ') Não sincronizadas' +
+        '(' + listaAcoesToSend.length + ') Não sincronizadas' +
         '</div>' +
         // '<div class="col-xs-3">&nbsp;</div>' +
         // '<div class="col-xs-3">&nbsp;</div>' +

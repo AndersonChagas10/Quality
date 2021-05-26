@@ -1,5 +1,5 @@
-﻿var listaColetaComAcoes = [];
-var listaObjAcoes = [];
+﻿var listaAcoes = [];
+var listaAcoesCurrent = [];
 var listaAcoesToSend = [];
 
 function processAction(coletaJson) {
@@ -7,6 +7,8 @@ function processAction(coletaJson) {
     var listaLevel1Acao = $.grep(parametrization.listaParLevel1, function (o, i) {
         return o.GenerateActionOnNotConformity;
     });
+    
+    var index = getNextIndex();
 
     coletaJson.forEach(function (coleta) {
 
@@ -16,47 +18,55 @@ function processAction(coletaJson) {
                 return level1.Id == parseInt(coleta.ParLevel1_Id);
             });
 
-            if (parlevel1.length)
-                listaColetaComAcoes.push(coleta);
+            if (parlevel1.length) {
+                createObjAcao(index, coleta);
+                index++;
+            }
         }
     });
 
-    montaObjAcao(listaColetaComAcoes); //Filtrar as acoes de um determinado Cluster
+    //atualizar arquivos de acoes pendentes (listaAcoes)
+    writeActionFile();
 
-    montaCorpoFormularioAcao(listaObjAcoes, 0);
-}
-
-function montaObjAcao(listaColetaComAcoes) {
-
-    listaObjAcoes = [];
-
-    if (listaObjAcoes != undefined && listaObjAcoes <= 0) {
-
-        var index = listaObjAcoes.length
-        var novoIndex = listaColetaComAcoes.length;
-        
-        for (i = index; i <= novoIndex; i++) {
-            createOrUpdateObj(i);
-        }
-
-        writeActionFile();
-    }
+    openAction();
 
 }
 
-function montaCorpoFormularioAcao(listaObjAcoes, index) {
+function openAction() {
 
-    if (listaObjAcoes.length <= 0) {
-        fecharModalAcao();
+    listaAcoesCurrent = [];
+
+    montaAcoesCurrent();
+
+    montaCorpoFormularioAcao(0);
+
+}
+
+function montaAcoesCurrent() {
+    listaAcoesCurrent = $.grep(listaAcoes, function (acao) {
+        return acao.ParDepartment_Id == currentParDepartment_Id &&
+        acao.ParCompany_Id == currentParCompany_Id &&
+        acao.ParDepartmentParent_Id == currentParDepartmentParent_Id &&
+        acao.ParCluster_Id == currentParCluster_Id &&
+        acao.ParClusterGroup_Id == currentParClusterGroup_Id &&
+        acao.ParCargo_Id == currentParCargo_Id &&
+        acao.ParFrequency_Id == currentParFrequency_Id;
+    });
+}
+
+function montaCorpoFormularioAcao(index) {
+
+    if (listaAcoesCurrent.length <= 0) {
+        closeModal();
         return;
     }
 
     //se não tiver proximo indice, volta no 0
-    if (listaObjAcoes[index] == undefined) {
+    if (listaAcoesCurrent[index] == undefined) {
         index = 0;
     }
 
-    var currentAction = listaObjAcoes[index];
+    var currentAction = listaAcoesCurrent[index];
 
     var options = '<option value="">Selecione...</option>';
 
@@ -64,38 +74,10 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         options += '<option value="' + auditor.Id + '">' + auditor.Name + " (" + auditor.SimpleDescription + ")" + '</option>';
     });
 
-    btnNext = '<button class="btn btn-primary" id="next" onclick="proximoElemento(' + index + ')">Próximo Alerta (' + (index + 1) + "/" + listaObjAcoes.length + ')</button>';
-    btnBack = '<button class="btn btn-primary" id="back" style="margin-right: 10px;" onclick="elementoAnterior(' + index + ')">Voltar Alerta</button>';
+    btnNext = '<button class="btn btn-primary" id="next" onclick="proximoElemento(' + index + ')">Próximo Alerta (' + (index + 1) + "/" + listaAcoesCurrent.length + ')</button>';
+    btnBack = '<button class="btn btn-primary" id="back" onclick="elementoAnterior(' + index + ')">Voltar Alerta</button>';
 
     var date = getCurrentDate();
-
-    var unidade = $.grep(currentLogin.ParCompanyXUserSgq, function (o, i) {
-        return o.ParCompany.Id == currentParCompany_Id
-    })[0].ParCompany.Name;
-
-    var centroCusto = $.grep(parametrization.listaParDepartment, function (o, i) {
-        return o.Id == currentParDepartment_Id
-    })[0].Name;
-
-    var secaoAtividade = $.grep(parametrization.listaParDepartment, function (o, i) {
-        return o.Parent_Id == currentParDepartmentParent_Id;
-    })[0].Name;
-
-    var itemCargo = $.grep(parametrization.listaParCargo, function (o, i) {
-        return o.Id == currentParCargo_Id
-    })[0].Name;
-
-    var level1 = $.grep(parametrization.listaParLevel1, function (o, i) {
-        return o.Id == currentAction.ParLevel1_Id;
-    })[0];
-
-    var level2 = $.grep(parametrization.listaParLevel2, function (o, i) {
-        return o.Id == currentAction.ParLevel2_Id;
-    })[0];
-
-    var level3 = $.grep(parametrization.listaParLevel3, function (o, i) {
-        return o.Id == currentAction.ParLevel3_Id;
-    })[0];
 
     var usersNotfy = "";
     currentAction.Notificar.forEach(function (auditor_Id) {
@@ -163,13 +145,13 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '   </div>' +
         '   <div class="form-group row" style="border: 2px;border-color: azure;border-style: groove;">' +
         '       <div class="col-xs-12">' +
-        '           <p id="actionParCompany_Id">Unidade: ' + unidade + '</p>' +
-        '           <p id="actionParDepartment_Id">Centro de Custo: ' + centroCusto + '</p>' +
-        '           <p id="actionParDepartmentParent_Id">Seção/Atividade: ' + secaoAtividade + '</p>' +
-        '           <p id="actionParCargo_Id">Item/Cargo: ' + itemCargo + ' </p>' +
-        '           <p id="actionParLevel1_Id" data-action-level1="' + level1.Id + '"> Indicador/Origem: ' + level1.Name + '</p>' +
-        '           <p id="actionParLevel2_Id" data-action-level2="' + level2.Id + '"> Monitoramento: ' + level2.Name + '</p>' +
-        '           <p id="actionParLevel3_Id" data-action-level3="' + level3.Id + '"> Desvio/Tarefa: ' + level3.Name + '</p>' +
+        '           <p id="actionParCompany_Id">Unidade: ' + currentAction.ParCompany_Name + '</p>' +
+        '           <p id="actionParDepartment_Id">Centro de Custo: ' + currentAction.ParDepartment_Name + '</p>' +
+        '           <p id="actionParDepartmentParent_Id">Seção/Atividade: ' + currentAction.ParDepartmentParent_Name + '</p>' +
+        '           <p id="actionParCargo_Id">Item/Cargo: ' + currentAction.ParCargo_Name + ' </p>' +
+        '           <p id="actionParLevel1_Id" data-action-level1="' + currentAction.ParLevel1_Id + '"> Indicador/Origem: ' + currentAction.ParLevel1_Name + '</p>' +
+        '           <p id="actionParLevel2_Id" data-action-level2="' + currentAction.ParLevel2_Id + '"> Monitoramento: ' + currentAction.ParLevel2_Name + '</p>' +
+        '           <p id="actionParLevel3_Id" data-action-level3="' + currentAction.ParLevel3_Id + '"> Desvio/Tarefa: ' + currentAction.ParLevel3_Name + '</p>' +
         '       </div>' +
         '   </div>' +
         '   <div class="form-group row" style="">' +
@@ -191,7 +173,7 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '       </div>' +
         '       <hr>' +
         '       <div class="col-xs-12">' +
-        '           <p>Ver e Agir <input type="checkbox" onclick="createOrUpdateObj(' + index + ')" id="checkVerAgir"></p>' +
+        '           <p>Ver e Agir <input type="checkbox" onclick="updateAcaoCurrent(' + index + ')" id="checkVerAgir"></p>' +
         '           <div id="actionsEvidencies">' +
         '               <p>Evidencias da Ação Concluida</p>' +
         '               ' + btnPhotoConcluida +
@@ -256,94 +238,159 @@ function montaCorpoFormularioAcao(listaObjAcoes, index) {
         '</div>' +
         '<hr>' +
         '<div class="row">' +
-        '   <div class="col-xs-8">' +
+        '   <div class="col-xs-12">' +
         '   ' + btnBack +
         '   ' + btnNext +
-        '   </div>' +
-        '   <div class="col-xs-4">' +
-        '       <button class="btn btn-success pull-right" style="margin-right: 10px;" onclick="saveAction(' + index + ');">Salvar esta ação</button>' +
+        // '   </div>' +
+        // '   <div class="col-xs-4">' +
+        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e iniciar acao</button>' +
+        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 2);">Salvar e preencher depois</button>' +
         '   </div>' +
         '</div>' +
         '</div></div>';
 
     openModal(htmlAcao, 'white', 'black');
 
-    if (currentAction != null) {
-        setCurrentActionValues(currentAction);
-    }
+    setCurrentActionValues(currentAction);
+
 }
 
 function elementoAnterior(index) {
 
-    if (listaObjAcoes.length > 1) {
-        createOrUpdateObj(index);
+    if (listaAcoesCurrent.length > 1) {
+        updateAcaoCurrent(index, true);
         index--;
-        montaCorpoFormularioAcao(listaObjAcoes, index);
+        montaCorpoFormularioAcao(index);
     }
 
 }
 
 function proximoElemento(index) {
 
-    if (listaObjAcoes.length > 1) {
-        createOrUpdateObj(index);
+    if (listaAcoesCurrent.length > 1) {
+        updateAcaoCurrent(index, true);
         index++;
-        montaCorpoFormularioAcao(listaObjAcoes, index);
+        montaCorpoFormularioAcao(index);
     }
     
 }
 
-function createOrUpdateObj(index) {
+function getNextIndex() {
 
-    return setListaAcoesObj(index, listaObjAcoes[index]);
+    if (listaAcoes.length == 0)
+        return 1;
 
+    var max = listaAcoes[0];
+
+    for (var i = 1; i < listaAcoes.length; ++i) {
+        if (listaAcoes[i].Id > max) {
+            max = listaAcoes[i].Id;
+        }
+    }
+
+    return max++;
+}
+
+function createObjAcao(index, coleta){
+
+    var unidade = $.grep(currentLogin.ParCompanyXUserSgq, function (o, i) {
+        return o.ParCompany.Id == coleta.ParCompany_Id
+    })[0].ParCompany.Name;
+
+    var centroCusto = $.grep(parametrization.listaParDepartment, function (o, i) {
+        return o.Id == coleta.ParDepartment_Id;
+    })[0].Name;
+
+    var secaoAtividade = $.grep(parametrization.listaParDepartment, function (o, i) {
+        return o.Parent_Id == currentParDepartmentParent_Id;
+    })[0].Name;
+
+    var itemCargo = $.grep(parametrization.listaParCargo, function (o, i) {
+        return o.Id == coleta.ParCargo_Id;
+    })[0].Name;
+
+    var level1 = $.grep(parametrization.listaParLevel1, function (o, i) {
+        return o.Id == coleta.ParLevel1_Id;
+    })[0];
+
+    var level2 = $.grep(parametrization.listaParLevel2, function (o, i) {
+        return o.Id == coleta.ParLevel2_Id;
+    })[0];
+
+    var level3 = $.grep(parametrization.listaParLevel3, function (o, i) {
+        return o.Id == coleta.ParLevel3_Id;
+    })[0];
+
+    var parCluster = $.grep(parametrization.listaParCluster, function (o, i) {
+        return o.Id == coleta.ParCluster_Id;
+    })[0];
+
+    var parClusterGroup = $.grep(parametrization.listaParClusterGroup, function (o, i) {
+        return o.Id == currentParClusterGroup_Id;
+    })[0];
+
+    var parFrequency = $.grep(parametrization.listaParFrequency, function (o, i) {
+        return o.Id == coleta.Parfrequency_Id;
+    })[0];
+
+    var actionObj = {
+        Id: index,
+        ParCompany_Id: coleta.ParCompany_Id,
+        ParCompany_Name: unidade,
+        ParDepartment_Id: coleta.ParDepartment_Id,
+        ParDepartment_Name: centroCusto,
+        ParDepartmentParent_Id: currentParDepartmentParent_Id,
+        ParDepartmentParent_Name: secaoAtividade,
+        ParCargo_Id: coleta.ParCargo_Id,
+        ParCargo_Name: itemCargo,
+        ParLevel1_Id: parseInt(coleta.ParLevel1_Id),
+        ParLevel1_Name: level1.Name,
+        ParLevel2_Id: parseInt(coleta.ParLevel2_Id),
+        ParLevel2_Name: level2.Name,
+        ParLevel3_Id: parseInt(coleta.ParLevel3_Id),
+        ParLevel3_Name: level3.Name,
+        ParCluster_Id: coleta.ParCluster_Id,
+        ParCluster_Name: parCluster.Name,
+        ParClusterGroup_Id: parClusterGroup.Id,
+        ParClusterGroup_Name: parClusterGroup.Name,
+        ParFrequency_Id: parFrequency.Id,
+        ParFrequency_Name: parFrequency.Name,
+        Acao_Naoconformidade: "",
+        AcaoText: "",
+        DataConclusao: "",
+        HoraConclusao: "",
+        Referencia: "",
+        Responsavel: "",
+        Notificar: [],
+        DataEmissao: "",
+        HoraEmissao: "",
+        Prioridade: "",
+        EvidenciaNaoConformidade: [],
+        EvidenciaAcaoConcluida: [],
+        VerEAgir: false,
+        Emissor: currentLogin.Id
+    };
+
+    listaAcoes.push(actionObj);
 }
 
 function setListaAcoesObj(index, currentObjAction) {
 
-    if (currentObjAction == null) {
+    currentObjAction.Acao_Naoconformidade = $("#txtActionNotConformity").val();
+    currentObjAction.AcaoText = $("#txtAction").val();
+    currentObjAction.DataConclusao = $("#actionConclusionDate").val();
+    currentObjAction.HoraConclusao = $("#actionConclusionHour").val();
+    currentObjAction.Referencia = $('#actionReference').val();
+    currentObjAction.Responsavel = $('#actionResponsable :selected').val();
+    currentObjAction.DataEmissao = currentCollectDate.toJSON();
+    currentObjAction.HoraEmissao = currentCollectDate.toLocaleTimeString();
+    currentObjAction.Emissor = currentLogin.Id;
+    currentObjAction.Prioridade = $('#actionPriority :selected').val();
+    currentObjAction.VerEAgir = $('#checkVerAgir').prop('checked');
 
-        var actionObj = {
-            ParCompany_Id: listaColetaComAcoes[index].ParCompany_Id,
-            ParDepartment_Id: listaColetaComAcoes[index].ParDepartment_Id,
-            ParDepartmentParent_Id: currentParDepartmentParent_Id,
-            ParCargo_Id: listaColetaComAcoes[index].ParCargo_Id,
-            ParLevel1_Id: parseInt(listaColetaComAcoes[index].ParLevel1_Id),
-            ParLevel2_Id: parseInt(listaColetaComAcoes[index].ParLevel2_Id),
-            ParLevel3_Id: parseInt(listaColetaComAcoes[index].ParLevel3_Id),
-            Acao_Naoconformidade: "",
-            AcaoText: "",
-            DataConclusao: "",
-            HoraConclusao: "",
-            Referencia: "",
-            Responsavel: "",
-            Notificar: [],
-            DataEmissao: "",
-            HoraEmissao: "",
-            Prioridade: "",
-            EvidenciaNaoConformidade: [],
-            EvidenciaAcaoConcluida: [],
-            VerEAgir: false,
-            Emissor: currentLogin.Id
-        };
+    listaAcoesCurrent[index] = currentObjAction;
 
-        listaObjAcoes.push(actionObj);
-
-    } else {
-        listaObjAcoes[index].Acao_Naoconformidade = $("#txtActionNotConformity").val();
-        listaObjAcoes[index].AcaoText = $("#txtAction").val();
-        listaObjAcoes[index].DataConclusao = $("#actionConclusionDate").val();
-        listaObjAcoes[index].HoraConclusao = $("#actionConclusionHour").val();
-        listaObjAcoes[index].Referencia = $('#actionReference').val();
-        listaObjAcoes[index].Responsavel = $('#actionResponsable :selected').val();
-        listaObjAcoes[index].DataEmissao = currentCollectDate.toJSON();
-        listaObjAcoes[index].HoraEmissao = currentCollectDate.toLocaleTimeString();
-        listaObjAcoes[index].Emissor = currentLogin.Id;
-        listaObjAcoes[index].Prioridade = $('#actionPriority :selected').val();
-        listaObjAcoes[index].VerEAgir = $('#checkVerAgir').prop('checked');
-    }
-
-    return listaObjAcoes[index];
+    return currentObjAction;
 }
 
 function setCurrentActionValues(currentAction) {
@@ -362,40 +409,71 @@ function setCurrentActionValues(currentAction) {
 
 }
 
-function saveAction(index) {
+function retornaStatusAcao(objCriado, status) {
 
-    var objCriado = createOrUpdateObj(index);
+    //1 Pendente
+    //2 Em andamento 
+    //3 Concluída
+    //4 Atrasada 
+    //5 Cancelada
+
+    if (objCriado.VerEAgir)
+        return 3
+    else
+        return status;
+
+}
+
+function updateAcaoCurrent(index, writefile) {
+
+    var objAlterado = setListaAcoesObj(index, listaAcoesCurrent[index]);
+
+    updateAcao(objAlterado);
+
+    if (writefile == true)
+        writeActionFile();
+
+    return objAlterado;
+}
+
+function updateAcao(objAlterado) {
+
+    var index = $.map(listaAcoes, function(acao){
+        return acao.Id;
+    }).indexOf(objAlterado.Id);
+
+    listaAcoes[index] = objAlterado;
+}
+
+function saveAction(index, status) {
+
+    var objCriado = updateAcaoCurrent(index, false);
+    objCriado.Status = retornaStatusAcao(objCriado, status);
 
     listaAcoesToSend.push(objCriado);
+    removeActionCurrentList(index);
 
-    console.log('ações salvas');
+    openMensagem('Ação salva.', 'blue', 'white');
+    closeMensagem(2000);
 
-    removeActionList(index);
-    montaCorpoFormularioAcao(listaObjAcoes, index);
+    montaCorpoFormularioAcao(index);
 
 }
 
-// function fecharModalAcao() {
-//     listaAcoes = [];
-//     listaObjAcoes = [];
-//     closeModal();
-// }
-
-function removeActionList(index) {
-    listaObjAcoes.splice(index, 1);
+function removeActionCurrentList(index) {
+    removeActionList(listaAcoesCurrent[index]);
+    listaAcoesCurrent.splice(index, 1);
 }
 
-function getActionById(indexId) {
+function removeActionList(objRemovido) {
 
-    var objAcao = $.grep(listaObjAcoes, function (objAcao) {
-        return objAcao.Id == indexId;
-    });
+    var index = $.map(listaAcoes, function(acao){
+        return acao.Id;
+    }).indexOf(objRemovido.Id);
 
-    if (objAcao.length > 0)
-        return objAcao[0];
+    listaAcoes.splice(index, 1);
 
-    return null;
-
+    writeActionFile();
 }
 
 function addUserNotify(index) {
@@ -405,19 +483,19 @@ function addUserNotify(index) {
     if (!userNotify)
         return;
 
-    if (listaObjAcoes[index].Notificar.indexOf(userNotify) < 0) {
-        createOrUpdateObj(index);
-        listaObjAcoes[index].Notificar.push(userNotify);
-        montaCorpoFormularioAcao(listaObjAcoes, index);
+    if (listaAcoesCurrent[index].Notificar.indexOf(userNotify) < 0) {
+        updateAcaoCurrent(index, true);
+        listaAcoesCurrent[index].Notificar.push(userNotify);
+        montaCorpoFormularioAcao(index);
     }
     else
         alert("usuário já adicionado");
 }
 
 function removeUserNotify(index, user_Id) {
-    createOrUpdateObj(index);
-    listaObjAcoes[index].Notificar.splice(listaObjAcoes[index].Notificar.indexOf(user_Id), 1);
-    montaCorpoFormularioAcao(listaObjAcoes, index);
+    updateAcaoCurrent(index, true);
+    listaAcoesCurrent[index].Notificar.splice(listaAcoesCurrent[index].Notificar.indexOf(user_Id), 1);
+    montaCorpoFormularioAcao(index);
 }
 
 var indexAcaoFoto = 0;
@@ -447,20 +525,20 @@ function upoadFotoAcaoConcluidaByLibrary(index) {
 }
 
 function addPhotoAcao(imageData) {
-    listaObjAcoes[indexAcaoFoto].EvidenciaNaoConformidade.push(imageData);
-    montaCorpoFormularioAcao(listaObjAcoes, indexAcaoFoto);
+    listaAcoesCurrent[indexAcaoFoto].EvidenciaNaoConformidade.push(imageData);
+    montaCorpoFormularioAcao(indexAcaoFoto);
 }
 
 function addPhotoAcaoConcluida(imageData) {
-    listaObjAcoes[indexAcaoFoto].EvidenciaAcaoConcluida.push(imageData);
-    montaCorpoFormularioAcao(listaObjAcoes, indexAcaoFoto);
+    listaAcoesCurrent[indexAcaoFoto].EvidenciaAcaoConcluida.push(imageData);
+    montaCorpoFormularioAcao(indexAcaoFoto);
 }
 
 function removePhotoAcao(index, indexAcaoFoto) {
     navigator.notification.confirm("Deseja realmente excluir a imagem?", function (number) {
         if (number == 1) {
-            listaObjAcoes[index].EvidenciaNaoConformidade.splice(indexAcaoFoto, 1);
-            montaCorpoFormularioAcao(listaObjAcoes, index);
+            listaAcoesCurrent[index].EvidenciaNaoConformidade.splice(indexAcaoFoto, 1);
+            montaCorpoFormularioAcao(index);
         }
     }, "Excluir ?", ["Sim", "Não"]);
 }
@@ -468,8 +546,8 @@ function removePhotoAcao(index, indexAcaoFoto) {
 function removePhotoAcaoConcluida(index, indexAcaoFoto) {
     navigator.notification.confirm("Deseja realmente excluir a imagem?", function (number) {
         if (number == 1) {
-            listaObjAcoes[index].EvidenciaAcaoConcluida.splice(indexAcaoFoto, 1);
-            montaCorpoFormularioAcao(listaObjAcoes, index);
+            listaAcoesCurrent[index].EvidenciaAcaoConcluida.splice(indexAcaoFoto, 1);
+            montaCorpoFormularioAcao(index);
         }
     }, "Excluir ?", ["Sim", "Não"]);
 }
@@ -518,9 +596,9 @@ $('body')
 //Ler o arquivo
 function readActonFromFile() {
 
-    _readFile("listaObjAcoes.txt", function (data) {
+    _readFile("listaAcoes.txt", function (data) {
         if (data)
-            listaObjAcoes = JSON.parse(data);
+            listaAcoes = JSON.parse(data);
 
     });
 
@@ -529,7 +607,7 @@ function readActonFromFile() {
 //Escrever no arquivo
 function writeActionFile() {
 
-    _writeFile("listaObjAcoes.txt", JSON.stringify(listaObjAcoes));
+    _writeFile("listaAcoes.txt", JSON.stringify(listaAcoes));
 
 }
 
@@ -544,9 +622,9 @@ function readActonToSendFromFile() {
 }
 
 //Escrever no arquivo
-function writeActonToSendFile() {
+function writeActonToSendFile(callback) {
 
-    _writeFile("listaAcoesToSend.txt", JSON.stringify(listaAcoesToSend));
+    _writeFile("listaAcoesToSend.txt", JSON.stringify(listaAcoesToSend), callback);
 
 }
 
@@ -558,44 +636,146 @@ function writeActonToSendFile() {
  * se não tiver envia as acoes
  */
 
+var isSendActions = false;
 function sendActions() {
 
     //verificar também coletas para serem enviadas <= 0
-    if (listaAcoesToSend && listaAcoesToSend.length <= 0) {
+    if (!appIsOnline || isSendActions || (listaAcoesToSend && listaAcoesToSend.length <= 0)) {
         return;
     }
 
-    listaAcoesToSend.forEach(function (acaoToSend) {
+    isSendActions = true;
 
-        $.ajax({
-            data: JSON.stringify([acaoToSend]),
-            url: urlPreffix + '/api/AppColeta/SetAction',
-            type: 'POST',
-            contentType: "application/json",
-            success: function (data) {
-                //remover acao da lista de acoesToSend
-                if (data)
-                    removeListAcaoToSend(acaoToSend);
-                else
-                    console.log("Erro ao salvar ação");
-            },
-            timeout: 600000,
-            error: function () {
-                console.log('erro ao salvar ação');
-            }
-        });
+    var acaoToSend = listaAcoesToSend[0];
 
+    $.ajax({
+        data: JSON.stringify(acaoToSend),
+        url: urlPreffix + '/api/AppColeta/SetAction',
+        type: 'POST',
+        contentType: "application/json",
+        success: function (data) {
+            //remover acao da lista de acoesToSend
+            removeListAcaoToSend(acaoToSend);
+            isSendActions = false;
+            writeActonToSendFile(sendActions);
+        },
+        timeout: 600000,
+        error: function () {
+            console.log('erro ao salvar ação');
+            isSendActions = false;
+        }
     });
-
-    //writeActonToSendFromFile();
-
 }
 
 
 function removeListAcaoToSend(data) {
-
     listaAcoesToSend = $.grep(listaAcoesToSend, function (acao) {
         return JSON.stringify(acao) !== JSON.stringify(data)
     });
 
+}
+
+
+//verificar se tem ação 
+//grupo de cluster
+function getAcoesByClusterGroup(clusterGroup_Id) {
+    return $.grep(listaAcoes, function (acao) {
+        return acao.ParCompany_Id == currentParCompany_Id &&
+            acao.ParClusterGroup_Id == clusterGroup_Id;
+    });
+}
+
+//cluster
+function getAcoesByCluster(cluster_Id){
+    return $.grep(listaAcoes, function (acao) {
+        return acao.ParCompany_Id == currentParCompany_Id &&
+            acao.ParClusterGroup_Id == currentParClusterGroup_Id &&
+            acao.ParCluster_Id == cluster_Id;
+    });
+}
+
+//indicador e frequencia
+function getAcoesByLevel1AndFrequency(level1_Id, parFrequency_Id) {
+    return $.grep(listaAcoes, function (acao) {
+        return acao.ParCompany_Id == currentParCompany_Id &&
+            acao.ParClusterGroup_Id == currentParClusterGroup_Id &&
+            acao.ParCluster_Id == currentParCluster_Id &&
+            acao.ParLevel1_Id == level1_Id && 
+            acao.ParFrequency_Id == parFrequency_Id;
+    });
+}
+
+//Seção
+function getAcoesByParDepartment(parDepartment_Id) {
+
+    var listaAcoesReturn = [];
+
+    currentPlanejamento.forEach(function (planejamento) {
+
+        var acao = $.grep(listaAcoes, function (acao) {
+            return acao.ParCompany_Id == currentParCompany_Id &&
+                acao.ParClusterGroup_Id == currentParClusterGroup_Id &&
+                acao.ParCluster_Id == currentParCluster_Id &&
+                acao.ParLevel1_Id == planejamento.indicador_Id &&
+                acao.ParFrequency_Id == currentParFrequency_Id &&
+                acao.ParDepartment_Id == parDepartment_Id &&
+                acao.ParDepartmentParent_Id == currentParDepartment_Id;
+        });
+
+        if (acao.length > 0)
+            listaAcoesReturn.push(acao);
+
+    });
+
+    return listaAcoesReturn;
+}
+
+//Centro de custo
+function getAcoesByParDepartmentParent(parDepartmentParent_Id) {
+
+    var listaAcoesReturn = [];
+
+    currentPlanejamento.forEach(function (planejamento) {
+
+        var acao = $.grep(listaAcoes, function (acao) {
+            return acao.ParCompany_Id == currentParCompany_Id &&
+                acao.ParClusterGroup_Id == currentParClusterGroup_Id &&
+                acao.ParCluster_Id == currentParCluster_Id &&
+                acao.ParLevel1_Id == planejamento.indicador_Id &&
+                acao.ParFrequency_Id == currentParFrequency_Id &&
+                acao.ParDepartmentParent_Id == parDepartmentParent_Id;
+        });
+
+        if (acao.length > 0)
+            listaAcoesReturn.push(acao);
+
+    });
+
+    return listaAcoesReturn;
+}
+
+//cargo
+function getAcoesByParCargo(parCargo_Id) {
+
+    var listaAcoesReturn = [];
+
+    currentPlanejamento.forEach(function (planejamento) {
+
+        var acao = $.grep(listaAcoes, function (acao) {
+            return acao.ParCompany_Id == currentParCompany_Id &&
+                acao.ParClusterGroup_Id == currentParClusterGroup_Id &&
+                acao.ParCluster_Id == currentParCluster_Id &&
+                acao.ParLevel1_Id == planejamento.indicador_Id &&
+                acao.ParFrequency_Id == currentParFrequency_Id &&
+                acao.ParDepartment_Id == currentParDepartment_Id &&
+                acao.ParDepartmentParent_Id == currentParDepartmentParent_Id &&
+                acao.ParCargo_Id == parCargo_Id;
+        });
+
+        if (acao.length > 0)
+            listaAcoesReturn.push(acao);
+
+    });
+
+    return listaAcoesReturn;
 }
