@@ -3969,52 +3969,72 @@
     <Version>1.10.6</Version>
     <Description>[RH SESMT] Ação coleta</Description>
     <Script>
-      CREATE TABLE [Pa].[Acao](
-      [Id] [int] NOT NULL identity,
-      [ParLevel1_Id] [int] NOT NULL,
-      [ParLevel2_Id] [int] NOT NULL,
-      [ParLevel3_Id] [int] NOT NULL,
-      [ParCompany_Id] [int] NOT NULL,
-      [ParDepartment_Id] [int] NOT NULL,
-      [ParDepartmentParent_Id] [int] NOT NULL,
-      [ParCargo_Id] [int] NOT NULL,
-      [Acao_Naoconformidade] [varchar](200) NULL,
-      [AcaoText] [varchar](200) NULL,
-      [DataConclusao] [date] NULL,
-      [HoraConclusao] [varchar](5) NULL,
-      [Referencia] [varchar](200) NULL,
-      [Responsavel] [int] NULL,
-      [Notificar] [varchar](100) NULL,
-      [DataEmissao] [date] NULL,
-      [HoraEmissao] [varchar](5) NULL,
-      [Emissor] [int] NOT NULL,
-      [Prioridade] [int] NULL,
+      
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Pa.Acao' AND xtype='U')
+      CREATE TABLE Pa.Acao (
+      Id int PRIMARY KEY IDENTITY NOT NULL,
+      ParLevel1_Id int NOT NULL,
+      ParLevel2_Id int NOT NULL,
+      ParLevel3_Id int NOT NULL,
+      ParCompany_Id int NOT NULL,
+      ParDepartment_Id int NOT NULL,
+      ParDepartmentParent_Id int NOT NULL,
+      ParCargo_Id int NOT NULL,
+      ParCluster_Id int NOT NULL,
+      ParClusterGroup_Id int NOT NULL,
+      Acao_Naoconformidade varchar(200) NULL,
+      AcaoText varchar(200) NULL,
+      DataConclusao date NULL,
+      HoraConclusao time(7) NULL,
+      Referencia varchar(200) NULL,
+      Responsavel int NULL,
+      Notificar varchar(100) NULL,
+      DataEmissao date NULL,
+      HoraEmissao time(7) NULL,
+      Emissor int NOT NULL,
+      Prioridade int NULL,
+      Status int NULL,
+      IsActive bit NOT NULL DEFAULT 1,
+      AddDate datetime NOT NULL DEFAULT GETDATE(),
+      AlterDate datetime NULL
       )
+      GO
 
-      INSERT [Pa].[Acao] ([Id], [ParLevel1_Id], [ParLevel2_Id], [ParLevel3_Id], [ParCompany_Id], [ParDepartment_Id], [ParDepartmentParent_Id], [ParCargo_Id], [Acao_Naoconformidade], [AcaoText], [DataConclusao], [HoraConclusao], [Referencia], [Responsavel], [Notificar], [DataEmissao], [HoraEmissao], [Emissor], [EvidenciaNaoConformidade], [EvidenciaAcaoConcluida]) VALUES (1, 12, 32, 1121, 49, 42162, 42161, 2611, N'', N'', NULL, NULL, N'', NULL, N'', CAST(N'2021-05-06' AS Date), N'11:40', 1, NULL, NULL)
-      ALTER TABLE [Pa].[Acao]  WITH CHECK ADD FOREIGN KEY([ParCargo_Id])
-      REFERENCES [dbo].[ParCargo] ([Id])
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Pa.AcaoXNotificarAcao' AND xtype='U')
+      create table Pa.AcaoXNotificarAcao (
+      Id int primary key not null identity,
+      Acao_Id int not null,
+      UserSgq_Id int not null,
+      IsActive bit not null default 1,
+      AddDate datetime not null  DEFAULT GETDATE(),
+      AlterDate datetime null
+      )
       GO
-      ALTER TABLE [Pa].[Acao]  WITH CHECK ADD FOREIGN KEY([ParCompany_Id])
-      REFERENCES [dbo].[ParCompany] ([Id])
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Pa.EvidenciaAcaoConcluida' AND xtype='U')
+      create table Pa.EvidenciaAcaoConcluida (
+      Id int primary key not null identity,
+      Acao_Id int not null,
+      [Path] varchar(255) not null,
+      Name varchar(255),
+      AddDate datetime not null  DEFAULT GETDATE(),
+      AlterDate datetime null,
+      IsActive bit not null default 1
+      )
       GO
-      ALTER TABLE [Pa].[Acao]  WITH CHECK ADD FOREIGN KEY([ParDepartment_Id])
-      REFERENCES [dbo].[ParDepartment] ([Id])
-      GO
-      ALTER TABLE [Pa].[Acao]  WITH CHECK ADD FOREIGN KEY([ParLevel1_Id])
-      REFERENCES [dbo].[ParLevel1] ([Id])
-      GO
-      ALTER TABLE [Pa].[Acao]  WITH CHECK ADD FOREIGN KEY([ParLevel2_Id])
-      REFERENCES [dbo].[ParLevel2] ([Id])
-      GO
-      ALTER TABLE [Pa].[Acao]  WITH CHECK ADD FOREIGN KEY([ParLevel3_Id])
-      REFERENCES [dbo].[ParLevel3] ([Id])
+
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Pa.EvidenciaNaoConformidade' AND xtype='U')
+      create table Pa.EvidenciaNaoConformidade (
+      Id int primary key not null identity,
+      Acao_Id int not null,
+      [Path] varchar(255) not null,
+      Name varchar(255),
+      AddDate datetime not null DEFAULT GETDATE(),
+      AlterDate datetime null,
+      IsActive bit not null default 1
+      )
       GO
     </Script>
   </Card>
-
-
-  
-
 
 </Cards>
