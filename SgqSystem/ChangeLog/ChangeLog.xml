@@ -3969,8 +3969,12 @@
     <Version>1.10.6</Version>
     <Description>[RH SESMT] Ação coleta</Description>
     <Script>
-      
-      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Pa.Acao' AND xtype='U')
+
+      IF NOT EXISTS (
+      SELECT 1
+      FROM sys.objects INNER JOIN sys.schemas ON sys.objects.schema_id = sys.schemas.schema_id
+      WHERE sys.objects.name='Acao' AND sys.objects.type='U' AND sys.schemas.name = 'PA')
+      BEGIN
       CREATE TABLE Pa.Acao (
       Id int PRIMARY KEY IDENTITY NOT NULL,
       ParLevel1_Id int NOT NULL,
@@ -3998,9 +4002,14 @@
       AddDate datetime NOT NULL DEFAULT GETDATE(),
       AlterDate datetime NULL
       )
+      END
       GO
 
-      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Pa.AcaoXNotificarAcao' AND xtype='U')
+      IF NOT EXISTS (
+      SELECT 1
+      FROM sys.objects INNER JOIN sys.schemas ON sys.objects.schema_id = sys.schemas.schema_id
+      WHERE sys.objects.name='AcaoXNotificarAcao' AND sys.objects.type='U' AND sys.schemas.name = 'PA')
+      BEGIN
       create table Pa.AcaoXNotificarAcao (
       Id int primary key not null identity,
       Acao_Id int not null,
@@ -4009,9 +4018,14 @@
       AddDate datetime not null  DEFAULT GETDATE(),
       AlterDate datetime null
       )
+      END
       GO
 
-      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Pa.EvidenciaAcaoConcluida' AND xtype='U')
+      IF NOT EXISTS (
+      SELECT 1
+      FROM sys.objects INNER JOIN sys.schemas ON sys.objects.schema_id = sys.schemas.schema_id
+      WHERE sys.objects.name='EvidenciaAcaoConcluida' AND sys.objects.type='U' AND sys.schemas.name = 'PA')
+      BEGIN
       create table Pa.EvidenciaAcaoConcluida (
       Id int primary key not null identity,
       Acao_Id int not null,
@@ -4021,9 +4035,14 @@
       AlterDate datetime null,
       IsActive bit not null default 1
       )
+      END
       GO
 
-      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Pa.EvidenciaNaoConformidade' AND xtype='U')
+      IF NOT EXISTS (
+      SELECT 1
+      FROM sys.objects INNER JOIN sys.schemas ON sys.objects.schema_id = sys.schemas.schema_id
+      WHERE sys.objects.name='EvidenciaNaoConformidade' AND sys.objects.type='U' AND sys.schemas.name = 'PA')
+      BEGIN
       create table Pa.EvidenciaNaoConformidade (
       Id int primary key not null identity,
       Acao_Id int not null,
@@ -4033,7 +4052,9 @@
       AlterDate datetime null,
       IsActive bit not null default 1
       )
+      END
       GO
+
     </Script>
   </Card>
 
