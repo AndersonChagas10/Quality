@@ -225,6 +225,7 @@ function logout() {
     //_writeFile("login.txt", '', function () {
     currentLogin = null;
     openLogin();
+    closeModal();
     // });
 }
 

@@ -418,7 +418,7 @@ function retornaStatusAcao(objCriado, status) {
     //5 Cancelada
 
     if (objCriado.VerEAgir)
-        return 3
+        return 3;
     else
         return status;
 
