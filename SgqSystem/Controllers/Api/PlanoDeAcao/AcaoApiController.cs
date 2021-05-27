@@ -75,7 +75,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         [HttpPost]
         public AcaoViewModel Post([System.Web.Http.FromBody] AcaoViewModel objAcao)
         {
-             AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
+            AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
 
             try
             {
@@ -100,11 +100,11 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                 }
 
 
-                //foreach (var evidenciaAcaoConcluida in acao.EvidenciaAcaoConcluida)
-                //{
-                //    var filePath = appColetaBusiness.SaveFileEvidenciaAcaoConcluida(acao.ParLevel1_Id, acao.ParLevel2_Id, acao.ParLevel3_Id, evidenciaAcaoConcluida);
-                //    appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = acao.Id, Path = filePath });
-                //}
+                foreach (var evidenciaAcaoConcluida in objAcao.ListaEvidenciaConcluida)
+                {
+                    var filePath = appColetaBusiness.SaveFileEvidenciaAcaoConcluida(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaAcaoConcluida.Base64);
+                    appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = objAcao.Id, Path = filePath });
+                }
 
             }
             catch (Exception e)
@@ -120,18 +120,18 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         {
             var listaUsuarioNotificados = getUsuariosNotificados(objAcao);
 
-            var listaIdsUsuarioEditados = objAcao.ListaNotificarAcao.Select(x => x.Id).ToList(); 
+            var listaIdsUsuarioEditados = objAcao.ListaNotificarAcao.Select(x => x.Id).ToList();
 
-            var listaInserir = listaIdsUsuarioEditados.Where(x => !listaUsuarioNotificados.Select(y => y.UserSgq_Id).ToList().Contains(x)).ToList(); 
+            var listaInserir = listaIdsUsuarioEditados.Where(x => !listaUsuarioNotificados.Select(y => y.UserSgq_Id).ToList().Contains(x)).ToList();
 
-            var listaDeletar = listaUsuarioNotificados.Select(y => y.UserSgq_Id).ToList().Where(x => !listaIdsUsuarioEditados.Contains(x)).ToList(); 
+            var listaDeletar = listaUsuarioNotificados.Select(y => y.UserSgq_Id).ToList().Where(x => !listaIdsUsuarioEditados.Contains(x)).ToList();
 
-            if(listaInserir.Count > 0)
+            if (listaInserir.Count > 0)
                 InserirNotificarList(objAcao, listaInserir);
 
-            if(listaDeletar.Count > 0)
+            if (listaDeletar.Count > 0)
                 InativarNotificarList(objAcao, listaDeletar);
-            
+
         }
 
         public void InserirNotificarList(AcaoViewModel objAcao, List<int> listaInserir)
@@ -278,61 +278,101 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         public AcaoFormViewModel GetById(int id)
         {
             var query = $@"
-SELECT
- PAC.Id,
- PL1.Id AS ParLevel1_Id,
- PL1.Name AS ParLevel1_Name,
- PL2.Id AS ParLevel2_Id,
- PL2.Name AS ParLevel2_Name,
- PL3.Id AS ParLevel3_Id,
- PL3.Name AS ParLevel3_Name,
- PC.Id AS ParCompany_Id,
- PC.Name AS ParCompany_Name,
- PD.Id AS ParDepartment_Id,
- PD.Name AS ParDepartment_Name,
- PD.Parent_Id AS ParDepartmentParent_Id,
- PCG.Id AS ParCargo_Id,
- PCG.Name AS ParCargo_Name,
- PAC.Acao_Naoconformidade,
- PAC.AcaoText,
- PAC.DataEmissao,
- PAC.DataConclusao,
- PAC.HoraEmissao,
- PAC.HoraConclusao,
- PAC.Referencia,
- PAC.Responsavel,
- PAC.Prioridade,
- PAC.Status,
- PAC.IsActive,
- US.Name AS Responsavel_Name
- FROM Pa.Acao PAC  WITH (NOLOCK)
- LEFT JOIN ParLevel1 PL1  WITH (NOLOCK)
- ON PL1.Id = PAC.ParLevel1_Id
- LEFT JOIN ParLevel2 PL2  WITH (NOLOCK)
- ON PL2.Id = PAC.ParLevel2_Id
- LEFT JOIN ParLevel3 PL3  WITH (NOLOCK)
- ON PL3.Id = PAC.ParLevel3_Id
- LEFT JOIN ParCompany PC  WITH (NOLOCK)
- ON PC.Id = PAC.ParCompany_Id
- LEFT JOIN ParDepartment PD  WITH (NOLOCK)
- ON PD.Id = PAC.ParDepartment_Id
- LEFT JOIN ParCargo PCG  WITH (NOLOCK)
- ON PCG.Id = PAC.ParCargo_Id
- LEFT JOIN UserSgq US WITH (NOLOCK)
- ON US.Id = PAC.Responsavel
-WHERE PAC.Id = {id}
-";
+                SELECT
+                 PAC.Id,
+                 PL1.Id AS ParLevel1_Id,
+                 PL1.Name AS ParLevel1_Name,
+                 PL2.Id AS ParLevel2_Id,
+                 PL2.Name AS ParLevel2_Name,
+                 PL3.Id AS ParLevel3_Id,
+                 PL3.Name AS ParLevel3_Name,
+                 PC.Id AS ParCompany_Id,
+                 PC.Name AS ParCompany_Name,
+                 PD.Id AS ParDepartment_Id,
+                 PD.Name AS ParDepartment_Name,
+                 PD.Parent_Id AS ParDepartmentParent_Id,
+                 PCG.Id AS ParCargo_Id,
+                 PCG.Name AS ParCargo_Name,
+                 PAC.Acao_Naoconformidade,
+                 PAC.AcaoText,
+                 PAC.DataEmissao,
+                 PAC.DataConclusao,
+                 PAC.HoraEmissao,
+                 PAC.HoraConclusao,
+                 PAC.Referencia,
+                 PAC.Responsavel,
+                 PAC.Prioridade,
+                 PAC.Status,
+                 PAC.IsActive,
+                 US.Name AS Responsavel_Name
+                 FROM Pa.Acao PAC  WITH (NOLOCK)
+                 LEFT JOIN ParLevel1 PL1  WITH (NOLOCK)
+                 ON PL1.Id = PAC.ParLevel1_Id
+                 LEFT JOIN ParLevel2 PL2  WITH (NOLOCK)
+                 ON PL2.Id = PAC.ParLevel2_Id
+                 LEFT JOIN ParLevel3 PL3  WITH (NOLOCK)
+                 ON PL3.Id = PAC.ParLevel3_Id
+                 LEFT JOIN ParCompany PC  WITH (NOLOCK)
+                 ON PC.Id = PAC.ParCompany_Id
+                 LEFT JOIN ParDepartment PD  WITH (NOLOCK)
+                 ON PD.Id = PAC.ParDepartment_Id
+                 LEFT JOIN ParCargo PCG  WITH (NOLOCK)
+                 ON PCG.Id = PAC.ParCargo_Id
+                 LEFT JOIN UserSgq US WITH (NOLOCK)
+                 ON US.Id = PAC.Responsavel
+                WHERE PAC.Id = {id}
+                ";
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
                 var lista = factory.SearchQuery<AcaoFormViewModel>(query).FirstOrDefault();
-                //Falta as listas de Evidências (Arquivos e Fotos)
                 lista.ListaResponsavel = BuscarListaResponsavel(lista.ParCompany_Id);
                 lista.ListaNotificar = BuscarListaNotificar(lista.ParCompany_Id);
                 lista.ListaNotificarAcao = BuscarListaNotificarAcao(lista.ParCompany_Id, lista.Id);
 
+                //download das imagens
+                lista.ListaEvidencia = BuscarListaEvidencias(lista.Id);
+                lista.ListaEvidenciaConcluida = BuscarListaEvidenciasConcluidas(lista.Id);
+
+
+
+               // FotoController.FotoController foto = new FotoController.FotoController();
+                //var listaEvidencias = foto.DownloadPhoto("sdsd");
+
                 return lista;
             }
+        }
+
+        private List<Evidencia> BuscarListaEvidencias(int acao_Id)
+        {
+            var lista = new List<Evidencia>();
+
+            var query = $@"select * from Pa.EvidenciaNaoConformidade
+                            where Acao_id = {acao_Id}
+                            and IsActive = 1";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                lista = factory.SearchQuery<Evidencia>(query).ToList();
+            }
+
+            return lista;
+        }
+
+        private List<Evidencia> BuscarListaEvidenciasConcluidas(int acao_Id)
+        {
+            var lista = new List<Evidencia>();
+
+            var query = $@"select * from Pa.EvidenciaAcaoConcluida
+                            where Acao_id = {acao_Id}
+                            and IsActive = 1";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                lista = factory.SearchQuery<Evidencia>(query).ToList();
+            }
+
+            return lista;
         }
 
         private List<NotificarViewModel> BuscarListaResponsavel(int ParCompany_Id)
@@ -484,6 +524,9 @@ SELECT
             public List<Evidencia> ListaEvidencia { get; set; }
 
             [NotMapped]
+            public List<Evidencia> ListaEvidenciaConcluida { get; set; }
+
+            [NotMapped]
             public List<AcaoXNotificarAcao> ListaNotificarAcao { get; set; }
 
             [NotMapped]
@@ -539,10 +582,16 @@ SELECT
             public bool IsActive { get; set; }
             public string Responsavel_Name { get; set; }
 
+            [NotMapped]
+            public List<Evidencia> ListaEvidencia { get; set; }
+
+            [NotMapped]
+            public List<Evidencia> ListaEvidenciaConcluida { get; set; }
+
 
             public string Observacao { get; set; }
             public string Acao { get; set; }
-            public List<NotificarViewModel> ListaEvidencia { get; set; } = new List<NotificarViewModel>();
+
 
             public List<NotificarViewModel> ListaResponsavel { get; set; } = new List<NotificarViewModel>();
 

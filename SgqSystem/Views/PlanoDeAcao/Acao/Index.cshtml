@@ -13,7 +13,7 @@
 <div class="modal fade" id="modalEditar" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form onsubmit="enviarFormularioEditarAcao(event)">
+            <form id="formAcao">
                 <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
                     <h3 style="font-weight:bold;">Criar Ação</h3>
                 </div>
@@ -66,7 +66,7 @@
                             <strong>Evidencias de Não conformidade</strong>
                             <label for="uploadPhoto" class="fa fa-file btn btn-default">
                             </label>
-                            <input type="file" id="uploadPhoto" onchange="uploadFile(event)" />
+                            <input type="file" id="uploadPhoto" onchange="uploadFile(event,'evidencia')" />
                         </div>
                         <div class="col-xs-12">
                             <div id="divEvidencias" class="row"></div>
@@ -81,7 +81,7 @@
                                 <p>Evidencias da Ação Concluida</p>
                                 <label for="uploadPhotox" class="fa fa-file btn btn-default">
                                 </label>
-                                <input type="file" id="uploadPhotox" onchange="uploadFile(event)" />
+                                <input type="file" id="uploadPhotox" onchange="uploadFile(event, 'evidenciaConcluida')" />
                             </div>
                         </div>
                         <div class="col-xs-4 vereagir">
@@ -111,7 +111,7 @@
                             <div class="form-inline">
                                 <select id="selectNotificarAcao" class="form-control">
                                 </select>
-                                <button onclick="inserirNaListaNotificarAcao();" class="btn btn-primary">+</button>
+                                <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
                             </div>
                         </div>
                         <div class="col-xs-12">
@@ -131,7 +131,11 @@
                 </div>
                 <div class="modal-footer">
                     <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
-                    <button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>
+
+                    @*<button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>*@
+
+                    <button class="btn btn-success" onclick="enviarFormularioEditarAcao('1')">Salvar e iniciar acao</button>
+                    <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e preencher depois</button>
                 </div>
             </form>
         </div>
@@ -242,11 +246,19 @@
                 { "title": "Responsavel", "mData": "Responsavel", "visible": true },
                 { "title": "Nome do Responsavel", "mData": "Responsavel_Name", "visible": true },
                 { "title": "Notificar", "mData": "Notificar", "visible": true },
-                { "title": "Evidencia da Não Conformidade", "mData": "EvidenciaNaoConformidade", "visible": true },
-                { "title": "Evidencia Ação Concluida", "mData": "EvidenciaAcaoConcluida", "visible": true },
                 { "title": "Prioridade", "mData": "Prioridade", "visible": true },
-                { "title": "Status", "mData": "Status", "visible": true },
-                { "title": "Ativo", "mData": "IsActive", "visible": true }
+                {
+                    "title": "Status", "mData": "Status", "visible": true,
+                    mRender: function (data, type, full, cell) {
+                        if (data == 1) {
+                            return "Pendente"
+                        } else if (data == 2) {
+                            return "Em andamento"
+                        } else {
+                            return "Concluída"
+                        }
+                    }},
+                { "title": "Ativo", "mData": "IsActive", "visible": false }
             ];
             return colunas;
         }
@@ -356,6 +368,56 @@
             }
         }
 
+        //Evidencia ação concluida
+        function imprimirListaEvidenciaConcluida(lista) {
+            $('#actionsEvidencies').empty();
+            if (lista) {
+                for (var i = 0; i < lista.length; i++) {
+                    var evidenciaConcluida = lista[i];
+                    imprimirEvidenciaConcluida(evidenciaConcluida, lista);
+                }
+            }
+        }
+
+
+        function imprimirEvidenciaConcluida(evidenciaConcluida, lista) {
+            var html;
+
+            if (evidenciaConcluida["base64"]) {
+                html = `
+                        <div class="col-sm-4">
+                            <img src="data:image/png;base64,${evidenciaConcluida["base64"]}" data-img class="img-responsive"/>
+                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidenciaConcluida(${lista.length})">Excluir</button>
+                        </div>`;
+            } else {
+                html = `<div class="col-sm-4"><img src="#${evidenciaConcluida["Nome"]}" class="img-responsive"/></div>`;
+            }
+            $('#actionsEvidencies').append(html);
+        }
+
+        function removerDaListaEvidenciaConcluida(index) {
+            acaoEditar["ListaEvidenciaConcluida"].splice((index - 1), 1);
+            imprimirListaEvidenciaConcluida(acaoEditar["ListaEvidenciaConcluida"])
+        }
+
+        function inserirNaListaEvidenciaConcluida(base64) {
+            if (acaoEditar["ListaEvidenciaConcluida"] == undefined)
+                acaoEditar["ListaEvidenciaConcluida"] = [];
+
+            if (acaoEditar["ListaEvidenciaConcluida"].length < 2) {
+
+                var evidencia = {
+                    base64: base64
+                };
+
+                acaoEditar["ListaEvidenciaConcluida"].push(evidencia);
+                imprimirEvidenciaConcluida(evidencia, acaoEditar["ListaEvidenciaConcluida"]);
+            } else {
+                openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
+            }
+        }
+        
+
         //Evidencias
         function imprimirListaEvidencia(lista) {
             $('#divEvidencias').empty();
@@ -437,15 +499,18 @@
         }
 
         //Formulário
-        function enviarFormularioEditarAcao(event) {
-            
+        function enviarFormularioEditarAcao(status) {
+
             event.preventDefault();
             var form = $(event.currentTarget).serializeObject();
+            //var form = $("#formAcao").serializeObject();
 
             form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
             form["ListaEvidencia"] = acaoEditar["ListaEvidencia"];
+            form["ListaEvidenciaConcluida"] = acaoEditar["ListaEvidenciaConcluida"];
 
-            console.log(form);
+            validarStatus(form, status);
+
             const url = '@Url.Action("Post", "api/AcaoApi")';
 
             $.ajax({
@@ -465,6 +530,20 @@
                     console.log('erro ao salvar ação');
                 }
             });
+        }
+
+        function validarStatus(form, status) {
+            //1 Pendente
+            //2 Em andamento 
+            //3 Concluída
+            //4 Atrasada 
+            //5 Cancelada
+
+            if (form.ListaEvidenciaConcluida.length > 0) {
+                form.status = 3;
+            } else {
+                form.Status = status;
+            }
         }
 
         function montarTabela(dados, colunas) {
@@ -502,7 +581,7 @@
             return colunas;
         }
 
-        function uploadFile(evt) {
+        function uploadFile(evt, tipoEvidencia) {
             if (evt.target.files.length == 0)
                 return;
 
@@ -516,7 +595,10 @@
                 //showing file converted to base64
                 //document.getElementsByName('imagefile')[0].value = base64String;
 
-                inserirNaListaEvidencia(base64String);
+                if (tipoEvidencia== 'evidencia')
+                    inserirNaListaEvidencia(base64String);
+                else
+                    inserirNaListaEvidenciaConcluida(base64String);
                 $('#uploadPhoto').val('');
             };
             // Read in the image file as a data URL.
@@ -525,20 +607,15 @@
 
         $('body')
             .on('click, change', '#checkVerAgir', function () {
-
-
+                
                 if ($(this).is(":checked")) {
                     $("#actionsEvidencies").removeAttr('hidden');
                     $('.vereagir').removeClass('hide');
-
-
                 } else {
                     $("#actionsEvidencies").attr('hidden', 'hidden');
                     $('.vereagir').addClass('hide');
-
                 }
             });
-
 
     </script>
 

@@ -584,7 +584,7 @@ WHERE 1 = 1
         {
             try
             {
-                string sql = $@"INSERT INTO Pa.EvidenciaNaoConformidade(
+                string sql = $@"INSERT INTO Pa.EvidenciaAcaoConcluida(
                                     Acao_Id				
                                     ,Path
                                     ,AddDate)
