@@ -49,44 +49,41 @@ namespace SgqSystem.Controllers.V2.Api
         }
 
         [Route("SetAction")]
-        public IHttpActionResult SetAction(List<Acao> listaObjAcoes)
+        public IHttpActionResult SetAction(Acao acao)
         {
             AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
 
             try
             {
-                foreach (var acao in listaObjAcoes)
+
+                appColetaBusiness.SaveAction(acao);
+
+                foreach (var usuarioNotificado in acao.Notificar)
                 {
-                    appColetaBusiness.SaveAction(acao);
-
-                    foreach(var usuarioNotificado in acao.Notificar)
-                    {
-                        appColetaBusiness.SaveAcaoXNotificarAcao(new AcaoXNotificarAcao() { Acao_Id = acao.Id, UserSgq_Id = usuarioNotificado });
-                    }
-
-
-                    foreach (var evidenciaNaoConformidade in acao.EvidenciaNaoConformidade)
-                    {
-                        var filePath = appColetaBusiness.SaveFileEvidenciaNaoConformidade(acao.ParLevel1_Id, acao.ParLevel2_Id, acao.ParLevel3_Id, evidenciaNaoConformidade);
-                        appColetaBusiness.SaveEvidenciaNaoConformidade(new EvidenciaNaoConformidade() { Acao_Id = acao.Id, Path = filePath });
-                    }
-
-
-                    foreach (var evidenciaAcaoConcluida in acao.EvidenciaAcaoConcluida)
-                    {
-                        var filePath = appColetaBusiness.SaveFileEvidenciaAcaoConcluida(acao.ParLevel1_Id, acao.ParLevel2_Id, acao.ParLevel3_Id, evidenciaAcaoConcluida);
-                        appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = acao.Id, Path = filePath });
-                    }
+                    appColetaBusiness.SaveAcaoXNotificarAcao(new AcaoXNotificarAcao() { Acao_Id = acao.Id, UserSgq_Id = usuarioNotificado });
                 }
-              
+
+
+                foreach (var evidenciaNaoConformidade in acao.EvidenciaNaoConformidade)
+                {
+                    var filePath = appColetaBusiness.SaveFileEvidenciaNaoConformidade(acao.ParLevel1_Id, acao.ParLevel2_Id, acao.ParLevel3_Id, evidenciaNaoConformidade);
+                    appColetaBusiness.SaveEvidenciaNaoConformidade(new EvidenciaNaoConformidade() { Acao_Id = acao.Id, Path = filePath });
+                }
+
+
+                foreach (var evidenciaAcaoConcluida in acao.EvidenciaAcaoConcluida)
+                {
+                    var filePath = appColetaBusiness.SaveFileEvidenciaAcaoConcluida(acao.ParLevel1_Id, acao.ParLevel2_Id, acao.ParLevel3_Id, evidenciaAcaoConcluida);
+                    appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = acao.Id, Path = filePath });
+                }
+
             }
             catch (Exception e)
             {
-                return null;
+                return InternalServerError(e);
             }
-       
 
-            return Ok();
+            return Ok(acao);
         }
 
         #region Coleta Padrão RH

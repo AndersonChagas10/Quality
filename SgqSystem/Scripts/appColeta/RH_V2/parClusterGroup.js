@@ -34,7 +34,7 @@
 }
 
 function listarParClusterGroup(isVoltar) {
-    
+
     cleanGlobalVarParCluster();
 
     currentParClusterGroup_Id = null;
@@ -58,11 +58,17 @@ function listarParClusterGroup(isVoltar) {
             systemLogo = 'background-image: url(' + globalLogo + ')';
 
         htmlParClusterGroup += '<div class="row">';
+
         $(data).each(function (i, o) {
 
-            htmlParClusterGroup += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important"><button type="button" class="list-group-item btn btn-lg btn-block"  style="color: #1F497D;background-color:#DCE6F1;white-space: break-spaces;" data-par-cluster-group-id="' + o.Id + '" title="' + o.Name + '">' + o.Name +
-                '</button></div>';
+            var flagAcao = "";
+            if (getAcoesByClusterGroup(o.Id).length > 0)
+                flagAcao = '<span class="badge">Ação Pendente</span>';
+
+            htmlParClusterGroup += '<div class="col-xs-6 col-md-4 divBtnLista"><button type="button" class="list-group-item btn btn-lg btn-block btnLista" data-par-cluster-group-id="' + o.Id + '" title="' + o.Name + '">' + o.Name +
+                '</button>' + flagAcao + '</div>';
         });
+
         htmlParClusterGroup += '</div>';
         var voltar = '<a onclick="voltarParcompany(openParCompany,null);" style="margin-bottom:10px" class="btn btn-warning col-xs-12">Voltar</a>';
 
@@ -118,5 +124,5 @@ $('body').off('click', '[data-par-cluster-group-id]').on('click', '[data-par-clu
 
 function voltarParcompany() {
 
-	listarParCompany(true);
+    listarParCompany(true);
 }
