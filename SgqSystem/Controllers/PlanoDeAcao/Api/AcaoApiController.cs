@@ -1,7 +1,8 @@
-﻿using System;
+﻿using ADOFactory;
+using Dominio;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace SgqSystem.Controllers.Api
@@ -152,7 +153,115 @@ WHERE PAC.Id = {id}
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
                 var lista = factory.SearchQuery<AcaoFormViewModel>(query).FirstOrDefault();
+                //Falta as listas de Evidências (Arquivos e Fotos)
+                lista.ListaResponsavel = BuscarListaResponsavel(lista.ParCompany_Id);
+                lista.ListaNotificar = BuscarListaNotificar(lista.ParCompany_Id);
+                lista.ListaNotificarAcao = BuscarListaNotificarAcao(lista.ParCompany_Id);
+
                 return lista;
+            }
+        }
+
+        private List<NotificarViewModel> BuscarListaResponsavel(int ParCompany_Id)
+        {
+            var listaAuditor = GetUsersByCompany(ParCompany_Id);
+            List<NotificarViewModel> listaAuditorAcao = new List<NotificarViewModel>();
+
+            foreach (var item in listaAuditor)
+            {
+                if (item.Role != null && item.Role.ToLower().Contains("Auditor".ToLower()))
+                {
+                    listaAuditorAcao.Add(listaAuditor.Select(x => new NotificarViewModel()
+                    {
+                        Id = item.Id,
+                        Nome = item.Name
+                    }).FirstOrDefault());
+                }
+            }
+            return listaAuditorAcao;
+        }
+
+        private List<NotificarViewModel> BuscarListaNotificar(int ParCompany_Id)
+        {
+            var listaNotificar = GetUsersByCompany(ParCompany_Id);
+            List<NotificarViewModel> listaNotificarAcao = new List<NotificarViewModel>();
+
+            foreach (var item in listaNotificar)
+            {
+                if (item.Role != null && item.Role.ToLower().Contains("Auditor".ToLower()))
+                {
+                    listaNotificarAcao.Add(listaNotificar.Select(x => new NotificarViewModel()
+                    {
+                        Id = item.Id,
+                        Nome = item.Name
+                    }).FirstOrDefault());
+                }
+            }
+            return listaNotificarAcao;
+        }
+
+        private List<NotificarViewModel> BuscarListaNotificarAcao(int ParCompany_Id)
+        {
+            var listaAuditor = GetUsersXAcao(ParCompany_Id);
+            List<NotificarViewModel> listaNotificarAcao = new List<NotificarViewModel>();
+
+            foreach (var item in listaAuditor)
+            {
+                if (item.Role != null && item.Role.ToLower().Contains("Auditor".ToLower()))
+                {
+                    listaNotificarAcao.Add(listaAuditor.Select(x => new NotificarViewModel()
+                    {
+                        Id = item.Id,
+                        Nome = item.Name
+                    }).FirstOrDefault());
+                }
+            }
+            return listaNotificarAcao;
+        }
+
+        public List<UserSgq> GetUsersByCompany(int ParCompany_Id)
+        {
+            var query = $@"
+SELECT * 
+FROM UserSgq
+WHERE 1=1 AND isActive = 1 AND id 
+IN(
+ SELECT
+ PCXU.UserSgq_Id
+ FROM
+ ParCompanyXUserSgq PCXU WITH(NOLOCK)                    
+ INNER JOIN UserSgq US ON PCXU.ParCompany_Id = {ParCompany_Id}
+ UNION ALL   
+
+ SELECT US.Id
+ FROM UserSgq US WITH(NOLOCK)             
+ WHERE US.ParCompany_Id = {ParCompany_Id}
+)";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                var retorno = factory.SearchQuery<UserSgq>(query).ToList();
+                return retorno;
+            }
+        }
+
+        private List<UserSgq> GetUsersXAcao(int ParCompany_Id)
+        {
+            var query = $@"
+SELECT
+ US.Id AS Id, 
+ US.FullName AS Name,
+ US.Role AS Role
+ FROM PA.AcaoXNotificarAcao PAAXN  WITH (NOLOCK)
+ LEFT JOIN UserSgq US WITH (NOLOCK)
+ ON US.Id = PAAXN.UserSgq_Id
+ WHERE 1=1 AND US.isActive = 1 AND PAAXN.isActive = 1 
+";
+
+            using (Factory factory = new Factory("DefaultConnection"))
+            {
+                var retorno = factory.SearchQuery<UserSgq>(query).ToList();
+                return retorno;
             }
         }
 
@@ -188,7 +297,7 @@ WHERE PAC.Id = {id}
             public bool IsActive { get; set; }
             public string Responsavel_Name { get; set; }
         }
-        
+
         public class AcaoFormViewModel
         {
             public int Id { get; set; }
@@ -223,31 +332,16 @@ WHERE PAC.Id = {id}
 
             public string Observacao { get; set; }
             public string Acao { get; set; }
-            public List<NotificarViewModel> ListaEvidencia { get; set; } = new List<NotificarViewModel>()
-            {
-                new NotificarViewModel{ Id = 1, Nome = "Pedro"},
-                new NotificarViewModel{ Id = 2, Nome = "Leonardo"},
-            };
-            public List<NotificarViewModel> ListaResponsavel { get; set; } = new List<NotificarViewModel>()
-            {
-                new NotificarViewModel{ Id = 1, Nome = "Pedro"},
-                new NotificarViewModel{ Id = 2, Nome = "Leonardo"},
-            };
+            public List<NotificarViewModel> ListaEvidencia { get; set; } = new List<NotificarViewModel>();
+            public List<NotificarViewModel> ListaResponsavel { get; set; } = new List<NotificarViewModel>();
             public List<NotificarViewModel> ListaPrioridade { get; set; } = new List<NotificarViewModel>()
             {
-                new NotificarViewModel{ Id = 1, Nome = "Pedro"},
-                new NotificarViewModel{ Id = 2, Nome = "Leonardo"},
+                new NotificarViewModel{ Id = 1, Nome = "Baixa"},
+                new NotificarViewModel{ Id = 2, Nome = "Média"},
+                new NotificarViewModel{ Id = 3, Nome = "Alta"},
             };
-            public List<NotificarViewModel> ListaNotificar { get; set; } = new List<NotificarViewModel>()
-            {
-                new NotificarViewModel{ Id = 1, Nome = "Pedro"},
-                new NotificarViewModel{ Id = 2, Nome = "Leonardo"},
-            };
-            public List<NotificarViewModel> ListaNotificarAcao { get; set; } = new List<NotificarViewModel>()
-            {
-                new NotificarViewModel{ Id = 1, Nome = "Pedro"},
-                new NotificarViewModel{ Id = 2, Nome = "Leonardo"},
-            };
+            public List<NotificarViewModel> ListaNotificar { get; set; } = new List<NotificarViewModel>();
+            public List<NotificarViewModel> ListaNotificarAcao { get; set; } = new List<NotificarViewModel>();
         }
 
         public class NotificarViewModel
