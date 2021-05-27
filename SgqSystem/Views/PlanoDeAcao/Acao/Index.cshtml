@@ -1,6 +1,7 @@
 ﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
 @{
     ViewBag.Title = "Listagem de ações";
+    var urlGraficoHolding = Url.Action("Salvar", "api/AcaoApi");
 }
 
 <style>
@@ -18,6 +19,7 @@
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="Id" />
+                    <input type="hidden" id="status" name="Status" />
                     <div class="row">
                         <div class="col-xs-4">
                             <strong>Data Emissão:</strong>
@@ -82,11 +84,11 @@
                                 <input type="file" id="uploadPhotox" onchange="uploadFile(event)" />
                             </div>
                         </div>
-                        <div class="col-xs-4 hide vereagir">
+                        <div class="col-xs-4 vereagir">
                             <label><strong>Data da conclusão:</strong></label>
                             <input id="actionConclusionDate" name="DataConclusao" type="date" min="2021-05-19" class="form-control">
                         </div>
-                        <div class="col-xs-4 hide vereagir">
+                        <div class="col-xs-4 vereagir">
                             <label><strong>Hora da conclusão:</strong></label>
                             <input id="actionConclusionHour" name="HoraConclusao" type="time" class="form-control">
                         </div>
@@ -128,8 +130,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
-                    <button type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>
+                    <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
+                    <button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>
                 </div>
             </form>
         </div>
@@ -145,6 +147,8 @@
 @section Scripts {
 
     <script type="text/javascript">
+
+        var urlGraficoHolding = @Html.Raw(Json.Encode(urlGraficoHolding));
 
         $(document).ready(function () {
 
@@ -165,7 +169,7 @@
             $.ajax({
                 //data: JSON.stringify(filtro),
                 type: 'GET',
-                url:  '@Html.Raw(Url.Action("", "api/AcaoApi"))',
+                url:  '@Html.Raw(Url.Action("Get", "api/AcaoApi"))',
                 contentType: "application/json",
                 success: function (dados) {
                     if (dados && dados.length > 0) {
@@ -192,54 +196,57 @@
         function montarColunasDaTabela() {
             var colunas = [
                 {
-                    "title": "", "mData": null, "visible": true, mRender: function (data, type, full, cell) {
+                    "title": "Ações", "mData": null, "visible": true, mRender: function (data, type, full, cell) {
                         var id = full["Id"];
                         return `<button class="btn btn-sm btn-info" onclick="abrirEditar(${id})">Editar</button>`;
                     }
                 },
                 { "title": "Id", "mData": "Id", "visible": true },
+
+                { "title": "Data Emissão", "mData": "DataEmissao", "visible": true },
+                { "title": "Hora Emissão", "mData": "HoraEmissao", "visible": true },
+                //{ "title": "Emissor", "mData": "Emissor", "visible": true },
+                { "title": "ParCompany_Id", "mData": "ParCompany_Id", "visible": false },
+                { "title": "Unidade", "mData": "ParCompany_Name", "visible": true },
+                { "title": "ParDepartment_Id", "mData": "ParDepartment_Id", "visible": false },
+                { "title": "Centro de Custo", "mData": "ParDepartment_Name", "visible": true },
+                { "title": "ParDepartmentParent_Id", "mData": "ParDepartmentParent_Id", "visible": false },
+                { "title": "Seção", "mData": "ParDepartmentParent_Id", "visible": true },
+                { "title": "ParCargo_Id", "mData": "ParCargo_Id", "visible": false },
+                { "title": "Cargo", "mData": "ParCargo_Name", "visible": true },
                 { "title": "ParLevel1_Id", "mData": "ParLevel1_Id", "visible": false },
                 {
-                    "title": "ParLevel1_Name", "mData": "ParLevel1_Name", "visible": true,
+                    "title": "Indicador", "mData": "ParLevel1_Name", "visible": true,
                     mRender: function (data, type, full, cell) {
                         return montarCampo(data);
                     }
                 },
                 { "title": "ParLevel2_Id", "mData": "ParLevel2_Id", "visible": false },
                 {
-                    "title": "ParLevel2_Name", "mData": "ParLevel2_Name", "visible": true,
+                    "title": "Monitoramento", "mData": "ParLevel2_Name", "visible": true,
                     mRender: function (data, type, full, cell) {
                         return montarCampo(data);
                     } },
                 { "title": "ParLevel3_Id", "mData": "ParLevel3_Id", "visible": false },
                 {
-                    "title": "ParLevel3_Name", "mData": "ParLevel3_Name", "visible": true,
+                    "title": "Tarefa", "mData": "ParLevel3_Name", "visible": true,
                     mRender: function (data, type, full, cell) {
                         return montarCampo(data);
                     }
                 },
-                { "title": "ParCompany_Id", "mData": "ParCompany_Id", "visible": false },
-                { "title": "ParCompany_Name", "mData": "ParCompany_Name", "visible": true },
-                { "title": "ParDepartment_Id", "mData": "ParDepartment_Id", "visible": false },
-                { "title": "ParDepartment_Name", "mData": "ParDepartment_Name", "visible": true },
-                { "title": "ParDepartmentParent_Id", "mData": "ParDepartmentParent_Id", "visible": false },
-                { "title": "ParCargo_Id", "mData": "ParCargo_Id", "visible": false },
-                { "title": "ParCargo_Name", "mData": "ParCargo_Name", "visible": true },
-                { "title": "Acao_Naoconformidade", "mData": "Acao_Naoconformidade", "visible": true },
-                { "title": "AcaoText", "mData": "AcaoText", "visible": true },
-                { "title": "DataEmissao", "mData": "DataEmissao", "visible": true },
-                { "title": "DataConclusao", "mData": "DataConclusao", "visible": true },
-                { "title": "HoraEmissao", "mData": "HoraEmissao", "visible": true },
-                { "title": "HoraConclusao", "mData": "HoraConclusao", "visible": true },
+                { "title": "Acao Naoconformidade", "mData": "Acao_Naoconformidade", "visible": true },
+                { "title": "Texto Ação", "mData": "AcaoText", "visible": true },
+                { "title": "Data Conclusão", "mData": "DataConclusao", "visible": true },
+                { "title": "Hora Conclusão", "mData": "HoraConclusao", "visible": true },
                 { "title": "Referencia", "mData": "Referencia", "visible": true },
                 { "title": "Responsavel", "mData": "Responsavel", "visible": true },
                 { "title": "Nome do Responsavel", "mData": "Responsavel_Name", "visible": true },
                 { "title": "Notificar", "mData": "Notificar", "visible": true },
-                { "title": "EvidenciaNaoConformidade", "mData": "EvidenciaNaoConformidade", "visible": true },
-                { "title": "EvidenciaAcaoConcluida", "mData": "EvidenciaAcaoConcluida", "visible": true },
+                { "title": "Evidencia da Não Conformidade", "mData": "EvidenciaNaoConformidade", "visible": true },
+                { "title": "Evidencia Ação Concluida", "mData": "EvidenciaAcaoConcluida", "visible": true },
                 { "title": "Prioridade", "mData": "Prioridade", "visible": true },
                 { "title": "Status", "mData": "Status", "visible": true },
-                { "title": "IsActive", "mData": "IsActive", "visible": true }
+                { "title": "Ativo", "mData": "IsActive", "visible": true }
             ];
             return colunas;
         }
@@ -251,7 +258,7 @@
         function abrirEditar(id) {
             openLoader("...");
 
-            const url = '@Url.Action("", "api/AcaoApi")';
+            const url = '@Url.Action("GetById", "api/AcaoApi")';
             //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
             //Pegar as informações e mapear para um objeto
             //Com as propriedades, apresente na tela
@@ -293,14 +300,17 @@
         var acaoEditar = {};
         function preencherModal(dados) {
             acaoEditar = dados;
-
+            
             if (dados.ListaResponsavel) {
                 var html = `<option value="">Selecione...</option>`;
                 for (var i = 0; i < dados.ListaResponsavel.length; i++) {
                     var responsavel = dados.ListaResponsavel[i];
                     html += `<option value="${responsavel["Id"]}">${responsavel["Nome"]}</option>`;
                 }
+
                 $('#selectResponsavel').html(html);
+
+                $("#selectResponsavel option[value=" + dados.Responsavel + "]").attr('selected', 'selected')
             }
 
             if (dados.ListaPrioridade) {
@@ -325,6 +335,10 @@
             $("#actionParLevel3_Id").text(dados.ParLevel3_Name);
             $("#selectPrioridade").val(dados.Prioridade);
             $("#selectResponsavel").val(dados.Responsavel);
+            $("#actionConclusionDate").val(dados.DataConclusao.split('T')[0]);
+            $("#actionConclusionHour").val(dados.HoraConclusao);
+            $("#actionReference").val(dados.Referencia);
+            $("#status").val(dados.Status);
 
             $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
             $("#txtAcaoText").text(dados.AcaoText);
@@ -348,15 +362,20 @@
             if (lista) {
                 for (var i = 0; i < lista.length; i++) {
                     var evidencia = lista[i];
-                    imprimirEvidencia(evidencia);
+                    imprimirEvidencia(evidencia, lista);
                 }
             }
         }
 
-        function imprimirEvidencia(evidencia) {
+        function imprimirEvidencia(evidencia, lista) {
             var html;
+            
             if (evidencia["base64"]) {
-                html = `<div class="col-sm-4"><img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/></div>`;
+                html = `
+                        <div class="col-sm-4">
+                            <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
+                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${lista.length})">Excluir</button>
+                        </div>`;
             } else {
                 html = `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
             }
@@ -364,16 +383,22 @@
         }
 
         function removerDaListaEvidencia(index) {
-            acaoEditar["ListaEvidencia"].splice(index, 1);
+            acaoEditar["ListaEvidencia"].splice((index-1), 1);
             imprimirListaEvidencia(acaoEditar["ListaEvidencia"])
         }
 
         function inserirNaListaEvidencia(base64) {
-            var evidencia = {
-                base64: base64
-            };
-            acaoEditar["ListaEvidencia"].push(evidencia);
-            imprimirEvidencia(evidencia);
+            if (acaoEditar["ListaEvidencia"].length < 2) {
+
+                var evidencia = {
+                    base64: base64
+                };
+
+                acaoEditar["ListaEvidencia"].push(evidencia);
+                imprimirEvidencia(evidencia, acaoEditar["ListaEvidencia"]);
+            } else {
+                openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
+            }
         }
 
         //Notificar ação
@@ -382,7 +407,13 @@
                 var html = "";
                 for (var i = 0; i < lista.length; i++) {
                     var notificarAcao = lista[i];
-                    html += `<tr><td>${notificarAcao["Id"]}</td><td>${notificarAcao["Nome"]}</td><td><button class="btn btn-sm btn-danger" onclick="removerDaListaNotificarAcao(${i})">X</button></td></tr>`;
+                    html += `<tr>
+                                <td>${notificarAcao["Id"]}</td>
+                                <td>${notificarAcao["Nome"]}</td>
+                                <td>
+                                <button class="btn btn-sm btn-danger" onclick="removerDaListaNotificarAcao(${i})">X</button>
+                                </td>
+                            </tr>`;
                 }
                 $('#tableNotificarAcao tbody').html(html);
             }
@@ -397,7 +428,8 @@
             if ($('#selectNotificarAcao').val() > 0) {
                 var obj = {
                     Id: $('#selectNotificarAcao').val(),
-                    Nome: $('#selectNotificarAcao option:selected').text()
+                    Nome: $('#selectNotificarAcao option:selected').text(),
+                    IsActive: true
                 };
                 acaoEditar["ListaNotificarAcao"].push(obj);
                 imprimirListaNotificarAcao(acaoEditar["ListaNotificarAcao"])
@@ -406,6 +438,7 @@
 
         //Formulário
         function enviarFormularioEditarAcao(event) {
+            
             event.preventDefault();
             var form = $(event.currentTarget).serializeObject();
 
@@ -413,6 +446,25 @@
             form["ListaEvidencia"] = acaoEditar["ListaEvidencia"];
 
             console.log(form);
+            const url = '@Url.Action("Post", "api/AcaoApi")';
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: JSON.stringify(form),
+                contentType: "application/json",
+                success: function (data) {
+                    openMessageModal("Concluido", "Ação salva com sucesso");
+                    $("#btnClose").trigger('click');
+                    setTimeout(function () {
+                        buscarDados(null);
+                    }, 3000);
+                   
+                },
+                error: function () {
+                    console.log('erro ao salvar ação');
+                }
+            });
         }
 
         function montarTabela(dados, colunas) {
@@ -470,6 +522,22 @@
             // Read in the image file as a data URL.
             reader.readAsBinaryString(e);
         }
+
+        $('body')
+            .on('click, change', '#checkVerAgir', function () {
+
+
+                if ($(this).is(":checked")) {
+                    $("#actionsEvidencies").removeAttr('hidden');
+                    $('.vereagir').removeClass('hide');
+
+
+                } else {
+                    $("#actionsEvidencies").attr('hidden', 'hidden');
+                    $('.vereagir').addClass('hide');
+
+                }
+            });
 
 
     </script>
