@@ -497,16 +497,18 @@ WHERE 1 = 1
         public string SaveFileEvidenciaNaoConformidade(int parLevel1_Id, int parLevel2_Id, int parLevel3_Id, string fileBase64)
         {
             var basePath = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot ?? "~";
+
             if (basePath.Equals("~"))
             {
                 basePath = @AppDomain.CurrentDomain.BaseDirectory;
             }
 
+            basePath = basePath + "\\Acao";
             string fileName = parLevel1_Id + parLevel2_Id + parLevel3_Id + DateTime.Now.GetHashCode() + new Random().Next(1000, 9999) + ".png";
 
             Exception exception;
 
-            FileHelper.SavePhoto(fileBase64, basePath + "/Acao", fileName
+            FileHelper.SavePhoto(fileBase64, basePath , fileName
                 , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
                 , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
                 , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot, out exception);
@@ -563,11 +565,12 @@ WHERE 1 = 1
                 basePath = @AppDomain.CurrentDomain.BaseDirectory;
             }
 
+            basePath = basePath + "\\Acao";
             string fileName = parLevel1_Id + parLevel2_Id + parLevel3_Id + DateTime.Now.GetHashCode() + new Random().Next(1000, 9999) + ".png";
 
             Exception exception;
 
-            FileHelper.SavePhoto(fileBase64, basePath + "\\Acao", fileName
+            FileHelper.SavePhoto(fileBase64, basePath , fileName
                       , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
                       , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
                       , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.StorageRoot, out exception);
@@ -584,7 +587,7 @@ WHERE 1 = 1
         {
             try
             {
-                string sql = $@"INSERT INTO Pa.EvidenciaNaoConformidade(
+                string sql = $@"INSERT INTO Pa.EvidenciaAcaoConcluida(
                                     Acao_Id				
                                     ,Path
                                     ,AddDate)

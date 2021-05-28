@@ -19,17 +19,17 @@ namespace Dominio
         public int ParClusterGroup_Id { get; set; }
         public string Acao_Naoconformidade { get; set; }
         public string AcaoText { get; set; }
-        public string HoraConclusao { get; set; }
+        public TimeSpan? HoraConclusao { get; set; }
         public DateTime? DataConclusao { get; set; }
         public string Referencia { get; set; }
         public int? Responsavel { get; set; }
         public List<int> Notificar { get; set; }
         public DateTime? DataEmissao { get; set; }
-        public string HoraEmissao { get; set; }
+        public TimeSpan? HoraEmissao { get; set; }
         public int Emissor { get; set; }
-        public int Prioridade { get; set; }
+        public int? Prioridade { get; set; }
         public int Status { get; set; }
-        public int IsActive { get; set; }
+        public bool IsActive { get; set; }
 
         public IEnumerable<string> EvidenciaNaoConformidade { get; set; }
         public IEnumerable<string> EvidenciaAcaoConcluida { get; set; }
