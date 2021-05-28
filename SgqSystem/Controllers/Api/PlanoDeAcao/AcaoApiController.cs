@@ -1,5 +1,6 @@
 ﻿using ADOFactory;
 using Dominio;
+using Helper;
 using SgqServiceBusiness.Controllers.RH;
 using SgqSystem.Helpers;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web.Http;
 
@@ -89,22 +91,24 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                 //salva os campos comuns da ação
                 UpdateAction(objAcao);
 
-                //salva a listagem de usuario no campo notificar
+                //salva/deleta a listagem de usuario no campo notificar
                 GetNotificarList(objAcao);
 
+                //salva/deleta a listagem de imagens de evidencias
+                GetEvidenciaList(objAcao);
 
-                foreach (var evidenciaNaoConformidade in objAcao.ListaEvidencia)
-                {
-                    var filePath = appColetaBusiness.SaveFileEvidenciaNaoConformidade(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaNaoConformidade.Base64);
-                    appColetaBusiness.SaveEvidenciaNaoConformidade(new EvidenciaNaoConformidade() { Acao_Id = objAcao.Id, Path = filePath });
-                }
+                //foreach (var evidenciaNaoConformidade in objAcao.ListaEvidencia)
+                //{
+                    //var filePath = appColetaBusiness.SaveFileEvidenciaNaoConformidade(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaNaoConformidade.Base64);
+                //    appColetaBusiness.SaveEvidenciaNaoConformidade(new EvidenciaNaoConformidade() { Acao_Id = objAcao.Id, Path = filePath });
+                //}
 
 
-                foreach (var evidenciaAcaoConcluida in objAcao.ListaEvidenciaConcluida)
-                {
-                    var filePath = appColetaBusiness.SaveFileEvidenciaAcaoConcluida(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaAcaoConcluida.Base64);
-                    appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = objAcao.Id, Path = filePath });
-                }
+                //foreach (var evidenciaAcaoConcluida in objAcao.ListaEvidenciaConcluida)
+                //{
+                    //var filePath = appColetaBusiness.SaveFileEvidenciaAcaoConcluida(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaAcaoConcluida.Base64);
+                //    appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = objAcao.Id, Path = filePath });
+                //}
 
             }
             catch (Exception e)
@@ -114,6 +118,32 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
 
             return null;
+        }
+
+        public void GetEvidenciaList(AcaoViewModel objAcao)
+        {
+            var listaEvidenciasDB = getEvidenciasDB(objAcao.Id);
+
+            var listaEvidenciasIdsEditadas = objAcao.ListaEvidencia.Select(x => x.Id).ToList();
+
+            var listaInserir = listaEvidenciasIdsEditadas.Where(x => !listaEvidenciasDB.Select(y => y.Id).ToList().Contains(x)).ToList();
+
+            var listaDeletar = listaEvidenciasDB.Select(y => y.Id).ToList().Where(x => !listaEvidenciasIdsEditadas.Contains(x)).ToList();
+        }
+
+        public List<Evidencia> getEvidenciasDB(int acao_Id)
+        {
+            var query = $@"
+                select * from Pa.EvidenciaNaoConformidade 
+                where Acao_Id = {acao_Id}
+                and IsActive = 1
+            ";
+
+            using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
+            {
+                var lista = factory.SearchQuery<Evidencia>(query);
+                return lista;
+            }
         }
 
         public void GetNotificarList(AcaoViewModel objAcao)
@@ -330,17 +360,97 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                 lista.ListaNotificar = BuscarListaNotificar(lista.ParCompany_Id);
                 lista.ListaNotificarAcao = BuscarListaNotificarAcao(lista.ParCompany_Id, lista.Id);
 
-                //download das imagens
-                lista.ListaEvidencia = BuscarListaEvidencias(lista.Id);
-                lista.ListaEvidenciaConcluida = BuscarListaEvidenciasConcluidas(lista.Id);
-
-
-
-               // FotoController.FotoController foto = new FotoController.FotoController();
-                //var listaEvidencias = foto.DownloadPhoto("sdsd");
-
                 return lista;
             }
+        }
+
+        [Route("GetFotosEvidenciaConcluida/{id}")]
+        [HttpGet]
+        public List<ImageEvidencia> GetFotosEvidenciaConcluida(int id)
+        {
+            var lista = new AcaoFormViewModel();
+
+            var listaFotos = new List<ImageEvidencia>();
+
+            lista.ListaEvidenciaConcluida = BuscarListaEvidenciasConcluidas(id);
+
+            using (var db = new SgqDbDevEntities())
+            {
+
+                foreach (var item in lista.ListaEvidenciaConcluida)
+                {
+                    var foto = new ImageEvidencia();
+
+                    string url = item.Path;
+
+                    byte[] bytes;
+                    //Verificar se no web.config a credencial do servidor de fotos
+                    Exception exception = null;
+
+                    bytes = FileHelper.DownloadPhoto(url
+                   , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
+                   , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
+                   , out exception);
+
+                    if (exception != null)
+                        throw new Exception("Error: " + exception.ToClient());
+
+                    foto.Byte = bytes;
+                    foto.Path = item.Path;
+                    listaFotos.Add(foto);
+                }
+            }
+            return listaFotos;
+        }
+
+
+        [Route("GetFotosEvidencia/{id}")]
+        [HttpGet]
+        public List<ImageEvidencia> GetFotosEvidencia(int id)
+        {
+            var lista = new AcaoFormViewModel();
+
+            var listaFotos = new List<ImageEvidencia>();
+
+            ////download das imagens
+            lista.ListaEvidencia = BuscarListaEvidencias(id);
+
+            using (var db = new SgqDbDevEntities())
+            {
+                
+                foreach (var item in lista.ListaEvidencia)
+                {
+                    var foto = new ImageEvidencia();
+
+                    string url = item.Path;
+
+                    byte[] bytes;
+                    //Verificar se no web.config a credencial do servidor de fotos
+                    Exception exception = null;
+
+                     bytes = FileHelper.DownloadPhoto(url
+                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
+                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
+                    , out exception);
+
+                    if (exception != null)
+                        throw new Exception("Error: " + exception.ToClient());
+
+                    foto.Byte = bytes;
+                    foto.Path = item.Path;
+                    listaFotos.Add(foto);
+                }
+
+                return listaFotos;
+            }
+        }
+
+        public class ImageEvidencia
+        {
+            public byte[] Byte { get; set; }
+
+            public string Path { get; set; }
+
         }
 
         private List<Evidencia> BuscarListaEvidencias(int acao_Id)
@@ -542,6 +652,8 @@ SELECT
 
         public class Evidencia
         {
+            public int Id { get; set; }
+
             public string Base64 { get; set; }
 
             public string Path { get; set; }
@@ -572,8 +684,12 @@ SELECT
             public string Referencia { get; set; }
             public string Responsavel { get; set; }
             public string Notificar { get; set; }
+
             [NotMapped]
             public List<string> EvidenciaNaoConformidade { get; set; }
+
+            [NotMapped]
+            public List<FileStream> listaDeFotosEvidencia { get; set; }
 
             [NotMapped]
             public List<string> EvidenciaAcaoConcluida { get; set; }

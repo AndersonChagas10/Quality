@@ -250,9 +250,9 @@
                 {
                     "title": "Status", "mData": "Status", "visible": true,
                     mRender: function (data, type, full, cell) {
-                        if (data == 1) {
+                        if (data == "1") {
                             return "Pendente"
-                        } else if (data == 2) {
+                        } else if (data == "2") {
                             return "Em andamento"
                         } else {
                             return "Concluída"
@@ -282,6 +282,7 @@
                 success: function (dados) {
                     preencherModal(dados);
 
+                    buscarFotos(id);
 
                     //if (dados && dados.length > 0) {
                     //    carregarTabela(dados);
@@ -307,6 +308,48 @@
             //confirmar se a função preencher dados está pegando os dados corretos para preencher o HTML
 
             $("#modalEditar").modal();
+        }
+
+        function buscarFotos(id) {
+            const url = '@Url.Action("GetFotosEvidencia", "api/AcaoApi")';
+            $.ajax({
+                type: 'GET',
+                url: `${url}/${id}`,
+                //contentType: "blob",
+                contentType: "application/json",
+                success: function (dados) {
+                    if(dados)
+                        imprimirListaEvidenciaDB(dados);
+
+                    buscarEvidenciaConcluida(id);
+                    closeLoader();
+                },
+                error: function (e) {
+                    console.error(e);
+                    closeLoader();
+                }
+            });
+
+        }
+
+        function buscarEvidenciaConcluida(id) {
+            const url = '@Url.Action("GetFotosEvidenciaConcluida", "api/AcaoApi")';
+
+            $.ajax({
+                type: 'GET',
+                url: `${url}/${id}`,
+                contentType: "application/json",
+                success: function (dados) {
+                    if(dados)
+                        imprimirListaEvidenciaConcluidaDB(dados);
+
+                    closeLoader();
+                },
+                error: function (e) {
+                    console.error(e);
+                    closeLoader();
+                }
+            });
         }
 
         var acaoEditar = {};
@@ -444,6 +487,59 @@
             $('#divEvidencias').append(html);
         }
 
+        function imprimirListaEvidenciaConcluidaDB(dados) {
+
+            var html = "";
+            acaoEditar["ListaEvidenciaConcluida"] = [];
+            if (dados.length > 0) {
+
+                dados.forEach(function (o, i) {
+
+                    var evidencia = {
+                        base64: o.Byte,
+                        path: o.Path
+                    };
+
+                    acaoEditar["ListaEvidenciaConcluida"].push(evidencia);
+
+                    html += `
+                        <div class="col-sm-4">
+                            <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive"/>
+                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${i + 1})">Excluir</button>
+                        </div>`;
+                });
+
+            }
+            $('#actionsEvidencies').append(html);
+
+        }
+
+        function imprimirListaEvidenciaDB(dados) {
+            
+            var html = "";
+            acaoEditar["ListaEvidencia"] = [];
+            if (dados.length > 0) {
+
+                dados.forEach(function (o, i) {
+
+                    var evidencia = {
+                        base64: o.Byte,
+                        path: o.Path
+                    };
+
+                    acaoEditar["ListaEvidencia"].push(evidencia);
+
+                    html += `
+                        <div class="col-sm-4">
+                            <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive"/>
+                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${i + 1})">Excluir</button>
+                        </div>`;
+                });
+               
+            }
+            $('#divEvidencias').append(html);
+        }
+
         function removerDaListaEvidencia(index) {
             acaoEditar["ListaEvidencia"].splice((index-1), 1);
             imprimirListaEvidencia(acaoEditar["ListaEvidencia"])
@@ -502,8 +598,8 @@
         function enviarFormularioEditarAcao(status) {
 
             event.preventDefault();
-            var form = $(event.currentTarget).serializeObject();
-            //var form = $("#formAcao").serializeObject();
+            //var form = $(event.currentTarget).serializeObject();
+            var form = $("#formAcao").serializeObject();
 
             form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
             form["ListaEvidencia"] = acaoEditar["ListaEvidencia"];
@@ -539,7 +635,7 @@
             //4 Atrasada 
             //5 Cancelada
 
-            if (form.ListaEvidenciaConcluida.length > 0) {
+            if (form.ListaEvidenciaConcluida != undefined && form.ListaEvidenciaConcluida.length > 0) {
                 form.status = 3;
             } else {
                 form.Status = status;
