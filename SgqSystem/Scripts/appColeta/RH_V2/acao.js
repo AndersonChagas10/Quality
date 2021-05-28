@@ -157,9 +157,9 @@ function montaCorpoFormularioAcao(index) {
         '   <div class="form-group row" style="">' +
         '       <div class="col-xs-12">' +
         '           <p>Não Conformidade/Ocorrencia</p>' +
-        '           <textarea id="txtActionNotConformity" class="form-control" style="resize: none; height: 100px;"></textarea>' +
+        '           <textarea id="txtActionNotConformity" maxlength="900" class="form-control" style="resize: none; height: 100px;"></textarea>' +
         '           <p>Ação</p>' +
-        '           <textarea id="txtAction" class="form-control" style="resize: none; height: 100px;"></textarea>' +
+        '           <textarea id="txtAction" class="form-control" maxlength="900" style="resize: none; height: 100px;"></textarea>' +
         '       </div>' +
         '   </div>' +
         '   <hr>' +
@@ -196,7 +196,7 @@ function montaCorpoFormularioAcao(index) {
         '   </div>' +
         '   <div class="col-xs-4">' +
         '       <h4>Referencia:</h4>' +
-        '       <input id="actionReference" type="text" class="form-control">' +
+        '       <input id="actionReference" maxlength="200" type="text" class="form-control">' +
         '   </div>' +
         '   <div class="col-xs-4">' +
         '       <h4>Responsavel:</h4>' +
