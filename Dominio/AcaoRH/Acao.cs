@@ -31,29 +31,18 @@ namespace Dominio
         public int Status { get; set; }
         public int IsActive { get; set; }
 
-        [NotMapped]
-        public List<string> EvidenciaNaoConformidade { get; set; }
+        public IEnumerable<string> EvidenciaNaoConformidade { get; set; }
+        public IEnumerable<string> EvidenciaAcaoConcluida { get; set; }
 
-        [NotMapped]
-        public List<string> EvidenciaAcaoConcluida { get; set; }
-
-        [ForeignKey("ParLevel1_Id")]
         public ParLevel1 ParLevel1 { get; set; }
-
-        [ForeignKey("ParLevel2_Id")]
         public ParLevel2 ParLevel2 { get; set; }
-
-        [ForeignKey("ParLevel3_Id")]
         public ParLevel3 ParLevel3 { get; set; }
-
-        [ForeignKey("ParCargo_Id")]
         public ParCargo ParCargo { get; set; }
-
-        [ForeignKey("ParCompany_Id")]
         public ParCompany ParCompany { get; set; }
-
-        [ForeignKey("ParDepartment_Id")]
         public ParDepartment ParDepartment { get; set; }
+        public ParDepartment ParDepartmentParent { get; set; }
+        public UserSgq UserResponsavel { get; set; }
 
+        public IEnumerable<UserSgq> NotificarUsers { get; set; }
     }
 }

@@ -99,6 +99,7 @@
     <Compile Include="Controllers\Api\UserController.cs" />
     <Compile Include="Controllers\Api\VTVerificacaoTipificacaoAPIController.cs" />
     <Compile Include="Controllers\RH\AppColetaBusiness.cs" />
+    <Compile Include="Controllers\RH\EmailAcaoService.cs" />
     <Compile Include="Controllers\RH\GetAppParametrizationBusiness.cs" />
     <Compile Include="Controllers\RH\ParClusterBusiness.cs" />
     <Compile Include="Controllers\RH\ParClusterGroupBusiness.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Helpers\CommonData.cs" />
     <Compile Include="Helpers\CommonDate.cs" />
     <Compile Include="Helpers\CommonLog.cs" />
+    <Compile Include="Helpers\MailSenderBusiness.cs" />
     <Compile Include="Mappers\Audit\CollectionHtmlMapperProfile.cs" />
     <Compile Include="Mappers\Audit\CorrectiveActionMapperProfile.cs" />
     <Compile Include="Mappers\AutoMapperConfig.cs" />

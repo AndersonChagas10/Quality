@@ -20,6 +20,9 @@ using SgqSystem.Jobs;
 using System.Data.SqlClient;
 using SgqServiceBusiness.Controllers.RH;
 using ServiceModel;
+using Dominio.AcaoRH;
+using Helper;
+using DTO.DTO;
 
 namespace SgqSystem.Controllers.V2.Api
 {
@@ -75,6 +78,12 @@ namespace SgqSystem.Controllers.V2.Api
                 {
                     var filePath = appColetaBusiness.SaveFileEvidenciaAcaoConcluida(acao.ParLevel1_Id, acao.ParLevel2_Id, acao.ParLevel3_Id, evidenciaAcaoConcluida);
                     appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = acao.Id, Path = filePath });
+                }
+
+                if (acao.Status == 2)
+                {
+                    var email = new MontaEmail(new EmailCreateAcaoResponsavel(acao));
+                    EmailAcaoService.Send(email);
                 }
 
             }
@@ -459,7 +468,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .ToList();
 
 
-                var listaDeDepartamento = db.ParDepartment.AsNoTracking(). Where(x => x.Active).ToList();
+                var listaDeDepartamento = db.ParDepartment.AsNoTracking().Where(x => x.Active).ToList();
 
                 listaParDepartment = listaDeDepartamento
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
@@ -490,7 +499,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 var listaCargoFiltrado_Id = listaParEvaluationXDepartmentXCargoAppViewModel.Select(x => x.ParCargo_Id).Distinct().ToList();
 
-   
+
                 var listaCargoFiltradoPorDepartamento_Id = db.ParCargoXDepartment
                     .AsNoTracking()
                     .Where(x => x.IsActive)
@@ -500,7 +509,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .Distinct()
                     .ToList();
 
-   
+
                 listaParCargo = db.ParCargo
                     .AsNoTracking()
                     .Where(x => x.IsActive)
@@ -513,7 +522,7 @@ namespace SgqSystem.Controllers.V2.Api
                     })
                     .ToList();
 
-    
+
                 listaParCargoXDepartment = db.ParCargoXDepartment
                     .AsNoTracking()
                     .Where(x => x.IsActive)
