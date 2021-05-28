@@ -35,11 +35,12 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          PD.Id AS ParDepartment_Id,
          PD.Name AS ParDepartment_Name,
          PD.Parent_Id AS ParDepartmentParent_Id,
+         PDS.Name AS ParDepartmentParent_Name,
          PCG.Id AS ParCargo_Id,
          PCG.Name AS ParCargo_Name,
          PAC.Acao_Naoconformidade,
          PAC.AcaoText,
-         PAC.DataEmissao,
+         FORMAT(PAC.DataEmissao, 'dd/MM/yyyy') as DataEmissao,
          PAC.DataConclusao,
          PAC.HoraEmissao,
          PAC.HoraConclusao,
@@ -60,6 +61,8 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          ON PC.Id = PAC.ParCompany_Id
          LEFT JOIN ParDepartment PD  WITH (NOLOCK)
          ON PD.Id = PAC.ParDepartment_Id
+        LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
+         ON PDs.Id = PAC.ParDepartmentParent_Id
          LEFT JOIN ParCargo PCG  WITH (NOLOCK)
          ON PCG.Id = PAC.ParCargo_Id
          LEFT JOIN UserSgq US WITH (NOLOCK)
@@ -77,17 +80,8 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         [HttpPost]
         public AcaoViewModel Post([System.Web.Http.FromBody] AcaoViewModel objAcao)
         {
-            AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
-
             try
             {
-                Acao objAcaoDB = new Acao();
-
-                using (var db = new SgqDbDevEntities())
-                {
-                    objAcaoDB = db.Acao.Where(x => x.Id == objAcao.Id).FirstOrDefault();
-                }
-
                 //salva os campos comuns da ação
                 UpdateAction(objAcao);
 
@@ -97,18 +91,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                 //salva/deleta a listagem de imagens de evidencias
                 GetEvidenciaList(objAcao);
 
-                //foreach (var evidenciaNaoConformidade in objAcao.ListaEvidencia)
-                //{
-                    //var filePath = appColetaBusiness.SaveFileEvidenciaNaoConformidade(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaNaoConformidade.Base64);
-                //    appColetaBusiness.SaveEvidenciaNaoConformidade(new EvidenciaNaoConformidade() { Acao_Id = objAcao.Id, Path = filePath });
-                //}
-
-
-                //foreach (var evidenciaAcaoConcluida in objAcao.ListaEvidenciaConcluida)
-                //{
-                    //var filePath = appColetaBusiness.SaveFileEvidenciaAcaoConcluida(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaAcaoConcluida.Base64);
-                //    appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = objAcao.Id, Path = filePath });
-                //}
+                GetEvidenciaConcluidaList(objAcao);
 
             }
             catch (Exception e)
@@ -124,11 +107,128 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         {
             var listaEvidenciasDB = getEvidenciasDB(objAcao.Id);
 
-            var listaEvidenciasIdsEditadas = objAcao.ListaEvidencia.Select(x => x.Id).ToList();
+            var listaEvidenciasPathsEditadas = objAcao.ListaEvidencia.ToList();
 
-            var listaInserir = listaEvidenciasIdsEditadas.Where(x => !listaEvidenciasDB.Select(y => y.Id).ToList().Contains(x)).ToList();
+            var listaInserir = listaEvidenciasPathsEditadas.Where(x => !listaEvidenciasDB.Select(y => y.Path).ToList().Contains(x.Path)).ToList();
 
-            var listaDeletar = listaEvidenciasDB.Select(y => y.Id).ToList().Where(x => !listaEvidenciasIdsEditadas.Contains(x)).ToList();
+            var listaDeletar = listaEvidenciasDB.Where(x => !listaEvidenciasPathsEditadas.Select(y => y.Path).Contains(x.Path)).ToList();
+
+            if (listaInserir.Count > 0)
+                InserirEvidenciaList(objAcao, listaInserir);
+
+            if (listaDeletar.Count > 0)
+                InativarEvidenciaList(objAcao, listaDeletar);
+        }
+
+        public void GetEvidenciaConcluidaList(AcaoViewModel objAcao)
+        {
+            var listaEvidenciasConcluidasDB = BuscarListaEvidenciasConcluidas(objAcao.Id);
+
+            var listaEvidenciasPathsEditadas = objAcao.ListaEvidenciaConcluida.ToList();
+
+            var listaInserir = listaEvidenciasPathsEditadas.Where(x => !listaEvidenciasConcluidasDB.Select(y => y.Path).ToList().Contains(x.Path)).ToList();
+
+            var listaDeletar = listaEvidenciasConcluidasDB.Where(x => !listaEvidenciasPathsEditadas.Select(y => y.Path).Contains(x.Path)).ToList();
+
+            if (listaInserir.Count > 0)
+                InserirEvidenciaConcluidaList(objAcao, listaInserir);
+
+            if (listaDeletar.Count > 0)
+                InativarEvidenciaConcluidaList(objAcao, listaDeletar);
+        }
+
+        public void InserirEvidenciaList(AcaoViewModel objAcao, List<Evidencia> listaInserir)
+        {
+            AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
+
+            Acao objAcaoDB = new Acao();
+
+            using (var db = new SgqDbDevEntities())
+            {
+                objAcaoDB = db.Acao.Where(x => x.Id == objAcao.Id).FirstOrDefault();
+            }
+
+            foreach (var evidenciaNaoConformidade in listaInserir)
+            {
+                var filePath = appColetaBusiness.SaveFileEvidenciaNaoConformidade(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaNaoConformidade.Base64);
+                appColetaBusiness.SaveEvidenciaNaoConformidade(new EvidenciaNaoConformidade() { Acao_Id = objAcao.Id, Path = filePath });
+            }
+        }
+
+        public void InserirEvidenciaConcluidaList(AcaoViewModel objAcao, List<Evidencia> listaInserir)
+        {
+            AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
+
+            Acao objAcaoDB = new Acao();
+
+            using (var db = new SgqDbDevEntities())
+            {
+                objAcaoDB = db.Acao.Where(x => x.Id == objAcao.Id).FirstOrDefault();
+            }
+
+            foreach (var evidenciaAcaoConcluida in listaInserir)
+            {
+                var filePath = appColetaBusiness.SaveFileEvidenciaAcaoConcluida(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaAcaoConcluida.Base64);
+                appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = objAcao.Id, Path = filePath });
+            }
+        }
+
+        public void InativarEvidenciaList(AcaoViewModel objAcao, List<Evidencia> listaDeletar)
+        {
+            foreach (var item in listaDeletar)
+            {
+                try
+                {
+                    string sql = $@" UPDATE Pa.EvidenciaNaoConformidade 
+                                        set IsActive = 0 
+                                    where Id = @Id";
+
+                    using (Factory factory = new Factory("DefaultConnection"))
+                    {
+                        using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                        {
+                            cmd.CommandType = CommandType.Text;
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Id", item.Id);
+
+                            var id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+        }
+
+        public void InativarEvidenciaConcluidaList(AcaoViewModel objAcao, List<Evidencia> listaDeletar)
+        {
+            foreach (var item in listaDeletar)
+            {
+                try
+                {
+                    string sql = $@" UPDATE Pa.EvidenciaAcaoConcluida 
+                                        set IsActive = 0 
+                                    where Id = @Id";
+
+                    using (Factory factory = new Factory("DefaultConnection"))
+                    {
+                        using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                        {
+                            cmd.CommandType = CommandType.Text;
+                            UtilSqlCommand.AddParameterNullable(cmd, "@Id", item.Id);
+
+                            var id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
         }
 
         public List<Evidencia> getEvidenciasDB(int acao_Id)
@@ -417,7 +517,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
             using (var db = new SgqDbDevEntities())
             {
-                
+
                 foreach (var item in lista.ListaEvidencia)
                 {
                     var foto = new ImageEvidencia();
@@ -428,10 +528,10 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                     //Verificar se no web.config a credencial do servidor de fotos
                     Exception exception = null;
 
-                     bytes = FileHelper.DownloadPhoto(url
-                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
-                    , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
-                    , out exception);
+                    bytes = FileHelper.DownloadPhoto(url
+                   , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
+                   , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
+                   , out exception);
 
                     if (exception != null)
                         throw new Exception("Error: " + exception.ToClient());
@@ -615,12 +715,15 @@ SELECT
             public int ParDepartment_Id { get; set; }
             public string ParDepartment_Name { get; set; }
             public int ParDepartmentParent_Id { get; set; }
+            public string ParDepartmentParent_Name { get; set; }
             public string ParCargo_Name { get; set; }
             public int ParCargo_Id { get; set; }
             public string Acao_Naoconformidade { get; set; }
             public string AcaoText { get; set; }
             public DateTime DataEmissao { get; set; }
+            public string _DataEmissao { get { return DataEmissao.ToShortDateString(); }}
             public DateTime DataConclusao { get; set; }
+            public string _DataConclusao { get { return DataConclusao.ToShortDateString(); } }
             public TimeSpan HoraEmissao { get; set; }
             public TimeSpan HoraConclusao { get; set; }
             public string Referencia { get; set; }
@@ -678,6 +781,7 @@ SELECT
             public string Acao_Naoconformidade { get; set; }
             public string AcaoText { get; set; }
             public DateTime DataEmissao { get; set; }
+            public string _DataEmissao { get { return DataEmissao.ToShortDateString(); } }
             public DateTime DataConclusao { get; set; }
             public TimeSpan HoraEmissao { get; set; }
             public TimeSpan HoraConclusao { get; set; }
