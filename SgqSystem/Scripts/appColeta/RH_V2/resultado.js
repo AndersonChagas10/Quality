@@ -107,6 +107,7 @@ function enviarColeta() {
 					data: JSON.stringify(retornaProximasColetasParaSincronizar()),
 					url: urlPreffix + '/api/AppColeta/SetCollect',
 					type: 'POST',
+					headers: token(),
 					contentType: "application/json",
 					success: function (data) {
 						enviarColetaEmExecucao = false;

@@ -73,7 +73,7 @@
     <Compile Include="Controllers\Api\ParClusterControllerTest.cs" />
     <Compile Include="Controllers\Api\ParClusterGroupControllerTest.cs" />
     <Compile Include="Controllers\Api\ParCompanyControllerTest.cs" />
-    <Compile Include="Controllers\Api\ParFrequencyControllerTest.cs" />
+    <Compile Include="Controllers\Api\GetParFrequencyXParLevel1ControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

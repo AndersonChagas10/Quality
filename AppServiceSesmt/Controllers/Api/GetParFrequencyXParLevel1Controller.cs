@@ -14,13 +14,14 @@ using System.Web.Http;
 namespace AppServiceSesmt.Controllers.Api.Sesmt
 {
     [RoutePrefix("api")]
-    public partial class ParFrequencyController : BaseApiController
+    public partial class GetParFrequencyXParLevel1Controller : BaseApiController
     {
         [HttpGet]
-        [Route("parFrequency")]
-        public async Task<List<JObject>> ParFrequency(PlanejamentoColetaViewModel obj)
+        [Route("GetParFrequencyXParLevel1")]
+        public async Task<List<JObject>> GetParFrequencyXParLevel1(PlanejamentoColetaViewModel obj)
         {
-            string url = $"/api/parFrequency";
+            VerifyIfIsAuthorized();
+            string url = $"/api/GetParFrequencyXParLevel1";
             RestRequest restRequest = await RestRequest.Post(url, obj, this.token);
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)

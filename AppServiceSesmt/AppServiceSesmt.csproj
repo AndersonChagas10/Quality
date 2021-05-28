@@ -138,7 +138,7 @@
     <Compile Include="Controllers\Api\ParClusterController.cs" />
     <Compile Include="Controllers\Api\ParClusterGroupController.cs" />
     <Compile Include="Controllers\Api\ParCompanyController.cs" />
-    <Compile Include="Controllers\Api\ParFrequencyController.cs" />
+    <Compile Include="Controllers\Api\GetParFrequencyXParLevel1Controller.cs" />
     <Compile Include="Controllers\Api\RetornaQueryRotinaController.cs" />
     <Compile Include="Controllers\Api\SetCollectController.cs" />
     <Compile Include="Controllers\Api\SetCorrectiveActionController.cs" />

@@ -6,12 +6,12 @@ using ServiceModel;
 namespace AppServiceSesmt.Tests.Controllers.Api
 {
     [TestClass]
-    public class ParFrequencyControllerTest
+    public class GetParFrequencyXParLevel1ControllerTest
     {
         [TestMethod]
         public void ParFrequencyTest()
         {
-            ParFrequencyController controller = new ParFrequencyController();
+            GetParFrequencyXParLevel1Controller controller = new GetParFrequencyXParLevel1Controller();
 
             PlanejamentoColetaViewModel obj = new PlanejamentoColetaViewModel()
             {
@@ -22,7 +22,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
                 ParFrequency_Id = 1
             };
 
-            var x = controller.ParFrequency(obj);
+            var x = controller.GetParFrequencyXParLevel1(obj);
 
             Assert.IsTrue(x.Result != null);
         }

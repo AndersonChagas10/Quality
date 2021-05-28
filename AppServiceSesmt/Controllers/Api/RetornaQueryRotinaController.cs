@@ -18,6 +18,7 @@ namespace AppServiceSesmt.Controllers.Api.Sesmt
         [Route("RetornaQueryRotina")]
         public async Task<JObject> RetornaQueryRontina(JToken body)
         {
+            VerifyIfIsAuthorized();
             string url = $"/api/RetornaQueryRotinaApi/RetornaQueryRotina";
             RestRequest restRequest = await RestRequest.Post(url, body, this.token);
 

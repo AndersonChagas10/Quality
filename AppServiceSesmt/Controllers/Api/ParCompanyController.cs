@@ -19,6 +19,7 @@ namespace AppServiceSesmt.Controllers.Api.Sesmt
         [Route("parCompany")]
         public async Task<List<JObject>> ParCompany(int userSgq_Id)
         {
+            VerifyIfIsAuthorized();
             string url = $"/api/parCompany?userSgq_Id=" + userSgq_Id + "";
             RestRequest restRequest = await RestRequest.Get(url, this.token);
 

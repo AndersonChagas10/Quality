@@ -20,6 +20,7 @@ namespace AppServiceSesmt.Controllers.Api.Sesmt
         [Route("GetResults")]
         public async Task<string> GetResults(GetResultsData obj)
         {
+            VerifyIfIsAuthorized();
             string url = $"/api/AppColeta/GetResults";
             RestRequest restRequest = await RestRequest.Post(url, obj, this.token);
 

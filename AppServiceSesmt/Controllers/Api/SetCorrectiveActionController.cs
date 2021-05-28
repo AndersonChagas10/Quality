@@ -19,6 +19,7 @@ namespace AppServiceSesmt.Controllers.Api.Sesmt
         [Route("SetCorrectiveAction")]
         public async Task<JObject> SetCorrectiveAction([FromBody] List<CorrectiveAction> correctiveActions)
         {
+            VerifyIfIsAuthorized();
             string url = $"/api/AppColeta/SetCorrectiveAction";
             RestRequest restRequest = await RestRequest.Post(url, correctiveActions, this.token);
 

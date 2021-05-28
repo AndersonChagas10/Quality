@@ -19,6 +19,7 @@ namespace AppServiceSesmt.Controllers.Api.Sesmt
         [Route("SetCollect")]
         public async Task<JObject> SetCollect(List<Collection> listSimpleCollect)
         {
+            VerifyIfIsAuthorized();
             string url = $"/api/AppColeta/SetCollect";
             RestRequest restRequest = await RestRequest.Post(url, listSimpleCollect, this.token);
 

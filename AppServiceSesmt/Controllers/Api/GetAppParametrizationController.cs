@@ -19,6 +19,7 @@ namespace AppServiceSesmt.Controllers.Api.Sesmt
         [Route("GetAppParametrization")]
         public async Task<JObject> GetAppParametrization(PlanejamentoColeta appParametrization)
         {
+            VerifyIfIsAuthorized();
             string url = $"/api/AppColeta/GetAppParametrization";
             RestRequest restRequest = await RestRequest.Post(url, appParametrization, this.token);
 

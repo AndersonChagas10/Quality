@@ -19,6 +19,7 @@ namespace AppServiceSesmt.Controllers.Api.Sesmt
         [Route("parClusterGroup")]
         public async Task<List<JObject>> ParClusterGroup(int parCompany_Id)
         {
+            VerifyIfIsAuthorized();
             string url = $"/api/parClusterGroup?parCompany_Id=" + parCompany_Id + "";
             RestRequest restRequest = await RestRequest.Get(url, this.token);
 
