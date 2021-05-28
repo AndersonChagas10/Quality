@@ -779,10 +779,10 @@ SELECT
             public int ParCargo_Id { get; set; }
             public string Acao_Naoconformidade { get; set; }
             public string AcaoText { get; set; }
-            public DateTime DataEmissao { get; set; }
-            public string _DataEmissao { get { return DataEmissao.ToShortDateString(); }}
-            public DateTime DataConclusao { get; set; }
-            public string _DataConclusao { get { return DataConclusao.ToShortDateString(); } }
+            public DateTime? DataEmissao { get; set; }
+            public string _DataEmissao { get { return DataEmissao?.ToShortDateString(); }}
+            public DateTime? DataConclusao { get; set; }
+            public string _DataConclusao { get { return DataConclusao?.ToShortDateString(); } }
             public TimeSpan HoraEmissao { get; set; }
             public TimeSpan HoraConclusao { get; set; }
             public string Referencia { get; set; }
@@ -839,8 +839,8 @@ SELECT
             public string ParCargo_Name { get; set; }
             public string Acao_Naoconformidade { get; set; }
             public string AcaoText { get; set; }
-            public DateTime DataEmissao { get; set; }
-            public string _DataEmissao { get { return DataEmissao.ToShortDateString(); } }
+            public DateTime? DataEmissao { get; set; }
+            public string _DataEmissao { get { return DataEmissao?.ToShortDateString(); } }
             public DateTime DataConclusao { get; set; }
             public TimeSpan HoraEmissao { get; set; }
             public TimeSpan HoraConclusao { get; set; }
