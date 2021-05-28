@@ -77,10 +77,10 @@
                         <div id="evidenciasConcluidas" class="col-xs-12" hidden="hidden">
 
                             <p>Evidencias da Ação Concluida</p>
-                    
+
                             <input type="file" id="uploadPhotox" onchange="uploadFile(event, 'evidenciaConcluida')" />
 
-                            <div id="actionsEvidencies" >
+                            <div id="actionsEvidencies">
                             </div>
 
                         </div>
@@ -98,19 +98,16 @@
                         </div>
                         <div class="col-xs-4">
                             <label><strong>Responsavel:</strong></label>
-                            <select id="selectResponsavel" name="Responsavel" class="form-control">
-                            </select>
+                            <select id="selectResponsavel" name="Responsavel" class="form-control"></select>
                         </div>
                         <div class="col-xs-4 divActionPriority">
                             <label><strong>Prioridade:</strong></label>
-                            <select id="selectPrioridade" name="Prioridade" class="form-control">
-                            </select>
+                            <select id="selectPrioridade" name="Prioridade" class="form-control"></select>
                         </div>
                         <div class="col-xs-12">
                             <label><strong>Notificar:</strong></label>
                             <div class="form-inline">
-                                <select id="selectNotificarAcao" class="form-control">
-                                </select>
+                                <select id="selectNotificarAcao" class="form-control"></select>
                                 <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
                             </div>
                         </div>
@@ -123,8 +120,7 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -208,7 +204,7 @@
             var colunas = montarColunasDaTabela();
             //var colunas = montarColunasDaTabelaDinamico(dados);
             //Outras configurações
-        debugger
+
             for (var i = 0; i < enumStatus.length; i++) {
                 var total = getTotalstatus(dados, enumStatus[i]);
 
@@ -228,7 +224,7 @@
                 }
 
             }
-            
+
             montarTabela(dados, colunas);
         }
 
@@ -420,17 +416,21 @@
                 error: function (e) {
                     console.error(e);
                     closeLoader();
+                },
+                complete: function () {
+                    if (showVerAgir) {
+                        $("#checkVerAgir").trigger('click');
+                    }
                 }
             });
 
-            //if (showVerAgir)
-               // $("#checkVerAgir").trigger('click');
+
         }
 
         var acaoEditar = {};
         function preencherModal(dados) {
             acaoEditar = dados;
-            
+
             if (dados.ListaResponsavel) {
                 var html = `<option value="">Selecione...</option>`;
                 for (var i = 0; i < dados.ListaResponsavel.length; i++) {
@@ -534,7 +534,7 @@
                 openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
             }
         }
-        
+
 
         //Evidencias
         function imprimirListaEvidencia(lista) {
@@ -549,7 +549,7 @@
 
         function imprimirEvidencia(evidencia, lista) {
             var html;
-            
+
             if (evidencia["base64"]) {
                 html = `
                         <div class="col-sm-4">
@@ -567,9 +567,9 @@
             var html = "";
             $('#actionsEvidencies').empty();
             acaoEditar["ListaEvidenciaConcluida"] = [];
-         
+
             if (dados.length > 0) {
-                $("#checkVerAgir").trigger('click');
+
                 dados.forEach(function (o, i) {
 
                     var evidencia = {
@@ -589,11 +589,11 @@
             }
 
             $('#actionsEvidencies').append(html);
-            
+
         }
 
         function imprimirListaEvidenciaDB(dados) {
-            
+
             var html = "";
             acaoEditar["ListaEvidencia"] = [];
             if (dados.length > 0) {
@@ -613,7 +613,7 @@
                             <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${i + 1})">Excluir</button>
                         </div>`;
                 });
-               
+
             }
             $('#divEvidencias').append(html);
         }
@@ -698,7 +698,7 @@
                     setTimeout(function () {
                         buscarDados(null);
                     }, 3000);
-                   
+
                 },
                 error: function () {
                     console.log('erro ao salvar ação');
@@ -708,9 +708,9 @@
 
         function validarStatus(form, status) {
             //1 Pendente
-            //2 Em andamento 
+            //2 Em andamento
             //3 Concluída
-            //4 Atrasada 
+            //4 Atrasada
             //5 Cancelada
 
             if (form.ListaEvidenciaConcluida != undefined && form.ListaEvidenciaConcluida.length > 0) {
@@ -781,7 +781,7 @@
 
         $('body')
             .on('click, change', '#checkVerAgir', function () {
-                
+
                 if ($(this).is(":checked")) {
                     $("#evidenciasConcluidas").removeAttr('hidden');
                     $('.vereagir').removeClass('hide');
