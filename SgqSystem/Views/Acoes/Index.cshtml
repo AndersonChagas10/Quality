@@ -1,0 +1,157 @@
+﻿@using DTO
+@using SgqSystem.Controllers.Params
+@model IEnumerable<Dominio.Acao>
+
+@{
+    ViewBag.Title = "Ação Coleta";
+}
+
+
+<div class="page-content-wrapper">
+    <!-- BEGIN CONTENT BODY -->
+    <div class="page-content">
+        <!-- BEGIN PAGE HEADER-->
+        <!-- BEGIN PAGE BAR -->
+        <div class="page-bar">
+            <ul class="page-breadcrumb">
+                <li>
+                    <a href="@Url.Action("Index", "Home")">Home</a>
+
+                    <i class="fa fa-angle-right"></i>
+                </li>
+                <li>
+                    <span>Ação Coleta</span>
+                </li>
+            </ul>
+            <div class="page-toolbar">
+                @*<div id="dashboard-report-range" class="pull-right tooltips btn btn-fit-height green">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span class="thin uppercase" id="currentDate"></span>&nbsp;
+                    </div>*@
+            </div>
+        </div>
+        <!-- END PAGE BAR -->
+        <!-- END PAGE HEADER-->
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="portlet light bordered">
+                    <div class="portlet-title tabbable-line">
+                        <div class="caption">
+                            <i class="icon-share font-dark"></i>
+                            <span class="caption-subject font-dark bold uppercase">Lista de Ações de Coleta</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="setup_tab">
+                                <p>
+
+                                    @*<div class="" id="complexCallendar" style="float:right;display:inline;width:550px;">
+                                            <button id="btnFilter" class="btn-info" style="float:right;margin-left:5px;padding:7px;margin-top:-12px;">Filtrar</button>
+                                            @Html.DropDownList("ParCompanyName", new SelectList(ViewBag.UnidadeUsuario, "Id", "Name"), Resources.Resource.select + "...", new { @class = "form-control", @style = "width:200px;float:right;margin-top:-12px;margin-left:5px;" })
+                                            <span style="float:right;margin-top:-5px;margin-left:5px;">Filtro: </span>
+
+                                        </div>*@
+
+                                    @*@Html.ActionLink("Novo equipamento", "Create", null, new { @class = "btn btn-primary" })*@
+                                </p>
+                                <table class="table table-condensed" id="tabelaAcao">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                Unidade
+                                            </th>
+                                            <th>
+                                                centro de custo
+                                            </th>
+                                            <th>
+                                                indicador
+                                            </th>
+                                            <th>
+                                                monitoramento
+                                            </th>
+                                            <th>
+                                                tarefa
+                                            </th>
+                                            <th>
+                                                cargo
+                                            </th>
+                                            <th>
+                                                data conclusao
+                                            </th>
+                                            <th>
+                                                hora conclusao
+                                            </th>
+                                            <th>
+                                                data emissao
+                                            </th>
+                                            <th>
+                                                hora emissao
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>@item.ParCompany.Description</td>
+                                                <td>@item.ParDepartment.Name</td>
+                                                <td>@item.ParLevel1.Name</td>
+                                                <td>@item.ParLevel2.Name</td>
+                                                <td>@item.ParLevel3.Name</td>
+                                                <td>@item.ParCargo.Name</td>
+                                                <td>@item.DataConclusao</td>
+                                                <td>@item.HoraConclusao</td>
+                                                <td>@item.DataEmissao</td>
+                                                <td>@item.HoraEmissao</td>
+                                                <td>
+                                                    @*@Html.ActionLink("Editar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                                                        @*Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                                        @Html.ActionLink("Excluir", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })*@
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END CONTENT BODY -->
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        closeLeftSidebar();
+
+        $('#tabelaAcao').dataTable({
+            "aoPaging": true,
+            "aoSearching": true,
+            "scrollX": true,
+            "aoColumns": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                { "bSearchable": false }
+            ],
+            "order": [[1, "asc"]],
+               "language": {
+                "lengthMenu": "Mostrar _MENU_ resultados por página",
+                "emptyTable": "@Resources.Resource.no_data_to_show"
+            }
+        });
+    });
+</script>

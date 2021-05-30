@@ -48,6 +48,44 @@ namespace SgqSystem.Controllers.V2.Api
             public string HasError { get; set; }
         }
 
+        [Route("SetAction")]
+        public IHttpActionResult SetAction(Acao acao)
+        {
+            AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
+
+            try
+            {
+
+                appColetaBusiness.SaveAction(acao);
+
+                foreach (var usuarioNotificado in acao.Notificar)
+                {
+                    appColetaBusiness.SaveAcaoXNotificarAcao(new AcaoXNotificarAcao() { Acao_Id = acao.Id, UserSgq_Id = usuarioNotificado });
+                }
+
+
+                foreach (var evidenciaNaoConformidade in acao.EvidenciaNaoConformidade)
+                {
+                    var filePath = appColetaBusiness.SaveFileEvidenciaNaoConformidade(acao.ParLevel1_Id, acao.ParLevel2_Id, acao.ParLevel3_Id, evidenciaNaoConformidade);
+                    appColetaBusiness.SaveEvidenciaNaoConformidade(new EvidenciaNaoConformidade() { Acao_Id = acao.Id, Path = filePath });
+                }
+
+
+                foreach (var evidenciaAcaoConcluida in acao.EvidenciaAcaoConcluida)
+                {
+                    var filePath = appColetaBusiness.SaveFileEvidenciaAcaoConcluida(acao.ParLevel1_Id, acao.ParLevel2_Id, acao.ParLevel3_Id, evidenciaAcaoConcluida);
+                    appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = acao.Id, Path = filePath });
+                }
+
+            }
+            catch (Exception e)
+            {
+                return InternalServerError(e);
+            }
+
+            return Ok(acao);
+        }
+
         #region Coleta Padrão RH
         [Route("SetCollect")]
         public IHttpActionResult SetCollect(List<Collection> listSimpleCollect)
@@ -635,7 +673,8 @@ namespace SgqSystem.Controllers.V2.Api
                         listaAuditor.Add(listaAuditor2.Select(x => new UserSgqViewModel()
                         {
                             Id = item.Id,
-                            Name = item.FullName
+                            Name = item.FullName,
+                            SimpleDescription = item.Name.Substring(0, 3)
                         }).FirstOrDefault());
                     }
                 }

@@ -76,9 +76,14 @@ function listarParFrequencyXindicador(isVoltar) {
 
             $(data[i].ParLevel1).each(function (x, y) {
 
-                htmlParFrequency += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important"><button type="button" class="list-group-item btn btn-lg btn-block" style="color: #1F497D;background-color:#DCE6F1;white-space: break-spaces;" data-selected="false" data-par-frequency-id="' + o.Id + '" data-par-level1-id="' + y.Id + '"  title="' + o.Name + '">' + y.Name +
-                    '</button></div>';
+                var flagAcao = "";
+                if (getAcoesByLevel1AndFrequency(y.Id, o.Id).length > 0)
+                    flagAcao = '<span class="badge">Ação Pendente</span>';
+
+                htmlParFrequency += '<div class="col-xs-6 col-md-4 divBtnLista"><button type="button" class="list-group-item btn btn-lg btn-block btnLista" data-selected="false" data-par-frequency-id="' + o.Id + '" data-par-level1-id="' + y.Id + '"  title="' + o.Name + '">' + y.Name +
+                    '</button>' + flagAcao + '</div>';
             });
+
             htmlParFrequency += '</div>';
         });
 
@@ -310,7 +315,7 @@ function chamaGetAppParametrization() {
             data.currentParClusterGroup_Id = currentParClusterGroup_Id;
             data.currentParCompany_Id = currentParCompany_Id;
             _writeFile("appParametrization.txt", JSON.stringify(data), function () {
-                
+
                 parametrization = data;
 
                 if (parametrization.listaParDepartment.length > 0) {

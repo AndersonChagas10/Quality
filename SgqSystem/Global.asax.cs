@@ -19,6 +19,7 @@ using Dominio;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Dynamic;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace SgqSystem
 {
@@ -125,7 +126,7 @@ namespace SgqSystem
         [Conditional("DEBUG")]
         private static void DisableApplicationInsightsOnDebug()
         {
-            //TelemetryConfiguration.Active.DisableTelemetry = true;
+            TelemetryConfiguration.Active.DisableTelemetry = true;
         }
 
 

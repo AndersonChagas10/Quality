@@ -137,8 +137,9 @@ function enviarColeta() {
 			&& parametrization != null) {
 			sincronizarResultado();
 		}
+		
 		enviarAcaoCorretiva();
-
+		sendActions();
 	}
 }
 

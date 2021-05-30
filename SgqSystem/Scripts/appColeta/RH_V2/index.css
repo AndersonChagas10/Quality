@@ -723,3 +723,16 @@ span.Completed {
 .alert-warning {
     background-color: #fcf8e3 !important;
 }
+
+.divBtnLista {
+    margin-bottom: 15px;
+    padding: 2px;
+    padding-left: 30px!important;
+    padding-right: 30px!important
+}
+
+.btnLista {
+    color: #1F497D;
+    background-color:#DCE6F1;
+    white-space: break-spaces;
+}

@@ -329,6 +329,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AcoesController.cs" />
     <Compile Include="Controllers\Api\AgendamentoApiController.cs" />
     <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
@@ -347,6 +348,7 @@
     <Compile Include="Controllers\Api\ParDepartmentsApiController.cs" />
     <Compile Include="Controllers\Api\ParInputTypeValuesApiController.cs" />
     <Compile Include="Controllers\Api\ParReasonApiController.cs" />
+    <Compile Include="Controllers\Api\PlanoDeAcao\AcaoApiController.cs" />
     <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
@@ -455,6 +457,7 @@
     <Compile Include="Controllers\Params\ParCompany2XClusterController.cs" />
     <Compile Include="Controllers\Params\ParCompany2XStructureController.cs" />
     <Compile Include="Controllers\Params\ParStructuresController.cs" />
+    <Compile Include="Controllers\PlanoDeAcao\AcaoController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoJsonController.cs" />
     <Compile Include="Controllers\RelatoriosMD\RelatoriosMDController.cs" />
@@ -1197,8 +1200,10 @@
     <Content Include="images\sort_asc.png" />
     <Content Include="images\sort_both.png" />
     <Content Include="images\sort_desc.png" />
+    <Content Include="Scripts\appColeta\RH_V2\acao.js" />
     <Content Include="Scripts\appColeta\RH_V2\alert.js" />
     <Content Include="Scripts\appColeta\RH_V2\app.js" />
+    <Content Include="Scripts\appColeta\RH_V2\camera.js" />
     <Content Include="Scripts\appColeta\RH_V2\coleta.js" />
     <Content Include="Scripts\appColeta\RH_V2\coletaParcial.js" />
     <Content Include="Scripts\appColeta\RH_V2\coletaUnicaTarefa.js" />
@@ -2450,6 +2455,8 @@
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamental.cshtml" />
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalAcompanhamento.cshtml" />
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalVisaoUnidade.cshtml" />
+    <Content Include="Views\Acoes\Index.cshtml" />
+    <Content Include="Views\PlanoDeAcao\Acao\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2457,6 +2464,7 @@
   <ItemGroup>
     <Folder Include="App_Data\Uploads\" />
     <Folder Include="Arquivos\uploads\" />
+    <Folder Include="Controllers\PlanoDeAcao\Api\" />
     <Folder Include="obj\" />
     <Folder Include="Scripts\BootStrapRecravacao\" />
     <Folder Include="Scripts\i18n\" />
@@ -2545,7 +2553,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:57506/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

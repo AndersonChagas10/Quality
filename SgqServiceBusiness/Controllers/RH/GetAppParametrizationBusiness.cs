@@ -81,7 +81,9 @@ namespace SgqServiceBusiness.Controllers.RH
                             select
                             Id,
                             HasTakePhoto,
-                            Name
+                            Name,
+                            GenerateActionOnNotConformity,
+                            OpenPhotoGallery
                             from ParLevel1
                             where
                             IsActive = 1

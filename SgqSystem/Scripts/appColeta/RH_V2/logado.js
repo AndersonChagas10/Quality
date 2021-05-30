@@ -1,7 +1,11 @@
 function openLogado() {
+
     openParCompany();
     AtualizarVariaveisDeColetas();
     AtualizarVariaveisDeAcoesCorretivas();
+
+    readActonToSendFromFile();
+    readActonFromFile();
 
     setInterval(function () {
         pingLogado(urlPreffix, online, offline)
@@ -38,9 +42,16 @@ function AtualizaConstantemente() {
             $('div[data-falta-sincronizar]').removeClass("btn-warning");
 
         //Ação Corretivas
-        $('div[data-falta-sincronizar-ca]').text('(' + globalAcoesCorretivasRealizadas.length + ') Ações corretivas não sincronizadas');
+        // $('div[data-falta-sincronizar-ca]').text('(' + globalAcoesCorretivasRealizadas.length + ') Ações corretivas não sincronizadas');
 
-        if (globalAcoesCorretivasRealizadas.length > 0)
+        // if (globalAcoesCorretivasRealizadas.length > 0)
+        //     $('div[data-falta-sincronizar-ca]').addClass("btn-warning");
+        // else
+        //     $('div[data-falta-sincronizar-ca]').removeClass("btn-warning");
+
+        $('div[data-falta-sincronizar-ca]').text('(' + listaAcoesToSend.length + ') Ações não sincronizadas');
+
+        if (listaAcoesToSend.length > 0)
             $('div[data-falta-sincronizar-ca]').addClass("btn-warning");
         else
             $('div[data-falta-sincronizar-ca]').removeClass("btn-warning");

@@ -1225,7 +1225,7 @@ function PrepararColetas() {
 
     if (!hasPartialSave) {
         //processAlertRole(coletaJson);
-        //processAction(coletaJson);
+        processAction(coletaJson);
     }
 
     var cabecalhos = getCollectionHeaderFields(collectionDate);
