@@ -12,6 +12,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
         public void GetColetaParcialTest()
         {
             AppColetaController controller = new AppColetaController();
+            controller.token = Config.TOKEN;
 
             GetResultsData obj = new GetResultsData()
             {

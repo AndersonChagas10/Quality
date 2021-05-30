@@ -5,7 +5,7 @@ var versionNumber = "";
 function getVersionAPI() {
     $.ajax({
         type: 'GET'
-        , url: urlPreffix + '/Config/GetAppVersionIsUpdated?versionNumber=' + versionNumber
+        , url: urlPreffix + '/api/AppParams/GetAppVersionIsUpdated?versionNumber=' + versionNumber
         , contentType: 'application/json; charset=utf-8'
         , dataType: 'json'
         , async: false //blocks window close

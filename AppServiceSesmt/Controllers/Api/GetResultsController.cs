@@ -18,7 +18,7 @@ namespace AppServiceSesmt.Controllers.Api.Sesmt
     {
         [HttpPost]
         [Route("GetResults")]
-        public async Task<string> GetResults(GetResultsData obj)
+        public async Task<object> GetResults(GetResultsData obj)
         {
             VerifyIfIsAuthorized();
             string url = $"/api/AppColeta/GetResults";
@@ -26,7 +26,7 @@ namespace AppServiceSesmt.Controllers.Api.Sesmt
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return restRequest.Response;
+                return Newtonsoft.Json.JsonConvert.DeserializeObject(restRequest.Response);
             }
             return null;
         }

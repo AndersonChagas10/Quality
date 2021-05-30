@@ -14,6 +14,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
         public void SetCollectTest()
         {
             SetCollectController controller = new SetCollectController();
+            controller.token = Config.TOKEN;
             Collection obj = new Collection();
 
             List<Collection> correctiveActions = new List<Collection>();

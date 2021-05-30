@@ -11,6 +11,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
         public void ParClusterController()
         {
             ParClusterController controller = new ParClusterController();
+            controller.token = Config.TOKEN;
 
             var x = controller.ParCluster(20, 234);
 

@@ -13,6 +13,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
         {
 
             GetResultsController controller = new GetResultsController();
+            controller.token = Config.TOKEN;
             GetResultsData obj = new GetResultsData()
             {
                 CollectionDate = DateTime.Now,

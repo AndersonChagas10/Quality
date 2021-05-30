@@ -1,19 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using AppServiceSesmt.Controllers.Api.Sesmt;
+using Dominio;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AppServiceSesmt.Tests.Controllers.Api
 {
     [TestClass]
-    public class ParClusterGroupControllerTest
+    public class SetActionControllerTest
     {
         [TestMethod]
-        public void ParClusterGroupTest()
+        public void SetActionTest()
         {
-            ParClusterGroupController controller = new ParClusterGroupController();
+            SetActionController controller = new SetActionController();
             controller.token = Config.TOKEN;
+            Acao obj = new Acao();
 
-            var x = controller.ParClusterGroup(234);
+            var x = controller.SetAction(obj);
 
             Assert.IsTrue(x.Result != null);
         }

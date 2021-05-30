@@ -11,6 +11,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
         public void AuthenticationLoginTest()
         {
             AuthenticationLoginController controller = new AuthenticationLoginController();
+            controller.token = Config.TOKEN;
 
             UserViewModel obj = new UserViewModel()
             {

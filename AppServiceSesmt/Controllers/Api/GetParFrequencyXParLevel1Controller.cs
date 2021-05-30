@@ -16,7 +16,7 @@ namespace AppServiceSesmt.Controllers.Api.Sesmt
     [RoutePrefix("api")]
     public partial class GetParFrequencyXParLevel1Controller : BaseApiController
     {
-        [HttpGet]
+        [HttpPost]
         [Route("GetParFrequencyXParLevel1")]
         public async Task<List<JObject>> GetParFrequencyXParLevel1(PlanejamentoColetaViewModel obj)
         {

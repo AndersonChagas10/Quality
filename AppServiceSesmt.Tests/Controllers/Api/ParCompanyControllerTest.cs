@@ -11,6 +11,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
         public void ParCompanyTest()
         {
             ParCompanyController controller = new ParCompanyController();
+            controller.token = Config.TOKEN;
 
             var x = controller.ParCompany(1);
 

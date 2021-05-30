@@ -13,19 +13,19 @@ using System.Web.Http;
 namespace AppServiceSesmt.Controllers.Api.Sesmt
 {
     [RoutePrefix("api/AppColeta")]
-    public class SetCollectController : BaseApiController
+    public class SetActionController : BaseApiController
     {
-        [HttpPost]
-        [Route("SetCollect")]
-        public async Task<object> SetCollect(List<Collection> listSimpleCollect)
+        [HttpGet]
+        [Route("SetAction")]
+        public async Task<JObject> SetAction(Acao acao)
         {
             VerifyIfIsAuthorized();
-            string url = $"/api/AppColeta/SetCollect";
-            RestRequest restRequest = await RestRequest.Post(url, listSimpleCollect, this.token);
+            string url = $"/api/AppColeta/SetAction";
+            RestRequest restRequest = await RestRequest.Post(url, acao, this.token);
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return Newtonsoft.Json.JsonConvert.DeserializeObject(restRequest.Response);
+                return JObject.Parse(restRequest.Response);
             }
 
             return null;

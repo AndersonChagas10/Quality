@@ -10,7 +10,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
         [TestMethod]
         public void GetAppVersionIsUpdatedTest()
         {
-            ConfigController controller = new ConfigController();
+            GetAppVersionIsUpdatedController controller = new GetAppVersionIsUpdatedController();
 
             var x = controller.GetAppVersionIsUpdated("2.0.56");
 

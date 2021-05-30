@@ -13,6 +13,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
         {
 
             GetAppParametrizationController controller = new GetAppParametrizationController();
+            controller.token = Config.TOKEN;
 
             PlanejamentoColeta obj = new PlanejamentoColeta()
             {

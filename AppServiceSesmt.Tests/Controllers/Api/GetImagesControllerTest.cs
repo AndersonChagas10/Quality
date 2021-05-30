@@ -10,7 +10,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
         [TestMethod]
         public void GetImagesTest()
         {
-            AppParamsController controller = new AppParamsController();
+            GetImagesController controller = new GetImagesController();
 
             var x = controller.GetImages();
 

@@ -12,6 +12,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
         public void RetornaQueryRotinaTest()
         {
             RetornaQueryRotinaController controller = new RetornaQueryRotinaController();
+            controller.token = Config.TOKEN;
 
             //PlanejamentoColetaViewModel obj = new PlanejamentoColetaViewModel()
             //{
@@ -22,7 +23,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
             //    ParFrequency_Id = 1
             //};
 
-            var x = controller.RetornaQueryRontina("");
+            var x = controller.RetornaQueryRontina(new JObject());
 
             Assert.IsTrue(x.Result != null);
         }

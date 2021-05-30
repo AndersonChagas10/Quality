@@ -13,6 +13,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
         public void SetCorrectiveActionTest()
         {
             SetCorrectiveActionController controller = new SetCorrectiveActionController();
+            controller.token = Config.TOKEN;
             CorrectiveAction obj = new CorrectiveAction();
 
             List<CorrectiveAction> correctiveActions = new List<CorrectiveAction>();

@@ -67,6 +67,7 @@
     <Compile Include="Controllers\Api\GetImagesControllerTest.cs" />
     <Compile Include="Controllers\Api\GetResultsControllerTest.cs" />
     <Compile Include="Controllers\Api\RetornaQueryRotinaControllerTest.cs" />
+    <Compile Include="Controllers\Api\SetActionControllerTest.cs" />
     <Compile Include="Controllers\Api\SetCollectControllerTest.cs" />
     <Compile Include="Controllers\Api\SetCorrectiveActionControllerTest.cs" />
     <Compile Include="Controllers\Api\GetColetaParcialControllerTest.cs" />

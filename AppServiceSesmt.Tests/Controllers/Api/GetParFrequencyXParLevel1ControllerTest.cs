@@ -12,6 +12,7 @@ namespace AppServiceSesmt.Tests.Controllers.Api
         public void ParFrequencyTest()
         {
             GetParFrequencyXParLevel1Controller controller = new GetParFrequencyXParLevel1Controller();
+            controller.token = Config.TOKEN;
 
             PlanejamentoColetaViewModel obj = new PlanejamentoColetaViewModel()
             {
