@@ -23,6 +23,7 @@ using ServiceModel;
 using Dominio.AcaoRH;
 using Helper;
 using DTO.DTO;
+using Dominio.AcaoRH.Email;
 
 namespace SgqSystem.Controllers.V2.Api
 {
@@ -82,10 +83,14 @@ namespace SgqSystem.Controllers.V2.Api
 
                 if (acao.Status == 2)
                 {
-                    var email = new MontaEmail(new EmailCreateAcaoResponsavel(acao));
-                    EmailAcaoService.Send(email);
-                }
+                    var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
 
+                    var emailResponsavel = new MontaEmail(new EmailCreateAcaoResponsavel(acaoCompleta));
+                    EmailAcaoService.Send(emailResponsavel);
+
+                    var emailNotificados = new MontaEmail(new EmailCreateAcaoNotificados(acaoCompleta));
+                    EmailAcaoService.Send(emailNotificados);
+                }
             }
             catch (Exception e)
             {

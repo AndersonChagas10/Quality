@@ -24,43 +24,40 @@ namespace Dominio.AcaoRH.Email
         public void MontarBody(Acao acao)
         {
             this.Body = $@"   
-            Corpo do e-mail
             Olá!
-            
-	
-            Seguindo o parâmetro da regra de Plano de Ação cadastrada no sistema SG-SEMST, informamos que a Ação descrita a seguir com prazo para conclusão em {acao.DataConclusao:""dd/MM/yyyy""}, em que você foi notificado, teve seu status alterado.            
+            <br><br>
+            Seguindo o parâmetro da regra de Plano de Ação cadastrada no sistema SG-SEMST, informamos que a Ação descrita a seguir com prazo para conclusão em {(acao.DataConclusao != null ? acao.DataConclusao?.ToString("dd/MM/yyyy") : "")}, em que você foi notificado, teve seu status alterado.            
+            <br><br>
             Formulário de Ação - ID {acao.Id}
+            <br><br>
+            Emissor: {acao.Emissor}<br>
+            Data de emissão: {acao.DataEmissao?.ToString("dd/MM/yyyy")}<br>
+            Hora de emissão: {acao.HoraEmissao}<br>
+            Unidade: {acao.ParCompany.Description}<br>
+            Centro de Custo: {acao.ParDepartmentParent.Name}<br>
+            Seção / Atividade: {acao.ParDepartment.Name}<br>
+            Item / Tarefa: {acao.ParCargo.Name}<br><br>
             
-            Emissor: {acao.Emissor}
-            Data de emissão: {acao.DataEmissao:""dd/MM/yyyy""}
-            Hora de emissão: {acao.HoraEmissao}
-            Unidade: {acao.ParCompany}
-            Centro de Custo: {acao.ParDepartment}
-            Seção / Atividade: {acao.ParDepartment.ParDepartmentFilho}
-            Item / Tarefa: {acao.ParCargo}
-            
-            Indicador / Origem: {acao.ParLevel1.Name}
-            Monitoramento:  {acao.ParLevel2.Name}
-            Desvio: {acao.ParLevel3.Name}
+            Indicador / Origem: {acao.ParLevel1.Name}<br>
+            Monitoramento:  {acao.ParLevel2.Name}<br>
+            Desvio: {acao.ParLevel3.Name}<br>
              
-            Não Conformidade / Ocorrência:  {acao.Acao_Naoconformidade}
+            Não Conformidade / Ocorrência:  {acao.Acao_Naoconformidade}<br><br>
              
-            Ação: {acao.AcaoText}
+            Ação: {acao.AcaoText}<br><br>
             
-            Evidência da Não Conformidade: 
-
-	       	Evidência da Ação Concluída:            
-
-            Referência: { acao.Referencia}
-            Data da conclusão: { acao.DataConclusao:""dd/MM/yyyy""}
-            Hora da conclusão: {acao.HoraConclusao}
-            Status da Ação: { acao.Status}
-            Responsável: { acao.Responsavel}
-            Notificar: { string.Join(",", acao.Notificar) }
+            Evidência da Não Conformidade: <br><br>
             
-            Atenciosamente, 
+            Prioridade: {(acao.Prioridade != null ? acao.Prioridade : 0)}<br>
+            Referência: {acao.Referencia}<br>
+            Data da conclusão: { (acao.DataConclusao != null ? acao.DataConclusao?.ToString("dd/MM/yyyy") : "")}<br>
+            Status da Ação: {acao.Status}<br>
+            Responsável: {(acao.ResponsavelUser != null ? acao.ResponsavelUser.FullName : "")}<br>
+            Notificar: {string.Join(",", acao.NotificarUsers.Select(x => x.FullName)) }<br><br>
             
-            Software SG-SESMT
+            Atenciosamente, <br>
+            
+            <b>Software SG-SESMT</b>
             ";
         }
 
@@ -71,7 +68,7 @@ namespace Dominio.AcaoRH.Email
 
         public void MontarTo(Acao acao)
         {
-            this.To = acao.NotificarUsers.Select(x => x.Email);
+            this.To = acao.NotificarUsers != null ? acao.NotificarUsers.Select(x => x.Email) : new string[] { };
         }
     }
 }

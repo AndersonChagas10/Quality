@@ -18,7 +18,7 @@ namespace Helper
                 client.EnableSsl = emailSSL; //true Hotmail
                 client.Credentials = new NetworkCredential(emailFrom, emailPass);
 
-                MailAddress from = new MailAddress(emailFrom, "SGQ", System.Text.Encoding.UTF8);
+                MailAddress from = new MailAddress(emailFrom, DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.systemName , System.Text.Encoding.UTF8);
 
                 var mails = emailList.Split(',');
 

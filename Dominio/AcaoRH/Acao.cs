@@ -28,6 +28,7 @@ namespace Dominio
         public TimeSpan? HoraEmissao { get; set; }
         public int Emissor { get; set; }
         public int? Prioridade { get; set; }
+        public string PrioridadeText { get; set; }
         public int Status { get; set; }
         public bool IsActive { get; set; }
 
@@ -41,8 +42,10 @@ namespace Dominio
         public ParCompany ParCompany { get; set; }
         public ParDepartment ParDepartment { get; set; }
         public ParDepartment ParDepartmentParent { get; set; }
-        public UserSgq UserResponsavel { get; set; }
-
+        public UserSgq ResponsavelUser { get; set; }
+        public UserSgq EmissorUser { get; set; }
+        public ParCluster ParCluster { get; set; }
+        public ParClusterGroup ParClusterGroup { get; set; }
         public IEnumerable<UserSgq> NotificarUsers { get; set; }
     }
 }

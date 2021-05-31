@@ -59,5 +59,19 @@ namespace SgqServiceBusiness.Controllers.RH
             }
             return listaParCompany;
         }
+
+        public ParCompany GetBy(int id)
+        {
+            ParCompany ParCluster;
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+
+                ParCluster = factory.SearchQuery<ParCompany>($"SELECT * FROM ParCompany WHERE ID = {id}").SingleOrDefault();
+
+            }
+
+            return ParCluster;
+        }
     }
 }

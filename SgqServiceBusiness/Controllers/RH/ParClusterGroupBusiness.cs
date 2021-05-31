@@ -11,6 +11,20 @@ namespace SgqServiceBusiness.Controllers.RH
 {
     public class ParClusterGroupBusiness
     {
+
+        public ParClusterGroup GetBy(int id)
+        {
+            ParClusterGroup ParClusterGroup;
+            using (var factory = new Factory("DefaultConnection"))
+            {
+
+                ParClusterGroup = factory.SearchQuery<ParClusterGroup>($"SELECT * FROM ParClusterGroup WHERE ID = {id}").SingleOrDefault();
+                
+            }
+
+            return ParClusterGroup;
+        }
+
         public List<ParClusterGroup> GetListaParClusterGroup(int parCompany_Id)
         {
             var listaClusterGroup = new List<ParClusterGroup>();

@@ -56,7 +56,22 @@ namespace SgqServiceBusiness.Controllers.RH
                     listaCluster = factory.SearchQuery<ParCluster>(cmd).ToList();
                 }
             }
+
             return listaCluster;
+        }
+
+        public ParCluster GetBy(int id)
+        {
+            ParCluster ParCluster;
+
+            using (var factory = new Factory("DefaultConnection"))
+            {
+
+                ParCluster = factory.SearchQuery<ParCluster>($"SELECT * FROM ParCluster WHERE ID = {id}").SingleOrDefault();
+
+            }
+
+            return ParCluster;
         }
     }
 }
