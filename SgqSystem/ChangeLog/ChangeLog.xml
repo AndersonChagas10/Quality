@@ -2831,7 +2831,7 @@
     <CardNumber>SGQ-474</CardNumber>
     <Version>1.6.0</Version>
     <Description>[GQ] Relatório Formulário SIF - Alteração nos filtros.</Description>
-    <Script>      
+    <Script>
     </Script>
   </Card>
   <Card>
@@ -2968,7 +2968,7 @@
       GO
 
     </Script>
-    
+
   </Card>
 
 
@@ -2984,25 +2984,25 @@
     <CardNumber>SGQ-431</CardNumber>
     <Version>1.5.0</Version>
     <Description>[Relatório Resultado][Seara] Adição da tabela % Conforme das Unidades e adicionada a Pivot Table ao relatório</Description>
-    <Script>  
+    <Script>
     </Script>
   </Card>
-  
- <Card>
-  <CardNumber>SGQ-469</CardNumber>
-  <Version>1.7.0</Version>
-  <Description>[5S / RH SESMT] [MARCOS] COLETA - Criar tipo de dado de entrada binário com múltipla escolha</Description>
-  <Script>
-    IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ResultLevel3XParQualification' AND xtype='U')
-    create table ResultLevel3XParQualification(
-    Id int not null identity primary key,
-    AddDate Date not null,
-    ResultLevel3_Id int not null,
-    [Qualification_Value] varchar(100) null
-    )
-  </Script>
- </Card>
-  
+
+  <Card>
+    <CardNumber>SGQ-469</CardNumber>
+    <Version>1.7.0</Version>
+    <Description>[5S / RH SESMT] [MARCOS] COLETA - Criar tipo de dado de entrada binário com múltipla escolha</Description>
+    <Script>
+      IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='ResultLevel3XParQualification' AND xtype='U')
+      create table ResultLevel3XParQualification(
+      Id int not null identity primary key,
+      AddDate Date not null,
+      ResultLevel3_Id int not null,
+      [Qualification_Value] varchar(100) null
+      )
+    </Script>
+  </Card>
+
   <Card>
     <CardNumber>SGQ-445</CardNumber>
     <Version>1.7.0</Version>
@@ -3158,7 +3158,7 @@
       ADD Ordenacao int null;
       END
       GO
-      
+
     </Script>
   </Card>
 
@@ -3182,7 +3182,7 @@
     <Script>
     </Script>
   </Card>
-  
+
   <Card>
     <CardNumber>SGQ-574</CardNumber>
     <Version>1.8.0</Version>
@@ -3190,7 +3190,7 @@
     <Script>
     </Script>
   </Card>
-  
+
   <Card>
     <CardNumber>SGQ-571</CardNumber>
     <Version>1.8.0</Version>
@@ -3389,7 +3389,7 @@
       GO
     </Script>
   </Card>
-  
+
   <Card>
     <CardNumber>SGQ-646</CardNumber>
     <Version>1.8.0</Version>
@@ -3603,8 +3603,10 @@
   <Card>
     <CardNumber>SGQ-826</CardNumber>
     <Version>1.4.0</Version>
-    <Description> [MSP] Relatório Consistency Call - Substituição das queries por apenas uma, efetuando os cálculos do relatório via BackEnd 
-                  e substituição dos Ids mockados por dados inputáveis via Componente Genérico.</Description>
+    <Description>
+      [MSP] Relatório Consistency Call - Substituição das queries por apenas uma, efetuando os cálculos do relatório via BackEnd
+      e substituição dos Ids mockados por dados inputáveis via Componente Genérico.
+    </Description>
     <Script>
     </Script>
   </Card>
@@ -3731,7 +3733,7 @@
     <Script>
     </Script>
   </Card>
-  
+
   <Card>
     <CardNumber>SGQ-765</CardNumber>
     <Version>1.9.0</Version>
@@ -3902,7 +3904,7 @@
     <Description> [RH COVID 5S] Apontamentos Diários - Criação da redistribuição de peso na edição de resultado.</Description>
     <Script></Script>
   </Card>
-  
+
   <Card>
     <CardNumber>GRX-189</CardNumber>
     <Version>1.10.0</Version>
@@ -3916,7 +3918,7 @@
       GO
     </Script>
   </Card>
-  
+
 
   <Card>
     <CardNumber>SGQ-1329</CardNumber>
@@ -3963,6 +3965,26 @@
     </Script>
   </Card>
 
+
+  <Card>
+    <CardNumber>GRX-1465</CardNumber>
+    <Version>1.10.6</Version>
+    <Description>[RH SESMT] Ação coleta - Criação do schema PA</Description>
+    <Script>
+      Insert into MigrationHistory (Name, AddDate) VALUES ('Cria Schema Pa',GetDate())
+      GO
+
+      IF NOT EXISTS (
+      SELECT 1
+      FROM sys.objects INNER JOIN sys.schemas ON sys.objects.schema_id = sys.schemas.schema_id
+      WHERE sys.objects.type='U'AND sys.schemas.name = 'Pa')
+      BEGIN
+      EXEC sp_executesql N'CREATE SCHEMA Pa'
+      END
+      
+      GO
+    </Script>
+  </Card>
 
   <Card>
     <CardNumber>GRX-1465</CardNumber>

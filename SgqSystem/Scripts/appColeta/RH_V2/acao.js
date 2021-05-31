@@ -148,22 +148,22 @@ function montaCorpoFormularioAcao(index) {
         '   <div class="row" style="border: 2px;border-color: azure;border-style: groove;">' +
         '       <label class="col-xs-4">Data Emissão: ' + currentCollectDate.toLocaleDateString() + '</label>' +
         '       <label class="col-xs-4">Hora Emissão: ' + currentCollectDate.toLocaleTimeString() + '</label>' +
-        '       <label class="col-xs-4">Emissor: ' + currentLogin.Name + '</label>' +
+        '       <label class="col-xs-4">Emissor: ' + currentLogin.FullName + '</label>' +
         '   </div>' +
         '   <div class="form-group row" style="border: 2px;border-color: azure;border-style: groove;">' +
         '       <div class="col-xs-12">' +
         '           <p id="actionParCompany_Id">Unidade: ' + currentAction.ParCompany_Name + '</p>' +
         '           <p id="actionParDepartment_Id">Centro de Custo: ' + currentAction.ParDepartment_Name + '</p>' +
-        '           <p id="actionParDepartmentParent_Id">Seção/Atividade: ' + currentAction.ParDepartmentParent_Name + '</p>' +
+        '           <p id="actionParDepartmentParent_Id">Item/Tarefa: ' + currentAction.ParDepartmentParent_Name + '</p>' +
         '           <p id="actionParCargo_Id">Item/Cargo: ' + currentAction.ParCargo_Name + ' </p>' +
         '           <p id="actionParLevel1_Id" data-action-level1="' + currentAction.ParLevel1_Id + '"> Indicador/Origem: ' + currentAction.ParLevel1_Name + '</p>' +
         '           <p id="actionParLevel2_Id" data-action-level2="' + currentAction.ParLevel2_Id + '"> Monitoramento: ' + currentAction.ParLevel2_Name + '</p>' +
-        '           <p id="actionParLevel3_Id" data-action-level3="' + currentAction.ParLevel3_Id + '"> Desvio/Tarefa: ' + currentAction.ParLevel3_Name + '</p>' +
+        '           <p id="actionParLevel3_Id" data-action-level3="' + currentAction.ParLevel3_Id + '"> Desvio/Medida de Controle: ' + currentAction.ParLevel3_Name + '</p>' +
         '       </div>' +
         '   </div>' +
         '   <div class="form-group row" style="">' +
         '       <div class="col-xs-12">' +
-        '           <p>Não Conformidade/Ocorrencia</p>' +
+        '           <p>Não Conformidade/Ocorrência</p>' +
         '           <textarea id="txtActionNotConformity" maxlength="900" class="form-control" style="resize: none; height: 100px;"></textarea>' +
         '           <p>Ação</p>' +
         '           <textarea id="txtAction" class="form-control" maxlength="900" style="resize: none; height: 100px;"></textarea>' +
@@ -172,7 +172,7 @@ function montaCorpoFormularioAcao(index) {
         '   <hr>' +
         '   <div class="form-group row">' +
         '       <div class="col-xs-12">' +
-        '           <p>Evidencias de Não conformidade </p>' +
+        '           <p>Evidências de Não Conformidade </p>' +
         '           ' + btnPhoto +
         '           ' + btnFile +
         '           <br><br> ' +
@@ -182,7 +182,7 @@ function montaCorpoFormularioAcao(index) {
         '       <div class="col-xs-12">' +
         '           <p>Ver e Agir <input type="checkbox" onclick="updateAcaoCurrent(' + index + ')" id="checkVerAgir"></p>' +
         '           <div id="actionsEvidencies">' +
-        '               <p>Evidencias da Ação Concluida</p>' +
+        '               <p>Evidências da Ação Concluída</p>' +
         '               ' + btnPhotoConcluida +
         '               ' + btnFileConcluida +
         '               <br><br> ' +
@@ -202,11 +202,11 @@ function montaCorpoFormularioAcao(index) {
         '       <input id="actionConclusionHour" type="time" class="form-control">' +
         '   </div>' +
         '   <div class="col-xs-4">' +
-        '       <h4>Referencia:</h4>' +
+        '       <h4>Referência:</h4>' +
         '       <input id="actionReference" maxlength="200" type="text" class="form-control">' +
         '   </div>' +
         '   <div class="col-xs-4">' +
-        '       <h4>Responsavel:</h4>' +
+        '       <h4>Responsável:</h4>' +
         '       <select id="actionResponsable" class="form-control">' +
         '           ' + options +
         '       </select>' +
@@ -250,8 +250,8 @@ function montaCorpoFormularioAcao(index) {
         '   ' + btnNext +
         // '   </div>' +
         // '   <div class="col-xs-4">' +
-        '       <button id="btnSalvarIniciar" class="btn btn-success" onclick="saveAction(' + index + ', 2);">Salvar e iniciar acao</button>' +
-        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e preencher depois</button>' +
+        '       <button id="btnSalvarIniciar" class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e iniciar acao</button>' +
+        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 2);">Salvar e preencher depois</button>' +
         '   </div>' +
         '</div>' +
         '</div></div>';
