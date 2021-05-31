@@ -7,7 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Dominio;
-using Dominio.Enum;
+using Dominio.Enums;
 using static SgqSystem.Controllers.CadastrosGerais.ParReportXFiltersController;
 
 namespace SgqSystem.Controllers

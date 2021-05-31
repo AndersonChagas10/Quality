@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Dominio.Enum
+namespace Dominio.Enums
 {
     public class Enums
     {
@@ -18,6 +18,21 @@ namespace Dominio.Enum
             ItemMenu = 1, ReportXUserSgq, ComponenteGenerico
         }
 
+        public enum AcaoStatus
+        {
+            Pendente = 1,
+            Em_andamento,
+            Concluída,
+            Atrasada,
+            Cancelada
+        }
+
+        public enum AcaoPrioridade
+        {
+            Baixa = 1,
+            Media,
+            Alta
+        }
 
         public static explicit operator int(Enums v)
         {

@@ -88,8 +88,8 @@
     <Compile Include="CrudGenerico\ComponenteGenericoTipoColuna.cs" />
     <Compile Include="CrudGenerico\ComponenteGenericoValor.cs" />
     <Compile Include="DicionarioEstatico.cs" />
-    <Compile Include="Enum\Enums.cs" />
-    <Compile Include="Enum\FilterEnum.cs" />
+    <Compile Include="Enums\Enums.cs" />
+    <Compile Include="Enums\FilterEnum.cs" />
     <Compile Include="ErrorLog.cs" />
     <Compile Include="DatabaseLog.cs" />
     <Compile Include="Defect.cs" />
