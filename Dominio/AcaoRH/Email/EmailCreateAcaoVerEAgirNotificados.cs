@@ -1,6 +1,7 @@
 ﻿using Dominio.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
+using static Dominio.Enums.Enums;
 
 namespace Dominio.AcaoRH.Email
 {
@@ -54,7 +55,7 @@ namespace Dominio.AcaoRH.Email
             Referência: {acao.Referencia}<br>
             Data da conclusão: { (acao.DataConclusao != null ? acao.DataConclusao?.ToString("dd/MM/yyyy") : "")}<br>
             Hora da conclusão: {acao.HoraConclusao}
-            Status da Ação: {Enum.GetName(typeof(AcaoStatus), acao.Status)}<br>
+            Status da Ação: {System.Enum.GetName(typeof(AcaoStatus), acao.Status)}<br>
             Responsável: {(acao.ResponsavelUser != null ? acao.ResponsavelUser.FullName : "")}<br>
             Notificar: {string.Join(",", acao.NotificarUsers.Select(x => x.FullName)) }<br><br>
             

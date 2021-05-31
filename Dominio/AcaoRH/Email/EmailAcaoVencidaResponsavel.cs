@@ -1,6 +1,8 @@
 ﻿using Dominio.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Dominio.Enums.Enums;
 
 namespace Dominio.AcaoRH.Email
 {
