@@ -243,8 +243,8 @@ function montaCorpoFormularioAcao(index) {
         '   ' + btnNext +
         // '   </div>' +
         // '   <div class="col-xs-4">' +
-        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e iniciar acao</button>' +
-        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 2);">Salvar e preencher depois</button>' +
+        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 2);">Salvar e iniciar acao</button>' +
+        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e preencher depois</button>' +
         '   </div>' +
         '</div>' +
         '</div></div>';

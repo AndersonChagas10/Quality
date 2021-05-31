@@ -18,7 +18,7 @@ namespace SgqSystem.Controllers
         {
             db = new SgqDbDevEntities();
 
-            var lista = Enum.GetValues(typeof(Dominio.Enum.Enums.PDCAMenuItem)).Cast<Dominio.Enum.Enums.PDCAMenuItem>().Select(t => new ItemMenu
+            var lista = Enum.GetValues(typeof(Dominio.Enums.Enums.PDCAMenuItem)).Cast<Dominio.Enums.Enums.PDCAMenuItem>().Select(t => new ItemMenu
                         {
                             Id = ((int)t),
                             Name = t.ToString()

@@ -20,6 +20,10 @@ using SgqSystem.Jobs;
 using System.Data.SqlClient;
 using SgqServiceBusiness.Controllers.RH;
 using ServiceModel;
+using Dominio.AcaoRH;
+using Helper;
+using DTO.DTO;
+using Dominio.AcaoRH.Email;
 
 namespace SgqSystem.Controllers.V2.Api
 {
@@ -77,6 +81,16 @@ namespace SgqSystem.Controllers.V2.Api
                     appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = acao.Id, Path = filePath });
                 }
 
+                if (acao.Status == 2)
+                {
+                    var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
+
+                    var emailResponsavel = new MontaEmail(new EmailCreateAcaoResponsavel(acaoCompleta));
+                    EmailAcaoService.Send(emailResponsavel);
+
+                    var emailNotificados = new MontaEmail(new EmailCreateAcaoNotificados(acaoCompleta));
+                    EmailAcaoService.Send(emailNotificados);
+                }
             }
             catch (Exception e)
             {
@@ -459,7 +473,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .ToList();
 
 
-                var listaDeDepartamento = db.ParDepartment.AsNoTracking(). Where(x => x.Active).ToList();
+                var listaDeDepartamento = db.ParDepartment.AsNoTracking().Where(x => x.Active).ToList();
 
                 listaParDepartment = listaDeDepartamento
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
@@ -490,7 +504,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 var listaCargoFiltrado_Id = listaParEvaluationXDepartmentXCargoAppViewModel.Select(x => x.ParCargo_Id).Distinct().ToList();
 
-   
+
                 var listaCargoFiltradoPorDepartamento_Id = db.ParCargoXDepartment
                     .AsNoTracking()
                     .Where(x => x.IsActive)
@@ -500,7 +514,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .Distinct()
                     .ToList();
 
-   
+
                 listaParCargo = db.ParCargo
                     .AsNoTracking()
                     .Where(x => x.IsActive)
@@ -513,7 +527,7 @@ namespace SgqSystem.Controllers.V2.Api
                     })
                     .ToList();
 
-    
+
                 listaParCargoXDepartment = db.ParCargoXDepartment
                     .AsNoTracking()
                     .Where(x => x.IsActive)
