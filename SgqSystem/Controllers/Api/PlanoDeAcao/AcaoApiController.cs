@@ -21,8 +21,8 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         [HttpGet]
         public IEnumerable<AcaoViewModel> Get()
         {
-            var query = $@"
-        SELECT
+         var query = $@"
+         SELECT
          PAC.Id,
          PL1.Id AS ParLevel1_Id,
          PL1.Name AS ParLevel1_Name,
@@ -67,7 +67,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          ON PCG.Id = PAC.ParCargo_Id
          LEFT JOIN UserSgq US WITH (NOLOCK)
          ON US.Id = PAC.Responsavel"
- ;
+        ;
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {

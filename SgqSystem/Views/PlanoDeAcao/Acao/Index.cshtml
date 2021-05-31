@@ -142,7 +142,7 @@
 
         <div class="caption">
             <i class="icon-share font-dark"></i>
-            <h4 class="text-center"><strong>WorkFlow de Ações</strong></h4>
+            <h4 class="text-center"><strong>Workflow de Ações</strong></h4>
         </div>
 
         <div class="col-md-12 col-xs-12 col-sm-6" style="text-align: center;">
@@ -221,8 +221,9 @@
                     $('#btnConcluida text').text('');
                     $('#btnConcluida text').text(" (" + total + ")");
                 }
-
             }
+            $('#btnTodas text').text(" (" + dados.length + ")");
+            
 
             montarTabela(dados, colunas);
         }
