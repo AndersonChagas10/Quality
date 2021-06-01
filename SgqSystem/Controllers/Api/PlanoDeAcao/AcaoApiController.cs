@@ -1,5 +1,7 @@
 ﻿using ADOFactory;
 using Dominio;
+using Dominio.AcaoRH;
+using Dominio.AcaoRH.Email;
 using Helper;
 using SgqServiceBusiness.Controllers.RH;
 using SgqSystem.Helpers;
@@ -151,6 +153,17 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                 GetEvidenciaList(objAcao);
 
                 GetEvidenciaConcluidaList(objAcao);
+
+                //if (int.Parse(objAcao.Status) == 2)
+                //{
+                //    var acaoCompleta = new AcaoBusiness().GetBy(objAcao.Id);
+
+                //    var emailResponsavel = new MontaEmail(new EmailCreateAcaoResponsavel(acaoCompleta));
+                //    EmailAcaoService.Send(emailResponsavel);
+
+                //    var emailNotificados = new MontaEmail(new EmailCreateAcaoNotificados(acaoCompleta));
+                //    EmailAcaoService.Send(emailNotificados);
+                //}
 
             }
             catch (Exception e)

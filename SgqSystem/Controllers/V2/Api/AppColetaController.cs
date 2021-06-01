@@ -83,13 +83,17 @@ namespace SgqSystem.Controllers.V2.Api
 
                 if (acao.Status == 2)
                 {
-                    var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
+                    //se nao houver  responsavel enviar o email para quem?
+                    if (acao.Responsavel != null)
+                    {
+                        var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
 
-                    var emailResponsavel = new MontaEmail(new EmailCreateAcaoResponsavel(acaoCompleta));
-                    EmailAcaoService.Send(emailResponsavel);
+                        var emailResponsavel = new MontaEmail(new EmailCreateAcaoResponsavel(acaoCompleta));
+                        EmailAcaoService.Send(emailResponsavel);
 
-                    var emailNotificados = new MontaEmail(new EmailCreateAcaoNotificados(acaoCompleta));
-                    EmailAcaoService.Send(emailNotificados);
+                        var emailNotificados = new MontaEmail(new EmailCreateAcaoNotificados(acaoCompleta));
+                        EmailAcaoService.Send(emailNotificados);
+                    }
                 }
             }
             catch (Exception e)

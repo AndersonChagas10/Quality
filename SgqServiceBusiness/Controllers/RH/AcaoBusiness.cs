@@ -26,7 +26,7 @@ namespace SgqServiceBusiness.Controllers.RH
             acao.ParCompany = new ParCompanyBusiness().GetBy(acao.ParCompany_Id);
             acao.ParDepartment = new ParDepartmentBusiness().GetBy(acao.ParDepartment_Id); //Sessão
             acao.ParDepartmentParent = new ParDepartmentBusiness().GetBy(acao.ParDepartmentParent_Id); //Centro de custo
-            acao.ResponsavelUser = new UserSgqBusiness().GetBy(acao.Responsavel.Value);
+            acao.ResponsavelUser = new UserSgqBusiness().GetBy(acao.Responsavel.Value); 
             acao.ParCluster = new ParClusterBusiness().GetBy(acao.ParCluster_Id);
             acao.ParClusterGroup = new ParClusterGroupBusiness().GetBy(acao.ParClusterGroup_Id);
             acao.NotificarUsers = GetNotificarUsersBy(acao.Id);

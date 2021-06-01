@@ -665,6 +665,7 @@ function sendActions() {
             removeListAcaoToSend(acaoToSend);
             isSendActions = false;
             writeActonToSendFile(sendActions);
+            //console.log(data.Id);
         },
         timeout: 600000,
         error: function () {
