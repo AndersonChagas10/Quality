@@ -1,5 +1,7 @@
 ﻿using ADOFactory;
 using Dominio;
+using Dominio.AcaoRH;
+using Dominio.AcaoRH.Email;
 using Helper;
 using SgqServiceBusiness.Controllers.RH;
 using SgqSystem.Helpers;
@@ -21,8 +23,8 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         [HttpGet]
         public IEnumerable<AcaoViewModel> Get()
         {
-            var query = $@"
-        SELECT
+         var query = $@"
+         SELECT
          PAC.Id,
          PL1.Id AS ParLevel1_Id,
          PL1.Name AS ParLevel1_Name,
@@ -67,7 +69,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          ON PCG.Id = PAC.ParCargo_Id
          LEFT JOIN UserSgq US WITH (NOLOCK)
          ON US.Id = PAC.Responsavel"
- ;
+        ;
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
@@ -141,6 +143,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         {
             try
             {
+
                 //salva os campos comuns da ação
                 UpdateAction(objAcao);
 
@@ -152,6 +155,11 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
                 GetEvidenciaConcluidaList(objAcao);
 
+                if (objAcao.Responsavel != null)
+                {
+                    SendMail(objAcao);
+                }
+
             }
             catch (Exception e)
             {
@@ -162,11 +170,49 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             return null;
         }
 
+
+        public void SendMail(AcaoViewModel acao)
+        {
+            //1 Pendente - nao envia email
+            //2 Em andamento - cenario 1 e 2
+            //3 Concluída - cenario 3 e 4
+            //4 Atrasada  - cenario 5 e 6
+            //5 Cancelada - cenario 7 e 8
+
+            if (int.Parse(acao.Status) == 2)
+            {
+                var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
+
+                var emailResponsavel = new MontaEmail(new EmailCreateAcaoResponsavel(acaoCompleta));
+                EmailAcaoService.Send(emailResponsavel);
+
+                var emailNotificados = new MontaEmail(new EmailCreateAcaoNotificados(acaoCompleta));
+                EmailAcaoService.Send(emailNotificados);
+
+            }
+
+            if (int.Parse(acao.Status) == 3)
+            {
+                var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
+
+                var emailResponsavel = new MontaEmail(new EmailCreateAcaoVerEAgirResponsavel(acaoCompleta));
+                EmailAcaoService.Send(emailResponsavel);
+
+                var emailNotificados = new MontaEmail(new EmailCreateAcaoVerEAgirNotificados(acaoCompleta));
+                EmailAcaoService.Send(emailNotificados);
+
+            }
+        }
+
         public void GetEvidenciaList(AcaoViewModel objAcao)
         {
             var listaEvidenciasDB = getEvidenciasDB(objAcao.Id);
+            var listaEvidenciasPathsEditadas = new List<Evidencia>();
 
-            var listaEvidenciasPathsEditadas = objAcao.ListaEvidencia.ToList();
+            if (objAcao.ListaEvidencia != null)
+            {
+                 listaEvidenciasPathsEditadas = objAcao.ListaEvidencia.ToList();
+            }
 
             var listaInserir = listaEvidenciasPathsEditadas.Where(x => !listaEvidenciasDB.Select(y => y.Path).ToList().Contains(x.Path)).ToList();
 
@@ -183,7 +229,11 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         {
             var listaEvidenciasConcluidasDB = BuscarListaEvidenciasConcluidas(objAcao.Id);
 
-            var listaEvidenciasPathsEditadas = objAcao.ListaEvidenciaConcluida.ToList();
+            var listaEvidenciasPathsEditadas = new List<Evidencia>();
+            if (objAcao.ListaEvidenciaConcluida != null)
+            {
+                 listaEvidenciasPathsEditadas = objAcao.ListaEvidenciaConcluida.ToList();
+            }
 
             var listaInserir = listaEvidenciasPathsEditadas.Where(x => !listaEvidenciasConcluidasDB.Select(y => y.Path).ToList().Contains(x.Path)).ToList();
 
@@ -841,7 +891,7 @@ SELECT
             public string AcaoText { get; set; }
             public DateTime? DataEmissao { get; set; }
             public string _DataEmissao { get { return DataEmissao?.ToShortDateString(); } }
-            public DateTime DataConclusao { get; set; }
+            public DateTime? DataConclusao { get; set; }
             public TimeSpan HoraEmissao { get; set; }
             public TimeSpan HoraConclusao { get; set; }
             public string Referencia { get; set; }

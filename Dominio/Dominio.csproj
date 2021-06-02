@@ -33,6 +33,15 @@
   <ItemGroup>
     <Compile Include="AcaoRH\Acao.cs" />
     <Compile Include="AcaoRH\AcaoXNotificarAcao.cs" />
+    <Compile Include="AcaoRH\Email\EmailAcaoStatusAlteradoNotificados.cs" />
+    <Compile Include="AcaoRH\Email\EmailAcaoStatusAlteradoResponsavel.cs" />
+    <Compile Include="AcaoRH\Email\EmailAcaoVencidaNotificados.cs" />
+    <Compile Include="AcaoRH\Email\EmailAcaoVencidaResponsavel.cs" />
+    <Compile Include="AcaoRH\Email\EmailCreateAcaoNotificados.cs" />
+    <Compile Include="AcaoRH\Email\EmailCreateAcaoResponsavel.cs" />
+    <Compile Include="AcaoRH\Email\EmailCreateAcaoVerEAgirNotificados.cs" />
+    <Compile Include="AcaoRH\Email\EmailCreateAcaoVerEAgirResponsavel.cs" />
+    <Compile Include="AcaoRH\Email\MontaEmail.cs" />
     <Compile Include="AcaoRH\EvidenciaAcaoConcluida.cs" />
     <Compile Include="AcaoRH\EvidenciaNaoConformidade.cs" />
     <Compile Include="AppScript.cs" />
@@ -79,8 +88,8 @@
     <Compile Include="CrudGenerico\ComponenteGenericoTipoColuna.cs" />
     <Compile Include="CrudGenerico\ComponenteGenericoValor.cs" />
     <Compile Include="DicionarioEstatico.cs" />
-    <Compile Include="Enum\Enums.cs" />
-    <Compile Include="Enum\FilterEnum.cs" />
+    <Compile Include="Enums\Enums.cs" />
+    <Compile Include="Enums\FilterEnum.cs" />
     <Compile Include="ErrorLog.cs" />
     <Compile Include="DatabaseLog.cs" />
     <Compile Include="Defect.cs" />
@@ -101,6 +110,7 @@
     <Compile Include="Integ\ColetaCabecalho.cs" />
     <Compile Include="Integ\ColetaTarefa.cs" />
     <Compile Include="Integ\IntegCollectionData.cs" />
+    <Compile Include="Interfaces\IEmail.cs" />
     <Compile Include="ItemMenu.cs" />
     <Compile Include="LeftControlRole.cs" />
     <Compile Include="LogAlteracoes.cs" />
@@ -330,6 +340,7 @@
       <Name>Helper</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

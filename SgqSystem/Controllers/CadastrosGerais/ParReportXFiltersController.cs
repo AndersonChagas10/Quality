@@ -1,5 +1,5 @@
 ﻿using Dominio;
-using Dominio.Enum;
+using Dominio.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

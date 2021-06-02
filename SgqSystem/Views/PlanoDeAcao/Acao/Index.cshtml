@@ -142,7 +142,7 @@
 
         <div class="caption">
             <i class="icon-share font-dark"></i>
-            <h4 class="text-center"><strong>WorkFlow de Ações</strong></h4>
+            <h4 class="text-center"><strong>Workflow de Ações</strong></h4>
         </div>
 
         <div class="col-md-12 col-xs-12 col-sm-6" style="text-align: center;">
@@ -221,8 +221,9 @@
                     $('#btnConcluida text').text('');
                     $('#btnConcluida text').text(" (" + total + ")");
                 }
-
             }
+            $('#btnTodas text').text(" (" + dados.length + ")");
+            
 
             montarTabela(dados, colunas);
         }
@@ -377,10 +378,12 @@
                 url: `${url}/${id}`,
                 contentType: "application/json",
                 success: function (dados) {
-                    if(dados)
+
+                    if (dados.length > 0) {
                         imprimirListaEvidenciaDB(dados);
 
-                    buscarEvidenciaConcluida(id);
+                        buscarEvidenciaConcluida(id);
+                    }
                     closeLoader();
                 },
                 error: function (e) {
@@ -459,7 +462,7 @@
             $("#actionParLevel3_Id").text(dados.ParLevel3_Name);
             $("#selectPrioridade").val(dados.Prioridade);
             $("#selectResponsavel").val(dados.Responsavel);
-            $("#actionConclusionDate").val(dados.DataConclusao.split('T')[0]);
+            $("#actionConclusionDate").val(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]);
             $("#actionConclusionHour").val(dados.HoraConclusao);
             $("#actionReference").val(dados.Referencia);
             $("#status").val(dados.Status);
@@ -515,7 +518,7 @@
         }
 
         function inserirNaListaEvidenciaConcluida(base64) {
-            if (acaoEditar["ListaEvidenciaConcluida"] == undefined)
+            if (acaoEditar["ListaEvidenciaConcluida"] == undefined || acaoEditar["ListaEvidenciaConcluida"] == null)
                 acaoEditar["ListaEvidenciaConcluida"] = [];
 
             if (acaoEditar["ListaEvidenciaConcluida"].length < 2) {
@@ -535,6 +538,7 @@
 
             var html = "";
             $('#actionsEvidencies').empty();
+
             acaoEditar["ListaEvidenciaConcluida"] = [];
 
             if (dados.length > 0) {
