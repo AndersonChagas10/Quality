@@ -7,16 +7,17 @@
     table#tabelaDeResultados tr:hover {
         background: #ff6a0099 !important;
     }
+
 </style>
 
 <div class="modal fade" id="modalEditar" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="formAcao">
-                <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
+            <form id="formAcao" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
+                <div id="cabecalhoDiv" class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
                     <h3 style="font-weight:bold;">Criar Ação</h3>
                 </div>
-                <div class="modal-body">
+                <div id="formBody" class="modal-body">
                     <input type="hidden" name="Id" />
                     <input type="hidden" id="status" name="Status" />
                     <div class="row">
@@ -124,10 +125,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div id="rodapeDiv" class="modal-footer">
                     <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
 
-                    @*<button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>*@
+                    <button id="btnPrint" type="button" class="btn btn-primary" onclick="print()">Imprimir</button>
 
                     <button class="btn btn-success" onclick="enviarFormularioEditarAcao('1')">Salvar e iniciar acao</button>
                     <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e preencher depois</button>
@@ -157,10 +158,11 @@
 </div>
 
 @section Scripts {
-
+    <script src="~/Scripts/Print/printGRT.js"></script>
     <script type="text/javascript">
 
         const enumStatus = [1, 2, 3];
+        var isVisualizar = false;
         var showVerAgir = false;
 
         $(document).ready(function () {
@@ -223,7 +225,7 @@
                 }
             }
             $('#btnTodas text').text(" (" + dados.length + ")");
-            
+
 
             montarTabela(dados, colunas);
         }
@@ -242,11 +244,16 @@
                         return `<button class="btn btn-sm btn-info" onclick="abrirEditar(${id})">Editar</button>`;
                     }
                 },
+                {
+                    "title": "Ações", "mData": null, "visible": true, mRender: function (data, type, full, cell) {
+                        var id = full["Id"];
+                        return `<button class="btn btn-sm btn-warning" onclick="abrirImpressao(${id})">Visualizar</button>`;
+                    }
+                },
                 { "title": "Id", "mData": "Id", "visible": false },
 
                 { "title": "Data Emissão", "mData": "_DataEmissao", "visible": true },
                 { "title": "Hora Emissão", "mData": "HoraEmissao", "visible": true },
-                //{ "title": "Emissor", "mData": "Emissor", "visible": true },
                 { "title": "ParCompany_Id", "mData": "ParCompany_Id", "visible": false },
                 { "title": "Unidade", "mData": "ParCompany_Name", "visible": true },
                 { "title": "ParDepartment_Id", "mData": "ParDepartment_Id", "visible": false },
@@ -333,9 +340,9 @@
 
         }
 
-        function abrirEditar(id) {
+        function abrirImpressao(id) {
             openLoader("...");
-
+            isVisualizar = true;
             const url = '@Url.Action("GetById", "api/AcaoApi")';
             //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
             //Pegar as informações e mapear para um objeto
@@ -346,9 +353,65 @@
                 url: `${url}/${id}`,
                 contentType: "application/json",
                 success: function (dados) {
-                    preencherModal(dados);
+                    preencherModal(dados, isVisualizar);
 
-                    buscarFotos(id);
+                    buscarFotos(id, isVisualizar);
+
+                    closeLoader();
+                },
+                error: function (e) {
+                    console.error(e);
+                    closeLoader();
+                }
+            });
+
+            $("#modalEditar").modal();
+        }
+
+        function print() {
+
+            $('img').attr('width', "150px");
+
+            var winPrint = window.open('', '', '');
+            winPrint.document.write(document.getElementById('formBody').innerHTML);
+            winPrint.document.close();
+            winPrint.focus();
+            winPrint.print();
+            //winPrint.close();
+
+            //printGRT.Inicializar({
+
+            //    headerHtml: document.getElementById('cabecalhoDiv').innerHTML,
+            //    bodyHtml: document.getElementById('formAcao').innerHTML,
+            //    footerHtml: document.getElementById('rodapeDiv').innerHTML,
+            //    numberMarginRight: 25,
+            //    numberMarginBottom: 25,
+            //    renderTableMargin: 0,
+            //    pageMarginHeader: "25px 25px 10px 25px",
+            //    pageMarginFooter: "10px 25px 25px 25px",
+            //    pageMarginBody: "0 25px 0 25px"
+
+            //});
+
+            //printGRT.Imprimir();
+        }
+
+        function abrirEditar(id) {
+            openLoader("...");
+            isVisualizar = false;
+            const url = '@Url.Action("GetById", "api/AcaoApi")';
+            //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
+            //Pegar as informações e mapear para um objeto
+            //Com as propriedades, apresente na tela
+            $.ajax({
+                //data: JSON.stringify(id),
+                type: 'GET',
+                url: `${url}/${id}`,
+                contentType: "application/json",
+                success: function (dados) {
+                    preencherModal(dados, isVisualizar);
+
+                    buscarFotos(id, isVisualizar);
 
                     closeLoader();
                 },
@@ -371,7 +434,7 @@
             $("#modalEditar").modal();
         }
 
-        function buscarFotos(id) {
+        function buscarFotos(id, isVisualizar) {
             const url = '@Url.Action("GetFotosEvidencia", "api/AcaoApi")';
             $.ajax({
                 type: 'GET',
@@ -380,9 +443,9 @@
                 success: function (dados) {
 
                     if (dados.length > 0) {
-                        imprimirListaEvidenciaDB(dados);
+                        imprimirListaEvidenciaDB(dados, isVisualizar);
 
-                        buscarEvidenciaConcluida(id);
+                        buscarEvidenciaConcluida(id, isVisualizar);
                     }
                     closeLoader();
                 },
@@ -393,7 +456,7 @@
             });
 
         }
-      
+
         function buscarEvidenciaConcluida(id) {
             const url = '@Url.Action("GetFotosEvidenciaConcluida", "api/AcaoApi")';
             $.ajax({
@@ -425,7 +488,7 @@
         }
 
         var acaoEditar = {};
-        function preencherModal(dados) {
+        function preencherModal(dados, isVisualizar) {
             acaoEditar = dados;
 
             if (dados.ListaResponsavel) {
@@ -435,7 +498,7 @@
                     html += `<option value="${responsavel["Id"]}">${responsavel["Nome"]}</option>`;
                 }
 
-                $('#selectResponsavel').html(html);
+                $('#selectResponsavel').html(html).attr('disabled', isVisualizar);
 
                 $("#selectResponsavel option[value=" + dados.Responsavel + "]").attr('selected', 'selected')
             }
@@ -446,29 +509,29 @@
                     var prioridade = dados.ListaPrioridade[i];
                     html += `<option value="${prioridade["Id"]}">${prioridade["Nome"]}</option>`;
                 }
-                $('#selectPrioridade').html(html);
+                $('#selectPrioridade').html(html).attr('disabled', isVisualizar);
             }
 
             $("input[name='Id']").val(dados.Id);
-            $("#dataEmissao").text(dados._DataEmissao);
-            $("#horaEmissao").text(dados.HoraEmissao);
-            $("#usuarioEmissor").text(dados.Responsavel_Name);
-            $("#actionParCompany_Id").text(dados.ParCompany_Name);
-            $("#actionParDepartment_Id").text(dados.ParDepartment_Name);
-            $("#actionParDepartmentParent_Id").text(dados.ParDepartment_Name);
-            $("#actionParCargo_Id").text(dados.ParCargo_Name);
-            $("#actionParLevel1_Id").text(dados.ParLevel1_Name);
-            $("#actionParLevel2_Id").text(dados.ParLevel2_Name);
-            $("#actionParLevel3_Id").text(dados.ParLevel3_Name);
-            $("#selectPrioridade").val(dados.Prioridade);
-            $("#selectResponsavel").val(dados.Responsavel);
-            $("#actionConclusionDate").val(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]);
-            $("#actionConclusionHour").val(dados.HoraConclusao);
-            $("#actionReference").val(dados.Referencia);
+            $("#dataEmissao").text(dados._DataEmissao).attr('disabled', isVisualizar);
+            $("#horaEmissao").text(dados.HoraEmissao).attr('disabled', isVisualizar);
+            $("#usuarioEmissor").text(dados.Responsavel_Name).attr('disabled', isVisualizar);
+            $("#actionParCompany_Id").text(dados.ParCompany_Name).attr('disabled', isVisualizar);
+            $("#actionParDepartment_Id").text(dados.ParDepartment_Name).attr('disabled', isVisualizar);
+            $("#actionParDepartmentParent_Id").text(dados.ParDepartment_Name).attr('disabled', isVisualizar);
+            $("#actionParCargo_Id").text(dados.ParCargo_Name).attr('disabled', isVisualizar);
+            $("#actionParLevel1_Id").text(dados.ParLevel1_Name).attr('disabled', isVisualizar);
+            $("#actionParLevel2_Id").text(dados.ParLevel2_Name).attr('disabled', isVisualizar);
+            $("#actionParLevel3_Id").text(dados.ParLevel3_Name).attr('disabled', isVisualizar);
+            $("#selectPrioridade").val(dados.Prioridade).attr('disabled', isVisualizar);
+            $("#selectResponsavel").val(dados.Responsavel).attr('disabled', isVisualizar);
+            $("#actionConclusionDate").val(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]).attr('disabled', isVisualizar);
+            $("#actionConclusionHour").val(dados.HoraConclusao).attr('disabled', isVisualizar);
+            $("#actionReference").val(dados.Referencia).attr('disabled', isVisualizar);
             $("#status").val(dados.Status);
 
-            $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
-            $("#txtAcaoText").text(dados.AcaoText);
+            $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade).attr('disabled', isVisualizar);
+            $("#txtAcaoText").text(dados.AcaoText).attr('disabled', isVisualizar);
 
             imprimirListaEvidencia(dados.ListaEvidencia);
             imprimirListaNotificarAcao(dados.ListaNotificarAcao);
@@ -479,7 +542,7 @@
                     var notificar = dados.ListaNotificar[i];
                     html += `<option value="${notificar["Id"]}">${notificar["Nome"]}</option>`;
                 }
-                $('#selectNotificarAcao').html(html);
+                $('#selectNotificarAcao').html(html).attr('disabled', isVisualizar);
             }
         }
 
@@ -591,7 +654,7 @@
             $('#divEvidencias').append(html);
         }
 
-        function imprimirListaEvidenciaDB(dados) {
+        function imprimirListaEvidenciaDB(dados, isVisualizar) {
 
             var html = "";
             acaoEditar["ListaEvidencia"] = [];
@@ -609,12 +672,13 @@
                     html += `
                         <div class="col-sm-4">
                             <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive"/>
-                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${i + 1})">Excluir</button>
+                            <button class="btn btn-danger btn-sm form-control" disabled="${isVisualizar}" onclick="removerDaListaEvidencia(${i + 1})">Excluir</button>
                         </div>`;
                 });
 
             }
             $('#divEvidencias').append(html);
+            $("#uploadPhoto").attr('disabled', isVisualizar);
         }
 
         function removerDaListaEvidencia(index) {
