@@ -32,6 +32,7 @@ namespace SgqServiceBusiness.Controllers.RH
             acao.NotificarUsers = GetNotificarUsersBy(acao.Id);
             acao.EvidenciaAcaoConcluida = GetEvidenciaAcaoConcluidaBy(acao.Id);
             acao.EvidenciaNaoConformidade = GetEvidenciaNaoConformidadeBy(acao.Id);
+            acao.EmissorUser = new UserSgqBusiness().GetBy(acao.Emissor);
 
             return acao;
         }

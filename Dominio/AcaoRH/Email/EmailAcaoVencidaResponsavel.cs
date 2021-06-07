@@ -28,12 +28,12 @@ namespace Dominio.AcaoRH.Email
             this.Body = $@"   
             Olá!
             <br><br>
-	        Seguindo o parâmetro da regra de Plano de Ação cadastrada no sistema SG-SEMST, informamos que a Ação descrita a seguir, de sua responsabilidade pela execução, venceu em {(acao.DataConclusao != null ? acao.DataConclusao?.ToString("dd/MM/yyyy") : "")}.
+	        Seguindo o parâmetro da regra de Plano de Ação cadastrada no sistema SG-SESMT, informamos que a Ação descrita a seguir, de sua responsabilidade pela execução, venceu em {(acao.DataConclusao != null ? acao.DataConclusao?.ToString("dd/MM/yyyy") : "")}.
             Favor acessar o sistema e atualizar o status da Ação.            
             <br><br>
             Formulário de Ação - ID {acao.Id}
             <br><br>
-            Emissor: {acao.Emissor}<br>
+            Emissor: {acao.EmissorUser.FullName}<br>
             Data de emissão: {acao.DataEmissao?.ToString("dd/MM/yyyy")}<br>
             Hora de emissão: {acao.HoraEmissao}<br>
             Unidade: {acao.ParCompany.Description}<br>
@@ -54,7 +54,7 @@ namespace Dominio.AcaoRH.Email
             Referência: {acao.Referencia}<br>
             Data da conclusão: { (acao.DataConclusao != null ? acao.DataConclusao?.ToString("dd/MM/yyyy") : "")}<br>
             Hora da conclusão: {acao.HoraConclusao}
-            Status da Ação: {Enum.GetName(typeof(AcaoStatus), acao.Status)}<br>
+            Status da Ação: {Enum.GetName(typeof(AcaoStatus), acao.Status).Replace('_', ' ')}<br>
             Responsável: {(acao.ResponsavelUser != null ? acao.ResponsavelUser.FullName : "")}<br>
             Notificar: {string.Join(",", acao.NotificarUsers.Select(x => x.FullName)) }<br><br>
             
