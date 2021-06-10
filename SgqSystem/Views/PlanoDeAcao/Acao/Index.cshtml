@@ -10,6 +10,124 @@
 
 </style>
 
+<div class="modal fade" id="modalPrint" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="formAcaoPrint" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
+                <div id="cabecalhoDiv" class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
+                    <h3 style="font-weight:bold;">Criar Ação</h3>
+                    <img height="90" width="250" class="img-responsive" style="margin-left: auto;margin-right: auto;" src="~/Imagens/novoLogoFriboi.PNG" />
+                </div>
+                <div id="formBodyPrint" class="modal-body">
+                    <input type="hidden" name="Id" />
+                    <input type="hidden" id="statusPrint" name="Status" />
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <strong>Data Emissão:</strong>
+                            <label id="dataEmissaoPrint"></label>
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Hora Emissão:</strong>
+                            <label id="horaEmissaoPrint"></label>
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Emissor:</strong>
+                            <label id="usuarioEmissorPrint"></label>
+                        </div>
+                        <div class="col-sm-12">
+                            <strong>Unidade:</strong><label id="actionParCompany_IdPrint"></label>
+                            <br />
+                            <strong>Centro de Custo:</strong><label id="actionParDepartment_IdPrint"></label>
+                            <br />
+                            <strong>Seção/Atividade:</strong><label id="actionParDepartmentParent_IdPrint"></label>
+                            <br />
+                            <strong>Item/Cargo:</strong><label id="actionParCargo_IdPrint"></label>
+                            <br />
+                            <strong>Indicador/Origem:</strong><label id="actionParLevel1_IdPrint"></label>
+                            <br />
+                            <strong>Monitoramento:</strong><label id="actionParLevel2_IdPrint"></label>
+                            <br />
+                            <strong>Desvio/Tarefa:</strong><label id="actionParLevel3_IdPrint"></label>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia</strong></label>
+                                <text id="txtAcao_NaoconformidadePrint" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></text>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="txtAcaoText"><strong>Ação</strong></label>
+                                <text id="txtAcaoTextPrint" name="AcaoText" class="form-control" style="resize: none; height: 100px;"></text>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="col-xs-12">
+                            <strong>Evidencias de Não conformidade</strong>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div id="divEvidencias" class="row"></div>
+                        </div>
+                        <hr />
+
+                        <div class="col-xs-12">
+                            <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
+                        </div>
+
+                        <div id="evidenciasConcluidas" class="col-xs-12" hidden="hidden">
+                            <p>Evidencias da Ação Concluida</p>
+
+                            <div id="actionsEvidencies">
+                            </div>
+                        </div>
+
+                        <div class="col-xs-4 vereagir">
+                            <label><strong>Data da conclusão:</strong></label>
+                            <text id="actionConclusionDatePrint"  name="DataConclusao" type="date" class="form-control"></text>
+                        </div>
+
+                        <div class="col-xs-4 vereagir">
+                            <label><strong>Hora da conclusão:</strong></label>
+                            <text id="actionConclusionHourPrint" name="HoraConclusao" type="time" class="form-control"></text>
+                        </div>
+
+                        <div class="col-xs-4">
+                            <label><strong>Referencia:</strong></label>
+                            <text id="actionReferencePrint" name="Referencia" type="text" class="form-control"></text>
+                        </div>
+
+                        <div class="col-xs-4">
+                            <label><strong>Responsavel:</strong></label>
+                            <text id="selectResponsavelPrint" name="Responsavel" class="form-control"></text>
+                        </div>
+
+                        <div class="col-xs-4 divActionPriority">
+                            <label><strong>Prioridade:</strong></label>
+                            <text id="selectPrioridadePrint" name="Prioridade" class="form-control"></text>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <label><strong>Notificar:</strong></label>
+                            <div class="form-inline">
+                                <select id="selectNotificarAcaoPrint" class="form-control"></select>
+                                <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="rodapeDiv" class="modal-footer">
+                    <button id="btnClosePrint" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
+                    <button id="btnPrint" type="button" class="btn btn-primary" onclick="print()">Imprimir</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modalEditar" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -127,9 +245,6 @@
                 </div>
                 <div id="rodapeDiv" class="modal-footer">
                     <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
-
-                    <button id="btnPrint" type="button" class="btn btn-primary" onclick="print()">Imprimir</button>
-
                     <button class="btn btn-success" onclick="enviarFormularioEditarAcao('1')">Salvar e iniciar acao</button>
                     <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e preencher depois</button>
                 </div>
@@ -353,7 +468,7 @@
                 url: `${url}/${id}`,
                 contentType: "application/json",
                 success: function (dados) {
-                    preencherModal(dados, isVisualizar);
+                    preencherModalImpressão(dados);
 
                     buscarFotos(id, isVisualizar);
 
@@ -365,15 +480,15 @@
                 }
             });
 
-            $("#modalEditar").modal();
+            $("#modalPrint").modal();
         }
 
         function print() {
 
-            $('img').attr('width', "150px");
+            //$('img').attr('width', "150px");
 
             var winPrint = window.open('', '', '');
-            winPrint.document.write(document.getElementById('formBody').innerHTML);
+            winPrint.document.write(document.getElementById('formAcaoPrint').innerHTML);
             winPrint.document.close();
             winPrint.focus();
             winPrint.print();
@@ -382,7 +497,7 @@
             //printGRT.Inicializar({
 
             //    headerHtml: document.getElementById('cabecalhoDiv').innerHTML,
-            //    bodyHtml: document.getElementById('formAcao').innerHTML,
+            //    bodyHtml: document.getElementById('formAcaoPrint').innerHTML,
             //    footerHtml: document.getElementById('rodapeDiv').innerHTML,
             //    numberMarginRight: 25,
             //    numberMarginBottom: 25,
@@ -457,7 +572,7 @@
 
         }
 
-        function buscarEvidenciaConcluida(id) {
+        function buscarEvidenciaConcluida(id, isVisualizar) {
             const url = '@Url.Action("GetFotosEvidenciaConcluida", "api/AcaoApi")';
             $.ajax({
                 type: 'GET',
@@ -466,7 +581,7 @@
                 success: function (dados) {
 
                     if (dados.length > 0) {
-                        imprimirListaEvidenciaConcluidaDB(dados);
+                        imprimirListaEvidenciaConcluidaDB(dados, isVisualizar);
                         showVerAgir = true;
                     } else
                         showVerAgir = false;
@@ -487,8 +602,53 @@
 
         }
 
+        function preencherModalImpressão(dados) {
+
+            if (dados.ListaPrioridade) {
+                var prioridade = {};
+                for (var i = 0; i < dados.ListaPrioridade.length; i++) {
+                     prioridade = dados.ListaPrioridade[i];
+                }
+            }
+
+            //if (dados.ListaNotificar) {
+            //    var notificar = {};
+            //    for (var i = 0; i < dados.ListaNotificar.length; i++) {
+            //         notificar = dados.ListaNotificar[i];
+            //    }
+
+            //    $('#selectNotificarAcaoPrint').text(notificar['Nome']);
+            //}
+            
+            $("input[name='Id']").val(dados.Id);
+            $("#dataEmissaoPrint").text(dados._DataEmissao);
+            $("#horaEmissaoPrint").text(dados.HoraEmissao);
+            $("#usuarioEmissorPrint").text(dados.Responsavel_Name);
+            $("#actionParCompany_IdPrint").text(dados.ParCompany_Name);
+            $("#actionParDepartment_IdPrint").text(dados.ParDepartment_Name);
+            $("#actionParDepartmentParent_IdPrint").text(dados.ParDepartment_Name);
+            $("#actionParCargo_IdPrint").text(dados.ParCargo_Name);
+            $("#actionParLevel1_IdPrint").text(dados.ParLevel1_Name);
+            $("#actionParLevel2_IdPrint").text(dados.ParLevel2_Name);
+            $("#actionParLevel3_IdPrint").text(dados.ParLevel3_Name);
+            $("#selectPrioridadePrint").text(prioridade['Nome']);
+            $("#selectResponsavelPrint").text(dados.Responsavel_Name);
+            $("#actionConclusionDatePrint").text(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]);
+            $("#actionConclusionHourPrint").text(dados.HoraConclusao);
+            $("#actionReferencePrint").text(dados.Referencia);
+            $("#statusPrint").val(dados.Status);
+
+            $("#txtAcao_NaoconformidadePrint").text(dados.Acao_Naoconformidade);
+            $("#txtAcaoTextPrint").text(dados.AcaoText);
+
+            imprimirListaEvidencia(dados.ListaEvidencia);
+            imprimirListaNotificarAcao(dados.ListaNotificarAcao);
+
+            
+        }
+
         var acaoEditar = {};
-        function preencherModal(dados, isVisualizar) {
+        function preencherModal(dados) {
             acaoEditar = dados;
 
             if (dados.ListaResponsavel) {
@@ -498,7 +658,7 @@
                     html += `<option value="${responsavel["Id"]}">${responsavel["Nome"]}</option>`;
                 }
 
-                $('#selectResponsavel').html(html).attr('disabled', isVisualizar);
+                $('#selectResponsavel').html(html);
 
                 $("#selectResponsavel option[value=" + dados.Responsavel + "]").attr('selected', 'selected')
             }
@@ -509,29 +669,29 @@
                     var prioridade = dados.ListaPrioridade[i];
                     html += `<option value="${prioridade["Id"]}">${prioridade["Nome"]}</option>`;
                 }
-                $('#selectPrioridade').html(html).attr('disabled', isVisualizar);
+                $('#selectPrioridade').html(html);
             }
 
             $("input[name='Id']").val(dados.Id);
-            $("#dataEmissao").text(dados._DataEmissao).attr('disabled', isVisualizar);
-            $("#horaEmissao").text(dados.HoraEmissao).attr('disabled', isVisualizar);
-            $("#usuarioEmissor").text(dados.Responsavel_Name).attr('disabled', isVisualizar);
-            $("#actionParCompany_Id").text(dados.ParCompany_Name).attr('disabled', isVisualizar);
-            $("#actionParDepartment_Id").text(dados.ParDepartment_Name).attr('disabled', isVisualizar);
-            $("#actionParDepartmentParent_Id").text(dados.ParDepartment_Name).attr('disabled', isVisualizar);
-            $("#actionParCargo_Id").text(dados.ParCargo_Name).attr('disabled', isVisualizar);
-            $("#actionParLevel1_Id").text(dados.ParLevel1_Name).attr('disabled', isVisualizar);
-            $("#actionParLevel2_Id").text(dados.ParLevel2_Name).attr('disabled', isVisualizar);
-            $("#actionParLevel3_Id").text(dados.ParLevel3_Name).attr('disabled', isVisualizar);
-            $("#selectPrioridade").val(dados.Prioridade).attr('disabled', isVisualizar);
-            $("#selectResponsavel").val(dados.Responsavel).attr('disabled', isVisualizar);
-            $("#actionConclusionDate").val(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]).attr('disabled', isVisualizar);
-            $("#actionConclusionHour").val(dados.HoraConclusao).attr('disabled', isVisualizar);
-            $("#actionReference").val(dados.Referencia).attr('disabled', isVisualizar);
+            $("#dataEmissao").text(dados._DataEmissao);
+            $("#horaEmissao").text(dados.HoraEmissao);
+            $("#usuarioEmissor").text(dados.Responsavel_Name);
+            $("#actionParCompany_Id").text(dados.ParCompany_Name);
+            $("#actionParDepartment_Id").text(dados.ParDepartment_Name);
+            $("#actionParDepartmentParent_Id").text(dados.ParDepartment_Name);
+            $("#actionParCargo_Id").text(dados.ParCargo_Name);
+            $("#actionParLevel1_Id").text(dados.ParLevel1_Name);
+            $("#actionParLevel2_Id").text(dados.ParLevel2_Name);
+            $("#actionParLevel3_Id").text(dados.ParLevel3_Name);
+            $("#selectPrioridade").val(dados.Prioridade);
+            $("#selectResponsavel").val(dados.Responsavel);
+            $("#actionConclusionDate").val(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]);
+            $("#actionConclusionHour").val(dados.HoraConclusao);
+            $("#actionReference").val(dados.Referencia);
             $("#status").val(dados.Status);
 
-            $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade).attr('disabled', isVisualizar);
-            $("#txtAcaoText").text(dados.AcaoText).attr('disabled', isVisualizar);
+            $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
+            $("#txtAcaoText").text(dados.AcaoText);
 
             imprimirListaEvidencia(dados.ListaEvidencia);
             imprimirListaNotificarAcao(dados.ListaNotificarAcao);
@@ -542,7 +702,7 @@
                     var notificar = dados.ListaNotificar[i];
                     html += `<option value="${notificar["Id"]}">${notificar["Nome"]}</option>`;
                 }
-                $('#selectNotificarAcao').html(html).attr('disabled', isVisualizar);
+                $('#selectNotificarAcao').html(html);
             }
         }
 
@@ -597,7 +757,7 @@
             }
         }
 
-        function imprimirListaEvidenciaConcluidaDB(dados) {
+        function imprimirListaEvidenciaConcluidaDB(dados, isVisualizar) {
 
             var html = "";
             $('#actionsEvidencies').empty();
@@ -615,10 +775,14 @@
 
                     acaoEditar["ListaEvidenciaConcluida"].push(evidencia);
 
+                    var btnDelete = '';
+                    if (!isVisualizar) {
+                        btnDelete = `<button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidenciaConcluida(${i + 1})">Excluir</button>`;
+                    }
+
                     html += `
                         <div class="col-sm-4">
                             <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive"/>
-                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidenciaConcluida(${i + 1})">Excluir</button>
                         </div>`;
                 });
 
@@ -669,16 +833,21 @@
 
                     acaoEditar["ListaEvidencia"].push(evidencia);
 
+                    var btnDelete = '';
+                    if (!isVisualizar) {
+                        btnDelete = `<button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${i + 1})">Excluir</button>`;
+                    }
+
                     html += `
                         <div class="col-sm-4">
                             <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive"/>
-                            <button class="btn btn-danger btn-sm form-control" disabled="${isVisualizar}" onclick="removerDaListaEvidencia(${i + 1})">Excluir</button>
+                            ${btnDelete}
                         </div>`;
                 });
 
             }
             $('#divEvidencias').append(html);
-            $("#uploadPhoto").attr('disabled', isVisualizar);
+            $("#uploadPhoto");
         }
 
         function removerDaListaEvidencia(index) {
