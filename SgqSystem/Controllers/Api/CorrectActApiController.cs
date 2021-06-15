@@ -20,7 +20,7 @@ namespace SgqSystem.Controllers.Api
 {
 
     [RoutePrefix("api/CorrectiveAction")]
-    public class CorrectActApiController : ApiController
+    public class CorrectActApiController : BaseApiController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
@@ -228,6 +228,7 @@ namespace SgqSystem.Controllers.Api
         [HttpPost]
         public List<CorrectiveAction> SetCorrectiveAction([FromBody]List<CorrectiveAction> correctiveActions)
         {
+            VerifyIfIsAuthorized();
             var correctiveActionsSave = new List<CorrectiveAction>();
 
             using (var factory = new Factory("DefaultConnection"))

@@ -15,6 +15,7 @@ function openParFrequencyXindicador(isVoltar) {
                 }),
                 contentType: "application/json",
                 type: 'POST',
+                headers: token(),
                 url: urlPreffix + '/api/GetParFrequencyXParLevel1',
                 success: function (data) {
 
@@ -304,6 +305,7 @@ function chamaGetAppParametrization() {
             , ParClusterGroup_Id: currentParClusterGroup_Id
         }),
         type: 'POST',
+        headers: token(),
         url: urlPreffix + '/api/AppColeta/GetAppParametrization',
         contentType: "application/json",
         success: function (data) {

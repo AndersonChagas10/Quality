@@ -19,6 +19,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("parCompany")]
         public IHttpActionResult GetParCompany(int userSgq_Id)
         {
+            VerifyIfIsAuthorized();
             InicioRequisicao();
 
             List<ParCompany> listaUnidadesVinculadasUsuario = new List<ParCompany>();

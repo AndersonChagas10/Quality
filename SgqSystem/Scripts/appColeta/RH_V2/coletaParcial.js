@@ -166,6 +166,7 @@ function buscarColetasParciais() {
                 ParCluster_Id: currentParCluster_Id,
                 CollectionDate: convertDateToJson(currentCollectDate)
             }),
+            headers: token(),
             type: 'POST',
             url: urlPreffix + '/api/AppColeta/GetColetaParcial',
             contentType: "application/json",

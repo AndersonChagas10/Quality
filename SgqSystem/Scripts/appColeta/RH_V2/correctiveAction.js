@@ -36,6 +36,7 @@ function enviarAcaoCorretiva() {
 					url: urlPreffix + '/api/CorrectiveAction/SetCorrectiveAction',
 					type: 'POST',
 					contentType: "application/json",
+					headers: token(),
 					success: function (data) {
 
 						var delay = 1;

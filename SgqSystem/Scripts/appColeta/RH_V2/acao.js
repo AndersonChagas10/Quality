@@ -659,6 +659,7 @@ function sendActions() {
         data: JSON.stringify(acaoToSend),
         url: urlPreffix + '/api/AppColeta/SetAction',
         type: 'POST',
+        headers: token(),
         contentType: "application/json",
         success: function (data) {
             //remover acao da lista de acoesToSend

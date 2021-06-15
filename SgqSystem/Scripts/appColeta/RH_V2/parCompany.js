@@ -11,6 +11,7 @@
                 data: { userSgq_Id: currentLogin.Id },
                 url: urlPreffix + '/api/parCompany',
                 type: 'GET',
+                headers: token(),
                 success: function (data) {
                     _writeFile("parCompany.txt", JSON.stringify(data), function () {
                         listaParCompany = data;

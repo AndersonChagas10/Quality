@@ -648,7 +648,6 @@
     <Compile Include="ViewModels\PargroupQualificationXParLevel3ValueViewModel.cs" />
     <Compile Include="ViewModels\PargroupQualificationXParQualificationVewModel.cs" />
     <Compile Include="ViewModels\ParQualificationViewModel.cs" />
-    <Compile Include="ViewModels\PlanejamentoColetaViewModel.cs" />
     <Compile Include="ViewModels\PlanejamentoViewModel.cs" />
     <Compile Include="ViewModels\ReportsCorrectiveActionViewModel.cs" />
     <Compile Include="ViewModels\ReqController.cs" />

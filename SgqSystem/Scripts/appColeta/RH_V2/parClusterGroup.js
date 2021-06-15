@@ -11,6 +11,7 @@
                 data: { parCompany_Id: currentParCompany_Id },
                 url: urlPreffix + '/api/parClusterGroup',
                 type: 'GET',
+                headers: token(),
                 success: function (data) {
                     _writeFile("parClusterGroup.txt", JSON.stringify(data), function () {
                         listaParClusterGroup = data;

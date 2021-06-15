@@ -85,6 +85,7 @@ function sincronizarResultado() {
             }),
             url: urlPreffix + '/api/AppColeta/GetResults/',
             type: 'POST',
+            headers: token(),
             contentType: "application/json",
             success: function (data) {
                 coletasAgrupadas = data;
