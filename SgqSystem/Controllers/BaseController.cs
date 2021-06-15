@@ -14,7 +14,7 @@ using AutoMapper;
 using DTO.DTO.Params;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Dominio.Enum;
+using Dominio.Enums;
 
 namespace SgqSystem.Controllers
 {

@@ -1,25 +1,21 @@
-﻿using System;
+﻿using ADOFactory;
+using Dominio;
+using Dominio.AcaoRH;
+using Dominio.AcaoRH.Email;
+using Dominio.AppViewModel;
+using ServiceModel;
+using SgqServiceBusiness.Controllers.RH;
+using SgqSystem.Controllers.Api;
+using SgqSystem.Helpers;
+using SgqSystem.Jobs;
+using SgqSystem.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Web.Http;
-using System.Web.Http.Description;
-using Dominio;
-using SgqSystem.Controllers.Api;
-using Dominio.AppViewModel;
-using ADOFactory;
-using System.Web.Http.Cors;
-using SgqSystem.Helpers;
-using SgqSystem.ViewModels;
-using SgqSystem.Jobs;
 using System.Data.SqlClient;
-using SgqServiceBusiness.Controllers.RH;
-using ServiceModel;
+using System.Linq;
+using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace SgqSystem.Controllers.V2.Api
 {
@@ -77,6 +73,11 @@ namespace SgqSystem.Controllers.V2.Api
                     appColetaBusiness.SaveEvidenciaAcaoConcluida(new EvidenciaAcaoConcluida() { Acao_Id = acao.Id, Path = filePath });
                 }
 
+                if (acao.Responsavel != null)
+                {
+                    SendMail(acao);
+                }
+
             }
             catch (Exception e)
             {
@@ -84,6 +85,39 @@ namespace SgqSystem.Controllers.V2.Api
             }
 
             return Ok(acao);
+        }
+
+        public void SendMail(Acao acao)
+        {
+            //1 Pendente - nao envia email
+            //2 Em andamento - cenario 1 e 2
+            //3 Concluída - cenario 3 e 4
+            //4 Atrasada  - cenario 5 e 6
+            //5 Cancelada - cenario 7 e 8
+
+            if (acao.Status == 2)
+            {
+                var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
+
+                var emailResponsavel = new MontaEmail(new EmailCreateAcaoResponsavel(acaoCompleta));
+                EmailAcaoService.Send(emailResponsavel);
+
+                var emailNotificados = new MontaEmail(new EmailCreateAcaoNotificados(acaoCompleta));
+                EmailAcaoService.Send(emailNotificados);
+
+            }
+
+            if (acao.Status == 3)
+            {
+                var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
+
+                var emailResponsavel = new MontaEmail(new EmailCreateAcaoVerEAgirResponsavel(acaoCompleta));
+                EmailAcaoService.Send(emailResponsavel);
+
+                var emailNotificados = new MontaEmail(new EmailCreateAcaoVerEAgirNotificados(acaoCompleta));
+                EmailAcaoService.Send(emailNotificados);
+
+            }
         }
 
         #region Coleta Padrão RH
@@ -459,7 +493,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .ToList();
 
 
-                var listaDeDepartamento = db.ParDepartment.AsNoTracking(). Where(x => x.Active).ToList();
+                var listaDeDepartamento = db.ParDepartment.AsNoTracking().Where(x => x.Active).ToList();
 
                 listaParDepartment = listaDeDepartamento
                     .Where(x => x.ParCompany_Id == appParametrization.ParCompany_Id || x.ParCompany_Id == null)
@@ -490,7 +524,7 @@ namespace SgqSystem.Controllers.V2.Api
 
                 var listaCargoFiltrado_Id = listaParEvaluationXDepartmentXCargoAppViewModel.Select(x => x.ParCargo_Id).Distinct().ToList();
 
-   
+
                 var listaCargoFiltradoPorDepartamento_Id = db.ParCargoXDepartment
                     .AsNoTracking()
                     .Where(x => x.IsActive)
@@ -500,7 +534,7 @@ namespace SgqSystem.Controllers.V2.Api
                     .Distinct()
                     .ToList();
 
-   
+
                 listaParCargo = db.ParCargo
                     .AsNoTracking()
                     .Where(x => x.IsActive)
@@ -513,7 +547,7 @@ namespace SgqSystem.Controllers.V2.Api
                     })
                     .ToList();
 
-    
+
                 listaParCargoXDepartment = db.ParCargoXDepartment
                     .AsNoTracking()
                     .Where(x => x.IsActive)

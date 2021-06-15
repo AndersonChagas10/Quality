@@ -1,4 +1,4 @@
-﻿namespace Dominio.Enum
+﻿namespace Dominio.Enums
 {
     public enum FilterEnum
     {

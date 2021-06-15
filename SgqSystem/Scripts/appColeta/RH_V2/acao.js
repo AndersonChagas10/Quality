@@ -74,8 +74,15 @@ function montaCorpoFormularioAcao(index) {
         options += '<option value="' + auditor.Id + '">' + auditor.Name + " (" + auditor.SimpleDescription + ")" + '</option>';
     });
 
-    btnNext = '<button class="btn btn-primary" id="next" onclick="proximoElemento(' + index + ')">Próxima Ação (' + (index + 1) + "/" + listaAcoesCurrent.length + ')</button>';
-    btnBack = '<button class="btn btn-primary" id="back" onclick="elementoAnterior(' + index + ')">Ação Anterior</button>';
+    var btnClass = "";
+    if (listaAcoesCurrent.length == 1) {
+        btnClass = "btn btn-primary disabled";
+    } else {
+        btnClass = "btn btn-primary";
+    }
+
+    btnNext = '<button class="' + btnClass +'" id="next" onclick="proximoElemento(' + index + ')">Próximo Alerta (' + (index + 1) + "/" + listaAcoesCurrent.length + ')</button>';
+    btnBack = '<button class="' + btnClass +'" id="back" onclick="elementoAnterior(' + index + ')">Voltar Alerta</button>';
 
     var date = getCurrentDate();
 
@@ -243,7 +250,7 @@ function montaCorpoFormularioAcao(index) {
         '   ' + btnNext +
         // '   </div>' +
         // '   <div class="col-xs-4">' +
-        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e iniciar ação</button>' +
+        '       <button id="btnSalvarIniciar" class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e iniciar acao</button>' +
         '       <button class="btn btn-success" onclick="saveAction(' + index + ', 2);">Salvar e preencher depois</button>' +
         '   </div>' +
         '</div>' +
@@ -658,6 +665,7 @@ function sendActions() {
             removeListAcaoToSend(acaoToSend);
             isSendActions = false;
             writeActonToSendFile(sendActions);
+            //console.log(data.Id);
         },
         timeout: 600000,
         error: function () {
@@ -779,3 +787,21 @@ function getAcoesByParCargo(parCargo_Id) {
 
     return listaAcoesReturn;
 }
+
+$("#txtActionNotConformity, #txtAction, #actionResponsable, #actionReference, #actionPriority, #actionNotify")
+    .off('input change')
+    .on('input change', function () {
+    if ($("#txtActionNotConformity").val() != ""
+        && $("#txtAction").val() != ""
+        && $("#actionResponsable").val() != ""
+        && $("#actionReference").val() == ""
+        && $("#actionPriority").val() == ""
+        && $("#tableActionNotify tbody").length == 0) {
+        $("#btnSalvarIniciar").removeClass('disabled');
+        console.log('habilitar botao salvar e iniciar');
+    } else {
+        $("#btnSalvarIniciar").addClass('disabled');
+        console.log('monter desabilitado');
+    }
+
+});

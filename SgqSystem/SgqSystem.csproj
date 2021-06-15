@@ -26,7 +26,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>true</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -347,6 +348,7 @@
     <Compile Include="Controllers\Api\ParDepartmentsApiController.cs" />
     <Compile Include="Controllers\Api\ParInputTypeValuesApiController.cs" />
     <Compile Include="Controllers\Api\ParReasonApiController.cs" />
+    <Compile Include="Controllers\Api\PlanoDeAcao\AcaoApiController.cs" />
     <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
@@ -455,6 +457,7 @@
     <Compile Include="Controllers\Params\ParCompany2XClusterController.cs" />
     <Compile Include="Controllers\Params\ParCompany2XStructureController.cs" />
     <Compile Include="Controllers\Params\ParStructuresController.cs" />
+    <Compile Include="Controllers\PlanoDeAcao\AcaoController.cs" />
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Controllers\Recravacao\RecravacaoJsonController.cs" />
     <Compile Include="Controllers\RelatoriosMD\RelatoriosMDController.cs" />
@@ -2454,6 +2457,7 @@
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalAcompanhamento.cshtml" />
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalVisaoUnidade.cshtml" />
     <Content Include="Views\Acoes\Index.cshtml" />
+    <Content Include="Views\PlanoDeAcao\Acao\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2461,6 +2465,7 @@
   <ItemGroup>
     <Folder Include="App_Data\Uploads\" />
     <Folder Include="Arquivos\uploads\" />
+    <Folder Include="Controllers\PlanoDeAcao\Api\" />
     <Folder Include="obj\" />
     <Folder Include="Scripts\BootStrapRecravacao\" />
     <Folder Include="Scripts\i18n\" />
