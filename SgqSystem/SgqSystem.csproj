@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -26,8 +26,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>
-    </Use64BitIISExpress>
+    <Use64BitIISExpress>true</Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -329,6 +328,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\AcoesController.cs" />
     <Compile Include="Controllers\Api\AgendamentoApiController.cs" />
     <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
@@ -1198,8 +1198,10 @@
     <Content Include="images\sort_asc.png" />
     <Content Include="images\sort_both.png" />
     <Content Include="images\sort_desc.png" />
+    <Content Include="Scripts\appColeta\RH_V2\acao.js" />
     <Content Include="Scripts\appColeta\RH_V2\alert.js" />
     <Content Include="Scripts\appColeta\RH_V2\app.js" />
+    <Content Include="Scripts\appColeta\RH_V2\camera.js" />
     <Content Include="Scripts\appColeta\RH_V2\coleta.js" />
     <Content Include="Scripts\appColeta\RH_V2\coletaParcial.js" />
     <Content Include="Scripts\appColeta\RH_V2\coletaUnicaTarefa.js" />
@@ -2451,6 +2453,7 @@
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamental.cshtml" />
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalAcompanhamento.cshtml" />
     <Content Include="Views\Relatorios\RH\_AuditoriaComportamentalVisaoUnidade.cshtml" />
+    <Content Include="Views\Acoes\Index.cshtml" />
     <None Include="Web.DeployInterno.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

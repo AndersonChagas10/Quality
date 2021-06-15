@@ -60,9 +60,14 @@ function listarParCluster(isVoltar) {
         htmlParCluster += '<div class="row">';
         $(data).each(function (i, o) {
 
-            htmlParCluster += '<div class="col-xs-6 col-md-4" style="padding:2px;padding-left: 30px!important;padding-right: 30px!important"><button type="button" class="list-group-item btn btn-lg btn-block"  style="color: #1F497D;background-color:#DCE6F1;white-space: break-spaces;" data-par-cluster-id="' + o.Id + '" title="' + o.Name + '">' + o.Name +
-                '</button></div>';
+            var flagAcao = "";
+            if (getAcoesByCluster(o.Id).length > 0)
+                flagAcao = '<span class="badge">Ação Pendente</span>';
+
+            htmlParCluster += '<div class="col-xs-6 col-md-4 divBtnLista"><button type="button" class="list-group-item btn btn-lg btn-block btnLista" data-par-cluster-id="' + o.Id + '" title="' + o.Name + '">' + o.Name +
+                '</button>' + flagAcao + '</div>';
         });
+
         htmlParCluster += "</div>";
 
         var voltar = '<a onclick="validaRota(openParClusterGroup,true);" style="margin-bottom:10px"  class="btn btn-warning col-xs-12">Voltar</a>';

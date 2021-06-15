@@ -13,46 +13,52 @@ function listarParCargo(isVoltar) {
     listaParCargo = listaParCargo.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
     $(listaParCargo).each(function (i, o) {
+
         currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, o.Id);
 
         //FIX para trabalhar de forma correta os valores 
         //que são recebidos do backend com os resultados
-        if (currentEvaluationSample.Sample > o.Evaluation.Sample){
+        if (currentEvaluationSample.Sample > o.Evaluation.Sample) {
             currentEvaluationSample.Evaluation += 1;
             currentEvaluationSample.Sample = 1;
         }
+
+        var flagAcao = "&nbsp;";
+        if (getAcoesByParCargo(o.Id).length > 0)
+            flagAcao = '<span class="badge">Ação Pendente</span>';
 
         var style = '';
         if (!podeRealizarColeta(currentEvaluationSample.Evaluation, o.Evaluation.Evaluation)) {
             style = 'style="background-color:#ddd;cursor:not-allowed"';
 
             htmlParCargo += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
-                'data-par-cargo-id="' + o.Id + '"                                                    ' +
-                'data-total-evaluation="' + o.Evaluation.Evaluation + '"                             ' +
-                'data-total-sample="' + o.Evaluation.Sample + '"                                     ' +
-                'data-current-evaluation="' + currentEvaluationSample.Evaluation + '"                ' +
-                'data-redistribute-weight="' + o.Evaluation.RedistributeWeight + '"                ' +
-                'data-partial-save="' + o.Evaluation.IsPartialCollection + '"                ' +
-                'data-current-sample="' + currentEvaluationSample.Sample + '">                       ' +
-                '	<div class="col-xs-3">' + o.Name + '</div>                                      ' +
-                '	<div class="col-xs-1">&nbsp;</div>                                                                  ' +
-                '	<div class="col-xs-4">Av: ' + o.Evaluation.Evaluation + '/' + o.Evaluation.Evaluation + ' </div>      ' +
-                '	<div class="col-xs-4">Am: ' + o.Evaluation.Sample + '/' + o.Evaluation.Sample + ' </div>  ' +
+                'data-par-cargo-id="' + o.Id + '"' +
+                'data-total-evaluation="' + o.Evaluation.Evaluation + '"' +
+                'data-total-sample="' + o.Evaluation.Sample + '"' +
+                'data-current-evaluation="' + currentEvaluationSample.Evaluation + '"' +
+                'data-redistribute-weight="' + o.Evaluation.RedistributeWeight + '"' +
+                'data-partial-save="' + o.Evaluation.IsPartialCollection + '"' +
+                'data-current-sample="' + currentEvaluationSample.Sample + '">' +
+                '	<div class="col-xs-3">' + o.Name +  ' ' + flagAcao +'</div>' +
+                '	<div class="col-xs-1">&nbsp;</div>' +
+                '	<div class="col-xs-4">Av: ' + o.Evaluation.Evaluation + '/' + o.Evaluation.Evaluation + ' </div>' +
+                '	<div class="col-xs-4">Am: ' + o.Evaluation.Sample + '/' + o.Evaluation.Sample + ' </div>' +
                 '</button>';
         } else {
-            htmlParCargo += '<button type="button" class="list-group-item col-xs-12"                                       ' +
-                'data-par-cargo-id="' + o.Id + '"                                                                                ' +
-                'data-total-evaluation="' + o.Evaluation.Evaluation + '"                                                         ' +
-                'data-total-sample="' + o.Evaluation.Sample + '"                                                                 ' +
-                'data-current-evaluation="' + currentEvaluationSample.Evaluation + '"                                            ' +
-                'data-redistribute-weight="' + o.Evaluation.RedistributeWeight + '"                ' +
-                'data-partial-save="' + o.Evaluation.IsPartialCollection + '"                ' +
-                'data-current-sample="' + currentEvaluationSample.Sample + '">                                                   ' +
-                '	<div class="col-xs-3">' + o.Name + '</div>                                                                  ' +
-                '	<div class="col-xs-1">&nbsp;</div>                                                                  ' +
-                '	<div class="col-xs-4">Av: ' + ((currentEvaluationSample.Evaluation >= 1 && currentEvaluationSample.Sample > 1) ? currentEvaluationSample.Evaluation : (currentEvaluationSample.Evaluation-1))+ '/' + o.Evaluation.Evaluation + ' </div>      ' +
-                '	<div class="col-xs-4">Am: ' + (currentEvaluationSample.Sample-1) + '/' + o.Evaluation.Sample + ' </div>              ' +
+            htmlParCargo += '<button type="button" class="list-group-item col-xs-12"' +
+                'data-par-cargo-id="' + o.Id + '"' +
+                'data-total-evaluation="' + o.Evaluation.Evaluation + '"' +
+                'data-total-sample="' + o.Evaluation.Sample + '"' +
+                'data-current-evaluation="' + currentEvaluationSample.Evaluation + '"' +
+                'data-redistribute-weight="' + o.Evaluation.RedistributeWeight + '"' +
+                'data-partial-save="' + o.Evaluation.IsPartialCollection + '"' +
+                'data-current-sample="' + currentEvaluationSample.Sample + '">' +
+                '	<div class="col-xs-3">' + o.Name + ' ' + flagAcao +'</div>' +
+                '	<div class="col-xs-1">&nbsp;</div>' +
+                '	<div class="col-xs-4">Av: ' + ((currentEvaluationSample.Evaluation >= 1 && currentEvaluationSample.Sample > 1) ? currentEvaluationSample.Evaluation : (currentEvaluationSample.Evaluation - 1)) + '/' + o.Evaluation.Evaluation + ' </div>      ' +
+                '	<div class="col-xs-4">Am: ' + (currentEvaluationSample.Sample - 1) + '/' + o.Evaluation.Sample + ' </div>' +
                 '</button>';
+
             atualizaCorAgendamento(o, currentEvaluationSample);
         }
 
@@ -378,6 +384,4 @@ function atualizaCorAgendamento(cargo, currentEvaluationSample) {
             atualizaCorAgendamento(cargo, currentEvaluationSample);
         }, 500);
     }, 200);
-
-
 }

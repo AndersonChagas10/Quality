@@ -2,15 +2,15 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
     var listaDepartamentos = retornaDepartamentos(parDepartmentId, true, parametrization.listaParDepartment);
 
-	var htmlParDepartment = "";
+    var htmlParDepartment = "";
 
-	var department = {};
+    var department = {};
 
     listaDepartamentos = listaDepartamentos.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
 
     var listaAvAmPorDepartamento = retornaListaContadorPorDepartamento(parDepartmentId);
 
-	$(listaDepartamentos).each(function (i, o) {
+    $(listaDepartamentos).each(function (i, o) {
 
         var objAvAm = $.grep(listaAvAmPorDepartamento, function (x, i) {
             if (x.parDepartmentParent_Id == o.Id || x.parDepartment_Id == o.Id)
@@ -20,62 +20,74 @@ function listarParDepartment(parDepartmentId, isVoltar) {
         var contador = {};
         if (objAvAm[0])
             contador = objAvAm[0];
-            
 
-		var style = '';
-		var contadorHtml = '';
 
-		var temp_currentsParDepartments_Ids = $.grep(currentsParDepartments_Ids, function (o, i) {return true;});
-		var temp_currentParDepartment_Id = currentParDepartment_Id;
+        var style = '';
+        var contadorHtml = '';
+
+        var temp_currentsParDepartments_Ids = $.grep(currentsParDepartments_Ids, function (o, i) { return true; });
+        var temp_currentParDepartment_Id = currentParDepartment_Id;
         if (bloqueiaCentroDeCustoParaColeta(o.Id) == true) {
             style = 'style="background-color:#ddd;cursor:not-allowed"';
         } else {
             contadorHtml = `<span> AV: ${contador.av}/${contador.avMax} | AM:  ${contador.am}/${contador.amMax} </span>`;
         }
-		currentsParDepartments_Ids = temp_currentsParDepartments_Ids;
-		currentParDepartment_Id = temp_currentParDepartment_Id;
+        currentsParDepartments_Ids = temp_currentsParDepartments_Ids;
+        currentParDepartment_Id = temp_currentParDepartment_Id;
 
-		if (parseInt(parDepartmentId) > 0 && parDepartmentId == o.Id) {
-			department = o;
-		} else
-			if ((parDepartmentId > 0 && parDepartmentId == o.Parent_Id) || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
-				htmlParDepartment += '<button type="button" '+style+' class="list-group-item col-xs-12" ' +
+        if (parseInt(parDepartmentId) > 0 && parDepartmentId == o.Id) {
+            department = o;
+        } else
+            if ((parDepartmentId > 0 && parDepartmentId == o.Parent_Id) || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
+
+                var flagAcao = "";
+                if (!o.Parent_Id && getAcoesByParDepartmentParent(o.Id).length > 0)
+                    flagAcao = '<span class="badge">Ação Pendente</span>';
+                else
+                    if (o.Parent_Id && getAcoesByParDepartment(o.Id).length > 0)
+                        flagAcao = '<span class="badge">Ação Pendente</span>';
+
+                htmlParDepartment += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
                     'data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name +
                     contadorHtml +
-					'<span class="badge">></span>' +
-					'</button>';
-			}
+                    '<span class="badge">></span>' +
+                    flagAcao +
+                    '</button>';
+            }
 
-	});
+    });
 
-	currentParDepartment_Id = department.Id;
+    currentParDepartment_Id = department.Id;
 
     //caso for "" quer dizer que não tem mais filhos, então abre o próximo	
     if (htmlParDepartment == "") {
         currentParDepartmentParent_Id = department.Parent_Id;
         listarParCargo(isVoltar);
-		return;
-	}
+        return;
+    }
 
-	var voltar = "";
+    var voltar = "";
+    var titulo = "";
 
     if (globalLogo)
         systemLogo = 'background-image: url(' + globalLogo + ')';
 
-	if (parDepartmentId == 0 || parDepartmentId == undefined || parDepartmentId == null) 
+    if (parDepartmentId == 0 || parDepartmentId == undefined || parDepartmentId == null) {
 
         voltar = '<a onclick="validaRota(openParFrequencyXindicador,true);" class="btn btn-warning col-xs-12" style="margin-bottom:10px;">Voltar</a>';
-
-	else {
+        titulo = 'o centro de custo desejado';
+    }
+    else {
 
         voltar = '<a onclick="voltarDepartment(' + department.Parent_Id + ');" class="btn btn-warning col-xs-12" style="margin-bottom:10px;">Voltar</a>';
-	}
+        titulo = 'a seção desejada';
+    }
 
-	html = getHeader() +
-		'<div class="container-fluid">                                           ' +
-		'	<div class="">                                              ' +
-		'		<div class="col-xs-12">                                    ' +
-		'                                                                  ' +
+    html = getHeader() +
+        '<div class="container-fluid">                                           ' +
+        '	<div class="">                                              ' +
+        '		<div class="col-xs-12">                                    ' +
+        '                                                                  ' +
         '			<div class="panel">                      ' +
         '			  <div class="panel-heading" style="background-color:#DCE6F1;">                          ' +
 
@@ -84,7 +96,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
         '			    <div class="row">                          ' +
         '			      <div class="col-xs-9">                         ' +
-        '				      <h3 class="panel-title">Selecione o centro de custo desejado</h3>            ' +
+        '				      <h3 class="panel-title">Selecione ' + titulo + '</h3>            ' +
         '                 </div >                                          ' +
         '                 <div class="col-sm-3">                           ' +
         getBotaoBuscarSecaoXCargo() +
@@ -92,17 +104,17 @@ function listarParDepartment(parDepartmentId, isVoltar) {
         '               </div>                                             ' +
 
         '			  </div>                                               ' +
-		'			  <div class="panel-body">                             ' +
-		'				<div class="list-group">                           ' +
+        '			  <div class="panel-body">                             ' +
+        '				<div class="list-group">                           ' +
         voltar +
-		htmlParDepartment +
-		'				</div>                                             ' +
-		'			  </div>                                               ' +
-		'			</div>                                                 ' +
-		'                                                                  ' +
-		'		</div>                                                     ' +
-		'	</div>                                                         ' +
-		'</div>';
+        htmlParDepartment +
+        '				</div>                                             ' +
+        '			  </div>                                               ' +
+        '			</div>                                                 ' +
+        '                                                                  ' +
+        '		</div>                                                     ' +
+        '	</div>                                                         ' +
+        '</div>';
 
     $('div#app').html(html);
 
@@ -135,7 +147,7 @@ function retornaDepartamentosPorCluster(parClusterId, retornaDepartamentoAtual, 
     });
 
     if (parDepartmentList != null && parDepartmentList.length > 0) {
-         listaDepartamentos = parDepartmentList;
+        listaDepartamentos = parDepartmentList;
     }
     else {
         for (var i = 0; i < parametrization.listaParDepartment.length; i++) {
@@ -169,70 +181,70 @@ function retornaDepartamentosPorCluster(parClusterId, retornaDepartamentoAtual, 
 
 function retornaDepartamentos(parDepartmentId, retornaDepartamentoAtual, listaParDepartment) {
 
-	currentParDepartment_Id = parDepartmentId;
+    currentParDepartment_Id = parDepartmentId;
 
-	currentParCargo_Id = null;
+    currentParCargo_Id = null;
 
-	if (currentsParDepartments_Ids.indexOf(parDepartmentId) >= 0)
-		currentsParDepartments_Ids = currentsParDepartments_Ids.slice(0, currentsParDepartments_Ids.indexOf(parDepartmentId));
+    if (currentsParDepartments_Ids.indexOf(parDepartmentId) >= 0)
+        currentsParDepartments_Ids = currentsParDepartments_Ids.slice(0, currentsParDepartments_Ids.indexOf(parDepartmentId));
 
-	if (parDepartmentId)
-		currentsParDepartments_Ids.push(parseInt(parDepartmentId));
-	else
-		currentsParDepartments_Ids = [];
+    if (parDepartmentId)
+        currentsParDepartments_Ids.push(parseInt(parDepartmentId));
+    else
+        currentsParDepartments_Ids = [];
 
-	var data = listaParDepartment;
+    var data = listaParDepartment;
 
-	var listaDepartamentos = [];
+    var listaDepartamentos = [];
 
-	$(data).each(function (i, o) {
-		if ((retornaDepartamentoAtual && parseInt(parDepartmentId) > 0 && parDepartmentId == o.Id)
-			|| (parDepartmentId > 0 && parDepartmentId == o.Parent_Id)
-			|| ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
-			listaDepartamentos.push(o);
-		}
-	});
+    $(data).each(function (i, o) {
+        if ((retornaDepartamentoAtual && parseInt(parDepartmentId) > 0 && parDepartmentId == o.Id)
+            || (parDepartmentId > 0 && parDepartmentId == o.Parent_Id)
+            || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
+            listaDepartamentos.push(o);
+        }
+    });
 
-	return listaDepartamentos;
+    return listaDepartamentos;
 }
 
 $('body').off('click', '[data-par-department-id]').on('click', '[data-par-department-id]', function (e) {
 
-	var parDepartmentId = $(this).attr('data-par-department-id');
+    var parDepartmentId = $(this).attr('data-par-department-id');
 
-	listarParDepartment(parDepartmentId, false);
+    listarParDepartment(parDepartmentId, false);
 
 });
 
 function voltarDepartment(parent_Id) {
 
-	currentParDepartment_Id = parent_Id;
+    currentParDepartment_Id = parent_Id;
 
-	listarParDepartment(currentParDepartment_Id, true);
+    listarParDepartment(currentParDepartment_Id, true);
 }
 
-function bloqueiaCentroDeCustoParaColeta(departmentId){
+function bloqueiaCentroDeCustoParaColeta(departmentId) {
     var listaDeDepartamentos = retornaDepartamentos(departmentId, false, parametrization.listaParDepartment);
-	
-	currentParDepartment_Id = departmentId;
 
-	if(listaDeDepartamentos.length > 0){
-		for(var i = 0; i < listaDeDepartamentos.length; i++){
-			var d = listaDeDepartamentos[i];
-			if(bloqueiaCentroDeCustoParaColeta(d.Id) == false){
-				return false;
-			}
-		}
-	}else{
+    currentParDepartment_Id = departmentId;
+
+    if (listaDeDepartamentos.length > 0) {
+        for (var i = 0; i < listaDeDepartamentos.length; i++) {
+            var d = listaDeDepartamentos[i];
+            if (bloqueiaCentroDeCustoParaColeta(d.Id) == false) {
+                return false;
+            }
+        }
+    } else {
         var listaParCargo = retornaCargos(currentParDepartment_Id);
-		
-		for(var i = 0; i < listaParCargo.length; i++){
-			if(bloqueiaCargoParaColeta(listaParCargo[i]) == false){
-				return false;
-			}
-		}
-	}
-	return true;
+
+        for (var i = 0; i < listaParCargo.length; i++) {
+            if (bloqueiaCargoParaColeta(listaParCargo[i]) == false) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 function retornarArvoreDesdobramentoDepartamentoCargo(listaDeDepartamentos) {
@@ -309,9 +321,9 @@ function retornaContadorPorDepartamento(listaDeDepartamento, parDepartmentParent
                         var avColetada = 0;
 
                         if ((
-                                (parDepartment_Id && parDepartment_Id == coleta["ParDepartment_Id"])
-                                || coleta["ParDepartment_Id"] == o['ParDepartment_Id']
-                            )
+                            (parDepartment_Id && parDepartment_Id == coleta["ParDepartment_Id"])
+                            || coleta["ParDepartment_Id"] == o['ParDepartment_Id']
+                        )
                             && coleta['ParCargo_Id'] == o['ParCargo_Id']) {
 
                             retornaValoresContador(coleta, avAtual, amAtual, avColetada, contador, avMaxima, amMaxima);
@@ -321,7 +333,7 @@ function retornaContadorPorDepartamento(listaDeDepartamento, parDepartmentParent
                     }
                     break;
                 }
-       
+
             }
         }
     });
@@ -358,14 +370,14 @@ function retornaListaContadorPorDepartamento(parDepartmentParent_Id) {
 }
 
 function bloqueiaCargoParaColeta(c) {
-	currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, c.Id);
-	
-	//FIX para trabalhar de forma correta os valores 
-	//que são recebidos do backend com os resultados
+    currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, c.Id);
+
+    //FIX para trabalhar de forma correta os valores 
+    //que são recebidos do backend com os resultados
     if (currentEvaluationSample.Sample > c.Evaluation.Sample) {
-		currentEvaluationSample.Evaluation += 1;
-		currentEvaluationSample.Sample = 1;
-	}
-	
-	return !podeRealizarColeta(currentEvaluationSample.Evaluation, c.Evaluation.Evaluation);
+        currentEvaluationSample.Evaluation += 1;
+        currentEvaluationSample.Sample = 1;
+    }
+
+    return !podeRealizarColeta(currentEvaluationSample.Evaluation, c.Evaluation.Evaluation);
 }
