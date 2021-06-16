@@ -23,7 +23,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         [HttpGet]
         public IEnumerable<AcaoViewModel> Get()
         {
-         var query = $@"
+            var query = $@"
          SELECT
          PAC.Id,
          PL1.Id AS ParLevel1_Id,
@@ -69,7 +69,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          ON PCG.Id = PAC.ParCargo_Id
          LEFT JOIN UserSgq US WITH (NOLOCK)
          ON US.Id = PAC.Responsavel"
-        ;
+           ;
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
@@ -211,7 +211,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
             if (objAcao.ListaEvidencia != null)
             {
-                 listaEvidenciasPathsEditadas = objAcao.ListaEvidencia.ToList();
+                listaEvidenciasPathsEditadas = objAcao.ListaEvidencia.ToList();
             }
 
             var listaInserir = listaEvidenciasPathsEditadas.Where(x => !listaEvidenciasDB.Select(y => y.Path).ToList().Contains(x.Path)).ToList();
@@ -232,7 +232,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             var listaEvidenciasPathsEditadas = new List<Evidencia>();
             if (objAcao.ListaEvidenciaConcluida != null)
             {
-                 listaEvidenciasPathsEditadas = objAcao.ListaEvidenciaConcluida.ToList();
+                listaEvidenciasPathsEditadas = objAcao.ListaEvidenciaConcluida.ToList();
             }
 
             var listaInserir = listaEvidenciasPathsEditadas.Where(x => !listaEvidenciasConcluidasDB.Select(y => y.Path).ToList().Contains(x.Path)).ToList();
@@ -564,12 +564,12 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
-                var lista = factory.SearchQuery<AcaoFormViewModel>(query).FirstOrDefault();
-                lista.ListaResponsavel = BuscarListaResponsavel(lista.ParCompany_Id);
-                lista.ListaNotificar = BuscarListaNotificar(lista.ParCompany_Id);
-                lista.ListaNotificarAcao = BuscarListaNotificarAcao(lista.ParCompany_Id, lista.Id);
+                var acao = factory.SearchQuery<AcaoFormViewModel>(query).FirstOrDefault();
+                acao.ListaResponsavel = BuscarListaResponsavel(acao.ParCompany_Id);
+                acao.ListaNotificar = BuscarListaNotificar(acao.ParCompany_Id);
+                acao.ListaNotificarAcao = BuscarListaNotificarAcao(acao.Id);
 
-                return lista;
+                return acao;
             }
         }
 
@@ -696,81 +696,50 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
         private List<NotificarViewModel> BuscarListaResponsavel(int ParCompany_Id)
         {
-            var listaAuditor = GetUsersByCompany(ParCompany_Id);
-            List<NotificarViewModel> listaAuditorAcao = new List<NotificarViewModel>();
-
-            foreach (var item in listaAuditor)
-            {
-                if (item.Role != null && item.Role.ToLower().Contains("Auditor".ToLower()))
-                {
-                    listaAuditorAcao.Add(listaAuditor.Select(x => new NotificarViewModel()
-                    {
-                        Id = item.Id,
-                        Nome = item.Name
-                    }).FirstOrDefault());
-                }
-            }
-            return listaAuditorAcao;
+            var listaAuditor = GetUsersNotificarViewModelByCompany(ParCompany_Id);
+            return listaAuditor;
         }
 
         private List<NotificarViewModel> BuscarListaNotificar(int ParCompany_Id)
         {
-            var listaNotificar = GetUsersByCompany(ParCompany_Id);
-            List<NotificarViewModel> listaNotificarAcao = new List<NotificarViewModel>();
-
-            foreach (var item in listaNotificar)
-            {
-                if (item.Role != null && item.Role.ToLower().Contains("Auditor".ToLower()))
-                {
-                    listaNotificarAcao.Add(listaNotificar.Select(x => new NotificarViewModel()
-                    {
-                        Id = item.Id,
-                        Nome = item.Name
-                    }).FirstOrDefault());
-                }
-            }
-            return listaNotificarAcao;
+            var listaNotificar = GetUsersNotificarViewModelByCompany(ParCompany_Id);
+            return listaNotificar;
         }
 
-        private List<NotificarViewModel> BuscarListaNotificarAcao(int ParCompany_Id, int acao_id)
+        private List<NotificarViewModel> BuscarListaNotificarAcao(int acao_id)
         {
 
-            List<NotificarViewModel> listaNotificarAcao = new List<NotificarViewModel>();
-
-            var query = $@"select * from Pa.AcaoXNotificarAcao
-                            where Acao_id = {acao_id}
-                            and IsActive = 1";
-            var lista = new List<AcaoXNotificarAcao>();
+            List<NotificarViewModel> listaNotificarAcao;
+            string queryUser = $@"
+SELECT 
+	USGQ.ID AS ID,
+	CONCAT(USGQ.FullName, ' (', IIF(LEN(USGQ.NAME) > 3, SUBSTRING(USGQ.NAME,0,4), ''), ')') AS Nome
+FROM UserSGQ USGQ WITH (NOLOCK)
+INNER JOIN Pa.AcaoXNotificarAcao AXNA WITH (NOLOCK)
+	ON AXNA.Acao_Id = {acao_id}
+	AND AXNA.IsActive = 1
+	AND AXNA.UserSgq_Id = USGQ.Id
+WHERE 1=1";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                lista = factory.SearchQuery<AcaoXNotificarAcao>(query).ToList();
-            }
-
-            var unit_Ids = lista.Select(i => i.UserSgq_Id).ToList();
-
-            var queryUser = "";
-
-            if (unit_Ids.Count > 0)
-            {
-                queryUser = $@" select Id, Name as Nome from UserSGQ where Id in({string.Join(",", unit_Ids)})";
-
-                using (Factory factory = new Factory("DefaultConnection"))
-                {
-                    listaNotificarAcao = factory.SearchQuery<NotificarViewModel>(queryUser).ToList();
-                }
+                listaNotificarAcao = factory.SearchQuery<NotificarViewModel>(queryUser).ToList();
             }
 
             return listaNotificarAcao;
         }
 
-        public List<UserSgq> GetUsersByCompany(int ParCompany_Id)
+        public List<NotificarViewModel> GetUsersNotificarViewModelByCompany(int ParCompany_Id)
         {
             var query = $@"
-SELECT * 
-FROM UserSgq
-WHERE 1=1 AND isActive = 1 AND id 
-IN(
+SELECT 
+	ID AS ID,
+	CONCAT(FullName, ' (', IIF(LEN(NAME) > 3, SUBSTRING(NAME,0,4), ''), ')') AS Nome
+FROM UserSgq WITH (NOLOCK)
+WHERE 1=1 
+AND isActive = 1 
+AND LOWER(Role) like LOWER('%Auditor%')
+AND id IN(
  SELECT
  PCXU.UserSgq_Id
  FROM
@@ -785,7 +754,7 @@ IN(
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                var retorno = factory.SearchQuery<UserSgq>(query).ToList();
+                var retorno = factory.SearchQuery<NotificarViewModel>(query).ToList();
                 return retorno;
             }
         }
@@ -830,7 +799,7 @@ SELECT
             public string Acao_Naoconformidade { get; set; }
             public string AcaoText { get; set; }
             public DateTime? DataEmissao { get; set; }
-            public string _DataEmissao { get { return DataEmissao?.ToShortDateString(); }}
+            public string _DataEmissao { get { return DataEmissao?.ToShortDateString(); } }
             public DateTime? DataConclusao { get; set; }
             public string _DataConclusao { get { return DataConclusao?.ToShortDateString(); } }
             public TimeSpan HoraEmissao { get; set; }
