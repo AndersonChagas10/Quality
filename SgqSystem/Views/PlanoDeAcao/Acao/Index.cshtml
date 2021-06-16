@@ -623,6 +623,10 @@
         }
 
         function inserirNaListaEvidencia(base64) {
+
+            if (acaoEditar["ListaEvidencia"] == null)
+                acaoEditar["ListaEvidencia"] = [];
+
             if (acaoEditar["ListaEvidencia"].length < 2) {
 
                 var evidencia = {
@@ -754,8 +758,25 @@
             return colunas;
         }
 
+        function validateUploadFile(evt) {
+
+            if (evt.target.files.length == 0) return false;
+
+            else if (!evt.target.files[0].type.match(/.(jpg|jpeg|png)$/i)) {
+                $('#uploadPhoto').val('')
+                $('#uploadPhotox').val('')
+                openMessageModal('Alerta! Não é uma imagem!')
+                return false;
+            }
+
+            else if (evt.target.files[0].size <= 0) return false;
+
+            return true;
+        }
+
         function uploadFile(evt, tipoEvidencia) {
-            if (evt.target.files.length == 0)
+
+            if (!validateUploadFile(evt))
                 return;
 
             var e = evt.target.files[0]; // FileList object
