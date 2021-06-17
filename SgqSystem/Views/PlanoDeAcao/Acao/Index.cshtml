@@ -287,7 +287,7 @@
 
 @section Scripts {
     <script src="~/Scripts/Print/printGRT.js"></script>
-    <script type="text/javascript">
+    <div><script type="text/javascript">
 
         const enumStatus = [1, 2, 3];
         var isVisualizar = false;
@@ -378,8 +378,7 @@
                         return `<button class="btn btn-sm btn-warning" onclick="abrirImpressao(${id})">Visualizar</button>`;
                     }
                 },
-                { "title": "Id", "mData": "Id", "visible": false },
-
+                { "title": "Número da Ação", "mData": "Id", "visible": true },
                 { "title": "Data Emissão", "mData": "_DataEmissao", "visible": true },
                 { "title": "Hora Emissão", "mData": "HoraEmissao", "visible": true },
                 { "title": "ParCompany_Id", "mData": "ParCompany_Id", "visible": false },
@@ -387,12 +386,12 @@
                 { "title": "ParDepartment_Id", "mData": "ParDepartment_Id", "visible": false },
                 { "title": "Centro de Custo", "mData": "ParDepartment_Name", "visible": true },
                 { "title": "ParDepartmentParent_Id", "mData": "ParDepartmentParent_Id", "visible": false },
-                { "title": "Seção", "mData": "ParDepartmentParent_Name", "visible": true },
+                { "title": "Seção/Atividade", "mData": "ParDepartmentParent_Name", "visible": true },
                 { "title": "ParCargo_Id", "mData": "ParCargo_Id", "visible": false },
-                { "title": "Cargo", "mData": "ParCargo_Name", "visible": true },
+                { "title": "Item/Tarefa", "mData": "ParCargo_Name", "visible": true },
                 { "title": "ParLevel1_Id", "mData": "ParLevel1_Id", "visible": false },
                 {
-                    "title": "Indicador", "mData": "ParLevel1_Name", "visible": true,
+                    "title": "Indicador/Origem", "mData": "ParLevel1_Name", "visible": true,
                     mRender: function (data, type, full, cell) {
                         return montarCampo(data);
                     }
@@ -405,18 +404,19 @@
                     } },
                 { "title": "ParLevel3_Id", "mData": "ParLevel3_Id", "visible": false },
                 {
-                    "title": "Tarefa", "mData": "ParLevel3_Name", "visible": true,
+                    "title": "Desvio/Medida de Controle", "mData": "ParLevel3_Name", "visible": true,
                     mRender: function (data, type, full, cell) {
                         return montarCampo(data);
                     }
                 },
-                { "title": "Acao Naoconformidade", "mData": "Acao_Naoconformidade", "visible": true },
-                { "title": "Texto Ação", "mData": "AcaoText", "visible": true },
+                { "title": "Não Conformidade/Ocorrência", "mData": "Acao_Naoconformidade", "visible": true },
+                { "title": "Ação", "mData": "AcaoText", "visible": true },
                 { "title": "Data Conclusão", "mData": "_DataConclusao", "visible": true },
+                { "title": "Emissor", "mData": "Emissor", "visible": true},
                 { "title": "Hora Conclusão", "mData": "HoraConclusao", "visible": true },
                 { "title": "Referencia", "mData": "Referencia", "visible": true },
-                { "title": "Nome do Responsavel", "mData": "Responsavel_Name", "visible": true },
-                { "title": "Notificar", "mData": "Notificar", "visible": true },
+                {"title": "Nome do Responsavel", "mData": "Responsavel_Name", "visible": true},
+                /*{ "title": "Notificar", "mData": "null", "visible": true },*/
                 { "title": "Prioridade", "mData": "Prioridade", "visible": true },
                 {
                     "title": "Status", "mData": "Status", "visible": true,
@@ -1036,6 +1036,6 @@
                 }
             });
 
-    </script>
+    </script></div>
 
 }
