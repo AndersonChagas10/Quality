@@ -1,8 +1,25 @@
 ﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
 @{
     ViewBag.Title = "Listagem de ações";
+
+    Layout = "~\\Views\\RelatoriosSgq\\_FilterReportsHorizontal.cshtml";
+
+    ViewBag.ShowCurrentDate = false;
+    ViewBag.ShowRangeDate = true;
+    ViewBag.ShowParCluster = true;
+    ViewBag.ShowParStructure3 = true;
+    ViewBag.ShowParClusterGroup = true;
+    ViewBag.ShowParLevel1 = true;
+    ViewBag.ShowParStructure2 = true;
+    ViewBag.ShowParCompany = true;
+    ViewBag.ShowParLevel2GQ = false;
+    ViewBag.ShowUserSgqAuditor = false;
+    ViewBag.ShowParLevel2 = false;
+    ViewBag.ShowParDepartment = false;
+    ViewBag.ShowUserCompanies = false;
 }
 
+@section Content{
 <style>
     table#tabelaDeResultados tr:hover {
         background: #ff6a0099 !important;
@@ -149,12 +166,13 @@
             <button id="btnPendente" onclick="getAcoesByStatus('1')" class="btn btn-danger">Pendente <text></text></button>
             <button id="btnAndamento" onclick="getAcoesByStatus('2')" class="btn btn-info">Em Andamento <text></text></button>
             <button id="btnConcluida" onclick="getAcoesByStatus('3')" class="btn btn-success">Concluida <text></text></button>
-            <button id="btnTodas" onclick="buscarDados(null)" class="btn btn-warning">Todas as ações <text></text></button>
+            <button id="btnTodas" onclick="enviarFiltro(null)" class="btn btn-warning">Todas as ações <text></text></button>
         </div>
 
         <table id="tabelaDeResultados" class="table table-striped"></table>
     </div>
 </div>
+}
 
 @section Scripts {
 
@@ -170,19 +188,19 @@
 
             setTimeout(() => {
                 var filtro = {};
-                buscarDados(filtro);
+                enviarFiltro(filtro);
                 closeLoader();
             }, 2000);
 
         });
 
-        function buscarDados(filtro) {
+        function enviarFiltro(filtro) {
             openLoader("Carregando Dados");
 
             $.ajax({
-                //data: JSON.stringify(filtro),
-                type: 'GET',
-                url:  '@Html.Raw(Url.Action("Get", "api/AcaoApi"))',
+                type: 'POST',
+                url: '@Html.Raw(Url.Action("GetAcaoByFilter", "api/AcaoApi"))',
+                data: JSON.stringify(objFiltro),
                 contentType: "application/json",
                 success: function (dados) {
                     if (dados && dados.length > 0) {
@@ -695,7 +713,7 @@
                     openMessageModal("Concluido", "Ação salva com sucesso");
                     $("#btnClose").trigger('click');
                     setTimeout(function () {
-                        buscarDados(null);
+                        enviarFiltro(null);
                     }, 3000);
 
                 },

@@ -2,6 +2,7 @@
 using Dominio;
 using Dominio.AcaoRH;
 using Dominio.AcaoRH.Email;
+using DTO;
 using Helper;
 using SgqServiceBusiness.Controllers.RH;
 using SgqSystem.Helpers;
@@ -19,11 +20,29 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
     [RoutePrefix("api/AcaoApi")]
     public class AcaoApiController : BaseApiController
     {
-        [Route("Get")]
-        [HttpGet]
-        public IEnumerable<AcaoViewModel> Get()
+        [Route("GetAcaoByFilter")]
+        [HttpPost]
+        public IEnumerable<AcaoViewModel> GetAcaoByFilter([FromBody] DataCarrierFormularioNew form)
         {
-         var query = $@"
+            //filtros:
+
+            //IsCascadeLevel2Level3   1
+            //ParClusterGroup_Ids 20 - ParClusterGroup - cluster grupo
+            //ParCluster_Ids  12 - ParCluster - cluster
+            //ParCompany_Ids  160 - ParCompany - unidade
+            //ParLevel1_Ids 1 - ParLevel1 - indicador
+            //ParStructure2_Ids 2 - ParStructure - regional(ParStructure_Id)
+            //ParStructure3_Ids 3 - ParStructure - grupoempresa(ParStructureParent_Id)
+            //startDate = { 17 / 06 / 2021 00:00:00}
+
+            string ParCompany = "";
+            string ClusterGroup = "";
+
+            if(form.ParCompany_Ids.Length > 0) ParCompany = $"AND PC.Id IN({string.Join(",", form.ParCompany_Ids)})";
+
+            if(form.ParClusterGroup_Ids.Length > 0) ClusterGroup = $"AND PAC.ParClusterGroup_Id IN({string.Join(",", form.ParClusterGroup_Ids)})";
+
+            var query = $@"
          SELECT
          PAC.Id,
          PL1.Id AS ParLevel1_Id,
@@ -68,8 +87,10 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          LEFT JOIN ParCargo PCG  WITH (NOLOCK)
          ON PCG.Id = PAC.ParCargo_Id
          LEFT JOIN UserSgq US WITH (NOLOCK)
-         ON US.Id = PAC.Responsavel"
-        ;
+         ON US.Id = PAC.Responsavel
+         WHERE 1=1
+         {ParCompany}
+         {ClusterGroup}";
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
