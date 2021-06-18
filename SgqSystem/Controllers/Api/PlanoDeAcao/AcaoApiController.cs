@@ -23,7 +23,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         [HttpGet]
         public IEnumerable<AcaoViewModel> Get()
         {
-         var query = $@"
+            var query = $@"
          SELECT
          PAC.Id,
          PL1.Id AS ParLevel1_Id,
@@ -69,7 +69,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          ON PCG.Id = PAC.ParCargo_Id
          LEFT JOIN UserSgq US WITH (NOLOCK)
          ON US.Id = PAC.Responsavel"
-        ;
+           ;
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
@@ -170,6 +170,46 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             return null;
         }
 
+        [Route("Post/Acompanhamento/{id}")]
+        [HttpPost]
+        public AcaoViewModel Post([FromUri] int id, [FromBody] AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
+        {
+            try
+            {
+                var usuarioLogado = base.GetUsuarioLogado();
+
+                var listaNotificar = objAcompanhamentoAcao.ListaNotificar
+                    .Select(x =>
+                        new AcompanhamentoAcaoXNotificar()
+                        {
+                            UserSgq_Id = x.Id
+                        }
+                    ).ToList();
+
+                var acompanhamento = new AcompanhamentoAcao()
+                {
+                    ListaNotificar = listaNotificar,
+                    Observacao = objAcompanhamentoAcao.Observacao,
+                    Status = objAcompanhamentoAcao.Status,
+                    Acao_Id = id,
+                    UserSgq_Id = usuarioLogado.Id
+                };
+
+                using (SgqDbDevEntities db = new SgqDbDevEntities())
+                {
+                    db.AcompanhamentoAcao.Add(acompanhamento);
+                    db.SaveChanges();
+                }
+
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+            return null;
+        }
+
 
         public void SendMail(AcaoViewModel acao)
         {
@@ -211,7 +251,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
             if (objAcao.ListaEvidencia != null)
             {
-                 listaEvidenciasPathsEditadas = objAcao.ListaEvidencia.ToList();
+                listaEvidenciasPathsEditadas = objAcao.ListaEvidencia.ToList();
             }
 
             var listaInserir = listaEvidenciasPathsEditadas.Where(x => !listaEvidenciasDB.Select(y => y.Path).ToList().Contains(x.Path)).ToList();
@@ -232,7 +272,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             var listaEvidenciasPathsEditadas = new List<Evidencia>();
             if (objAcao.ListaEvidenciaConcluida != null)
             {
-                 listaEvidenciasPathsEditadas = objAcao.ListaEvidenciaConcluida.ToList();
+                listaEvidenciasPathsEditadas = objAcao.ListaEvidenciaConcluida.ToList();
             }
 
             var listaInserir = listaEvidenciasPathsEditadas.Where(x => !listaEvidenciasConcluidasDB.Select(y => y.Path).ToList().Contains(x.Path)).ToList();
@@ -564,12 +604,13 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
-                var lista = factory.SearchQuery<AcaoFormViewModel>(query).FirstOrDefault();
-                lista.ListaResponsavel = BuscarListaResponsavel(lista.ParCompany_Id);
-                lista.ListaNotificar = BuscarListaNotificar(lista.ParCompany_Id);
-                lista.ListaNotificarAcao = BuscarListaNotificarAcao(lista.ParCompany_Id, lista.Id);
+                var acao = factory.SearchQuery<AcaoFormViewModel>(query).FirstOrDefault();
+                acao.ListaResponsavel = BuscarListaResponsavel(acao.ParCompany_Id);
+                acao.ListaNotificar = BuscarListaNotificar(acao.ParCompany_Id);
+                acao.ListaNotificarAcao = BuscarListaNotificarAcao(acao.ParCompany_Id, acao.Id);
+                acao.ListaAcompanhamento = BuscarAcompanhamento(acao.Id);
 
-                return lista;
+                return acao;
             }
         }
 
@@ -764,6 +805,30 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             return listaNotificarAcao;
         }
 
+        private List<AcompanhamentoAcaoViewModel> BuscarAcompanhamento(int acao_id)
+        {
+            List<AcompanhamentoAcaoViewModel> listaAcompanhamentoAcaoViewModel;
+            using (SgqDbDevEntities db = new SgqDbDevEntities())
+            {
+                listaAcompanhamentoAcaoViewModel = db.AcompanhamentoAcao
+                    .Where(x => x.Acao_Id == acao_id)
+                    .OrderByDescending(x => x.DataRegistro)
+                    .Select(x => new AcompanhamentoAcaoViewModel()
+                    {
+                        DataRegistro = x.DataRegistro,
+                        Observacao = x.Observacao,
+                        Status = x.Status,
+                        ListaNotificar = x.ListaNotificar
+                            .Select(n => new NotificarViewModel() { Id = n.UserSgq.Id, Nome = n.UserSgq.FullName })
+                            .ToList(),
+                        Responsavel = x.UserSgq.FullName
+                    })
+                    .ToList();
+            }
+
+            return listaAcompanhamentoAcaoViewModel;
+        }
+
         public List<UserSgq> GetUsersByCompany(int ParCompany_Id)
         {
             var query = $@"
@@ -830,7 +895,7 @@ SELECT
             public string Acao_Naoconformidade { get; set; }
             public string AcaoText { get; set; }
             public DateTime? DataEmissao { get; set; }
-            public string _DataEmissao { get { return DataEmissao?.ToShortDateString(); }}
+            public string _DataEmissao { get { return DataEmissao?.ToShortDateString(); } }
             public DateTime? DataConclusao { get; set; }
             public string _DataConclusao { get { return DataConclusao?.ToShortDateString(); } }
             public TimeSpan HoraEmissao { get; set; }
@@ -932,12 +997,33 @@ SELECT
             };
             public List<NotificarViewModel> ListaNotificar { get; set; } = new List<NotificarViewModel>();
             public List<NotificarViewModel> ListaNotificarAcao { get; set; } = new List<NotificarViewModel>();
+
+            public List<AcompanhamentoAcaoViewModel> ListaAcompanhamento { get; set; } = new List<AcompanhamentoAcaoViewModel>();
         }
 
         public class NotificarViewModel
         {
             public int Id { get; set; }
             public string Nome { get; set; }
+        }
+
+        public class AcompanhamentoAcaoViewModel
+        {
+            public string Observacao { get; set; }
+            public DateTime DataRegistro { get; set; }
+            public string DataRegistroFormatada { get { return DataRegistro.ToString("dd/MM/yyyy HH:mm"); } }
+            public List<NotificarViewModel> ListaNotificar { get; set; }
+            public Dominio.Enums.Enums.EAcaoStatus Status { get; set; }
+            public string Responsavel { get; set; }
+            public string StatusName { get { return Enum.GetName(typeof(Dominio.Enums.Enums.EAcaoStatus), Status); } }
+        }
+
+        public class AcompanhamentoAcaoInputModel
+        {
+            public string Observacao { get; set; }
+            public DateTime DataRegistro { get { return DateTime.Now; } }
+            public List<NotificarViewModel> ListaNotificar { get; set; }
+            public Dominio.Enums.Enums.EAcaoStatus Status { get; set; }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using static Dominio.Enums.Enums;
 
 namespace Dominio
 {
@@ -29,7 +30,7 @@ namespace Dominio
         public int Emissor { get; set; }
         public int? Prioridade { get; set; }
         public string PrioridadeText { get; set; }
-        public int Status { get; set; }
+        public EAcaoStatus Status { get; set; }
         public bool IsActive { get; set; }
 
         public IEnumerable<string> EvidenciaNaoConformidade { get; set; }
