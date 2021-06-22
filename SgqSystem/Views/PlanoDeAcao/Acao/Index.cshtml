@@ -183,14 +183,14 @@
 
         $(document).ready(function () {
 
-            openLoader("Aguarde");
-            closeLeftSidebar();
+            //openLoader("Aguarde");
+            //closeLeftSidebar();
 
-            setTimeout(() => {
-                var filtro = {};
-                enviarFiltro(filtro);
-                closeLoader();
-            }, 2000);
+            //setTimeout(() => {
+            //    var filtro = {};
+            //    enviarFiltro(filtro);
+            //    closeLoader();
+            //}, 2000);
 
         });
 
@@ -206,7 +206,7 @@
                     if (dados && dados.length > 0) {
                         carregarTabela(dados);
                     } else {
-                        //Não há valores
+                        openMessageModal('Alerta', 'Não há dados')
                     }
                     closeLoader();
                 },

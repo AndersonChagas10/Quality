@@ -24,73 +24,86 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         [HttpPost]
         public IEnumerable<AcaoViewModel> GetAcaoByFilter([FromBody] DataCarrierFormularioNew form)
         {
-            //filtros:
-
-            //IsCascadeLevel2Level3   1
-            //ParClusterGroup_Ids 20 - ParClusterGroup - cluster grupo
-            //ParCluster_Ids  12 - ParCluster - cluster
-            //ParCompany_Ids  160 - ParCompany - unidade
-            //ParLevel1_Ids 1 - ParLevel1 - indicador
-            //ParStructure2_Ids 2 - ParStructure - regional(ParStructure_Id)
-            //ParStructure3_Ids 3 - ParStructure - grupoempresa(ParStructureParent_Id)
-            //startDate = { 17 / 06 / 2021 00:00:00}
 
             string ParCompany = "";
             string ClusterGroup = "";
+            string ParCluster = "";
+            string ParLevel1 = "";
+            string Regional = "";
+            string GrupoEmpresa = "";            
 
             if(form.ParCompany_Ids.Length > 0) ParCompany = $"AND PC.Id IN({string.Join(",", form.ParCompany_Ids)})";
 
             if(form.ParClusterGroup_Ids.Length > 0) ClusterGroup = $"AND PAC.ParClusterGroup_Id IN({string.Join(",", form.ParClusterGroup_Ids)})";
 
+            if(form.ParCluster_Ids.Length > 0) ParCluster = $"AND PAC.ParCluster_Id IN({string.Join(",", form.ParCluster_Ids)})";
+
+            if(form.ParLevel1_Ids.Length > 0) ParLevel1 = $"AND PAC.ParLevel1_Id IN({string.Join(",", form.ParLevel1_Ids)})";
+
+            if (form.ParStructure3_Ids.Length > 0) Regional  = $"AND PS.Id IN({string.Join(",", form.ParStructure3_Ids)})";
+
+            if (form.ParStructure2_Ids.Length > 0) GrupoEmpresa = $"AND PS.ParStructureParent_Id IN({string.Join(",", form.ParStructure2_Ids)})";
+
             var query = $@"
-         SELECT
-         PAC.Id,
-         PL1.Id AS ParLevel1_Id,
-         PL1.Name AS ParLevel1_Name,
-         PL2.Id AS ParLevel2_Id,
-         PL2.Name AS ParLevel2_Name,
-         PL3.Id AS ParLevel3_Id,
-         PL3.Name AS ParLevel3_Name,
-         PC.Id AS ParCompany_Id,
-         PC.Name AS ParCompany_Name,
-         PD.Id AS ParDepartment_Id,
-         PD.Name AS ParDepartment_Name,
-         PD.Parent_Id AS ParDepartmentParent_Id,
-         PDS.Name AS ParDepartmentParent_Name,
-         PCG.Id AS ParCargo_Id,
-         PCG.Name AS ParCargo_Name,
-         PAC.Acao_Naoconformidade,
-         PAC.AcaoText,
-         FORMAT(PAC.DataEmissao, 'dd/MM/yyyy') as DataEmissao,
-         PAC.DataConclusao,
-         PAC.HoraEmissao,
-         PAC.HoraConclusao,
-         PAC.Referencia,
-         PAC.Responsavel,
-         PAC.Prioridade,
-         PAC.Status,
-         PAC.IsActive,
-         US.Name AS Responsavel_Name
-         FROM Pa.Acao PAC  WITH (NOLOCK)
-         LEFT JOIN ParLevel1 PL1  WITH (NOLOCK)
-         ON PL1.Id = PAC.ParLevel1_Id
-         LEFT JOIN ParLevel2 PL2  WITH (NOLOCK)
-         ON PL2.Id = PAC.ParLevel2_Id
-         LEFT JOIN ParLevel3 PL3  WITH (NOLOCK)
-         ON PL3.Id = PAC.ParLevel3_Id
-         LEFT JOIN ParCompany PC  WITH (NOLOCK)
-         ON PC.Id = PAC.ParCompany_Id
-         LEFT JOIN ParDepartment PD  WITH (NOLOCK)
-         ON PD.Id = PAC.ParDepartment_Id
-        LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
-         ON PDs.Id = PAC.ParDepartmentParent_Id
-         LEFT JOIN ParCargo PCG  WITH (NOLOCK)
-         ON PCG.Id = PAC.ParCargo_Id
-         LEFT JOIN UserSgq US WITH (NOLOCK)
-         ON US.Id = PAC.Responsavel
-         WHERE 1=1
-         {ParCompany}
-         {ClusterGroup}";
+                         DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+                         DECLARE @DATAFINAL   DATETIME =  '{ form.endDate.ToString("yyyy-MM-dd")} {" 23:59:00"}'
+
+                         SELECT
+                             PAC.Id,
+                             PL1.Id AS ParLevel1_Id,
+                             PL1.Name AS ParLevel1_Name,
+                             PL2.Id AS ParLevel2_Id,
+                             PL2.Name AS ParLevel2_Name,
+                             PL3.Id AS ParLevel3_Id,
+                             PL3.Name AS ParLevel3_Name,
+                             PC.Id AS ParCompany_Id,
+                             PC.Name AS ParCompany_Name,
+                             PD.Id AS ParDepartment_Id,
+                             PD.Name AS ParDepartment_Name,
+                             PD.Parent_Id AS ParDepartmentParent_Id,
+                             PDS.Name AS ParDepartmentParent_Name,
+                             PCG.Id AS ParCargo_Id,
+                             PCG.Name AS ParCargo_Name,
+                             PAC.Acao_Naoconformidade,
+                             PAC.AcaoText,
+                             FORMAT(PAC.DataEmissao, 'dd/MM/yyyy') as DataEmissao,
+                             PAC.DataConclusao,
+                             PAC.HoraEmissao,
+                             PAC.HoraConclusao,
+                             PAC.Referencia,
+                             PAC.Responsavel,
+                             PAC.Prioridade,
+                             PAC.Status,
+                             PAC.IsActive,
+                             US.Name AS Responsavel_Name
+                             FROM Pa.Acao PAC  WITH (NOLOCK)
+                             LEFT JOIN ParLevel1 PL1  WITH (NOLOCK)
+                             ON PL1.Id = PAC.ParLevel1_Id
+                             LEFT JOIN ParLevel2 PL2  WITH (NOLOCK)
+                             ON PL2.Id = PAC.ParLevel2_Id
+                             LEFT JOIN ParLevel3 PL3  WITH (NOLOCK)
+                             ON PL3.Id = PAC.ParLevel3_Id
+                             LEFT JOIN ParCompany PC  WITH (NOLOCK)
+                             ON PC.Id = PAC.ParCompany_Id
+                             LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK)
+							 ON PCXS.ParCompany_Id = PC.Id AND PCXS.Active = 1
+							 INNER JOIN ParStructure PS WITH (NOLOCK)
+							 ON PS.Id = PCXS.ParStructure_Id 
+                             LEFT JOIN ParDepartment PD  WITH (NOLOCK)
+                             ON PD.Id = PAC.ParDepartment_Id
+                             LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
+                             ON PDs.Id = PAC.ParDepartmentParent_Id
+                             LEFT JOIN ParCargo PCG  WITH (NOLOCK)
+                             ON PCG.Id = PAC.ParCargo_Id
+                             LEFT JOIN UserSgq US WITH (NOLOCK)
+                             ON US.Id = PAC.Responsavel
+                             WHERE PAC.DataEmissao BETWEEN @DATAINICIAL AND @DATAFINAL
+                             {ParCompany}
+                             {ClusterGroup}
+                             {ParCluster}
+                             {ParLevel1}
+                             {GrupoEmpresa}
+                             {Regional}";
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
