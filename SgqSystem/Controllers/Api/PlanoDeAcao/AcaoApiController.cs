@@ -48,10 +48,11 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          PAC.HoraConclusao,
          PAC.Referencia,
          PAC.Responsavel,
+         PAC.Emissor,
          PAC.Prioridade,
          PAC.Status,
          PAC.IsActive,
-         US.Name AS Responsavel_Name,
+         US.FullName AS Responsavel_Name,
         STUFF((SELECT DISTINCT
 			    CONCAT(', ', USGQ.FullName)
 		    FROM UserSGQ USGQ
@@ -119,10 +120,11 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                      PAC.HoraConclusao,
                      PAC.Referencia,
                      PAC.Responsavel,
+                     PAC.Emissor,
                      PAC.Prioridade,
                      PAC.Status,
                      PAC.IsActive,
-                     US.Name AS Responsavel_Name,
+                     US.FullName AS Responsavel_Name,
                     STUFF((SELECT DISTINCT
 			                CONCAT(', ', USGQ.FullName)
 		                FROM UserSGQ USGQ
@@ -146,7 +148,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                      ON PC.Id = PAC.ParCompany_Id
                      LEFT JOIN ParDepartment PD  WITH (NOLOCK)
                      ON PD.Id = PAC.ParDepartment_Id
-                    LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
+                     LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
                      ON PDs.Id = PAC.ParDepartmentParent_Id
                      LEFT JOIN ParCargo PCG  WITH (NOLOCK)
                      ON PCG.Id = PAC.ParCargo_Id
@@ -568,7 +570,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                  PAC.Prioridade,
                  PAC.Status,
                  PAC.IsActive,
-                 US.Name AS Responsavel_Name
+                 US.FullName AS Responsavel_Name
                  FROM Pa.Acao PAC  WITH (NOLOCK)
                  LEFT JOIN ParLevel1 PL1  WITH (NOLOCK)
                  ON PL1.Id = PAC.ParLevel1_Id
@@ -586,8 +588,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                  ON PCG.Id = PAC.ParCargo_Id
                  LEFT JOIN UserSgq US WITH (NOLOCK)
                  ON US.Id = PAC.Responsavel
-                WHERE PAC.Id = {id}
-                ";
+                 WHERE PAC.Id = {id}";
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
