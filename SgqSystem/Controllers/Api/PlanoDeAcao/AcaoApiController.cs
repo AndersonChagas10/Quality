@@ -530,6 +530,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                  PD.Id AS ParDepartment_Id,
                  PD.Name AS ParDepartment_Name,
                  PD.Parent_Id AS ParDepartmentParent_Id,
+                 PDS.Name AS ParDepartmentParent_Name,
                  PCG.Id AS ParCargo_Id,
                  PCG.Name AS ParCargo_Name,
                  PAC.Acao_Naoconformidade,
@@ -555,6 +556,8 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                  ON PC.Id = PAC.ParCompany_Id
                  LEFT JOIN ParDepartment PD  WITH (NOLOCK)
                  ON PD.Id = PAC.ParDepartment_Id
+                 LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
+                 ON PDs.Id = PAC.ParDepartmentParent_Id
                  LEFT JOIN ParCargo PCG  WITH (NOLOCK)
                  ON PCG.Id = PAC.ParCargo_Id
                  LEFT JOIN UserSgq US WITH (NOLOCK)
@@ -885,6 +888,7 @@ SELECT
             public int ParDepartment_Id { get; set; }
             public string ParDepartment_Name { get; set; }
             public int ParDepartmentParent_Id { get; set; }
+            public string ParDepartmentParent_Name { get; set; }
             public int ParCargo_Id { get; set; }
             public string ParCargo_Name { get; set; }
             public string Acao_Naoconformidade { get; set; }

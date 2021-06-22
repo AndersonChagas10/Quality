@@ -249,10 +249,10 @@
                 //{ "title": "Emissor", "mData": "Emissor", "visible": true },
                 { "title": "ParCompany_Id", "mData": "ParCompany_Id", "visible": false },
                 { "title": "Unidade", "mData": "ParCompany_Name", "visible": true },
-                { "title": "ParDepartment_Id", "mData": "ParDepartment_Id", "visible": false },
-                { "title": "Centro de Custo", "mData": "ParDepartment_Name", "visible": true },
                 { "title": "ParDepartmentParent_Id", "mData": "ParDepartmentParent_Id", "visible": false },
-                { "title": "Seção", "mData": "ParDepartmentParent_Name", "visible": true },
+                { "title": "Centro de Custo", "mData": "ParDepartmentParent_Name", "visible": true },
+                { "title": "ParDepartment_Id", "mData": "ParDepartment_Id", "visible": false },
+                { "title": "Seção", "mData": "ParDepartment_Name", "visible": true },
                 { "title": "ParCargo_Id", "mData": "ParCargo_Id", "visible": false },
                 { "title": "Cargo", "mData": "ParCargo_Name", "visible": true },
                 { "title": "ParLevel1_Id", "mData": "ParLevel1_Id", "visible": false },
@@ -455,7 +455,7 @@
             $("#usuarioEmissor").text(dados.Responsavel_Name);
             $("#actionParCompany_Id").text(dados.ParCompany_Name);
             $("#actionParDepartment_Id").text(dados.ParDepartment_Name);
-            $("#actionParDepartmentParent_Id").text(dados.ParDepartment_Name);
+            $("#actionParDepartmentParent_Id").text(dados.ParDepartmentParent_Name);
             $("#actionParCargo_Id").text(dados.ParCargo_Name);
             $("#actionParLevel1_Id").text(dados.ParLevel1_Name);
             $("#actionParLevel2_Id").text(dados.ParLevel2_Name);
