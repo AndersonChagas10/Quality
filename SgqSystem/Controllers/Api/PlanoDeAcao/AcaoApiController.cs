@@ -44,8 +44,8 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             if (form.ParStructure2_Ids.Length > 0) GrupoEmpresa = $"AND PS.ParStructureParent_Id IN({string.Join(",", form.ParStructure2_Ids)})";
 
             var query = $@"
-                         DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
-                         DECLARE @DATAFINAL   DATETIME =  '{ form.endDate.ToString("yyyy-MM-dd")} {" 23:59:00"}'
+        DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+        DECLARE @DATAFINAL   DATETIME =  '{ form.endDate.ToString("yyyy-MM-dd")} {" 23:59:00"}'
 
          SELECT
          PAC.Id,
@@ -97,10 +97,10 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          ON PL3.Id = PAC.ParLevel3_Id
          LEFT JOIN ParCompany PC  WITH (NOLOCK)
          ON PC.Id = PAC.ParCompany_Id
-                             LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK)
-							 ON PCXS.ParCompany_Id = PC.Id AND PCXS.Active = 1
-							 INNER JOIN ParStructure PS WITH (NOLOCK)
-							 ON PS.Id = PCXS.ParStructure_Id 
+        LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK)
+		ON PCXS.ParCompany_Id = PC.Id AND PCXS.Active = 1
+		INNER JOIN ParStructure PS WITH (NOLOCK)
+		ON PS.Id = PCXS.ParStructure_Id 
          LEFT JOIN ParDepartment PD  WITH (NOLOCK)
          ON PD.Id = PAC.ParDepartment_Id
         LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
@@ -109,13 +109,13 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          ON PCG.Id = PAC.ParCargo_Id
          LEFT JOIN UserSgq US WITH (NOLOCK)
          ON US.Id = PAC.Responsavel
-                             WHERE PAC.DataEmissao BETWEEN @DATAINICIAL AND @DATAFINAL
-                             {ParCompany}
-                             {ClusterGroup}
-                             {ParCluster}
-                             {ParLevel1}
-                             {GrupoEmpresa}
-                             {Regional}";
+        WHERE PAC.DataEmissao BETWEEN @DATAINICIAL AND @DATAFINAL
+        {ParCompany}
+        {ClusterGroup}
+        {ParCluster}
+        {ParLevel1}
+        {GrupoEmpresa}
+        {Regional}";
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
