@@ -2,6 +2,7 @@
 using Dominio;
 using Dominio.AcaoRH;
 using Dominio.AcaoRH.Email;
+using DTO;
 using Helper;
 using SgqServiceBusiness.Controllers.RH;
 using SgqSystem.Helpers;
@@ -19,11 +20,33 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
     [RoutePrefix("api/AcaoApi")]
     public class AcaoApiController : BaseApiController
     {
-        [Route("Get")]
-        [HttpGet]
-        public IEnumerable<AcaoViewModel> Get()
+        [Route("GetAcaoByFilter")]
+        [HttpPost]
+        public IEnumerable<AcaoViewModel> GetAcaoByFilter([FromBody] DataCarrierFormularioNew form)
         {
+            string ParCompany = "";
+            string ClusterGroup = "";
+            string ParCluster = "";
+            string ParLevel1 = "";
+            string Regional = "";
+            string GrupoEmpresa = "";
+
+            if (form.ParCompany_Ids.Length > 0) ParCompany = $"AND PC.Id IN({string.Join(",", form.ParCompany_Ids)})";
+
+            if (form.ParClusterGroup_Ids.Length > 0) ClusterGroup = $"AND PAC.ParClusterGroup_Id IN({string.Join(",", form.ParClusterGroup_Ids)})";
+
+            if (form.ParCluster_Ids.Length > 0) ParCluster = $"AND PAC.ParCluster_Id IN({string.Join(",", form.ParCluster_Ids)})";
+
+            if (form.ParLevel1_Ids.Length > 0) ParLevel1 = $"AND PAC.ParLevel1_Id IN({string.Join(",", form.ParLevel1_Ids)})";
+
+            if (form.ParStructure3_Ids.Length > 0) Regional = $"AND PS.Id IN({string.Join(",", form.ParStructure3_Ids)})";
+
+            if (form.ParStructure2_Ids.Length > 0) GrupoEmpresa = $"AND PS.ParStructureParent_Id IN({string.Join(",", form.ParStructure2_Ids)})";
+
             var query = $@"
+                         DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+                         DECLARE @DATAFINAL   DATETIME =  '{ form.endDate.ToString("yyyy-MM-dd")} {" 23:59:00"}'
+
          SELECT
          PAC.Id,
          PL1.Id AS ParLevel1_Id,
@@ -74,6 +97,10 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          ON PL3.Id = PAC.ParLevel3_Id
          LEFT JOIN ParCompany PC  WITH (NOLOCK)
          ON PC.Id = PAC.ParCompany_Id
+                             LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK)
+							 ON PCXS.ParCompany_Id = PC.Id AND PCXS.Active = 1
+							 INNER JOIN ParStructure PS WITH (NOLOCK)
+							 ON PS.Id = PCXS.ParStructure_Id 
          LEFT JOIN ParDepartment PD  WITH (NOLOCK)
          ON PD.Id = PAC.ParDepartment_Id
         LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
@@ -81,8 +108,14 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          LEFT JOIN ParCargo PCG  WITH (NOLOCK)
          ON PCG.Id = PAC.ParCargo_Id
          LEFT JOIN UserSgq US WITH (NOLOCK)
-         ON US.Id = PAC.Responsavel"
-           ;
+         ON US.Id = PAC.Responsavel
+                             WHERE PAC.DataEmissao BETWEEN @DATAINICIAL AND @DATAFINAL
+                             {ParCompany}
+                             {ClusterGroup}
+                             {ParCluster}
+                             {ParLevel1}
+                             {GrupoEmpresa}
+                             {Regional}";
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
