@@ -51,7 +51,19 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          PAC.Prioridade,
          PAC.Status,
          PAC.IsActive,
-         US.Name AS Responsavel_Name
+         US.Name AS Responsavel_Name,
+        STUFF((SELECT DISTINCT
+			    CONCAT(', ', USGQ.FullName)
+		    FROM UserSGQ USGQ
+		    INNER JOIN PA.AcaoXNotificarAcao PAXNA
+			    ON PAXNA.UserSgq_Id = USGQ.Id
+			    AND PAXNA.Acao_Id = PAC.Id
+			    AND PAXNA.IsActive = 1
+			    AND USGQ.IsActive = 1
+		    FOR XML PATH (''))
+	    ,
+	    1, 2, ''
+	    ) AS Notificar
          FROM Pa.Acao PAC  WITH (NOLOCK)
          LEFT JOIN ParLevel1 PL1  WITH (NOLOCK)
          ON PL1.Id = PAC.ParLevel1_Id
@@ -110,7 +122,19 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                      PAC.Prioridade,
                      PAC.Status,
                      PAC.IsActive,
-                     US.Name AS Responsavel_Name
+                     US.Name AS Responsavel_Name,
+                    STUFF((SELECT DISTINCT
+			                CONCAT(', ', USGQ.FullName)
+		                FROM UserSGQ USGQ
+		                INNER JOIN PA.AcaoXNotificarAcao PAXNA
+			                ON PAXNA.UserSgq_Id = USGQ.Id
+			                AND PAXNA.Acao_Id = PAC.Id
+							AND PAXNA.IsActive = 1
+							AND USGQ.IsActive = 1
+		                FOR XML PATH (''))
+	                ,
+	                1, 2, ''
+	                ) AS Notificar
                      FROM Pa.Acao PAC  WITH (NOLOCK)
                      LEFT JOIN ParLevel1 PL1  WITH (NOLOCK)
                      ON PL1.Id = PAC.ParLevel1_Id
