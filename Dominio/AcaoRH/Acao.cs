@@ -36,16 +36,37 @@ namespace Dominio
         public IEnumerable<string> EvidenciaNaoConformidade { get; set; }
         public IEnumerable<string> EvidenciaAcaoConcluida { get; set; }
 
+        [NotMapped]
         public ParLevel1 ParLevel1 { get; set; }
+
+        [NotMapped]
         public ParLevel2 ParLevel2 { get; set; }
+
+        [NotMapped]
         public ParLevel3 ParLevel3 { get; set; }
+
+        [NotMapped]
         public ParCargo ParCargo { get; set; }
+
+        [NotMapped]
         public ParCompany ParCompany { get; set; }
+
+        [NotMapped]
         public ParDepartment ParDepartment { get; set; }
+
+        [NotMapped]
         public ParDepartment ParDepartmentParent { get; set; }
+
+        [NotMapped]
         public UserSgq ResponsavelUser { get; set; }
+
+        [NotMapped]
         public UserSgq EmissorUser { get; set; }
+
+        [NotMapped]
         public ParCluster ParCluster { get; set; }
+
+        [NotMapped]
         public ParClusterGroup ParClusterGroup { get; set; }
         public IEnumerable<UserSgq> NotificarUsers { get; set; }
     }

@@ -96,17 +96,18 @@ function montaCorpoFormularioAcao(index) {
         usersNotfy += '<tr><td>' + auditor_Id + '</td><td>' + name + '</td><td><button class="btn btn-danger btn-sm" onclick="removeUserNotify(' + index + ',' + auditor_Id + ')">X</button></td></tr>';
     });
 
-
     var btnPhoto = "";
     var btnFile = "";
-
+    
     if (currentAction.EvidenciaNaoConformidade.length < 2) {
-        if (device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows") {
+        if ((device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows")
+        && currentAction.ParLevel1_HasTakePhoto) {
             btnPhoto = '<button class="fa fa-camera btn btn-default" onclick="tirarFotoAcao(' + index + ');" aria-hidden="true"></button>';
         }
 
-        if (device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows") {
-            btnFile = '<button class="fa fa-file btn btn-default" onclick="upoadFotoAcaoByLibrary(' + index + ')" aria-hidden="true"></button>';
+        if ((device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows")
+        && currentAction.ParLevel1_OpenPhotoGallery) {
+            btnFile = '<button class="fa fa-file btn btn-default" onclick="uploadFotoAcaoByLibrary(' + index + ')" aria-hidden="true"></button>';
         }
     }
 
@@ -114,12 +115,14 @@ function montaCorpoFormularioAcao(index) {
     var btnFileConcluida = "";
 
     if (currentAction.EvidenciaAcaoConcluida.length < 2) {
-        if (device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows") {
+        if ((device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows")
+        && currentAction.ParLevel1_HasTakePhoto) {
             btnPhotoConcluida = '<button class="fa fa-camera btn btn-default" onclick="tirarFotoAcaoConcluida(' + index + ');" aria-hidden="true"></button>';
         }
 
-        if (device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows") {
-            btnFileConcluida = '<button class="fa fa-file btn btn-default" onclick="upoadFotoAcaoConcluidaByLibrary(' + index + ')" aria-hidden="true"></button>';
+        if ((device.platform.toLowerCase() == "android" || device.platform.toLowerCase() == "windows")
+        && currentAction.ParLevel1_OpenPhotoGallery) {
+            btnFileConcluida = '<button class="fa fa-file btn btn-default" onclick="uploadFotoAcaoConcluidaByLibrary(' + index + ')" aria-hidden="true"></button>';
         }
     }
 
@@ -352,6 +355,8 @@ function createObjAcao(index, coleta){
         ParCargo_Name: itemCargo,
         ParLevel1_Id: parseInt(coleta.ParLevel1_Id),
         ParLevel1_Name: level1.Name,
+        ParLevel1_HasTakePhoto: level1.HasTakePhoto,
+        ParLevel1_OpenPhotoGallery: level1.OpenPhotoGallery,
         ParLevel2_Id: parseInt(coleta.ParLevel2_Id),
         ParLevel2_Name: level2.Name,
         ParLevel3_Id: parseInt(coleta.ParLevel3_Id),
@@ -518,14 +523,14 @@ function tirarFotoAcaoConcluida(index) {
     abrirCamera(addPhotoAcaoConcluida, cameraError, cameraOptions);
 }
 
-function upoadFotoAcaoByLibrary(index) {
+function uploadFotoAcaoByLibrary(index) {
     cameraOptions.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
     indexAcaoFoto = index;
     abrirCamera(addPhotoAcao, cameraError, cameraOptions);
 
 }
 
-function upoadFotoAcaoConcluidaByLibrary(index) {
+function uploadFotoAcaoConcluidaByLibrary(index) {
     cameraOptions.sourceType = Camera.PictureSourceType.PHOTOLIBRARY;
     indexAcaoFoto = index;
     abrirCamera(addPhotoAcaoConcluida, cameraError, cameraOptions);

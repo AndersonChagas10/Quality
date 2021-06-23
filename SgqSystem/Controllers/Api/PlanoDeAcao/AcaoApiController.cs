@@ -2,6 +2,7 @@
 using Dominio;
 using Dominio.AcaoRH;
 using Dominio.AcaoRH.Email;
+using DTO;
 using Helper;
 using SgqServiceBusiness.Controllers.RH;
 using SgqSystem.Helpers;
@@ -19,11 +20,33 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
     [RoutePrefix("api/AcaoApi")]
     public class AcaoApiController : BaseApiController
     {
-        [Route("Get")]
-        [HttpGet]
-        public IEnumerable<AcaoViewModel> Get()
+        [Route("GetAcaoByFilter")]
+        [HttpPost]
+        public IEnumerable<AcaoViewModel> GetAcaoByFilter([FromBody] DataCarrierFormularioNew form)
         {
+            string ParCompany = "";
+            string ClusterGroup = "";
+            string ParCluster = "";
+            string ParLevel1 = "";
+            string Regional = "";
+            string GrupoEmpresa = "";
+
+            if (form.ParCompany_Ids.Length > 0) ParCompany = $"AND PC.Id IN({string.Join(",", form.ParCompany_Ids)})";
+
+            if (form.ParClusterGroup_Ids.Length > 0) ClusterGroup = $"AND PAC.ParClusterGroup_Id IN({string.Join(",", form.ParClusterGroup_Ids)})";
+
+            if (form.ParCluster_Ids.Length > 0) ParCluster = $"AND PAC.ParCluster_Id IN({string.Join(",", form.ParCluster_Ids)})";
+
+            if (form.ParLevel1_Ids.Length > 0) ParLevel1 = $"AND PAC.ParLevel1_Id IN({string.Join(",", form.ParLevel1_Ids)})";
+
+            if (form.ParStructure3_Ids.Length > 0) Regional = $"AND PS.Id IN({string.Join(",", form.ParStructure3_Ids)})";
+
+            if (form.ParStructure2_Ids.Length > 0) GrupoEmpresa = $"AND PS.ParStructureParent_Id IN({string.Join(",", form.ParStructure2_Ids)})";
+
             var query = $@"
+        DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+        DECLARE @DATAFINAL   DATETIME =  '{ form.endDate.ToString("yyyy-MM-dd")} {" 23:59:00"}'
+
          SELECT
          PAC.Id,
          PL1.Id AS ParLevel1_Id,
@@ -48,10 +71,23 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          PAC.HoraConclusao,
          PAC.Referencia,
          PAC.Responsavel,
+         PAC.Emissor,
          PAC.Prioridade,
          PAC.Status,
          PAC.IsActive,
-         US.Name AS Responsavel_Name
+         US.FullName AS Responsavel_Name,
+        STUFF((SELECT DISTINCT
+			    CONCAT(', ', USGQ.FullName)
+		    FROM UserSGQ USGQ
+		    INNER JOIN PA.AcaoXNotificarAcao PAXNA
+			    ON PAXNA.UserSgq_Id = USGQ.Id
+			    AND PAXNA.Acao_Id = PAC.Id
+			    AND PAXNA.IsActive = 1
+			    AND USGQ.IsActive = 1
+		    FOR XML PATH (''))
+	    ,
+	    1, 2, ''
+	    ) AS Notificar
          FROM Pa.Acao PAC  WITH (NOLOCK)
          LEFT JOIN ParLevel1 PL1  WITH (NOLOCK)
          ON PL1.Id = PAC.ParLevel1_Id
@@ -61,6 +97,10 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          ON PL3.Id = PAC.ParLevel3_Id
          LEFT JOIN ParCompany PC  WITH (NOLOCK)
          ON PC.Id = PAC.ParCompany_Id
+        LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK)
+		ON PCXS.ParCompany_Id = PC.Id AND PCXS.Active = 1
+		INNER JOIN ParStructure PS WITH (NOLOCK)
+		ON PS.Id = PCXS.ParStructure_Id 
          LEFT JOIN ParDepartment PD  WITH (NOLOCK)
          ON PD.Id = PAC.ParDepartment_Id
         LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
@@ -68,8 +108,14 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
          LEFT JOIN ParCargo PCG  WITH (NOLOCK)
          ON PCG.Id = PAC.ParCargo_Id
          LEFT JOIN UserSgq US WITH (NOLOCK)
-         ON US.Id = PAC.Responsavel"
-           ;
+         ON US.Id = PAC.Responsavel
+        WHERE PAC.DataEmissao BETWEEN @DATAINICIAL AND @DATAFINAL
+        {ParCompany}
+        {ClusterGroup}
+        {ParCluster}
+        {ParLevel1}
+        {GrupoEmpresa}
+        {Regional}";
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
@@ -107,10 +153,23 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                      PAC.HoraConclusao,
                      PAC.Referencia,
                      PAC.Responsavel,
+                     PAC.Emissor,
                      PAC.Prioridade,
                      PAC.Status,
                      PAC.IsActive,
-                     US.Name AS Responsavel_Name
+                     US.FullName AS Responsavel_Name,
+                    STUFF((SELECT DISTINCT
+			                CONCAT(', ', USGQ.FullName)
+		                FROM UserSGQ USGQ
+		                INNER JOIN PA.AcaoXNotificarAcao PAXNA
+			                ON PAXNA.UserSgq_Id = USGQ.Id
+			                AND PAXNA.Acao_Id = PAC.Id
+							AND PAXNA.IsActive = 1
+							AND USGQ.IsActive = 1
+		                FOR XML PATH (''))
+	                ,
+	                1, 2, ''
+	                ) AS Notificar
                      FROM Pa.Acao PAC  WITH (NOLOCK)
                      LEFT JOIN ParLevel1 PL1  WITH (NOLOCK)
                      ON PL1.Id = PAC.ParLevel1_Id
@@ -122,7 +181,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                      ON PC.Id = PAC.ParCompany_Id
                      LEFT JOIN ParDepartment PD  WITH (NOLOCK)
                      ON PD.Id = PAC.ParDepartment_Id
-                    LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
+                     LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
                      ON PDs.Id = PAC.ParDepartmentParent_Id
                      LEFT JOIN ParCargo PCG  WITH (NOLOCK)
                      ON PCG.Id = PAC.ParCargo_Id
@@ -570,6 +629,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                  PD.Id AS ParDepartment_Id,
                  PD.Name AS ParDepartment_Name,
                  PD.Parent_Id AS ParDepartmentParent_Id,
+                 PDS.Name AS ParDepartmentParent_Name,
                  PCG.Id AS ParCargo_Id,
                  PCG.Name AS ParCargo_Name,
                  PAC.Acao_Naoconformidade,
@@ -583,7 +643,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                  PAC.Prioridade,
                  PAC.Status,
                  PAC.IsActive,
-                 US.Name AS Responsavel_Name
+                 US.FullName AS Responsavel_Name
                  FROM Pa.Acao PAC  WITH (NOLOCK)
                  LEFT JOIN ParLevel1 PL1  WITH (NOLOCK)
                  ON PL1.Id = PAC.ParLevel1_Id
@@ -595,19 +655,20 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                  ON PC.Id = PAC.ParCompany_Id
                  LEFT JOIN ParDepartment PD  WITH (NOLOCK)
                  ON PD.Id = PAC.ParDepartment_Id
+                 LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
+                 ON PDs.Id = PAC.ParDepartmentParent_Id
                  LEFT JOIN ParCargo PCG  WITH (NOLOCK)
                  ON PCG.Id = PAC.ParCargo_Id
                  LEFT JOIN UserSgq US WITH (NOLOCK)
                  ON US.Id = PAC.Responsavel
-                WHERE PAC.Id = {id}
-                ";
+                 WHERE PAC.Id = {id}";
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {
                 var acao = factory.SearchQuery<AcaoFormViewModel>(query).FirstOrDefault();
                 acao.ListaResponsavel = BuscarListaResponsavel(acao.ParCompany_Id);
                 acao.ListaNotificar = BuscarListaNotificar(acao.ParCompany_Id);
-                acao.ListaNotificarAcao = BuscarListaNotificarAcao(acao.ParCompany_Id, acao.Id);
+                acao.ListaNotificarAcao = BuscarListaNotificarAcao(acao.Id);
                 acao.ListaAcompanhamento = BuscarAcompanhamento(acao.Id);
 
                 return acao;
@@ -773,33 +834,24 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             return listaNotificarAcao;
         }
 
-        private List<NotificarViewModel> BuscarListaNotificarAcao(int ParCompany_Id, int acao_id)
+        private List<NotificarViewModel> BuscarListaNotificarAcao(int acao_id)
         {
 
-            List<NotificarViewModel> listaNotificarAcao = new List<NotificarViewModel>();
-
-            var query = $@"select * from Pa.AcaoXNotificarAcao
-                            where Acao_id = {acao_id}
-                            and IsActive = 1";
-            var lista = new List<AcaoXNotificarAcao>();
+            List<NotificarViewModel> listaNotificarAcao;
+            string queryUser = $@"
+SELECT 
+	USGQ.ID AS ID,
+	CONCAT(USGQ.FullName, ' (', IIF(LEN(USGQ.NAME) > 3, SUBSTRING(USGQ.NAME,0,4), ''), ')') AS Nome
+FROM UserSGQ USGQ WITH (NOLOCK)
+INNER JOIN Pa.AcaoXNotificarAcao AXNA WITH (NOLOCK)
+	ON AXNA.Acao_Id = {acao_id}
+	AND AXNA.IsActive = 1
+	AND AXNA.UserSgq_Id = USGQ.Id
+WHERE 1=1";
 
             using (Factory factory = new Factory("DefaultConnection"))
             {
-                lista = factory.SearchQuery<AcaoXNotificarAcao>(query).ToList();
-            }
-
-            var unit_Ids = lista.Select(i => i.UserSgq_Id).ToList();
-
-            var queryUser = "";
-
-            if (unit_Ids.Count > 0)
-            {
-                queryUser = $@" select Id, Name as Nome from UserSGQ where Id in({string.Join(",", unit_Ids)})";
-
-                using (Factory factory = new Factory("DefaultConnection"))
-                {
-                    listaNotificarAcao = factory.SearchQuery<NotificarViewModel>(queryUser).ToList();
-                }
+                listaNotificarAcao = factory.SearchQuery<NotificarViewModel>(queryUser).ToList();
             }
 
             return listaNotificarAcao;
@@ -832,10 +884,14 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         public List<UserSgq> GetUsersByCompany(int ParCompany_Id)
         {
             var query = $@"
-SELECT * 
-FROM UserSgq
-WHERE 1=1 AND isActive = 1 AND id 
-IN(
+SELECT 
+	ID AS ID,
+	CONCAT(FullName, ' (', IIF(LEN(NAME) > 3, SUBSTRING(NAME,0,4), ''), ')') AS Nome
+FROM UserSgq WITH (NOLOCK)
+WHERE 1=1 
+AND isActive = 1 
+AND LOWER(Role) like LOWER('%Auditor%')
+AND id IN(
  SELECT
  PCXU.UserSgq_Id
  FROM
@@ -950,6 +1006,7 @@ SELECT
             public int ParDepartment_Id { get; set; }
             public string ParDepartment_Name { get; set; }
             public int ParDepartmentParent_Id { get; set; }
+            public string ParDepartmentParent_Name { get; set; }
             public int ParCargo_Id { get; set; }
             public string ParCargo_Name { get; set; }
             public string Acao_Naoconformidade { get; set; }
