@@ -668,7 +668,7 @@
                 success: function (dados) {
 
                     if (dados.length > 0) {
-                        imprimirListaEvidenciaDB(dados, isVisualizar);
+                        imprimirListaEvidencia(dados, isVisualizar);
 
                         buscarEvidenciaConcluida(id, isVisualizar);
                     }
@@ -751,9 +751,10 @@
             $("#txtAcao_NaoconformidadePrint").text(dados.Acao_Naoconformidade);
             $("#txtAcaoTextPrint").text(dados.AcaoText);
 
-            imprimirListaEvidencia(dados.ListaEvidencia);
             imprimirListaNotificarAcao(dados.ListaNotificarAcao);
-
+            if (dados.ListaEvidencia == null) {
+                $('#divEvidencias .fotos').empty();
+            }
             
         }
 
@@ -805,7 +806,10 @@
             $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
             $("#txtAcaoText").text(dados.AcaoText);
 
-            imprimirListaEvidencia(dados.ListaEvidencia);
+            if (dados.ListaEvidencia == null) {
+                $('#divEvidencias .fotos').empty();
+            }
+
             imprimirListaNotificarAcao(dados.ListaNotificarAcao);
 
             if (dados.ListaNotificar) {
@@ -824,7 +828,7 @@
             if (lista.length > 0) {
                 for (var i = 0; i < lista.length; i++) {
                     var evidenciaConcluida = lista[i];
-                    imprimirEvidenciaConcluida(evidenciaConcluida, lista);
+                    adicionaImagemConcluida(evidenciaConcluida, lista);
                 }
             } else {
                 $("#checkVerAgir").trigger('click');
@@ -832,7 +836,7 @@
         }
 
 
-        function imprimirEvidenciaConcluida(evidenciaConcluida, lista) {
+        function adicionaImagemConcluida(evidenciaConcluida, lista) {
             var html;
 
             if (evidenciaConcluida["base64"]) {
@@ -863,7 +867,7 @@
                 };
 
                 acaoEditar["ListaEvidenciaConcluida"].push(evidencia);
-                imprimirEvidenciaConcluida(evidencia, acaoEditar["ListaEvidenciaConcluida"]);
+                adicionaImagemConcluida(evidencia, acaoEditar["ListaEvidenciaConcluida"]);
             } else {
                 openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
             }
@@ -905,33 +909,9 @@
         }
 
         //Evidencias
-        function imprimirListaEvidencia(lista) {
+
+        function imprimirListaEvidencia(dados, isVisualizar) {
             $('#divEvidencias .fotos').empty();
-            if (lista) {
-                for (var i = 0; i < lista.length; i++) {
-                    var evidencia = lista[i];
-                    imprimirEvidencia(evidencia, lista);
-                }
-            }
-        }
-
-        function imprimirEvidencia(evidencia, lista) {
-            var html;
-
-            if (evidencia["base64"]) {
-                html = `
-                        <div class="col-sm-4">
-                            <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
-                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${lista.length})">Excluir</button>
-                        </div>`;
-            } else {
-                html = `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
-            }
-            $('#divEvidencias .fotos').append(html);
-        }
-
-        function imprimirListaEvidenciaDB(dados, isVisualizar) {
-
             var html = "";
             acaoEditar["ListaEvidencia"] = [];
             if (dados.length > 0) {
@@ -964,7 +944,23 @@
 
         function removerDaListaEvidencia(index) {
             acaoEditar["ListaEvidencia"].splice((index-1), 1);
-            imprimirListaEvidencia(acaoEditar["ListaEvidencia"])
+
+            $('#divEvidencias .fotos').empty();
+
+            acaoEditar["ListaEvidencia"].forEach(function (item, indice) {
+                var html;
+
+                if (item["base64"]) {
+                    html = `
+                        <div class="col-sm-4">
+                            <img src="data:image/png;base64,${item["base64"]}" data-img class="img-responsive"/>
+                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${acaoEditar["ListaEvidencia"].length})">Excluir</button>
+                        </div>`;
+                } else {
+                    html = `<div class="col-sm-4"><img src="#${item["Nome"]}" class="img-responsive"/></div>`;
+                }
+                $('#divEvidencias .fotos').append(html);
+            })
         }
 
         function inserirNaListaEvidencia(base64) {
@@ -979,7 +975,7 @@
                 };
 
                 acaoEditar["ListaEvidencia"].push(evidencia);
-                imprimirEvidencia(evidencia, acaoEditar["ListaEvidencia"]);
+                adicionaImagem(evidencia, acaoEditar["ListaEvidencia"]);
             } else {
                 openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
             }
