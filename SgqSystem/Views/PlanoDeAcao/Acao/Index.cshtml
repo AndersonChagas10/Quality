@@ -688,7 +688,7 @@
                 success: function (dados) {
 
                     if (dados.length > 0) {
-                        imprimirListaEvidenciaConcluida(dados, isVisualizar);
+                        evidenciaConcluida.carregarListaEvidenciaConcluida(dados);
                         showVerAgir = true;
                     } else
                         showVerAgir = false;
@@ -821,84 +821,129 @@
             }
         }
 
-        //EvidenciasConcluidas
+        
+        evidenciaConcluida = {
 
-        function removerDaListaEvidenciaConcluida(index) {
-            acaoEditar["ListaEvidenciaConcluida"].splice((index - 1), 1);
+            carregarListaEvidenciaConcluida: (dados) => {
+                var html = "";
+                evidenciaConcluida["ListaEvidencia"] = [];
 
-            $('#actionsEvidencies').empty();
+                $('#actionsEvidencies .fotosConcluidas').empty();
 
-            if (acaoEditar["ListaEvidenciaConcluida"].length > 0) {
-                acaoEditar["ListaEvidenciaConcluida"].forEach(function (item, indice) {
-                    var html;
-
-                    if (item["base64"]) {
-                        html = `
-                        <div class="col-sm-4">
-                            <img src="data:image/png;base64,${item["base64"]}" data-img class="img-responsive"/>
-                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidenciaConcluida(${acaoEditar["ListaEvidenciaConcluida"].length})">Excluir</button>
-                        </div>`;
-                    } else {
-                        html = `<div class="col-sm-4"><img src="#${item["Nome"]}" class="img-responsive"/></div>`;
-                    }
-                    $('#actionsEvidencies').append(html);
-                })
-            } else {
-                $("#checkVerAgir").trigger('click');
-            }
-        }
-
-        function inserirNaListaEvidenciaConcluida(base64) {
-            if (acaoEditar["ListaEvidenciaConcluida"] == undefined || acaoEditar["ListaEvidenciaConcluida"] == null)
-                acaoEditar["ListaEvidenciaConcluida"] = [];
-
-            if (acaoEditar["ListaEvidenciaConcluida"].length < 2) {
-
-                var evidencia = {
-                    base64: base64
-                };
-
-                acaoEditar["ListaEvidenciaConcluida"].push(evidencia);
-                adicionaImagemConcluida(evidencia, acaoEditar["ListaEvidenciaConcluida"]);
-            } else {
-                openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
-            }
-        }
-
-        function imprimirListaEvidenciaConcluida(dados, isVisualizar) {
-
-            var html = "";
-            $('#actionsEvidencies .fotosConcluidas').empty();
-
-            acaoEditar["ListaEvidenciaConcluida"] = [];
-
-            if (dados.length > 0) {
-
-                dados.forEach(function (o, i) {
+                dados.forEach(function (elemento, indice) {
 
                     var evidencia = {
-                        base64: o.Byte,
-                        path: o.Path
+                        base64: elemento.Byte,
+                        path: elemento.Path
                     };
 
-                    acaoEditar["ListaEvidenciaConcluida"].push(evidencia);
+                    evidenciaConcluida["ListaEvidencia"].push(evidencia)
 
-                    var btnDelete = '';
-                    if (!isVisualizar) {
-                        btnDelete = `<button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidenciaConcluida(${i + 1})">Excluir</button>`;
-                    }
-
-                    html += `
-                        <div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
-                            <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
-                        </div>`;
+                    html += `<div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
+                        <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
+                        <button class="btn btn-danger btn-sm form-control" onclick="evidenciaConcluida.removerDaListaEvidenciaConcluida(${indice})">Excluir</button>
+                    </div>`;
                 });
+                $('#actionsEvidencies .fotosConcluidas').append(html);
+            },
 
+            adicionaNaListaEvidenciaConcluida: (base64) => {
+
+                if (evidenciaConcluida["ListaEvidencia"] == null)
+                    evidenciaConcluida["ListaEvidencia"] = [];
+
+                if (evidenciaConcluida["ListaEvidencia"].length < 2) {
+
+                    var evidencia = {
+                        base64: base64
+                    };
+
+                    evidenciaConcluida["ListaEvidencia"].push(evidencia);
+                    evidenciaConcluida.imprimirListaEvidenciaConcluida(evidenciaConcluida["ListaEvidencia"]);
+                }
+                else {
+                    openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
+                }
+            },
+
+            imprimirListaEvidenciaConcluida: (listaEvidenciaConcluida) => {
+
+                $('#actionsEvidencies .fotosConcluidas').empty();
+                let html;
+
+                listaEvidenciaConcluida.forEach(function (elemento, indice) {
+
+                    if (elemento["base64"]) {
+                        html += `
+                    <div class="col-sm-4">
+                        <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
+                        <button class="btn btn-danger btn-sm form-control" onclick="evidenciaConcluida.removerDaListaEvidenciaConcluida(${indice})">Excluir</button>
+                    </div>`;
+                    }
+                    else {
+                        html = `<div class="col-sm-4"><img src="#${elemento["Nome"]}" class="img-responsive"/></div>`;
+                    }
+                })
+                $('#actionsEvidencies .fotosConcluidas').append(html);
+            },
+
+            removerDaListaEvidenciaConcluida: (index) => {
+
+                evidenciaConcluida["ListaEvidencia"].splice(index, 1);
+
+                if (evidenciaConcluida["ListaEvidencia"].length > 0) {
+                    evidenciaConcluida.imprimirListaEvidenciaConcluida(evidenciaConcluida["ListaEvidencia"])
+                
+                } else {
+                    $("#checkVerAgir").trigger('click');
+                }
             }
-
-            $('#actionsEvidencies .fotosConcluidas').append(html);
-
         }
+            
+        
+        //EvidenciasConcluidas
+
+        //function removerDaListaEvidenciaConcluida(index) {
+        //    acaoEditar["ListaEvidenciaConcluida"].splice((index - 1), 1);
+
+        //    $('#actionsEvidencies').empty();
+
+        //    if (acaoEditar["ListaEvidenciaConcluida"].length > 0) {
+        //        acaoEditar["ListaEvidenciaConcluida"].forEach(function (item, indice) {
+        //            var html;
+
+        //            if (item["base64"]) {
+        //                html = `
+        //                <div class="col-sm-4">
+        //                    <img src="data:image/png;base64,${item["base64"]}" data-img class="img-responsive"/>
+        //                    <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidenciaConcluida(${acaoEditar["ListaEvidenciaConcluida"].length})">Excluir</button>
+        //                </div>`;
+        //            } else {
+        //                html = `<div class="col-sm-4"><img src="#${item["Nome"]}" class="img-responsive"/></div>`;
+        //            }
+        //            $('#actionsEvidencies').append(html);
+        //        })
+        //    } else {
+        //        $("#checkVerAgir").trigger('click');
+        //    }
+        //}
+
+        //function inserirNaListaEvidenciaConcluida(base64) {
+        //    if (acaoEditar["ListaEvidenciaConcluida"] == undefined || acaoEditar["ListaEvidenciaConcluida"] == null)
+        //        acaoEditar["ListaEvidenciaConcluida"] = [];
+
+        //    if (acaoEditar["ListaEvidenciaConcluida"].length < 2) {
+
+        //        var evidencia = {
+        //            base64: base64
+        //        };
+
+        //        acaoEditar["ListaEvidenciaConcluida"].push(evidencia);
+        //        adicionaImagemConcluida(evidencia, acaoEditar["ListaEvidenciaConcluida"]);
+        //    } else {
+        //        openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
+        //    }
+        //}//
 
         //Evidencias
 
@@ -1125,7 +1170,7 @@
                 if (tipoEvidencia== 'evidencia')
                     inserirNaListaEvidencia(base64String);
                 else
-                    inserirNaListaEvidenciaConcluida(base64String);
+                    evidenciaConcluida.adicionaNaListaEvidenciaConcluida(base64String);
                 $('#uploadPhoto').val('');
             };
             // Read in the image file as a data URL.
