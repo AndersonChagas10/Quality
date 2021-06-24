@@ -109,47 +109,47 @@
                             <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
                         </div>
 
-                        <div id="evidenciasConcluidas" class="col-xs-12" hidden="hidden" style="margin: 10px 0;">
+                        <div id="evidenciasConcluidasImpressao" class="col-xs-12" hidden="hidden" style="margin: 10px 0;">
                             <b>Evidencias da Ação Concluida: </b>
-
                             <div id="actionsEvidencies">
+                                <div class="fotosConcluidas"></div>
                             </div>
                         </div>
 
-                        <div class="col-xs-4 vereagir" style="margin: 10px 0;">
-                            <label><strong>Data da conclusão:</strong></label>
-                            <text id="actionConclusionDatePrint"  name="DataConclusao" type="date" class="form-control"></text>
-                        </div>
-
-                        <div class="col-xs-4 vereagir" style="margin: 10px 0;">
-                            <label><strong>Hora da conclusão:</strong></label>
-                            <text id="actionConclusionHourPrint" name="HoraConclusao" type="time" class="form-control"></text>
-                        </div>
-
-                        <div class="col-xs-4" style="margin: 10px 0;">
-                            <label><strong>Referencia:</strong></label>
-                            <text id="actionReferencePrint" name="Referencia" type="text" class="form-control"></text>
-                        </div>
-
-                        <div class="col-xs-4" style="margin: 10px 0;">
-                            <label><strong>Responsavel:</strong></label>
-                            <text id="selectResponsavelPrint" name="Responsavel" class="form-control"></text>
-                        </div>
-
-                        <div class="col-xs-4 divActionPriority" style="margin: 10px 0;">
-                            <label><strong>Prioridade:</strong></label>
-                            <text id="selectPrioridadePrint" name="Prioridade" class="form-control"></text>
-                        </div>
-
-                        <div class="col-xs-12" style="margin: 10px 0;">
-                            <label><strong>Notificar:</strong></label>
-                            <div class="form-inline">
-                                <select id="selectNotificarAcaoPrint" class="form-control"></select>
-                                <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
+                            <div class="col-xs-4 vereagir" style="margin: 10px 0;">
+                                <label><strong>Data da conclusão:</strong></label>
+                                <text id="actionConclusionDatePrint" name="DataConclusao" type="date" class="form-control"></text>
                             </div>
-                        </div>
 
-                    </div>
+                            <div class="col-xs-4 vereagir" style="margin: 10px 0;">
+                                <label><strong>Hora da conclusão:</strong></label>
+                                <text id="actionConclusionHourPrint" name="HoraConclusao" type="time" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-4" style="margin: 10px 0;">
+                                <label><strong>Referencia:</strong></label>
+                                <text id="actionReferencePrint" name="Referencia" type="text" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-4" style="margin: 10px 0;">
+                                <label><strong>Responsavel:</strong></label>
+                                <text id="selectResponsavelPrint" name="Responsavel" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-4 divActionPriority" style="margin: 10px 0;">
+                                <label><strong>Prioridade:</strong></label>
+                                <text id="selectPrioridadePrint" name="Prioridade" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-12" style="margin: 10px 0;">
+                                <label><strong>Notificar:</strong></label>
+                                <div class="form-inline">
+                                    <select id="selectNotificarAcaoPrint" class="form-control"></select>
+                                    <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
+                                </div>
+                            </div>
+
+                        </div>
                 </div>
                 <div id="rodapeDiv" class="modal-footer">
                     <button id="btnClosePrint" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
@@ -245,15 +245,12 @@
                                     <div class="col-xs-12">
                                         <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
                                     </div>
-                                    <div id="evidenciasConcluidas" class="col-xs-12" hidden="hidden">
-
+                                    <div id="evidenciasConcluidasEdicao" class="col-xs-12" hidden="hidden">
                                         <p>Evidencias da Ação Concluida</p>
-
                                         <input type="file" id="uploadPhotox" onchange="uploadFile(event, 'evidenciaConcluida')" />
-
                                         <div id="actionsEvidencies">
+                                            <div class="fotosConcluidas"></div>
                                         </div>
-
                                     </div>
                                     <div class="col-xs-4 vereagir">
                                         <label><strong>Data da conclusão:</strong></label>
@@ -691,7 +688,7 @@
                 success: function (dados) {
 
                     if (dados.length > 0) {
-                        imprimirListaEvidenciaConcluidaDB(dados, isVisualizar);
+                        imprimirListaEvidenciaConcluida(dados, isVisualizar);
                         showVerAgir = true;
                     } else
                         showVerAgir = false;
@@ -754,6 +751,7 @@
             imprimirListaNotificarAcao(dados.ListaNotificarAcao);
             if (dados.ListaEvidencia == null) {
                 $('#divEvidencias .fotos').empty();
+                $('#actionsEvidencies .fotosConcluidas').empty();
             }
             
         }
@@ -808,6 +806,7 @@
 
             if (dados.ListaEvidencia == null) {
                 $('#divEvidencias .fotos').empty();
+                $('#actionsEvidencies .fotosConcluidas').empty();
             }
 
             imprimirListaNotificarAcao(dados.ListaNotificarAcao);
@@ -822,38 +821,31 @@
             }
         }
 
-        //Evidencia ação concluida
-        function imprimirListaEvidenciaConcluida(lista) {
-            $('#actionsEvidencies').empty();
-            if (lista.length > 0) {
-                for (var i = 0; i < lista.length; i++) {
-                    var evidenciaConcluida = lista[i];
-                    adicionaImagemConcluida(evidenciaConcluida, lista);
-                }
-            } else {
-                $("#checkVerAgir").trigger('click');
-            }
-        }
-
-
-        function adicionaImagemConcluida(evidenciaConcluida, lista) {
-            var html;
-
-            if (evidenciaConcluida["base64"]) {
-                html = `
-                        <div class="col-sm-4">
-                            <img src="data:image/png;base64,${evidenciaConcluida["base64"]}" data-img class="img-responsive"/>
-                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidenciaConcluida(${lista.length})">Excluir</button>
-                        </div>`;
-            } else {
-                html = `<div class="col-sm-4"><img src="#${evidenciaConcluida["Nome"]}" class="img-responsive"/></div>`;
-            }
-            $('#actionsEvidencies').append(html);
-        }
+        //EvidenciasConcluidas
 
         function removerDaListaEvidenciaConcluida(index) {
             acaoEditar["ListaEvidenciaConcluida"].splice((index - 1), 1);
-            imprimirListaEvidenciaConcluida(acaoEditar["ListaEvidenciaConcluida"])
+
+            $('#actionsEvidencies').empty();
+
+            if (acaoEditar["ListaEvidenciaConcluida"].length > 0) {
+                acaoEditar["ListaEvidenciaConcluida"].forEach(function (item, indice) {
+                    var html;
+
+                    if (item["base64"]) {
+                        html = `
+                        <div class="col-sm-4">
+                            <img src="data:image/png;base64,${item["base64"]}" data-img class="img-responsive"/>
+                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidenciaConcluida(${acaoEditar["ListaEvidenciaConcluida"].length})">Excluir</button>
+                        </div>`;
+                    } else {
+                        html = `<div class="col-sm-4"><img src="#${item["Nome"]}" class="img-responsive"/></div>`;
+                    }
+                    $('#actionsEvidencies').append(html);
+                })
+            } else {
+                $("#checkVerAgir").trigger('click');
+            }
         }
 
         function inserirNaListaEvidenciaConcluida(base64) {
@@ -873,10 +865,10 @@
             }
         }
 
-        function imprimirListaEvidenciaConcluidaDB(dados, isVisualizar) {
+        function imprimirListaEvidenciaConcluida(dados, isVisualizar) {
 
             var html = "";
-            $('#actionsEvidencies').empty();
+            $('#actionsEvidencies .fotosConcluidas').empty();
 
             acaoEditar["ListaEvidenciaConcluida"] = [];
 
@@ -904,7 +896,7 @@
 
             }
 
-            $('#actionsEvidencies').append(html);
+            $('#actionsEvidencies .fotosConcluidas').append(html);
 
         }
 
@@ -1144,10 +1136,12 @@
             .on('click, change', '#checkVerAgir', function () {
 
                 if ($(this).is(":checked")) {
-                    $("#evidenciasConcluidas").removeAttr('hidden');
+                    $("#evidenciasConcluidasImpressao").removeAttr('hidden');
+                    $("#evidenciasConcluidasEdicao").removeAttr('hidden');
                     $('.vereagir').removeClass('hide');
                 } else {
-                    $("#evidenciasConcluidas").attr('hidden', 'hidden');
+                    $("#evidenciasConcluidasImpressao").attr('hidden', 'hidden');
+                    $("#evidenciasConcluidasEdicao").attr('hidden', 'hidden');
                     $('.vereagir').addClass('hide');
                 }
             });
