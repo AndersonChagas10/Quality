@@ -562,27 +562,33 @@
 
         let acao = {
 
-            evidenciaConcluida: {
+            imprimir: (dados) => {
+                var html = "";
+                dados.forEach(function (elemento, indice) {
 
-                imprimirEvidencia: (dados) => {
-                    var html = "";
+                    var evidencia = {
+                        base64: elemento.Byte,
+                        path: elemento.Path
+                    };
 
-                    $('#actionsEvidencies .fotosConcluidas').empty();
+                    acao.evidenciaConcluida["ListaEvidencia"].push(evidencia)
 
-                    dados.forEach(function (elemento, indice) {
-
-                        var evidencia = {
-                            base64: elemento.Byte,
-                            path: elemento.Path
-                        };
-
-                        acao.evidenciaConcluida["ListaEvidencia"].push(evidencia)
-
-                        html += `<div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
+                    html += `<div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
                         <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
                         <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${indice + 1})">Excluir</button>
                     </div>`;
-                    });
+                    
+                });
+                return html
+            },
+
+            evidenciaConcluida: {
+
+                imprimirEvidencia: (dados) => {
+
+                    $('#actionsEvidencies .fotosConcluidas').empty();
+                    let html = acao.imprimir(dados)
+                    
                     $('#actionsEvidencies .fotosConcluidas').append(html);
                 },
 
@@ -644,25 +650,11 @@
             evidenciasNaoConforme: {
 
                 imprimirEvidencia: (dados) => {
-                    var html = "";
 
                     $('#divEvidencias .fotos').empty();
 
-                    dados.forEach(function (elemento, indice) {
+                    let html = acao.imprimir(dados)
 
-                        var evidencia = {
-                            base64: elemento.Byte,
-                            path: elemento.Path
-                        };
-
-                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
-
-                        html += `
-                    <div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
-                        <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
-                        <button class="btn btn-danger btn-sm form-control" onclick = "acao.evidenciasNaoConforme.removerEvidencia(${indice + 1})">Excluir</button>
-                    </div>`;
-                    });
                     $('#divEvidencias .fotos').append(html);
                 },
 
@@ -689,8 +681,6 @@
                 },
 
                 adicionarEvidencia: (base64) => {
-                    if (acao.evidenciasNaoConforme["ListaEvidencia"] == null)
-                        acao.evidenciasNaoConforme["ListaEvidencia"] = [];
 
                     if (acao.evidenciasNaoConforme["ListaEvidencia"].length < 2) {
 
