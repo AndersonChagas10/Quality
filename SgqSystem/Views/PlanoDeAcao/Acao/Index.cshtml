@@ -539,11 +539,7 @@
             openLoader("...");
 
             const url = '@Url.Action("GetByIdStatus", "api/AcaoApi")';
-            //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
-            //Pegar as informações e mapear para um objeto
-            //Com as propriedades, apresente na tela
             $.ajax({
-                //data: JSON.stringify(id),
                 type: 'GET',
                 url: `${url}/${status}`,
                 contentType: "application/json",
@@ -564,15 +560,171 @@
 
         }
 
+        let acao = {
+
+            evidenciaConcluida: {
+
+                imprimirEvidencia: (dados) => {
+                    var html = "";
+
+                    $('#actionsEvidencies .fotosConcluidas').empty();
+
+                    dados.forEach(function (elemento, indice) {
+
+                        var evidencia = {
+                            base64: elemento.Byte,
+                            path: elemento.Path
+                        };
+
+                        acao.evidenciaConcluida["ListaEvidencia"].push(evidencia)
+
+                        html += `<div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
+                        <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
+                        <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${indice + 1})">Excluir</button>
+                    </div>`;
+                    });
+                    $('#actionsEvidencies .fotosConcluidas').append(html);
+                },
+
+                adicionarEvidencia: (base64) => {
+
+                    if (acao.evidenciaConcluida["ListaEvidencia"].length < 2) {
+
+                        var evidencia = {
+                            base64: base64
+                        };
+
+                        acao.evidenciaConcluida["ListaEvidencia"].push(evidencia);
+
+                        let html;
+
+                        if (evidencia["base64"]) {
+                            html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${acao.evidenciaConcluida["ListaEvidencia"].length})">Excluir</button>
+                                    </div>`;
+                        }
+                        else {
+                            html = `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
+                        }
+                        $('#actionsEvidencies .fotosConcluidas').append(html);
+                    } else {
+                        openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
+                    }
+                },
+
+                removerEvidencia: (index) => {
+
+                    acao.evidenciaConcluida["ListaEvidencia"].splice(index, 1);
+
+                    $('#actionsEvidencies .fotosConcluidas').empty();
+
+                    if (acao.evidenciaConcluida["ListaEvidencia"].length > 0) {
+                        listaEvidenciaConcluida.forEach(function (elemento, indice) {
+
+                            let html;
+
+                            if (evidenciaConcluida["base64"]) {
+                                html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${acao.evidenciaConcluida["ListaEvidencia"].length})">Excluir</button>
+                                    </div>`;
+                            }
+                            else {
+                                html = `<div class="col-sm-4"><img src="#${elemento["Nome"]}" class="img-responsive"/></div>`;
+                            }
+                            $('#actionsEvidencies .fotosConcluidas').append(html);
+                        })
+                    } else {
+                        $("#checkVerAgir").trigger('click');
+                    }
+                }
+            },
+
+            evidenciasNaoConforme: {
+
+                imprimirEvidencia: (dados) => {
+                    var html = "";
+
+                    $('#divEvidencias .fotos').empty();
+
+                    dados.forEach(function (elemento, indice) {
+
+                        var evidencia = {
+                            base64: elemento.Byte,
+                            path: elemento.Path
+                        };
+
+                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
+
+                        html += `
+                    <div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
+                        <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
+                        <button class="btn btn-danger btn-sm form-control" onclick = "acao.evidenciasNaoConforme.removerEvidencia(${indice + 1})">Excluir</button>
+                    </div>`;
+                    });
+                    $('#divEvidencias .fotos').append(html);
+                },
+
+                removerEvidencia: (index) => {
+                    acao.evidenciasNaoConforme["ListaEvidencia"].splice((index - 1), 1);
+
+                    $('#divEvidencias .fotos').empty();
+
+                    acao.evidenciasNaoConforme["ListaEvidencia"].forEach(function (elemento, indice) {
+
+                        let html;
+
+                        if (elemento["base64"]) {
+                            html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme["ListaEvidencia"].length})">Excluir</button>
+                                    </div>`;
+                        }
+                        else {
+                            html = `<div class="col-sm-4"><img src="#${elemento["Nome"]}" class="img-responsive"/></div>`;
+                        }
+                        $('#divEvidencias .fotos').append(html);
+                    })
+                },
+
+                adicionarEvidencia: (base64) => {
+                    if (acao.evidenciasNaoConforme["ListaEvidencia"] == null)
+                        acao.evidenciasNaoConforme["ListaEvidencia"] = [];
+
+                    if (acao.evidenciasNaoConforme["ListaEvidencia"].length < 2) {
+
+                        var evidencia = {
+                            base64: base64
+                        };
+
+                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
+
+                        let html;
+
+                        if (evidencia["base64"]) {
+                            html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme["ListaEvidencia"].length})">Excluir</button>
+                                    </div>`;
+                        }
+                        else {
+                            html = `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
+                        }
+                        $('#divEvidencias .fotos').append(html);
+                    }
+                    else {
+                        openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
+                    }
+                }
+            }
+        }
+
         function abrirImpressao(id) {
             openLoader("...");
             isVisualizar = true;
             const url = '@Url.Action("GetById", "api/AcaoApi")';
-            //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
-            //Pegar as informações e mapear para um objeto
-            //Com as propriedades, apresente na tela
             $.ajax({
-                //data: JSON.stringify(id),
                 type: 'GET',
                 url: `${url}/${id}`,
                 contentType: "application/json",
@@ -602,6 +754,8 @@
                     carregarDados(id);
                     break;
             }
+            
+            $('.modal input').val('');
             $("#modalEditar").modal();
         }
 
@@ -687,7 +841,7 @@
                 success: function (dados) {
 
                     if (dados.length > 0) {
-                        acao.evidenciaConcluida.imprimirEvidencia(dados);
+                        acao.evidenciaConcluida.imprimirEvidencia(dados)
                         showVerAgir = true;
                     } else
                         showVerAgir = false;
@@ -715,15 +869,6 @@
                 }
             }
 
-            //if (dados.ListaNotificar) {
-            //    var notificar = {};
-            //    for (var i = 0; i < dados.ListaNotificar.length; i++) {
-            //         notificar = dados.ListaNotificar[i];
-            //    }
-
-            //    $('#selectNotificarAcaoPrint').text(notificar['Nome']);
-            //}
-            
             $("input[name='Id']").val(dados.Id);
             $("#dataEmissaoPrint").text(dados._DataEmissao);
             $("#horaEmissaoPrint").text(dados.HoraEmissao);
@@ -750,7 +895,14 @@
                 $('#divEvidencias .fotos').empty();
                 $('#actionsEvidencies .fotosConcluidas').empty();
             }
-            
+
+        }
+
+        function limparAcao() {
+            acao.evidenciaConcluida["ListaEvidencia"] = []
+            acao.evidenciasNaoConforme["ListaEvidencia"] = []
+            $('#divEvidencias .fotos').empty();
+            $('#actionsEvidencies .fotosConcluidas').empty();
         }
 
         var acaoEditar = {};
@@ -758,6 +910,7 @@
             preencherInformacoesAcompanhamento(dados);
 
             acaoEditar = dados;
+            limparAcao()
 
             if (dados.ListaResponsavel) {
                 var html = `<option value="">Selecione...</option>`;
@@ -802,11 +955,6 @@
             $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
             $("#txtAcaoText").text(dados.AcaoText);
 
-            if (dados.ListaEvidencia == null) {
-                $('#divEvidencias .fotos').empty();
-                $('#actionsEvidencies .fotosConcluidas').empty();
-            }
-
             imprimirListaNotificarAcao(dados.ListaNotificarAcao);
 
             if (dados.ListaNotificar) {
@@ -819,204 +967,6 @@
             }
         }
 
-        acao = {
-            evidenciaConcluida: {
-
-                imprimirEvidencia: (dados) => {
-                    var html = "";
-                    acao.evidenciaConcluida["ListaEvidencia"] = [];
-                    console.log(acao)
-                    $('#actionsEvidencies .fotosConcluidas').empty();
-
-                    dados.forEach(function (elemento, indice) {
-
-                        var evidencia = {
-                            base64: elemento.Byte,
-                            path: elemento.Path
-                        };
-
-                        acao.evidenciaConcluida["ListaEvidencia"].push(evidencia)
-
-                        html += `<div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
-                        <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
-                        <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${indice})">Excluir</button>
-                    </div>`;
-                    });
-                    $('#actionsEvidencies .fotosConcluidas').append(html);
-                },
-
-                adicionarEvidencia: (base64) => {
-
-                    if (acao.evidenciaConcluida["ListaEvidencia"] == null)
-                        acao.evidenciaConcluida["ListaEvidencia"] = [];
-
-                    if (acao.evidenciaConcluida["ListaEvidencia"].length < 2) {
-
-                        var evidencia = {
-                            base64: base64
-                        };
-
-                        acao.evidenciaConcluida["ListaEvidencia"].push(evidencia);
-                        acao.evidenciaConcluida.atualizarEvidencia(acao.evidenciaConcluida["ListaEvidencia"]);
-                    }
-                    else {
-                        openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
-                    }
-                },
-
-                atualizarEvidencia: (listaEvidenciaConcluida) => {
-
-                    $('#actionsEvidencies .fotosConcluidas').empty();
-                    let html;
-
-                    listaEvidenciaConcluida.forEach(function (elemento, indice) {
-
-                        if (elemento["base64"]) {
-                            html += `<div class="col-sm-4">
-                                    <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
-                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${indice})">Excluir</button>
-                                    </div>`;
-                        }
-                        else {
-                            html = `<div class="col-sm-4"><img src="#${elemento["Nome"]}" class="img-responsive"/></div>`;
-                        }
-                    })
-                    $('#actionsEvidencies .fotosConcluidas').append(html);
-                },
-
-                removerEvidencia: (index) => {
-
-                    acao.evidenciaConcluida["ListaEvidencia"].splice(index, 1);
-
-                    if (acao.evidenciaConcluida["ListaEvidencia"].length > 0) {
-                        acao.evidenciaConcluida.atualizarEvidencia(acao.evidenciaConcluida["ListaEvidencia"])
-
-                    } else {
-                        $("#checkVerAgir").trigger('click');
-                    }
-                }
-            },
-
-            evidenciasNaoConforme: {
-
-                imprimirEvidencia: (dados) => {
-                    var html = "";
-                    acao.evidenciasNaoConforme["ListaEvidencia"] = [];
-
-                    $('#divEvidencias .fotos').empty();
-
-                    dados.forEach(function (elemento, indice) {
-
-                        var evidencia = {
-                            base64: elemento.Byte,
-                            path: elemento.Path
-                        };
-
-                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
-
-                        html += `
-                    <div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
-                        <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
-                        <button class="btn btn-danger btn-sm form-control" onclick = "acao.evidenciasNaoConforme.removerEvidencia(${indice})">Excluir</button>
-                    </div>`;
-                    });
-                    $('#divEvidencias .fotos').append(html);
-                },
-
-                atualizarEvidencia: (lista) => {
-
-                    $('#divEvidencias .fotos').empty();
-                    let html;
-
-                    lista.forEach(function (elemento, indice) {
-
-                        if (elemento["base64"]) {
-                            html += `<div class="col-sm-4">
-                                    <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
-                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${indice})">Excluir</button>
-                                    </div>`;
-                        }
-                        else {
-                            html = `<div class="col-sm-4"><img src="#${elemento["Nome"]}" class="img-responsive"/></div>`;
-                        }
-                    })
-                    $('#divEvidencias .fotos').append(html);
-                },
-
-                removerEvidencia: (index) => {
-                    acao.evidenciasNaoConforme["ListaEvidencia"].splice((index), 1);
-
-                    $('#divEvidencias .fotos').empty();
-
-                    if (acao.evidenciasNaoConforme["ListaEvidencia"].length > 0) {
-                        acao.evidenciasNaoConforme.atualizarEvidencia(acao.evidenciasNaoConforme["ListaEvidencia"])
-                    }
-                },
-
-                adicionarEvidencia: (base64) => {
-                    if (acao.evidenciasNaoConforme["ListaEvidencia"] == null)
-                        acao.evidenciasNaoConforme["ListaEvidencia"] = [];
-
-                    if (acao.evidenciasNaoConforme["ListaEvidencia"].length < 2) {
-
-                        var evidencia = {
-                            base64: base64
-                        };
-
-                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
-                        acao.evidenciasNaoConforme.atualizarEvidencia(acao.evidenciasNaoConforme["ListaEvidencia"])
-                    }
-                    else {
-                        openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
-                    }
-                }
-            }
-        }
-        
-
-        
-        
-
-        //function removerDaListaEvidencia(index) {
-        //    acaoEditar["ListaEvidencia"].splice((index-1), 1);
-
-        //    $('#divEvidencias .fotos').empty();
-
-        //    acaoEditar["ListaEvidencia"].forEach(function (item, indice) {
-        //        var html;
-
-        //        if (item["base64"]) {
-        //            html = `
-        //                <div class="col-sm-4">
-        //                    <img src="data:image/png;base64,${item["base64"]}" data-img class="img-responsive"/>
-        //                    <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${acaoEditar["ListaEvidencia"].length})">Excluir</button>
-        //                </div>`;
-        //        } else {
-        //            html = `<div class="col-sm-4"><img src="#${item["Nome"]}" class="img-responsive"/></div>`;
-        //        }
-        //        $('#divEvidencias .fotos').append(html);
-        //    })
-        //}
-
-        //function inserirNaListaEvidencia(base64) {
-
-        //    if (acaoEditar["ListaEvidencia"] == null)
-        //        acaoEditar["ListaEvidencia"] = [];
-
-        //    if (acaoEditar["ListaEvidencia"].length < 2) {
-
-        //        var evidencia = {
-        //            base64: base64
-        //        };
-
-        //        acaoEditar["ListaEvidencia"].push(evidencia);
-        //        adicionaImagem(evidencia, acaoEditar["ListaEvidencia"]);
-        //    } else {
-        //        openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
-        //    }
-        //}
-
-        //Notificar ação
         function imprimirListaNotificarAcao(lista) {
             if (lista) {
                 var html = "";
@@ -1059,8 +1009,8 @@
             var form = $("#formAcao").serializeObject();
 
             form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
-            form["ListaEvidencia"] = acaoEditar["ListaEvidencia"];
-            form["ListaEvidenciaConcluida"] = acaoEditar["ListaEvidenciaConcluida"];
+            form["ListaEvidencia"] = acao.evidenciaConcluida["ListaEvidencia"];
+            form["ListaEvidenciaConcluida"] = acao.evidenciasNaoConforme["ListaEvidencia"];
 
             validarStatus(form, status);
 
@@ -1155,23 +1105,20 @@
             if (!validateUploadFile(evt))
                 return;
 
-            var e = evt.target.files[0]; // FileList object
+            var e = evt.target.files[0]; 
             var reader = new FileReader();
-            // Closure to capture the file information.
+
             reader.onload = (e) => {
                 var binaryData = e.target.result;
-                //Converting Binary Data to base 64
                 var base64String = window.btoa(binaryData);
-                //showing file converted to base64
-                //document.getElementsByName('imagefile')[0].value = base64String;
 
                 if (tipoEvidencia == 'evidencia')
                     acao.evidenciasNaoConforme.adicionarEvidencia(base64String);
                 else
                     acao.evidenciaConcluida.adicionarEvidencia(base64String);
-                $('#uploadPhoto').val('');
+                $('input[type=file]').val('');
             };
-            // Read in the image file as a data URL.
+
             reader.readAsBinaryString(e);
         }
 
