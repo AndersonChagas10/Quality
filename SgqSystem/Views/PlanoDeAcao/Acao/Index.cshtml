@@ -99,7 +99,9 @@
                         </div>
 
                         <div class="col-xs-12">
-                            <div id="divEvidencias" class="row"></div>
+                            <div id="divEvidencias" class="row">
+                                <div class="fotos"></div>
+                            </div>
                         </div>
                         <hr />
 
@@ -107,47 +109,47 @@
                             <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
                         </div>
 
-                        <div id="evidenciasConcluidas" class="col-xs-12" hidden="hidden" style="margin: 10px 0;">
+                        <div id="evidenciasConcluidasImpressao" class="col-xs-12" hidden="hidden" style="margin: 10px 0;">
                             <b>Evidencias da Ação Concluida: </b>
-
                             <div id="actionsEvidencies">
+                                <div class="fotosConcluidas"></div>
                             </div>
                         </div>
 
-                        <div class="col-xs-4 vereagir" style="margin: 10px 0;">
-                            <label><strong>Data da conclusão:</strong></label>
-                            <text id="actionConclusionDatePrint"  name="DataConclusao" type="date" class="form-control"></text>
-                        </div>
-
-                        <div class="col-xs-4 vereagir" style="margin: 10px 0;">
-                            <label><strong>Hora da conclusão:</strong></label>
-                            <text id="actionConclusionHourPrint" name="HoraConclusao" type="time" class="form-control"></text>
-                        </div>
-
-                        <div class="col-xs-4" style="margin: 10px 0;">
-                            <label><strong>Referencia:</strong></label>
-                            <text id="actionReferencePrint" name="Referencia" type="text" class="form-control"></text>
-                        </div>
-
-                        <div class="col-xs-4" style="margin: 10px 0;">
-                            <label><strong>Responsavel:</strong></label>
-                            <text id="selectResponsavelPrint" name="Responsavel" class="form-control"></text>
-                        </div>
-
-                        <div class="col-xs-4 divActionPriority" style="margin: 10px 0;">
-                            <label><strong>Prioridade:</strong></label>
-                            <text id="selectPrioridadePrint" name="Prioridade" class="form-control"></text>
-                        </div>
-
-                        <div class="col-xs-12" style="margin: 10px 0;">
-                            <label><strong>Notificar:</strong></label>
-                            <div class="form-inline">
-                                <select id="selectNotificarAcaoPrint" class="form-control"></select>
-                                <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
+                            <div class="col-xs-4 vereagir" style="margin: 10px 0;">
+                                <label><strong>Data da conclusão:</strong></label>
+                                <text id="actionConclusionDatePrint" name="DataConclusao" type="date" class="form-control"></text>
                             </div>
-                        </div>
 
-                    </div>
+                            <div class="col-xs-4 vereagir" style="margin: 10px 0;">
+                                <label><strong>Hora da conclusão:</strong></label>
+                                <text id="actionConclusionHourPrint" name="HoraConclusao" type="time" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-4" style="margin: 10px 0;">
+                                <label><strong>Referencia:</strong></label>
+                                <text id="actionReferencePrint" name="Referencia" type="text" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-4" style="margin: 10px 0;">
+                                <label><strong>Responsavel:</strong></label>
+                                <text id="selectResponsavelPrint" name="Responsavel" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-4 divActionPriority" style="margin: 10px 0;">
+                                <label><strong>Prioridade:</strong></label>
+                                <text id="selectPrioridadePrint" name="Prioridade" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-12" style="margin: 10px 0;">
+                                <label><strong>Notificar:</strong></label>
+                                <div class="form-inline">
+                                    <select id="selectNotificarAcaoPrint" class="form-control"></select>
+                                    <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
+                                </div>
+                            </div>
+
+                        </div>
                 </div>
                 <div id="rodapeDiv" class="modal-footer">
                     <button id="btnClosePrint" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
@@ -161,124 +163,206 @@
 <div class="modal fade" id="modalEditar" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form id="formAcao" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
-                <div id="cabecalhoDiv" class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
-                    <h3 style="font-weight:bold;">Criar Ação</h3>
-                </div>
-                <div id="formBody" class="modal-body">
-                    <input type="hidden" name="Id" />
-                    <input type="hidden" id="status" name="Status" />
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <strong>Data Emissão:</strong>
-                            <label id="dataEmissao"></label>
-                        </div>
-                        <div class="col-xs-4">
-                            <strong>Hora Emissão:</strong>
-                            <label id="horaEmissao"></label>
-                        </div>
-                        <div class="col-xs-4">
-                            <strong>Emissor:</strong>
-                            <label id="usuarioEmissor"></label>
-                        </div>
-                        <div class="col-sm-12">
-                            <strong>Unidade:</strong><label id="actionParCompany_Id"></label>
-                            <br />
-                            <strong>Centro de Custo:</strong><label id="actionParDepartment_Id"></label>
-                            <br />
-                            <strong>Seção/Atividade:</strong><label id="actionParDepartmentParent_Id"></label>
-                            <br />
-                            <strong>Item/Cargo:</strong><label id="actionParCargo_Id"></label>
-                            <br />
-                            <strong>Indicador/Origem:</strong><label id="actionParLevel1_Id"></label>
-                            <br />
-                            <strong>Monitoramento:</strong><label id="actionParLevel2_Id"></label>
-                            <br />
-                            <strong>Desvio/Tarefa:</strong><label id="actionParLevel3_Id"></label>
-                        </div>
+            <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
+                <h3 style="font-weight:bold;">Ação</h3>
+            </div>
 
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia</strong></label>
-                                <textarea id="txtAcao_Naoconformidade" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></textarea>
+            <div class="col-xs-12">
+                <ul class="nav nav-tabs">
+                    <li>
+                        <a href="#acao_edicao" data-toggle="tab" id="tabAcaoEdicao">
+                            Edição
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#acao_acompanhamento" data-toggle="tab" id="tabAcaoAcompanhamento">
+                            Acompanhamento
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-xs-12">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="acao_edicao">
+                        <form id="formAcao" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
+                            <div class="modal-body">
+                                <input type="hidden" name="Id" />
+                                <input type="hidden" id="status" name="Status" />
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <strong>Data Emissão:</strong>
+                                        <label id="dataEmissao"></label>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <strong>Hora Emissão:</strong>
+                                        <label id="horaEmissao"></label>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <strong>Emissor:</strong>
+                                        <label id="usuarioEmissor"></label>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <strong>Unidade:</strong><label id="actionParCompany_Id"></label>
+                                        <br />
+                                        <strong>Centro de Custo:</strong><label id="actionParDepartment_Id"></label>
+                                        <br />
+                                        <strong>Seção/Atividade:</strong><label id="actionParDepartmentParent_Id"></label>
+                                        <br />
+                                        <strong>Item/Cargo:</strong><label id="actionParCargo_Id"></label>
+                                        <br />
+                                        <strong>Indicador/Origem:</strong><label id="actionParLevel1_Id"></label>
+                                        <br />
+                                        <strong>Monitoramento:</strong><label id="actionParLevel2_Id"></label>
+                                        <br />
+                                        <strong>Desvio/Tarefa:</strong><label id="actionParLevel3_Id"></label>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia</strong></label>
+                                            <textarea id="txtAcao_Naoconformidade" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="txtAcaoText"><strong>Ação</strong></label>
+                                            <textarea id="txtAcaoText" name="AcaoText" class="form-control" style="resize: none; height: 100px;"></textarea>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="col-xs-12">
+                                        <strong>Evidencias de Não conformidade</strong>
+                                        <input type="file" id="uploadPhoto" onchange="uploadFile(event,'evidencia')" />
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div id="divEvidencias" class="row">
+                                            <div class="fotos"></div>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    <div class="col-xs-12">
+                                        <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
+                                    </div>
+                                    <div id="evidenciasConcluidasEdicao" class="col-xs-12" hidden="hidden">
+                                        <p>Evidencias da Ação Concluida</p>
+                                        <input type="file" id="uploadPhotox" onchange="uploadFile(event, 'evidenciaConcluida')" />
+                                        <div id="actionsEvidencies">
+                                            <div class="fotosConcluidas"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 vereagir">
+                                        <label><strong>Data da conclusão:</strong></label>
+                                        <input id="actionConclusionDate" name="DataConclusao" type="date" min="2021-05-19" class="form-control">
+                                    </div>
+                                    <div class="col-xs-4 vereagir">
+                                        <label><strong>Hora da conclusão:</strong></label>
+                                        <input id="actionConclusionHour" name="HoraConclusao" type="time" class="form-control">
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <label><strong>Referencia:</strong></label>
+                                        <input id="actionReference" name="Referencia" type="text" class="form-control">
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <label><strong>Responsavel:</strong></label>
+                                        <select id="selectResponsavel" name="Responsavel" class="form-control"></select>
+                                    </div>
+                                    <div class="col-xs-4 divActionPriority">
+                                        <label><strong>Prioridade:</strong></label>
+                                        <select id="selectPrioridade" name="Prioridade" class="form-control"></select>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <label><strong>Notificar:</strong></label>
+                                        <div class="form-inline">
+                                            <select id="selectNotificarAcao" class="form-control"></select>
+                                            <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <table id="tableNotificarAcao" class="table table-striped" style="font-size:14px;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Id</th>
+                                                    <th>Nome</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="txtAcaoText"><strong>Ação</strong></label>
-                                <textarea id="txtAcaoText" name="AcaoText" class="form-control" style="resize: none; height: 100px;"></textarea>
+                            <div class="modal-footer">
+                                <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
+
+                                @*<button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>*@
+
+                                <button class="btn btn-success" onclick="enviarFormularioEditarAcao('1')">Salvar e iniciar acao</button>
+                                <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e preencher depois</button>
                             </div>
-                        </div>
-                        <hr />
-                        <div class="col-xs-12">
-                            <strong>Evidencias de Não conformidade</strong>
-                            <input type="file" id="uploadPhoto" onchange="uploadFile(event,'evidencia')" />
-                        </div>
-                        <div class="col-xs-12">
-                            <div id="divEvidencias" class="row"></div>
-                        </div>
-                        <hr />
+                        </form>
+                    </div>
 
-                        <div class="col-xs-12">
-                            <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
-                        </div>
-                        <div id="evidenciasConcluidas" class="col-xs-12" hidden="hidden">
-
-                            <p>Evidencias da Ação Concluida</p>
-
-                            <input type="file" id="uploadPhotox" onchange="uploadFile(event, 'evidenciaConcluida')" />
-
-                            <div id="actionsEvidencies">
+                    <div class="tab-pane active" id="acao_acompanhamento">
+                        <form id="formAcompanhamento">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label for="txtAcompanhamento_Observacao"><strong>Observação</strong></label>
+                                                <textarea id="txtAcompanhamento_Observacao" name="Observacao" class="form-control" style="resize: none; height: 100px;"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <label><strong>Notificar:</strong></label>
+                                            <div class="form-inline">
+                                                <select id="selectAcompanhamento_Notificar" class="form-control"></select>
+                                                <button onclick="acompanhamento.inserirNaListaNotificar();" type="button" class="btn btn-primary">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <table id="tableAcompanhamento_Notificar" class="table table-striped" style="font-size:14px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Nome</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="txtAcompanhamento_Status"><strong>Status</strong></label>
+                                        <select id="txtAcompanhamento_Status" name="Status" class="form-control">
+                                            <option value="">Selecione o status</option>
+                                            <option value="1">Concluído</option>
+                                            <option value="2">Cancelado</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-success" onclick="acompanhamento.salvarAcompanhamento()">Salvar</button>
+                                    </div>
+                                </div>
                             </div>
 
-                        </div>
-                        <div class="col-xs-4 vereagir">
-                            <label><strong>Data da conclusão:</strong></label>
-                            <input id="actionConclusionDate" name="DataConclusao" type="date" min="2021-05-19" class="form-control">
-                        </div>
-                        <div class="col-xs-4 vereagir">
-                            <label><strong>Hora da conclusão:</strong></label>
-                            <input id="actionConclusionHour" name="HoraConclusao" type="time" class="form-control">
-                        </div>
-                        <div class="col-xs-4">
-                            <label><strong>Referencia:</strong></label>
-                            <input id="actionReference" name="Referencia" type="text" class="form-control">
-                        </div>
-                        <div class="col-xs-4">
-                            <label><strong>Responsavel:</strong></label>
-                            <select id="selectResponsavel" name="Responsavel" class="form-control"></select>
-                        </div>
-                        <div class="col-xs-4 divActionPriority">
-                            <label><strong>Prioridade:</strong></label>
-                            <select id="selectPrioridade" name="Prioridade" class="form-control"></select>
-                        </div>
-                        <div class="col-xs-12">
-                            <label><strong>Notificar:</strong></label>
-                            <div class="form-inline">
-                                <select id="selectNotificarAcao" class="form-control"></select>
-                                <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
+                            <div class="col-sm-12" id="Acompanhamento_Listagem">
                             </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <table id="tableNotificarAcao" class="table table-striped" style="font-size:14px;">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Nome</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
+
+                            <div class="modal-footer">
+                                <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div id="rodapeDiv" class="modal-footer">
-                    <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
-                    <button class="btn btn-success" onclick="enviarFormularioEditarAcao('1')">Salvar e iniciar acao</button>
-                    <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e preencher depois</button>
-                </div>
-            </form>
+            </div>
+
+            <div class="clearfix"></div>
         </div>
     </div>
 </div>
@@ -379,7 +463,9 @@
                 {
                     "title": "Ações", "mData": null, "visible": true, mRender: function (data, type, full, cell) {
                         var id = full["Id"];
-                        return `<button class="btn btn-sm btn-info" onclick="abrirEditar(${id})">Editar</button>`;
+                        var btnEditar = `<button class="btn btn-sm btn-info" onclick="abrirAcao('editar',${id})">Editar</button>`;
+                        var btnAcompanhar = `<button class="btn btn-sm btn-success" onclick="abrirAcao('acompanhamento',${id})">Acompanhar</button>`;
+                        return btnEditar + btnAcompanhar;
                     }
                 },
                 {
@@ -453,11 +539,7 @@
             openLoader("...");
 
             const url = '@Url.Action("GetByIdStatus", "api/AcaoApi")';
-            //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
-            //Pegar as informações e mapear para um objeto
-            //Com as propriedades, apresente na tela
             $.ajax({
-                //data: JSON.stringify(id),
                 type: 'GET',
                 url: `${url}/${status}`,
                 contentType: "application/json",
@@ -478,15 +560,161 @@
 
         }
 
+        let acao = {
+
+            imprimir: (dados) => {
+                var html = "";
+                dados.forEach(function (elemento, indice) {
+
+                    var evidencia = {
+                        base64: elemento.Byte,
+                        path: elemento.Path
+                    };
+
+                    acao.evidenciaConcluida["ListaEvidencia"].push(evidencia)
+
+                    html += `<div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
+                        <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
+                        <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${indice + 1})">Excluir</button>
+                    </div>`;
+                    
+                });
+                return html
+            },
+
+            evidenciaConcluida: {
+
+                imprimirEvidencia: (dados) => {
+
+                    $('#actionsEvidencies .fotosConcluidas').empty();
+                    let html = acao.imprimir(dados)
+                    
+                    $('#actionsEvidencies .fotosConcluidas').append(html);
+                },
+
+                adicionarEvidencia: (base64) => {
+
+                    if (acao.evidenciaConcluida["ListaEvidencia"].length < 2) {
+
+                        var evidencia = {
+                            base64: base64
+                        };
+
+                        acao.evidenciaConcluida["ListaEvidencia"].push(evidencia);
+
+                        let html;
+
+                        if (evidencia["base64"]) {
+                            html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${acao.evidenciaConcluida["ListaEvidencia"].length})">Excluir</button>
+                                    </div>`;
+                        }
+                        else {
+                            html = `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
+                        }
+                        $('#actionsEvidencies .fotosConcluidas').append(html);
+                    } else {
+                        openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
+                    }
+                },
+
+                removerEvidencia: (index) => {
+
+                    acao.evidenciaConcluida["ListaEvidencia"].splice(index, 1);
+
+                    $('#actionsEvidencies .fotosConcluidas').empty();
+
+                    if (acao.evidenciaConcluida["ListaEvidencia"].length > 0) {
+                        listaEvidenciaConcluida.forEach(function (elemento, indice) {
+
+                            let html;
+
+                            if (evidenciaConcluida["base64"]) {
+                                html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${acao.evidenciaConcluida["ListaEvidencia"].length})">Excluir</button>
+                                    </div>`;
+                            }
+                            else {
+                                html = `<div class="col-sm-4"><img src="#${elemento["Nome"]}" class="img-responsive"/></div>`;
+                            }
+                            $('#actionsEvidencies .fotosConcluidas').append(html);
+                        })
+                    } else {
+                        $("#checkVerAgir").trigger('click');
+                    }
+                }
+            },
+
+            evidenciasNaoConforme: {
+
+                imprimirEvidencia: (dados) => {
+
+                    $('#divEvidencias .fotos').empty();
+
+                    let html = acao.imprimir(dados)
+
+                    $('#divEvidencias .fotos').append(html);
+                },
+
+                removerEvidencia: (index) => {
+                    acao.evidenciasNaoConforme["ListaEvidencia"].splice((index - 1), 1);
+
+                    $('#divEvidencias .fotos').empty();
+
+                    acao.evidenciasNaoConforme["ListaEvidencia"].forEach(function (elemento, indice) {
+
+                        let html;
+
+                        if (elemento["base64"]) {
+                            html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme["ListaEvidencia"].length})">Excluir</button>
+                                    </div>`;
+                        }
+                        else {
+                            html = `<div class="col-sm-4"><img src="#${elemento["Nome"]}" class="img-responsive"/></div>`;
+                        }
+                        $('#divEvidencias .fotos').append(html);
+                    })
+                },
+
+                adicionarEvidencia: (base64) => {
+
+                    if (acao.evidenciasNaoConforme["ListaEvidencia"].length < 2) {
+
+                        var evidencia = {
+                            base64: base64
+                        };
+
+                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
+
+                        let html;
+
+                        if (evidencia["base64"]) {
+                            html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme["ListaEvidencia"].length})">Excluir</button>
+                                    </div>`;
+                        }
+                        else {
+                            html = `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
+                        }
+                        $('#divEvidencias .fotos').append(html);
+                    }
+                    else {
+                        openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
+                    }
+                }
+            }
+        }
+
         function abrirImpressao(id) {
             openLoader("...");
             isVisualizar = true;
             const url = '@Url.Action("GetById", "api/AcaoApi")';
-            //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
-            //Pegar as informações e mapear para um objeto
-            //Com as propriedades, apresente na tela
             $.ajax({
-                //data: JSON.stringify(id),
                 type: 'GET',
                 url: `${url}/${id}`,
                 contentType: "application/json",
@@ -502,8 +730,23 @@
                     closeLoader();
                 }
             });
-
             $("#modalPrint").modal();
+        }
+
+        function abrirAcao(acao, id) {
+            switch (acao) {
+                case "editar":
+                    $('#tabAcaoEdicao').click();
+                    carregarDados(id)
+                    break;
+                case "acompanhamento":
+                    $('#tabAcaoAcompanhamento').click();
+                    carregarDados(id);
+                    break;
+            }
+            
+            $('.modal input').val('');
+            $("#modalEditar").modal();
         }
 
         function print() {
@@ -534,13 +777,10 @@
             //printGRT.Imprimir();
         }
 
-        function abrirEditar(id) {
+        function carregarDados(id) {
             openLoader("...");
             isVisualizar = false;
             const url = '@Url.Action("GetById", "api/AcaoApi")';
-            //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
-            //Pegar as informações e mapear para um objeto
-            //Com as propriedades, apresente na tela
             $.ajax({
                 //data: JSON.stringify(id),
                 type: 'GET',
@@ -548,7 +788,6 @@
                 contentType: "application/json",
                 success: function (dados) {
                     preencherModal(dados, isVisualizar);
-
                     buscarFotos(id, isVisualizar);
 
                     closeLoader();
@@ -558,18 +797,6 @@
                     closeLoader();
                 }
             });
-
-
-            //Possibilitar Edição
-            //Salvar
-            //Fazer uma requisição, mapeando os dados da tela e enviar como um objeto
-            //Localizar a pessoa como ID e alterar os dados que estão vindo da tela, possiveis de modificação.
-            //Retorna OK
-
-            //pendencias:
-            //confirmar se a função preencher dados está pegando os dados corretos para preencher o HTML
-
-            $("#modalEditar").modal();
         }
 
         function buscarFotos(id, isVisualizar) {
@@ -581,9 +808,9 @@
                 success: function (dados) {
 
                     if (dados.length > 0) {
-                        imprimirListaEvidenciaDB(dados, isVisualizar);
+                        acao.evidenciasNaoConforme.imprimirEvidencia(dados);
 
-                        buscarEvidenciaConcluida(id, isVisualizar);
+                        buscarEvidenciaConcluida(id);
                     }
                     closeLoader();
                 },
@@ -595,7 +822,7 @@
 
         }
 
-        function buscarEvidenciaConcluida(id, isVisualizar) {
+        function buscarEvidenciaConcluida(id) {
             const url = '@Url.Action("GetFotosEvidenciaConcluida", "api/AcaoApi")';
             $.ajax({
                 type: 'GET',
@@ -604,7 +831,7 @@
                 success: function (dados) {
 
                     if (dados.length > 0) {
-                        imprimirListaEvidenciaConcluidaDB(dados, isVisualizar);
+                        acao.evidenciaConcluida.imprimirEvidencia(dados)
                         showVerAgir = true;
                     } else
                         showVerAgir = false;
@@ -621,8 +848,6 @@
                     }
                 }
             });
-
-
         }
 
         function preencherModalImpressão(dados) {
@@ -634,15 +859,6 @@
                 }
             }
 
-            //if (dados.ListaNotificar) {
-            //    var notificar = {};
-            //    for (var i = 0; i < dados.ListaNotificar.length; i++) {
-            //         notificar = dados.ListaNotificar[i];
-            //    }
-
-            //    $('#selectNotificarAcaoPrint').text(notificar['Nome']);
-            //}
-            
             $("input[name='Id']").val(dados.Id);
             $("#dataEmissaoPrint").text(dados._DataEmissao);
             $("#horaEmissaoPrint").text(dados.HoraEmissao);
@@ -664,15 +880,27 @@
             $("#txtAcao_NaoconformidadePrint").text(dados.Acao_Naoconformidade);
             $("#txtAcaoTextPrint").text(dados.AcaoText);
 
-            imprimirListaEvidencia(dados.ListaEvidencia);
             imprimirListaNotificarAcao(dados.ListaNotificarAcao);
+            if (dados.ListaEvidencia == null) {
+                $('#divEvidencias .fotos').empty();
+                $('#actionsEvidencies .fotosConcluidas').empty();
+            }
 
-            
+        }
+
+        function limparAcao() {
+            acao.evidenciaConcluida["ListaEvidencia"] = []
+            acao.evidenciasNaoConforme["ListaEvidencia"] = []
+            $('#divEvidencias .fotos').empty();
+            $('#actionsEvidencies .fotosConcluidas').empty();
         }
 
         var acaoEditar = {};
         function preencherModal(dados) {
+            preencherInformacoesAcompanhamento(dados);
+
             acaoEditar = dados;
+            limparAcao()
 
             if (dados.ListaResponsavel) {
                 var html = `<option value="">Selecione...</option>`;
@@ -682,6 +910,7 @@
                 }
 
                 $('#selectResponsavel').html(html);
+                $('#selectAcompanhamento_Notificar').html(html);
 
                 $("#selectResponsavel option[value=" + dados.Responsavel + "]").attr('selected', 'selected')
             }
@@ -716,7 +945,6 @@
             $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
             $("#txtAcaoText").text(dados.AcaoText);
 
-            imprimirListaEvidencia(dados.ListaEvidencia);
             imprimirListaNotificarAcao(dados.ListaNotificarAcao);
 
             if (dados.ListaNotificar) {
@@ -729,174 +957,6 @@
             }
         }
 
-        //Evidencia ação concluida
-        function imprimirListaEvidenciaConcluida(lista) {
-            $('#actionsEvidencies').empty();
-            if (lista.length > 0) {
-                for (var i = 0; i < lista.length; i++) {
-                    var evidenciaConcluida = lista[i];
-                    imprimirEvidenciaConcluida(evidenciaConcluida, lista);
-                }
-            } else {
-                $("#checkVerAgir").trigger('click');
-            }
-        }
-
-
-        function imprimirEvidenciaConcluida(evidenciaConcluida, lista) {
-            var html;
-
-            if (evidenciaConcluida["base64"]) {
-                html = `
-                        <div class="col-sm-4">
-                            <img src="data:image/png;base64,${evidenciaConcluida["base64"]}" data-img class="img-responsive"/>
-                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidenciaConcluida(${lista.length})">Excluir</button>
-                        </div>`;
-            } else {
-                html = `<div class="col-sm-4"><img src="#${evidenciaConcluida["Nome"]}" class="img-responsive"/></div>`;
-            }
-            $('#actionsEvidencies').append(html);
-        }
-
-        function removerDaListaEvidenciaConcluida(index) {
-            acaoEditar["ListaEvidenciaConcluida"].splice((index - 1), 1);
-            imprimirListaEvidenciaConcluida(acaoEditar["ListaEvidenciaConcluida"])
-        }
-
-        function inserirNaListaEvidenciaConcluida(base64) {
-            if (acaoEditar["ListaEvidenciaConcluida"] == undefined || acaoEditar["ListaEvidenciaConcluida"] == null)
-                acaoEditar["ListaEvidenciaConcluida"] = [];
-
-            if (acaoEditar["ListaEvidenciaConcluida"].length < 2) {
-
-                var evidencia = {
-                    base64: base64
-                };
-
-                acaoEditar["ListaEvidenciaConcluida"].push(evidencia);
-                imprimirEvidenciaConcluida(evidencia, acaoEditar["ListaEvidenciaConcluida"]);
-            } else {
-                openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
-            }
-        }
-
-        function imprimirListaEvidenciaConcluidaDB(dados, isVisualizar) {
-
-            var html = "";
-            $('#actionsEvidencies').empty();
-
-            acaoEditar["ListaEvidenciaConcluida"] = [];
-
-            if (dados.length > 0) {
-
-                dados.forEach(function (o, i) {
-
-                    var evidencia = {
-                        base64: o.Byte,
-                        path: o.Path
-                    };
-
-                    acaoEditar["ListaEvidenciaConcluida"].push(evidencia);
-
-                    var btnDelete = '';
-                    if (!isVisualizar) {
-                        btnDelete = `<button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidenciaConcluida(${i + 1})">Excluir</button>`;
-                    }
-
-                    html += `
-                        <div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
-                            <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
-                        </div>`;
-                });
-
-            }
-
-            $('#actionsEvidencies').append(html);
-
-        }
-
-        //Evidencias
-        function imprimirListaEvidencia(lista) {
-            $('#divEvidencias').empty();
-            if (lista) {
-                for (var i = 0; i < lista.length; i++) {
-                    var evidencia = lista[i];
-                    imprimirEvidencia(evidencia, lista);
-                }
-            }
-        }
-
-        function imprimirEvidencia(evidencia, lista) {
-            var html;
-
-            if (evidencia["base64"]) {
-                html = `
-                        <div class="col-sm-4">
-                            <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
-                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${lista.length})">Excluir</button>
-                        </div>`;
-            } else {
-                html = `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
-            }
-            $('#divEvidencias').append(html);
-        }
-
-        function imprimirListaEvidenciaDB(dados, isVisualizar) {
-
-            var html = "";
-            acaoEditar["ListaEvidencia"] = [];
-            if (dados.length > 0) {
-
-                dados.forEach(function (o, i) {
-
-                    var evidencia = {
-                        base64: o.Byte,
-                        path: o.Path
-                    };
-
-                    acaoEditar["ListaEvidencia"].push(evidencia);
-
-                    var btnDelete = '';
-                    if (!isVisualizar) {
-                        btnDelete = `<button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${i + 1})">Excluir</button>`;
-                    }
-
-                    html += `
-                        <div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
-                            <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%;"/>
-                            ${btnDelete}
-                        </div>`;
-                });
-
-            }
-            $('#divEvidencias').append(html);
-            $("#uploadPhoto");
-        }
-
-        function removerDaListaEvidencia(index) {
-            acaoEditar["ListaEvidencia"].splice((index-1), 1);
-            imprimirListaEvidencia(acaoEditar["ListaEvidencia"])
-        }
-
-        function inserirNaListaEvidencia(base64) {
-
-            if (acaoEditar["ListaEvidencia"] == null)
-                acaoEditar["ListaEvidencia"] = [];
-
-            if (acaoEditar["ListaEvidencia"].length < 2) {
-
-                var evidencia = {
-                    base64: base64
-                };
-
-                acaoEditar["ListaEvidencia"].push(evidencia);
-                imprimirEvidencia(evidencia, acaoEditar["ListaEvidencia"]);
-            } else {
-                openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
-            }
-        }
-
-        //Notificar ação
         function imprimirListaNotificarAcao(lista) {
             if (lista) {
                 var html = "";
@@ -939,8 +999,8 @@
             var form = $("#formAcao").serializeObject();
 
             form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
-            form["ListaEvidencia"] = acaoEditar["ListaEvidencia"];
-            form["ListaEvidenciaConcluida"] = acaoEditar["ListaEvidenciaConcluida"];
+            form["ListaEvidencia"] = acao.evidenciaConcluida["ListaEvidencia"];
+            form["ListaEvidenciaConcluida"] = acao.evidenciasNaoConforme["ListaEvidencia"];
 
             validarStatus(form, status);
 
@@ -1035,23 +1095,20 @@
             if (!validateUploadFile(evt))
                 return;
 
-            var e = evt.target.files[0]; // FileList object
+            var e = evt.target.files[0]; 
             var reader = new FileReader();
-            // Closure to capture the file information.
+
             reader.onload = (e) => {
                 var binaryData = e.target.result;
-                //Converting Binary Data to base 64
                 var base64String = window.btoa(binaryData);
-                //showing file converted to base64
-                //document.getElementsByName('imagefile')[0].value = base64String;
 
-                if (tipoEvidencia== 'evidencia')
-                    inserirNaListaEvidencia(base64String);
+                if (tipoEvidencia == 'evidencia')
+                    acao.evidenciasNaoConforme.adicionarEvidencia(base64String);
                 else
-                    inserirNaListaEvidenciaConcluida(base64String);
-                $('#uploadPhoto').val('');
+                    acao.evidenciaConcluida.adicionarEvidencia(base64String);
+                $('input[type=file]').val('');
             };
-            // Read in the image file as a data URL.
+
             reader.readAsBinaryString(e);
         }
 
@@ -1059,13 +1116,165 @@
             .on('click, change', '#checkVerAgir', function () {
 
                 if ($(this).is(":checked")) {
-                    $("#evidenciasConcluidas").removeAttr('hidden');
+                    $("#evidenciasConcluidasImpressao").removeAttr('hidden');
+                    $("#evidenciasConcluidasEdicao").removeAttr('hidden');
                     $('.vereagir').removeClass('hide');
                 } else {
-                    $("#evidenciasConcluidas").attr('hidden', 'hidden');
+                    $("#evidenciasConcluidasImpressao").attr('hidden', 'hidden');
+                    $("#evidenciasConcluidasEdicao").attr('hidden', 'hidden');
                     $('.vereagir').addClass('hide');
                 }
             });
+
+        function preencherInformacoesAcompanhamento(dados) {
+
+            acompanhamento.objeto = {
+                AcaoId: dados.Id,
+                ListaNotificar: dados.ListaNotificarAcao
+            };
+            acompanhamento.imprimirListaNotificar();
+
+            if (dados.ListaAcompanhamento) {
+                var html = `<div>`;
+                for (var i = 0; i < dados.ListaAcompanhamento.length; i++) {
+                    var objAcompanhamento = dados.ListaAcompanhamento[i];
+
+                    var htmlTabelaNotificar = acompanhamento.montarHtmlTabelaListaNotificar(objAcompanhamento['ListaNotificar']);
+
+                    html += `
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <label><strong>Observação</strong></label>
+                                    <textarea disabled readonly class="form-control" style="resize: none; height: 100px;">
+                                        ${objAcompanhamento["Observacao"]}
+                                    </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label><strong>Notificar</strong></label>
+                                    ${htmlTabelaNotificar}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label><strong>Data Registro</strong></label>
+                                    <input disabled readonly class="form-control" value="${objAcompanhamento["DataRegistroFormatada"]}">
+                                </div>
+                                <div class="form-group">
+                                    <label><strong>Responsavel</strong></label>
+                                    <input disabled readonly class="form-control" value="${objAcompanhamento["Responsavel"]}">
+                                </div>
+                                <div class="form-group">
+                                    <label><strong>Status</strong></label>
+                                    <input disabled readonly class="form-control" value="${objAcompanhamento["StatusName"]}">
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>`;
+                }
+                html += `</div>`;
+                $('#Acompanhamento_Listagem').html(html);
+            }
+        }
+
+        //Notificar ação
+        var acompanhamento = {
+
+            objeto: {},
+
+            montarHtmlTabelaListaNotificar: (lista) => {
+                var html = ''
+                if (lista) {
+                    var valoresNotificarAcao = '';
+                    for (var i = 0; i < lista.length; i++) {
+                        var notificarAcao = lista[i];
+                        valoresNotificarAcao += `<tr>
+                                    <td>${notificarAcao["Id"]}</td>
+                                    <td>${notificarAcao["Nome"]}</td>
+                                </tr>`;
+                    }
+
+                    html = `<table class="table table-striped" style="font-size:14px;">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Nome</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${valoresNotificarAcao}
+                                </tbody>
+                            </table>`;
+                }
+                return html;
+            },
+
+            imprimirListaNotificar: () => {
+                var lista = acompanhamento.objeto["ListaNotificar"];
+                if (lista) {
+                    var html = "";
+                    for (var i = 0; i < lista.length; i++) {
+                        var notificar = lista[i];
+                        html += `<tr>
+                                    <td>${notificar["Id"]}</td>
+                                    <td>${notificar["Nome"]}</td>
+                                    <td>
+                                    <button class="btn btn-sm btn-danger" onclick="acompanhamento.removerDaListaNotificar(${i})">X</button>
+                                    </td>
+                                </tr>`;
+                    }
+                    $('#tableAcompanhamento_Notificar tbody').html(html);
+                }
+            },
+
+            removerDaListaNotificar: (index) => {
+                acompanhamento.objeto["ListaNotificar"].splice(index, 1);
+                acompanhamento.imprimirListaNotificar(acompanhamento.objeto["ListaNotificar"])
+            },
+
+            inserirNaListaNotificar: () => {
+                if ($('#selectAcompanhamento_Notificar').val() > 0) {
+                    var obj = {
+                        Id: $('#selectAcompanhamento_Notificar').val(),
+                        Nome: $('#selectAcompanhamento_Notificar option:selected').text(),
+                        IsActive: true
+                    };
+                    acompanhamento.objeto["ListaNotificar"].push(obj);
+                    acompanhamento.imprimirListaNotificar(acompanhamento.objeto["ListaNotificar"])
+                }
+            },
+
+            salvarAcompanhamento: () => {
+                openLoader("Aguarde");
+                var form = $("#formAcompanhamento").serializeObject();
+
+                form["ListaNotificar"] = acompanhamento.objeto["ListaNotificar"];
+
+                const url = '@Url.Action("Post/Acompanhamento", "api/AcaoApi")';
+                $.ajax({
+                    url: url + "/" + acompanhamento.objeto["AcaoId"],
+                    type: 'POST',
+                    data: JSON.stringify(form),
+                    contentType: "application/json",
+                    success: function (data) {
+                        openMessageModal("Concluido", "Ação salva com sucesso");
+                        closeLoader();
+                        $("#btnClose").trigger('click');
+                        setTimeout(function () {
+                            buscarDados(null);
+                        }, 3000);
+                    },
+                    error: function () {
+                        console.log('erro ao salvar ação');
+                        closeLoader();
+                    }
+                });
+                closeLoader();
+            }
+
+        }
+
 
     </script>
 

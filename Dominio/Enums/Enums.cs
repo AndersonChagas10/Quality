@@ -18,10 +18,10 @@ namespace Dominio.Enums
             ItemMenu = 1, ReportXUserSgq, ComponenteGenerico
         }
 
-        public enum AcaoStatus
+        public enum EAcaoStatus
         {
             Pendente = 1,
-            Em_andamento,
+            Em_Andamento,
             Concluída,
             Atrasada,
             Cancelada

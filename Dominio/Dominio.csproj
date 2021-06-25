@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AcaoRH\AcompanhamentoAcao.cs" />
     <Compile Include="AcaoRH\Acao.cs" />
     <Compile Include="AcaoRH\AcaoXNotificarAcao.cs" />
     <Compile Include="AcaoRH\Email\EmailAcaoStatusAlteradoNotificados.cs" />
