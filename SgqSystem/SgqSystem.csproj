@@ -26,7 +26,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress>true</Use64BitIISExpress>
+    <Use64BitIISExpress>
+    </Use64BitIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -2487,6 +2488,10 @@
     <ProjectReference Include="..\CrossCutting\CrossCutting.csproj">
       <Project>{0896bc38-df38-4e39-adf9-db1f9910bfe6}</Project>
       <Name>CrossCutting</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{A75EC76C-9ABF-4890-B82B-D8A048E6B7C5}</Project>
+      <Name>Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dominio\Dominio.csproj">
       <Project>{777d8e88-0d52-446a-bc77-2f50a7d936e5}</Project>

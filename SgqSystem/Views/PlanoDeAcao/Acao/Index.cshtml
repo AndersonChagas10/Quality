@@ -564,6 +564,8 @@
 
             imprimir: (dados) => {
                 var html = "";
+                acao.evidenciaConcluida["ListaEvidencia"] = []
+                acao.evidenciasNaoConforme["ListaEvidencia"] = []
                 dados.forEach(function (elemento, indice) {
 
                     var evidencia = {
@@ -572,6 +574,7 @@
                     };
 
                     acao.evidenciaConcluida["ListaEvidencia"].push(evidencia)
+                    acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia)
 
                     html += `<div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
                         <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>

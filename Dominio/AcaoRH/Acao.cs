@@ -29,7 +29,6 @@ namespace Dominio
         public TimeSpan? HoraEmissao { get; set; }
         public int Emissor { get; set; }
         public int? Prioridade { get; set; }
-        public string PrioridadeText { get; set; }
         public EAcaoStatus Status { get; set; }
         public bool IsActive { get; set; }
 

@@ -1,4 +1,6 @@
-﻿using Data.Repositories;
+﻿using Data.PlanoDeAcao;
+using Data.PlanoDeAcao.Repositorio;
+using Data.Repositories;
 using DTO.Interfaces.Repositories;
 using Ninject.Modules;
 
@@ -13,6 +15,7 @@ namespace CrossCutting.IOC.Module
             Bind<IUserRepository>().To<UserRepository>();
             Bind<IParamsRepository>().To<ParamsRepository>();
             Bind<IParLevel3Repository>().To<ParLevel3Repository>();
+            Bind<IAcaoRepository>().To<AcaoRepository>();
         }
     }
 }
