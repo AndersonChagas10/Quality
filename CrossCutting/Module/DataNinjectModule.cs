@@ -16,6 +16,7 @@ namespace CrossCutting.IOC.Module
             Bind<IParamsRepository>().To<ParamsRepository>();
             Bind<IParLevel3Repository>().To<ParLevel3Repository>();
             Bind<IAcaoRepository>().To<AcaoRepository>();
+            Bind<IAcompanhamentoRepository>().To<AcompanhamentoRepository>();
         }
     }
 }

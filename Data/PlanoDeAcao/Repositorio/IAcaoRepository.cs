@@ -9,7 +9,6 @@ namespace Data.PlanoDeAcao.Repositorio
     {
         IEnumerable<AcaoViewModel> ObterAcaoPorFiltro(DataCarrierFormularioNew form);
         IEnumerable<AcaoViewModel> ObterStatusPorId(string status);
-        void SalvarAcompanhamentoAcao(AcompanhamentoAcao acompanhamento);
         AcaoFormViewModel ObterAcaoComVinculosPorId(int id);
         Acao ObterAcaoPorId(int id);
         List<EvidenciaViewModel> BuscarListaEvidencias(int acao_Id);

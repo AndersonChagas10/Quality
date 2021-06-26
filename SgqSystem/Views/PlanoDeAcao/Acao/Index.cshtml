@@ -1254,7 +1254,7 @@
 
                 form["ListaNotificar"] = acompanhamento.objeto["ListaNotificar"];
 
-                const url = '@Url.Action("Post/Acompanhamento", "api/AcaoApi")';
+                const url = '@Url.Action("Post/Acompanhamento", "api/AcompanhamentoApi")';
                 $.ajax({
                     url: url + "/" + acompanhamento.objeto["AcaoId"],
                     type: 'POST',

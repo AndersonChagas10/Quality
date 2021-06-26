@@ -349,6 +349,7 @@
     <Compile Include="Controllers\Api\ParInputTypeValuesApiController.cs" />
     <Compile Include="Controllers\Api\ParReasonApiController.cs" />
     <Compile Include="Controllers\Api\PlanoDeAcao\AcaoApiController.cs" />
+    <Compile Include="Controllers\Api\PlanoDeAcao\AcompanhamentoApiController.cs" />
     <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />

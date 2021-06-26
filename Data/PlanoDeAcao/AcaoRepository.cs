@@ -192,12 +192,6 @@ namespace Data.PlanoDeAcao
             }
         }
 
-        public void SalvarAcompanhamentoAcao(AcompanhamentoAcao acompanhamento)
-        {
-            _db.AcompanhamentoAcao.Add(acompanhamento);
-            _db.SaveChanges();
-        }
-
         public AcaoFormViewModel ObterAcaoComVinculosPorId(int id)
         {
             var query = $@"
