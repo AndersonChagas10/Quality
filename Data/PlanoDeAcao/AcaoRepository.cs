@@ -323,23 +323,20 @@ namespace Data.PlanoDeAcao
         private List<AcompanhamentoAcaoViewModel> BuscarAcompanhamento(int acao_id)
         {
             List<AcompanhamentoAcaoViewModel> listaAcompanhamentoAcaoViewModel;
-            using (SgqDbDevEntities db = new SgqDbDevEntities())
-            {
-                listaAcompanhamentoAcaoViewModel = db.AcompanhamentoAcao
-                    .Where(x => x.Acao_Id == acao_id)
-                    .OrderByDescending(x => x.DataRegistro)
-                    .Select(x => new AcompanhamentoAcaoViewModel()
-                    {
-                        DataRegistro = x.DataRegistro,
-                        Observacao = x.Observacao,
-                        Status = x.Status,
-                        ListaNotificar = x.ListaNotificar
-                            .Select(n => new NotificarViewModel() { Id = n.UserSgq.Id, Nome = n.UserSgq.FullName })
-                            .ToList(),
-                        Responsavel = x.UserSgq.FullName
-                    })
-                    .ToList();
-            }
+            listaAcompanhamentoAcaoViewModel = _db.AcompanhamentoAcao
+                .Where(x => x.Acao_Id == acao_id)
+                .OrderByDescending(x => x.DataRegistro)
+                .Select(x => new AcompanhamentoAcaoViewModel()
+                {
+                    DataRegistro = x.DataRegistro,
+                    Observacao = x.Observacao,
+                    Status = x.Status,
+                    ListaNotificar = x.ListaNotificar
+                        .Select(n => new NotificarViewModel() { Id = n.UserSgq.Id, Nome = n.UserSgq.FullName })
+                        .ToList(),
+                    Responsavel = x.UserSgq.FullName
+                })
+                .ToList();
 
             return listaAcompanhamentoAcaoViewModel;
         }
