@@ -20,6 +20,8 @@ namespace CrossCutting.IOC.Module
             Bind<IAcompanhamentoRepository>().To<AcompanhamentoRepository>();
             Bind<IEvidenciaNaoConformeRepository>().To<EvidenciaNaoConformeRepository>();
             Bind<IEvidenciaNaoConformeService>().To<EvidenciaNaoConformeService>();
+            Bind<IEvidenciaConcluidaRepository>().To<EvidenciaConcluidaRepository>();
+            Bind<IEvidenciaConcluidaService>().To<EvidenciaConcluidaService>();
         }
     }
 }

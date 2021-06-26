@@ -41,7 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlanoDeAcao\EvidenciaConcluidaService.cs" />
     <Compile Include="PlanoDeAcao\EvidenciaNaoConformeService.cs" />
+    <Compile Include="PlanoDeAcao\IEvidenciaConcluidaService.cs" />
     <Compile Include="PlanoDeAcao\IEvidenciaNaoConformeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

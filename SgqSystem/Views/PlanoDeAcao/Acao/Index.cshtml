@@ -826,7 +826,7 @@
         }
 
         function buscarEvidenciaConcluida(id) {
-            const url = '@Url.Action("GetFotosEvidenciaConcluida", "api/AcaoApi")';
+            const url = '@Url.Action("GetFotosEvidenciaConcluida", "api/EvidenciaConcluidaApi")';
             $.ajax({
                 type: 'GET',
                 url: `${url}/${id}`,
