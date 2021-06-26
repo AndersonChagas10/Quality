@@ -17,6 +17,7 @@ namespace CrossCutting.IOC.Module
             Bind<IParamsRepository>().To<ParamsRepository>();
             Bind<IParLevel3Repository>().To<ParLevel3Repository>();
             Bind<IAcaoRepository>().To<AcaoRepository>();
+            Bind<IAcaoService>().To<AcaoService>();
             Bind<IAcompanhamentoRepository>().To<AcompanhamentoRepository>();
             Bind<IEvidenciaNaoConformeRepository>().To<EvidenciaNaoConformeRepository>();
             Bind<IEvidenciaNaoConformeService>().To<EvidenciaNaoConformeService>();
