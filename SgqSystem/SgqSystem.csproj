@@ -350,6 +350,7 @@
     <Compile Include="Controllers\Api\ParReasonApiController.cs" />
     <Compile Include="Controllers\Api\PlanoDeAcao\AcaoApiController.cs" />
     <Compile Include="Controllers\Api\PlanoDeAcao\AcompanhamentoApiController.cs" />
+    <Compile Include="Controllers\Api\PlanoDeAcao\EvidenciaNaoConformeApiController.cs" />
     <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
@@ -2521,6 +2522,10 @@
     <ProjectReference Include="..\ServiceModel\ServiceModel.csproj">
       <Project>{3ECF1D86-91F3-4140-A11A-1546B8F662A1}</Project>
       <Name>ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Services.csproj">
+      <Project>{9D205979-3646-42D1-89D6-C23FCC1CBDD6}</Project>
+      <Name>Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\SgqServiceBusiness\SgqServiceBusiness.csproj">
       <Project>{2a112b7a-4627-43f6-b362-321e0b2e6b0b}</Project>

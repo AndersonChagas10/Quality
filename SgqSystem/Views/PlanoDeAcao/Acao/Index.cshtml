@@ -803,7 +803,7 @@
         }
 
         function buscarFotos(id, isVisualizar) {
-            const url = '@Url.Action("GetFotosEvidencia", "api/AcaoApi")';
+            const url = '@Url.Action("GetFotosEvidencia", "api/EvidenciaNaoConformeApi")';
             $.ajax({
                 type: 'GET',
                 url: `${url}/${id}`,

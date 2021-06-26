@@ -55,6 +55,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SgqServiceBusiness", "SgqSe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogSystem", "LogSystem\LogSystem.csproj", "{2F2074D0-E013-46BB-99B9-E53603BFC44D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{9D205979-3646-42D1-89D6-C23FCC1CBDD6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7 - Services", "7 - Services", "{942B1F6F-DA7E-41C6-80F5-1CC09E9B38CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +141,10 @@ Global
 		{2F2074D0-E013-46BB-99B9-E53603BFC44D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F2074D0-E013-46BB-99B9-E53603BFC44D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F2074D0-E013-46BB-99B9-E53603BFC44D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D205979-3646-42D1-89D6-C23FCC1CBDD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D205979-3646-42D1-89D6-C23FCC1CBDD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D205979-3646-42D1-89D6-C23FCC1CBDD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D205979-3646-42D1-89D6-C23FCC1CBDD6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -161,6 +169,7 @@ Global
 		{8DC329A7-0151-438C-A2D5-9E5D82946F9B} = {A9B14F0F-0651-4B4E-8A2F-E26D95018D98}
 		{2A112B7A-4627-43F6-B362-321E0B2E6B0B} = {CF963560-082D-46E7-89D3-B594CE0E36A7}
 		{2F2074D0-E013-46BB-99B9-E53603BFC44D} = {A9B14F0F-0651-4B4E-8A2F-E26D95018D98}
+		{9D205979-3646-42D1-89D6-C23FCC1CBDD6} = {942B1F6F-DA7E-41C6-80F5-1CC09E9B38CB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7D0A1A9-F2A2-4A1F-A45E-16387BDF6813}

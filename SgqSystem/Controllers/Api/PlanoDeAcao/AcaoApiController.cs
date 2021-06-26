@@ -5,6 +5,7 @@ using Dominio.AcaoRH.Email;
 using DTO;
 using DTO.PlanoDeAcao;
 using Helper;
+using Services.PlanoDeAcao;
 using SgqServiceBusiness.Controllers.RH;
 using SgqSystem.Helpers;
 using System;
@@ -19,9 +20,11 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
     public class AcaoApiController : BaseApiController
     {
         public readonly IAcaoRepository _acaoRepository;
-        public AcaoApiController(IAcaoRepository acaoRepository)
+        public readonly IEvidenciaNaoConformeService _evidenciaNaoConformeService;
+        public AcaoApiController(IAcaoRepository acaoRepository, IEvidenciaNaoConformeService evidenciaNaoConformeService)
         {
             _acaoRepository = acaoRepository;
+            _evidenciaNaoConformeService = evidenciaNaoConformeService;
         }
 
         [Route("GetAcaoByFilter")]
@@ -52,7 +55,8 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                 AtualizarUsuariosASeremNotificadosDaAcao(objAcao);
 
                 //salva/deleta a listagem de imagens de evidencias
-                RetornarListaDeEvidencias(objAcao);
+                var objAcaoDB = _acaoRepository.ObterAcaoPorId(objAcao.Id);
+                _evidenciaNaoConformeService.RetornarListaDeEvidencias(objAcao);
 
                 RetornarListaDeEvidenciasConcluidas(objAcao);
 
@@ -113,43 +117,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             return listaFotos;
         }
 
-        [Route("GetFotosEvidencia/{id}")]
-        [HttpGet]
-        public List<ImagemDaEvidenciaViewModel> GetFotosEvidencia(int id)
-        {
-            var lista = new AcaoFormViewModel();
-
-            var listaFotos = new List<ImagemDaEvidenciaViewModel>();
-
-            ////download das imagens
-            lista.ListaEvidencia = _acaoRepository.BuscarListaEvidencias(id);
-
-            foreach (var item in lista.ListaEvidencia)
-            {
-                var foto = new ImagemDaEvidenciaViewModel();
-
-                string url = item.Path;
-
-                byte[] bytes;
-                //Verificar se no web.config a credencial do servidor de fotos
-                Exception exception = null;
-
-                bytes = FileHelper.DownloadPhoto(url
-                , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
-                , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
-                , out exception);
-
-                if (exception != null)
-                    throw new Exception("Error: " + exception.ToClient());
-
-                foto.Byte = bytes;
-                foto.Path = item.Path;
-                listaFotos.Add(foto);
-            }
-
-            return listaFotos;
-        }
-
+        
         #region AcaoService
         private void PrepararEEnviarEmail(AcaoInputModel acao)
         {
@@ -183,27 +151,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             }
         }
 
-        private void RetornarListaDeEvidencias(AcaoInputModel objAcao)
-        {
-            var listaEvidenciasDB = _acaoRepository.RetornarEvidenciasDaAcao(objAcao.Id);
-            var listaEvidenciasPathsEditadas = new List<EvidenciaViewModel>();
-
-            if (objAcao.ListaEvidencia != null)
-            {
-                listaEvidenciasPathsEditadas = objAcao.ListaEvidencia.ToList();
-            }
-
-            var listaInserir = listaEvidenciasPathsEditadas.Where(x => !listaEvidenciasDB.Select(y => y.Path).ToList().Contains(x.Path)).ToList();
-
-            var listaDeletar = listaEvidenciasDB.Where(x => !listaEvidenciasPathsEditadas.Select(y => y.Path).Contains(x.Path)).ToList();
-
-            if (listaInserir.Count > 0)
-                VincularEvidenciasAAcao(objAcao, listaInserir);
-
-            if (listaDeletar.Count > 0)
-                _acaoRepository.InativarEvidencias(listaDeletar);
-        }
-
+        
         private void RetornarListaDeEvidenciasConcluidas(AcaoInputModel objAcao)
         {
             var listaEvidenciasConcluidasDB = _acaoRepository.BuscarListaEvidenciasConcluidas(objAcao.Id);
@@ -225,19 +173,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                 _acaoRepository.InativarEvidenciasDaAcaoConcluida(listaDeletar);
         }
 
-        private void VincularEvidenciasAAcao(AcaoInputModel objAcao, List<EvidenciaViewModel> listaInserir)
-        {
-            AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
-
-            var objAcaoDB = _acaoRepository.ObterAcaoPorId(objAcao.Id);
-
-            foreach (var evidenciaNaoConformidade in listaInserir)
-            {
-                var filePath = appColetaBusiness.SaveFileEvidenciaNaoConformidade(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaNaoConformidade.Base64);
-                appColetaBusiness.SaveEvidenciaNaoConformidade(new EvidenciaNaoConformidade() { Acao_Id = objAcao.Id, Path = filePath });
-            }
-        }
-
+        
         private void VincularEvidenciasAAcaoConcluida(AcaoInputModel objAcao, List<EvidenciaViewModel> listaInserir)
         {
             AppColetaBusiness appColetaBusiness = new AppColetaBusiness();

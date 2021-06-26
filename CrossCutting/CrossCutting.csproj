@@ -91,6 +91,10 @@
       <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
       <Name>DTO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Services\Services.csproj">
+      <Project>{9D205979-3646-42D1-89D6-C23FCC1CBDD6}</Project>
+      <Name>Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

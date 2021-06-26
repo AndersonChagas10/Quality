@@ -3,6 +3,7 @@ using Data.PlanoDeAcao.Repositorio;
 using Data.Repositories;
 using DTO.Interfaces.Repositories;
 using Ninject.Modules;
+using Services.PlanoDeAcao;
 
 namespace CrossCutting.IOC.Module
 {
@@ -17,6 +18,8 @@ namespace CrossCutting.IOC.Module
             Bind<IParLevel3Repository>().To<ParLevel3Repository>();
             Bind<IAcaoRepository>().To<AcaoRepository>();
             Bind<IAcompanhamentoRepository>().To<AcompanhamentoRepository>();
+            Bind<IEvidenciaNaoConformeRepository>().To<EvidenciaNaoConformeRepository>();
+            Bind<IEvidenciaNaoConformeService>().To<EvidenciaNaoConformeService>();
         }
     }
 }
