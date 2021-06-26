@@ -2,7 +2,7 @@
 
 namespace Data.PlanoDeAcao.Repositorio
 {
-    public interface IAcompanhamentoRepository
+    public interface IAcompanhamentoAcaoRepository
     {
         void SalvarAcompanhamentoAcao(AcompanhamentoAcao acompanhamento);
     }

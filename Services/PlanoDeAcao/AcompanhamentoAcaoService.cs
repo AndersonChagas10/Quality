@@ -1,31 +1,25 @@
 ﻿using Data.PlanoDeAcao.Repositorio;
 using Dominio;
+using Dominio.AcaoRH;
 using DTO.PlanoDeAcao;
 using System;
 using System.Linq;
-using System.Web.Http;
 
-namespace SgqSystem.Controllers.Api.PlanoDeAcao
+namespace Services.PlanoDeAcao
 {
-    [RoutePrefix("api/AcompanhamentoApi")]
-
-    public class AcompanhamentoApiController : BaseApiController
+    public class AcompanhamentoAcaoService : IAcompanhamentoAcaoService
     {
-        private readonly IAcompanhamentoRepository _acompanhamentoRepository;
+        private readonly IAcompanhamentoAcaoRepository _acompanhamentoRepository;
 
-        public AcompanhamentoApiController(IAcompanhamentoRepository acompanhamentoRepository)
+        public AcompanhamentoAcaoService(IAcompanhamentoAcaoRepository acompanhamentoRepository)
         {
             _acompanhamentoRepository = acompanhamentoRepository;
         }
 
-        [Route("Post/Acompanhamento/{id}")]
-        [HttpPost]
-        public AcaoViewModel Post([FromUri] int id, [FromBody] AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
+        public AcaoViewModel SalvarAcompanhamentoComNotificaveis(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao, UserSgq usuarioLogado)
         {
             try
             {
-                var usuarioLogado = base.GetUsuarioLogado();
-
                 var listaNotificar = objAcompanhamentoAcao.ListaNotificar
                     .Select(x =>
                         new AcompanhamentoAcaoXNotificar()

@@ -34,6 +34,7 @@
     <Compile Include="AcaoRH\AcompanhamentoAcao.cs" />
     <Compile Include="AcaoRH\Acao.cs" />
     <Compile Include="AcaoRH\AcaoXNotificarAcao.cs" />
+    <Compile Include="AcaoRH\AcompanhamentoAcaoXNotificar.cs" />
     <Compile Include="AcaoRH\Email\EmailAcaoStatusAlteradoNotificados.cs" />
     <Compile Include="AcaoRH\Email\EmailAcaoStatusAlteradoResponsavel.cs" />
     <Compile Include="AcaoRH\Email\EmailAcaoVencidaNotificados.cs" />

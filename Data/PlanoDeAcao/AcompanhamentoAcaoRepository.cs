@@ -3,10 +3,10 @@ using Dominio;
 
 namespace Data.PlanoDeAcao
 {
-    public class AcompanhamentoRepository : IAcompanhamentoRepository
+    public class AcompanhamentoAcaoRepository : IAcompanhamentoAcaoRepository
     {
         public readonly SgqDbDevEntities _db;
-        public AcompanhamentoRepository(SgqDbDevEntities db)
+        public AcompanhamentoAcaoRepository(SgqDbDevEntities db)
         {
             _db = db;
         }

@@ -69,11 +69,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PlanoDeAcao\AcaoRepository.cs" />
-    <Compile Include="PlanoDeAcao\AcompanhamentoRepository.cs" />
+    <Compile Include="PlanoDeAcao\AcompanhamentoAcaoRepository.cs" />
     <Compile Include="PlanoDeAcao\EvidenciaConcluidaRepository.cs" />
     <Compile Include="PlanoDeAcao\EvidenciaNaoConformeRepository.cs" />
     <Compile Include="PlanoDeAcao\Repositorio\IAcaoRepository.cs" />
-    <Compile Include="PlanoDeAcao\Repositorio\IAcompanhamentoRepository.cs" />
+    <Compile Include="PlanoDeAcao\Repositorio\IAcompanhamentoAcaoRepository.cs" />
     <Compile Include="PlanoDeAcao\Repositorio\IEvidenciaConcluidaRepository.cs" />
     <Compile Include="PlanoDeAcao\Repositorio\IEvidenciaNaoConformeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

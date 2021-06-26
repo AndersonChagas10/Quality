@@ -42,9 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PlanoDeAcao\AcaoService.cs" />
+    <Compile Include="PlanoDeAcao\AcompanhamentoAcaoService.cs" />
     <Compile Include="PlanoDeAcao\EvidenciaConcluidaService.cs" />
     <Compile Include="PlanoDeAcao\EvidenciaNaoConformeService.cs" />
     <Compile Include="PlanoDeAcao\IAcaoService.cs" />
+    <Compile Include="PlanoDeAcao\IAcompanhamentoAcaoService.cs" />
     <Compile Include="PlanoDeAcao\IEvidenciaConcluidaService.cs" />
     <Compile Include="PlanoDeAcao\IEvidenciaNaoConformeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
