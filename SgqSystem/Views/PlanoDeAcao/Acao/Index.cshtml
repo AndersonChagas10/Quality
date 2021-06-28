@@ -629,11 +629,11 @@
                     $('#actionsEvidencies .fotosConcluidas').empty();
 
                     if (acao.evidenciaConcluida["ListaEvidencia"].length > 0) {
-                        listaEvidenciaConcluida.forEach(function (elemento, indice) {
+                        acao.evidenciaConcluida["ListaEvidencia"].forEach(function (elemento, indice) {
 
                             let html;
 
-                            if (evidenciaConcluida["base64"]) {
+                            if (elemento["base64"]) {
                                 html += `<div class="col-sm-4">
                                     <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
                                     <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${acao.evidenciaConcluida["ListaEvidencia"].length})">Excluir</button>
