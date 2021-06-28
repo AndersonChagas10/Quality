@@ -34,6 +34,7 @@ namespace DTO.PlanoDeAcao
         public string Responsavel { get; set; }
         public string Notificar { get; set; }
         public string Emissor { get; set; }
+        public int UsuarioLogado { get; set; }
         public int ParCluster_Id { get; set; }
         public int ParClusterGroup_Id { get; set; }
 

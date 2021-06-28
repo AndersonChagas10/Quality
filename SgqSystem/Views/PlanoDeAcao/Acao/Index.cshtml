@@ -463,7 +463,7 @@
                 {
                     "title": "Ações", "mData": null, "visible": true, mRender: function (data, type, full, cell) {
                         var id = full["Id"];
-                        var btnEditar = `<button class="btn btn-sm btn-info" onclick="abrirAcao('editar',${id})">Editar</button>`;
+                        var btnEditar = montarBotãoEditar(data, id)
                         var btnAcompanhar = `<button class="btn btn-sm btn-success" onclick="abrirAcao('acompanhamento',${id})">Acompanhar</button>`;
                         return btnEditar + btnAcompanhar;
                     }
@@ -528,6 +528,15 @@
                 { "title": "Ativo", "mData": "IsActive", "visible": false }
             ];
             return colunas;
+        }
+
+        function montarBotãoEditar(data, id) {
+
+            if (parseInt(data.Emissor) != data.UsuarioLogado) {
+                return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})" disabled>Editar</button>`;
+            }
+
+            return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})">Editar</button>`;
         }
 
         function montarCampo(data) {

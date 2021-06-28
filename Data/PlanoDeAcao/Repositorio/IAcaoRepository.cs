@@ -7,7 +7,7 @@ namespace Data.PlanoDeAcao.Repositorio
 {
     public interface IAcaoRepository
     {
-        IEnumerable<AcaoViewModel> ObterAcaoPorFiltro(DataCarrierFormularioNew form);
+        IEnumerable<AcaoViewModel> ObterAcao(DataCarrierFormularioNew form, UserSgq usuarioLogado);
         IEnumerable<AcaoViewModel> ObterStatusPorId(string status);
         AcaoFormViewModel ObterAcaoComVinculosPorId(int id);
         Acao ObterAcaoPorId(int id);

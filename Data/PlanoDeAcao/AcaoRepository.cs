@@ -20,7 +20,7 @@ namespace Data.PlanoDeAcao
             _db = db;
         }
 
-        public IEnumerable<AcaoViewModel> ObterAcaoPorFiltro(DataCarrierFormularioNew form)
+        public IEnumerable<AcaoViewModel> ObterAcao(DataCarrierFormularioNew form, UserSgq usuarioLogado)
         {
             string ParCompany = "";
             string ClusterGroup = "";
@@ -42,8 +42,8 @@ namespace Data.PlanoDeAcao
             if (form.ParStructure2_Ids.Length > 0) GrupoEmpresa = $"AND PS.ParStructureParent_Id IN({string.Join(",", form.ParStructure2_Ids)})";
 
             var query = $@"
-        DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
-        DECLARE @DATAFINAL   DATETIME =  '{ form.endDate.ToString("yyyy-MM-dd")} {" 23:59:00"}'
+         DECLARE @DATAINICIAL DATETIME = '{ form.startDate.ToString("yyyy-MM-dd")} {" 00:00:00"}'
+         DECLARE @DATAFINAL   DATETIME =  '{ form.endDate.ToString("yyyy-MM-dd")} {" 23:59:00"}'
 
          SELECT
          PAC.Id,
@@ -61,6 +61,7 @@ namespace Data.PlanoDeAcao
          PDS.Name AS ParDepartmentParent_Name,
          PCG.Id AS ParCargo_Id,
          PCG.Name AS ParCargo_Name,
+         PCXUS.UserSgq_Id as UsuarioLogado,
          PAC.Acao_Naoconformidade,
          PAC.AcaoText,
          FORMAT(PAC.DataEmissao, 'dd/MM/yyyy') as DataEmissao,
@@ -74,18 +75,18 @@ namespace Data.PlanoDeAcao
          PAC.Status,
          PAC.IsActive,
          US.FullName AS Responsavel_Name,
-        STUFF((SELECT DISTINCT
-			    CONCAT(', ', USGQ.FullName)
-		    FROM UserSGQ USGQ
-		    INNER JOIN PA.AcaoXNotificarAcao PAXNA
-			    ON PAXNA.UserSgq_Id = USGQ.Id
-			    AND PAXNA.Acao_Id = PAC.Id
-			    AND PAXNA.IsActive = 1
-			    AND USGQ.IsActive = 1
-		    FOR XML PATH (''))
-	    ,
-	    1, 2, ''
-	    ) AS Notificar
+            STUFF((SELECT DISTINCT
+			        CONCAT(', ', USGQ.FullName)
+		        FROM UserSGQ USGQ
+		        INNER JOIN PA.AcaoXNotificarAcao PAXNA
+			        ON PAXNA.UserSgq_Id = USGQ.Id
+			        AND PAXNA.Acao_Id = PAC.Id
+			        AND PAXNA.IsActive = 1
+			        AND USGQ.IsActive = 1
+		        FOR XML PATH (''))
+	        ,
+	        1, 2, ''
+	        ) AS Notificar
          FROM Pa.Acao PAC  WITH (NOLOCK)
          LEFT JOIN ParLevel1 PL1  WITH (NOLOCK)
          ON PL1.Id = PAC.ParLevel1_Id
@@ -95,25 +96,28 @@ namespace Data.PlanoDeAcao
          ON PL3.Id = PAC.ParLevel3_Id
          LEFT JOIN ParCompany PC  WITH (NOLOCK)
          ON PC.Id = PAC.ParCompany_Id
-        LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK)
-		ON PCXS.ParCompany_Id = PC.Id AND PCXS.Active = 1
-		INNER JOIN ParStructure PS WITH (NOLOCK)
-		ON PS.Id = PCXS.ParStructure_Id 
+         LEFT JOIN ParCompanyXStructure PCXS WITH (NOLOCK)
+		 ON PCXS.ParCompany_Id = PC.Id AND PCXS.Active = 1
+		 INNER JOIN ParStructure PS WITH (NOLOCK)
+		 ON PS.Id = PCXS.ParStructure_Id 
          LEFT JOIN ParDepartment PD  WITH (NOLOCK)
          ON PD.Id = PAC.ParDepartment_Id
-        LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
+         LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
          ON PDs.Id = PAC.ParDepartmentParent_Id
          LEFT JOIN ParCargo PCG  WITH (NOLOCK)
          ON PCG.Id = PAC.ParCargo_Id
          LEFT JOIN UserSgq US WITH (NOLOCK)
          ON US.Id = PAC.Responsavel
-        WHERE PAC.DataEmissao BETWEEN @DATAINICIAL AND @DATAFINAL
-        {ParCompany}
-        {ClusterGroup}
-        {ParCluster}
-        {ParLevel1}
-        {GrupoEmpresa}
-        {Regional}";
+         INNER JOIN ParCompanyXUserSgq PCXUS 
+         ON PCXUS.ParCompany_Id = PAC.ParCompany_Id
+	     and PCXUS.UserSgq_Id = {usuarioLogado.Id}
+         WHERE PAC.DataEmissao BETWEEN @DATAINICIAL AND @DATAFINAL
+         {ParCompany}
+         {ClusterGroup}
+         {ParCluster}
+         {ParLevel1}
+         {GrupoEmpresa}
+         {Regional}";
 
             using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
             {

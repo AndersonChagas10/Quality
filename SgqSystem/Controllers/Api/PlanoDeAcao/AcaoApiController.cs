@@ -29,7 +29,8 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         [HttpPost]
         public IEnumerable<AcaoViewModel> GetAcaoByFilter([FromBody] DataCarrierFormularioNew form)
         {
-            return _acaoRepository.ObterAcaoPorFiltro(form);
+            var usuarioLogado = base.GetUsuarioLogado();
+            return _acaoService.ObterAcaoPorFiltro(form, usuarioLogado);
         }
 
         [Route("GetByIdStatus/{status}")]
@@ -45,7 +46,6 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         {
             try
             {
-
                 //salva os campos comuns da ação
                 _acaoRepository.AtualizarValoresDaAcao(objAcao);
 
