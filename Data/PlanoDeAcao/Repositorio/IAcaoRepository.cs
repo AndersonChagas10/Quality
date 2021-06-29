@@ -9,7 +9,7 @@ namespace Data.PlanoDeAcao.Repositorio
     {
         IEnumerable<AcaoViewModel> ObterAcao(DataCarrierFormularioNew form, UserSgq usuarioLogado);
         IEnumerable<AcaoViewModel> ObterStatusPorId(string status);
-        AcaoFormViewModel ObterAcaoComVinculosPorId(int id);
+        AcaoFormViewModel ObterAcaoComVinculosPorId(int id, UserSgq usuarioLogado);
         Acao ObterAcaoPorId(int id);
         void VincularUsuariosASeremNotificadosAAcao(AcaoInputModel objAcao, List<int> listaInserir);
         void InativarUsuariosASeremNotificadosAAcao(AcaoInputModel objAcao, List<int> listaDeletar);

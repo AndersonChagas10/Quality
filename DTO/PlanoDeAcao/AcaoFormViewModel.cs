@@ -32,6 +32,8 @@ namespace DTO.PlanoDeAcao
         public string Referencia { get; set; }
         public string Responsavel { get; set; }
         public string Notificar { get; set; }
+        public string Emissor { get; set; }
+        public int UsuarioLogado { get; set; }
 
         [NotMapped]
         public List<string> EvidenciaNaoConformidade { get; set; }

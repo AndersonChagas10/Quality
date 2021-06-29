@@ -1,4 +1,5 @@
 ﻿using Data.PlanoDeAcao.Repositorio;
+using Dominio;
 using DTO;
 using DTO.PlanoDeAcao;
 using Services.PlanoDeAcao;
@@ -76,7 +77,8 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         [HttpGet]
         public AcaoFormViewModel GetById(int id)
         {
-            return _acaoRepository.ObterAcaoComVinculosPorId(id);
+            var usuarioLogado = base.GetUsuarioLogado();
+            return _acaoRepository.ObterAcaoComVinculosPorId(id, usuarioLogado);
         }
 
         private void PrepararEEnviarEmail(AcaoInputModel acao)

@@ -196,7 +196,7 @@ namespace Data.PlanoDeAcao
             }
         }
 
-        public AcaoFormViewModel ObterAcaoComVinculosPorId(int id)
+        public AcaoFormViewModel ObterAcaoComVinculosPorId(int id, UserSgq usuarioLogado)
         {
             var query = $@"
                 SELECT
@@ -215,6 +215,7 @@ namespace Data.PlanoDeAcao
                  PDS.Name AS ParDepartmentParent_Name,
                  PCG.Id AS ParCargo_Id,
                  PCG.Name AS ParCargo_Name,
+                 PCXUS.UserSgq_Id as UsuarioLogado,
                  PAC.Acao_Naoconformidade,
                  PAC.AcaoText,
                  PAC.DataEmissao,
@@ -224,6 +225,7 @@ namespace Data.PlanoDeAcao
                  PAC.Referencia,
                  PAC.Responsavel,
                  PAC.Prioridade,
+                 PAC.Emissor,
                  PAC.Status,
                  PAC.IsActive,
                  US.FullName AS Responsavel_Name
@@ -244,6 +246,9 @@ namespace Data.PlanoDeAcao
                  ON PCG.Id = PAC.ParCargo_Id
                  LEFT JOIN UserSgq US WITH (NOLOCK)
                  ON US.Id = PAC.Responsavel
+                 INNER JOIN ParCompanyXUserSgq PCXUS 
+                 ON PCXUS.ParCompany_Id = PAC.ParCompany_Id
+	             and PCXUS.UserSgq_Id = {usuarioLogado.Id}
                  WHERE PAC.Id = {id}";
 
             using (Factory factory = new Factory("DefaultConnection"))

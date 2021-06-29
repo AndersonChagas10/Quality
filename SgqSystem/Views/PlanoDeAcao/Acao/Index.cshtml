@@ -532,11 +532,11 @@
 
         function montarBotãoEditar(data, id) {
 
-            if (parseInt(data.Emissor) != data.UsuarioLogado) {
-                return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})" disabled>Editar</button>`;
+            if (parseInt(data.Emissor) == data.UsuarioLogado) {
+                return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})">Editar</button>`;
+                
             }
-
-            return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})">Editar</button>`;
+            return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})" disabled>Editar</button>`;
         }
 
         function montarCampo(data) {
@@ -908,6 +908,16 @@
         }
 
         var acaoEditar = {};
+
+        ativarOuDesativarStatus = (dados) => {
+
+            $('#txtAcompanhamento_Status').prop('disabled', true)
+
+            if (parseInt(dados.Emissor) == dados.UsuarioLogado) {
+                $('#txtAcompanhamento_Status').prop('disabled', false)
+            }
+        }
+
         function preencherModal(dados) {
             preencherInformacoesAcompanhamento(dados);
 
@@ -953,6 +963,7 @@
             $("#actionConclusionHour").val(dados.HoraConclusao);
             $("#actionReference").val(dados.Referencia);
             $("#status").val(dados.Status);
+            ativarOuDesativarStatus(dados)
 
             $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
             $("#txtAcaoText").text(dados.AcaoText);
