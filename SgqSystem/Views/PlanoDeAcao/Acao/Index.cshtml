@@ -514,7 +514,7 @@
                 { "title": "Não Conformidade/Ocorrência", "mData": "Acao_Naoconformidade", "visible": true },
                 { "title": "Ação", "mData": "AcaoText", "visible": true },
                 { "title": "Data Conclusão", "mData": "_DataConclusao", "visible": true },
-                { "title": "Emissor", "mData": "Emissor", "visible": true},
+                { "title": "Emissor", "mData": "EmissorNome", "visible": true},
                 { "title": "Hora Conclusão", "mData": "HoraConclusao", "visible": true },
                 { "title": "Referencia", "mData": "Referencia", "visible": true },
                 {"title": "Nome do Responsavel", "mData": "Responsavel_Name", "visible": true},
@@ -876,7 +876,7 @@
             $("input[name='Id']").val(dados.Id);
             $("#dataEmissaoPrint").text(dados._DataEmissao);
             $("#horaEmissaoPrint").text(dados.HoraEmissao);
-            $("#usuarioEmissorPrint").text(dados.Responsavel_Name);
+            $("#usuarioEmissorPrint").text(dados.EmissorNome);
             $("#actionParCompany_IdPrint").text(dados.ParCompany_Name);
             $("#actionParDepartment_IdPrint").text(dados.ParDepartment_Name);
             $("#actionParDepartmentParent_IdPrint").text(dados.ParDepartment_Name);
@@ -971,7 +971,7 @@
             $("input[name='Id']").val(dados.Id);
             $("#dataEmissao").text(dados._DataEmissao);
             $("#horaEmissao").text(dados.HoraEmissao);
-            $("#usuarioEmissor").text(dados.Responsavel_Name);
+            $("#usuarioEmissor").text(dados.EmissorNome);
             $("#actionParCompany_Id").text(dados.ParCompany_Name);
             $("#actionParDepartment_Id").text(dados.ParDepartment_Name);
             $("#actionParDepartmentParent_Id").text(dados.ParDepartmentParent_Name);

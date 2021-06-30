@@ -71,6 +71,12 @@ namespace Data.PlanoDeAcao
          PAC.Referencia,
          PAC.Responsavel,
          PAC.Emissor,
+            (SELECT US.FullName
+				FROM UserSgq US 
+				INNER JOIN Pa.Acao AC
+				ON AC.Emissor = US.Id
+				AND AC.iD = PAC.Id)
+			AS EmissorNome,
          PAC.Prioridade,
          PAC.Status,
          PAC.IsActive,
@@ -226,6 +232,12 @@ namespace Data.PlanoDeAcao
                  PAC.Responsavel,
                  PAC.Prioridade,
                  PAC.Emissor,
+                    (SELECT US.FullName
+				        FROM UserSgq US 
+				        INNER JOIN Pa.Acao AC
+				        ON AC.Emissor = US.Id
+				        AND AC.iD = PAC.Id)
+			        AS EmissorNome,
                  PAC.Status,
                  PAC.IsActive,
                  US.FullName AS Responsavel_Name

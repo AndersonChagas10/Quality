@@ -33,6 +33,7 @@ namespace DTO.PlanoDeAcao
         public int Responsavel { get; set; }
         public string Notificar { get; set; }
         public int Emissor { get; set; }
+        public string EmissorNome { get; set; }
         public int UsuarioLogado { get; set; }
 
         [NotMapped]
