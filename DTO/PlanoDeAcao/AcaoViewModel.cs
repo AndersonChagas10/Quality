@@ -33,7 +33,7 @@ namespace DTO.PlanoDeAcao
         public string Referencia { get; set; }
         public string Responsavel { get; set; }
         public string Notificar { get; set; }
-        public string Emissor { get; set; }
+        public int Emissor { get; set; }
         public int UsuarioLogado { get; set; }
         public int ParCluster_Id { get; set; }
         public int ParClusterGroup_Id { get; set; }
@@ -56,5 +56,6 @@ namespace DTO.PlanoDeAcao
         public string Status { get; set; }
         public bool IsActive { get; set; }
         public string Responsavel_Name { get; set; }
+        public bool PermiteEditar { get => Emissor == UsuarioLogado; }
     }
 }

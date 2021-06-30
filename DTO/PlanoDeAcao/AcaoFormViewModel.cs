@@ -30,9 +30,9 @@ namespace DTO.PlanoDeAcao
         public TimeSpan HoraEmissao { get; set; }
         public TimeSpan HoraConclusao { get; set; }
         public string Referencia { get; set; }
-        public string Responsavel { get; set; }
+        public int Responsavel { get; set; }
         public string Notificar { get; set; }
-        public string Emissor { get; set; }
+        public int Emissor { get; set; }
         public int UsuarioLogado { get; set; }
 
         [NotMapped]
@@ -71,5 +71,20 @@ namespace DTO.PlanoDeAcao
         public List<NotificarViewModel> ListaNotificarAcao { get; set; } = new List<NotificarViewModel>();
 
         public List<AcompanhamentoAcaoViewModel> ListaAcompanhamento { get; set; } = new List<AcompanhamentoAcaoViewModel>();
+        public bool PermiteEditar { get => EhEmissor(); }
+        public bool PermiteAlterarStatus { get => EhEmissor() || EhResponsavel(); }
+        public bool PermiteInserirAcompanhamento { get => EhVinculadoEmNotificacao() || EhEmissor() || EhResponsavel(); }
+
+        public bool EhEmissor() => Emissor == UsuarioLogado;
+        public bool EhResponsavel() => Responsavel == UsuarioLogado;
+
+        public bool EhVinculadoEmNotificacao()
+        {
+            if (ListaNotificarAcao != null)
+            {
+                return ListaNotificarAcao.Exists(l => l.Id == UsuarioLogado);
+            }
+            return false;
+        }
     }
 }

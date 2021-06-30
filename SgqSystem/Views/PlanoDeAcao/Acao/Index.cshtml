@@ -169,12 +169,12 @@
 
             <div class="col-xs-12">
                 <ul class="nav nav-tabs">
-                    <li>
+                    <li class="edicao">
                         <a href="#acao_edicao" data-toggle="tab" id="tabAcaoEdicao">
                             Edição
                         </a>
                     </li>
-                    <li>
+                    <li class="acompanhamento">
                         <a href="#acao_acompanhamento" data-toggle="tab" id="tabAcaoAcompanhamento">
                             Acompanhamento
                         </a>
@@ -312,14 +312,14 @@
                                         <div class="col-xs-12">
                                             <div class="form-group">
                                                 <label for="txtAcompanhamento_Observacao"><strong>Observação</strong></label>
-                                                <textarea id="txtAcompanhamento_Observacao" name="Observacao" class="form-control" style="resize: none; height: 100px;"></textarea>
+                                                <textarea id="txtAcompanhamento_Observacao" name="Observacao" class="form-control acompanhamento" style="resize: none; height: 100px;"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-xs-12">
                                             <label><strong>Notificar:</strong></label>
                                             <div class="form-inline">
-                                                <select id="selectAcompanhamento_Notificar" class="form-control"></select>
-                                                <button onclick="acompanhamento.inserirNaListaNotificar();" type="button" class="btn btn-primary">+</button>
+                                                <select id="selectAcompanhamento_Notificar" class="form-control acompanhamento"></select>
+                                                <button onclick="acompanhamento.inserirNaListaNotificar();" type="button" class="btn btn-primary acompanhamento">+</button>
                                             </div>
                                         </div>
                                         <div class="col-xs-12">
@@ -339,14 +339,14 @@
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label for="txtAcompanhamento_Status"><strong>Status</strong></label>
-                                        <select id="txtAcompanhamento_Status" name="Status" class="form-control">
+                                        <select id="txtAcompanhamento_Status" name="Status" class="form-control acompanhamento">
                                             <option value="">Selecione o status</option>
                                             <option value="1">Concluído</option>
                                             <option value="2">Cancelado</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <button class="btn btn-success" onclick="acompanhamento.salvarAcompanhamento()">Salvar</button>
+                                        <button class="btn btn-success acompanhamento" onclick="acompanhamento.salvarAcompanhamento()">Salvar</button>
                                     </div>
                                 </div>
                             </div>
@@ -463,9 +463,15 @@
                 {
                     "title": "Ações", "mData": null, "visible": true, mRender: function (data, type, full, cell) {
                         var id = full["Id"];
-                        var btnEditar = montarBotãoEditar(data, id)
+
+                        let btnEditar = () => {
+                            if (data.PermiteEditar) {
+                                return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})">Editar</button>`;
+                            }
+                            return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})" disabled>Editar</button>`;
+                        }
                         var btnAcompanhar = `<button class="btn btn-sm btn-success" onclick="abrirAcao('acompanhamento',${id})">Acompanhar</button>`;
-                        return btnEditar + btnAcompanhar;
+                        return btnEditar() + btnAcompanhar;
                     }
                 },
                 {
@@ -528,15 +534,6 @@
                 { "title": "Ativo", "mData": "IsActive", "visible": false }
             ];
             return colunas;
-        }
-
-        function montarBotãoEditar(data, id) {
-
-            if (parseInt(data.Emissor) == data.UsuarioLogado) {
-                return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})">Editar</button>`;
-                
-            }
-            return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})" disabled>Editar</button>`;
         }
 
         function montarCampo(data) {
@@ -909,17 +906,37 @@
 
         var acaoEditar = {};
 
-        ativarOuDesativarStatus = (dados) => {
+        permiteAlterarStatus = (dados) => {
 
             $('#txtAcompanhamento_Status').prop('disabled', true)
 
-            if (parseInt(dados.Emissor) == dados.UsuarioLogado) {
+            if (dados.PermiteAlterarStatus) {
                 $('#txtAcompanhamento_Status').prop('disabled', false)
+            }
+        }
+
+        permiteInserirAcompanhamento = (dados) => {
+
+            $('#formAcompanhamento .acompanhamento').prop('disabled', true)
+
+            if (dados.PermiteInserirAcompanhamento) {
+                $('#formAcompanhamento .acompanhamento').prop('disabled', false)
+            }
+        }
+
+        permiteEditar = (dados) => {
+            $('#tabAcaoEdicao').prop('disabled', true)
+            $('.edicao').addClass('disabled')
+
+            if (dados.PermiteEditar) {
+                $('#tabAcaoEdicao').prop('disabled', false)
+                $('.edicao').removeClass('disabled')
             }
         }
 
         function preencherModal(dados) {
             preencherInformacoesAcompanhamento(dados);
+            permiteInserirAcompanhamento(dados)
 
             acaoEditar = dados;
             limparAcao()
@@ -963,7 +980,8 @@
             $("#actionConclusionHour").val(dados.HoraConclusao);
             $("#actionReference").val(dados.Referencia);
             $("#status").val(dados.Status);
-            ativarOuDesativarStatus(dados)
+            permiteAlterarStatus(dados)
+            permiteEditar(dados)
 
             $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
             $("#txtAcaoText").text(dados.AcaoText);
@@ -1243,7 +1261,7 @@
                                     <td>${notificar["Id"]}</td>
                                     <td>${notificar["Nome"]}</td>
                                     <td>
-                                    <button class="btn btn-sm btn-danger" onclick="acompanhamento.removerDaListaNotificar(${i})">X</button>
+                                    <button class="btn btn-sm btn-danger acompanhamento" onclick="acompanhamento.removerDaListaNotificar(${i})">X</button>
                                     </td>
                                 </tr>`;
                     }
