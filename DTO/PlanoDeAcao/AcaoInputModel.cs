@@ -23,5 +23,6 @@ namespace DTO.PlanoDeAcao
 
         public string Prioridade { get; set; }
         public string Status { get; set; }
+        public int UsuarioLogado { get; set; }
     }
 }

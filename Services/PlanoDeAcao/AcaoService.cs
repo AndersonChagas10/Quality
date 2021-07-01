@@ -1,9 +1,12 @@
 ﻿using Data.PlanoDeAcao.Interfaces;
 using Data.PlanoDeAcao.Repositorio;
+using Dominio;
 using Dominio.AcaoRH;
 using Dominio.AcaoRH.Email;
+using DTO;
 using DTO.PlanoDeAcao;
 using SgqServiceBusiness.Controllers.RH;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Services.PlanoDeAcao
@@ -15,6 +18,11 @@ namespace Services.PlanoDeAcao
         public AcaoService(IAcaoRepository acaoRepository)
         {
             _acaoRepository = acaoRepository;
+        }
+
+        public IEnumerable<AcaoViewModel> ObterAcaoPorFiltro(DataCarrierFormularioNew form, UserSgq usuarioLogado)
+        {
+            return _acaoRepository.ObterAcao(form, usuarioLogado);
         }
 
         public void EnviarEmail(AcaoInputModel acao)
@@ -64,6 +72,6 @@ namespace Services.PlanoDeAcao
 
             if (listaDeletar.Count > 0)
                 _acaoRepository.InativarUsuariosASeremNotificadosAAcao(objAcao, listaDeletar);
-        }
+        }        
     }
 }
