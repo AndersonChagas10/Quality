@@ -21,8 +21,9 @@ namespace CrossCutting.IOC
             return new StandardKernel(
                 //new ApplicationNinjectModule(),
                 new DomainNinjectModule(),
-                new DataNinjectModule()
-                );
+                new DataNinjectModule(),
+                new AcaoRHNinjectModule()
+                ); ;
         }
     }
 }

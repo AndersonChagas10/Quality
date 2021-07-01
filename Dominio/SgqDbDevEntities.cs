@@ -9,6 +9,7 @@ namespace Dominio
     using Newtonsoft.Json;
     using System.Data.Entity.ModelConfiguration.Conventions;
     using Helper;
+    using Dominio.AcaoRH;
 
     public partial class SgqDbDevEntities : DbContext
     {
