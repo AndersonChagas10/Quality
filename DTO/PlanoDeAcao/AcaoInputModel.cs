@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using static Dominio.Enums.Enums;
 
 namespace DTO.PlanoDeAcao
 {
@@ -25,7 +26,33 @@ namespace DTO.PlanoDeAcao
         public List<AcaoXNotificarAcao> ListaNotificarAcao { get; set; }
 
         public string Prioridade { get; set; }
-        public string Status { get; set; }
         public int UsuarioLogado { get; set; }
+
+        private EAcaoStatus _status;
+        public EAcaoStatus Status
+        {
+            get
+            {
+                return _status;                
+            }
+            set
+            {
+                if (!DentroDoPrazo()) _status =  EAcaoStatus.Atrasada;
+                else if (value == EAcaoStatus.Em_Andamento && DentroDoPrazo()) _status = EAcaoStatus.Em_Andamento;
+                else
+                {
+                    _status = value;
+                }
+            }
+        }
+        
+
+        public bool DentroDoPrazo()
+        {
+            DateTime Hoje = DateTime.Now;
+            if (Hoje < DataConclusao) return true;
+            else if (Hoje == DataConclusao && Hoje.Hour <= HoraConclusao.Hours && Hoje.Minute < HoraConclusao.Minutes) return true;
+            return false;
+        }
     }
 }

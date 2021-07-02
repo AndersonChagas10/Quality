@@ -7,6 +7,7 @@ using DTO.PlanoDeAcao;
 using SgqServiceBusiness.Controllers.RH;
 using System.Collections.Generic;
 using System.Linq;
+using static Dominio.Enums.Enums;
 
 namespace Services.PlanoDeAcao
 {
@@ -32,7 +33,7 @@ namespace Services.PlanoDeAcao
             //4 Atrasada  - cenario 5 e 6
             //5 Cancelada - cenario 7 e 8
 
-            if (int.Parse(acao.Status) == 2)
+            if (acao.Status == EAcaoStatus.Em_Andamento)
             {
                 var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
 
@@ -43,7 +44,7 @@ namespace Services.PlanoDeAcao
                 EmailAcaoService.Send(emailNotificados);
             }
 
-            if (int.Parse(acao.Status) == 3)
+            if (acao.Status == EAcaoStatus.Concluída)
             {
                 var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
 
