@@ -6,18 +6,29 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Conformity.Application.Util;
 using Dominio;
 
 namespace SgqSystem.Controllers
 {
-    public class ParCompany2Controller : BaseController
+    public class ParCompany2Controller : BaseAuthenticatedController
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
+
+        private Conformity.Application.Core.Core.ParCompanyService _serviceCompany;
+
+        public ParCompany2Controller(ApplicationConfig applicationConfig
+            , Conformity.Application.Core.Core.ParCompanyService serviceCompany)
+            : base (applicationConfig)
+        {
+            _serviceCompany = serviceCompany;
+        }
 
         // GET: ParCompany2
         public ActionResult Index()
         {
-            return View(db.ParCompany.ToList());
+            var lista = View(_serviceCompany.GetAll());
+            return lista;
         }
 
         // GET: ParCompany2/Details/5
@@ -68,7 +79,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParCompany parCompany = db.ParCompany.Find(id);
+            Conformity.Domain.Core.Entities.ParCompany parCompany = _serviceCompany.GetById(id.Value);
             if (parCompany == null)
             {
                 return HttpNotFound();
@@ -81,14 +92,13 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id, Name, Description, IsActive, Initials, SIF, CompanyNumber, IpServer, DBServer, IntegrationId, ParCompany_Id, Identification")] ParCompany parCompany)
+        public ActionResult Edit([Bind(Include = "Id, Name, Description, IsActive, Initials, SIF, CompanyNumber, IpServer, DBServer, IntegrationId, ParCompany_Id, Identification")] Conformity.Domain.Core.Entities.ParCompany parCompany)
         {
-            ValidModelState(parCompany);
+            //ValidModelState(parCompany);
             if (ModelState.IsValid)
             {
-                parCompany.AlterDate = DateTime.Now;
-                db.Entry(parCompany).State = EntityState.Modified;
-                db.SaveChanges();
+                //parCompany.AlterDate = DateTime.Now;
+                _serviceCompany.UpdateWithLog(parCompany);
                 return RedirectToAction("Index");
             }
             return View(parCompany);
@@ -133,7 +143,7 @@ namespace SgqSystem.Controllers
 
         private void ValidModelState(ParCompany parCompany)
         {
-            if (!string.IsNullOrEmpty(parCompany.Identification) && parCompany.Identification.Length > 50) 
+            if (!string.IsNullOrEmpty(parCompany.Identification) && parCompany.Identification.Length > 50)
                 ModelState.AddModelError("Identification", "O campo deve conter apenas 50 caracteres!");
 
             //if (totalDeVinculos > 0 && parCompany.IsActive == false) 

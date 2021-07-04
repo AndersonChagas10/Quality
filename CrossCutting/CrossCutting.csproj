@@ -79,6 +79,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Conformity.Infra.IoC\Conformity.Infra.IoC.csproj">
+      <Project>{0ee680da-b832-4d97-ad8f-454ffa725340}</Project>
+      <Name>Conformity.Infra.IoC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{a75ec76c-9abf-4890-b82b-d8a048e6b7c5}</Project>
       <Name>Data</Name>
