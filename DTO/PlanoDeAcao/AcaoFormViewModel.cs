@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
+using static Dominio.Enums.Enums;
 
 namespace DTO.PlanoDeAcao
 {
@@ -45,7 +46,7 @@ namespace DTO.PlanoDeAcao
         [NotMapped]
         public List<string> EvidenciaAcaoConcluida { get; set; }
         public string Prioridade { get; set; }
-        public string Status { get; set; }
+        public int Status { get; set; }
         public bool IsActive { get; set; }
         public string Responsavel_Name { get; set; }
 
@@ -72,12 +73,30 @@ namespace DTO.PlanoDeAcao
         public List<NotificarViewModel> ListaNotificarAcao { get; set; } = new List<NotificarViewModel>();
 
         public List<AcompanhamentoAcaoViewModel> ListaAcompanhamento { get; set; } = new List<AcompanhamentoAcaoViewModel>();
-        public bool PermiteEditar { get => EhEmissor(); }
-        public bool PermiteAlterarStatus { get => EhEmissor() || EhResponsavel(); }
-        public bool PermiteInserirAcompanhamento { get => EhVinculadoEmNotificacao() || EhEmissor() || EhResponsavel(); }
 
-        public bool EhEmissor() => Emissor == UsuarioLogado;
-        public bool EhResponsavel() => Responsavel == UsuarioLogado;
+        public bool PermiteEditar
+        { 
+            get => EhEmissorComAcaoPendenteOuAndamento; 
+        }
+        public bool PermiteAlterarStatus 
+        { 
+            get => EhEmissorComAcaoPendenteOuAndamento && (Responsavel == UsuarioLogado || Responsavel == 0); 
+        }
+
+        public bool PermiteInserirAcompanhamento 
+        {
+            get 
+            {
+                if (!EhEmissorComAcaoPendenteOuAndamento) return false;
+
+                else
+                {
+                    return EhVinculadoEmNotificacao() || (Responsavel == UsuarioLogado || Responsavel == 0);
+                }
+            }   
+        }
+
+        public bool EhEmissorComAcaoPendenteOuAndamento => Emissor == UsuarioLogado && Status == (int)EAcaoStatus.Pendente || Status == (int)EAcaoStatus.Em_Andamento;
 
         public bool EhVinculadoEmNotificacao()
         {

@@ -299,7 +299,7 @@
                                     @*<button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>*@
 
                                     <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e iniciar acao</button>
-                                    <button class="btn btn-success" onclick="enviarFormularioEditarAcao('1')">Salvar e preencher depois</button>
+                                    <button class="btn btn-success preencherDepois" onclick="enviarFormularioEditarAcao('1')">Salvar e preencher depois</button>
                                 </div>
                             </form>
                         </div>
@@ -340,7 +340,6 @@
                                         <div class="form-group">
                                             <label for="txtAcompanhamento_Status"><strong>Status</strong></label>
                                             <select id="txtAcompanhamento_Status" name="Status" class="form-control acompanhamento">
-                                                <option value="">Selecione o status</option>
                                                 <option value="3">Concluído</option>
                                                 <option value="5">Cancelado</option>
                                             </select>
@@ -803,7 +802,6 @@
                 success: function (dados) {
                     preencherModal(dados, isVisualizar);
                     buscarFotos(id, isVisualizar);
-
                     closeLoader();
                 },
                 error: function (e) {
@@ -939,6 +937,14 @@
             }
         }
 
+        desabilitarBotaoSalvarEPreencherDepois = (dados) => {
+
+            $('.preencherDepois').prop('disabled', false)
+
+            if(dados.Status == 2)
+            $('.preencherDepois').prop('disabled', true)
+        }
+
         function preencherModal(dados) {
             preencherInformacoesAcompanhamento(dados);
             permiteInserirAcompanhamento(dados)
@@ -987,6 +993,7 @@
             $("#status").val(dados.Status);
             permiteAlterarStatus(dados)
             permiteEditar(dados)
+            desabilitarBotaoSalvarEPreencherDepois(dados)
 
             $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
             $("#txtAcaoText").text(dados.AcaoText);

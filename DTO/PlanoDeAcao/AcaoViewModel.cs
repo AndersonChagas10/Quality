@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using static Dominio.Enums.Enums;
 
 namespace DTO.PlanoDeAcao
 {
@@ -54,9 +55,9 @@ namespace DTO.PlanoDeAcao
         [NotMapped]
         public List<string> EvidenciaAcaoConcluida { get; set; }
         public string Prioridade { get; set; }
-        public string Status { get; set; }
+        public int Status { get; set; }
         public bool IsActive { get; set; }
         public string Responsavel_Name { get; set; }
-        public bool PermiteEditar { get => Emissor == UsuarioLogado; }
+        public bool PermiteEditar { get => Emissor == UsuarioLogado  && Status == (int)EAcaoStatus.Pendente || Status == (int)EAcaoStatus.Em_Andamento; }
     }
 }
