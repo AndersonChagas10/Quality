@@ -3,6 +3,7 @@ using Dominio;
 using DTO;
 using DTO.PlanoDeAcao;
 using Services.PlanoDeAcao;
+using SgqServiceBusiness.Controllers.RH;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -51,6 +52,72 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                 _acaoRepository.AtualizarValoresDaAcao(objAcao);
 
                 //salva/deleta a listagem de usuario no campo notificar
+                AtualizarUsuariosASeremNotificadosDaAcao(objAcao);
+
+                //salva/deleta a listagem de imagens de evidencias
+                _evidenciaNaoConformeService.RetornarListaDeEvidencias(objAcao);
+
+                _evidenciaConcluidaService.RetornarListaDeEvidenciasConcluidas(objAcao);
+
+                if (objAcao.Responsavel != null)
+                {
+                    PrepararEEnviarEmail(objAcao);
+                }
+
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+            return new AcaoViewModel() { Id = objAcao.Id };
+        }
+
+        [Route("SalvarAcao")]
+        [HttpPost]
+        public void SalvarAcao([FromBody] Acao objAcao)
+        {
+            try
+            {
+                AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
+                appColetaBusiness.SaveAction(objAcao);
+
+                //salva os campos comuns da ação
+                //_acaoRepository.AtualizarValoresDaAcao(objAcao);
+
+                //salva/deleta a listagem de usuario no campo notificar
+                //AtualizarUsuariosASeremNotificadosDaAcao(objAcao);
+
+                ////salva/deleta a listagem de imagens de evidencias
+                //_evidenciaNaoConformeService.RetornarListaDeEvidencias(objAcao);
+
+                //_evidenciaConcluidaService.RetornarListaDeEvidenciasConcluidas(objAcao);
+
+                //if (objAcao.Responsavel != null)
+                //{
+                //    PrepararEEnviarEmail(objAcao);
+                //}
+
+            }
+            catch (Exception e)
+            {
+                //
+            }
+
+            //return new AcaoViewModel() { Id = objAcao.Id };
+        }
+
+        [Route("AtualizarNotificacoesEvidenciasReponsavel")]
+        [HttpPost]
+        public AcaoViewModel AtualizarNotificacoesEvidenciasReponsavel([FromBody]  AcaoInputModel objAcao)
+        {
+            try
+            {
+
+                //salva os campos comuns da ação
+                //_acaoRepository.AtualizarValoresDaAcao(objAcao);
+
+               // salva / deleta a listagem de usuario no campo notificar
                 AtualizarUsuariosASeremNotificadosDaAcao(objAcao);
 
                 //salva/deleta a listagem de imagens de evidencias

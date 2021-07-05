@@ -404,6 +404,26 @@
                                                 <label><strong>Centro de Custo:</strong></label>
                                                 <button type="button"
                                                         data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parDepartment_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParDepartment", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParDepartmentDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                                <select class="form-control" name="parDepartment_Ids" multiple style="width:100%;">
+                                                    @if (ViewBag.ShowParDepartmentDefault != null)
+                                                    {
+                                                        <option value="">@ViewBag.ShowParDepartmentDefault</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="col-sm-12 p-0" style="padding-left:0px;">
+                                                <label><strong>Seção/Atividade:</strong></label>
+                                                <button type="button"
+                                                        data-filtroselect3-btn
                                                         data-filtroselect3-select="select[name=parSecao_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParDepartmentFilho", "api/Formulario")"
                                                         data-filtroselect3-default-select="@ViewBag.ShowParSecaoDefault">
@@ -413,10 +433,10 @@
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                 <select class="form-control" name="parSecao_Ids" multiple style="width:100%;"></select>
                                             </div>
-                                        </div>
+                                        </div> 
                                         <div class="col-sm-6">
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
-                                                <label><strong>Seção/Atividade:</strong></label>
+                                                <label><strong>Item/Cargo</strong></label>
                                                 <button type="button"
                                                         data-filtroselect3-btn
                                                         data-filtroselect3-select="select[name=parCargo_Ids]"
@@ -431,30 +451,16 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
-                                                <label><strong>Item/Cargo:</strong></label>
+                                                <label><strong>Indicador/Origem:</strong></label>
                                                 <button type="button" data-filtroselect3-btn
                                                         data-filtroselect3-select="select[name=parLevel1_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParLevel1", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel1Default">
-                                                    Abrir
-                                                </button>
-                                            </div>
-                                            <div class="col-sm-12 p-0" style="padding-left:0px;">
-                                                <select class="form-control" name="parLevel1_Ids" multiple style="width:100%;"></select>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="col-sm-12 p-0" style="padding-left:0px;">
-                                                <label><strong>Indicador/Origem:</strong></label>
-                                                <button type="button" data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parLevel2_Ids]"
-                                                        data-filtroselect3-url="@Url.Action("GetFilteredParLevel2", "api/Formulario")"
                                                         data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default">
                                                     Abrir
                                                 </button>
                                             </div>
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
-                                                <select class="form-control" name="parLevel2_Ids" multiple style="width:100%;"></select>
+                                                <select class="form-control" name="parLevel1_Ids" multiple style="width:100%;"></select>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -489,67 +495,67 @@
                                     <hr />
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia</strong></label>
-                                            <textarea id="txtAcao_Naoconformidade" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></textarea>
+                                            <label for="txtNovaAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia</strong></label>
+                                            <textarea id="txtNovaAcao_Naoconformidade" name="NovaAcao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></textarea>
                                         </div>
                                     </div>
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label for="txtAcaoText"><strong>Ação</strong></label>
-                                            <textarea id="txtAcaoText" name="AcaoText" class="form-control" style="resize: none; height: 100px;"></textarea>
+                                            <label for="txtNovaAcaoText"><strong>Ação</strong></label>
+                                            <textarea id="txtNovaAcaoText" name="NovaAcaoText" class="form-control" style="resize: none; height: 100px;"></textarea>
                                         </div>
                                     </div>
                                     <hr />
                                     <div class="col-xs-12">
                                         <strong>Evidencias de Não conformidade</strong>
-                                        <input type="file" id="uploadPhoto" onchange="uploadFile(event,'evidencia')" />
+                                        <input type="file" id="novaAcaoUploadPhoto" onchange="uploadFile(event,'evidencia')" />
                                     </div>
                                     <div class="col-xs-12">
-                                        <div id="divEvidencias" class="row">
+                                        <div id="divNovaAcaoEvidencias" class="row">
                                             <div class="fotos"></div>
                                         </div>
                                     </div>
                                     <hr />
 
                                     <div class="col-xs-12">
-                                        <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
+                                        <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgirNovaAcao" />
                                     </div>
-                                    <div id="evidenciasConcluidasEdicao" class="col-xs-12" hidden="hidden">
+                                    <div id="evidenciasConcluidasNovaAcao" class="col-xs-12" hidden="hidden">
                                         <p>Evidencias da Ação Concluida</p>
-                                        <input type="file" id="uploadPhotox" onchange="uploadFile(event, 'evidenciaConcluida')" />
+                                        <input type="file" id="novaAcaoUploadPhotox" onchange="uploadFile(event, 'evidenciaConcluida')" />
                                         <div id="actionsEvidencies">
                                             <div class="fotosConcluidas"></div>
                                         </div>
                                     </div>
                                     <div class="col-xs-4 vereagir">
                                         <label><strong>Data da conclusão:</strong></label>
-                                        <input id="actionConclusionDate" name="DataConclusao" type="date" min="2021-05-19" class="form-control">
+                                        <input id="actionConclusionDateNovaAcao" name="DataConclusaoNovaAcao" type="date" min="2021-05-19" class="form-control">
                                     </div>
                                     <div class="col-xs-4 vereagir">
                                         <label><strong>Hora da conclusão:</strong></label>
-                                        <input id="actionConclusionHour" name="HoraConclusao" type="time" class="form-control">
+                                        <input id="actionConclusionHourNovaAcao" name="HoraConclusaoNovaAcao" type="time" class="form-control">
                                     </div>
                                     <div class="col-xs-4">
                                         <label><strong>Referencia:</strong></label>
-                                        <input id="actionReference" name="Referencia" type="text" class="form-control">
+                                        <input id="actionReferenceNovaAcao" name="ReferenciaNovaAcao" type="text" class="form-control">
                                     </div>
                                     <div class="col-xs-4">
                                         <label><strong>Responsavel:</strong></label>
-                                        <select id="selectResponsavel" name="Responsavel" class="form-control"></select>
+                                        <select id="selectResponsavelNovaAcao" name="ResponsavelNovaAcao" class="form-control"></select>
                                     </div>
                                     <div class="col-xs-4 divActionPriority">
                                         <label><strong>Prioridade:</strong></label>
-                                        <select id="selectPrioridade" name="Prioridade" class="form-control"></select>
+                                        <select id="selectPrioridadeNovaAcao" name="PrioridadeNovaAcao" class="form-control"></select>
                                     </div>
                                     <div class="col-xs-12">
                                         <label><strong>Notificar:</strong></label>
                                         <div class="form-inline">
-                                            <select id="selectNotificarAcao" class="form-control"></select>
+                                            <select id="selectNotificarAcaoNovaAcao" name="NotificarAcaoNovaAcao" class="form-control" style="width: 23%;"></select>
                                             <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
                                         </div>
                                     </div>
                                     <div class="col-xs-12">
-                                        <table id="tableNotificarAcao" class="table table-striped" style="font-size:14px;">
+                                        <table id="tableNotificarAcaoNovaAcao" class="table table-striped" style="font-size:14px;">
                                             <thead>
                                                 <tr>
                                                     <th>Id</th>
@@ -567,67 +573,11 @@
 
                                 @*<button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>*@
 
-                                <button class="btn btn-success" onclick="enviarFormularioEditarAcao('1')">Salvar e iniciar acao</button>
-                                <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e preencher depois</button>
+                                <button class="btn btn-success" onclick="salvarNovaAcao('1')">Salvar e iniciar acao</button>
+                                <button class="btn btn-success" onclick="salvarNovaAcao('2')">Salvar e preencher depois</button>
                             </div>
                         </form>
-                    </div>
-
-                    @*<div class="tab-pane active" id="acao_acompanhamento">
-                        <form id="formAcompanhamento">
-                            <div class="row">
-                                <div class="col-sm-8">
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <div class="form-group">
-                                                <label for="txtAcompanhamento_Observacao"><strong>Observação</strong></label>
-                                                <textarea id="txtAcompanhamento_Observacao" name="Observacao" class="form-control acompanhamento" style="resize: none; height: 100px;"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-12">
-                                            <label><strong>Notificar:</strong></label>
-                                            <div class="form-inline">
-                                                <select id="selectAcompanhamento_Notificar" class="form-control acompanhamento"></select>
-                                                <button onclick="acompanhamento.inserirNaListaNotificar();" type="button" class="btn btn-primary acompanhamento">+</button>
-                                            </div>
-                                        </div>
-                                        <div class="col-xs-12">
-                                            <table id="tableAcompanhamento_Notificar" class="table table-striped" style="font-size:14px;">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Id</th>
-                                                        <th>Nome</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label for="txtAcompanhamento_Status"><strong>Status</strong></label>
-                                        <select id="txtAcompanhamento_Status" name="Status" class="form-control acompanhamento">
-                                            <option value="">Selecione o status</option>
-                                            <option value="1">Concluído</option>
-                                            <option value="2">Cancelado</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-success acompanhamento" onclick="acompanhamento.salvarAcompanhamento()">Salvar</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-12" id="Acompanhamento_Listagem">
-                            </div>
-
-                            <div class="modal-footer">
-                                <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
-                            </div>
-                        </form>
-                    </div>*@
+                    </div> 
                 </div>
             </div>
 
@@ -1278,7 +1228,7 @@
             }
         }
 
-        function imprimirListaNotificarAcao(lista) {
+        function imprimirListaNotificarAcao(lista){
             if (lista) {
                 var html = "";
                 for (var i = 0; i < lista.length; i++) {
@@ -1326,6 +1276,88 @@
             validarStatus(form, status);
 
             const url = '@Url.Action("Post", "api/AcaoApi")';
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: JSON.stringify(form),
+                contentType: "application/json",
+                success: function (data) {
+                    openMessageModal("Concluido", "Ação salva com sucesso");
+                    $("#btnClose").trigger('click');
+                    setTimeout(function () {
+                        enviarFiltro(null);
+                    }, 3000);
+
+                },
+                error: function () {
+                    console.log('erro ao salvar ação');
+                }
+            });
+        }
+
+        //Formulário
+        function salvarNovaAcao(status) {
+
+            event.preventDefault();
+            
+            var form = $("#formNovaAcao").serializeObject();
+
+            validarStatus(form, status); 
+            salvar(form);
+
+            //AtualizarNotificacoesEvidenciasReponsavel(form);
+           
+        }
+
+        function salvar(form) {
+
+            var objAcao = {};
+
+            objAcao["ParCompany_Id"] =  form["parCompany_Ids"]
+            objAcao["ParDepartment_Id"] =  form["parDepartment_Ids"]
+            objAcao["ParDepartmentParent_Id"] =  form["parSecao_Ids"]
+            objAcao["ParCargo_Id"] =  form["parCargo_Ids"]
+            objAcao["ParLevel1_Id"] =  form["parLevel1_Ids"]
+            objAcao["ParLevel2_Id"] =  form["parLevel2_Ids"]
+            objAcao["ParLevel3_Id"] =  form["parLevel3_Ids"]
+            objAcao["Acao_Naoconformidade"] =  form["NovaAcao_Naoconformidade"]
+            objAcao["AcaoText"] =  form["NovaAcaoText"]
+            objAcao["DataConclusao"] =  form["DataConclusaoNovaAcao"]
+            objAcao["Referencia"] =  form["ReferenciaNovaAcao"]
+            objAcao["Responsavel"] =  form["ResponsavelNovaAcao"]
+            objAcao["Prioridade"] =  form["PrioridadeNovaAcao"]
+            objAcao["HoraConclusao"] =  form["HoraConclusaoNovaAcao"]
+            objAcao["Notificar"] =  form["NotificarAcaoNovaAcao"] 
+
+             const url = '@Url.Action("SalvarAcao", "api/AcaoApi")';
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: JSON.stringify(objAcao),
+                contentType: "application/json",
+                success: function (data) {
+                    openMessageModal("Concluido", "Ação salva com sucesso");
+                    $("#btnClose").trigger('click');
+                    setTimeout(function () {
+                        enviarFiltro(null);
+                    }, 3000);
+
+                },
+                error: function () {
+                    console.log('erro ao salvar ação');
+                }
+            });
+        }
+
+        function AtualizarNotificacoesEvidenciasReponsavel(form) {
+
+            form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
+            form["ListaEvidencia"] = acao.evidenciaConcluida["ListaEvidencia"];
+            form["ListaEvidenciaConcluida"] = acao.evidenciasNaoConforme["ListaEvidencia"];
+           
+             const url = '@Url.Action("AtualizarNotificacoesEvidenciasReponsavel", "api/AcaoApi")';
 
             $.ajax({
                 url: url,
