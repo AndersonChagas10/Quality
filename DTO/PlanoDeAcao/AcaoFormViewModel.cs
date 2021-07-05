@@ -47,6 +47,7 @@ namespace DTO.PlanoDeAcao
         public List<string> EvidenciaAcaoConcluida { get; set; }
         public string Prioridade { get; set; }
         public int Status { get; set; }
+        public string StatusName { get { return Enum.GetName(typeof(Dominio.Enums.Enums.EAcaoStatus), Status); } }
         public bool IsActive { get; set; }
         public string Responsavel_Name { get; set; }
 
@@ -80,23 +81,27 @@ namespace DTO.PlanoDeAcao
         }
         public bool PermiteAlterarStatus 
         { 
-            get => EhEmissorComAcaoPendenteOuAndamento && (Responsavel == UsuarioLogado || Responsavel == 0); 
+            get => EhEmissorComAcaoPendenteOuAndamento && EhResponsavel; 
         }
 
         public bool PermiteInserirAcompanhamento 
         {
             get 
             {
-                if (!EhEmissorComAcaoPendenteOuAndamento) return false;
+                if (!EhEmissorComAcaoEmAndamentoOuAtrasada) return false;
 
                 else
                 {
-                    return EhVinculadoEmNotificacao() || (Responsavel == UsuarioLogado || Responsavel == 0);
+                    return EhVinculadoEmNotificacao() || EhResponsavel;
                 }
             }   
         }
 
+        //Lógica das Regras
+        public bool EhResponsavel => Responsavel == UsuarioLogado || Responsavel == 0;
+
         public bool EhEmissorComAcaoPendenteOuAndamento => Emissor == UsuarioLogado && Status == (int)EAcaoStatus.Pendente || Status == (int)EAcaoStatus.Em_Andamento;
+        public bool EhEmissorComAcaoEmAndamentoOuAtrasada => Emissor == UsuarioLogado && Status == (int)EAcaoStatus.Em_Andamento || Status == (int)EAcaoStatus.Atrasada;
 
         public bool EhVinculadoEmNotificacao()
         {

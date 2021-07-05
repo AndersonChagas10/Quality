@@ -1166,7 +1166,6 @@
             });
 
         function preencherInformacoesAcompanhamento(dados) {
-
             acompanhamento.objeto = {
                 AcaoId: dados.Id,
                 ListaNotificar: dados.ListaNotificarAcao
@@ -1177,6 +1176,11 @@
                 var html = `<div>`;
                 for (var i = 0; i < dados.ListaAcompanhamento.length; i++) {
                     var objAcompanhamento = dados.ListaAcompanhamento[i];
+
+                    if (dados.PermiteAlterarStatus == false) {
+                        objAcompanhamento["StatusName"] = dados.StatusName
+                    }
+
 
                     var htmlTabelaNotificar = acompanhamento.montarHtmlTabelaListaNotificar(objAcompanhamento['ListaNotificar']);
 
