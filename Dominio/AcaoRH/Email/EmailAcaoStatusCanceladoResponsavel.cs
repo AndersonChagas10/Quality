@@ -70,7 +70,7 @@ namespace Dominio.AcaoRH.Email
 
         public void MontarTo(Acao acao)
         {
-            this.To = new string[] { acao.ResponsavelUser.Email, "alyne.gois@grtsolucoes.com.br" };
+            this.To = new string[] { acao.ResponsavelUser.Email };
         }
     }
 }

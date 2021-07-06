@@ -1065,7 +1065,7 @@
             form["ListaEvidencia"] = acao.evidenciaConcluida["ListaEvidencia"];
             form["ListaEvidenciaConcluida"] = acao.evidenciasNaoConforme["ListaEvidencia"];
 
-            form.status = status
+            form.status = status;
 
             const url = '@Url.Action("Post", "api/AcaoApi")';
 
@@ -1190,7 +1190,6 @@
                     if (dados.PermiteAlterarStatus == false) {
                         objAcompanhamento["StatusName"] = dados.StatusName
                     }
-
 
                     var htmlTabelaNotificar = acompanhamento.montarHtmlTabelaListaNotificar(objAcompanhamento['ListaNotificar']);
 

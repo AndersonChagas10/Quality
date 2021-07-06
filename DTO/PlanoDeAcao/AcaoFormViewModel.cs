@@ -91,7 +91,6 @@ namespace DTO.PlanoDeAcao
             }   
         }
 
-        //Lógica das Regras
         public bool EhResponsavel => Responsavel == UsuarioLogado || Responsavel == 0;
         public bool EhEmissor => Emissor == UsuarioLogado;
 

@@ -34,8 +34,14 @@ namespace DTO.PlanoDeAcao
             }
             set
             {
-                if (!DentroDoPrazo()) _status =  EAcaoStatus.Atrasada;
-                else if (value == EAcaoStatus.Em_Andamento && DentroDoPrazo()) _status = EAcaoStatus.Em_Andamento;
+                if (!DentroDoPrazo())
+                {
+                    _status = EAcaoStatus.Atrasada;
+                }
+                else if (value == EAcaoStatus.Em_Andamento && DentroDoPrazo())
+                {
+                    _status = EAcaoStatus.Em_Andamento;
+                }
                 else
                 {
                     _status = value;
@@ -47,8 +53,16 @@ namespace DTO.PlanoDeAcao
         public bool DentroDoPrazo()
         {
             DateTime Hoje = DateTime.Now;
-            if (Hoje < DataConclusao) return true;
-            else if (Hoje == DataConclusao && Hoje.Hour <= HoraConclusao.Hours && Hoje.Minute < HoraConclusao.Minutes) return true;
+            if (Hoje < DataConclusao)
+            {
+                return true;
+            }
+            else if (Hoje == DataConclusao 
+                && Hoje.Hour <= HoraConclusao.Hours 
+                && Hoje.Minute < HoraConclusao.Minutes)
+            {
+                return true;
+            }
             return false;
         }
     }
