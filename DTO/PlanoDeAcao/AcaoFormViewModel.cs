@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
+using static Dominio.Enums.Enums;
 
 namespace DTO.PlanoDeAcao
 {
@@ -42,7 +43,8 @@ namespace DTO.PlanoDeAcao
 
         public List<string> EvidenciaAcaoConcluida { get; set; }
         public string Prioridade { get; set; }
-        public string Status { get; set; }
+        public int Status { get; set; }
+        public string StatusName { get { return Enum.GetName(typeof(Dominio.Enums.Enums.EAcaoStatus), Status); } }
         public bool IsActive { get; set; }
         public string Responsavel_Name { get; set; }
 
@@ -66,12 +68,31 @@ namespace DTO.PlanoDeAcao
         public List<NotificarViewModel> ListaNotificar { get; set; } = new List<NotificarViewModel>();
         public List<NotificarViewModel> ListaNotificarAcao { get; set; } = new List<NotificarViewModel>();
         public List<AcompanhamentoAcaoViewModel> ListaAcompanhamento { get; set; } = new List<AcompanhamentoAcaoViewModel>();
-        public bool PermiteEditar { get => EhEmissor(); }
-        public bool PermiteAlterarStatus { get => EhEmissor() || EhResponsavel(); }
-        public bool PermiteInserirAcompanhamento { get => EhVinculadoEmNotificacao() || EhEmissor() || EhResponsavel(); }
 
-        private bool EhEmissor() => Emissor == UsuarioLogado;
-        private bool EhResponsavel() => Responsavel == UsuarioLogado;
+        public bool PermiteEditar
+        { 
+            get => EhEmissor && (Status == (int)EAcaoStatus.Pendente || Status == (int)EAcaoStatus.Em_Andamento);
+        }
+        public bool PermiteAlterarStatus 
+        { 
+            get => (EhEmissor && Status == (int)EAcaoStatus.Em_Andamento) && EhResponsavel; 
+        }
+
+        public bool PermiteInserirAcompanhamento 
+        {
+            get 
+            {
+                if (!EhEmissor && (Status == (int)EAcaoStatus.Em_Andamento || Status == (int)EAcaoStatus.Atrasada)) return false;
+
+                else
+                {
+                    return EhVinculadoEmNotificacao() || EhResponsavel;
+                }
+            }   
+        }
+
+        public bool EhResponsavel => Responsavel == UsuarioLogado || Responsavel == 0;
+        public bool EhEmissor => Emissor == UsuarioLogado;
 
         private bool EhVinculadoEmNotificacao()
         {
