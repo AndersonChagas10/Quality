@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Dominio.ParCompany>
+﻿@model IEnumerable<Conformity.Domain.Core.Entities.Parametrizacao.ParCompany>
 
 @{
     ViewBag.Title = Resources.Resource.company;
@@ -48,9 +48,6 @@
                                                 @Resources.Resource.description
                                             </th>
                                             <th>
-                                                @Resources.Resource.add_date
-                                            </th>
-                                            <th>
                                                 @Resources.Resource.is_active
                                             </th>
                                             <th></th>
@@ -66,9 +63,6 @@
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Description)
-                                                </td>
-                                                <td>
-                                                    @Html.DisplayFor(modelItem => item.AddDate)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.IsActive)

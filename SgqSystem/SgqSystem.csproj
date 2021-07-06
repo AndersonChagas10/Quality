@@ -403,6 +403,7 @@
     <Compile Include="Controllers\Api\Volume\VolumeController.cs" />
     <Compile Include="Controllers\Api\VerificacaoTipificacao\VTVerificacaoTipificacaoApiController.cs" />
     <Compile Include="Controllers\AppScriptsController.cs" />
+    <Compile Include="Controllers\BaseAuthenticatedController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParDepartmentGroupsController.cs" />
     <Compile Include="Controllers\CadastrosGerais\ParReasonController.cs" />
@@ -2253,7 +2254,6 @@
     <Content Include="Views\ParStructureGroup\Create.cshtml" />
     <Content Include="Views\ParStructureGroup\Edit.cshtml" />
     <Content Include="Views\ParCompany2\Create.cshtml" />
-    <Content Include="Views\ParCompany2\Delete.cshtml" />
     <Content Include="Views\ParCompany2\Details.cshtml" />
     <Content Include="Views\ParCompany2\Edit.cshtml" />
     <Content Include="Views\ParCompany2\Index.cshtml" />
@@ -2486,6 +2486,18 @@
     <ProjectReference Include="..\ADOFactory\ADOFactory.csproj">
       <Project>{31925fca-e0f6-428d-9a7d-59ca8879d6f8}</Project>
       <Name>ADOFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Conformity.Application.Core\Conformity.Application.Core.csproj">
+      <Project>{e8bcc5c7-2d4c-465a-af39-cf17c9e1fb64}</Project>
+      <Name>Conformity.Application.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Conformity.Application.Helper\Conformity.Application.Helper.csproj">
+      <Project>{a8dee7bc-072f-437f-b9ba-8de3ec7b46dd}</Project>
+      <Name>Conformity.Application.Helper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Conformity.Domain.Core\Conformity.Domain.Core.csproj">
+      <Project>{1ad13509-f817-4551-ac84-1d1090dc1037}</Project>
+      <Name>Conformity.Domain.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\CrossCutting\CrossCutting.csproj">
       <Project>{0896bc38-df38-4e39-adf9-db1f9910bfe6}</Project>

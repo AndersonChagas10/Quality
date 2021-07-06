@@ -6,18 +6,28 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Dominio;
+using Conformity.Application.Util;
+using Conformity.Domain.Core.Entities.Parametrizacao;
 
 namespace SgqSystem.Controllers
 {
-    public class ParCompany2Controller : BaseController
+    public class ParCompany2Controller : BaseAuthenticatedController
     {
-        private SgqDbDevEntities db = new SgqDbDevEntities();
+
+        private Conformity.Application.Core.Parametrizacao.ParCompanyService _serviceCompany;
+
+        public ParCompany2Controller(ApplicationConfig applicationConfig
+            , Conformity.Application.Core.Parametrizacao.ParCompanyService serviceCompany)
+            : base (applicationConfig)
+        {
+            _serviceCompany = serviceCompany;
+        }
 
         // GET: ParCompany2
         public ActionResult Index()
         {
-            return View(db.ParCompany.ToList());
+            var lista = View(_serviceCompany.GetAll());
+            return lista;
         }
 
         // GET: ParCompany2/Details/5
@@ -27,7 +37,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParCompany parCompany = db.ParCompany.Find(id);
+            ParCompany parCompany = _serviceCompany.GetById(id.Value);
             if (parCompany == null)
             {
                 return HttpNotFound();
@@ -52,9 +62,7 @@ namespace SgqSystem.Controllers
             ValidModelState(parCompany);
             if (ModelState.IsValid)
             {
-                parCompany.AddDate = DateTime.Now;
-                db.ParCompany.Add(parCompany);
-                db.SaveChanges();
+                _serviceCompany.Add(parCompany);
                 return RedirectToAction("Index");
             }
 
@@ -68,7 +76,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParCompany parCompany = db.ParCompany.Find(id);
+            ParCompany parCompany = _serviceCompany.GetById(id.Value);
             if (parCompany == null)
             {
                 return HttpNotFound();
@@ -81,59 +89,21 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id, Name, Description, IsActive, Initials, SIF, CompanyNumber, IpServer, DBServer, IntegrationId, ParCompany_Id, Identification")] ParCompany parCompany)
+        public ActionResult Edit([Bind(Include = "Id, Name, Description, IsActive, Initials, SIF, CompanyNumber, IpServer, DBServer, IntegrationId, ParCompany_Id, Identification")] Conformity.Domain.Core.Entities.Parametrizacao.ParCompany parCompany)
         {
-            ValidModelState(parCompany);
+            //ValidModelState(parCompany);
             if (ModelState.IsValid)
             {
-                parCompany.AlterDate = DateTime.Now;
-                db.Entry(parCompany).State = EntityState.Modified;
-                db.SaveChanges();
+                //parCompany.AlterDate = DateTime.Now;
+                _serviceCompany.Update(parCompany);
                 return RedirectToAction("Index");
             }
             return View(parCompany);
         }
 
-        // GET: ParCompany2/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ParCompany parCompany = db.ParCompany.Find(id);
-            if (parCompany == null)
-            {
-                return HttpNotFound();
-            }
-            return View(parCompany);
-        }
-
-        // POST: ParCompany2/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            ParCompany parCompany = db.ParCompany.Find(id);
-            parCompany.AlterDate = DateTime.Now;
-            parCompany.IsActive = false;
-            db.Entry(parCompany).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         private void ValidModelState(ParCompany parCompany)
         {
-            if (!string.IsNullOrEmpty(parCompany.Identification) && parCompany.Identification.Length > 50) 
+            if (!string.IsNullOrEmpty(parCompany.Identification) && parCompany.Identification.Length > 50)
                 ModelState.AddModelError("Identification", "O campo deve conter apenas 50 caracteres!");
 
             //if (totalDeVinculos > 0 && parCompany.IsActive == false) 
