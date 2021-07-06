@@ -96,7 +96,7 @@ namespace SgqSystem.Controllers.V2.Api
             //4 Atrasada  - cenario 5 e 6
             //5 Cancelada - cenario 7 e 8
 
-            if (acao.Status == 2)
+            if (acao.Status == Dominio.Enums.Enums.EAcaoStatus.Em_Andamento)
             {
                 var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
 
@@ -108,7 +108,7 @@ namespace SgqSystem.Controllers.V2.Api
 
             }
 
-            if (acao.Status == 3)
+            if (acao.Status == Dominio.Enums.Enums.EAcaoStatus.Concluída)
             {
                 var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
 

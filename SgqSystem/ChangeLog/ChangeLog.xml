@@ -4067,4 +4067,43 @@
     </Script>
   </Card>
 
+  <Card>
+    <CardNumber>GRX-2061</CardNumber>
+    <Version>1.10.8</Version>
+    <Description>[RH SESMT] Criar estrutura de acompanhamento de ação e notificar ação</Description>
+    <Script>
+      IF NOT EXISTS (
+      SELECT 1
+      FROM sys.objects INNER JOIN sys.schemas ON sys.objects.schema_id = sys.schemas.schema_id
+      WHERE sys.objects.name='AcompanhamentoAcao' AND sys.objects.type='U' AND sys.schemas.name = 'PA')
+      BEGIN
+      create table Pa.AcompanhamentoAcao (
+      Id int primary key not null identity,
+      Acao_Id int not null,
+      UserSgq_Id int not null,
+      Observacao varchar(900) not null,
+      DataRegistro datetime not null,
+      Status int not null,
+      IsActive bit not null default 1
+      )
+      END
+      GO
+
+      IF NOT EXISTS (
+      SELECT 1
+      FROM sys.objects INNER JOIN sys.schemas ON sys.objects.schema_id = sys.schemas.schema_id
+      WHERE sys.objects.name='AcompanhamentoAcaoXNotificar' AND sys.objects.type='U' AND sys.schemas.name = 'PA')
+      BEGIN
+      create table Pa.AcompanhamentoAcaoXNotificar (
+      Id int primary key not null identity,
+      AcompanhamentoAcao_Id int not null,
+      UserSgq_Id int not null,
+      IsActive bit not null default 1
+      )
+      END
+      GO
+
+    </Script>
+  </Card>
+
 </Cards>

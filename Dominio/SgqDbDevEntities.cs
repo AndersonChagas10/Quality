@@ -9,6 +9,7 @@ namespace Dominio
     using Newtonsoft.Json;
     using System.Data.Entity.ModelConfiguration.Conventions;
     using Helper;
+    using Dominio.AcaoRH;
 
     public partial class SgqDbDevEntities : DbContext
     {
@@ -315,6 +316,8 @@ namespace Dominio
         public virtual DbSet<Seara.ParVinculoPesoParLevel2> ParVinculoPesoParLevel2 { get; set; }
 
         public virtual DbSet<Acao> Acao { get; set; }
+        public virtual DbSet<AcompanhamentoAcao> AcompanhamentoAcao { get; set; }
+        public virtual DbSet<AcompanhamentoAcaoXNotificar> AcompanhamentoAcaoXNotificar { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();

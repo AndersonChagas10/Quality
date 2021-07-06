@@ -6,9 +6,9 @@ using static Dominio.Enums.Enums;
 
 namespace Dominio.AcaoRH.Email
 {
-    public class EmailAcaoStatusAlteradoNotificados : IEmail
+    public class EmailAcaoStatusCanceladoNotificados : IEmail
     {
-        public EmailAcaoStatusAlteradoNotificados(Acao acao)
+        public EmailAcaoStatusCanceladoNotificados(Acao acao)
         {
             MontarSybject(acao);
             MontarBody(acao);
@@ -53,7 +53,7 @@ namespace Dominio.AcaoRH.Email
             Prioridade: {(acao.Prioridade != null ? Enum.GetName(typeof(AcaoPrioridade), acao.Prioridade) : "")}<br>
             Referência: {acao.Referencia}<br>
             Data da conclusão: { (acao.DataConclusao != null ? acao.DataConclusao?.ToString("dd/MM/yyyy") : "")}<br>
-            Status da Ação: {Enum.GetName(typeof(AcaoStatus), acao.Status).Replace('_', ' ')}<br>
+            Status da Ação: {Enum.GetName(typeof(EAcaoStatus), acao.Status).Replace('_', ' ')}<br>
             Responsável: {(acao.ResponsavelUser != null ? acao.ResponsavelUser.FullName : "")}<br>
             Notificar: {string.Join(",", acao.NotificarUsers.Select(x => x.FullName)) }<br><br>
             

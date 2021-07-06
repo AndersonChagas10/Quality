@@ -31,10 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AcaoRH\AcompanhamentoAcao.cs" />
     <Compile Include="AcaoRH\Acao.cs" />
     <Compile Include="AcaoRH\AcaoXNotificarAcao.cs" />
-    <Compile Include="AcaoRH\Email\EmailAcaoStatusAlteradoNotificados.cs" />
-    <Compile Include="AcaoRH\Email\EmailAcaoStatusAlteradoResponsavel.cs" />
+    <Compile Include="AcaoRH\AcompanhamentoAcaoXNotificar.cs" />
+    <Compile Include="AcaoRH\Email\EmailAcaoStatusCanceladoNotificados.cs" />
+    <Compile Include="AcaoRH\Email\EmailAcaoStatusCanceladoResponsavel.cs" />
     <Compile Include="AcaoRH\Email\EmailAcaoVencidaNotificados.cs" />
     <Compile Include="AcaoRH\Email\EmailAcaoVencidaResponsavel.cs" />
     <Compile Include="AcaoRH\Email\EmailCreateAcaoNotificados.cs" />

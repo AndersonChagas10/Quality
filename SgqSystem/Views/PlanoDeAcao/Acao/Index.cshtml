@@ -1,194 +1,417 @@
 ﻿@model SgqService.ViewModels.FormularioParaRelatorioViewModel
 @{
     ViewBag.Title = "Listagem de ações";
+
+    Layout = "~\\Views\\RelatoriosSgq\\_FilterReportsHorizontal.cshtml";
+
+    ViewBag.ShowCurrentDate = false;
+    ViewBag.ShowRangeDate = true;
+    ViewBag.ShowParCluster = true;
+    ViewBag.ShowParStructure3 = true;
+    ViewBag.ShowParClusterGroup = true;
+    ViewBag.ShowParLevel1 = true;
+    ViewBag.ShowParStructure2 = true;
+    ViewBag.ShowParCompany = true;
+    ViewBag.ShowParLevel2GQ = false;
+    ViewBag.ShowUserSgqAuditor = false;
+    ViewBag.ShowParLevel2 = false;
+    ViewBag.ShowParDepartment = false;
+    ViewBag.ShowUserCompanies = false;
 }
 
-<style>
-    table#tabelaDeResultados tr:hover {
-        background: #ff6a0099 !important;
-    }
-</style>
+@section Content{
+    <style>
+        table#tabelaDeResultados tr:hover {
+            background: #ff6a0099 !important;
+        }
+    </style>
 
-<div class="modal fade" id="modalEditar" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <form id="formAcao">
+    <div class="modal fade" id="modalPrint" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="formAcaoPrint" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
+                    <div id="cabecalhoDiv" class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
+                        <h3 style="font-weight: bold; margin: 10px auto;">Criar Ação</h3>
+                        <img height="150" width="300" class="img-responsive" style="margin: 10px auto;" src="~/Imagens/logoSesmt.PNG" />
+                    </div>
+                    <div id="formBodyPrint" class="modal-body">
+                        <input type="hidden" name="Id" />
+                        <input type="hidden" id="statusPrint" name="Status" />
+                        <div class="row">
+                            <div class="col-xs-4" style="margin: 10px 0;">
+                                <strong>Data Emissão:</strong>
+                                <label id="dataEmissaoPrint"></label>
+                            </div>
+                            <div class="col-xs-4" style="margin: 10px 0;">
+                                <strong>Hora Emissão:</strong>
+                                <label id="horaEmissaoPrint"></label>
+                            </div>
+                            <div class="col-xs-4" style="margin: 10px 0;">
+                                <strong>Emissor:</strong>
+                                <label id="usuarioEmissorPrint"></label>
+                            </div>
+                            <div class="col-sm-12">
+                                <div style="margin: 10px 0;">
+                                    <strong>Unidade: </strong><label id="actionParCompany_IdPrint"></label>
+                                    <br>
+                                </div>
+                                <div style="margin: 10px 0;">
+                                    <strong>Centro de Custo: </strong><label id="actionParDepartment_IdPrint"></label>
+                                    <br>
+                                </div>
+                                <div style="margin: 10px 0;">
+                                    <strong>Seção/Atividade: </strong><label id="actionParDepartmentParent_IdPrint"></label>
+                                    <br>
+                                </div>
+                                <div style="margin: 10px 0;">
+                                    <strong>Item/Cargo: </strong><label id="actionParCargo_IdPrint"></label>
+                                    <br>
+                                </div>
+                                <div style="margin: 10px 0;">
+                                    <strong>Indicador/Origem: </strong><label id="actionParLevel1_IdPrint"></label>
+                                    <br>
+                                </div>
+                                <div style="margin: 10px 0;">
+                                    <strong>Monitoramento: </strong><label id="actionParLevel2_IdPrint"></label>
+                                    <br>
+                                </div>
+                                <div style="margin: 10px 0;">
+                                    <strong>Desvio/Tarefa: </strong><label id="actionParLevel3_IdPrint"></label>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12" style="margin: 10px 0;">
+                                <div class="form-group">
+                                    <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia: </strong></label>
+                                    <text id="txtAcao_NaoconformidadePrint" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></text>
+                                </div>
+                            </div>
+                            <div class="col-sm-12" style="margin: 10px 0;">
+                                <div class="form-group">
+                                    <label for="txtAcaoText"><strong>Ação: </strong></label>
+                                    <text id="txtAcaoTextPrint" name="AcaoText" class="form-control" style="resize: none; height: 100px;"></text>
+                                </div>
+                            </div>
+
+                            <hr />
+                            <div class="col-xs-12" style="margin: 10px 0;">
+                                <strong>Evidencias de Não conformidade: </strong>
+                            </div>
+
+                            <div class="col-xs-12">
+                                <div id="divEvidencias" class="row">
+                                    <div class="fotos"></div>
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div class="col-xs-12" style="margin: 10px 0;">
+                                <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
+                            </div>
+
+                            <div id="evidenciasConcluidasImpressao" class="col-xs-12" hidden="hidden" style="margin: 10px 0;">
+                                <b>Evidencias da Ação Concluida: </b>
+                                <div id="actionsEvidencies">
+                                    <div class="fotosConcluidas"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-4 vereagir" style="margin: 10px 0;">
+                                <label><strong>Data da conclusão:</strong></label>
+                                <text id="actionConclusionDatePrint" name="DataConclusao" type="date" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-4 vereagir" style="margin: 10px 0;">
+                                <label><strong>Hora da conclusão:</strong></label>
+                                <text id="actionConclusionHourPrint" name="HoraConclusao" type="time" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-4" style="margin: 10px 0;">
+                                <label><strong>Referencia:</strong></label>
+                                <text id="actionReferencePrint" name="Referencia" type="text" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-4" style="margin: 10px 0;">
+                                <label><strong>Responsavel:</strong></label>
+                                <text id="selectResponsavelPrint" name="Responsavel" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-4 divActionPriority" style="margin: 10px 0;">
+                                <label><strong>Prioridade:</strong></label>
+                                <text id="selectPrioridadePrint" name="Prioridade" class="form-control"></text>
+                            </div>
+
+                            <div class="col-xs-12" style="margin: 10px 0;">
+                                <label><strong>Notificar:</strong></label>
+                                <div class="form-inline">
+                                    <select id="selectNotificarAcaoPrint" class="form-control"></select>
+                                    <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="rodapeDiv" class="modal-footer">
+                        <button id="btnClosePrint" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
+                        <button id="btnPrint" type="button" class="btn btn-primary" onclick="print()">Imprimir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEditar" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
                 <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
-                    <h3 style="font-weight:bold;">Criar Ação</h3>
+                    <h3 style="font-weight:bold;">Ação</h3>
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" name="Id" />
-                    <input type="hidden" id="status" name="Status" />
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <strong>Data Emissão:</strong>
-                            <label id="dataEmissao"></label>
-                        </div>
-                        <div class="col-xs-4">
-                            <strong>Hora Emissão:</strong>
-                            <label id="horaEmissao"></label>
-                        </div>
-                        <div class="col-xs-4">
-                            <strong>Emissor:</strong>
-                            <label id="usuarioEmissor"></label>
-                        </div>
-                        <div class="col-sm-12">
-                            <strong>Unidade:</strong><label id="actionParCompany_Id"></label>
-                            <br />
-                            <strong>Centro de Custo:</strong><label id="actionParDepartment_Id"></label>
-                            <br />
-                            <strong>Seção/Atividade:</strong><label id="actionParDepartmentParent_Id"></label>
-                            <br />
-                            <strong>Item/Cargo:</strong><label id="actionParCargo_Id"></label>
-                            <br />
-                            <strong>Indicador/Origem:</strong><label id="actionParLevel1_Id"></label>
-                            <br />
-                            <strong>Monitoramento:</strong><label id="actionParLevel2_Id"></label>
-                            <br />
-                            <strong>Desvio/Tarefa:</strong><label id="actionParLevel3_Id"></label>
+
+                <div class="col-xs-12">
+                    <ul class="nav nav-tabs">
+                        <li class="edicao">
+                            <a href="#acao_edicao" data-toggle="tab" id="tabAcaoEdicao">
+                                Edição
+                            </a>
+                        </li>
+                        <li class="acompanhamento">
+                            <a href="#acao_acompanhamento" data-toggle="tab" id="tabAcaoAcompanhamento">
+                                Acompanhamento
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-xs-12">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="acao_edicao">
+                            <form id="formAcao" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
+                                <div class="modal-body">
+                                    <input type="hidden" name="Id" />
+                                    <input type="hidden" id="status" name="Status" />
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <strong>Data Emissão:</strong>
+                                            <label id="dataEmissao"></label>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <strong>Hora Emissão:</strong>
+                                            <label id="horaEmissao"></label>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <strong>Emissor:</strong>
+                                            <label id="usuarioEmissor"></label>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <strong>Unidade:</strong><label id="actionParCompany_Id"></label>
+                                            <br />
+                                            <strong>Centro de Custo:</strong><label id="actionParDepartment_Id"></label>
+                                            <br />
+                                            <strong>Seção/Atividade:</strong><label id="actionParDepartmentParent_Id"></label>
+                                            <br />
+                                            <strong>Item/Cargo:</strong><label id="actionParCargo_Id"></label>
+                                            <br />
+                                            <strong>Indicador/Origem:</strong><label id="actionParLevel1_Id"></label>
+                                            <br />
+                                            <strong>Monitoramento:</strong><label id="actionParLevel2_Id"></label>
+                                            <br />
+                                            <strong>Desvio/Tarefa:</strong><label id="actionParLevel3_Id"></label>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia</strong></label>
+                                                <textarea id="txtAcao_Naoconformidade" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="txtAcaoText"><strong>Ação</strong></label>
+                                                <textarea id="txtAcaoText" name="AcaoText" class="form-control" style="resize: none; height: 100px;"></textarea>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="col-xs-12">
+                                            <strong>Evidencias de Não conformidade</strong>
+                                            <input type="file" id="uploadPhoto" onchange="uploadFile(event,'evidencia')" />
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div id="divEvidencias" class="row">
+                                                <div class="fotos"></div>
+                                            </div>
+                                        </div>
+                                        <hr />
+
+                                        <div class="col-xs-12">
+                                            <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
+                                        </div>
+                                        <div id="evidenciasConcluidasEdicao" class="col-xs-12" hidden="hidden">
+                                            <p>Evidencias da Ação Concluida</p>
+                                            <input type="file" id="uploadPhotox" onchange="uploadFile(event, 'evidenciaConcluida')" />
+                                            <div id="actionsEvidencies">
+                                                <div class="fotosConcluidas"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4 vereagir">
+                                            <label><strong>Data da conclusão:</strong></label>
+                                            <input id="actionConclusionDate" name="DataConclusao" type="date" min="2021-05-19" class="form-control">
+                                        </div>
+                                        <div class="col-xs-4 vereagir">
+                                            <label><strong>Hora da conclusão:</strong></label>
+                                            <input id="actionConclusionHour" name="HoraConclusao" type="time" class="form-control">
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <label><strong>Referencia:</strong></label>
+                                            <input id="actionReference" name="Referencia" type="text" class="form-control">
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <label><strong>Responsavel:</strong></label>
+                                            <select id="selectResponsavel" name="Responsavel" class="form-control"></select>
+                                        </div>
+                                        <div class="col-xs-4 divActionPriority">
+                                            <label><strong>Prioridade:</strong></label>
+                                            <select id="selectPrioridade" name="Prioridade" class="form-control"></select>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <label><strong>Notificar:</strong></label>
+                                            <div class="form-inline">
+                                                <select id="selectNotificarAcao" class="form-control"></select>
+                                                <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <table id="tableNotificarAcao" class="table table-striped" style="font-size:14px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Id</th>
+                                                        <th>Nome</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
+
+                                    @*<button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>*@
+
+                                    <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e iniciar acao</button>
+                                    <button class="btn btn-success preencherDepois" onclick="enviarFormularioEditarAcao('1')">Salvar e preencher depois</button>
+                                </div>
+                            </form>
                         </div>
 
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia</strong></label>
-                                <textarea id="txtAcao_Naoconformidade" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <label for="txtAcaoText"><strong>Ação</strong></label>
-                                <textarea id="txtAcaoText" name="AcaoText" class="form-control" style="resize: none; height: 100px;"></textarea>
-                            </div>
-                        </div>
-                        <hr />
-                        <div class="col-xs-12">
-                            <strong>Evidencias de Não conformidade</strong>
-                            <input type="file" id="uploadPhoto" onchange="uploadFile(event,'evidencia')" />
-                        </div>
-                        <div class="col-xs-12">
-                            <div id="divEvidencias" class="row"></div>
-                        </div>
-                        <hr />
+                        <div class="tab-pane active" id="acao_acompanhamento">
+                            <form id="formAcompanhamento">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <div class="form-group">
+                                                    <label for="txtAcompanhamento_Observacao"><strong>Observação</strong></label>
+                                                    <textarea id="txtAcompanhamento_Observacao" name="Observacao" class="form-control acompanhamento" style="resize: none; height: 100px;"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <label><strong>Notificar:</strong></label>
+                                                <div class="form-inline">
+                                                    <select id="selectAcompanhamento_Notificar" class="form-control acompanhamento"></select>
+                                                    <button onclick="acompanhamento.inserirNaListaNotificar();" type="button" class="btn btn-primary acompanhamento">+</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <table id="tableAcompanhamento_Notificar" class="table table-striped" style="font-size:14px;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Id</th>
+                                                            <th>Nome</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="txtAcompanhamento_Status"><strong>Status</strong></label>
+                                            <select id="txtAcompanhamento_Status" name="Status" class="form-control acompanhamento">
+                                                <option value="3">Concluído</option>
+                                                <option value="5">Cancelado</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-success acompanhamento" onclick="acompanhamento.salvarAcompanhamento()">Salvar</button>
+                                        </div>
+                                    </div>
+                                </div>
 
-                        <div class="col-xs-12">
-                            <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
-                        </div>
-                        <div id="evidenciasConcluidas" class="col-xs-12" hidden="hidden">
+                                <div class="col-sm-12" id="Acompanhamento_Listagem">
+                                </div>
 
-                            <p>Evidencias da Ação Concluida</p>
-
-                            <input type="file" id="uploadPhotox" onchange="uploadFile(event, 'evidenciaConcluida')" />
-
-                            <div id="actionsEvidencies">
-                            </div>
-
-                        </div>
-                        <div class="col-xs-4 vereagir">
-                            <label><strong>Data da conclusão:</strong></label>
-                            <input id="actionConclusionDate" name="DataConclusao" type="date" min="2021-05-19" class="form-control">
-                        </div>
-                        <div class="col-xs-4 vereagir">
-                            <label><strong>Hora da conclusão:</strong></label>
-                            <input id="actionConclusionHour" name="HoraConclusao" type="time" class="form-control">
-                        </div>
-                        <div class="col-xs-4">
-                            <label><strong>Referencia:</strong></label>
-                            <input id="actionReference" name="Referencia" type="text" class="form-control">
-                        </div>
-                        <div class="col-xs-4">
-                            <label><strong>Responsavel:</strong></label>
-                            <select id="selectResponsavel" name="Responsavel" class="form-control"></select>
-                        </div>
-                        <div class="col-xs-4 divActionPriority">
-                            <label><strong>Prioridade:</strong></label>
-                            <select id="selectPrioridade" name="Prioridade" class="form-control"></select>
-                        </div>
-                        <div class="col-xs-12">
-                            <label><strong>Notificar:</strong></label>
-                            <div class="form-inline">
-                                <select id="selectNotificarAcao" class="form-control"></select>
-                                <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
-                            </div>
-                        </div>
-                        <div class="col-xs-12">
-                            <table id="tableNotificarAcao" class="table table-striped" style="font-size:14px;">
-                                <thead>
-                                    <tr>
-                                        <th>Id</th>
-                                        <th>Nome</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                                <div class="modal-footer">
+                                    <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
 
-                    @*<button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>*@
-
-                    <button class="btn btn-success" onclick="enviarFormularioEditarAcao('1')">Salvar e iniciar acao</button>
-                    <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e preencher depois</button>
-                </div>
-            </form>
+                <div class="clearfix"></div>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="page-content-wrapper">
-    <div class="page-content">
+    <div class="page-content-wrapper">
+        <div class="page-content">
 
-        <div class="caption">
-            <i class="icon-share font-dark"></i>
-            <h4 class="text-center"><strong>Workflow de Ações</strong></h4>
+            <div class="caption">
+                <i class="icon-share font-dark"></i>
+                <h4 class="text-center"><strong>Workflow de Ações</strong></h4>
+            </div>
+
+            <div class="col-md-12 col-xs-12 col-sm-6" style="text-align: center;">
+                <button id="btnPendente" onclick="getAcoesByStatus('1')" class="btn btn-danger">Pendente <text></text></button>
+                <button id="btnAndamento" onclick="getAcoesByStatus('2')" class="btn btn-info">Em Andamento <text></text></button>
+                <button id="btnConcluida" onclick="getAcoesByStatus('3')" class="btn btn-success">Concluida <text></text></button>
+                <button id="btnTodas" onclick="enviarFiltro(null)" class="btn btn-warning">Todas as ações <text></text></button>
+            </div>
+
+            <table id="tabelaDeResultados" class="table table-striped"></table>
         </div>
-
-        <div class="col-md-12 col-xs-12 col-sm-6" style="text-align: center;">
-            <button id="btnPendente" onclick="getAcoesByStatus('1')" class="btn btn-danger">Pendente <text></text></button>
-            <button id="btnAndamento" onclick="getAcoesByStatus('2')" class="btn btn-info">Em Andamento <text></text></button>
-            <button id="btnConcluida" onclick="getAcoesByStatus('3')" class="btn btn-success">Concluida <text></text></button>
-            <button id="btnTodas" onclick="buscarDados(null)" class="btn btn-warning">Todas as ações <text></text></button>
-        </div>
-
-        <table id="tabelaDeResultados" class="table table-striped"></table>
     </div>
-</div>
+}
 
 @section Scripts {
-
+    <script src="~/Scripts/Print/printGRT.js"></script>
     <script type="text/javascript">
 
         const enumStatus = [1, 2, 3];
+        var isVisualizar = false;
         var showVerAgir = false;
 
         $(document).ready(function () {
 
-            openLoader("Aguarde");
-            closeLeftSidebar();
-
-            setTimeout(() => {
-                var filtro = {};
-                buscarDados(filtro);
-                closeLoader();
-            }, 2000);
 
         });
 
-        function buscarDados(filtro) {
+        function enviarFiltro(filtro) {
             openLoader("Carregando Dados");
 
             $.ajax({
-                //data: JSON.stringify(filtro),
-                type: 'GET',
-                url:  '@Html.Raw(Url.Action("Get", "api/AcaoApi"))',
+                type: 'POST',
+                url: '@Html.Raw(Url.Action("GetAcaoByFilter", "api/AcaoApi"))',
+                data: JSON.stringify(objFiltro),
                 contentType: "application/json",
                 success: function (dados) {
                     if (dados && dados.length > 0) {
                         carregarTabela(dados);
                     } else {
-                        //Não há valores
+                        openMessageModal('Alerta', 'Não há dados')
                     }
                     closeLoader();
                 },
@@ -223,7 +446,7 @@
                 }
             }
             $('#btnTodas text').text(" (" + dados.length + ")");
-            
+
 
             montarTabela(dados, colunas);
         }
@@ -239,25 +462,37 @@
                 {
                     "title": "Ações", "mData": null, "visible": true, mRender: function (data, type, full, cell) {
                         var id = full["Id"];
-                        return `<button class="btn btn-sm btn-info" onclick="abrirEditar(${id})">Editar</button>`;
+
+                        let btnEditar = () => {
+                            if (data.PermiteEditar) {
+                                return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})">Editar</button>`;
+                            }
+                            return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})" disabled>Editar</button>`;
+                        }
+                        var btnAcompanhar = `<button class="btn btn-sm btn-success" onclick="abrirAcao('acompanhamento',${id})">Acompanhar</button>`;
+                        return btnEditar() + btnAcompanhar;
                     }
                 },
-                { "title": "Id", "mData": "Id", "visible": false },
-
+                {
+                    "title": "Ações", "mData": null, "visible": true, mRender: function (data, type, full, cell) {
+                        var id = full["Id"];
+                        return `<button class="btn btn-sm btn-warning" onclick="abrirImpressao(${id})">Visualizar</button>`;
+                    }
+                },
+                { "title": "Número da Ação", "mData": "Id", "visible": true },
                 { "title": "Data Emissão", "mData": "_DataEmissao", "visible": true },
                 { "title": "Hora Emissão", "mData": "HoraEmissao", "visible": true },
-                //{ "title": "Emissor", "mData": "Emissor", "visible": true },
                 { "title": "ParCompany_Id", "mData": "ParCompany_Id", "visible": false },
                 { "title": "Unidade", "mData": "ParCompany_Name", "visible": true },
-                { "title": "ParDepartment_Id", "mData": "ParDepartment_Id", "visible": false },
-                { "title": "Centro de Custo", "mData": "ParDepartment_Name", "visible": true },
                 { "title": "ParDepartmentParent_Id", "mData": "ParDepartmentParent_Id", "visible": false },
-                { "title": "Seção", "mData": "ParDepartmentParent_Name", "visible": true },
+                { "title": "Centro de Custo", "mData": "ParDepartmentParent_Name", "visible": true },
+                { "title": "ParDepartment_Id", "mData": "ParDepartment_Id", "visible": false },
+                { "title": "Seção/Atividade", "mData": "ParDepartmentParent_Name", "visible": true },
                 { "title": "ParCargo_Id", "mData": "ParCargo_Id", "visible": false },
-                { "title": "Cargo", "mData": "ParCargo_Name", "visible": true },
+                { "title": "Item/Tarefa", "mData": "ParCargo_Name", "visible": true },
                 { "title": "ParLevel1_Id", "mData": "ParLevel1_Id", "visible": false },
                 {
-                    "title": "Indicador", "mData": "ParLevel1_Name", "visible": true,
+                    "title": "Indicador/Origem", "mData": "ParLevel1_Name", "visible": true,
                     mRender: function (data, type, full, cell) {
                         return montarCampo(data);
                     }
@@ -270,18 +505,19 @@
                     } },
                 { "title": "ParLevel3_Id", "mData": "ParLevel3_Id", "visible": false },
                 {
-                    "title": "Tarefa", "mData": "ParLevel3_Name", "visible": true,
+                    "title": "Desvio/Medida de Controle", "mData": "ParLevel3_Name", "visible": true,
                     mRender: function (data, type, full, cell) {
                         return montarCampo(data);
                     }
                 },
-                { "title": "Acao Naoconformidade", "mData": "Acao_Naoconformidade", "visible": true },
-                { "title": "Texto Ação", "mData": "AcaoText", "visible": true },
+                { "title": "Não Conformidade/Ocorrência", "mData": "Acao_Naoconformidade", "visible": true },
+                { "title": "Ação", "mData": "AcaoText", "visible": true },
                 { "title": "Data Conclusão", "mData": "_DataConclusao", "visible": true },
+                { "title": "Emissor", "mData": "EmissorNome", "visible": true},
                 { "title": "Hora Conclusão", "mData": "HoraConclusao", "visible": true },
                 { "title": "Referencia", "mData": "Referencia", "visible": true },
-                { "title": "Nome do Responsavel", "mData": "Responsavel_Name", "visible": true },
-                { "title": "Notificar", "mData": "Notificar", "visible": true },
+                {"title": "Nome do Responsavel", "mData": "Responsavel_Name", "visible": true},
+                /*{ "title": "Notificar", "mData": "null", "visible": true },*/
                 { "title": "Prioridade", "mData": "Prioridade", "visible": true },
                 {
                     "title": "Status", "mData": "Status", "visible": true,
@@ -308,11 +544,7 @@
             openLoader("...");
 
             const url = '@Url.Action("GetByIdStatus", "api/AcaoApi")';
-            //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
-            //Pegar as informações e mapear para um objeto
-            //Com as propriedades, apresente na tela
             $.ajax({
-                //data: JSON.stringify(id),
                 type: 'GET',
                 url: `${url}/${status}`,
                 contentType: "application/json",
@@ -333,22 +565,176 @@
 
         }
 
-        function abrirEditar(id) {
-            openLoader("...");
+        let acao = {
 
+            evidenciaConcluida: {
+
+                imprimirEvidencia: (dados) => {
+                    var html = "";
+
+                    $('#actionsEvidencies .fotosConcluidas').empty();
+
+                    dados.forEach(function (elemento, indice) {
+
+                        var evidencia = {
+                            base64: elemento.Byte,
+                            path: elemento.Path
+                        };
+
+                        acao.evidenciaConcluida["ListaEvidencia"].push(evidencia)
+
+                        html += `<div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
+                                <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
+                                <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${indice + 1})">Excluir</button>
+                                </div>`;
+                        });
+                    $('#actionsEvidencies .fotosConcluidas').append(html);
+                },
+
+                adicionarEvidencia: (base64) => {
+
+                    if (acao.evidenciaConcluida["ListaEvidencia"].length < 2) {
+
+                        var evidencia = {
+                            base64: base64
+                        };
+
+                        acao.evidenciaConcluida["ListaEvidencia"].push(evidencia);
+
+                        let html;
+
+                        if (evidencia["base64"]) {
+                            html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${acao.evidenciaConcluida["ListaEvidencia"].length})">Excluir</button>
+                                    </div>`;
+                        }
+                        else {
+                            html = `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
+                        }
+                        $('#actionsEvidencies .fotosConcluidas').append(html);
+                    } else {
+                        openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
+                    }
+                },
+
+                removerEvidencia: (index) => {
+
+                    acao.evidenciaConcluida["ListaEvidencia"].splice((index - 1), 1);
+
+                    $('#actionsEvidencies .fotosConcluidas').empty();
+
+                    if (acao.evidenciaConcluida["ListaEvidencia"].length > 0) {
+                        acao.evidenciaConcluida["ListaEvidencia"].forEach(function (elemento, indice) {
+
+                            let html;
+
+                            if (elemento["base64"]) {
+                                html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${acao.evidenciaConcluida["ListaEvidencia"].length})">Excluir</button>
+                                    </div>`;
+                            }
+                            else {
+                                html = `<div class="col-sm-4"><img src="#${elemento["Nome"]}" class="img-responsive"/></div>`;
+                            }
+                            $('#actionsEvidencies .fotosConcluidas').append(html);
+                        })
+                    } else {
+                        $("#checkVerAgir").trigger('click');
+                    }
+                }
+            },
+
+            evidenciasNaoConforme: {
+
+                imprimirEvidencia: (dados) => {
+
+                    var html = "";
+                    $('#divEvidencias .fotos').empty();
+
+                    dados.forEach(function (elemento, indice) {
+
+                        var evidencia = {
+                            base64: elemento.Byte,
+                            path: elemento.Path
+                        };
+
+                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
+
+                        html += `
+                                <div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
+                                    <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick = "acao.evidenciasNaoConforme.removerEvidencia(${indice + 1})">Excluir</button>
+                                </div>`;
+                        });
+                    $('#divEvidencias .fotos').append(html);
+                 },
+
+                removerEvidencia: (index) => {
+                    acao.evidenciasNaoConforme["ListaEvidencia"].splice((index - 1), 1);
+
+                    $('#divEvidencias .fotos').empty();
+
+                    acao.evidenciasNaoConforme["ListaEvidencia"].forEach(function (elemento, indice) {
+
+                        let html;
+
+                        if (elemento["base64"]) {
+                            html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme["ListaEvidencia"].length})">Excluir</button>
+                                    </div>`;
+                        }
+                        else {
+                            html = `<div class="col-sm-4"><img src="#${elemento["Nome"]}" class="img-responsive"/></div>`;
+                        }
+                        $('#divEvidencias .fotos').append(html);
+                    })
+                },
+
+                adicionarEvidencia: (base64) => {
+
+                    if (acao.evidenciasNaoConforme["ListaEvidencia"].length < 2) {
+
+                        var evidencia = {
+                            base64: base64
+                        };
+
+                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
+
+                        let html;
+
+                        if (evidencia["base64"]) {
+                            html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme["ListaEvidencia"].length})">Excluir</button>
+                                    </div>`;
+                        }
+                        else {
+                            html = `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
+                        }
+                        $('#divEvidencias .fotos').append(html);
+                    }
+                    else {
+                        openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
+                    }
+                }
+            }
+        }
+
+        function abrirImpressao(id) {
+            openLoader("...");
+            isVisualizar = true;
             const url = '@Url.Action("GetById", "api/AcaoApi")';
-            //Fazer uma requisição passando o ID e retornar os dados com base no ID (Buscar no banco)
-            //Pegar as informações e mapear para um objeto
-            //Com as propriedades, apresente na tela
             $.ajax({
-                //data: JSON.stringify(id),
                 type: 'GET',
                 url: `${url}/${id}`,
                 contentType: "application/json",
                 success: function (dados) {
-                    preencherModal(dados);
+                    preencherModalImpressão(dados);
 
-                    buscarFotos(id);
+                    buscarFotos(id, isVisualizar);
 
                     closeLoader();
                 },
@@ -357,22 +743,76 @@
                     closeLoader();
                 }
             });
+            $("#modalPrint").modal();
+        }
 
+        function abrirAcao(acao, id) {
+            switch (acao) {
+                case "editar":
+                    $('#tabAcaoEdicao').click();
+                    carregarDados(id)
+                    break;
+                case "acompanhamento":
+                    $('#tabAcaoAcompanhamento').click();
+                    carregarDados(id);
+                    break;
+            }
 
-            //Possibilitar Edição
-            //Salvar
-            //Fazer uma requisição, mapeando os dados da tela e enviar como um objeto
-            //Localizar a pessoa como ID e alterar os dados que estão vindo da tela, possiveis de modificação.
-            //Retorna OK
-
-            //pendencias:
-            //confirmar se a função preencher dados está pegando os dados corretos para preencher o HTML
-
+            $('.modal input').val('');
             $("#modalEditar").modal();
         }
 
-        function buscarFotos(id) {
-            const url = '@Url.Action("GetFotosEvidencia", "api/AcaoApi")';
+        function print() {
+
+            //$('img').attr('width', "150px");
+
+            var winPrint = window.open('', '', '');
+            winPrint.document.write(document.getElementById('formAcaoPrint').innerHTML);
+            winPrint.document.close();
+            winPrint.focus();
+            winPrint.print();
+            //winPrint.close();
+
+            //printGRT.Inicializar({
+
+            //    headerHtml: document.getElementById('cabecalhoDiv').innerHTML,
+            //    bodyHtml: document.getElementById('formAcaoPrint').innerHTML,
+            //    footerHtml: document.getElementById('rodapeDiv').innerHTML,
+            //    numberMarginRight: 25,
+            //    numberMarginBottom: 25,
+            //    renderTableMargin: 0,
+            //    pageMarginHeader: "25px 25px 10px 25px",
+            //    pageMarginFooter: "10px 25px 25px 25px",
+            //    pageMarginBody: "0 25px 0 25px"
+
+            //});
+
+            //printGRT.Imprimir();
+        }
+
+        function carregarDados(id) {
+            openLoader("...");
+            isVisualizar = false;
+            const url = '@Url.Action("GetById", "api/AcaoApi")';
+            $.ajax({
+                //data: JSON.stringify(id),
+                type: 'GET',
+                url: `${url}/${id}`,
+                contentType: "application/json",
+                success: function (dados) {
+                    preencherModal(dados, isVisualizar);
+                    buscarFotos(id, isVisualizar);
+                    closeLoader();
+                },
+                error: function (e) {
+                    console.error(e);
+                    closeLoader();
+                }
+            });
+        }
+
+        function buscarFotos(id, isVisualizar) {
+            const url = '@Url.Action("GetFotosEvidencia", "api/EvidenciaNaoConformeApi")';
             $.ajax({
                 type: 'GET',
                 url: `${url}/${id}`,
@@ -380,7 +820,7 @@
                 success: function (dados) {
 
                     if (dados.length > 0) {
-                        imprimirListaEvidenciaDB(dados);
+                        acao.evidenciasNaoConforme.imprimirEvidencia(dados);
 
                         buscarEvidenciaConcluida(id);
                     }
@@ -393,9 +833,9 @@
             });
 
         }
-      
+
         function buscarEvidenciaConcluida(id) {
-            const url = '@Url.Action("GetFotosEvidenciaConcluida", "api/AcaoApi")';
+            const url = '@Url.Action("GetFotosEvidenciaConcluida", "api/EvidenciaConcluidaApi")';
             $.ajax({
                 type: 'GET',
                 url: `${url}/${id}`,
@@ -403,7 +843,7 @@
                 success: function (dados) {
 
                     if (dados.length > 0) {
-                        imprimirListaEvidenciaConcluidaDB(dados);
+                        acao.evidenciaConcluida.imprimirEvidencia(dados)
                         showVerAgir = true;
                     } else
                         showVerAgir = false;
@@ -420,13 +860,97 @@
                     }
                 }
             });
+        }
 
+        function preencherModalImpressão(dados) {
+
+            if (dados.ListaPrioridade) {
+                var prioridade = {};
+                for (var i = 0; i < dados.ListaPrioridade.length; i++) {
+                     prioridade = dados.ListaPrioridade[i];
+                }
+            }
+
+            $("input[name='Id']").val(dados.Id);
+            $("#dataEmissaoPrint").text(dados._DataEmissao);
+            $("#horaEmissaoPrint").text(dados.HoraEmissao);
+            $("#usuarioEmissorPrint").text(dados.EmissorNome);
+            $("#actionParCompany_IdPrint").text(dados.ParCompany_Name);
+            $("#actionParDepartment_IdPrint").text(dados.ParDepartment_Name);
+            $("#actionParDepartmentParent_IdPrint").text(dados.ParDepartment_Name);
+            $("#actionParCargo_IdPrint").text(dados.ParCargo_Name);
+            $("#actionParLevel1_IdPrint").text(dados.ParLevel1_Name);
+            $("#actionParLevel2_IdPrint").text(dados.ParLevel2_Name);
+            $("#actionParLevel3_IdPrint").text(dados.ParLevel3_Name);
+            $("#selectPrioridadePrint").text(prioridade['Nome']);
+            $("#selectResponsavelPrint").text(dados.Responsavel_Name);
+            $("#actionConclusionDatePrint").text(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]);
+            $("#actionConclusionHourPrint").text(dados.HoraConclusao);
+            $("#actionReferencePrint").text(dados.Referencia);
+            $("#statusPrint").val(dados.Status);
+
+            $("#txtAcao_NaoconformidadePrint").text(dados.Acao_Naoconformidade);
+            $("#txtAcaoTextPrint").text(dados.AcaoText);
+
+            imprimirListaNotificarAcao(dados.ListaNotificarAcao);
+            if (dados.ListaEvidencia == null) {
+                $('#divEvidencias .fotos').empty();
+                $('#actionsEvidencies .fotosConcluidas').empty();
+            }
 
         }
 
+        function limparAcao() {
+            acao.evidenciaConcluida["ListaEvidencia"] = []
+            acao.evidenciasNaoConforme["ListaEvidencia"] = []
+            $('#divEvidencias .fotos').empty();
+            $('#actionsEvidencies .fotosConcluidas').empty();
+        }
+
         var acaoEditar = {};
+
+        permiteAlterarStatus = (dados) => {
+
+            $('#txtAcompanhamento_Status').prop('disabled', true)
+
+            if (dados.PermiteAlterarStatus) {
+                $('#txtAcompanhamento_Status').prop('disabled', false)
+            }
+        }
+
+        permiteInserirAcompanhamento = (dados) => {
+
+            $('#formAcompanhamento .acompanhamento').prop('disabled', true)
+
+            if (dados.PermiteInserirAcompanhamento) {
+                $('#formAcompanhamento .acompanhamento').prop('disabled', false)
+            }
+        }
+
+        permiteEditar = (dados) => {
+            $('#tabAcaoEdicao').prop('disabled', true)
+            $('.edicao').addClass('disabled')
+
+            if (dados.PermiteEditar) {
+                $('#tabAcaoEdicao').prop('disabled', false)
+                $('.edicao').removeClass('disabled')
+            }
+        }
+
+        desabilitarBotaoSalvarEPreencherDepois = (dados) => {
+
+            $('.preencherDepois').prop('disabled', false)
+
+            if(dados.Status == 2)
+            $('.preencherDepois').prop('disabled', true)
+        }
+
         function preencherModal(dados) {
+            preencherInformacoesAcompanhamento(dados);
+            permiteInserirAcompanhamento(dados)
+
             acaoEditar = dados;
+            limparAcao()
 
             if (dados.ListaResponsavel) {
                 var html = `<option value="">Selecione...</option>`;
@@ -436,6 +960,7 @@
                 }
 
                 $('#selectResponsavel').html(html);
+                $('#selectAcompanhamento_Notificar').html(html);
 
                 $("#selectResponsavel option[value=" + dados.Responsavel + "]").attr('selected', 'selected')
             }
@@ -452,25 +977,27 @@
             $("input[name='Id']").val(dados.Id);
             $("#dataEmissao").text(dados._DataEmissao);
             $("#horaEmissao").text(dados.HoraEmissao);
-            $("#usuarioEmissor").text(dados.Responsavel_Name);
+            $("#usuarioEmissor").text(dados.EmissorNome);
             $("#actionParCompany_Id").text(dados.ParCompany_Name);
             $("#actionParDepartment_Id").text(dados.ParDepartment_Name);
-            $("#actionParDepartmentParent_Id").text(dados.ParDepartment_Name);
+            $("#actionParDepartmentParent_Id").text(dados.ParDepartmentParent_Name);
             $("#actionParCargo_Id").text(dados.ParCargo_Name);
             $("#actionParLevel1_Id").text(dados.ParLevel1_Name);
             $("#actionParLevel2_Id").text(dados.ParLevel2_Name);
             $("#actionParLevel3_Id").text(dados.ParLevel3_Name);
             $("#selectPrioridade").val(dados.Prioridade);
-            $("#selectResponsavel").val(dados.Responsavel);
+            $("#selectResponsavel").append(new Option(dados.Responsavel_Name, dados.Responsavel, true));
             $("#actionConclusionDate").val(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]);
             $("#actionConclusionHour").val(dados.HoraConclusao);
             $("#actionReference").val(dados.Referencia);
             $("#status").val(dados.Status);
+            permiteAlterarStatus(dados)
+            permiteEditar(dados)
+            desabilitarBotaoSalvarEPreencherDepois(dados)
 
             $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
             $("#txtAcaoText").text(dados.AcaoText);
 
-            imprimirListaEvidencia(dados.ListaEvidencia);
             imprimirListaNotificarAcao(dados.ListaNotificarAcao);
 
             if (dados.ListaNotificar) {
@@ -483,160 +1010,6 @@
             }
         }
 
-        //Evidencia ação concluida
-        function imprimirListaEvidenciaConcluida(lista) {
-            $('#actionsEvidencies').empty();
-            if (lista.length > 0) {
-                for (var i = 0; i < lista.length; i++) {
-                    var evidenciaConcluida = lista[i];
-                    imprimirEvidenciaConcluida(evidenciaConcluida, lista);
-                }
-            } else {
-                $("#checkVerAgir").trigger('click');
-            }
-        }
-
-
-        function imprimirEvidenciaConcluida(evidenciaConcluida, lista) {
-            var html;
-
-            if (evidenciaConcluida["base64"]) {
-                html = `
-                        <div class="col-sm-4">
-                            <img src="data:image/png;base64,${evidenciaConcluida["base64"]}" data-img class="img-responsive"/>
-                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidenciaConcluida(${lista.length})">Excluir</button>
-                        </div>`;
-            } else {
-                html = `<div class="col-sm-4"><img src="#${evidenciaConcluida["Nome"]}" class="img-responsive"/></div>`;
-            }
-            $('#actionsEvidencies').append(html);
-        }
-
-        function removerDaListaEvidenciaConcluida(index) {
-            acaoEditar["ListaEvidenciaConcluida"].splice((index - 1), 1);
-            imprimirListaEvidenciaConcluida(acaoEditar["ListaEvidenciaConcluida"])
-        }
-
-        function inserirNaListaEvidenciaConcluida(base64) {
-            if (acaoEditar["ListaEvidenciaConcluida"] == undefined || acaoEditar["ListaEvidenciaConcluida"] == null)
-                acaoEditar["ListaEvidenciaConcluida"] = [];
-
-            if (acaoEditar["ListaEvidenciaConcluida"].length < 2) {
-
-                var evidencia = {
-                    base64: base64
-                };
-
-                acaoEditar["ListaEvidenciaConcluida"].push(evidencia);
-                imprimirEvidenciaConcluida(evidencia, acaoEditar["ListaEvidenciaConcluida"]);
-            } else {
-                openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
-            }
-        }
-
-        function imprimirListaEvidenciaConcluidaDB(dados) {
-
-            var html = "";
-            $('#actionsEvidencies').empty();
-
-            acaoEditar["ListaEvidenciaConcluida"] = [];
-
-            if (dados.length > 0) {
-
-                dados.forEach(function (o, i) {
-
-                    var evidencia = {
-                        base64: o.Byte,
-                        path: o.Path
-                    };
-
-                    acaoEditar["ListaEvidenciaConcluida"].push(evidencia);
-
-                    html += `
-                        <div class="col-sm-4">
-                            <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive"/>
-                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidenciaConcluida(${i + 1})">Excluir</button>
-                        </div>`;
-                });
-
-            }
-
-            $('#actionsEvidencies').append(html);
-
-        }
-
-        //Evidencias
-        function imprimirListaEvidencia(lista) {
-            $('#divEvidencias').empty();
-            if (lista) {
-                for (var i = 0; i < lista.length; i++) {
-                    var evidencia = lista[i];
-                    imprimirEvidencia(evidencia, lista);
-                }
-            }
-        }
-
-        function imprimirEvidencia(evidencia, lista) {
-            var html;
-
-            if (evidencia["base64"]) {
-                html = `
-                        <div class="col-sm-4">
-                            <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
-                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${lista.length})">Excluir</button>
-                        </div>`;
-            } else {
-                html = `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
-            }
-            $('#divEvidencias').append(html);
-        }
-
-        function imprimirListaEvidenciaDB(dados) {
-
-            var html = "";
-            acaoEditar["ListaEvidencia"] = [];
-            if (dados.length > 0) {
-
-                dados.forEach(function (o, i) {
-
-                    var evidencia = {
-                        base64: o.Byte,
-                        path: o.Path
-                    };
-
-                    acaoEditar["ListaEvidencia"].push(evidencia);
-
-                    html += `
-                        <div class="col-sm-4">
-                            <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive"/>
-                            <button class="btn btn-danger btn-sm form-control" onclick="removerDaListaEvidencia(${i + 1})">Excluir</button>
-                        </div>`;
-                });
-
-            }
-            $('#divEvidencias').append(html);
-        }
-
-        function removerDaListaEvidencia(index) {
-            acaoEditar["ListaEvidencia"].splice((index-1), 1);
-            imprimirListaEvidencia(acaoEditar["ListaEvidencia"])
-        }
-
-        function inserirNaListaEvidencia(base64) {
-            if (acaoEditar["ListaEvidencia"].length < 2) {
-
-                var evidencia = {
-                    base64: base64
-                };
-
-                acaoEditar["ListaEvidencia"].push(evidencia);
-                imprimirEvidencia(evidencia, acaoEditar["ListaEvidencia"]);
-            } else {
-                openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
-            }
-        }
-
-        //Notificar ação
         function imprimirListaNotificarAcao(lista) {
             if (lista) {
                 var html = "";
@@ -679,10 +1052,10 @@
             var form = $("#formAcao").serializeObject();
 
             form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
-            form["ListaEvidencia"] = acaoEditar["ListaEvidencia"];
-            form["ListaEvidenciaConcluida"] = acaoEditar["ListaEvidenciaConcluida"];
+            form["ListaEvidencia"] = acao.evidenciaConcluida["ListaEvidencia"];
+            form["ListaEvidenciaConcluida"] = acao.evidenciasNaoConforme["ListaEvidencia"];
 
-            validarStatus(form, status);
+            form.status = status
 
             const url = '@Url.Action("Post", "api/AcaoApi")';
 
@@ -695,7 +1068,7 @@
                     openMessageModal("Concluido", "Ação salva com sucesso");
                     $("#btnClose").trigger('click');
                     setTimeout(function () {
-                        buscarDados(null);
+                        enviarFiltro(null);
                     }, 3000);
 
                 },
@@ -703,20 +1076,6 @@
                     console.log('erro ao salvar ação');
                 }
             });
-        }
-
-        function validarStatus(form, status) {
-            //1 Pendente
-            //2 Em andamento
-            //3 Concluída
-            //4 Atrasada
-            //5 Cancelada
-
-            if (form.ListaEvidenciaConcluida != undefined && form.ListaEvidenciaConcluida.length > 0) {
-                form.status = 3;
-            } else {
-                form.Status = status;
-            }
         }
 
         function montarTabela(dados, colunas) {
@@ -754,27 +1113,41 @@
             return colunas;
         }
 
+        function validateUploadFile(evt) {
+
+            if (evt.target.files.length == 0) return false;
+
+            else if (!evt.target.files[0].type.match(/.(jpg|jpeg|png)$/i)) {
+                $('#uploadPhoto').val('')
+                $('#uploadPhotox').val('')
+                openMessageModal('Alerta! Não é uma imagem!')
+                return false;
+            }
+
+            else if (evt.target.files[0].size <= 0) return false;
+
+            return true;
+        }
+
         function uploadFile(evt, tipoEvidencia) {
-            if (evt.target.files.length == 0)
+
+            if (!validateUploadFile(evt))
                 return;
 
-            var e = evt.target.files[0]; // FileList object
+            var e = evt.target.files[0];
             var reader = new FileReader();
-            // Closure to capture the file information.
+
             reader.onload = (e) => {
                 var binaryData = e.target.result;
-                //Converting Binary Data to base 64
                 var base64String = window.btoa(binaryData);
-                //showing file converted to base64
-                //document.getElementsByName('imagefile')[0].value = base64String;
 
-                if (tipoEvidencia== 'evidencia')
-                    inserirNaListaEvidencia(base64String);
+                if (tipoEvidencia == 'evidencia')
+                    acao.evidenciasNaoConforme.adicionarEvidencia(base64String);
                 else
-                    inserirNaListaEvidenciaConcluida(base64String);
-                $('#uploadPhoto').val('');
+                    acao.evidenciaConcluida.adicionarEvidencia(base64String);
+                $('input[type=file]').val('');
             };
-            // Read in the image file as a data URL.
+
             reader.readAsBinaryString(e);
         }
 
@@ -782,13 +1155,169 @@
             .on('click, change', '#checkVerAgir', function () {
 
                 if ($(this).is(":checked")) {
-                    $("#evidenciasConcluidas").removeAttr('hidden');
+                    $("#evidenciasConcluidasImpressao").removeAttr('hidden');
+                    $("#evidenciasConcluidasEdicao").removeAttr('hidden');
                     $('.vereagir').removeClass('hide');
                 } else {
-                    $("#evidenciasConcluidas").attr('hidden', 'hidden');
+                    $("#evidenciasConcluidasImpressao").attr('hidden', 'hidden');
+                    $("#evidenciasConcluidasEdicao").attr('hidden', 'hidden');
                     $('.vereagir').addClass('hide');
                 }
             });
+
+        function preencherInformacoesAcompanhamento(dados) {
+            acompanhamento.objeto = {
+                AcaoId: dados.Id,
+                ListaNotificar: dados.ListaNotificarAcao
+            };
+            acompanhamento.imprimirListaNotificar();
+
+            if (dados.ListaAcompanhamento) {
+                var html = `<div>`;
+                for (var i = 0; i < dados.ListaAcompanhamento.length; i++) {
+                    var objAcompanhamento = dados.ListaAcompanhamento[i];
+
+                    if (dados.PermiteAlterarStatus == false) {
+                        objAcompanhamento["StatusName"] = dados.StatusName
+                    }
+
+
+                    var htmlTabelaNotificar = acompanhamento.montarHtmlTabelaListaNotificar(objAcompanhamento['ListaNotificar']);
+
+                    html += `
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="form-group">
+                                    <label><strong>Observação</strong></label>
+                                    <textarea disabled readonly class="form-control" style="resize: none; height: 100px;">
+                                        ${objAcompanhamento["Observacao"]}
+                                    </textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label><strong>Notificar</strong></label>
+                                    ${htmlTabelaNotificar}
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label><strong>Data Registro</strong></label>
+                                    <input disabled readonly class="form-control" value="${objAcompanhamento["DataRegistroFormatada"]}">
+                                </div>
+                                <div class="form-group">
+                                    <label><strong>Responsavel</strong></label>
+                                    <input disabled readonly class="form-control" value="${objAcompanhamento["Responsavel"]}">
+                                </div>
+                                <div class="form-group">
+                                    <label><strong>Status</strong></label>
+                                    <input disabled readonly class="form-control" value="${objAcompanhamento["StatusName"]}">
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>`;
+                }
+                html += `</div>`;
+                $('#Acompanhamento_Listagem').html(html);
+            }
+        }
+
+        //Notificar ação
+        var acompanhamento = {
+
+            objeto: {},
+
+            montarHtmlTabelaListaNotificar: (lista) => {
+                var html = ''
+                if (lista) {
+                    var valoresNotificarAcao = '';
+                    for (var i = 0; i < lista.length; i++) {
+                        var notificarAcao = lista[i];
+                        valoresNotificarAcao += `<tr>
+                                    <td>${notificarAcao["Id"]}</td>
+                                    <td>${notificarAcao["Nome"]}</td>
+                                </tr>`;
+                    }
+
+                    html = `<table class="table table-striped" style="font-size:14px;">
+                                <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Nome</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${valoresNotificarAcao}
+                                </tbody>
+                            </table>`;
+                }
+                return html;
+            },
+
+            imprimirListaNotificar: () => {
+                var lista = acompanhamento.objeto["ListaNotificar"];
+                if (lista) {
+                    var html = "";
+                    for (var i = 0; i < lista.length; i++) {
+                        var notificar = lista[i];
+                        html += `<tr>
+                                    <td>${notificar["Id"]}</td>
+                                    <td>${notificar["Nome"]}</td>
+                                    <td>
+                                    <button class="btn btn-sm btn-danger acompanhamento" onclick="acompanhamento.removerDaListaNotificar(${i})">X</button>
+                                    </td>
+                                </tr>`;
+                    }
+                    $('#tableAcompanhamento_Notificar tbody').html(html);
+                }
+            },
+
+            removerDaListaNotificar: (index) => {
+                acompanhamento.objeto["ListaNotificar"].splice(index, 1);
+                acompanhamento.imprimirListaNotificar(acompanhamento.objeto["ListaNotificar"])
+            },
+
+            inserirNaListaNotificar: () => {
+                if ($('#selectAcompanhamento_Notificar').val() > 0) {
+                    var obj = {
+                        Id: $('#selectAcompanhamento_Notificar').val(),
+                        Nome: $('#selectAcompanhamento_Notificar option:selected').text(),
+                        IsActive: true
+                    };
+                    acompanhamento.objeto["ListaNotificar"].push(obj);
+                    acompanhamento.imprimirListaNotificar(acompanhamento.objeto["ListaNotificar"])
+                }
+            },
+
+            salvarAcompanhamento: () => {
+                openLoader("Aguarde");
+                var form = $("#formAcompanhamento").serializeObject();
+
+                form["ListaNotificar"] = acompanhamento.objeto["ListaNotificar"];
+
+                const url = '@Url.Action("Post/Acompanhamento", "api/AcompanhamentoApi")';
+                $.ajax({
+                    url: url + "/" + acompanhamento.objeto["AcaoId"],
+                    type: 'POST',
+                    data: JSON.stringify(form),
+                    contentType: "application/json",
+                    success: function (data) {
+                        openMessageModal("Concluido", "Ação salva com sucesso");
+                        closeLoader();
+                        $("#btnClose").trigger('click');
+                        setTimeout(function () {
+                            enviarFiltro(null);
+                        }, 3000);
+                    },
+                    error: function () {
+                        console.log('erro ao salvar ação');
+                        closeLoader();
+                    }
+                });
+                closeLoader();
+            }
+
+        }
+
 
     </script>
 

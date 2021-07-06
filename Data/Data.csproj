@@ -68,6 +68,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlanoDeAcao\AcaoRepository.cs" />
+    <Compile Include="PlanoDeAcao\AcompanhamentoAcaoRepository.cs" />
+    <Compile Include="PlanoDeAcao\EvidenciaConcluidaRepository.cs" />
+    <Compile Include="PlanoDeAcao\EvidenciaNaoConformeRepository.cs" />
+    <Compile Include="PlanoDeAcao\Repositorio\IAcaoRepository.cs" />
+    <Compile Include="PlanoDeAcao\Repositorio\IAcompanhamentoAcaoRepository.cs" />
+    <Compile Include="PlanoDeAcao\Repositorio\IEvidenciaConcluidaRepository.cs" />
+    <Compile Include="PlanoDeAcao\Repositorio\IEvidenciaNaoConformeRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ParamsRepository.cs" />
     <Compile Include="Repositories\ParLevel3Repository.cs" />
@@ -88,6 +96,10 @@
       <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
       <Name>DTO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{026EFA70-BD6D-46C8-BD94-D7FCD42B9692}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogSystem\LogSystem.csproj">
       <Project>{2F2074D0-E013-46BB-99B9-E53603BFC44D}</Project>
       <Name>LogSystem</Name>
@@ -97,6 +109,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

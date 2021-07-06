@@ -58,7 +58,7 @@ namespace Dominio.AcaoRH.Email
             Prioridade: {(acao.Prioridade != null ? Enum.GetName(typeof(AcaoPrioridade), acao.Prioridade) : "")}<br>
             Referência: {acao.Referencia}<br>
             Data da conclusão: { (acao.DataConclusao != null ? acao.DataConclusao?.ToString("dd/MM/yyyy") : "")}<br>
-            Status da Ação: {Enum.GetName(typeof(AcaoStatus), acao.Status).Replace('_', ' ')}<br>
+            Status da Ação: {Enum.GetName(typeof(EAcaoStatus), acao.Status).Replace('_', ' ')}<br>
             Responsável: {(acao.ResponsavelUser != null ? acao.ResponsavelUser.FullName : "")}<br>
             Notificar: {string.Join(",", acao.NotificarUsers.Select(x => x.FullName)) }<br><br>
             
@@ -76,7 +76,7 @@ namespace Dominio.AcaoRH.Email
 
         public void MontarTo(Acao acao)
         {
-            this.To = new string[] { acao.ResponsavelUser.Email };
+            this.To = new string[] { acao.ResponsavelUser.Email, "alyne.gois@grtsolucoes.com.br" };
             
         }
     

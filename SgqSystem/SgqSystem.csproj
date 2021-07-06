@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -349,6 +349,9 @@
     <Compile Include="Controllers\Api\ParInputTypeValuesApiController.cs" />
     <Compile Include="Controllers\Api\ParReasonApiController.cs" />
     <Compile Include="Controllers\Api\PlanoDeAcao\AcaoApiController.cs" />
+    <Compile Include="Controllers\Api\PlanoDeAcao\AcompanhamentoAcaoApiController.cs" />
+    <Compile Include="Controllers\Api\PlanoDeAcao\EvidenciaConcluidaApiController.cs" />
+    <Compile Include="Controllers\Api\PlanoDeAcao\EvidenciaNaoConformeApiController.cs" />
     <Compile Include="Controllers\Api\Public\PublicApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoLinhaApiController.cs" />
     <Compile Include="Controllers\Api\Recravacao\RecravacaoApiController.cs" />
@@ -2488,6 +2491,10 @@
       <Project>{0896bc38-df38-4e39-adf9-db1f9910bfe6}</Project>
       <Name>CrossCutting</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Data\Data.csproj">
+      <Project>{A75EC76C-9ABF-4890-B82B-D8A048E6B7C5}</Project>
+      <Name>Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dominio\Dominio.csproj">
       <Project>{777d8e88-0d52-446a-bc77-2f50a7d936e5}</Project>
       <Name>Dominio</Name>
@@ -2515,6 +2522,10 @@
     <ProjectReference Include="..\ServiceModel\ServiceModel.csproj">
       <Project>{3ECF1D86-91F3-4140-A11A-1546B8F662A1}</Project>
       <Name>ServiceModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Services.csproj">
+      <Project>{9D205979-3646-42D1-89D6-C23FCC1CBDD6}</Project>
+      <Name>Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\SgqServiceBusiness\SgqServiceBusiness.csproj">
       <Project>{2a112b7a-4627-43f6-b362-321e0b2e6b0b}</Project>
@@ -2553,7 +2564,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57506</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/SgqSystem</IISUrl>
+          <IISUrl>http://localhost:57506/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
