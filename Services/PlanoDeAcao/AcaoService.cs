@@ -33,10 +33,10 @@ namespace Services.PlanoDeAcao
             //4 Atrasada  - cenario 5 e 6
             //5 Cancelada - cenario 7 e 8
 
+            var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
+
             if (acao.Status == EAcaoStatus.Em_Andamento)
             {
-                var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
-
                 var emailResponsavel = new MontaEmail(new EmailCreateAcaoResponsavel(acaoCompleta));
                 EmailAcaoService.Send(emailResponsavel);
 
@@ -46,14 +46,30 @@ namespace Services.PlanoDeAcao
 
             if (acao.Status == EAcaoStatus.Concluída)
             {
-                var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
-
                 var emailResponsavel = new MontaEmail(new EmailCreateAcaoVerEAgirResponsavel(acaoCompleta));
                 EmailAcaoService.Send(emailResponsavel);
 
                 var emailNotificados = new MontaEmail(new EmailCreateAcaoVerEAgirNotificados(acaoCompleta));
                 EmailAcaoService.Send(emailNotificados);
 
+            }
+
+            if(acao.Status == EAcaoStatus.Atrasada)
+            {
+                var emailResponsavel = new MontaEmail(new EmailAcaoVencidaResponsavel(acaoCompleta));
+                EmailAcaoService.Send(emailResponsavel);
+
+                var emailNotificados = new MontaEmail(new EmailAcaoVencidaNotificados(acaoCompleta));
+                EmailAcaoService.Send(emailNotificados);
+            }
+
+            if(acao.Status == EAcaoStatus.Cancelada)
+            {
+                var emailResponsavel = new MontaEmail(new EmailAcaoStatusCanceladoResponsavel(acaoCompleta));
+                EmailAcaoService.Send(emailResponsavel);
+
+                var emailNotificados = new MontaEmail(new EmailAcaoStatusCanceladoNotificados(acaoCompleta));
+                EmailAcaoService.Send(emailNotificados);
             }
         }
 

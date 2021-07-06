@@ -6,9 +6,9 @@ using static Dominio.Enums.Enums;
 
 namespace Dominio.AcaoRH.Email
 {
-    class EmailAcaoStatusAlteradoResponsavel : IEmail
+    public class EmailAcaoStatusCanceladoResponsavel : IEmail
     {
-        public EmailAcaoStatusAlteradoResponsavel(Acao acao)
+        public EmailAcaoStatusCanceladoResponsavel(Acao acao)
         {
             MontarSybject(acao);
             MontarBody(acao);
