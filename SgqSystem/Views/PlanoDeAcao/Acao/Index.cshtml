@@ -986,7 +986,7 @@
             $("#actionParLevel2_Id").text(dados.ParLevel2_Name);
             $("#actionParLevel3_Id").text(dados.ParLevel3_Name);
             $("#selectPrioridade").val(dados.Prioridade);
-            $("#selectResponsavel").val(dados.Responsavel);
+            $("#selectResponsavel").append(new Option(dados.Responsavel_Name, dados.Responsavel, true));
             $("#actionConclusionDate").val(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]);
             $("#actionConclusionHour").val(dados.HoraConclusao);
             $("#actionReference").val(dados.Referencia);

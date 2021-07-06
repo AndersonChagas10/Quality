@@ -77,18 +77,18 @@ namespace DTO.PlanoDeAcao
 
         public bool PermiteEditar
         { 
-            get => EhEmissorComAcaoPendenteOuAndamento; 
+            get => EhEmissor && (Status == (int)EAcaoStatus.Pendente || Status == (int)EAcaoStatus.Em_Andamento);
         }
         public bool PermiteAlterarStatus 
         { 
-            get => EhEmissorComAcaoPendenteOuAndamento && EhResponsavel; 
+            get => (EhEmissor && Status == (int)EAcaoStatus.Em_Andamento) && EhResponsavel; 
         }
 
         public bool PermiteInserirAcompanhamento 
         {
             get 
             {
-                if (!EhEmissorComAcaoEmAndamentoOuAtrasada) return false;
+                if (!EhEmissor && (Status == (int)EAcaoStatus.Em_Andamento || Status == (int)EAcaoStatus.Atrasada)) return false;
 
                 else
                 {
@@ -99,9 +99,7 @@ namespace DTO.PlanoDeAcao
 
         //Lógica das Regras
         public bool EhResponsavel => Responsavel == UsuarioLogado || Responsavel == 0;
-
-        public bool EhEmissorComAcaoPendenteOuAndamento => Emissor == UsuarioLogado && Status == (int)EAcaoStatus.Pendente || Status == (int)EAcaoStatus.Em_Andamento;
-        public bool EhEmissorComAcaoEmAndamentoOuAtrasada => Emissor == UsuarioLogado && Status == (int)EAcaoStatus.Em_Andamento || Status == (int)EAcaoStatus.Atrasada;
+        public bool EhEmissor => Emissor == UsuarioLogado;
 
         public bool EhVinculadoEmNotificacao()
         {
