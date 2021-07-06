@@ -4069,7 +4069,7 @@
 
   <Card>
     <CardNumber>GRX-2061</CardNumber>
-    <Version>1.10.8</Version>
+    <Version>1.10.7</Version>
     <Description>[RH SESMT] Criar estrutura de acompanhamento de ação e notificar ação</Description>
     <Script>
       IF NOT EXISTS (

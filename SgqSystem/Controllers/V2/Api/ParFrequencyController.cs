@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Dominio;
+using ServiceModel;
 using SgqSystem.Controllers.Api;
 using SgqSystem.ViewModels;
 
