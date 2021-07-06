@@ -12,9 +12,9 @@ using System.Linq;
 
 namespace Data.PlanoDeAcao
 {
-    public class AcaoRepository : IAcaoRepository
+    public class AcaoRepository : Interfaces.IAcaoRepository
     {
-        public readonly SgqDbDevEntities _db;
+        private readonly SgqDbDevEntities _db;
         public AcaoRepository(SgqDbDevEntities db)
         {
             _db = db;
@@ -71,12 +71,7 @@ namespace Data.PlanoDeAcao
          PAC.Referencia,
          PAC.Responsavel,
          PAC.Emissor,
-            (SELECT US.FullName
-				FROM UserSgq US 
-				INNER JOIN Pa.Acao AC
-				ON AC.Emissor = US.Id
-				AND AC.iD = PAC.Id)
-			AS EmissorNome,
+		US_Emissor.FullName AS EmissorNome,
          PAC.Prioridade,
          PAC.Status,
          PAC.IsActive,
@@ -114,6 +109,8 @@ namespace Data.PlanoDeAcao
          ON PCG.Id = PAC.ParCargo_Id
          LEFT JOIN UserSgq US WITH (NOLOCK)
          ON US.Id = PAC.Responsavel
+         LEFT JOIN UserSgq US_Emissor WITH (NOLOCK)
+         ON US_Emissor.Id = PAC.Emissor
          INNER JOIN ParCompanyXUserSgq PCXUS 
          ON PCXUS.ParCompany_Id = PAC.ParCompany_Id
 	     and PCXUS.UserSgq_Id = {usuarioLogado.Id}
@@ -232,12 +229,7 @@ namespace Data.PlanoDeAcao
                  PAC.Responsavel,
                  PAC.Prioridade,
                  PAC.Emissor,
-                    (SELECT US.FullName
-				        FROM UserSgq US 
-				        INNER JOIN Pa.Acao AC
-				        ON AC.Emissor = US.Id
-				        AND AC.iD = PAC.Id)
-			        AS EmissorNome,
+		        US_Emissor.FullName AS EmissorNome,
                  PAC.Status,
                  PAC.IsActive,
                  US.FullName AS Responsavel_Name
@@ -258,6 +250,8 @@ namespace Data.PlanoDeAcao
                  ON PCG.Id = PAC.ParCargo_Id
                  LEFT JOIN UserSgq US WITH (NOLOCK)
                  ON US.Id = PAC.Responsavel
+                 LEFT JOIN UserSgq US_Emissor WITH (NOLOCK)
+                 ON US_Emissor.Id = PAC.Emissor
                  INNER JOIN ParCompanyXUserSgq PCXUS 
                  ON PCXUS.ParCompany_Id = PAC.ParCompany_Id
 	             and PCXUS.UserSgq_Id = {usuarioLogado.Id}

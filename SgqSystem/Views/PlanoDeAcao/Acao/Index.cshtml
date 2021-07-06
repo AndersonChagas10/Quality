@@ -510,13 +510,23 @@
                         return montarCampo(data);
                     }
                 },
-                { "title": "Não Conformidade/Ocorrência", "mData": "Acao_Naoconformidade", "visible": true },
-                { "title": "Ação", "mData": "AcaoText", "visible": true },
+                {
+                    "title": "Não Conformidade/Ocorrência", "mData": "Acao_Naoconformidade", "visible": true,
+                    mRender: function (data, type, full, cell) {
+                        return montarCampo(data);
+                    }
+                },
+                {
+                    "title": "Ação", "mData": "AcaoText", "visible": true,
+                    mRender: function (data, type, full, cell) {
+                        return montarCampo(data);
+                    }
+                },
                 { "title": "Data Conclusão", "mData": "_DataConclusao", "visible": true },
                 { "title": "Emissor", "mData": "EmissorNome", "visible": true},
                 { "title": "Hora Conclusão", "mData": "HoraConclusao", "visible": true },
-                { "title": "Referencia", "mData": "Referencia", "visible": true },
-                {"title": "Nome do Responsavel", "mData": "Responsavel_Name", "visible": true},
+                { "title": "Referência", "mData": "Referencia", "visible": true },
+                {"title": "Nome do Responsável", "mData": "Responsavel_Name", "visible": true},
                 /*{ "title": "Notificar", "mData": "null", "visible": true },*/
                 { "title": "Prioridade", "mData": "Prioridade", "visible": true },
                 {

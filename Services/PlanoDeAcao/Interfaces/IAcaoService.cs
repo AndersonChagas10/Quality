@@ -3,7 +3,7 @@ using DTO;
 using DTO.PlanoDeAcao;
 using System.Collections.Generic;
 
-namespace Services.PlanoDeAcao
+namespace Services.PlanoDeAcao.Interfaces
 {
     public interface IAcaoService
     {

@@ -1,6 +1,6 @@
 ﻿using Dominio;
 
-namespace Data.PlanoDeAcao.Repositorio
+namespace Data.PlanoDeAcao.Interfaces
 {
     public interface IAcompanhamentoAcaoRepository
     {

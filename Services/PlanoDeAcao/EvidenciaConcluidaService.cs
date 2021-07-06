@@ -1,4 +1,5 @@
-﻿using Data.PlanoDeAcao.Repositorio;
+﻿using Data.PlanoDeAcao.Interfaces;
+using Data.PlanoDeAcao.Repositorio;
 using Dominio;
 using DTO.PlanoDeAcao;
 using Helper;
@@ -10,10 +11,10 @@ using System.Linq;
 
 namespace Services.PlanoDeAcao
 {
-    public class EvidenciaConcluidaService : IEvidenciaConcluidaService
+    public class EvidenciaConcluidaService : Interfaces.IEvidenciaConcluidaService
     {
         private readonly IEvidenciaConcluidaRepository _evidenciaConcluidaRepository;
-        public readonly IAcaoRepository _acaoRepository;
+        private readonly IAcaoRepository _acaoRepository;
 
         public EvidenciaConcluidaService(IEvidenciaConcluidaRepository evidenciaConcluidaRepository, IAcaoRepository acaoRepository)
         {

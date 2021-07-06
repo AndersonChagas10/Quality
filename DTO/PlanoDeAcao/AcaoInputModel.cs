@@ -16,13 +16,10 @@ namespace DTO.PlanoDeAcao
         public string Referencia { get; set; }
         public string Responsavel { get; set; }
 
-        [NotMapped]
         public List<EvidenciaViewModel> ListaEvidencia { get; set; }
 
-        [NotMapped]
         public List<EvidenciaViewModel> ListaEvidenciaConcluida { get; set; }
 
-        [NotMapped]
         public List<AcaoXNotificarAcao> ListaNotificarAcao { get; set; }
 
         public string Prioridade { get; set; }

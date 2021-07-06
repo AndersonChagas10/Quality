@@ -1,9 +1,6 @@
-﻿using Data.PlanoDeAcao;
-using Data.PlanoDeAcao.Repositorio;
-using Data.Repositories;
+﻿using Data.Repositories;
 using DTO.Interfaces.Repositories;
 using Ninject.Modules;
-using Services.PlanoDeAcao;
 
 namespace CrossCutting.IOC.Module
 {
@@ -16,14 +13,6 @@ namespace CrossCutting.IOC.Module
             Bind<IUserRepository>().To<UserRepository>();
             Bind<IParamsRepository>().To<ParamsRepository>();
             Bind<IParLevel3Repository>().To<ParLevel3Repository>();
-            Bind<IAcaoRepository>().To<AcaoRepository>();
-            Bind<IAcaoService>().To<AcaoService>();
-            Bind<IAcompanhamentoAcaoRepository>().To<AcompanhamentoAcaoRepository>();
-            Bind<IAcompanhamentoAcaoService>().To<AcompanhamentoAcaoService>();
-            Bind<IEvidenciaNaoConformeRepository>().To<EvidenciaNaoConformeRepository>();
-            Bind<IEvidenciaNaoConformeService>().To<EvidenciaNaoConformeService>();
-            Bind<IEvidenciaConcluidaRepository>().To<EvidenciaConcluidaRepository>();
-            Bind<IEvidenciaConcluidaService>().To<EvidenciaConcluidaService>();
         }
     }
 }

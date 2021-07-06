@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Data.PlanoDeAcao
 {
-    public class EvidenciaConcluidaRepository : IEvidenciaConcluidaRepository
+    public class EvidenciaConcluidaRepository : Interfaces.IEvidenciaConcluidaRepository
     {
         public List<EvidenciaViewModel> BuscarListaEvidenciasConcluidas(int acao_Id)
         {

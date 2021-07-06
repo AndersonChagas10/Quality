@@ -1,7 +1,7 @@
 ﻿using Dominio;
 using DTO.PlanoDeAcao;
 
-namespace Services.PlanoDeAcao
+namespace Services.PlanoDeAcao.Interfaces
 {
     public interface IAcompanhamentoAcaoService
     {

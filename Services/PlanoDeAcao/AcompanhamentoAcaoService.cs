@@ -1,4 +1,5 @@
-﻿using Data.PlanoDeAcao.Repositorio;
+﻿using Data.PlanoDeAcao.Interfaces;
+using Data.PlanoDeAcao.Repositorio;
 using Dominio;
 using Dominio.AcaoRH;
 using DTO.PlanoDeAcao;
@@ -7,7 +8,7 @@ using System.Linq;
 
 namespace Services.PlanoDeAcao
 {
-    public class AcompanhamentoAcaoService : IAcompanhamentoAcaoService
+    public class AcompanhamentoAcaoService : Interfaces.IAcompanhamentoAcaoService
     {
         private readonly IAcompanhamentoAcaoRepository _acompanhamentoRepository;
 

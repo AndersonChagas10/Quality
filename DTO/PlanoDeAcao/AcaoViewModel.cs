@@ -40,19 +40,14 @@ namespace DTO.PlanoDeAcao
         public int ParCluster_Id { get; set; }
         public int ParClusterGroup_Id { get; set; }
 
-        [NotMapped]
         public List<EvidenciaViewModel> ListaEvidencia { get; set; }
 
-        [NotMapped]
         public List<EvidenciaViewModel> ListaEvidenciaConcluida { get; set; }
 
-        [NotMapped]
         public List<AcaoXNotificarAcao> ListaNotificarAcao { get; set; }
 
-        [NotMapped]
         public List<string> EvidenciaNaoConformidade { get; set; }
 
-        [NotMapped]
         public List<string> EvidenciaAcaoConcluida { get; set; }
         public string Prioridade { get; set; }
         public int Status { get; set; }

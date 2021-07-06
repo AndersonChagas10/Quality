@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Data.PlanoDeAcao.Repositorio
 {
-    public class EvidenciaNaoConformeRepository : IEvidenciaNaoConformeRepository
+    public class EvidenciaNaoConformeRepository : Interfaces.IEvidenciaNaoConformeRepository
     {
         public List<EvidenciaViewModel> BuscarListaEvidencias(int acao_Id)
         {

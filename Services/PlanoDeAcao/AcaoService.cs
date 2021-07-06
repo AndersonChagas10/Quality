@@ -1,4 +1,5 @@
-﻿using Data.PlanoDeAcao.Repositorio;
+﻿using Data.PlanoDeAcao.Interfaces;
+using Data.PlanoDeAcao.Repositorio;
 using Dominio;
 using Dominio.AcaoRH;
 using Dominio.AcaoRH.Email;
@@ -11,9 +12,9 @@ using static Dominio.Enums.Enums;
 
 namespace Services.PlanoDeAcao
 {
-    public class AcaoService : IAcaoService
+    public class AcaoService : Interfaces.IAcaoService
     {
-        public readonly IAcaoRepository _acaoRepository;
+        private readonly IAcaoRepository _acaoRepository;
 
         public AcaoService(IAcaoRepository acaoRepository)
         {

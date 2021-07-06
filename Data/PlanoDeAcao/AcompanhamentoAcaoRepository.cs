@@ -3,9 +3,9 @@ using Dominio;
 
 namespace Data.PlanoDeAcao
 {
-    public class AcompanhamentoAcaoRepository : IAcompanhamentoAcaoRepository
+    public class AcompanhamentoAcaoRepository : Interfaces.IAcompanhamentoAcaoRepository
     {
-        public readonly SgqDbDevEntities _db;
+        private readonly SgqDbDevEntities _db;
         public AcompanhamentoAcaoRepository(SgqDbDevEntities db)
         {
             _db = db;

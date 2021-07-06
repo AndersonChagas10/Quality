@@ -37,13 +37,10 @@ namespace DTO.PlanoDeAcao
         public string EmissorNome { get; set; }
         public int UsuarioLogado { get; set; }
 
-        [NotMapped]
         public List<string> EvidenciaNaoConformidade { get; set; }
 
-        [NotMapped]
         public List<FileStream> listaDeFotosEvidencia { get; set; }
 
-        [NotMapped]
         public List<string> EvidenciaAcaoConcluida { get; set; }
         public string Prioridade { get; set; }
         public int Status { get; set; }
@@ -51,10 +48,8 @@ namespace DTO.PlanoDeAcao
         public bool IsActive { get; set; }
         public string Responsavel_Name { get; set; }
 
-        [NotMapped]
         public List<EvidenciaViewModel> ListaEvidencia { get; set; }
 
-        [NotMapped]
         public List<EvidenciaViewModel> ListaEvidenciaConcluida { get; set; }
 
 
@@ -72,7 +67,6 @@ namespace DTO.PlanoDeAcao
             };
         public List<NotificarViewModel> ListaNotificar { get; set; } = new List<NotificarViewModel>();
         public List<NotificarViewModel> ListaNotificarAcao { get; set; } = new List<NotificarViewModel>();
-
         public List<AcompanhamentoAcaoViewModel> ListaAcompanhamento { get; set; } = new List<AcompanhamentoAcaoViewModel>();
 
         public bool PermiteEditar
@@ -101,7 +95,7 @@ namespace DTO.PlanoDeAcao
         public bool EhResponsavel => Responsavel == UsuarioLogado || Responsavel == 0;
         public bool EhEmissor => Emissor == UsuarioLogado;
 
-        public bool EhVinculadoEmNotificacao()
+        private bool EhVinculadoEmNotificacao()
         {
             if (ListaNotificarAcao != null)
             {

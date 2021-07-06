@@ -3,7 +3,7 @@ using DTO;
 using DTO.PlanoDeAcao;
 using System.Collections.Generic;
 
-namespace Data.PlanoDeAcao.Repositorio
+namespace Data.PlanoDeAcao.Interfaces
 {
     public interface IAcaoRepository
     {
