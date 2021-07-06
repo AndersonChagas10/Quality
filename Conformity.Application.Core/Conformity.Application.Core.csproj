@@ -42,10 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\BaseServiceWithLog.cs" />
-    <Compile Include="Core\BaseService.cs" />
-    <Compile Include="Core\HistoricoAlteracaoService.cs" />
-    <Compile Include="Core\ParCompanyService.cs" />
+    <Compile Include="BaseServiceWithLog.cs" />
+    <Compile Include="BaseService.cs" />
+    <Compile Include="Log\EntityTrackService.cs" />
+    <Compile Include="Parametrizacao\ParCompanyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

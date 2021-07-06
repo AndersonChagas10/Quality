@@ -1,4 +1,4 @@
-﻿namespace Conformity.Domain.Core.Entities
+﻿namespace Conformity.Domain.Core.Entities.Parametrizacao
 {
     using Conformity.Domain.Core.Interfaces;
 

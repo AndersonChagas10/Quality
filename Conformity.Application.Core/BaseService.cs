@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Conformity.Application.Core.Core
+namespace Conformity.Application.Core
 {
-    public class BaseService<T> : IService<T> where T : class //IEntity
+    public abstract class BaseService<T> : IService<T> where T : IEntity //IEntity
     {
         protected IRepositoryNoLazyLoad<T> _repository;
         public BaseService(IRepositoryNoLazyLoad<T> repository)

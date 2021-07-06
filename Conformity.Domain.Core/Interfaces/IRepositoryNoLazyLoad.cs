@@ -2,7 +2,7 @@
 
 namespace Conformity.Domain.Core.Interfaces
 {
-    public interface IRepositoryNoLazyLoad<T> where T : class
+    public interface IRepositoryNoLazyLoad<T> where T : IEntity
     {
         void Refresh(T obj);
 

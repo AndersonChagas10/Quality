@@ -1941,7 +1941,6 @@
     <Content Include="Views\ParStructureGroup\Create.cshtml" />
     <Content Include="Views\ParStructureGroup\Edit.cshtml" />
     <Content Include="Views\ParCompany2\Create.cshtml" />
-    <Content Include="Views\ParCompany2\Delete.cshtml" />
     <Content Include="Views\ParCompany2\Details.cshtml" />
     <Content Include="Views\ParCompany2\Edit.cshtml" />
     <Content Include="Views\ParCompany2\Index.cshtml" />

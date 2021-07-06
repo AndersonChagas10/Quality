@@ -1,28 +1,24 @@
-﻿using Conformity.Domain.Core.Entities;
+﻿using Conformity.Application.Core.Log;
 using Conformity.Domain.Core.Interfaces;
-using Conformity.Infra.Data.Core;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Conformity.Application.Core.Core
+namespace Conformity.Application.Core
 {
-    public class BaseServiceWithLog<T> : IServiceWithLog<T> where T : class //IEntity
+    public abstract class BaseServiceWithLog<T> : IServiceWithLog<T> where T : IEntity //IEntity
     {
         protected IRepositoryNoLazyLoad<T> _repository;
-        protected HistoricoAlteracaoService _historicoAlteracaoService;
+        protected EntityTrackService _entityTrackService;
         public BaseServiceWithLog(IRepositoryNoLazyLoad<T> repository
-            , HistoricoAlteracaoService historicoAlteracaoService)
+            , EntityTrackService entityTrackService)
         {
             _repository = repository;
-            _historicoAlteracaoService = historicoAlteracaoService;
+            _entityTrackService = entityTrackService;
         }
 
         public virtual void Add(T entity)
         {
             _repository.Add(entity);
+            _entityTrackService.RegisterCreate(entity);
         }
 
         public virtual void AddAll(IEnumerable<T> entity)
@@ -58,8 +54,8 @@ namespace Conformity.Application.Core.Core
         public virtual void UpdateWithLog(T entity)
         {
             T dbEntity = GetById(((IEntity)entity).Id);
-            _historicoAlteracaoService.RegistrarAlteracoes(dbEntity, entity);
             _repository.Update(entity);
+            _entityTrackService.RegisterUpdate(dbEntity, entity);
         }
 
         public virtual void UpdateAll(IEnumerable<T> entityList)

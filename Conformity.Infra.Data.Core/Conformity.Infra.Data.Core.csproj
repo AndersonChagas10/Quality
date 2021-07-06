@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\HistoricoAlteracaoRepository.cs" />
+    <Compile Include="Repository\Log\EntityTrackRepository.cs" />
     <Compile Include="Core\RepositoryBase.cs" />
     <Compile Include="Core\RepositoryBaseNoLazyLoad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

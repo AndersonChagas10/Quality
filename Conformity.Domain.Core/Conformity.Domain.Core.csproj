@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,10 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DTOs\HistoricoAlteracoesViewModel.cs" />
+    <Compile Include="DTOs\EntityTrackViewModel.cs" />
     <Compile Include="Entities\BaseModel.cs" />
-    <Compile Include="Entities\HistoricoAlteracoes.cs" />
-    <Compile Include="Entities\ParCompany.cs" />
+    <Compile Include="Entities\Log\EntityTrack.cs" />
+    <Compile Include="Entities\Parametrizacao\ParCompany.cs" />
+    <Compile Include="Enums\Log\ELogTrackEvent.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRepositoryNoLazyLoad.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
@@ -54,8 +56,6 @@
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Enums\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

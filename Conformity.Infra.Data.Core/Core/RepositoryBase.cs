@@ -4,15 +4,16 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Linq;
+using Conformity.Domain.Core.Entities;
 using Conformity.Domain.Core.Interfaces;
 
-namespace Conformity.Infra.Data.Core.Core
+namespace Conformity.Infra.Data.Core
 {
     /// <summary>
     /// Repositório Base, classe de gerencia do Banco de Dados.
     /// </summary>
     /// <typeparam name="T">Object reconhecido pelo DataBase: EntityBase</typeparam>
-    public class RepositoryBase<T> : IDisposable, IRepository<T> where T : class
+    public class RepositoryBase<T> : IDisposable, IRepository<T> where T : BaseModel
     {
 
         /// <summary>

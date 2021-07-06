@@ -1,4 +1,6 @@
-﻿using Conformity.Application.Core.Core;
+﻿using Conformity.Application.Core;
+using Conformity.Application.Core.Log;
+using Conformity.Application.Core.Parametrizacao;
 using Conformity.Domain.Core.Entities;
 using Conformity.Domain.Core.Interfaces;
 using Conformity.Infra.Data.Core;
@@ -16,12 +18,17 @@ namespace Conformity.Infra.IoC.Core
     {
         public override void Load()
         {
-            CustomService();
+            LogService();
+            ParametrizacaoService();
         }
 
-        public void CustomService()
+        public void LogService()
         {
-            Bind(typeof(HistoricoAlteracaoService)).To(typeof(HistoricoAlteracaoService));
+            Bind(typeof(EntityTrackService)).To(typeof(EntityTrackService));
+        }
+
+        public void ParametrizacaoService()
+        {
             Bind(typeof(ParCompanyService)).To(typeof(ParCompanyService));
         }
     }

@@ -7,18 +7,17 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Conformity.Application.Util;
-using Dominio;
+using Conformity.Domain.Core.Entities.Parametrizacao;
 
 namespace SgqSystem.Controllers
 {
     public class ParCompany2Controller : BaseAuthenticatedController
     {
-        private SgqDbDevEntities db = new SgqDbDevEntities();
 
-        private Conformity.Application.Core.Core.ParCompanyService _serviceCompany;
+        private Conformity.Application.Core.Parametrizacao.ParCompanyService _serviceCompany;
 
         public ParCompany2Controller(ApplicationConfig applicationConfig
-            , Conformity.Application.Core.Core.ParCompanyService serviceCompany)
+            , Conformity.Application.Core.Parametrizacao.ParCompanyService serviceCompany)
             : base (applicationConfig)
         {
             _serviceCompany = serviceCompany;
@@ -38,7 +37,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            ParCompany parCompany = db.ParCompany.Find(id);
+            ParCompany parCompany = _serviceCompany.GetById(id.Value);
             if (parCompany == null)
             {
                 return HttpNotFound();
@@ -63,9 +62,7 @@ namespace SgqSystem.Controllers
             ValidModelState(parCompany);
             if (ModelState.IsValid)
             {
-                parCompany.AddDate = DateTime.Now;
-                db.ParCompany.Add(parCompany);
-                db.SaveChanges();
+                _serviceCompany.Add(parCompany);
                 return RedirectToAction("Index");
             }
 
@@ -79,7 +76,7 @@ namespace SgqSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Conformity.Domain.Core.Entities.ParCompany parCompany = _serviceCompany.GetById(id.Value);
+            ParCompany parCompany = _serviceCompany.GetById(id.Value);
             if (parCompany == null)
             {
                 return HttpNotFound();
@@ -92,7 +89,7 @@ namespace SgqSystem.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id, Name, Description, IsActive, Initials, SIF, CompanyNumber, IpServer, DBServer, IntegrationId, ParCompany_Id, Identification")] Conformity.Domain.Core.Entities.ParCompany parCompany)
+        public ActionResult Edit([Bind(Include = "Id, Name, Description, IsActive, Initials, SIF, CompanyNumber, IpServer, DBServer, IntegrationId, ParCompany_Id, Identification")] Conformity.Domain.Core.Entities.Parametrizacao.ParCompany parCompany)
         {
             //ValidModelState(parCompany);
             if (ModelState.IsValid)
@@ -102,43 +99,6 @@ namespace SgqSystem.Controllers
                 return RedirectToAction("Index");
             }
             return View(parCompany);
-        }
-
-        // GET: ParCompany2/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            ParCompany parCompany = db.ParCompany.Find(id);
-            if (parCompany == null)
-            {
-                return HttpNotFound();
-            }
-            return View(parCompany);
-        }
-
-        // POST: ParCompany2/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            ParCompany parCompany = db.ParCompany.Find(id);
-            parCompany.AlterDate = DateTime.Now;
-            parCompany.IsActive = false;
-            db.Entry(parCompany).State = EntityState.Modified;
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
 
         private void ValidModelState(ParCompany parCompany)

@@ -2,7 +2,7 @@
 
 namespace Conformity.Domain.Core.Interfaces
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : IEntity
     {
         void Refresh(T obj);
 
