@@ -1,12 +1,14 @@
 ﻿using Conformity.Domain.Core.Interfaces;
+using Dominio;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 {
     [Table("PA.Acao")]
-    public class Acao : BaseModel, IEntity
+    public partial class Acao : BaseModel, IEntity
     {
         public int ParLevel1_Id { get; set; }
         public int ParLevel2_Id { get; set; }

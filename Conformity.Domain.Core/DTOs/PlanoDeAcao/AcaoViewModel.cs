@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Conformity.Domain.Core.Entities.PlanoDeAcao;
+using System;
 using System.Collections.Generic;
+using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace Conformity.Domain.Core.DTOs
 {

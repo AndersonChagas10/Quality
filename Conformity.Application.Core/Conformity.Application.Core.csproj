@@ -47,6 +47,9 @@
     <Compile Include="Log\EntityTrackService.cs" />
     <Compile Include="Parametrizacao\ParCompanyService.cs" />
     <Compile Include="PlanoDeAcao\AcaoService.cs" />
+    <Compile Include="PlanoDeAcao\AcompanhamentoAcaoService.cs" />
+    <Compile Include="PlanoDeAcao\EvidenciaConcluidaService.cs" />
+    <Compile Include="PlanoDeAcao\EvidenciaNaoConformeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

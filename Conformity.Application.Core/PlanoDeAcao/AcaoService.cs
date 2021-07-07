@@ -1,17 +1,20 @@
 ﻿using Conformity.Application.Core.Log;
 using Conformity.Domain.Core.DTOs;
+using Conformity.Domain.Core.DTOs.Filtros;
 using Conformity.Domain.Core.Entities.PlanoDeAcao;
 using Conformity.Domain.Core.Interfaces;
 using Conformity.Infra.Data.Core.Repository.PlanoDeAcao;
 using System.Collections.Generic;
+using System.Linq;
+using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace Conformity.Application.Core.PlanoDeAcao
 {
-    public class AcaoService : BaseServiceWithLog<Acao>
+    public class AcaoService : BaseServiceWithLog<EvidenciaConcluida>
     {
         private readonly AcaoRepository _acaoRepository;
 
-        public AcaoService(IRepositoryNoLazyLoad<Acao> repository
+        public AcaoService(IRepositoryNoLazyLoad<EvidenciaConcluida> repository
             , EntityTrackService historicoAlteracaoService,
             AcaoRepository acaoRepository)
             : base(repository
@@ -19,7 +22,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
         {
             _acaoRepository = acaoRepository;
         }
-        public IEnumerable<AcaoViewModel> ObterAcaoPorFiltro(DataCarrierFormularioNew form, UserSgq usuarioLogado)
+        public IEnumerable<AcaoViewModel> ObterAcaoPorFiltro(FiltroListagemDeAcaoDoWorkflow form, UserSgq usuarioLogado)
         {
             return _acaoRepository.ObterAcao(form, usuarioLogado);
         }

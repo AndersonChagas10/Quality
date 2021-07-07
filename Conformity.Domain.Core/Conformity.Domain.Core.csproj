@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -50,6 +53,7 @@
     <Compile Include="DTOs\PlanoDeAcao\AcompanhamentoAcaoInputModel.cs" />
     <Compile Include="DTOs\PlanoDeAcao\AcompanhamentoAcaoViewModel.cs" />
     <Compile Include="DTOs\PlanoDeAcao\EvidenciaViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\Filtros\FiltroListagemDeAcaoDoWorkflow.cs" />
     <Compile Include="DTOs\PlanoDeAcao\ImagemEvidenciaViewModel.cs" />
     <Compile Include="DTOs\PlanoDeAcao\NotificarViewModel.cs" />
     <Compile Include="Entities\BaseModel.cs" />
@@ -59,9 +63,29 @@
     <Compile Include="Entities\PlanoDeAcao\AcaoXNotificarAcao.cs" />
     <Compile Include="Entities\PlanoDeAcao\AcompanhamentoAcao.cs" />
     <Compile Include="Entities\PlanoDeAcao\AcompanhamentoAcaoXNotificar.cs" />
-    <Compile Include="Entities\PlanoDeAcao\EvidenciaAcaoConcluida.cs" />
-    <Compile Include="Entities\PlanoDeAcao\EvidenciaNaoConformidade.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailAcaoStatusCanceladoNotificados.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailAcaoStatusCanceladoResponsavel.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailAcaoVencidaNotificados.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailAcaoVencidaResponsavel.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailCreateAcaoNotificados.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailCreateAcaoResponsavel.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailCreateAcaoVerEAgirNotificados.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailCreateAcaoVerEAgirResponsavel.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\MontaEmail.cs" />
+    <Compile Include="Entities\PlanoDeAcao\EvidenciaConcluida.cs" />
+    <Compile Include="Entities\PlanoDeAcao\EvidenciaNaoConforme.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParCargo.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParCluster.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParClusterGroup.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParCompany.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParDepartment.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParLevel1.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParLevel2.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParLevel3.cs" />
+    <Compile Include="Entities\PlanoDeAcao\UserSgq.cs" />
     <Compile Include="Enums\Log\ELogTrackEvent.cs" />
+    <Compile Include="Enums\PlanoDeAcao\Enums.cs" />
+    <Compile Include="Interfaces\IEmail.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRepositoryNoLazyLoad.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
@@ -70,6 +94,8 @@
     <Compile Include="Interfaces\IService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

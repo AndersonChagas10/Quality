@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace Conformity.Domain.Core.DTOs
 {
@@ -42,7 +43,7 @@ namespace Conformity.Domain.Core.DTOs
         public List<string> EvidenciaAcaoConcluida { get; set; }
         public string Prioridade { get; set; }
         public int Status { get; set; }
-        public string StatusName { get { return Enum.GetName(typeof(Dominio.Enums.Enums.EAcaoStatus), Status); } }
+        public string StatusName { get { return Enum.GetName(typeof(EAcaoStatus), Status); } }
         public bool IsActive { get; set; }
         public string Responsavel_Name { get; set; }
 

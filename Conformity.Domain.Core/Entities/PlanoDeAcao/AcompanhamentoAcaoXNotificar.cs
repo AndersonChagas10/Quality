@@ -1,11 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Conformity.Domain.Core.Interfaces;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 {
     [Table("PA.AcompanhamentoAcaoXNotificar")]
-    public class AcompanhamentoAcaoXNotificar
+    public partial class AcompanhamentoAcaoXNotificar : BaseModel, IEntity
     {
-        public int Id { get; set; }
         public int UserSgq_Id { get; set; }
         public bool IsActive { get; set; } = true;
 

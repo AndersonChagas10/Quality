@@ -1,7 +1,11 @@
-﻿using Conformity.Domain.Core.DTOs;
+﻿using Conformity.Application.Helper;
+using Conformity.Domain.Core.DTOs;
+using Conformity.Domain.Core.DTOs.Filtros;
 using Conformity.Domain.Core.Entities.PlanoDeAcao;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
@@ -9,13 +13,15 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
     public class AcaoRepository
     {
         private readonly EntityContext _dbContext;
+        private readonly ADOContext _aDOContext;
 
-        public AcaoRepository(EntityContext dbContext)
+        public AcaoRepository(EntityContext dbContext, ADOContext aDOContext)
         {
             _dbContext = dbContext;
+            _aDOContext = aDOContext;
         }
 
-        public IEnumerable<AcaoViewModel> ObterAcao(DataCarrierFormularioNew form, UserSgq usuarioLogado)
+        public IEnumerable<AcaoViewModel> ObterAcao(FiltroListagemDeAcaoDoWorkflow form, UserSgq usuarioLogado)
         {
             string ParCompany = "";
             string ClusterGroup = "";
@@ -117,11 +123,8 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
          {GrupoEmpresa}
          {Regional}";
 
-            using (Factory factory = new Factory("DefaultConnection"))
-            {
-                var lista = factory.SearchQuery<AcaoViewModel>(query);
-                return lista;
-            }
+            var lista = _aDOContext.SearchQuery<AcaoViewModel>(query);
+            return lista;
         }
 
         public IEnumerable<AcaoViewModel> ObterStatusPorId(string status)
@@ -187,11 +190,9 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                      ON US.Id = PAC.Responsavel
                      WHERE PAC.Status = {status}";
 
-            using (ADOFactory.Factory factory = new ADOFactory.Factory("DefaultConnection"))
-            {
-                var lista = factory.SearchQuery<AcaoViewModel>(query);
-                return lista;
-            }
+            var lista = _aDOContext.SearchQuery<AcaoViewModel>(query);
+            return lista;
+
         }
 
         public AcaoFormViewModel ObterAcaoComVinculosPorId(int id, UserSgq usuarioLogado)
@@ -252,21 +253,19 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 	             and PCXUS.UserSgq_Id = {usuarioLogado.Id}
                  WHERE PAC.Id = {id}";
 
-            using (Factory factory = new Factory("DefaultConnection"))
-            {
-                var acao = factory.SearchQuery<AcaoFormViewModel>(query).FirstOrDefault();
-                acao.ListaResponsavel = BuscarListaResponsavel(acao.ParCompany_Id);
-                acao.ListaNotificar = BuscarListaNotificar(acao.ParCompany_Id);
-                acao.ListaNotificarAcao = BuscarListaNotificarAcao(acao.Id);
-                acao.ListaAcompanhamento = BuscarAcompanhamento(acao.Id);
 
-                return acao;
-            }
+            var acao = _aDOContext.SearchQuery<AcaoFormViewModel>(query).FirstOrDefault();
+            acao.ListaResponsavel = BuscarListaResponsavel(acao.ParCompany_Id);
+            acao.ListaNotificar = BuscarListaNotificar(acao.ParCompany_Id);
+            acao.ListaNotificarAcao = BuscarListaNotificarAcao(acao.Id);
+            acao.ListaAcompanhamento = BuscarAcompanhamento(acao.Id);
+
+            return acao;
         }
 
-        public Acao ObterAcaoPorId(int id)
+        public EvidenciaConcluida ObterAcaoPorId(int id)
         {
-            Acao acao = _dbContext.Fin .Find(id);
+            EvidenciaConcluida acao = _dbContext.Acao.Find(id);
             return acao;
         }
 
@@ -285,17 +284,14 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 	                                AND AXNA.UserSgq_Id = USGQ.Id
                                 WHERE 1=1";
 
-            using (Factory factory = new Factory("DefaultConnection"))
-            {
-                listaNotificarAcao = factory.SearchQuery<NotificarViewModel>(queryUser).ToList();
-            }
+            listaNotificarAcao = _aDOContext.SearchQuery<NotificarViewModel>(queryUser).ToList();
 
             return listaNotificarAcao;
         }
         private List<AcompanhamentoAcaoViewModel> BuscarAcompanhamento(int acao_id)
         {
             List<AcompanhamentoAcaoViewModel> listaAcompanhamentoAcaoViewModel;
-            listaAcompanhamentoAcaoViewModel = _db.AcompanhamentoAcao
+            listaAcompanhamentoAcaoViewModel = _dbContext.AcompanhamentoAcao
                 .Where(x => x.Acao_Id == acao_id)
                 .OrderByDescending(x => x.DataRegistro)
                 .Select(x => new AcompanhamentoAcaoViewModel()
@@ -371,11 +367,8 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                              WHERE US.ParCompany_Id = {ParCompany_Id}
                             )";
 
-            using (Factory factory = new Factory("DefaultConnection"))
-            {
-                var retorno = factory.SearchQuery<UserSgq>(query).ToList();
-                return retorno;
-            }
+            var retorno = _aDOContext.SearchQuery<UserSgq>(query).ToList();
+            return retorno;
         }
 
         public void VincularUsuariosASeremNotificadosAAcao(AcaoInputModel objAcao, List<int> listaInserir)
@@ -394,19 +387,15 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                                          ,@AddDate			
                                         )";
 
-
-                    using (Factory factory = new Factory("DefaultConnection"))
+                    using (SqlCommand cmd = new SqlCommand(sql, _aDOContext.connection))
                     {
-                        using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
-                        {
-                            cmd.CommandType = CommandType.Text;
-                            UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Id", objAcao.Id);
-                            UtilSqlCommand.AddParameterNullable(cmd, "@UserSgq_Id", item);
-                            UtilSqlCommand.AddParameterNullable(cmd, "@AddDate", DateTime.Now);
+                        cmd.CommandType = CommandType.Text;
+                        cmd.AddParameterNullable("@Acao_Id", objAcao.Id);
+                        cmd.AddParameterNullable("@UserSgq_Id", item);
+                        cmd.AddParameterNullable("@AddDate", DateTime.Now);
 
-                            var id = Convert.ToInt32(cmd.ExecuteScalar());
+                        var id = Convert.ToInt32(cmd.ExecuteScalar());
 
-                        }
                     }
                 }
                 catch (Exception e)
@@ -427,19 +416,20 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                                     where Acao_Id = @Acao_Id
                                     and UserSgq_Id = @UserSgq_Id";
 
+                    _aDOContext.ExecuteStoredProcedure<SqlCommand>(sql);
 
-                    using (Factory factory = new Factory("DefaultConnection"))
-                    {
-                        using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
-                        {
-                            cmd.CommandType = CommandType.Text;
-                            UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Id", objAcao.Id);
-                            UtilSqlCommand.AddParameterNullable(cmd, "@UserSgq_Id", item);
+                    //using (Factory factory = new Factory("DefaultConnection"))
+                    //{
+                    //    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                    //    {
+                    //        cmd.CommandType = CommandType.Text;
+                    //        UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Id", objAcao.Id);
+                    //        UtilSqlCommand.AddParameterNullable(cmd, "@UserSgq_Id", item);
 
-                            var id = Convert.ToInt32(cmd.ExecuteScalar());
+                    //        var id = Convert.ToInt32(cmd.ExecuteScalar());
 
-                        }
-                    }
+                    //    }
+                    //}
                 }
                 catch (Exception e)
                 {
@@ -456,11 +446,8 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                 and IsActive = 1
             ";
 
-            using (Factory factory = new Factory("DefaultConnection"))
-            {
-                var lista = factory.SearchQuery<AcaoXNotificarAcao>(query);
-                return lista;
-            }
+            var lista = _aDOContext.SearchQuery<AcaoXNotificarAcao>(query);
+            return lista;
         }
 
         public void AtualizarValoresDaAcao(AcaoInputModel objAcao)
@@ -482,25 +469,27 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 
             ";
 
-            using (Factory factory = new Factory("DefaultConnection"))
-            {
-                using (SqlCommand cmd = new SqlCommand(queryUpdate, factory.connection))
-                {
-                    cmd.CommandType = CommandType.Text;
+            _aDOContext.ExecuteStoredProcedure<SqlCommand>(queryUpdate);
 
-                    UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Naoconformidade", objAcao.Acao_Naoconformidade);
-                    UtilSqlCommand.AddParameterNullable(cmd, "@AcaoText", objAcao.AcaoText);
-                    UtilSqlCommand.AddParameterNullable(cmd, "@DataConclusao", objAcao.DataConclusao);
-                    UtilSqlCommand.AddParameterNullable(cmd, "@HoraConclusao", objAcao.HoraConclusao);
-                    UtilSqlCommand.AddParameterNullable(cmd, "@Referencia", objAcao.Referencia);
-                    UtilSqlCommand.AddParameterNullable(cmd, "@Responsavel", objAcao.Responsavel);
-                    UtilSqlCommand.AddParameterNullable(cmd, "@Prioridade", objAcao.Prioridade);
-                    UtilSqlCommand.AddParameterNullable(cmd, "@Status", objAcao.Status);
+            //using (Factory factory = new Factory("DefaultConnection"))
+            //{
+            //    using (SqlCommand cmd = new SqlCommand(queryUpdate, factory.connection))
+            //    {
+            //        cmd.CommandType = CommandType.Text;
 
-                    var id = cmd.ExecuteScalar();
+            //        UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Naoconformidade", objAcao.Acao_Naoconformidade);
+            //        UtilSqlCommand.AddParameterNullable(cmd, "@AcaoText", objAcao.AcaoText);
+            //        UtilSqlCommand.AddParameterNullable(cmd, "@DataConclusao", objAcao.DataConclusao);
+            //        UtilSqlCommand.AddParameterNullable(cmd, "@HoraConclusao", objAcao.HoraConclusao);
+            //        UtilSqlCommand.AddParameterNullable(cmd, "@Referencia", objAcao.Referencia);
+            //        UtilSqlCommand.AddParameterNullable(cmd, "@Responsavel", objAcao.Responsavel);
+            //        UtilSqlCommand.AddParameterNullable(cmd, "@Prioridade", objAcao.Prioridade);
+            //        UtilSqlCommand.AddParameterNullable(cmd, "@Status", objAcao.Status);
 
-                }
-            }
+            //        var id = cmd.ExecuteScalar();
+
+            //    }
+            //}
         }
     }
 }

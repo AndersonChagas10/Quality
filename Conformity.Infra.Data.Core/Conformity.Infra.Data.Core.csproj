@@ -38,8 +38,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ADOContext.cs" />
-    <Compile Include="Context\EntityAcaoContext.cs" />
+    <Compile Include="Context\EntityPlanoDeAcaoContext.cs" />
     <Compile Include="Context\EntityParametrizacaoContext.cs" />
     <Compile Include="Context\EntityLogContext.cs" />
     <Compile Include="Repository\Log\EntityTrackRepository.cs" />
@@ -59,12 +63,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EntityContext.cs" />
     <Compile Include="Repository\PlanoDeAcao\AcaoRepository.cs" />
+    <Compile Include="Repository\PlanoDeAcao\AcompanhamentoAcaoRepository.cs" />
+    <Compile Include="Repository\PlanoDeAcao\EvidenciaConcluidaRepository.cs" />
+    <Compile Include="Repository\PlanoDeAcao\EvidenciaNaoConformeRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Conformity.Application.Helper\Conformity.Application.Helper.csproj">
+      <Project>{a8dee7bc-072f-437f-b9ba-8de3ec7b46dd}</Project>
+      <Name>Conformity.Application.Helper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Conformity.Domain.Core\Conformity.Domain.Core.csproj">
       <Project>{1ad13509-f817-4551-ac84-1d1090dc1037}</Project>
       <Name>Conformity.Domain.Core</Name>
