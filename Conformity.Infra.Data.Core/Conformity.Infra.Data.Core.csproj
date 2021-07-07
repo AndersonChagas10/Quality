@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ADOContext.cs" />
     <Compile Include="Context\EntityAcaoContext.cs" />
     <Compile Include="Context\EntityParametrizacaoContext.cs" />
     <Compile Include="Context\EntityLogContext.cs" />
