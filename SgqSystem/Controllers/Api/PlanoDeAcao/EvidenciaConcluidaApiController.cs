@@ -1,6 +1,5 @@
-﻿using DTO.PlanoDeAcao;
-using Services.PlanoDeAcao;
-using Services.PlanoDeAcao.Interfaces;
+﻿using Conformity.Application.Core.PlanoDeAcao;
+using Conformity.Domain.Core.DTOs;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -10,9 +9,9 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
     public class EvidenciaConcluidaApiController : BaseApiController
     {
-        private readonly IEvidenciaConcluidaService _evidenciaConcluidaService;
+        private readonly EvidenciaConcluidaService _evidenciaConcluidaService;
 
-        public EvidenciaConcluidaApiController(IEvidenciaConcluidaService evidenciaConcluidaService)
+        public EvidenciaConcluidaApiController(EvidenciaConcluidaService evidenciaConcluidaService)
         {
             _evidenciaConcluidaService = evidenciaConcluidaService;
         }

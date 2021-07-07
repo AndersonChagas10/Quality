@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Conformity.Application.Util")]
+[assembly: AssemblyTitle("Conformity.Infra.CrossCutting")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Conformity.Application.Util")]
+[assembly: AssemblyProduct("Conformity.Infra.CrossCutting")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a8dee7bc-072f-437f-b9ba-8de3ec7b46dd")]
+[assembly: Guid("92025452-914a-4305-a2f1-bb1bfdc8c566")]
 
 // Version information for an assembly consists of the following four values:
 //

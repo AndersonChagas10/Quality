@@ -1,5 +1,4 @@
 ﻿using Conformity.Domain.Core.Interfaces;
-using Dominio;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

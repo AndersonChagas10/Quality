@@ -1,8 +1,7 @@
-﻿using Data.PlanoDeAcao.Repositorio;
+﻿using Conformity.Application.Core.PlanoDeAcao;
+using Conformity.Domain.Core.DTOs;
+using Conformity.Infra.CrossCutting;
 using Dominio;
-using DTO.PlanoDeAcao;
-using Services.PlanoDeAcao;
-using Services.PlanoDeAcao.Interfaces;
 using System;
 using System.Linq;
 using System.Web.Http;
@@ -13,11 +12,14 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
     public class AcompanhamentoApiController : BaseApiController
     {
-        private readonly IAcompanhamentoAcaoService _acompanhamentoService;
+        private readonly ApplicationConfig _applicationConfig;
+        private readonly AcompanhamentoAcaoService _acompanhamentoService;
 
-        public AcompanhamentoApiController(IAcompanhamentoAcaoService acompanhamentoService)
+        public AcompanhamentoApiController(AcompanhamentoAcaoService acompanhamentoService
+            , ApplicationConfig applicationConfig)
         {
             _acompanhamentoService = acompanhamentoService;
+            _applicationConfig = applicationConfig;
         }
 
         [Route("Post/Acompanhamento/{id}")]
@@ -26,9 +28,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         {
             try
             {
-                var usuarioLogado = base.GetUsuarioLogado();
-
-                _acompanhamentoService.SalvarAcompanhamentoComNotificaveis(id, objAcompanhamentoAcao, usuarioLogado);
+                _acompanhamentoService.SalvarAcompanhamentoComNotificaveis(id, objAcompanhamentoAcao);
             }
             catch (Exception e)
             {

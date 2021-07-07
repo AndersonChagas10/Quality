@@ -1,7 +1,7 @@
-﻿using Conformity.Application.Util;
-using Conformity.Domain.Core.DTOs;
+﻿using Conformity.Domain.Core.DTOs;
 using Conformity.Domain.Core.Entities.Log;
 using Conformity.Domain.Core.Interfaces;
+using Conformity.Infra.CrossCutting;
 using Conformity.Infra.Data.Core.Repository.Log;
 using System;
 using System.Collections.Generic;

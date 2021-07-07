@@ -1,10 +1,13 @@
 ﻿using Conformity.Application.Core.Log;
 using Conformity.Domain.Core.DTOs;
+using Conformity.Domain.Core.Entities.Global;
 using Conformity.Domain.Core.Entities.PlanoDeAcao;
 using Conformity.Domain.Core.Interfaces;
+using Conformity.Infra.CrossCutting;
 using Conformity.Infra.Data.Core.Repository.PlanoDeAcao;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Conformity.Application.Core.PlanoDeAcao
@@ -14,16 +17,19 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
         private readonly EvidenciaNaoConformeRepository _evidenciaNaoConformeRepository;
         private readonly AcaoRepository _acaoRepository;
+        private readonly LogErrorService _logErrorService;
 
         public EvidenciaNaoConformeService(IRepositoryNoLazyLoad<EvidenciaNaoConforme> repository
-            , EntityTrackService historicoAlteracaoService,
-            EvidenciaNaoConformeRepository evidenciaNaoConformeRepository,
-            AcaoRepository acaoRepository)
+            , LogErrorService logErrorService
+            , EntityTrackService historicoAlteracaoService
+            , EvidenciaNaoConformeRepository evidenciaNaoConformeRepository
+            , AcaoRepository acaoRepository)
             : base(repository
                   , historicoAlteracaoService)
         {
             _evidenciaNaoConformeRepository = evidenciaNaoConformeRepository;
             _acaoRepository = acaoRepository;
+            _logErrorService = logErrorService;
         }
         public List<ImagemDaEvidenciaViewModel> ObterFotosEvidencia(int id)
         {
@@ -45,8 +51,8 @@ namespace Conformity.Application.Core.PlanoDeAcao
                 Exception exception = null;
 
                 bytes = FileHelper.DownloadPhoto(url
-                , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialUserServerPhoto
-                , DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.credentialPassServerPhoto
+                , DicionarioEstatico.DicionarioEstaticoHelpers.credentialUserServerPhoto
+                , DicionarioEstatico.DicionarioEstaticoHelpers.credentialPassServerPhoto
                 , out exception);
 
                 if (exception != null)
@@ -83,15 +89,40 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
         public void VincularEvidenciasAAcao(AcaoInputModel objAcao, List<EvidenciaViewModel> listaInserir)
         {
-            AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
-
-            var objAcaoDB = _acaoRepository.ObterAcaoPorId(objAcao.Id);
+            var objAcaoDB = _acaoRepository.GetById(objAcao.Id);
 
             foreach (var evidenciaNaoConformidade in listaInserir)
             {
-                var filePath = appColetaBusiness.SaveFileEvidenciaNaoConformidade(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaNaoConformidade.Base64);
-                appColetaBusiness.SaveEvidenciaNaoConformidade(new EvidenciaNaoConforme() { Acao_Id = objAcao.Id, Path = filePath });
+                var filePath = SaveFileEvidenciaNaoConformidade(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaNaoConformidade.Base64);
+                _evidenciaNaoConformeRepository.SaveEvidenciaNaoConformidade(new EvidenciaNaoConforme() { Acao_Id = objAcao.Id, Path = filePath });
             }
+        }
+
+        private string SaveFileEvidenciaNaoConformidade(int parLevel1_Id, int parLevel2_Id, int parLevel3_Id, string fileBase64)
+        {
+            var basePath = DicionarioEstatico.DicionarioEstaticoHelpers.StorageRoot ?? "~";
+
+            if (basePath.Equals("~"))
+            {
+                basePath = @AppDomain.CurrentDomain.BaseDirectory;
+            }
+
+            basePath = basePath + "\\Acao";
+            string fileName = parLevel1_Id + parLevel2_Id + parLevel3_Id + DateTime.Now.GetHashCode() + new Random().Next(1000, 9999) + ".png";
+
+            Exception exception;
+
+            FileHelper.SavePhoto(fileBase64, basePath, fileName
+                , DicionarioEstatico.DicionarioEstaticoHelpers.credentialUserServerPhoto
+                , DicionarioEstatico.DicionarioEstaticoHelpers.credentialPassServerPhoto
+                , DicionarioEstatico.DicionarioEstaticoHelpers.StorageRoot, out exception);
+
+            if (exception != null)
+                _logErrorService.Register(exception);
+
+            var path = Path.Combine(basePath, fileName);
+
+            return path;
         }
     }
 }

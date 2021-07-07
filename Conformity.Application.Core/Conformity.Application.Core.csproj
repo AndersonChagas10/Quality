@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="BaseServiceWithLog.cs" />
     <Compile Include="BaseService.cs" />
+    <Compile Include="Log\LogErrorService.cs" />
     <Compile Include="Log\EntityTrackService.cs" />
     <Compile Include="Parametrizacao\ParCompanyService.cs" />
     <Compile Include="PlanoDeAcao\AcaoService.cs" />
@@ -53,13 +54,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Conformity.Application.Helper\Conformity.Application.Helper.csproj">
-      <Project>{A8DEE7BC-072F-437F-B9BA-8DE3EC7B46DD}</Project>
-      <Name>Conformity.Application.Helper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Conformity.Domain.Core\Conformity.Domain.Core.csproj">
       <Project>{1AD13509-F817-4551-AC84-1D1090DC1037}</Project>
       <Name>Conformity.Domain.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Conformity.Infra.CrossCutting\Conformity.Infra.CrossCutting.csproj">
+      <Project>{92025452-914A-4305-A2F1-BB1BFDC8C566}</Project>
+      <Name>Conformity.Infra.CrossCutting</Name>
     </ProjectReference>
     <ProjectReference Include="..\Conformity.Infra.Data.Core\Conformity.Infra.Data.Core.csproj">
       <Project>{E56A004C-7913-4E92-9D40-A88CD12C673C}</Project>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 
-namespace Conformity.Application.Helper
+namespace Conformity.Infra.CrossCutting
 {
     public static class ADOHelper
     {

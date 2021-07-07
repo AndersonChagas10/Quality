@@ -1,6 +1,5 @@
-﻿using DTO.PlanoDeAcao;
-using Services.PlanoDeAcao;
-using Services.PlanoDeAcao.Interfaces;
+﻿using Conformity.Application.Core.PlanoDeAcao;
+using Conformity.Domain.Core.DTOs;
 using System.Collections.Generic;
 using System.Web.Http;
 
@@ -10,9 +9,9 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
     public class EvidenciaNaoConformeApiController : BaseApiController
     {
-        private readonly IEvidenciaNaoConformeService _evidenciaNaoConformeService;
+        private readonly EvidenciaNaoConformeService _evidenciaNaoConformeService;
 
-        public EvidenciaNaoConformeApiController(IEvidenciaNaoConformeService evidenciaNaoConformeService)
+        public EvidenciaNaoConformeApiController(EvidenciaNaoConformeService evidenciaNaoConformeService)
         {
             _evidenciaNaoConformeService = evidenciaNaoConformeService;
         }

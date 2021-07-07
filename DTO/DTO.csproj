@@ -198,14 +198,6 @@
     <Compile Include="Interfaces\Services\IExampleDomain.cs" />
     <Compile Include="Interfaces\Services\IParamsDomain.cs" />
     <Compile Include="Interfaces\Services\IUserDomain.cs" />
-    <Compile Include="PlanoDeAcao\AcaoFormViewModel.cs" />
-    <Compile Include="PlanoDeAcao\AcaoInputModel.cs" />
-    <Compile Include="PlanoDeAcao\AcaoViewModel.cs" />
-    <Compile Include="PlanoDeAcao\AcompanhamentoAcaoInputModel.cs" />
-    <Compile Include="PlanoDeAcao\AcompanhamentoAcaoViewModel.cs" />
-    <Compile Include="PlanoDeAcao\EvidenciaViewModel.cs" />
-    <Compile Include="PlanoDeAcao\ImagemEvidenciaViewModel.cs" />
-    <Compile Include="PlanoDeAcao\NotificarViewModel.cs" />
     <Compile Include="ResultSet\AnaliseCriticaResultSet.cs" />
     <Compile Include="ResultSet\ApontamentosDiariosDomingoResultSet.cs" />
     <Compile Include="ResultSet\ApontamentosDiariosResultSet.cs" />

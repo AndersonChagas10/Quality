@@ -2,19 +2,21 @@
 using Conformity.Domain.Core.DTOs;
 using Conformity.Domain.Core.DTOs.Filtros;
 using Conformity.Domain.Core.Entities.PlanoDeAcao;
+using Conformity.Domain.Core.Entities.Global;
 using Conformity.Domain.Core.Interfaces;
 using Conformity.Infra.Data.Core.Repository.PlanoDeAcao;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace Conformity.Application.Core.PlanoDeAcao
 {
-    public class AcaoService : BaseServiceWithLog<EvidenciaConcluida>
+    public class AcaoService : BaseServiceWithLog<Acao>
     {
         private readonly AcaoRepository _acaoRepository;
 
-        public AcaoService(IRepositoryNoLazyLoad<EvidenciaConcluida> repository
+        public AcaoService(IRepositoryNoLazyLoad<Acao> repository
             , EntityTrackService historicoAlteracaoService,
             AcaoRepository acaoRepository)
             : base(repository
@@ -22,9 +24,9 @@ namespace Conformity.Application.Core.PlanoDeAcao
         {
             _acaoRepository = acaoRepository;
         }
-        public IEnumerable<AcaoViewModel> ObterAcaoPorFiltro(FiltroListagemDeAcaoDoWorkflow form, UserSgq usuarioLogado)
+        public IEnumerable<AcaoViewModel> ObterAcaoPorFiltro(FiltroListagemDeAcaoDoWorkflow form)
         {
-            return _acaoRepository.ObterAcao(form, usuarioLogado);
+            return _acaoRepository.ObterAcao(form);
         }
 
         public void EnviarEmail(AcaoInputModel acao)
@@ -35,43 +37,43 @@ namespace Conformity.Application.Core.PlanoDeAcao
             //4 Atrasada  - cenario 5 e 6
             //5 Cancelada - cenario 7 e 8
 
-            var acaoCompleta = new AcaoBusiness().GetBy(acao.Id);
+            var acaoCompleta = _repository.GetById(acao.Id);
 
             if (acao.Status == EAcaoStatus.Em_Andamento)
             {
                 var emailResponsavel = new MontaEmail(new EmailCreateAcaoResponsavel(acaoCompleta));
-                EmailAcaoService.Send(emailResponsavel);
+                EnviarEmailAcao(emailResponsavel);
 
                 var emailNotificados = new MontaEmail(new EmailCreateAcaoNotificados(acaoCompleta));
-                EmailAcaoService.Send(emailNotificados);
+                EnviarEmailAcao(emailNotificados);
             }
 
             if (acao.Status == EAcaoStatus.Concluída)
             {
                 var emailResponsavel = new MontaEmail(new EmailCreateAcaoVerEAgirResponsavel(acaoCompleta));
-                EmailAcaoService.Send(emailResponsavel);
+                EnviarEmailAcao(emailResponsavel);
 
                 var emailNotificados = new MontaEmail(new EmailCreateAcaoVerEAgirNotificados(acaoCompleta));
-                EmailAcaoService.Send(emailNotificados);
+                EnviarEmailAcao(emailNotificados);
 
             }
 
             if (acao.Status == EAcaoStatus.Atrasada)
             {
                 var emailResponsavel = new MontaEmail(new EmailAcaoVencidaResponsavel(acaoCompleta));
-                EmailAcaoService.Send(emailResponsavel);
+                EnviarEmailAcao(emailResponsavel);
 
                 var emailNotificados = new MontaEmail(new EmailAcaoVencidaNotificados(acaoCompleta));
-                EmailAcaoService.Send(emailNotificados);
+                EnviarEmailAcao(emailNotificados);
             }
 
             if (acao.Status == EAcaoStatus.Cancelada)
             {
                 var emailResponsavel = new MontaEmail(new EmailAcaoStatusCanceladoResponsavel(acaoCompleta));
-                EmailAcaoService.Send(emailResponsavel);
+                EnviarEmailAcao(emailResponsavel);
 
                 var emailNotificados = new MontaEmail(new EmailAcaoStatusCanceladoNotificados(acaoCompleta));
-                EmailAcaoService.Send(emailNotificados);
+                EnviarEmailAcao(emailNotificados);
             }
         }
 
@@ -91,5 +93,31 @@ namespace Conformity.Application.Core.PlanoDeAcao
             if (listaDeletar.Count > 0)
                 _acaoRepository.InativarUsuariosASeremNotificadosAAcao(objAcao, listaDeletar);
         }
+
+        public static void EnviarEmailAcao(MontaEmail email)
+        {
+            Task.Run(() =>
+            Conformity.Infra.CrossCutting.MailHelper.SendMail(
+                (DicionarioEstatico.DicionarioEstaticoHelpers.emailFrom as string),
+                (DicionarioEstatico.DicionarioEstaticoHelpers.emailPass as string),
+                (DicionarioEstatico.DicionarioEstaticoHelpers.emailSmtp as string),
+                int.Parse(DicionarioEstatico.DicionarioEstaticoHelpers.emailPort as string),
+                bool.Parse(DicionarioEstatico.DicionarioEstaticoHelpers.emailSSL as string),
+                string.Join(",", email.GetEmail().To),
+                email.GetEmail().Subject,
+                email.GetEmail().Body,
+                DicionarioEstatico.DicionarioEstaticoHelpers.systemName));
+        }
+
+        public AcaoFormViewModel ObterAcaoComVinculosPorId(int id)
+        {
+            return _acaoRepository.ObterAcaoComVinculosPorId(id);
+        }
+
+        public void AtualizarValoresDaAcao(AcaoInputModel objAcao)
+        {
+            _acaoRepository.AtualizarValoresDaAcao(objAcao);
+        }
+
     }
 }

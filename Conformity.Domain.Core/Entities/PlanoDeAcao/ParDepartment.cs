@@ -9,7 +9,6 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
     [Table("ParDepartment")]
     public partial class ParDepartment : BaseModel, IEntity
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParDepartment()
         {
             ParLevel2 = new HashSet<ParLevel2>();
@@ -40,7 +39,6 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
         [ForeignKey("Parent_Id")]
         public virtual ParDepartment ParDepartmentPai { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParLevel2> ParLevel2 { get; set; }
 
         [ForeignKey("ParCompany_Id")]

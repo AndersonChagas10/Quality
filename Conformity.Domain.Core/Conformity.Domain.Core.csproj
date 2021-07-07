@@ -57,6 +57,7 @@
     <Compile Include="DTOs\PlanoDeAcao\ImagemEvidenciaViewModel.cs" />
     <Compile Include="DTOs\PlanoDeAcao\NotificarViewModel.cs" />
     <Compile Include="Entities\BaseModel.cs" />
+    <Compile Include="Entities\Log\LogError.cs" />
     <Compile Include="Entities\Log\EntityTrack.cs" />
     <Compile Include="Entities\Parametrizacao\ParCompany.cs" />
     <Compile Include="Entities\PlanoDeAcao\Acao.cs" />
@@ -83,6 +84,8 @@
     <Compile Include="Entities\PlanoDeAcao\ParLevel2.cs" />
     <Compile Include="Entities\PlanoDeAcao\ParLevel3.cs" />
     <Compile Include="Entities\PlanoDeAcao\UserSgq.cs" />
+    <Compile Include="Entities\Global\DicionarioEstatico.cs" />
+    <Compile Include="Entities\Global\Resources.cs" />
     <Compile Include="Enums\Log\ELogTrackEvent.cs" />
     <Compile Include="Enums\PlanoDeAcao\Enums.cs" />
     <Compile Include="Interfaces\IEmail.cs" />
@@ -96,6 +99,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Conformity.Infra.CrossCutting\Conformity.Infra.CrossCutting.csproj">
+      <Project>{92025452-914a-4305-a2f1-bb1bfdc8c566}</Project>
+      <Name>Conformity.Infra.CrossCutting</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

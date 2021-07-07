@@ -1,7 +1,8 @@
-﻿using Conformity.Application.Helper;
+﻿using Conformity.Infra.CrossCutting;
 using Conformity.Domain.Core.DTOs;
 using Conformity.Domain.Core.DTOs.Filtros;
 using Conformity.Domain.Core.Entities.PlanoDeAcao;
+using Conformity.Domain.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,13 +16,49 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
         private readonly EntityContext _dbContext;
         private readonly ADOContext _aDOContext;
 
-        public AcaoRepository(EntityContext dbContext, ADOContext aDOContext)
+        private readonly IRepositoryNoLazyLoad<Acao> _repositoryAcao;
+        private readonly IRepositoryNoLazyLoad<ParLevel1> _repositoryParLevel1;
+        private readonly IRepositoryNoLazyLoad<ParLevel2> _repositoryParLevel2;
+        private readonly IRepositoryNoLazyLoad<ParLevel3> _repositoryParLevel3;
+        private readonly IRepositoryNoLazyLoad<ParCargo> _repositoryParCargo;
+        private readonly IRepositoryNoLazyLoad<ParCompany> _repositoryParCompany;
+        private readonly IRepositoryNoLazyLoad<ParDepartment> _repositoryParDepartment;
+        private readonly IRepositoryNoLazyLoad<UserSgq> _repositoryUserSgq;
+        private readonly IRepositoryNoLazyLoad<ParCluster> _repositoryParCluster;
+        private readonly IRepositoryNoLazyLoad<ParClusterGroup> _repositoryParClusterGroup;
+        private readonly ApplicationConfig _applicationConfig;
+
+public AcaoRepository(EntityContext dbContext
+            , ADOContext aDOContext
+            , IRepositoryNoLazyLoad<Acao> repositoryAcao
+            , IRepositoryNoLazyLoad<ParLevel1> repositoryParLevel1
+            , IRepositoryNoLazyLoad<ParLevel2> repositoryParLevel2
+            , IRepositoryNoLazyLoad<ParLevel3> repositoryParLevel3
+            , IRepositoryNoLazyLoad<ParCargo> repositoryParCargo
+            , IRepositoryNoLazyLoad<ParCompany> repositoryParCompany
+            , IRepositoryNoLazyLoad<ParDepartment> repositoryParDepartment
+            , IRepositoryNoLazyLoad<UserSgq> repositoryUserSgq
+            , IRepositoryNoLazyLoad<ParCluster> repositoryParCluster
+            , IRepositoryNoLazyLoad<ParClusterGroup> repositoryParClusterGroup
+            , ApplicationConfig applicationConfig)
         {
             _dbContext = dbContext;
             _aDOContext = aDOContext;
+
+            _repositoryAcao = repositoryAcao;
+            _repositoryParLevel1 = repositoryParLevel1;
+            _repositoryParLevel2 = repositoryParLevel2;
+            _repositoryParLevel3 = repositoryParLevel3;
+            _repositoryParCargo = repositoryParCargo;
+            _repositoryParCompany = repositoryParCompany;
+            _repositoryParDepartment = repositoryParDepartment;
+            _repositoryUserSgq = repositoryUserSgq;
+            _repositoryParCluster = repositoryParCluster;
+            _repositoryParClusterGroup = repositoryParClusterGroup;
+            _applicationConfig = applicationConfig;
         }
 
-        public IEnumerable<AcaoViewModel> ObterAcao(FiltroListagemDeAcaoDoWorkflow form, UserSgq usuarioLogado)
+        public IEnumerable<AcaoViewModel> ObterAcao(FiltroListagemDeAcaoDoWorkflow form)
         {
             string ParCompany = "";
             string ClusterGroup = "";
@@ -114,7 +151,7 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
          ON US_Emissor.Id = PAC.Emissor
          INNER JOIN ParCompanyXUserSgq PCXUS 
          ON PCXUS.ParCompany_Id = PAC.ParCompany_Id
-	     and PCXUS.UserSgq_Id = {usuarioLogado.Id}
+	     and PCXUS.UserSgq_Id = {_applicationConfig.Authenticated_Id}
          WHERE PAC.DataEmissao BETWEEN @DATAINICIAL AND @DATAFINAL
          {ParCompany}
          {ClusterGroup}
@@ -195,7 +232,7 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 
         }
 
-        public AcaoFormViewModel ObterAcaoComVinculosPorId(int id, UserSgq usuarioLogado)
+        public AcaoFormViewModel ObterAcaoComVinculosPorId(int id)
         {
             var query = $@"
                 SELECT
@@ -250,7 +287,7 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                  ON US_Emissor.Id = PAC.Emissor
                  INNER JOIN ParCompanyXUserSgq PCXUS 
                  ON PCXUS.ParCompany_Id = PAC.ParCompany_Id
-	             and PCXUS.UserSgq_Id = {usuarioLogado.Id}
+	             and PCXUS.UserSgq_Id = {_applicationConfig.Authenticated_Id}
                  WHERE PAC.Id = {id}";
 
 
@@ -260,12 +297,6 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
             acao.ListaNotificarAcao = BuscarListaNotificarAcao(acao.Id);
             acao.ListaAcompanhamento = BuscarAcompanhamento(acao.Id);
 
-            return acao;
-        }
-
-        public EvidenciaConcluida ObterAcaoPorId(int id)
-        {
-            EvidenciaConcluida acao = _dbContext.Acao.Find(id);
             return acao;
         }
 
@@ -416,20 +447,15 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                                     where Acao_Id = @Acao_Id
                                     and UserSgq_Id = @UserSgq_Id";
 
-                    _aDOContext.ExecuteStoredProcedure<SqlCommand>(sql);
+                    using (SqlCommand cmd = new SqlCommand(sql, _aDOContext.connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.AddParameterNullable("@Acao_Id", objAcao.Id);
+                        cmd.AddParameterNullable("@UserSgq_Id", item);
 
-                    //using (Factory factory = new Factory("DefaultConnection"))
-                    //{
-                    //    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
-                    //    {
-                    //        cmd.CommandType = CommandType.Text;
-                    //        UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Id", objAcao.Id);
-                    //        UtilSqlCommand.AddParameterNullable(cmd, "@UserSgq_Id", item);
+                        var id = Convert.ToInt32(cmd.ExecuteScalar());
 
-                    //        var id = Convert.ToInt32(cmd.ExecuteScalar());
-
-                    //    }
-                    //}
+                    }
                 }
                 catch (Exception e)
                 {
@@ -469,27 +495,59 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 
             ";
 
-            _aDOContext.ExecuteStoredProcedure<SqlCommand>(queryUpdate);
+            using (SqlCommand cmd = new SqlCommand(queryUpdate, _aDOContext.connection))
+            {
+                cmd.CommandType = CommandType.Text;
 
-            //using (Factory factory = new Factory("DefaultConnection"))
-            //{
-            //    using (SqlCommand cmd = new SqlCommand(queryUpdate, factory.connection))
-            //    {
-            //        cmd.CommandType = CommandType.Text;
+                cmd.AddParameterNullable("@Acao_Naoconformidade", objAcao.Acao_Naoconformidade);
+                cmd.AddParameterNullable("@AcaoText", objAcao.AcaoText);
+                cmd.AddParameterNullable("@DataConclusao", objAcao.DataConclusao);
+                cmd.AddParameterNullable("@HoraConclusao", objAcao.HoraConclusao);
+                cmd.AddParameterNullable("@Referencia", objAcao.Referencia);
+                cmd.AddParameterNullable("@Responsavel", objAcao.Responsavel);
+                cmd.AddParameterNullable("@Prioridade", objAcao.Prioridade);
+                cmd.AddParameterNullable("@Status", objAcao.Status);
 
-            //        UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Naoconformidade", objAcao.Acao_Naoconformidade);
-            //        UtilSqlCommand.AddParameterNullable(cmd, "@AcaoText", objAcao.AcaoText);
-            //        UtilSqlCommand.AddParameterNullable(cmd, "@DataConclusao", objAcao.DataConclusao);
-            //        UtilSqlCommand.AddParameterNullable(cmd, "@HoraConclusao", objAcao.HoraConclusao);
-            //        UtilSqlCommand.AddParameterNullable(cmd, "@Referencia", objAcao.Referencia);
-            //        UtilSqlCommand.AddParameterNullable(cmd, "@Responsavel", objAcao.Responsavel);
-            //        UtilSqlCommand.AddParameterNullable(cmd, "@Prioridade", objAcao.Prioridade);
-            //        UtilSqlCommand.AddParameterNullable(cmd, "@Status", objAcao.Status);
+                var id = cmd.ExecuteScalar();
 
-            //        var id = cmd.ExecuteScalar();
+            }
+        }
 
-            //    }
-            //}
+
+        public Acao GetById(int id)
+        {
+            Acao acao = _repositoryAcao.GetById(id);
+            acao.ParLevel1 = _repositoryParLevel1.GetById(acao.ParLevel1_Id);
+            acao.ParLevel2 = _repositoryParLevel2.GetById(acao.ParLevel2_Id);
+            acao.ParLevel3 = _repositoryParLevel3.GetById(acao.ParLevel3_Id);
+            acao.ParCargo = _repositoryParCargo.GetById(acao.ParCargo_Id);
+            acao.ParCompany = _repositoryParCompany.GetById(acao.ParCompany_Id);
+            acao.ParDepartment = _repositoryParDepartment.GetById(acao.ParDepartment_Id); //Sessão
+            acao.ParDepartmentParent = _repositoryParDepartment.GetById(acao.ParDepartmentParent_Id); //Centro de custo
+            acao.ResponsavelUser = _repositoryUserSgq.GetById(acao.Responsavel.Value);
+            acao.ParCluster = _repositoryParCluster.GetById(acao.ParCluster_Id);
+            acao.ParClusterGroup = _repositoryParClusterGroup.GetById(acao.ParClusterGroup_Id);
+            acao.NotificarUsers = GetNotificarUsersBy(acao.Id);
+            acao.EvidenciaAcaoConcluida = new string[] { };
+            acao.EvidenciaNaoConformidade = new string[] { };
+            acao.EmissorUser = _repositoryUserSgq.GetById(acao.Emissor);
+
+            return acao;
+        }
+
+        public IEnumerable<UserSgq> GetNotificarUsersBy(int acao_Id)
+        {
+            string query = $@"SELECT
+                            	U.*
+                            FROM UserSgq U
+                            INNER JOIN Pa.AcaoXNotificarAcao AXN
+                            	ON AXN.UserSgq_Id = u.Id
+                            WHERE 1 = 1 
+                            AND AXN.IsActive = 1
+                            AND AXN.Acao_Id = {acao_Id}";
+
+            IEnumerable<UserSgq> usuarios = _aDOContext.SearchQuery<UserSgq>(query).ToList();
+            return usuarios;
         }
     }
 }

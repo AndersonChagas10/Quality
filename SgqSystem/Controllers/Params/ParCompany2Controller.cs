@@ -6,8 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Conformity.Application.Util;
 using Conformity.Domain.Core.Entities.Parametrizacao;
+using Conformity.Infra.CrossCutting;
 
 namespace SgqSystem.Controllers
 {

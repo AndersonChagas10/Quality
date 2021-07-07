@@ -8,7 +8,6 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
     [Table("ParClusterGroup")]
     public partial class ParClusterGroup : BaseModel, IEntity
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ParClusterGroup()
         {
             ParCluster = new HashSet<ParCluster>();
@@ -25,7 +24,6 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 
         public bool IsActive { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParCluster> ParCluster { get; set; }
     }
 }

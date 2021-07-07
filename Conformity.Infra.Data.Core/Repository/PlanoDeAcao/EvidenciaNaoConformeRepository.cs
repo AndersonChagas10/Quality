@@ -1,4 +1,6 @@
 ﻿using Conformity.Domain.Core.DTOs;
+using Conformity.Domain.Core.Entities.PlanoDeAcao;
+using Conformity.Infra.CrossCutting;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,7 +9,7 @@ using System.Linq;
 
 namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 {
-    public class EvidenciaNaoConformeRepository 
+    public class EvidenciaNaoConformeRepository
     {
         private readonly ADOContext _aDOContext;
 
@@ -24,8 +26,8 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                             where Acao_id = {acao_Id}
                             and IsActive = 1";
 
-            
-             lista = _aDOContext.SearchQuery<EvidenciaViewModel>(query).ToList();
+
+            lista = _aDOContext.SearchQuery<EvidenciaViewModel>(query).ToList();
 
             return lista;
         }
@@ -53,22 +55,51 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 
                     _aDOContext.ExecuteStoredProcedure<SqlCommand>(sql);
 
-                    //using (Factory factory = new Factory("DefaultConnection"))
-                    //{
-                    //    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
-                    //    {
-                    //        cmd.CommandType = CommandType.Text;
-                    //        UtilSqlCommand.AddParameterNullable(cmd, "@Id", item.Id);
+                    using (SqlCommand cmd = new SqlCommand(sql, _aDOContext.connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        cmd.AddParameterNullable("@Id", item.Id);
 
-                    //        var id = Convert.ToInt32(cmd.ExecuteScalar());
+                        var id = Convert.ToInt32(cmd.ExecuteScalar());
 
-                    //    }
-                    //}
+                    }
                 }
                 catch (Exception e)
                 {
 
                 }
+            }
+        }
+        public void SaveEvidenciaNaoConformidade(EvidenciaNaoConforme evidenciaNaoConformidade)
+        {
+            try
+            {
+                string sql = $@"INSERT INTO Pa.EvidenciaNaoConformidade(
+                                    Acao_Id				
+                                    ,Path
+                                    ,AddDate)
+                                    VALUES(
+                                          @Acao_Id			
+                                         ,@Path	
+                                         ,@AddDate			
+                                        )";
+
+
+                using (SqlCommand cmd = new SqlCommand(sql, _aDOContext.connection))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.AddParameterNullable("@Acao_Id", evidenciaNaoConformidade.Acao_Id);
+                    cmd.AddParameterNullable("@Path", evidenciaNaoConformidade.Path);
+                    cmd.AddParameterNullable("@AddDate", DateTime.Now);
+
+                    var id = Convert.ToInt32(cmd.ExecuteScalar());
+
+                    evidenciaNaoConformidade.Id = id;
+                }
+            }
+            catch (Exception e)
+            {
+
             }
         }
     }

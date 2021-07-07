@@ -21,10 +21,7 @@ namespace Conformity.Infra.IoC
         {
             LogService();
             ParametrizacaoService();
-            AcaoService();
-            AcompanhamentoAcaoService();
-            EvidenciaConcluidaService();
-            EvidenciaNaoConformeService();
+            PlanoDeAcaoService();
         }
 
         public void LogService()
@@ -36,21 +33,12 @@ namespace Conformity.Infra.IoC
         {
             Bind(typeof(ParCompanyService)).To(typeof(ParCompanyService));
         }
-        
-        public void AcaoService()
+
+        public void PlanoDeAcaoService()
         {
             Bind(typeof(AcaoService)).To(typeof(AcaoService));
-        }
-        public void AcompanhamentoAcaoService()
-        {
             Bind(typeof(AcompanhamentoAcaoService)).To(typeof(AcompanhamentoAcaoService));
-        }
-        public void EvidenciaConcluidaService()
-        {
             Bind(typeof(EvidenciaConcluidaService)).To(typeof(EvidenciaConcluidaService));
-        }
-        public void EvidenciaNaoConformeService()
-        {
             Bind(typeof(EvidenciaNaoConformeService)).To(typeof(EvidenciaNaoConformeService));
         }
     }
