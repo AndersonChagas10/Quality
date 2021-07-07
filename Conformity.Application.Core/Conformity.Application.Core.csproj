@@ -46,6 +46,7 @@
     <Compile Include="BaseService.cs" />
     <Compile Include="Log\EntityTrackService.cs" />
     <Compile Include="Parametrizacao\ParCompanyService.cs" />
+    <Compile Include="PlanoDeAcao\AcaoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -62,5 +63,6 @@
       <Name>Conformity.Infra.Data.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

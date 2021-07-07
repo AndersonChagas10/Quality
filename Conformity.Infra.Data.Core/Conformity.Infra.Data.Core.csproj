@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\EntityAcaoContext.cs" />
     <Compile Include="Context\EntityParametrizacaoContext.cs" />
     <Compile Include="Context\EntityLogContext.cs" />
     <Compile Include="Repository\Log\EntityTrackRepository.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Core\RepositoryBaseNoLazyLoad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EntityContext.cs" />
+    <Compile Include="Repository\PlanoDeAcao\AcaoRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

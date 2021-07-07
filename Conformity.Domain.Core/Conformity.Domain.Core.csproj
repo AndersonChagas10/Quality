@@ -44,9 +44,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\EntityTrackViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\AcaoFormViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\AcaoInputModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\AcaoViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\AcompanhamentoAcaoInputModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\AcompanhamentoAcaoViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\EvidenciaViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\ImagemEvidenciaViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\NotificarViewModel.cs" />
     <Compile Include="Entities\BaseModel.cs" />
     <Compile Include="Entities\Log\EntityTrack.cs" />
     <Compile Include="Entities\Parametrizacao\ParCompany.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Acao.cs" />
+    <Compile Include="Entities\PlanoDeAcao\AcaoXNotificarAcao.cs" />
+    <Compile Include="Entities\PlanoDeAcao\AcompanhamentoAcao.cs" />
+    <Compile Include="Entities\PlanoDeAcao\AcompanhamentoAcaoXNotificar.cs" />
+    <Compile Include="Entities\PlanoDeAcao\EvidenciaAcaoConcluida.cs" />
+    <Compile Include="Entities\PlanoDeAcao\EvidenciaNaoConformidade.cs" />
     <Compile Include="Enums\Log\ELogTrackEvent.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRepositoryNoLazyLoad.cs" />
