@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Conformity.Infra.IoC.Core
+namespace Conformity.Infra.IoC
 {
     public class ServiceNinjectModule : NinjectModule
     {

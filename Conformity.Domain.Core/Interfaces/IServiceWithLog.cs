@@ -9,7 +9,6 @@ namespace Conformity.Domain.Core.Interfaces
         T GetById(int id);
         IEnumerable<T> GetAll();
         void Update(T obj);
-        void UpdateWithLog(T obj);
         void UpdateAll(IEnumerable<T> listObj);
         void Remove(T obj);
         void RemoveAll(IEnumerable<T> obj);

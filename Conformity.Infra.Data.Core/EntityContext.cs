@@ -18,8 +18,5 @@ namespace Conformity.Infra.Data.Core
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
         }
-
-        public virtual DbSet<ParCompany> ParCompany { get; set; }
-        public virtual DbSet<EntityTrack> HistoricoAlteracoes { get; set; }
     }
 }

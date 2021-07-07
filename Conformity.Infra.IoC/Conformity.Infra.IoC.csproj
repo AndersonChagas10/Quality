@@ -48,10 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\HelperNinjectModule.cs" />
-    <Compile Include="Core\ServiceNinjectModule.cs" />
-    <Compile Include="Core\RepositoryNinjectModule.cs" />
-    <Compile Include="Core\DataNinjectModule.cs" />
+    <Compile Include="HelperNinjectModule.cs" />
+    <Compile Include="ServiceNinjectModule.cs" />
+    <Compile Include="RepositoryNinjectModule.cs" />
+    <Compile Include="DataNinjectModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

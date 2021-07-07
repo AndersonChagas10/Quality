@@ -8,13 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Conformity.Infra.IoC.Core
+namespace Conformity.Infra.IoC
 {
-    public class HelperNinjectModule : NinjectModule
+    public class DataNinjectModule : NinjectModule
     {
         public override void Load()
         {
-            Bind<ApplicationConfig>().ToSelf().InRequestScope();
+            Bind<EntityContext>().ToSelf().InRequestScope();
+            Bind<ADOContext>().ToSelf().InRequestScope();
         }
     }
 }

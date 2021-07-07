@@ -4,7 +4,7 @@ using Conformity.Infra.Data.Core.Repository;
 using Conformity.Infra.Data.Core.Repository.Log;
 using Ninject.Modules;
 
-namespace Conformity.Infra.IoC.Core
+namespace Conformity.Infra.IoC
 {
     public class RepositoryNinjectModule : NinjectModule
     {

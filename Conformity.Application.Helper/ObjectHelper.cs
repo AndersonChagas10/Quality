@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Conformity.Application.Util
 {
-    public class ObjectHelper
+    public static class ObjectHelper
     {
-        public static T Clone<T>(T obj)
+        public static T Clone<T>(this T obj)
         {
             var newObject = Activator.CreateInstance<T>();
             var fields = newObject.GetType().GetProperties();

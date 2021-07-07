@@ -48,11 +48,6 @@ namespace Conformity.Application.Core
 
         public virtual void Update(T entity)
         {
-            _repository.Update(entity);
-        }
-
-        public virtual void UpdateWithLog(T entity)
-        {
             T dbEntity = GetById(((IEntity)entity).Id);
             _repository.Update(entity);
             _entityTrackService.RegisterUpdate(dbEntity, entity);
