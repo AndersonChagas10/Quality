@@ -15,6 +15,7 @@ namespace Conformity.Infra.IoC
         public override void Load()
         {
             Bind<EntityContext>().ToSelf().InRequestScope();
+            Bind<ADOContext>().ToSelf().InRequestScope();
         }
     }
 }
