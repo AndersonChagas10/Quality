@@ -15,5 +15,6 @@ namespace Data.PlanoDeAcao.Repositorio
         void InativarUsuariosASeremNotificadosAAcao(AcaoInputModel objAcao, List<int> listaDeletar);
         List<AcaoXNotificarAcao> RetornarUsuariosASeremNotificadosDaAcao(AcaoInputModel objAcao);
         void AtualizarValoresDaAcao(AcaoInputModel objAcao);
+        int SalvarAcao(Acao item);  
     }
 }

@@ -513,5 +513,94 @@ namespace Data.PlanoDeAcao
                 }
             }
         }
+
+        public int SalvarAcao(Acao item)
+        {
+            try
+            {
+                string sql = $@"INSERT INTO Pa.Acao(
+                                    ParLevel1_Id				
+                                    ,ParLevel2_Id				
+                                    ,ParLevel3_Id				
+                                    ,ParCompany_Id				
+                                    ,ParDepartment_Id			
+                                    ,ParDepartmentParent_Id	
+                                    ,ParCargo_Id				
+                                    ,Acao_Naoconformidade		
+                                    ,AcaoText					
+                                    ,DataConclusao				
+                                    ,HoraConclusao				
+                                    ,Referencia				
+                                    ,Responsavel								
+                                    ,DataEmissao				
+                                    ,HoraEmissao				
+                                    ,Emissor	
+                                    ,Prioridade
+                                    ,ParCluster_Id
+                                    ,ParClusterGroup_Id
+                                    ,Status)
+                                    VALUES(
+                                          @ParLevel1_Id			
+                                         ,@ParLevel2_Id			
+                                         ,@ParLevel3_Id			
+                                         ,@ParCompany_Id			
+                                         ,@ParDepartment_Id		
+                                         ,@ParDepartmentParent_Id	
+                                         ,@ParCargo_Id			
+                                         ,@Acao_Naoconformidade	
+                                         ,@AcaoText				
+                                         ,@DataConclusao			
+                                         ,@HoraConclusao			
+                                         ,@Referencia				
+                                         ,@Responsavel							
+                                         ,@DataEmissao			
+                                         ,@HoraEmissao			
+                                         ,@Emissor				
+                                         ,@Prioridade
+                                         ,@ParCluster_Id
+                                         ,@ParClusterGroup_Id
+                                         ,@Status
+                                        );
+
+                SELECT CAST(scope_identity() AS int)";
+
+                var id = 0;
+
+                using (Factory factory = new Factory("DefaultConnection"))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, factory.connection))
+                    {
+                        cmd.CommandType = CommandType.Text;
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel1_Id", item.ParLevel1_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel2_Id", item.ParLevel2_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParLevel3_Id", item.ParLevel3_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCompany_Id", item.ParCompany_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartment_Id", item.ParDepartment_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParDepartmentParent_Id", item.ParDepartmentParent_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCargo_Id", item.ParCargo_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Acao_Naoconformidade", item.Acao_Naoconformidade);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@AcaoText", item.AcaoText);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@DataConclusao", item.DataConclusao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@HoraConclusao", item.HoraConclusao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Referencia", item.Referencia);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Responsavel", item.Responsavel);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@DataEmissao", item.DataEmissao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@HoraEmissao", item.HoraEmissao);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Emissor", item.Emissor);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Prioridade", item.Prioridade);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParCluster_Id", item.ParCluster_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@ParClusterGroup_Id", item.ParClusterGroup_Id);
+                        UtilSqlCommand.AddParameterNullable(cmd, "@Status", item.Status);
+
+                        id = (int)cmd.ExecuteScalar();  
+                    }
+                }
+                return id;
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
     }
 }

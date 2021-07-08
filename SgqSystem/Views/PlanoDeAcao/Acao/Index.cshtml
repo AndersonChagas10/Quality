@@ -505,71 +505,11 @@
                                             <textarea id="txtNovaAcaoText" name="NovaAcaoText" class="form-control" style="resize: none; height: 100px;"></textarea>
                                         </div>
                                     </div>
-                                    <hr />
-                                    <div class="col-xs-12">
-                                        <strong>Evidencias de Não conformidade</strong>
-                                        <input type="file" id="novaAcaoUploadPhoto" onchange="uploadFile(event,'evidencia')" />
-                                    </div>
-                                    <div class="col-xs-12">
-                                        <div id="divNovaAcaoEvidencias" class="row">
-                                            <div class="fotos"></div>
-                                        </div>
-                                    </div>
-                                    <hr />
-
-                                    <div class="col-xs-12">
-                                        <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgirNovaAcao" />
-                                    </div>
-                                    <div id="evidenciasConcluidasNovaAcao" class="col-xs-12" hidden="hidden">
-                                        <p>Evidencias da Ação Concluida</p>
-                                        <input type="file" id="novaAcaoUploadPhotox" onchange="uploadFile(event, 'evidenciaConcluida')" />
-                                        <div id="actionsEvidencies">
-                                            <div class="fotosConcluidas"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-4 vereagir">
-                                        <label><strong>Data da conclusão:</strong></label>
-                                        <input id="actionConclusionDateNovaAcao" name="DataConclusaoNovaAcao" type="date" min="2021-05-19" class="form-control">
-                                    </div>
-                                    <div class="col-xs-4 vereagir">
-                                        <label><strong>Hora da conclusão:</strong></label>
-                                        <input id="actionConclusionHourNovaAcao" name="HoraConclusaoNovaAcao" type="time" class="form-control">
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <label><strong>Referencia:</strong></label>
-                                        <input id="actionReferenceNovaAcao" name="ReferenciaNovaAcao" type="text" class="form-control">
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <label><strong>Responsavel:</strong></label>
-                                        <select id="selectResponsavelNovaAcao" name="ResponsavelNovaAcao" class="form-control"></select>
-                                    </div>
-                                    <div class="col-xs-4 divActionPriority">
-                                        <label><strong>Prioridade:</strong></label>
-                                        <select id="selectPrioridadeNovaAcao" name="PrioridadeNovaAcao" class="form-control"></select>
-                                    </div>
-                                    <div class="col-xs-12">
-                                        <label><strong>Notificar:</strong></label>
-                                        <div class="form-inline">
-                                            <select id="selectNotificarAcaoNovaAcao" name="NotificarAcaoNovaAcao" class="form-control" style="width: 23%;"></select>
-                                            <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-12">
-                                        <table id="tableNotificarAcaoNovaAcao" class="table table-striped" style="font-size:14px;">
-                                            <thead>
-                                                <tr>
-                                                    <th>Id</th>
-                                                    <th>Nome</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody></tbody>
-                                        </table>
-                                    </div>
+                                    <hr /> 
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
+                                <button id="btnCloseNovaAcao" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
 
                                 @*<button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>*@
 
@@ -985,7 +925,8 @@
         }
 
         function abrirNovaAcao() {
-            $("#modalNovaAcao").modal();
+            limparCampoModalNovaAcao();
+            $("#modalNovaAcao").modal('show');
         }
 
         function print() {
@@ -1132,6 +1073,18 @@
             acao.evidenciasNaoConforme["ListaEvidencia"] = []
             $('#divEvidencias .fotos').empty();
             $('#actionsEvidencies .fotosConcluidas').empty();
+        }
+
+         function limparCampoModalNovaAcao() {
+            $("select[name=parCompany_Ids]").empty();
+            $("select[name=parDepartment_Ids]").empty();
+            $("select[name=parSecao_Ids]").empty();
+            $("select[name=parCargo_Ids]").empty();
+            $("select[name=parLevel1_Ids]").empty();
+            $("select[name=parLevel2_Ids]").empty();
+            $("select[name=parLevel3_Ids]").empty(); 
+            $("#txtNovaAcao_Naoconformidade").val("");
+            $("#txtNovaAcaoText").val("");
         }
 
         var acaoEditar = {};
@@ -1302,33 +1255,25 @@
             event.preventDefault();
             
             var form = $("#formNovaAcao").serializeObject();
-
-            validarStatus(form, status); 
-            salvar(form);
-
-            //AtualizarNotificacoesEvidenciasReponsavel(form);
+             
+            salvar(form,status); 
            
         }
 
-        function salvar(form) {
+        function salvar(form,status) {
 
             var objAcao = {};
 
-            objAcao["ParCompany_Id"] =  form["parCompany_Ids"]
-            objAcao["ParDepartment_Id"] =  form["parDepartment_Ids"]
-            objAcao["ParDepartmentParent_Id"] =  form["parSecao_Ids"]
-            objAcao["ParCargo_Id"] =  form["parCargo_Ids"]
-            objAcao["ParLevel1_Id"] =  form["parLevel1_Ids"]
-            objAcao["ParLevel2_Id"] =  form["parLevel2_Ids"]
-            objAcao["ParLevel3_Id"] =  form["parLevel3_Ids"]
-            objAcao["Acao_Naoconformidade"] =  form["NovaAcao_Naoconformidade"]
-            objAcao["AcaoText"] =  form["NovaAcaoText"]
-            objAcao["DataConclusao"] =  form["DataConclusaoNovaAcao"]
-            objAcao["Referencia"] =  form["ReferenciaNovaAcao"]
-            objAcao["Responsavel"] =  form["ResponsavelNovaAcao"]
-            objAcao["Prioridade"] =  form["PrioridadeNovaAcao"]
-            objAcao["HoraConclusao"] =  form["HoraConclusaoNovaAcao"]
-            objAcao["Notificar"] =  form["NotificarAcaoNovaAcao"] 
+            objAcao["ParCompany_Id"] = form["parCompany_Ids"];
+            objAcao["ParDepartment_Id"] = form["parDepartment_Ids"];
+            objAcao["ParDepartmentParent_Id"] = form["parSecao_Ids"];
+            objAcao["ParCargo_Id"] = form["parCargo_Ids"];
+            objAcao["ParLevel1_Id"] = form["parLevel1_Ids"];
+            objAcao["ParLevel2_Id"] = form["parLevel2_Ids"];
+            objAcao["ParLevel3_Id"] = form["parLevel3_Ids"];
+            objAcao["Acao_Naoconformidade"] = form["NovaAcao_Naoconformidade"];
+            objAcao["AcaoText"] = form["NovaAcaoText"];
+            objAcao["Status"] = status; 
 
              const url = '@Url.Action("SalvarAcao", "api/AcaoApi")';
 
@@ -1337,47 +1282,18 @@
                 type: 'POST',
                 data: JSON.stringify(objAcao),
                 contentType: "application/json",
-                success: function (data) {
+                success: function (Id) {
                     openMessageModal("Concluido", "Ação salva com sucesso");
-                    $("#btnClose").trigger('click');
-                    setTimeout(function () {
-                        enviarFiltro(null);
-                    }, 3000);
-
+                    $("#btnCloseNovaAcao").trigger('click');
+                    limparCampoModalNovaAcao();
+                    abrirAcao("editar", Id); 
                 },
                 error: function () {
                     console.log('erro ao salvar ação');
                 }
             });
         }
-
-        function AtualizarNotificacoesEvidenciasReponsavel(form) {
-
-            form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
-            form["ListaEvidencia"] = acao.evidenciaConcluida["ListaEvidencia"];
-            form["ListaEvidenciaConcluida"] = acao.evidenciasNaoConforme["ListaEvidencia"];
-           
-             const url = '@Url.Action("AtualizarNotificacoesEvidenciasReponsavel", "api/AcaoApi")';
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: JSON.stringify(form),
-                contentType: "application/json",
-                success: function (data) {
-                    openMessageModal("Concluido", "Ação salva com sucesso");
-                    $("#btnClose").trigger('click');
-                    setTimeout(function () {
-                        enviarFiltro(null);
-                    }, 3000);
-
-                },
-                error: function () {
-                    console.log('erro ao salvar ação');
-                }
-            });
-        }
-
+ 
         function validarStatus(form, status) {
             //1 Pendente
             //2 Em andamento
