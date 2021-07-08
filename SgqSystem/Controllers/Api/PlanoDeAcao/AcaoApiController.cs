@@ -11,7 +11,7 @@ using System.Web.Http;
 namespace SgqSystem.Controllers.Api.PlanoDeAcao
 {
     [RoutePrefix("api/AcaoApi")]
-    public class AcaoApiController : BaseApiController
+    public class AcaoApiController : BaseAuthenticatedApiController
     {
         public readonly AcaoService _acaoService;
         public readonly EvidenciaNaoConformeService _evidenciaNaoConformeService;
@@ -19,7 +19,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         public AcaoApiController(AcaoService acaoService
             , ApplicationConfig applicationConfig
             , EvidenciaNaoConformeService evidenciaNaoConformeService
-            , EvidenciaConcluidaService evidenciaConcluidaService) : base()
+            , EvidenciaConcluidaService evidenciaConcluidaService) : base(applicationConfig)
         {
             _acaoService = acaoService;
             _evidenciaNaoConformeService = evidenciaNaoConformeService;
@@ -77,7 +77,6 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         [HttpGet]
         public AcaoFormViewModel GetById(int id)
         {
-            var usuarioLogado = base.GetUsuarioLogado();
             return _acaoService.ObterAcaoComVinculosPorId(id);
         }
 

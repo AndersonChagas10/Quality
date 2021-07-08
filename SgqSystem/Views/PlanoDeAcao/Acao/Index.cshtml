@@ -17,6 +17,8 @@
     ViewBag.ShowParLevel2 = false;
     ViewBag.ShowParDepartment = false;
     ViewBag.ShowUserCompanies = false;
+
+    var userToken = ViewBag.UserToken;
 }
 
 @section Content{
@@ -396,7 +398,6 @@
 
         $(document).ready(function () {
 
-
         });
 
         function enviarFiltro(filtro) {
@@ -406,6 +407,9 @@
                 type: 'POST',
                 url: '@Html.Raw(Url.Action("GetAcaoByFilter", "api/AcaoApi"))',
                 data: JSON.stringify(objFiltro),
+                headers: {
+                    "token": '@Html.Raw(userToken)'
+                },
                 contentType: "application/json",
                 success: function (dados) {
                     if (dados && dados.length > 0) {
@@ -827,6 +831,9 @@
                 type: 'GET',
                 url: `${url}/${id}`,
                 contentType: "application/json",
+                headers: {
+                    "token": '@Html.Raw(userToken)'
+                },
                 success: function (dados) {
 
                     if (dados.length > 0) {
@@ -850,6 +857,9 @@
                 type: 'GET',
                 url: `${url}/${id}`,
                 contentType: "application/json",
+                headers: {
+                    "token": '@Html.Raw(userToken)'
+                },
                 success: function (dados) {
 
                     if (dados.length > 0) {
@@ -1308,6 +1318,9 @@
                     url: url + "/" + acompanhamento.objeto["AcaoId"],
                     type: 'POST',
                     data: JSON.stringify(form),
+                    headers: {
+                    "token": '@Html.Raw(userToken)'
+                    },
                     contentType: "application/json",
                     success: function (data) {
                         openMessageModal("Concluido", "Ação salva com sucesso");

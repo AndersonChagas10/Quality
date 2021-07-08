@@ -65,9 +65,11 @@ namespace SgqSystem
             SetGlobalConfigAmbient();
 
             bool runSetSeed = false;
-            #if !DEBUG
+#if !DEBUG
                 runSetSeed = bool.Parse(DicionarioEstaticoGlobal.DicionarioEstaticoHelpers.RunScriptsSystem ?? "false");
-            #endif
+#endif
+
+            Conformity.Domain.Core.Entities.Global.DicionarioEstatico.DicionarioEstaticoHelpers = DicionarioEstaticoGlobal.DicionarioEstaticoHelpers;
 
             Dominio.Seed.Seed.SetSeedValues(isEN:GlobalConfig.LanguageEUA, runSetSeed: runSetSeed);
 

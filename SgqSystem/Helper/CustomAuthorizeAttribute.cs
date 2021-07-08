@@ -120,8 +120,11 @@ namespace Helper
                             }
                             else
                             {
-                                _userSgqRoles = db.UserSgq.Find(userid).Role.ToString();
+                                var usuario = db.UserSgq.Find(userid);
+                                _userSgqRoles = usuario.Role.ToString();
                                 filterContext.Controller.ViewBag.IsAdmin = VerificarRole("Admin");
+                                filterContext.Controller.ViewBag.UserToken = usuario.Name + "|" + usuario.Password;
+                                
                             }
                         }
                         else

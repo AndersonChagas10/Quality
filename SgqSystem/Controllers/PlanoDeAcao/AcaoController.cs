@@ -1,4 +1,5 @@
 ﻿using Dominio;
+using Helper;
 using SgqSystem.Secirity;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,9 @@ using System.Web.Mvc;
 
 namespace SgqSystem.Controllers
 {
+    [CustomAuthorize]
     public class AcaoController : BaseController
-    {
+    {        
         [FormularioPesquisa(filtraUnidadePorUsuario = true)]
         public ActionResult Index()
         {
