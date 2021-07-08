@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 {
+    [Table("ParCargo")]
     public class ParCargo : BaseModel, IEntity
     {
         [Required(ErrorMessage = "O campo Nome é Obrigatório")]

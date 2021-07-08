@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 {
+    [Table("ParLevel3")]
     public partial class ParLevel3 : BaseModel, IEntity
     {
         [Required(AllowEmptyStrings = true)]

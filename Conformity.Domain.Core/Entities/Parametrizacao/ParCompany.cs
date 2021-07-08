@@ -1,7 +1,11 @@
-﻿namespace Conformity.Domain.Core.Entities.Parametrizacao
-{
-    using Conformity.Domain.Core.Interfaces;
+﻿using Conformity.Domain.Core.Interfaces;
+    using System.ComponentModel.DataAnnotations.Schema;
 
+namespace Conformity.Domain.Core.Entities.Parametrizacao
+{
+    
+
+    [Table("ParCompany")]
     public partial class ParCompany : BaseModel, IEntity
     {
         public ParCompany()

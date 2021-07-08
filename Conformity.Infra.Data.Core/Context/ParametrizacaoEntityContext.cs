@@ -8,6 +8,6 @@ namespace Conformity.Infra.Data.Core
 {
     public partial class EntityContext : DbContext
     {
-        public virtual DbSet<ParCompany> ParCompany { get; set; }
+        //public virtual DbSet<Conformity.Domain.Core.Entities.Parametrizacao.ParCompany> ParCompany { get; set; }
     }
 }

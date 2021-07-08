@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 {
 
-
+    [Table("ParLevel1")]
     public partial class ParLevel1 : BaseModel, IEntity
     {
 

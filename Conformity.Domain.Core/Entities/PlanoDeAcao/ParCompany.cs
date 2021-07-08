@@ -7,7 +7,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 {
 
     [Table("ParCompany")]
-    public partial class ParCompany : BaseModel, IEntity
+    public class ParCompany : BaseModel, IEntity
     {
         [Required(AllowEmptyStrings = true)]
         [StringLength(155)]

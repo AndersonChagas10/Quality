@@ -37,7 +37,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
             //4 Atrasada  - cenario 5 e 6
             //5 Cancelada - cenario 7 e 8
 
-            var acaoCompleta = _repository.GetById(acao.Id);
+            var acaoCompleta = _acaoRepository.GetById(acao.Id);
 
             if (acao.Status == EAcaoStatus.Em_Andamento)
             {

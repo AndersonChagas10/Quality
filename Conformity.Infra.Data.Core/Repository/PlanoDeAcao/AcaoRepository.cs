@@ -524,7 +524,7 @@ public AcaoRepository(EntityContext dbContext
             acao.ParCompany = _repositoryParCompany.GetById(acao.ParCompany_Id);
             acao.ParDepartment = _repositoryParDepartment.GetById(acao.ParDepartment_Id); //Sessão
             acao.ParDepartmentParent = _repositoryParDepartment.GetById(acao.ParDepartmentParent_Id); //Centro de custo
-            acao.ResponsavelUser = _repositoryUserSgq.GetById(acao.Responsavel.Value);
+            acao.ResponsavelUser = acao.Responsavel.Value != 0 ? _repositoryUserSgq.GetById(acao.Responsavel.Value) : null;
             acao.ParCluster = _repositoryParCluster.GetById(acao.ParCluster_Id);
             acao.ParClusterGroup = _repositoryParClusterGroup.GetById(acao.ParClusterGroup_Id);
             acao.NotificarUsers = GetNotificarUsersBy(acao.Id);
