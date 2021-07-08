@@ -11,11 +11,13 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
     public class AcompanhamentoApiController : BaseAuthenticatedApiController
     {
         private readonly AcompanhamentoAcaoService _acompanhamentoService;
+        private readonly AcaoService _acaoService;
 
-        public AcompanhamentoApiController(AcompanhamentoAcaoService acompanhamentoService
-            , ApplicationConfig applicationConfig) : base(applicationConfig)
+        public AcompanhamentoApiController(AcompanhamentoAcaoService acompanhamentoService,
+            AcaoService acaoService, ApplicationConfig applicationConfig) : base(applicationConfig)
         {
             _acompanhamentoService = acompanhamentoService;
+            _acaoService = acaoService;
         }
 
         [Route("Post/Acompanhamento/{id}")]
@@ -25,6 +27,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             try
             {
                 _acompanhamentoService.SalvarAcompanhamentoComNotificaveis(id, objAcompanhamentoAcao);
+                _acaoService.AlterarStatusComBaseNoAcompanhamento(id, objAcompanhamentoAcao);
             }
             catch (Exception e)
             {

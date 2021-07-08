@@ -119,5 +119,9 @@ namespace Conformity.Application.Core.PlanoDeAcao
             _acaoRepository.AtualizarValoresDaAcao(objAcao);
         }
 
+        public void AlterarStatusComBaseNoAcompanhamento(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
+        {
+            _acaoRepository.AlterarStatusComBaseNoAcompanhamento(id, objAcompanhamentoAcao);
+        }
     }
 }

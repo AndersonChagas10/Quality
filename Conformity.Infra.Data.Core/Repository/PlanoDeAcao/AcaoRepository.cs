@@ -549,5 +549,16 @@ public AcaoRepository(EntityContext dbContext
             IEnumerable<UserSgq> usuarios = _aDOContext.SearchQuery<UserSgq>(query).ToList();
             return usuarios;
         }
+
+        public void AlterarStatusComBaseNoAcompanhamento(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
+        {
+            Acao acao = _dbContext.Acao.Find(id);
+
+            if(acao != null)
+            {
+                acao.Status = objAcompanhamentoAcao.Status;
+                _dbContext.SaveChanges();
+            }
+        }
     }
 }
