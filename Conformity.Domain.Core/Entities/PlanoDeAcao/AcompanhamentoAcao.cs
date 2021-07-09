@@ -14,7 +14,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
         public string Observacao { get; set; }
         public DateTime DataRegistro { get; set; } = DateTime.Now;
         public ICollection<AcompanhamentoAcaoXNotificar> ListaNotificar { get; set; }
-        public EAcaoStatus Status { get; set; }
+        public int Status { get; set; }
         public bool IsActive { get; set; } = true;
 
         [ForeignKey("UserSgq_Id")]

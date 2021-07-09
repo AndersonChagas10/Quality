@@ -15,7 +15,7 @@ namespace Conformity.Infra.Data.Core
     /// <typeparam name="T">Object reconhecido pelo DataBase: EntityBase</typeparam>
     public class LogRepositoryBase<T> : RepositoryBase<T>, ILogRepository<T>  where T : BaseModel
     {
-        public LogRepositoryBase(ParametrizacaoEntityContext dbContext) : base(dbContext)
+        public LogRepositoryBase(LogEntityContext dbContext) : base(dbContext)
         {
         }
     }

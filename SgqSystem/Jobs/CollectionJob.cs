@@ -64,6 +64,11 @@ namespace SgqSystem.Jobs
 
         public static void ConsolidarCollectionLevel2(List<CollectionLevel2> collectionsLevel2MontadoDaCollection)
         {
+            if(collectionsLevel2MontadoDaCollection.Count == 0)
+            {
+                return;
+            }
+
             try
             {
                 LogSystem.LogErrorBusiness.Register(new Exception("Iniciado ConsolidarCollectionLevel2"));

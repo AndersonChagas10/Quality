@@ -16,7 +16,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
     {
         private readonly AcaoRepository _acaoRepository;
 
-        public AcaoService(IRepositoryNoLazyLoad<Acao> repository
+        public AcaoService(IPlanoDeAcaoRepositoryNoLazyLoad<Acao> repository
             , EntityTrackService historicoAlteracaoService,
             AcaoRepository acaoRepository)
             : base(repository
@@ -96,17 +96,25 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
         public static void EnviarEmailAcao(MontaEmail email)
         {
+            string emailFrom = (DicionarioEstatico.DicionarioEstaticoHelpers.emailFrom as string);
+            string emailPass = (DicionarioEstatico.DicionarioEstaticoHelpers.emailPass as string);
+            string emailSmtp = (DicionarioEstatico.DicionarioEstaticoHelpers.emailSmtp as string);
+            int emailPort = int.Parse(DicionarioEstatico.DicionarioEstaticoHelpers.emailPort as string);
+            bool emailSSL = bool.Parse(DicionarioEstatico.DicionarioEstaticoHelpers.emailSSL as string);
+            string systemName = (DicionarioEstatico.DicionarioEstaticoHelpers.systemName as string);
+            string toAddress = string.Join(",", email.Email.To);
             Task.Run(() =>
             Conformity.Infra.CrossCutting.MailHelper.SendMail(
-                (DicionarioEstatico.DicionarioEstaticoHelpers.emailFrom as string),
-                (DicionarioEstatico.DicionarioEstaticoHelpers.emailPass as string),
-                (DicionarioEstatico.DicionarioEstaticoHelpers.emailSmtp as string),
-                int.Parse(DicionarioEstatico.DicionarioEstaticoHelpers.emailPort as string),
-                bool.Parse(DicionarioEstatico.DicionarioEstaticoHelpers.emailSSL as string),
-                string.Join(",", email.GetEmail().To),
-                email.GetEmail().Subject,
-                email.GetEmail().Body,
-                DicionarioEstatico.DicionarioEstaticoHelpers.systemName));
+                emailFrom,
+                emailPass,
+                emailSmtp,
+                emailPort,
+                emailSSL,
+                toAddress,
+                email.Email.Subject,
+                email.Email.Body,
+                systemName)
+            );
         }
 
         public AcaoFormViewModel ObterAcaoComVinculosPorId(int id)
@@ -116,7 +124,10 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
         public void AtualizarValoresDaAcao(AcaoInputModel objAcao)
         {
+            Acao dbEntityAnterior = GetById(objAcao.Id);
             _acaoRepository.AtualizarValoresDaAcao(objAcao);
+            Acao dbEntityAlterado = GetById(objAcao.Id);
+            _entityTrackService.RegisterUpdate(dbEntityAnterior, dbEntityAlterado);
         }
 
         public void AlterarStatusComBaseNoAcompanhamento(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)

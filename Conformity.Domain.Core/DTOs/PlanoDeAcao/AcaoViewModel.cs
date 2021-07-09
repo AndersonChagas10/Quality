@@ -31,7 +31,7 @@ namespace Conformity.Domain.Core.DTOs
         public TimeSpan HoraEmissao { get; set; }
         public TimeSpan HoraConclusao { get; set; }
         public string Referencia { get; set; }
-        public string Responsavel { get; set; }
+        public int Responsavel { get; set; }
         public string Notificar { get; set; }
         public int Emissor { get; set; }
         public string EmissorNome { get; set; }
@@ -52,6 +52,48 @@ namespace Conformity.Domain.Core.DTOs
         public int Status { get; set; }
         public bool IsActive { get; set; }
         public string Responsavel_Name { get; set; }
-        public bool PermiteEditar { get => Emissor == UsuarioLogado && Status == (int)EAcaoStatus.Pendente || Status == (int)EAcaoStatus.Em_Andamento; }
+        public bool PermitirEditar { get => Emissor == UsuarioLogado && Status == (int)EAcaoStatus.Pendente || Status == (int)EAcaoStatus.Em_Andamento; }
+        public bool PermitirInserirAcompanhamento
+        {
+            get
+            {
+                if (Status == (int)EAcaoStatus.Pendente
+                    || (!EhEmissor
+                        && (Status == (int)EAcaoStatus.Em_Andamento
+                            || Status == (int)EAcaoStatus.Atrasada)
+                    ))
+                {
+                    return false;
+                }
+                else
+                {
+                    return EhVinculadoEmNotificacao() || EhResponsavel;
+                }
+            }
+        }
+
+        public bool PermitirVisualizarAcompanhamento
+        {
+            get
+            {
+                if (Status == (int)EAcaoStatus.Pendente)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        public bool EhResponsavel => Responsavel == UsuarioLogado || Responsavel == 0;
+        public bool EhEmissor => Emissor == UsuarioLogado;
+
+        private bool EhVinculadoEmNotificacao()
+        {
+            if (ListaNotificarAcao != null)
+            {
+                return ListaNotificarAcao.Exists(l => l.Id == UsuarioLogado);
+            }
+            return false;
+        }
     }
 }

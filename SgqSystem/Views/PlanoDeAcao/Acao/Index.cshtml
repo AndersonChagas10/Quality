@@ -342,23 +342,22 @@
                                         <div class="form-group">
                                             <label for="txtAcompanhamento_Status"><strong>Status</strong></label>
                                             <select id="txtAcompanhamento_Status" name="Status" class="form-control acompanhamento">
-                                                <option value="3">Concluído</option>
-                                                <option value="5">Cancelado</option>
+                                                
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <button class="btn btn-success acompanhamento" onclick="acompanhamento.salvarAcompanhamento()">Salvar</button>
+                                            <button type="button" class="btn btn-success acompanhamento" onclick="acompanhamento.salvarAcompanhamento()">Salvar</button>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-sm-12" id="Acompanhamento_Listagem">
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
-                                </div>
                             </form>
+
+                            <div class="col-sm-12" id="Acompanhamento_Listagem">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -468,13 +467,19 @@
                         var id = full["Id"];
 
                         let btnEditar = () => {
-                            if (data.PermiteEditar) {
+                            if (data.PermitirEditar) {
                                 return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})">Editar</button>`;
                             }
                             return `<button class="btn btn-sm btn-info botaoEditar" onclick="abrirAcao('editar',${id})" disabled>Editar</button>`;
                         }
-                        var btnAcompanhar = `<button class="btn btn-sm btn-success" onclick="abrirAcao('acompanhamento',${id})">Acompanhar</button>`;
-                        return btnEditar() + btnAcompanhar;
+
+                        let btnAcompanhar = () => {
+                            if (data.PermitirVisualizarAcompanhamento) {
+                                return `<button class="btn btn-sm btn-success" onclick="abrirAcao('acompanhamento',${id})">Acompanhar</button>`;
+                            }
+                            return `<button class="btn btn-sm btn-success" onclick="abrirAcao('acompanhamento',${id})" disabled>Acompanhar</button>`;
+                        }
+                        return btnEditar() + btnAcompanhar();
                     }
                 },
                 {
@@ -760,7 +765,17 @@
             $("#modalPrint").modal();
         }
 
+        function resetarAbasModalAcao() {
+            $('#tabAcaoEdicao').prop('disabled', false)
+            $('.edicao').removeClass('disabled');
+            $('#formAcompanhamento').removeClass('hide');
+            $('#tabAcaoAcompanhamento').prop('disabled', false)
+            $('.acompanhamento').removeClass('disabled');
+        }
+
         function abrirAcao(acao, id) {
+            resetarAbasModalAcao();
+
             switch (acao) {
                 case "editar":
                     $('#tabAcaoEdicao').click();
@@ -929,35 +944,36 @@
 
         var acaoEditar = {};
 
-        permiteAlterarStatus = (dados) => {
+        var permitirAlterarStatus = (dados) => {
+            $('#txtAcompanhamento_Status').empty();
+            $('#txtAcompanhamento_Status').append(new Option(dados["StatusName"], dados["Status"], true));
+            if (dados.PermitirAlterarStatus) {
+                $('#txtAcompanhamento_Status').append(new Option('Cancelado', 5, false));
+                $('#txtAcompanhamento_Status').append(new Option('Concluído', 3, false));
+            } 
+        }
 
-            $('#txtAcompanhamento_Status').prop('disabled', true)
-
-            if (dados.PermiteAlterarStatus) {
-                $('#txtAcompanhamento_Status').prop('disabled', false)
+        var permitirInserirAcompanhamento = (dados) => {
+            if (!dados.PermitirInserirAcompanhamento) {
+                $('#formAcompanhamento').addClass('hide');
             }
         }
 
-        permiteInserirAcompanhamento = (dados) => {
-
-            $('#formAcompanhamento .acompanhamento').prop('disabled', true)
-
-            if (dados.PermiteInserirAcompanhamento) {
-                $('#formAcompanhamento .acompanhamento').prop('disabled', false)
+        var permitirVisualizarAcompanhamento = (dados) => {
+            if (!dados.PermitirVisualizarAcompanhamento) {
+                $('#tabAcaoAcompanhamento').prop('disabled', true)
+                $('.acompanhamento').addClass('disabled');
             }
         }
 
-        permiteEditar = (dados) => {
-            $('#tabAcaoEdicao').prop('disabled', true)
-            $('.edicao').addClass('disabled')
-
-            if (dados.PermiteEditar) {
-                $('#tabAcaoEdicao').prop('disabled', false)
-                $('.edicao').removeClass('disabled')
+        var permitirEditar = (dados) => {
+            if (!dados.PermitirEditar) {
+                $('#tabAcaoEdicao').prop('disabled', true)
+                $('.edicao').addClass('disabled')
             }
         }
 
-        desabilitarBotaoSalvarEPreencherDepois = (dados) => {
+        var desabilitarBotaoSalvarEPreencherDepois = (dados) => {
 
             $('.preencherDepois').prop('disabled', false)
 
@@ -967,7 +983,8 @@
 
         function preencherModal(dados) {
             preencherInformacoesAcompanhamento(dados);
-            permiteInserirAcompanhamento(dados)
+            permitirInserirAcompanhamento(dados);
+            permitirVisualizarAcompanhamento(dados);
 
             acaoEditar = dados;
             limparAcao()
@@ -1006,13 +1023,13 @@
             $("#actionParLevel2_Id").text(dados.ParLevel2_Name);
             $("#actionParLevel3_Id").text(dados.ParLevel3_Name);
             $("#selectPrioridade").val(dados.Prioridade);
-            $("#selectResponsavel").append(new Option(dados.Responsavel_Name, dados.Responsavel, true));
+            $("#selectResponsavel").val(dados.Responsavel);
             $("#actionConclusionDate").val(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]);
             $("#actionConclusionHour").val(dados.HoraConclusao);
             $("#actionReference").val(dados.Referencia);
             $("#status").val(dados.Status);
-            permiteAlterarStatus(dados)
-            permiteEditar(dados)
+            permitirAlterarStatus(dados)
+            permitirEditar(dados)
             desabilitarBotaoSalvarEPreencherDepois(dados)
 
             $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
@@ -1089,7 +1106,7 @@
                     $("#btnClose").trigger('click');
                     setTimeout(function () {
                         enviarFiltro(null);
-                    }, 3000);
+                    }, 1000);
 
                 },
                 error: function () {
@@ -1197,10 +1214,6 @@
                 for (var i = 0; i < dados.ListaAcompanhamento.length; i++) {
                     var objAcompanhamento = dados.ListaAcompanhamento[i];
 
-                    if (dados.PermiteAlterarStatus == false) {
-                        objAcompanhamento["StatusName"] = dados.StatusName
-                    }
-
                     var htmlTabelaNotificar = acompanhamento.montarHtmlTabelaListaNotificar(objAcompanhamento['ListaNotificar']);
 
                     html += `
@@ -1208,9 +1221,7 @@
                             <div class="col-sm-8">
                                 <div class="form-group">
                                     <label><strong>Observação</strong></label>
-                                    <textarea disabled readonly class="form-control" style="resize: none; height: 100px;">
-                                        ${objAcompanhamento["Observacao"]}
-                                    </textarea>
+                                    <textarea disabled readonly class="form-control" style="resize: none; height: 100px;">${objAcompanhamento["Observacao"]}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <label><strong>Notificar</strong></label>
@@ -1328,7 +1339,7 @@
                         $("#btnClose").trigger('click');
                         setTimeout(function () {
                             enviarFiltro(null);
-                        }, 3000);
+                        }, 1000);
                     },
                     error: function () {
                         console.log('erro ao salvar ação');

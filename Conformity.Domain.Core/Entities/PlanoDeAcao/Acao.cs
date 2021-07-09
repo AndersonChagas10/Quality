@@ -6,7 +6,7 @@ using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 {
-    [Table("PA.Acao")]
+    [Table("Acao", Schema = "PA")]
     public partial class Acao : BaseModel, IEntity
     {
         public int ParLevel1_Id { get; set; }

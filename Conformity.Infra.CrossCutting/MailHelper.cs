@@ -13,7 +13,6 @@ namespace Conformity.Infra.CrossCutting
         public static void SendMail(string emailFrom, string emailPass, string emailSmtp,
             int emailPort, bool emailSSL, string emailList, string subject, string body, string systemName)
         {
-
             try
             {
                 SmtpClient client = new SmtpClient(emailSmtp, emailPort);

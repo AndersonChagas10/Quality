@@ -380,7 +380,8 @@ public AcaoRepository(PlanoDeAcaoEntityContext dbContext
             var query = $@"
                             SELECT 
 	                            ID AS ID,
-	                            CONCAT(FullName, ' (', IIF(LEN(NAME) > 3, SUBSTRING(NAME,0,4), ''), ')') AS Nome
+	                            CONCAT(FullName, ' (', IIF(LEN(NAME) > 3, SUBSTRING(NAME,0,4), ''), ')') AS Name,
+                                Role AS Role
                             FROM UserSgq WITH (NOLOCK)
                             WHERE 1=1 
                             AND isActive = 1 
@@ -524,7 +525,7 @@ public AcaoRepository(PlanoDeAcaoEntityContext dbContext
             acao.ParCompany = _repositoryParCompany.GetById(acao.ParCompany_Id);
             acao.ParDepartment = _repositoryParDepartment.GetById(acao.ParDepartment_Id); //Sessão
             acao.ParDepartmentParent = _repositoryParDepartment.GetById(acao.ParDepartmentParent_Id); //Centro de custo
-            acao.ResponsavelUser = acao.Responsavel.Value != 0 ? _repositoryUserSgq.GetById(acao.Responsavel.Value) : null;
+            acao.ResponsavelUser = _repositoryUserSgq.GetById(acao.Responsavel.Value);
             acao.ParCluster = _repositoryParCluster.GetById(acao.ParCluster_Id);
             acao.ParClusterGroup = _repositoryParClusterGroup.GetById(acao.ParClusterGroup_Id);
             acao.NotificarUsers = GetNotificarUsersBy(acao.Id);

@@ -13,7 +13,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
     {
         private readonly ApplicationConfig _applicationConfig;
 
-        public AcompanhamentoAcaoService(IRepositoryNoLazyLoad<AcompanhamentoAcao> repository
+        public AcompanhamentoAcaoService(IPlanoDeAcaoRepositoryNoLazyLoad<AcompanhamentoAcao> repository
             , ApplicationConfig applicationConfig
             , EntityTrackService historicoAlteracaoService)
             : base(repository
@@ -38,11 +38,11 @@ namespace Conformity.Application.Core.PlanoDeAcao
                 {
                     ListaNotificar = listaNotificar,
                     Observacao = objAcompanhamentoAcao.Observacao,
-                    Status = objAcompanhamentoAcao.Status,
+                    Status = (int)objAcompanhamentoAcao.Status,
                     Acao_Id = id,
                     UserSgq_Id = _applicationConfig.Authenticated_Id
                 };
-                _repository.Add(acompanhamento);
+                base.Add(acompanhamento);
             }
             catch (Exception e)
             {

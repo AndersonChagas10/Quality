@@ -68,26 +68,47 @@ namespace Conformity.Domain.Core.DTOs
         public List<NotificarViewModel> ListaNotificarAcao { get; set; } = new List<NotificarViewModel>();
         public List<AcompanhamentoAcaoViewModel> ListaAcompanhamento { get; set; } = new List<AcompanhamentoAcaoViewModel>();
 
-        public bool PermiteEditar
-        { 
+        public bool PermitirEditar
+        {
             get => EhEmissor && (Status == (int)EAcaoStatus.Pendente || Status == (int)EAcaoStatus.Em_Andamento);
         }
-        public bool PermiteAlterarStatus 
-        { 
-            get => (EhEmissor && Status == (int)EAcaoStatus.Em_Andamento) && EhResponsavel; 
+        public bool PermitirAlterarStatus
+        {
+            get => (Status == (int)EAcaoStatus.Em_Andamento
+                        || Status == (int)EAcaoStatus.Atrasada)
+                    && (EhResponsavel
+                        || EhEmissor);
         }
 
-        public bool PermiteInserirAcompanhamento 
+        public bool PermitirInserirAcompanhamento
         {
-            get 
+            get
             {
-                if (!EhEmissor && (Status == (int)EAcaoStatus.Em_Andamento || Status == (int)EAcaoStatus.Atrasada)) return false;
-
+                if (Status == (int)EAcaoStatus.Pendente
+                    || (!EhEmissor
+                        && (Status == (int)EAcaoStatus.Em_Andamento
+                            || Status == (int)EAcaoStatus.Atrasada)
+                    ))
+                {
+                    return false;
+                }
                 else
                 {
                     return EhVinculadoEmNotificacao() || EhResponsavel;
                 }
-            }   
+            }
+        }
+
+        public bool PermitirVisualizarAcompanhamento
+        {
+            get
+            {
+                if (Status == (int)EAcaoStatus.Pendente)
+                {
+                    return false;
+                }
+                return true;
+            }
         }
 
         public bool EhResponsavel => Responsavel == UsuarioLogado || Responsavel == 0;

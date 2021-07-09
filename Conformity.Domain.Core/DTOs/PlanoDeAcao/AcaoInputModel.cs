@@ -33,7 +33,11 @@ namespace Conformity.Domain.Core.DTOs
             }
             set
             {
-                if (!DentroDoPrazo())
+                if(value == EAcaoStatus.Pendente)
+                {
+                    _status = EAcaoStatus.Pendente;
+                }
+                else if (value == EAcaoStatus.Em_Andamento && !DentroDoPrazo())
                 {
                     _status = EAcaoStatus.Atrasada;
                 }

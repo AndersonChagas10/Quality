@@ -19,7 +19,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
         private readonly AcaoRepository _acaoRepository;
         private readonly LogErrorService _logErrorService;
 
-        public EvidenciaNaoConformeService(IRepositoryNoLazyLoad<EvidenciaNaoConforme> repository
+        public EvidenciaNaoConformeService(IPlanoDeAcaoRepositoryNoLazyLoad<EvidenciaNaoConforme> repository
             , LogErrorService logErrorService
             , EntityTrackService historicoAlteracaoService
             , EvidenciaNaoConformeRepository evidenciaNaoConformeRepository

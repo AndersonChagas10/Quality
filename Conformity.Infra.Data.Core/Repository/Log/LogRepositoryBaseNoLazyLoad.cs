@@ -18,7 +18,7 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
         /// Construtor.
         /// </summary>
         /// <param name="Db"></param>
-        public LogRepositoryBaseNoLazyLoad(ParametrizacaoEntityContext dbContext) : base(dbContext)
+        public LogRepositoryBaseNoLazyLoad(LogEntityContext dbContext) : base(dbContext)
         {
         }
     }
