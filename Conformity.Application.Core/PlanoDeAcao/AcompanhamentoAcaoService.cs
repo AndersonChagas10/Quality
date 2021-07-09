@@ -11,18 +11,15 @@ namespace Conformity.Application.Core.PlanoDeAcao
 {
     public class AcompanhamentoAcaoService : BaseServiceWithLog<AcompanhamentoAcao>
     {
-        private readonly AcompanhamentoAcaoRepository _acompanhamentoAcaoRepository;
         private readonly ApplicationConfig _applicationConfig;
 
         public AcompanhamentoAcaoService(IRepositoryNoLazyLoad<AcompanhamentoAcao> repository
             , ApplicationConfig applicationConfig
-            , EntityTrackService historicoAlteracaoService,
-            AcompanhamentoAcaoRepository acompanhamentoAcaoRepository)
+            , EntityTrackService historicoAlteracaoService)
             : base(repository
                   , historicoAlteracaoService)
         {
             _applicationConfig = applicationConfig;
-            _acompanhamentoAcaoRepository = acompanhamentoAcaoRepository;
         }
 
         public AcaoViewModel SalvarAcompanhamentoComNotificaveis(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
@@ -45,7 +42,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
                     Acao_Id = id,
                     UserSgq_Id = _applicationConfig.Authenticated_Id
                 };
-                _acompanhamentoAcaoRepository.SalvarAcompanhamentoAcao(acompanhamento);
+                _repository.Add(acompanhamento);
             }
             catch (Exception e)
             {

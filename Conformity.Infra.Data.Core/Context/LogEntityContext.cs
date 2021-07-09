@@ -6,7 +6,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace Conformity.Infra.Data.Core
 {
-    public partial class EntityContext : DbContext
+    public class LogEntityContext : EntityContext
     {
         public virtual DbSet<EntityTrack> EntityTrack { get; set; }
     }

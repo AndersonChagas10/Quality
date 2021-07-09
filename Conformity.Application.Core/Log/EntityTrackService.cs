@@ -12,7 +12,7 @@ namespace Conformity.Application.Core.Log
     {
         private readonly EntityTrackRepository _historicoAlteracaoRepository;
         private readonly ApplicationConfig _applicationConfig;
-        public EntityTrackService(IRepositoryNoLazyLoad<EntityTrack> repository
+        public EntityTrackService(ILogRepositoryNoLazyLoad<EntityTrack> repository
             , EntityTrackRepository historicoAlteracaoRepository
             , ApplicationConfig applicationConfig) 
             : base(repository)

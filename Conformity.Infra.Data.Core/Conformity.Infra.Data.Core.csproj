@@ -63,10 +63,15 @@
     <Compile Include="Core\RepositoryBaseNoLazyLoad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EntityContext.cs" />
+    <Compile Include="Repository\Log\LogRepositoryBase.cs" />
+    <Compile Include="Repository\Log\LogRepositoryBaseNoLazyLoad.cs" />
+    <Compile Include="Repository\Parametrizacao\ParametrizacaoRepositoryBase.cs" />
+    <Compile Include="Repository\Parametrizacao\ParametrizacaoRepositoryBaseNoLazyLoad.cs" />
     <Compile Include="Repository\PlanoDeAcao\AcaoRepository.cs" />
-    <Compile Include="Repository\PlanoDeAcao\AcompanhamentoAcaoRepository.cs" />
     <Compile Include="Repository\PlanoDeAcao\EvidenciaConcluidaRepository.cs" />
     <Compile Include="Repository\PlanoDeAcao\EvidenciaNaoConformeRepository.cs" />
+    <Compile Include="Repository\PlanoDeAcao\PlanoDeAcaoRepositoryBase.cs" />
+    <Compile Include="Repository\PlanoDeAcao\PlanoDeAcaoRepositoryBaseNoLazyLoad.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

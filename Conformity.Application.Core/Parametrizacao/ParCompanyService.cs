@@ -6,7 +6,7 @@ namespace Conformity.Application.Core.Parametrizacao
 {
     public class ParCompanyService : BaseServiceWithLog<ParCompany>
     {
-        public ParCompanyService(IRepositoryNoLazyLoad<ParCompany> repository
+        public ParCompanyService(IParametrizacaoRepositoryNoLazyLoad<ParCompany> repository
             , EntityTrackService historicoAlteracaoService) 
             : base(repository
                   , historicoAlteracaoService)

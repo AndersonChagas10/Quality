@@ -95,6 +95,12 @@
     <Compile Include="Interfaces\IEnum.cs" />
     <Compile Include="Interfaces\IServiceWithLog.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\Log\ILogRepository.cs" />
+    <Compile Include="Interfaces\Log\ILogRepositoryNoLazyLoad.cs" />
+    <Compile Include="Interfaces\PlanoDeAcao\IPlanoDeAcaoRepository.cs" />
+    <Compile Include="Interfaces\PlanoDeAcao\IPlanoDeAcaoRepositoryNoLazyLoad.cs" />
+    <Compile Include="Interfaces\Parametrizacao\IParametrizacaoRepository.cs" />
+    <Compile Include="Interfaces\Parametrizacao\IParametrizacaoRepositoryNoLazyLoad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -106,5 +112,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

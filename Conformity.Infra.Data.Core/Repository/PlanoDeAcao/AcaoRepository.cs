@@ -13,33 +13,33 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 {
     public class AcaoRepository
     {
-        private readonly EntityContext _dbContext;
+        private readonly PlanoDeAcaoEntityContext _dbContext;
         private readonly ADOContext _aDOContext;
 
-        private readonly IRepositoryNoLazyLoad<Acao> _repositoryAcao;
-        private readonly IRepositoryNoLazyLoad<ParLevel1> _repositoryParLevel1;
-        private readonly IRepositoryNoLazyLoad<ParLevel2> _repositoryParLevel2;
-        private readonly IRepositoryNoLazyLoad<ParLevel3> _repositoryParLevel3;
-        private readonly IRepositoryNoLazyLoad<ParCargo> _repositoryParCargo;
-        private readonly IRepositoryNoLazyLoad<ParCompany> _repositoryParCompany;
-        private readonly IRepositoryNoLazyLoad<ParDepartment> _repositoryParDepartment;
-        private readonly IRepositoryNoLazyLoad<UserSgq> _repositoryUserSgq;
-        private readonly IRepositoryNoLazyLoad<ParCluster> _repositoryParCluster;
-        private readonly IRepositoryNoLazyLoad<ParClusterGroup> _repositoryParClusterGroup;
+        private readonly IPlanoDeAcaoRepositoryNoLazyLoad<Acao> _repositoryAcao;
+        private readonly IPlanoDeAcaoRepositoryNoLazyLoad<ParLevel1> _repositoryParLevel1;
+        private readonly IPlanoDeAcaoRepositoryNoLazyLoad<ParLevel2> _repositoryParLevel2;
+        private readonly IPlanoDeAcaoRepositoryNoLazyLoad<ParLevel3> _repositoryParLevel3;
+        private readonly IPlanoDeAcaoRepositoryNoLazyLoad<ParCargo> _repositoryParCargo;
+        private readonly IPlanoDeAcaoRepositoryNoLazyLoad<ParCompany> _repositoryParCompany;
+        private readonly IPlanoDeAcaoRepositoryNoLazyLoad<ParDepartment> _repositoryParDepartment;
+        private readonly IPlanoDeAcaoRepositoryNoLazyLoad<UserSgq> _repositoryUserSgq;
+        private readonly IPlanoDeAcaoRepositoryNoLazyLoad<ParCluster> _repositoryParCluster;
+        private readonly IPlanoDeAcaoRepositoryNoLazyLoad<ParClusterGroup> _repositoryParClusterGroup;
         private readonly ApplicationConfig _applicationConfig;
 
-public AcaoRepository(EntityContext dbContext
+public AcaoRepository(PlanoDeAcaoEntityContext dbContext
             , ADOContext aDOContext
-            , IRepositoryNoLazyLoad<Acao> repositoryAcao
-            , IRepositoryNoLazyLoad<ParLevel1> repositoryParLevel1
-            , IRepositoryNoLazyLoad<ParLevel2> repositoryParLevel2
-            , IRepositoryNoLazyLoad<ParLevel3> repositoryParLevel3
-            , IRepositoryNoLazyLoad<ParCargo> repositoryParCargo
-            , IRepositoryNoLazyLoad<ParCompany> repositoryParCompany
-            , IRepositoryNoLazyLoad<ParDepartment> repositoryParDepartment
-            , IRepositoryNoLazyLoad<UserSgq> repositoryUserSgq
-            , IRepositoryNoLazyLoad<ParCluster> repositoryParCluster
-            , IRepositoryNoLazyLoad<ParClusterGroup> repositoryParClusterGroup
+            , IPlanoDeAcaoRepositoryNoLazyLoad<Acao> repositoryAcao
+            , IPlanoDeAcaoRepositoryNoLazyLoad<ParLevel1> repositoryParLevel1
+            , IPlanoDeAcaoRepositoryNoLazyLoad<ParLevel2> repositoryParLevel2
+            , IPlanoDeAcaoRepositoryNoLazyLoad<ParLevel3> repositoryParLevel3
+            , IPlanoDeAcaoRepositoryNoLazyLoad<ParCargo> repositoryParCargo
+            , IPlanoDeAcaoRepositoryNoLazyLoad<ParCompany> repositoryParCompany
+            , IPlanoDeAcaoRepositoryNoLazyLoad<ParDepartment> repositoryParDepartment
+            , IPlanoDeAcaoRepositoryNoLazyLoad<UserSgq> repositoryUserSgq
+            , IPlanoDeAcaoRepositoryNoLazyLoad<ParCluster> repositoryParCluster
+            , IPlanoDeAcaoRepositoryNoLazyLoad<ParClusterGroup> repositoryParClusterGroup
             , ApplicationConfig applicationConfig)
         {
             _dbContext = dbContext;
