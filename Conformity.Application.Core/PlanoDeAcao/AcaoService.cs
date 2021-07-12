@@ -29,7 +29,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
             return _acaoRepository.ObterAcao(form);
         }
 
-        public void EnviarEmail(AcaoInputModel acao)
+        public void EnviarEmail(int acaoId)
         {
             //1 Pendente - nao envia email
             //2 Em andamento - cenario 1 e 2
@@ -37,9 +37,9 @@ namespace Conformity.Application.Core.PlanoDeAcao
             //4 Atrasada  - cenario 5 e 6
             //5 Cancelada - cenario 7 e 8
 
-            var acaoCompleta = _acaoRepository.GetById(acao.Id);
+            var acaoCompleta = _acaoRepository.GetById(acaoId);
 
-            if (acao.Status == EAcaoStatus.Em_Andamento)
+            if (acaoCompleta.Status == EAcaoStatus.Em_Andamento)
             {
                 var emailResponsavel = new MontaEmail(new EmailCreateAcaoResponsavel(acaoCompleta));
                 EnviarEmailAcao(emailResponsavel);
@@ -48,7 +48,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
                 EnviarEmailAcao(emailNotificados);
             }
 
-            if (acao.Status == EAcaoStatus.Concluída)
+            if (acaoCompleta.Status == EAcaoStatus.Concluída)
             {
                 var emailResponsavel = new MontaEmail(new EmailCreateAcaoVerEAgirResponsavel(acaoCompleta));
                 EnviarEmailAcao(emailResponsavel);
@@ -58,7 +58,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
             }
 
-            if (acao.Status == EAcaoStatus.Atrasada)
+            if (acaoCompleta.Status == EAcaoStatus.Atrasada)
             {
                 var emailResponsavel = new MontaEmail(new EmailAcaoVencidaResponsavel(acaoCompleta));
                 EnviarEmailAcao(emailResponsavel);
@@ -67,7 +67,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
                 EnviarEmailAcao(emailNotificados);
             }
 
-            if (acao.Status == EAcaoStatus.Cancelada)
+            if (acaoCompleta.Status == EAcaoStatus.Cancelada)
             {
                 var emailResponsavel = new MontaEmail(new EmailAcaoStatusCanceladoResponsavel(acaoCompleta));
                 EnviarEmailAcao(emailResponsavel);
@@ -132,7 +132,12 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
         public void AlterarStatusComBaseNoAcompanhamento(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
         {
+            Acao dbEntityAnterior = GetById(id);
+
             _acaoRepository.AlterarStatusComBaseNoAcompanhamento(id, objAcompanhamentoAcao);
+
+            Acao dbEntityAlterado = GetById(id);
+            _entityTrackService.RegisterUpdate(dbEntityAnterior, dbEntityAlterado);
         }
     }
 }

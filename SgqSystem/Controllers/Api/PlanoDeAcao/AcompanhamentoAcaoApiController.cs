@@ -28,6 +28,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             {
                 _acompanhamentoService.SalvarAcompanhamentoComNotificaveis(id, objAcompanhamentoAcao);
                 _acaoService.AlterarStatusComBaseNoAcompanhamento(id, objAcompanhamentoAcao);
+                _acaoService.EnviarEmail(id);
             }
             catch (Exception e)
             {

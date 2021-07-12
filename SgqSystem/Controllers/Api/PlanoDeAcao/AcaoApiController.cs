@@ -7,6 +7,7 @@ using DTO;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace SgqSystem.Controllers.Api.PlanoDeAcao
 {
@@ -58,9 +59,9 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
                 _evidenciaConcluidaService.RetornarListaDeEvidenciasConcluidas(objAcao);
 
-                if (objAcao.Responsavel != null)
+                if (objAcao.Status != EAcaoStatus.Pendente)
                 {
-                    PrepararEEnviarEmail(objAcao);
+                    PrepararEEnviarEmail(objAcao.Id);
                 }
 
             }
@@ -80,9 +81,9 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             return _acaoService.ObterAcaoComVinculosPorId(id);
         }
 
-        private void PrepararEEnviarEmail(AcaoInputModel acao)
+        private void PrepararEEnviarEmail(int acaoId)
         {
-            _acaoService.EnviarEmail(acao);
+            _acaoService.EnviarEmail(acaoId);
         }
 
         private void AtualizarUsuariosASeremNotificadosDaAcao(AcaoInputModel objAcao)
