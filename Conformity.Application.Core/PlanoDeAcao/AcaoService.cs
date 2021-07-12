@@ -132,7 +132,12 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
         public void AlterarStatusComBaseNoAcompanhamento(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
         {
+            Acao dbEntityAnterior = GetById(id);
+
             _acaoRepository.AlterarStatusComBaseNoAcompanhamento(id, objAcompanhamentoAcao);
+
+            Acao dbEntityAlterado = GetById(id);
+            _entityTrackService.RegisterUpdate(dbEntityAnterior, dbEntityAlterado);
         }
     }
 }
