@@ -394,12 +394,12 @@
                                                     </button>
                                                 </div>
                                                 <div class="col-sm-12 p-0" style="padding-left:0px;">
-                                                    <select class="form-control " name="parCompany_Ids" multiple style="width:100%;"></select>
+                                                    <select id="selectUnidade" class="form-control " name="parCompany_Ids" style="width:100%;"></select>
                                                 </div>
                                                 <div class="clearfix"></div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div id="divCentroCusto" class="col-sm-6" hidden>
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                 <label><strong>Centro de Custo:</strong></label>
                                                 <button type="button"
@@ -411,7 +411,7 @@
                                                 </button>
                                             </div>
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
-                                                <select class="form-control" name="parDepartment_Ids" multiple style="width:100%;">
+                                                <select id="selectCentroCusto" class="form-control" name="parDepartment_Ids" style="width:100%;">
                                                     @if (ViewBag.ShowParDepartmentDefault != null)
                                                     {
                                                         <option value="">@ViewBag.ShowParDepartmentDefault</option>
@@ -419,7 +419,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div id="divSecaoAtividade" class="col-sm-6" hidden>
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                 <label><strong>Seção/Atividade:</strong></label>
                                                 <button type="button"
@@ -431,10 +431,10 @@
                                                 </button>
                                             </div>
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
-                                                <select class="form-control" name="parSecao_Ids" multiple style="width:100%;"></select>
+                                                <select id="selectSecaoAtividade" class="form-control" name="parSecao_Ids" style="width:100%;"></select>
                                             </div>
                                         </div> 
-                                        <div class="col-sm-6">
+                                        <div id="divItemCargo" class="col-sm-6" hidden>
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                 <label><strong>Item/Cargo</strong></label>
                                                 <button type="button"
@@ -446,7 +446,7 @@
                                                 </button>
                                             </div>
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
-                                                <select class="form-control" name="parCargo_Ids" multiple style="width:100%;"></select>
+                                                <select id="selectItemCargo" class="form-control" name="parCargo_Ids" style="width:100%;"></select>
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
@@ -460,10 +460,10 @@
                                                 </button>
                                             </div>
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
-                                                <select class="form-control" name="parLevel1_Ids" multiple style="width:100%;"></select>
+                                                <select id="selectIndicador" class="form-control" name="parLevel1_Ids" style="width:100%;"></select>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div id="divMonitoramento" class="col-sm-6" hidden>
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                 <label><strong>@Resources.Resource.level2:</strong></label>
                                                 <button type="button" data-filtroselect3-btn
@@ -474,10 +474,10 @@
                                                 </button>
                                             </div>
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
-                                                <select class="form-control" name="parLevel2_Ids" multiple style="width:100%;"></select>
+                                                <select id="selectMonitoramento" class="form-control" name="parLevel2_Ids" style="width:100%;"></select>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6">
+                                        <div id="divDesvioTarefa" class="col-sm-6" hidden>
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                 <label><strong>Desvio/Tarefa:</strong></label>
                                                 <button type="button" data-filtroselect3-btn
@@ -488,7 +488,7 @@
                                                 </button>
                                             </div>
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
-                                                <select class="form-control" name="parLevel3_Ids" multiple style="width:100%;"></select>
+                                                <select class="form-control" name="parLevel3_Ids" style="width:100%;"></select>
                                             </div>
                                         </div> 
                                     </div>
@@ -557,9 +557,74 @@
         var showVerAgir = false;
 
         $(document).ready(function () {
-
-
+            campoCascata();
         });
+
+        function campoCascata(){
+
+            if ($('#selectUnidade').val() == null) {
+                $('#divCentroCusto').attr('hidden', 'hidden');
+                $('#divSecaoAtividade').attr('hidden', 'hidden');
+                $('#divItemCargo').attr('hidden', 'hidden');
+            }
+
+            if ($('#selectIndicador').val() ==  null) {
+                $('#divMonitoramento').attr('hidden', 'hidden');
+                $('#divDesvioTarefa').attr('hidden', 'hidden');
+            }
+
+            //Exibição campo Centro de Custo
+            $('#selectUnidade').change(function () {
+                if ($('#selectUnidade').val() != null) {
+                    $('#divCentroCusto').removeAttr('hidden');
+                }
+                else {
+                    $('#divCentroCusto').attr('hidden', 'hidden');
+                }
+            });
+
+            //Exibição campo Seção/Atividade
+            $('#selectCentroCusto').change(function () {
+                if ($('#selectCentroCusto').val() != null) {
+                    $('#divSecaoAtividade').removeAttr('hidden');
+                }
+                else {
+                    $('#divSecaoAtividade').attr('hidden', 'hidden');
+                }
+            });
+
+            //Exibição campo Item/Cargo
+            $('#selectSecaoAtividade').change(function () {
+                if ($('#selectSecaoAtividade').val() != null) {
+                    $('#divItemCargo').removeAttr('hidden');
+                }
+                else {
+                    $('#divItemCargo').attr('hidden', 'hidden');
+                }
+            });
+
+            //Exibição campo Monitoramento
+            $('#selectIndicador').change(function () {
+                if ($('#selectIndicador').val() != null) {
+                    $('#divMonitoramento').removeAttr('hidden');
+                }
+                else {
+                    $('#divMonitoramento').attr('hidden', 'hidden');
+                }
+            });
+
+            //Exibição campo Desvio/Tarefa
+            $('#selectMonitoramento').change(function () {
+                if ($('#selectMonitoramento').val() != null) {
+                    $('#divDesvioTarefa').removeAttr('hidden');
+                }
+                else {
+                    $('#divDesvioTarefa').attr('hidden', 'hidden');
+                }
+            });
+
+
+        }
 
         function enviarFiltro(filtro) {
             openLoader("Carregando Dados");
@@ -926,6 +991,7 @@
 
         function abrirNovaAcao() {
             limparCampoModalNovaAcao();
+            campoCascata();
             $("#modalNovaAcao").modal('show');
         }
 
@@ -1249,15 +1315,30 @@
             });
         }
 
+        function verificaObrigatoriedade() {
+
+            var unidade = $('#selectUnidade').val();
+            var indicador = $('#selectIndicador').val();
+
+            if (unidade == null || indicador == null) {
+                return true;
+            }
+
+        }
+
         //Formulário
         function salvarNovaAcao(status) {
 
             event.preventDefault();
-            
-            var form = $("#formNovaAcao").serializeObject();
-             
-            salvar(form,status); 
-           
+
+            if (verificaObrigatoriedade() == true) {
+                alert('Os campos Unidade e Indicador são obrigatórios.');
+            }
+            else {
+                var form = $("#formNovaAcao").serializeObject();
+
+                salvar(form, status); 
+            }
         }
 
         function salvar(form,status) {
