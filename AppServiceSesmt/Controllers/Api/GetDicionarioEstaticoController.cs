@@ -18,14 +18,14 @@ namespace AppServiceSesmt.Controllers.Api.Sesmt
     {
         [HttpGet]
         [Route("GetDicionarioEstatico")]
-        public async Task<string> GetDicionarioEstatico()
+        public async Task<object> GetDicionarioEstatico()
         {
             string url = $"/api/AppParams/GetDicionarioEstatico";
             RestRequest restRequest = await RestRequest.Get(url, this.token);
 
             if (restRequest.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                return restRequest.Response;
+                return Newtonsoft.Json.JsonConvert.DeserializeObject(restRequest.Response);
             }
             return null;
         }
