@@ -73,7 +73,41 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             return new AcaoViewModel() { Id = objAcao.Id };
         }
 
+        [Route("SalvarAcao")]
+        [HttpPost]
+        public int SalvarAcao([FromBody] Acao objAcao)
+        {
+            int Id = 0;
+            try
+            {
+                //AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
+                //appColetaBusiness.SalvarAcao(objAcao);
 
+                // salva os campos comuns da ação
+                Id =  _acaoRepository.SalvarAcao(objAcao);
+                 
+                //salva/deleta a listagem de usuario no campo notificar
+                //AtualizarUsuariosASeremNotificadosDaAcao(objAcao);
+
+                ////salva/deleta a listagem de imagens de evidencias
+                //_evidenciaNaoConformeService.RetornarListaDeEvidencias(objAcao);
+
+                //_evidenciaConcluidaService.RetornarListaDeEvidenciasConcluidas(objAcao);
+
+                //if (objAcao.Responsavel != null)
+                //{
+                //    PrepararEEnviarEmail(objAcao);
+                //}
+
+            }
+            catch (Exception e)
+            {
+                //
+            }
+
+            return  Id ;
+        }
+ 
         [Route("GetById/{id}")]
         [HttpGet]
         public AcaoFormViewModel GetById(int id)

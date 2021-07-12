@@ -28,19 +28,19 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
         private readonly IPlanoDeAcaoRepositoryNoLazyLoad<ParClusterGroup> _repositoryParClusterGroup;
         private readonly ApplicationConfig _applicationConfig;
 
-public AcaoRepository(PlanoDeAcaoEntityContext dbContext
-            , ADOContext aDOContext
-            , IPlanoDeAcaoRepositoryNoLazyLoad<Acao> repositoryAcao
-            , IPlanoDeAcaoRepositoryNoLazyLoad<ParLevel1> repositoryParLevel1
-            , IPlanoDeAcaoRepositoryNoLazyLoad<ParLevel2> repositoryParLevel2
-            , IPlanoDeAcaoRepositoryNoLazyLoad<ParLevel3> repositoryParLevel3
-            , IPlanoDeAcaoRepositoryNoLazyLoad<ParCargo> repositoryParCargo
-            , IPlanoDeAcaoRepositoryNoLazyLoad<ParCompany> repositoryParCompany
-            , IPlanoDeAcaoRepositoryNoLazyLoad<ParDepartment> repositoryParDepartment
-            , IPlanoDeAcaoRepositoryNoLazyLoad<UserSgq> repositoryUserSgq
-            , IPlanoDeAcaoRepositoryNoLazyLoad<ParCluster> repositoryParCluster
-            , IPlanoDeAcaoRepositoryNoLazyLoad<ParClusterGroup> repositoryParClusterGroup
-            , ApplicationConfig applicationConfig)
+        public AcaoRepository(PlanoDeAcaoEntityContext dbContext
+                    , ADOContext aDOContext
+                    , IPlanoDeAcaoRepositoryNoLazyLoad<Acao> repositoryAcao
+                    , IPlanoDeAcaoRepositoryNoLazyLoad<ParLevel1> repositoryParLevel1
+                    , IPlanoDeAcaoRepositoryNoLazyLoad<ParLevel2> repositoryParLevel2
+                    , IPlanoDeAcaoRepositoryNoLazyLoad<ParLevel3> repositoryParLevel3
+                    , IPlanoDeAcaoRepositoryNoLazyLoad<ParCargo> repositoryParCargo
+                    , IPlanoDeAcaoRepositoryNoLazyLoad<ParCompany> repositoryParCompany
+                    , IPlanoDeAcaoRepositoryNoLazyLoad<ParDepartment> repositoryParDepartment
+                    , IPlanoDeAcaoRepositoryNoLazyLoad<UserSgq> repositoryUserSgq
+                    , IPlanoDeAcaoRepositoryNoLazyLoad<ParCluster> repositoryParCluster
+                    , IPlanoDeAcaoRepositoryNoLazyLoad<ParClusterGroup> repositoryParClusterGroup
+                    , ApplicationConfig applicationConfig)
         {
             _dbContext = dbContext;
             _aDOContext = aDOContext;
@@ -555,10 +555,97 @@ public AcaoRepository(PlanoDeAcaoEntityContext dbContext
         {
             Acao acao = _dbContext.Acao.Find(id);
 
-            if(acao != null)
+            if (acao != null)
             {
                 acao.Status = objAcompanhamentoAcao.Status;
                 _dbContext.SaveChanges();
+            }
+        }
+
+        public int SalvarAcao(Acao item)
+        {
+            try
+            {
+                string sql = $@"INSERT INTO Pa.Acao(
+                                    ParLevel1_Id				
+                                    ,ParLevel2_Id				
+                                    ,ParLevel3_Id				
+                                    ,ParCompany_Id				
+                                    ,ParDepartment_Id			
+                                    ,ParDepartmentParent_Id	
+                                    ,ParCargo_Id				
+                                    ,Acao_Naoconformidade		
+                                    ,AcaoText					
+                                    ,DataConclusao				
+                                    ,HoraConclusao				
+                                    ,Referencia				
+                                    ,Responsavel								
+                                    ,DataEmissao				
+                                    ,HoraEmissao				
+                                    ,Emissor	
+                                    ,Prioridade
+                                    ,ParCluster_Id
+                                    ,ParClusterGroup_Id
+                                    ,Status)
+                                    VALUES(
+                                          @ParLevel1_Id			
+                                         ,@ParLevel2_Id			
+                                         ,@ParLevel3_Id			
+                                         ,@ParCompany_Id			
+                                         ,@ParDepartment_Id		
+                                         ,@ParDepartmentParent_Id	
+                                         ,@ParCargo_Id			
+                                         ,@Acao_Naoconformidade	
+                                         ,@AcaoText				
+                                         ,@DataConclusao			
+                                         ,@HoraConclusao			
+                                         ,@Referencia				
+                                         ,@Responsavel							
+                                         ,@DataEmissao			
+                                         ,@HoraEmissao			
+                                         ,@Emissor				
+                                         ,@Prioridade
+                                         ,@ParCluster_Id
+                                         ,@ParClusterGroup_Id
+                                         ,@Status
+                                        );
+
+                SELECT CAST(scope_identity() AS int)";
+
+                var id = 0;
+
+                using (SqlCommand cmd = new SqlCommand(sql, _aDOContext.connection))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.AddParameterNullable("@ParLevel1_Id", item.ParLevel1_Id);
+                    cmd.AddParameterNullable("@ParLevel2_Id", item.ParLevel2_Id);
+                    cmd.AddParameterNullable("@ParLevel3_Id", item.ParLevel3_Id);
+                    cmd.AddParameterNullable("@ParCompany_Id", item.ParCompany_Id);
+                    cmd.AddParameterNullable("@ParDepartment_Id", item.ParDepartment_Id);
+                    cmd.AddParameterNullable("@ParDepartmentParent_Id", item.ParDepartmentParent_Id);
+                    cmd.AddParameterNullable("@ParCargo_Id", item.ParCargo_Id);
+                    cmd.AddParameterNullable("@Acao_Naoconformidade", item.Acao_Naoconformidade);
+                    cmd.AddParameterNullable("@AcaoText", item.AcaoText);
+                    cmd.AddParameterNullable("@DataConclusao", item.DataConclusao);
+                    cmd.AddParameterNullable("@HoraConclusao", item.HoraConclusao);
+                    cmd.AddParameterNullable("@Referencia", item.Referencia);
+                    cmd.AddParameterNullable("@Responsavel", item.Responsavel);
+                    cmd.AddParameterNullable("@DataEmissao", item.DataEmissao);
+                    cmd.AddParameterNullable("@HoraEmissao", item.HoraEmissao);
+                    cmd.AddParameterNullable("@Emissor", item.Emissor);
+                    cmd.AddParameterNullable("@Prioridade", item.Prioridade);
+                    cmd.AddParameterNullable("@ParCluster_Id", item.ParCluster_Id);
+                    cmd.AddParameterNullable("@ParClusterGroup_Id", item.ParClusterGroup_Id);
+                    cmd.AddParameterNullable("@Status", item.Status);
+
+                    id = (int)cmd.ExecuteScalar();
+
+                }
+                return id;
+            }
+            catch (Exception e)
+            {
+                return 0;
             }
         }
     }
