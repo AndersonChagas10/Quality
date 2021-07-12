@@ -81,8 +81,8 @@ function montaCorpoFormularioAcao(index) {
         btnClass = "btn btn-primary";
     }
 
-    btnNext = '<button class="' + btnClass +'" id="next" onclick="proximoElemento(' + index + ')">Próximo Alerta (' + (index + 1) + "/" + listaAcoesCurrent.length + ')</button>';
-    btnBack = '<button class="' + btnClass +'" id="back" onclick="elementoAnterior(' + index + ')">Voltar Alerta</button>';
+    btnNext = '<button class="' + btnClass +'" id="next" onclick="proximoElemento(' + index + ')">Próxima Ação (' + (index + 1) + "/" + listaAcoesCurrent.length + ')</button>';
+    btnBack = '<button class="' + btnClass +'" id="back" onclick="elementoAnterior(' + index + ')">Ação Anterior</button>';
 
     var date = getCurrentDate();
 
@@ -175,7 +175,7 @@ function montaCorpoFormularioAcao(index) {
         '   <hr>' +
         '   <div class="form-group row">' +
         '       <div class="col-xs-12">' +
-        '           <p>Evidências de Não Conformidade </p>' +
+        '           <p>Evidências da Não Conformidade</p>' +
         '           ' + btnPhoto +
         '           ' + btnFile +
         '           <br><br> ' +
@@ -253,8 +253,8 @@ function montaCorpoFormularioAcao(index) {
         '   ' + btnNext +
         // '   </div>' +
         // '   <div class="col-xs-4">' +
-        '       <button id="btnSalvarIniciar" class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e iniciar acao</button>' +
-        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 2);">Salvar e preencher depois</button>' +
+        '       <button id="btnSalvarIniciar" class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e iniciar ação</button>' +
+        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 2);">Salvar e preencher a ação depois</button>' +
         '   </div>' +
         '</div>' +
         '</div></div>';
@@ -664,6 +664,7 @@ function sendActions() {
         data: JSON.stringify(acaoToSend),
         url: urlPreffix + '/api/AppColeta/SetAction',
         type: 'POST',
+        headers: token(),
         contentType: "application/json",
         success: function (data) {
             //remover acao da lista de acoesToSend

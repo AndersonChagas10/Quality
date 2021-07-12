@@ -1,10 +1,7 @@
-﻿using ADOFactory;
-using Dominio;
+﻿using Dominio;
 using DTO.DTO;
 using Newtonsoft.Json.Linq;
-using SGQDBContext;
 using SgqService.ViewModels;
-using SgqSystem.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -29,7 +26,7 @@ namespace SgqSystem.Controllers.Api
 
     public class BaseApiController : ApiController
     {
-        private LogSystem.LogRequestBusiness LogRequestBusiness = new LogSystem.LogRequestBusiness();
+        private readonly LogSystem.LogRequestBusiness LogRequestBusiness = new LogSystem.LogRequestBusiness();
         protected string token;
         protected string tokenFiltros;
         // GET: BaseAPI
@@ -84,9 +81,9 @@ namespace SgqSystem.Controllers.Api
         protected void InicioRequisicao(object userId = null)
         {
             LogRequestBusiness.RegistrarInicioRequisicao(
-                this.ControllerContext.Request.Method.Method,
-                this.ControllerContext.Request.RequestUri.LocalPath,
-                this.ActionContext.ActionArguments,
+                ControllerContext.Request.Method.Method,
+                ControllerContext.Request.RequestUri.LocalPath,
+                ActionContext.ActionArguments,
                 userId
                 );
         }
@@ -97,12 +94,12 @@ namespace SgqSystem.Controllers.Api
             {
                 using (SgqDbDevEntities db = new SgqDbDevEntities())
                 {
-                    var user = new CredenciaisSgq()
+                    CredenciaisSgq user = new CredenciaisSgq()
                     {
                         Username = token.Split('|')[0],
                         Senha = token.Split('|')[1]
                     };
-                    var userSgq = db.UserSgq.Where(x => x.Name == user.Username && x.Password == user.Senha && x.IsActive == true).FirstOrDefault();
+                    UserSgq userSgq = db.UserSgq.Where(x => x.Name == user.Username && x.Password == user.Senha && x.IsActive == true).FirstOrDefault();
                     if (userSgq == null)
                     {
                         throw new UnauthorizedAccessException("Acesso negado!");
@@ -113,7 +110,7 @@ namespace SgqSystem.Controllers.Api
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw new UnauthorizedAccessException("Acesso negado!");
             }
@@ -128,19 +125,21 @@ namespace SgqSystem.Controllers.Api
         protected dynamic QueryNinjaDataTable(DbContext db, string query)
         {
             db.Database.Connection.Open();
-            var cmd = db.Database.Connection.CreateCommand();
+            System.Data.Common.DbCommand cmd = db.Database.Connection.CreateCommand();
             cmd.CommandText = query;
             cmd.CommandTimeout = 9600;
-            var reader = cmd.ExecuteReader();
+            System.Data.Common.DbDataReader reader = cmd.ExecuteReader();
             List<JObject> datas = new List<JObject>();
             List<JObject> columns = new List<JObject>();
             dynamic retorno = new ExpandoObject();
 
             while (reader.Read())
             {
-                var row = new JObject();
+                JObject row = new JObject();
                 for (int i = 0; i < reader.FieldCount; i++)
+                {
                     row[reader.GetName(i)] = reader[i].ToString();
+                }
 
                 datas.Add(row);
             }
@@ -148,7 +147,7 @@ namespace SgqSystem.Controllers.Api
 
             for (int i = 0; i < reader.FieldCount; i++)
             {
-                var col = new JObject();
+                JObject col = new JObject();
                 col["title"] = col["data"] = reader.GetName(i);
                 columns.Add(col);
             }
@@ -169,16 +168,18 @@ namespace SgqSystem.Controllers.Api
         protected List<JObject> QueryNinja(DbContext db, string query)
         {
             db.Database.Connection.Open();
-            var cmd = db.Database.Connection.CreateCommand();
+            System.Data.Common.DbCommand cmd = db.Database.Connection.CreateCommand();
             cmd.CommandText = query;
             cmd.CommandTimeout = 300;
-            var reader = cmd.ExecuteReader();
+            System.Data.Common.DbDataReader reader = cmd.ExecuteReader();
             List<JObject> items = new List<JObject>();
             while (reader.Read())
             {
                 JObject row = new JObject();
                 for (int i = 0; i < reader.FieldCount; i++)
+                {
                     row[reader.GetName(i)] = reader[i].ToString();
+                }
 
                 items.Add(row);
             }
@@ -193,10 +194,10 @@ namespace SgqSystem.Controllers.Api
         /// <returns></returns>
         protected async Task<string> GetExternalResponse(string url)
         {
-            using (var client = new HttpClient())
+            using (HttpClient client = new HttpClient())
             {
                 client.Timeout = TimeSpan.FromMinutes(2);
-                var response = await client.GetAsync(url).Result.Content.ReadAsStringAsync();
+                string response = await client.GetAsync(url).Result.Content.ReadAsStringAsync();
                 return response;
             }
         }
@@ -207,8 +208,8 @@ namespace SgqSystem.Controllers.Api
         /// <param name="path"></param>
         protected void ExecuteBatch(string path)
         {
-            var mappedPath = System.Web.Hosting.HostingEnvironment.MapPath("~/" + path);
-            var proc = new System.Diagnostics.Process();
+            string mappedPath = System.Web.Hosting.HostingEnvironment.MapPath("~/" + path);
+            System.Diagnostics.Process proc = new System.Diagnostics.Process();
 
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.CreateNoWindow = false;
@@ -227,14 +228,20 @@ namespace SgqSystem.Controllers.Api
         /// <returns></returns>
         protected CookieHeaderValue CreateCookieFromUserDTO(UserDTO userDto)
         {
-            var values = new NameValueCollection();
-            values.Add("userId", userDto.Id.ToString());
-            values.Add("userName", userDto.Name);
-            values.Add("CompanyId", userDto.ParCompany_Id.GetValueOrDefault().ToString());
+            NameValueCollection values = new NameValueCollection
+            {
+                { "userId", userDto.Id.ToString() },
+                { "userName", userDto.Name },
+                { "CompanyId", userDto.ParCompany_Id.GetValueOrDefault().ToString() }
+            };
             if (userDto.AlterDate != null)
+            {
                 values.Add("alterDate", userDto.AlterDate.GetValueOrDefault().ToString("dd/MM/yyyy"));
+            }
             else
+            {
                 values.Add("alterDate", "");
+            }
 
             values.Add("addDate", userDto.AddDate.ToString("dd/MM/yyyy"));
 
@@ -250,17 +257,19 @@ namespace SgqSystem.Controllers.Api
             //        values.Add("rolesCompany", string.Join(",", userDto.ParCompanyXUserSgq.Select(n => n.ParCompany_Id).Distinct().ToArray()));
 
 
-            var cookie = new CookieHeaderValue("webControlCookie", values);
-            cookie.MaxAge = TimeSpan.FromHours(48);
-            cookie.Expires = DateTime.Now.AddHours(48);
-            cookie.Path = "/";
+            CookieHeaderValue cookie = new CookieHeaderValue("webControlCookie", values)
+            {
+                MaxAge = TimeSpan.FromHours(48),
+                Expires = DateTime.Now.AddHours(48),
+                Path = "/"
+            };
 
             return cookie;
         }
 
         protected object ToDynamic(string value)
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings
+            Newtonsoft.Json.JsonSerializerSettings settings = new Newtonsoft.Json.JsonSerializerSettings
             {
                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             };
@@ -270,7 +279,7 @@ namespace SgqSystem.Controllers.Api
 
         protected string ToJson(object value)
         {
-            var settings = new Newtonsoft.Json.JsonSerializerSettings
+            Newtonsoft.Json.JsonSerializerSettings settings = new Newtonsoft.Json.JsonSerializerSettings
             {
                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             };
@@ -284,7 +293,7 @@ namespace SgqSystem.Controllers.Api
 
         protected string getAprovadorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
         {
-            var SQL = $@"SELECT top 1
+            string SQL = $@"SELECT top 1
         Aprovador
         FROM ReportXUserSgq RXU      
         WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
@@ -297,7 +306,7 @@ namespace SgqSystem.Controllers.Api
 
         protected string getElaboradorName(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
         {
-            var SQL = $@"SELECT top 1
+            string SQL = $@"SELECT top 1
     	Elaborador
         FROM ReportXUserSgq RXU
         WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
@@ -310,7 +319,7 @@ namespace SgqSystem.Controllers.Api
 
         protected string getNomeRelatorio(FormularioParaRelatorioViewModel form, SgqDbDevEntities dbSgq)
         {
-            var SQL = $@"SELECT top 1
+            string SQL = $@"SELECT top 1
     	NomeRelatorio
         FROM ReportXUserSgq RXU
         WHERE (RXU.Parcompany_Id = {form.unitId} OR RXU.Parcompany_Id IS NULL)
@@ -335,7 +344,7 @@ namespace SgqSystem.Controllers.Api
 
             try
             {
-                using (var db = new SgqDbDevEntities())
+                using (SgqDbDevEntities db = new SgqDbDevEntities())
                 {
                     return db.DicionarioEstatico.Where(r => r.Key == key).FirstOrDefault().Value;
                 }
@@ -349,23 +358,25 @@ namespace SgqSystem.Controllers.Api
         protected string GetUserUnitsIds(bool showUserCompanies = false)
         {
 
-            var unidadesUsuario = new List<string>();
+            List<string> unidadesUsuario = new List<string>();
 
             try
             {
                 using (SgqDbDevEntities db = new SgqDbDevEntities())
                 {
-                    var user = new CredenciaisSgq()
+                    CredenciaisSgq user = new CredenciaisSgq()
                     {
                         Username = tokenFiltros.Split('|')[0],
                         Senha = tokenFiltros.Split('|')[1]
                     };
 
-                    var usuarioLogado = db.UserSgq.Where(x => x.Name == user.Username).FirstOrDefault();
+                    UserSgq usuarioLogado = db.UserSgq.Where(x => x.Name == user.Username).FirstOrDefault();
 
 
                     if (usuarioLogado == null)
+                    {
                         throw new UnauthorizedAccessException("Acesso negado!");
+                    }
 
                     if (usuarioLogado.ShowAllUnits.Value || !showUserCompanies)
                     {
@@ -378,13 +389,13 @@ namespace SgqSystem.Controllers.Api
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "";
                 throw new UnauthorizedAccessException("Acesso negado!");
             }
 
-            var retorno = string.Join(",", unidadesUsuario);
+            string retorno = string.Join(",", unidadesUsuario);
 
             return retorno;
 
@@ -396,13 +407,13 @@ namespace SgqSystem.Controllers.Api
             {
                 db.Configuration.LazyLoadingEnabled = false;
 
-                var user = new CredenciaisSgq()
+                CredenciaisSgq user = new CredenciaisSgq()
                 {
                     Username = tokenFiltros.Split('|')[0],
                     Senha = tokenFiltros.Split('|')[1]
                 };
 
-                var usuarioLogado = db.UserSgq.Where(x => x.Name == user.Username).FirstOrDefault();
+                UserSgq usuarioLogado = db.UserSgq.Where(x => x.Name == user.Username).FirstOrDefault();
 
                 return usuarioLogado;
             }

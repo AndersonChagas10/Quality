@@ -47,6 +47,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("SetAction")]
         public IHttpActionResult SetAction(Acao acao)
         {
+            VerifyIfIsAuthorized();
             AppColetaBusiness appColetaBusiness = new AppColetaBusiness();
 
             try
@@ -124,6 +125,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("SetCollect")]
         public IHttpActionResult SetCollect(List<Collection> listSimpleCollect)
         {
+            VerifyIfIsAuthorized();
             #region Gambi Log de Coletas
             var guiid = Guid.NewGuid();
             LogSystem.LogErrorBusiness.TryRegister(new Exception("Iniciado o registro das coletas (" + listSimpleCollect.Count + ")")
@@ -254,6 +256,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("GetAppParametrization")]
         public IHttpActionResult GetAppParametrization(PlanejamentoColeta appParametrization)
         {
+            VerifyIfIsAuthorized();
             InicioRequisicao();
             List<ParVinculoPesoAppViewModel> listaParVinculoPeso;
             List<ParLevel1AppViewModel> listaParLevel1;
@@ -491,7 +494,6 @@ namespace SgqSystem.Controllers.V2.Api
                     .Where(x => x.ParCargo_Id == null)
                     .Select(x => x.ParDepartment_Id)
                     .ToList();
-
 
                 var listaDeDepartamento = db.ParDepartment.AsNoTracking().Where(x => x.Active).ToList();
 
@@ -755,6 +757,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("GetResults")]
         public IHttpActionResult GetResults(GetResultsData data)
         {
+            VerifyIfIsAuthorized();
             InicioRequisicao();
             var coletaAgrupada = new List<ColetaAgrupadaViewModel>();
 
@@ -1608,6 +1611,7 @@ WHERE 1 = 1
         [Route("GetColetaParcial")]
         public IHttpActionResult GetColetaParcial(GetResultsData data)
         {
+            VerifyIfIsAuthorized();
             //Enviar parametros para não buscar todas as coletas
             List<CollectionPartial> coletasParciais = new List<CollectionPartial>();
             InicioRequisicao();
@@ -1658,13 +1662,6 @@ AND cp.Parfrequency_Id = @ParFrequency_Id";
         }
 
         #endregion
-
-        public class GetResultsData
-        {
-            public int ParCompany_Id { get; set; }
-            public DateTime CollectionDate { get; set; }
-            public int ParFrequency_Id { get; set; }
-        }
 
         public class ColetaAgrupadaViewModel
         {

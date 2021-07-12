@@ -21,8 +21,12 @@ namespace CrossCutting.IOC
             return new StandardKernel(
                 //new ApplicationNinjectModule(),
                 new DomainNinjectModule(),
-                new DataNinjectModule()
-                );
+                new DataNinjectModule(),
+                new Conformity.Infra.IoC.DataNinjectModule(),
+                new Conformity.Infra.IoC.RepositoryNinjectModule(),
+                new Conformity.Infra.IoC.ServiceNinjectModule(),
+                new Conformity.Infra.IoC.HelperNinjectModule()
+                ); ;
         }
     }
 }

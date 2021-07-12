@@ -79,6 +79,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Conformity.Infra.IoC\Conformity.Infra.IoC.csproj">
+      <Project>{0ee680da-b832-4d97-ad8f-454ffa725340}</Project>
+      <Name>Conformity.Infra.IoC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{a75ec76c-9abf-4890-b82b-d8a048e6b7c5}</Project>
       <Name>Data</Name>
@@ -90,10 +94,6 @@
     <ProjectReference Include="..\DTO\DTO.csproj">
       <Project>{0ED5466D-2A8F-4E37-8D4A-C2F2760BD687}</Project>
       <Name>DTO</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Services\Services.csproj">
-      <Project>{9D205979-3646-42D1-89D6-C23FCC1CBDD6}</Project>
-      <Name>Services</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

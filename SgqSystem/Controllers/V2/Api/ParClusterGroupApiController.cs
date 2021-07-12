@@ -15,10 +15,11 @@ namespace SgqSystem.Controllers.V2.Api
     {
         private SgqDbDevEntities db = new SgqDbDevEntities();
 
-        // GET: api/ParCluster
+        // GET: api/parClusterGroup
         [Route("parClusterGroup")]
         public IHttpActionResult GetParClusterGroup(int parCompany_Id)
         {
+            VerifyIfIsAuthorized();
             InicioRequisicao();
             var listaClusterGroup = new List<ParClusterGroup>();
 

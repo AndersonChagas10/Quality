@@ -1,5 +1,6 @@
 ﻿using Dominio;
 using Dominio.AppViewModel;
+using ServiceModel;
 using SgqSystem.Controllers.Api;
 using SgqSystem.ViewModels;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace SgqSystem.Controllers.V2.Api
         [Route("GetParFrequencyXParLevel1")]
         public IHttpActionResult GetParFrequencyXParLevel1(PlanejamentoColetaViewModel appParametrization)
         {
+            VerifyIfIsAuthorized();
 
             List<ParFrequencyAppViewModel> frequencies = new List<ParFrequencyAppViewModel>();
 

@@ -26,6 +26,7 @@ namespace SgqSystem.Controllers.Api
         [Route("RetornaQueryRotina")]
         public Object RetornaQueryRotina(JToken body)
         {
+            VerifyIfIsAuthorized();
             return business.RetornaQueryRotina(body);
         }
     }

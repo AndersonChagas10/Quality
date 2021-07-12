@@ -1,22 +1,23 @@
-﻿using Data.PlanoDeAcao.Repositorio;
-using Dominio;
-using DTO.PlanoDeAcao;
-using Services.PlanoDeAcao;
+﻿using Conformity.Application.Core.PlanoDeAcao;
+using Conformity.Domain.Core.DTOs;
+using Conformity.Infra.CrossCutting;
 using System;
-using System.Linq;
 using System.Web.Http;
 
 namespace SgqSystem.Controllers.Api.PlanoDeAcao
 {
     [RoutePrefix("api/AcompanhamentoApi")]
 
-    public class AcompanhamentoApiController : BaseApiController
+    public class AcompanhamentoApiController : BaseAuthenticatedApiController
     {
-        private readonly IAcompanhamentoAcaoService _acompanhamentoService;
+        private readonly AcompanhamentoAcaoService _acompanhamentoService;
+        private readonly AcaoService _acaoService;
 
-        public AcompanhamentoApiController(IAcompanhamentoAcaoService acompanhamentoService)
+        public AcompanhamentoApiController(AcompanhamentoAcaoService acompanhamentoService,
+            AcaoService acaoService, ApplicationConfig applicationConfig) : base(applicationConfig)
         {
             _acompanhamentoService = acompanhamentoService;
+            _acaoService = acaoService;
         }
 
         [Route("Post/Acompanhamento/{id}")]
@@ -25,9 +26,9 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         {
             try
             {
-                var usuarioLogado = base.GetUsuarioLogado();
-
-                _acompanhamentoService.SalvarAcompanhamentoComNotificaveis(id, objAcompanhamentoAcao, usuarioLogado);
+                _acompanhamentoService.SalvarAcompanhamentoComNotificaveis(id, objAcompanhamentoAcao);
+                _acaoService.AlterarStatusComBaseNoAcompanhamento(id, objAcompanhamentoAcao);
+                _acaoService.EnviarEmail(id);
             }
             catch (Exception e)
             {

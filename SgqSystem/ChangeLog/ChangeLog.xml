@@ -4069,7 +4069,7 @@
 
   <Card>
     <CardNumber>GRX-2061</CardNumber>
-    <Version>1.10.8</Version>
+    <Version>1.10.7</Version>
     <Description>[RH SESMT] Criar estrutura de acompanhamento de ação e notificar ação</Description>
     <Script>
       IF NOT EXISTS (
@@ -4103,6 +4103,48 @@
       END
       GO
 
+    </Script>
+  </Card>
+
+  <Card>
+    <CardNumber>INTERNO-14</CardNumber>
+    <Version>1.10.7</Version>
+    <Description>[RH SESMT] Criação de camada e tabela para rastreamento de entidades (Alteração e criação)</Description>
+    <Script>
+      IF NOT EXISTS (
+      SELECT  schema_name
+      FROM    information_schema.schemata
+      WHERE   schema_name = 'LOG' )
+      BEGIN
+      EXEC sp_executesql N'CREATE SCHEMA LOG'
+      END
+
+      GO
+
+      IF NOT EXISTS (
+      SELECT 1
+      FROM sys.objects INNER JOIN sys.schemas ON sys.objects.schema_id = sys.schemas.schema_id
+      WHERE sys.objects.name='EntityTrack' AND sys.objects.type='U' AND sys.schemas.name = 'LOG')
+      CREATE TABLE [LOG].[EntityTrack](
+      [Id] [int] IDENTITY(1,1) PRIMARY KEY NOT NULL,
+      [TypeEntityTrack] [int] NOT NULL,
+      [RegisterDate] [datetime] NULL,
+      [User_Id] [int] NULL,
+      [Entity_Id] [int] NULL,
+      [TableName] [varchar](200) NULL,
+      [FieldName] [varchar](200) NULL,
+      [OldValue] [text] NULL,
+      [NewValue] [text] NULL
+      )
+      
+      GO
+
+      if  exists (select DATA_TYPE from Information_Schema.COLUMNS
+      where TABLE_NAME = 'ParCompany'
+      and COLUMN_NAME = 'AddDate')
+      BEGIN
+      ALTER table ParCompany  alter COLUMN AddDate datetime2 NULL;
+      END
     </Script>
   </Card>
 
