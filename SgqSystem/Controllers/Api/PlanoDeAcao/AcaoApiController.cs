@@ -1,10 +1,9 @@
-﻿using Data.PlanoDeAcao.Interfaces;
-using Data.PlanoDeAcao.Repositorio;
+﻿using Conformity.Application.Core.PlanoDeAcao;
+using Conformity.Domain.Core.DTOs;
+using Conformity.Domain.Core.DTOs.Filtros;
+using Conformity.Infra.CrossCutting;
 using Dominio;
 using DTO;
-using DTO.PlanoDeAcao;
-using Services.PlanoDeAcao;
-using Services.PlanoDeAcao.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -12,17 +11,16 @@ using System.Web.Http;
 namespace SgqSystem.Controllers.Api.PlanoDeAcao
 {
     [RoutePrefix("api/AcaoApi")]
-    public class AcaoApiController : BaseApiController
+    public class AcaoApiController : BaseAuthenticatedApiController
     {
-        public readonly IAcaoRepository _acaoRepository;
-        public readonly IAcaoService _acaoService;
-        public readonly IEvidenciaNaoConformeService _evidenciaNaoConformeService;
-        private readonly IEvidenciaConcluidaService _evidenciaConcluidaService;
-        public AcaoApiController(IAcaoRepository acaoRepository, IAcaoService acaoService,
-            IEvidenciaNaoConformeService evidenciaNaoConformeService,
-            IEvidenciaConcluidaService evidenciaConcluidaService)
+        public readonly AcaoService _acaoService;
+        public readonly EvidenciaNaoConformeService _evidenciaNaoConformeService;
+        private readonly EvidenciaConcluidaService _evidenciaConcluidaService;
+        public AcaoApiController(AcaoService acaoService
+            , ApplicationConfig applicationConfig
+            , EvidenciaNaoConformeService evidenciaNaoConformeService
+            , EvidenciaConcluidaService evidenciaConcluidaService) : base(applicationConfig)
         {
-            _acaoRepository = acaoRepository;
             _acaoService = acaoService;
             _evidenciaNaoConformeService = evidenciaNaoConformeService;
             _evidenciaConcluidaService = evidenciaConcluidaService;
@@ -30,17 +28,17 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
         [Route("GetAcaoByFilter")]
         [HttpPost]
-        public IEnumerable<AcaoViewModel> GetAcaoByFilter([FromBody] DataCarrierFormularioNew form)
+        public IEnumerable<AcaoViewModel> GetAcaoByFilter([FromBody] FiltroListagemDeAcaoDoWorkflow form)
         {
-            var usuarioLogado = base.GetUsuarioLogado();
-            return _acaoService.ObterAcaoPorFiltro(form, usuarioLogado);
+            return _acaoService.ObterAcaoPorFiltro(form);
         }
 
         [Route("GetByIdStatus/{status}")]
         [HttpGet]
         public IEnumerable<AcaoViewModel> GetByIdStatus(string status)
         {
-            return _acaoRepository.ObterStatusPorId(status);
+            return null;
+            // return _acaoService.(status);
         }
 
         [Route("Post")]
@@ -50,7 +48,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             try
             {
                 //salva os campos comuns da ação
-                _acaoRepository.AtualizarValoresDaAcao(objAcao);
+                _acaoService.AtualizarValoresDaAcao(objAcao);
 
                 //salva/deleta a listagem de usuario no campo notificar
                 AtualizarUsuariosASeremNotificadosDaAcao(objAcao);
@@ -79,8 +77,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         [HttpGet]
         public AcaoFormViewModel GetById(int id)
         {
-            var usuarioLogado = base.GetUsuarioLogado();
-            return _acaoRepository.ObterAcaoComVinculosPorId(id, usuarioLogado);
+            return _acaoService.ObterAcaoComVinculosPorId(id);
         }
 
         private void PrepararEEnviarEmail(AcaoInputModel acao)

@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -44,17 +47,70 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\EntityTrackViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\AcaoFormViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\AcaoInputModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\AcaoViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\AcompanhamentoAcaoInputModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\AcompanhamentoAcaoViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\EvidenciaViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\Filtros\FiltroListagemDeAcaoDoWorkflow.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\ImagemEvidenciaViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\NotificarViewModel.cs" />
     <Compile Include="Entities\BaseModel.cs" />
+    <Compile Include="Entities\Log\LogError.cs" />
     <Compile Include="Entities\Log\EntityTrack.cs" />
     <Compile Include="Entities\Parametrizacao\ParCompany.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Acao.cs" />
+    <Compile Include="Entities\PlanoDeAcao\AcaoXNotificarAcao.cs" />
+    <Compile Include="Entities\PlanoDeAcao\AcompanhamentoAcao.cs" />
+    <Compile Include="Entities\PlanoDeAcao\AcompanhamentoAcaoXNotificar.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailAcaoStatusCanceladoNotificados.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailAcaoStatusCanceladoResponsavel.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailAcaoVencidaNotificados.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailAcaoVencidaResponsavel.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailCreateAcaoNotificados.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailCreateAcaoResponsavel.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailCreateAcaoVerEAgirNotificados.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\EmailCreateAcaoVerEAgirResponsavel.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\MontaEmail.cs" />
+    <Compile Include="Entities\PlanoDeAcao\EvidenciaConcluida.cs" />
+    <Compile Include="Entities\PlanoDeAcao\EvidenciaNaoConforme.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParCargo.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParCluster.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParClusterGroup.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParCompany.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParDepartment.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParLevel1.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParLevel2.cs" />
+    <Compile Include="Entities\PlanoDeAcao\ParLevel3.cs" />
+    <Compile Include="Entities\PlanoDeAcao\UserSgq.cs" />
+    <Compile Include="Entities\Global\DicionarioEstatico.cs" />
+    <Compile Include="Entities\Global\Resources.cs" />
     <Compile Include="Enums\Log\ELogTrackEvent.cs" />
+    <Compile Include="Enums\PlanoDeAcao\Enums.cs" />
+    <Compile Include="Interfaces\IEmail.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IRepositoryNoLazyLoad.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IEnum.cs" />
     <Compile Include="Interfaces\IServiceWithLog.cs" />
     <Compile Include="Interfaces\IService.cs" />
+    <Compile Include="Interfaces\Log\ILogRepository.cs" />
+    <Compile Include="Interfaces\Log\ILogRepositoryNoLazyLoad.cs" />
+    <Compile Include="Interfaces\PlanoDeAcao\IPlanoDeAcaoRepository.cs" />
+    <Compile Include="Interfaces\PlanoDeAcao\IPlanoDeAcaoRepositoryNoLazyLoad.cs" />
+    <Compile Include="Interfaces\Parametrizacao\IParametrizacaoRepository.cs" />
+    <Compile Include="Interfaces\Parametrizacao\IParametrizacaoRepositoryNoLazyLoad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Conformity.Infra.CrossCutting\Conformity.Infra.CrossCutting.csproj">
+      <Project>{92025452-914a-4305-a2f1-bb1bfdc8c566}</Project>
+      <Name>Conformity.Infra.CrossCutting</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -6,7 +6,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace Conformity.Infra.Data.Core
 {
-    public partial class EntityContext : DbContext
+    public abstract class EntityContext : DbContext
     {
         public EntityContext(string connectionString = "name=DefaultConnection")
             : base(connectionString)

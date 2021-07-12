@@ -1,12 +1,6 @@
-﻿using Conformity.Application.Util;
-using Conformity.Infra.Data.Core;
+﻿using Conformity.Infra.Data.Core;
 using Ninject.Modules;
 using Ninject.Web.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Conformity.Infra.IoC
 {
@@ -14,8 +8,15 @@ namespace Conformity.Infra.IoC
     {
         public override void Load()
         {
-            Bind<EntityContext>().ToSelf().InRequestScope();
+            EntityContext();
             Bind<ADOContext>().ToSelf().InRequestScope();
+        }
+
+        public void EntityContext()
+        {
+            Bind<PlanoDeAcaoEntityContext>().ToSelf().InRequestScope();
+            Bind<LogEntityContext>().ToSelf().InRequestScope();
+            Bind<ParametrizacaoEntityContext>().ToSelf().InRequestScope();
         }
     }
 }

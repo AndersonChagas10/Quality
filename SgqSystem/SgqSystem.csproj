@@ -334,6 +334,7 @@
     <Compile Include="Controllers\Api\App\AppApiControlle.cs" />
     <Compile Include="Controllers\Api\App\ContadoresXX.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />
+    <Compile Include="Controllers\Api\BaseAuthenticatedApiController.cs" />
     <Compile Include="Controllers\Api\BuildPermissionApiController.cs" />
     <Compile Include="Controllers\Api\CompanyFormApiController.cs" />
     <Compile Include="Controllers\Api\CorrectActApiController.cs" />
@@ -2491,13 +2492,13 @@
       <Project>{e8bcc5c7-2d4c-465a-af39-cf17c9e1fb64}</Project>
       <Name>Conformity.Application.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Conformity.Application.Helper\Conformity.Application.Helper.csproj">
-      <Project>{a8dee7bc-072f-437f-b9ba-8de3ec7b46dd}</Project>
-      <Name>Conformity.Application.Helper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Conformity.Domain.Core\Conformity.Domain.Core.csproj">
       <Project>{1ad13509-f817-4551-ac84-1d1090dc1037}</Project>
       <Name>Conformity.Domain.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Conformity.Infra.CrossCutting\Conformity.Infra.CrossCutting.csproj">
+      <Project>{92025452-914A-4305-A2F1-BB1BFDC8C566}</Project>
+      <Name>Conformity.Infra.CrossCutting</Name>
     </ProjectReference>
     <ProjectReference Include="..\CrossCutting\CrossCutting.csproj">
       <Project>{0896bc38-df38-4e39-adf9-db1f9910bfe6}</Project>
@@ -2534,10 +2535,6 @@
     <ProjectReference Include="..\ServiceModel\ServiceModel.csproj">
       <Project>{3ECF1D86-91F3-4140-A11A-1546B8F662A1}</Project>
       <Name>ServiceModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Services\Services.csproj">
-      <Project>{9D205979-3646-42D1-89D6-C23FCC1CBDD6}</Project>
-      <Name>Services</Name>
     </ProjectReference>
     <ProjectReference Include="..\SgqServiceBusiness\SgqServiceBusiness.csproj">
       <Project>{2a112b7a-4627-43f6-b362-321e0b2e6b0b}</Project>

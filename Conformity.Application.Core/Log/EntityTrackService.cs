@@ -1,7 +1,7 @@
-﻿using Conformity.Application.Util;
-using Conformity.Domain.Core.DTOs;
+﻿using Conformity.Domain.Core.DTOs;
 using Conformity.Domain.Core.Entities.Log;
 using Conformity.Domain.Core.Interfaces;
+using Conformity.Infra.CrossCutting;
 using Conformity.Infra.Data.Core.Repository.Log;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace Conformity.Application.Core.Log
     {
         private readonly EntityTrackRepository _historicoAlteracaoRepository;
         private readonly ApplicationConfig _applicationConfig;
-        public EntityTrackService(IRepositoryNoLazyLoad<EntityTrack> repository
+        public EntityTrackService(ILogRepositoryNoLazyLoad<EntityTrack> repository
             , EntityTrackRepository historicoAlteracaoRepository
             , ApplicationConfig applicationConfig) 
             : base(repository)

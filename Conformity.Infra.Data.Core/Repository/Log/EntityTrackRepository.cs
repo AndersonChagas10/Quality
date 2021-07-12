@@ -11,9 +11,9 @@ namespace Conformity.Infra.Data.Core.Repository.Log
 {
     public class EntityTrackRepository
     {     
-        private readonly EntityContext _dbContext;
+        private readonly LogEntityContext _dbContext;
 
-        public EntityTrackRepository(EntityContext dbContext)
+        public EntityTrackRepository(LogEntityContext dbContext)
         {
             _dbContext = dbContext;
         }

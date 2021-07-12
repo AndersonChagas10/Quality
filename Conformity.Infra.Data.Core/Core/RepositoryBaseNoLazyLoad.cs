@@ -23,7 +23,7 @@ namespace Conformity.Infra.Data.Core
         /// <summary>
         /// Objeto T em memória volátil pela chamada de sua Interface.
         /// </summary>
-        private DbSet<T> Entity { get { return _dbContext.Set<T>(); } }
+        protected DbSet<T> Entity { get { return _dbContext.Set<T>(); } }
 
         /// <summary>
         /// Construtor.

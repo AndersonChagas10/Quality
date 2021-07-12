@@ -1,6 +1,7 @@
 ﻿using Conformity.Application.Core;
 using Conformity.Application.Core.Log;
 using Conformity.Application.Core.Parametrizacao;
+using Conformity.Application.Core.PlanoDeAcao;
 using Conformity.Domain.Core.Entities;
 using Conformity.Domain.Core.Interfaces;
 using Conformity.Infra.Data.Core;
@@ -20,6 +21,7 @@ namespace Conformity.Infra.IoC
         {
             LogService();
             ParametrizacaoService();
+            PlanoDeAcaoService();
         }
 
         public void LogService()
@@ -30,6 +32,14 @@ namespace Conformity.Infra.IoC
         public void ParametrizacaoService()
         {
             Bind(typeof(ParCompanyService)).To(typeof(ParCompanyService));
+        }
+
+        public void PlanoDeAcaoService()
+        {
+            Bind(typeof(AcaoService)).To(typeof(AcaoService));
+            Bind(typeof(AcompanhamentoAcaoService)).To(typeof(AcompanhamentoAcaoService));
+            Bind(typeof(EvidenciaConcluidaService)).To(typeof(EvidenciaConcluidaService));
+            Bind(typeof(EvidenciaNaoConformeService)).To(typeof(EvidenciaNaoConformeService));
         }
     }
 }

@@ -1,10 +1,10 @@
-﻿namespace Conformity.Domain.Core.Entities.Log
-{
-    using Conformity.Domain.Core.Enums.Log;
-    using Conformity.Domain.Core.Interfaces;
-    using System;
-    using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using Conformity.Domain.Core.Enums.Log;
+using Conformity.Domain.Core.Interfaces;
+using System.ComponentModel.DataAnnotations.Schema;
 
+namespace Conformity.Domain.Core.Entities.Log
+{
     [Table("EntityTrack", Schema = "LOG")]
     public partial class EntityTrack : BaseModel, IEntity
     {

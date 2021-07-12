@@ -13,7 +13,7 @@ using System.Collections;
 using AutoMapper;
 using DTO.DTO.Params;
 using System.Collections.Generic;
-using Conformity.Application.Util;
+using Conformity.Infra.CrossCutting;
 
 namespace SgqSystem.Controllers
 {

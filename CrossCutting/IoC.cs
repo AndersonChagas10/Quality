@@ -25,8 +25,7 @@ namespace CrossCutting.IOC
                 new Conformity.Infra.IoC.DataNinjectModule(),
                 new Conformity.Infra.IoC.RepositoryNinjectModule(),
                 new Conformity.Infra.IoC.ServiceNinjectModule(),
-                new Conformity.Infra.IoC.HelperNinjectModule(),
-                new AcaoRHNinjectModule()
+                new Conformity.Infra.IoC.HelperNinjectModule()
                 ); ;
         }
     }

@@ -1,4 +1,4 @@
-﻿using Conformity.Application.Util;
+﻿using Conformity.Infra.CrossCutting;
 using Conformity.Infra.Data.Core;
 using Ninject.Modules;
 using Ninject.Web.Common;
