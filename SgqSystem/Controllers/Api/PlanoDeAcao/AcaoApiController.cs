@@ -7,7 +7,9 @@ using DTO;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using Conformity.Domain.Core.Entities.PlanoDeAcao;
 using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
+using ParCompany = Conformity.Domain.Core.Entities.PlanoDeAcao.ParCompany;
 
 namespace SgqSystem.Controllers.Api.PlanoDeAcao
 {
@@ -32,6 +34,13 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         public IEnumerable<AcaoViewModel> GetAcaoByFilter([FromBody] FiltroListagemDeAcaoDoWorkflow form)
         {
             return _acaoService.ObterAcaoPorFiltro(form);
+        }
+
+        [Route("GetUnityByCurrentUser")]
+        [HttpPost]
+        public IEnumerable<ParCompany> GetUnityByCurrentUser(string search)
+        {
+            return _acaoService.GetUnityByCurrentUser(search);
         }
 
         [Route("GetByIdStatus/{status}")]
@@ -75,7 +84,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
 
         [Route("SalvarAcao")]
         [HttpPost]
-        public int SalvarAcao([FromBody] Acao objAcao)
+        public int SalvarAcao([FromBody] Conformity.Domain.Core.Entities.PlanoDeAcao.Acao objAcao)
         {
             int Id = 0;
             try
@@ -84,7 +93,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                 //appColetaBusiness.SalvarAcao(objAcao);
 
                 // salva os campos comuns da ação
-                Id =  _acaoRepository.SalvarAcao(objAcao);
+                Id = _acaoService.SalvarAcao(objAcao);
                  
                 //salva/deleta a listagem de usuario no campo notificar
                 //AtualizarUsuariosASeremNotificadosDaAcao(objAcao);
@@ -105,7 +114,7 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                 //
             }
 
-            return  Id ;
+            return Id;
         }
  
         [Route("GetById/{id}")]

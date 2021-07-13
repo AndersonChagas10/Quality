@@ -388,7 +388,7 @@
                                                     <button type="button"
                                                             data-filtroselect3-btn
                                                             data-filtroselect3-select="select[name=parCompany_Ids]"
-                                                            data-filtroselect3-url="@Url.Action("GetFilteredParCompany", "api/Formulario")"
+                                                            data-filtroselect3-url="@Url.Action("GetUnityByCurrentUser", "api/AcaoApi")"
                                                             data-filtroselect3-default-select="@ViewBag.ShowParCompanyDefault">
                                                         Abrir
                                                     </button>
@@ -1018,9 +1018,43 @@
             $("#modalEditar").modal();
         }
 
+        function preencheUnidadeCurrentUser() {
+            const url = '@Url.Action("GetUnityByCurrentUser", "api/AcaoApi")';
+
+            $.ajax({
+                type: 'POST',
+                url: `${url}?search=`,
+                contentType: "application/json",
+                success: function (data) {
+
+                    if (data.length == 1) {
+                        var titleParCompany = data[0].ParCompany_Id + " - " + data[0].Name;
+                        var idParCompany = data[0].ParCompany_Id;
+
+                        $('#selectUnidade').append($('<option>',
+                            {
+                                value: `${idParCompany}`,
+                                text: `${titleParCompany}`
+                            }
+                        ));
+
+                        $('#divCentroCusto').removeAttr('hidden');
+
+                    }
+                },
+                error: function (e) {
+                    console.error(e);
+                }
+            });
+        }
+
         function abrirNovaAcao() {
             limparCampoModalNovaAcao();
+
+            preencheUnidadeCurrentUser();
+
             campoCascata();
+
             $("#modalNovaAcao").modal('show');
         }
 
@@ -1182,7 +1216,7 @@
             $("select[name=parCargo_Ids]").empty();
             $("select[name=parLevel1_Ids]").empty();
             $("select[name=parLevel2_Ids]").empty();
-            $("select[name=parLevel3_Ids]").empty(); 
+            $("select[name=parLevel3_Ids]").empty();
             $("#txtNovaAcao_Naoconformidade").val("");
             $("#txtNovaAcaoText").val("");
         }
@@ -1195,7 +1229,7 @@
             if (dados.PermitirAlterarStatus) {
                 $('#txtAcompanhamento_Status').append(new Option('Cancelado', 5, false));
                 $('#txtAcompanhamento_Status').append(new Option('Concluído', 3, false));
-            } 
+            }
         }
 
         var permitirInserirAcompanhamento = (dados) => {
@@ -1382,7 +1416,7 @@
             else {
                 var form = $("#formNovaAcao").serializeObject();
 
-                salvar(form, status); 
+                salvar(form, status);
             }
         }
 
@@ -1399,7 +1433,7 @@
             objAcao["ParLevel3_Id"] = form["parLevel3_Ids"];
             objAcao["Acao_Naoconformidade"] = form["NovaAcao_Naoconformidade"];
             objAcao["AcaoText"] = form["NovaAcaoText"];
-            objAcao["Status"] = status; 
+            objAcao["Status"] = status;
 
              const url = '@Url.Action("SalvarAcao", "api/AcaoApi")';
 
@@ -1412,7 +1446,7 @@
                     openMessageModal("Concluido", "Ação salva com sucesso");
                     $("#btnCloseNovaAcao").trigger('click');
                     limparCampoModalNovaAcao();
-                    abrirAcao("editar", Id); 
+                    abrirAcao("editar", Id);
                 },
                 error: function () {
                     console.log('erro ao salvar ação');

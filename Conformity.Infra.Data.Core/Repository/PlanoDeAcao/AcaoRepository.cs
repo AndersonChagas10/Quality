@@ -648,5 +648,19 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                 return 0;
             }
         }
+
+        public List<ParCompany> GetUnityByCurrentUser(string search)
+        {
+            string query = $@"SELECT * FROM dbo.ParCompanyXUserSgq PcXUs
+                            INNER JOIN dbo.ParCompany PC
+                            ON PcXUs.ParCompany_Id = PC.Id
+                            WHERE UserSgq_Id = {_applicationConfig.Authenticated_Id}
+                            AND PC.Name LIKE '%{search}%'";
+
+            List<ParCompany> unidades = _aDOContext.SearchQuery<ParCompany>(query).ToList();
+
+            return unidades;
+        }
+
     }
 }

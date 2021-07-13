@@ -77,6 +77,16 @@ namespace Conformity.Application.Core.PlanoDeAcao
             }
         }
 
+        public int SalvarAcao(Acao objAcao)
+        {
+            return _acaoRepository.SalvarAcao(objAcao);
+        }
+
+        public List<ParCompany> GetUnityByCurrentUser(string search)
+        {
+            return _acaoRepository.GetUnityByCurrentUser(search);
+        }
+
         public void AtualizarUsuarios(AcaoInputModel objAcao)
         {
             var listaUsuarioNotificados = _acaoRepository.RetornarUsuariosASeremNotificadosDaAcao(objAcao);
