@@ -375,11 +375,13 @@
                 <h4 class="text-center"><strong>Workflow de Ações</strong></h4>
             </div>
 
-            <div class="col-md-12 col-xs-12 col-sm-6" style="text-align: center;">
-                <button id="btnPendente" onclick="getAcoesByStatus('1')" class="btn btn-danger">Pendente <text></text></button>
-                <button id="btnAndamento" onclick="getAcoesByStatus('2')" class="btn btn-info">Em Andamento <text></text></button>
-                <button id="btnConcluida" onclick="getAcoesByStatus('3')" class="btn btn-success">Concluida <text></text></button>
-                <button id="btnTodas" onclick="enviarFiltro(null)" class="btn btn-warning">Todas as ações <text></text></button>
+            <div class="col-md-12 col-xs-12 col-sm-6 filtros" style="text-align: center;">
+                <button id="btnPendente" onclick="filtrarPorStatus('1')" class="btn btn-danger">Pendente <text></text></button>
+                <button id="btnAndamento" onclick="filtrarPorStatus('2')" class="btn btn-info">Em Andamento <text></text></button>
+                <button id="btnConcluida" onclick="filtrarPorStatus('3')" class="btn btn-success">Concluida <text></text></button>
+                <button id="btnAtrasada" onclick="filtrarPorStatus('4')" class="btn btn-warning">Atrasada <text></text></button>
+                <button id="btnCancelada" onclick="filtrarPorStatus('5')" class="btn btn-dark">Cancelada <text></text></button>
+                <button id="btnTodas" onclick="enviarFiltro(null)" class="btn btn-primary">Todas as ações <text></text></button>
             </div>
 
             <table id="tabelaDeResultados" class="table table-striped"></table>
@@ -391,7 +393,8 @@
     <script src="~/Scripts/Print/printGRT.js"></script>
     <script type="text/javascript">
 
-        const enumStatus = [1, 2, 3];
+        const enumStatus = [1, 2, 3, 4, 5];
+        let listaDeAcoes = []
         var isVisualizar = false;
         var showVerAgir = false;
 
@@ -412,7 +415,8 @@
                 contentType: "application/json",
                 success: function (dados) {
                     if (dados && dados.length > 0) {
-                        carregarTabela(dados);
+                        carregarTabela(dados)
+                        listaDeAcoes = dados
                     } else {
                         openMessageModal('Alerta', 'Não há dados')
                     }
@@ -427,29 +431,8 @@
 
         function carregarTabela(dados) {
             var colunas = montarColunasDaTabela();
-            //var colunas = montarColunasDaTabelaDinamico(dados);
-            //Outras configurações
 
-            for (var i = 0; i < enumStatus.length; i++) {
-                var total = getTotalstatus(dados, enumStatus[i]);
-
-                if (enumStatus[i] == 1) {
-                    $('#btnPendente text').text('');
-                    $('#btnPendente text').text(" (" + total + ")");
-                }
-
-                if (enumStatus[i] == 2) {
-                    $('#btnAndamento text').text('');
-                    $('#btnAndamento text').text(" (" + total + ")");
-                }
-
-                if (enumStatus[i] == 3) {
-                    $('#btnConcluida text').text('');
-                    $('#btnConcluida text').text(" (" + total + ")");
-                }
-            }
-            $('#btnTodas text').text(" (" + dados.length + ")");
-
+            montarFiltros(dados)
 
             montarTabela(dados, colunas);
         }
@@ -558,30 +541,63 @@
             return `<label style="word-break: break-word;max-width: 200px;min-width: 200px;white-space: break-spaces;">${data}</label>`;
         }
 
-        function getAcoesByStatus(status) {
+        function montarFiltros(dados) {       
 
-            openLoader("...");
+            for (var i = 0; i < enumStatus.length; i++) {
+                let acoesFiltradasPorStatus = dados.filter(acao => acao.Status == enumStatus[i])
 
-            const url = '@Url.Action("GetByIdStatus", "api/AcaoApi")';
-            $.ajax({
-                type: 'GET',
-                url: `${url}/${status}`,
-                contentType: "application/json",
-                success: function (dados) {
-
-                    if (dados && dados.length > 0) {
-                        carregarTabela(dados);
-                    } else {
-                        //Não há valores
-                    }
-                    closeLoader();
-                },
-                error: function (e) {
-                    console.error(e);
-                    closeLoader();
+                if (enumStatus[i] == 1) {
+                    $('#btnPendente text').text(" (" + acoesFiltradasPorStatus.length + ")");
                 }
-            });
 
+                if (enumStatus[i] == 2) {
+                    $('#btnAndamento text').text(" (" + acoesFiltradasPorStatus.length + ")");
+                }
+
+                if (enumStatus[i] == 3) {
+                    $('#btnConcluida text').text(" (" + acoesFiltradasPorStatus.length + ")");
+                }
+
+                if (enumStatus[i] == 4) {
+                    $('#btnAtrasada text').text(" (" + acoesFiltradasPorStatus.length + ")");
+                }
+
+                if (enumStatus[i] == 5) {
+                    $('#btnCancelada text').text(" (" + acoesFiltradasPorStatus.length + ")");
+                }
+            }
+            $('#btnTodas text').text(" (" + dados.length + ")");
+        }
+
+        function filtrarPorStatus(status) {
+
+            let acoesFiltradasPorStatus = listaDeAcoes.filter(acao => acao.Status == status)
+
+            if (status == 1) {
+                $('#btnPendente text').text(" (" + acoesFiltradasPorStatus.length + ")");
+            }
+
+            if (status == 2) {
+                $('#btnAndamento text').text(" (" + acoesFiltradasPorStatus.length + ")");
+            }
+
+            if (status == 3) {
+                $('#btnConcluida text').text(" (" + acoesFiltradasPorStatus.length + ")");
+            }
+
+            if (status == 4) {
+                $('#btnAtrasada text').text(" (" + acoesFiltradasPorStatus.length + ")");
+            }
+
+            if (status == 5) {
+                $('#btnCancelada text').text(" (" + acoesFiltradasPorStatus.length + ")");
+            }
+
+            $('#btnTodas text').text(" (" + listaDeAcoes.length + ")");
+
+            var colunas = montarColunasDaTabela();
+
+            montarTabela(acoesFiltradasPorStatus, colunas);
         }
 
         let acao = {
@@ -950,7 +966,7 @@
             if (dados.PermitirAlterarStatus) {
                 $('#txtAcompanhamento_Status').append(new Option('Cancelado', 5, false));
                 $('#txtAcompanhamento_Status').append(new Option('Concluído', 3, false));
-            } 
+            }
         }
 
         var permitirInserirAcompanhamento = (dados) => {
