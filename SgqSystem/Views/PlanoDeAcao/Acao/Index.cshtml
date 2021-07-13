@@ -380,11 +380,11 @@
             </div>
 
             <div class="col-md-12 col-xs-12 col-sm-6 filtros" style="text-align: center;">
-                <button type="button" id="btnPendente" onclick="filtrarAcoesPorStatus('1')" class="btn btn-danger">Pendente <text></text></button>
-                <button type="button" id="btnAndamento" onclick="filtrarAcoesPorStatus('2')" class="btn btn-info">Em Andamento <text></text></button>
-                <button type="button" id="btnConcluida" onclick="filtrarAcoesPorStatus('3')" class="btn btn-success">Concluida <text></text></button>
-                <button type="button" id="btnAtrasada" onclick="filtrarAcoesPorStatus('4')" class="btn btn-warning">Atrasada <text></text></button>
-                <button type="button" id="btnCancelada" onclick="filtrarAcoesPorStatus('5')" class="btn btn-default">Cancelada <text></text></button>
+                <button type="button" id="btnPendente" onclick="status.obterAcoesPorStatus('1')" class="btn btn-danger">Pendente <text></text></button>
+                <button type="button" id="btnAndamento" onclick="status.obterAcoesPorStatus('2')" class="btn btn-info">Em Andamento <text></text></button>
+                <button type="button" id="btnConcluida" onclick="status.obterAcoesPorStatus('3')" class="btn btn-success">Concluida <text></text></button>
+                <button type="button" id="btnAtrasada" onclick="status.obterAcoesPorStatus('4')" class="btn btn-warning">Atrasada <text></text></button>
+                <button type="button" id="btnCancelada" onclick="status.obterAcoesPorStatus('5')" class="btn btn-default">Cancelada <text></text></button>
                 <button type="button" id="btnTodas" onclick="enviarFiltro(null)" class="btn btn-primary">Todas as ações <text></text></button>
             </div>
 
@@ -541,49 +541,61 @@
                 let acoesFiltradasPorStatus = dados.filter(acao => acao.Status == enumStatus[i])
                 let porcentagem = (acoesFiltradasPorStatus.length / dados.length) * 100
 
-                percorrerCondicoesDoStatus(enumStatus[i], acoesFiltradasPorStatus, porcentagem)
+                status.alterarTextoDosStatus(enumStatus[i], acoesFiltradasPorStatus, porcentagem)
             }
             $('#btnTodas').addClass('selected')
             $('#btnTodas text').text(` - ${dados.length}`);
         }
 
-        $(".filtros button").click(function () {
-            $(".filtros button").removeClass("selected");
-            $(this).addClass("selected");
-        });
+        const status = {
+            filtrar: (statusDaAcao) => {
+                return listaDeAcoes.filter(acao => acao.Status == statusDaAcao)
+            },
 
-        function percorrerCondicoesDoStatus(status, acoesFiltradasPorStatus, porcentagem){
-            switch (status) {
-                case 1:
-                    $('#btnPendente text').text(` - ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
-                    break;
-                case 2:
-                    $('#btnAndamento text').text(` - ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
-                    break;
-                case 3:
-                    $('#btnConcluida text').text(` - ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
-                    break;
-                case 4:
-                    $('#btnAtrasada text').text(`- ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
-                    break;
-                case 5:
-                    $('#btnCancelada text').text(` - ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
-                    break;
+            obterPorcentagemDasAcoes: (acoesFiltradasPorStatus) => {
+                return (acoesFiltradasPorStatus.length / listaDeAcoes.length) * 100
+            },
+
+            obterAcoesPorStatus: (statusDaAcao) => {
+                let acoesFiltradasPorStatus = status.filtrar(statusDaAcao)
+                let porcentagem = status.obterPorcentagemDasAcoes(acoesFiltradasPorStatus)
+
+                status.alterarTextoDosStatus(statusDaAcao, acoesFiltradasPorStatus, porcentagem)
+
+                $('#btnTodas text').text(` - ${listaDeAcoes.length}`);
+                status.destacarBotaoClicado()
+
+                var colunas = montarColunasDaTabela();
+
+                montarTabela(acoesFiltradasPorStatus, colunas);
+            },
+
+            alterarTextoDosStatus: (status, acoesFiltradasPorStatus, porcentagem) => {
+                switch (status) {
+                    case 1:
+                        $('#btnPendente text').text(` - ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
+                        break;
+                    case 2:
+                        $('#btnAndamento text').text(` - ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
+                        break;
+                    case 3:
+                        $('#btnConcluida text').text(` - ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
+                        break;
+                    case 4:
+                        $('#btnAtrasada text').text(`- ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
+                        break;
+                    case 5:
+                        $('#btnCancelada text').text(` - ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
+                        break;
+                }
+            },
+
+            destacarBotaoClicado:() => {
+                $(".filtros button").click(function () {
+                    $(".filtros button").removeClass("selected");
+                    $(this).addClass("selected");
+                });
             }
-        }
-
-        function filtrarAcoesPorStatus(status) {
-
-            let acoesFiltradasPorStatus = listaDeAcoes.filter(acao => acao.Status == status)
-            let porcentagem = (acoesFiltradasPorStatus.length / listaDeAcoes.length) * 100
-
-            percorrerCondicoesDoStatus(status, acoesFiltradasPorStatus, porcentagem)
-
-            $('#btnTodas text').text(` - ${listaDeAcoes.length}`);
-
-            var colunas = montarColunasDaTabela();
-
-            montarTabela(acoesFiltradasPorStatus, colunas);
         }
 
         let acao = {
