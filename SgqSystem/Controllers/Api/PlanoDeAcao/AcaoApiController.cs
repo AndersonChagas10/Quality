@@ -43,14 +43,6 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             return _acaoService.GetUnityByCurrentUser(search);
         }
 
-        [Route("GetByIdStatus/{status}")]
-        [HttpGet]
-        public IEnumerable<AcaoViewModel> GetByIdStatus(string status)
-        {
-            return null;
-            // return _acaoService.(status);
-        }
-
         [Route("Post")]
         [HttpPost]
         public AcaoViewModel Post([FromBody] AcaoInputModel objAcao)

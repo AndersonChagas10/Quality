@@ -26,6 +26,10 @@
         table#tabelaDeResultados tr:hover {
             background: #ff6a0099 !important;
         }
+
+        .selected {
+            border: #2f353b 2px solid !important;
+        }
     </style>
 
     <div class="modal fade" id="modalPrint" role="dialog">
@@ -529,19 +533,21 @@
 <div class="page-content-wrapper">
     <div class="page-content">
 
-        <div class="caption">
-            <i class="icon-share font-dark"></i>
-            <h4 class="text-center"><strong>Workflow de Ações</strong></h4>
-        </div>
-        <div class="col-md-12 col-xs-12 col-sm-6" style="text-align: left;">
-            <button id="btnNovaAcao" onclick="abrirNovaAcao()" class="btn btn-primary">Nova Ação <text></text></button> 
-        </div>
-        <div class="col-md-12 col-xs-12 col-sm-6" style="text-align: center;">
-            <button id="btnPendente" onclick="getAcoesByStatus('1')" class="btn btn-danger">Pendente <text></text></button>
-            <button id="btnAndamento" onclick="getAcoesByStatus('2')" class="btn btn-info">Em Andamento <text></text></button>
-            <button id="btnConcluida" onclick="getAcoesByStatus('3')" class="btn btn-success">Concluida <text></text></button>
-            <button id="btnTodas" onclick="enviarFiltro(null)" class="btn btn-warning">Todas as ações <text></text></button>
-        </div>
+            <div class="caption">
+                <i class="icon-share font-dark"></i>
+                <h4 class="text-center"><strong>Workflow de Ações</strong></h4>
+            </div>
+            <div class="col-md-12 col-xs-12 col-sm-6" style="text-align: left;">
+                <button id="btnNovaAcao" onclick="abrirNovaAcao()" class="btn btn-primary">Nova Ação <text></text></button> 
+            </div>
+            <div class="col-md-12 col-xs-12 col-sm-6 filtros" style="text-align: center;">
+                <button type="button" id="btnPendente" onclick="status.obterAcoesPorStatus('1')" class="btn btn-danger">Pendente <text></text></button>
+                <button type="button" id="btnAndamento" onclick="status.obterAcoesPorStatus('2')" class="btn btn-info">Em Andamento <text></text></button>
+                <button type="button" id="btnConcluida" onclick="status.obterAcoesPorStatus('3')" class="btn btn-success">Concluida <text></text></button>
+                <button type="button" id="btnAtrasada" onclick="status.obterAcoesPorStatus('4')" class="btn btn-warning">Atrasada <text></text></button>
+                <button type="button" id="btnCancelada" onclick="status.obterAcoesPorStatus('5')" class="btn btn-default">Cancelada <text></text></button>
+                <button type="button" id="btnTodas" onclick="enviarFiltro(null)" class="btn btn-primary">Todas as ações <text></text></button>
+            </div>
 
             <table id="tabelaDeResultados" class="table table-striped"></table>
         </div>
@@ -552,7 +558,8 @@
     <script src="~/Scripts/Print/printGRT.js"></script>
     <script type="text/javascript">
 
-        const enumStatus = [1, 2, 3];
+        const enumStatus = [1, 2, 3, 4, 5];
+        let listaDeAcoes = []
         var isVisualizar = false;
         var showVerAgir = false;
 
@@ -639,7 +646,8 @@
                 contentType: "application/json",
                 success: function (dados) {
                     if (dados && dados.length > 0) {
-                        carregarTabela(dados);
+                        carregarTabela(dados)
+                        listaDeAcoes = dados
                     } else {
                         openMessageModal('Alerta', 'Não há dados')
                     }
@@ -654,37 +662,10 @@
 
         function carregarTabela(dados) {
             var colunas = montarColunasDaTabela();
-            //var colunas = montarColunasDaTabelaDinamico(dados);
-            //Outras configurações
 
-            for (var i = 0; i < enumStatus.length; i++) {
-                var total = getTotalstatus(dados, enumStatus[i]);
-
-                if (enumStatus[i] == 1) {
-                    $('#btnPendente text').text('');
-                    $('#btnPendente text').text(" (" + total + ")");
-                }
-
-                if (enumStatus[i] == 2) {
-                    $('#btnAndamento text').text('');
-                    $('#btnAndamento text').text(" (" + total + ")");
-                }
-
-                if (enumStatus[i] == 3) {
-                    $('#btnConcluida text').text('');
-                    $('#btnConcluida text').text(" (" + total + ")");
-                }
-            }
-            $('#btnTodas text').text(" (" + dados.length + ")");
-
+            montarBotoesDosStatus(dados)
 
             montarTabela(dados, colunas);
-        }
-
-        function getTotalstatus(dados, status) {
-            return dados.filter(function (value) {
-                return parseInt(value.Status) === status;
-            }).length;
         }
 
         function montarColunasDaTabela() {
@@ -785,30 +766,67 @@
             return `<label style="word-break: break-word;max-width: 200px;min-width: 200px;white-space: break-spaces;">${data}</label>`;
         }
 
-        function getAcoesByStatus(status) {
+        function montarBotoesDosStatus(dados) {       
 
-            openLoader("...");
+            for (var i = 0; i < enumStatus.length; i++) {
+                let acoesFiltradasPorStatus = dados.filter(acao => acao.Status == enumStatus[i])
+                let porcentagem = (acoesFiltradasPorStatus.length / dados.length) * 100
 
-            const url = '@Url.Action("GetByIdStatus", "api/AcaoApi")';
-            $.ajax({
-                type: 'GET',
-                url: `${url}/${status}`,
-                contentType: "application/json",
-                success: function (dados) {
+                status.alterarTextoDosStatus(enumStatus[i], acoesFiltradasPorStatus, porcentagem)
+            }
+            $('#btnTodas').addClass('selected')
+            $('#btnTodas text').text(` - ${dados.length}`);
+        }
 
-                    if (dados && dados.length > 0) {
-                        carregarTabela(dados);
-                    } else {
-                        //Não há valores
-                    }
-                    closeLoader();
-                },
-                error: function (e) {
-                    console.error(e);
-                    closeLoader();
+        const status = {
+            filtrar: (statusDaAcao) => {
+                return listaDeAcoes.filter(acao => acao.Status == statusDaAcao)
+            },
+
+            obterPorcentagemDasAcoes: (acoesFiltradasPorStatus) => {
+                return (acoesFiltradasPorStatus.length / listaDeAcoes.length) * 100
+            },
+
+            obterAcoesPorStatus: (statusDaAcao) => {
+                let acoesFiltradasPorStatus = status.filtrar(statusDaAcao)
+                let porcentagem = status.obterPorcentagemDasAcoes(acoesFiltradasPorStatus)
+
+                status.alterarTextoDosStatus(statusDaAcao, acoesFiltradasPorStatus, porcentagem)
+
+                $('#btnTodas text').text(` - ${listaDeAcoes.length}`);
+                status.destacarBotaoClicado()
+
+                var colunas = montarColunasDaTabela();
+
+                montarTabela(acoesFiltradasPorStatus, colunas);
+            },
+
+            alterarTextoDosStatus: (status, acoesFiltradasPorStatus, porcentagem) => {
+                switch (status) {
+                    case 1:
+                        $('#btnPendente text').text(` - ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
+                        break;
+                    case 2:
+                        $('#btnAndamento text').text(` - ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
+                        break;
+                    case 3:
+                        $('#btnConcluida text').text(` - ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
+                        break;
+                    case 4:
+                        $('#btnAtrasada text').text(`- ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
+                        break;
+                    case 5:
+                        $('#btnCancelada text').text(` - ${acoesFiltradasPorStatus.length} (${porcentagem.toFixed(2)}%)`);
+                        break;
                 }
-            });
+            },
 
+            destacarBotaoClicado:() => {
+                $(".filtros button").click(function () {
+                    $(".filtros button").removeClass("selected");
+                    $(this).addClass("selected");
+                });
+            }
         }
 
         let acao = {
