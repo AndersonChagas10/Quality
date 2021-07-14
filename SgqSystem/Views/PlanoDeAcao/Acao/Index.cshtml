@@ -304,8 +304,8 @@
 
                                     @*<button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>*@
 
-                                <button class="btn btn-success" onclick="enviarFormularioEditarAcao('1')">Salvar e iniciar ação</button>
-                                <button class="btn btn-success preencherDepois" onclick="enviarFormularioEditarAcao('2')">Salvar e preencher a ação depois</button>
+                                <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e iniciar ação</button>
+                                <button class="btn btn-success preencherDepois" onclick="enviarFormularioEditarAcao('1')">Salvar e preencher a ação depois</button>
                             </div>
                         </form>
                     </div>
@@ -1386,8 +1386,8 @@
             var form = $("#formAcao").serializeObject();
 
             form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
-            form["ListaEvidencia"] = acao.evidenciaConcluida["ListaEvidencia"];
-            form["ListaEvidenciaConcluida"] = acao.evidenciasNaoConforme["ListaEvidencia"];
+            form["ListaEvidenciaConcluida"] = acao.evidenciaConcluida["ListaEvidencia"];
+            form["ListaEvidencia"] = acao.evidenciasNaoConforme["ListaEvidencia"];
 
             form.status = status;
 
