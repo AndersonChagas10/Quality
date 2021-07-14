@@ -7,7 +7,9 @@ using DTO;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using Conformity.Domain.Core.Entities.PlanoDeAcao;
 using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
+using ParCompany = Conformity.Domain.Core.Entities.PlanoDeAcao.ParCompany;
 
 namespace SgqSystem.Controllers.Api.PlanoDeAcao
 {
@@ -32,6 +34,13 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
         public IEnumerable<AcaoViewModel> GetAcaoByFilter([FromBody] FiltroListagemDeAcaoDoWorkflow form)
         {
             return _acaoService.ObterAcaoPorFiltro(form);
+        }
+
+        [Route("GetUnityByCurrentUser")]
+        [HttpPost]
+        public IEnumerable<ParCompany> GetUnityByCurrentUser(string search)
+        {
+            return _acaoService.GetUnityByCurrentUser(search);
         }
 
         [Route("GetByIdStatus/{status}")]
@@ -73,7 +82,14 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             return new AcaoViewModel() { Id = objAcao.Id };
         }
 
-
+        [Route("SalvarAcao")]
+        [HttpPost]
+        public int SalvarAcao([FromBody] Conformity.Domain.Core.Entities.PlanoDeAcao.Acao objAcao)
+        {
+            int Id = _acaoService.SalvarAcao(objAcao);
+            return Id;
+        }
+ 
         [Route("GetById/{id}")]
         [HttpGet]
         public AcaoFormViewModel GetById(int id)
