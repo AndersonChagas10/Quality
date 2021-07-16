@@ -40,7 +40,8 @@ namespace Conformity.Application.Core.PlanoDeAcao
                     Observacao = objAcompanhamentoAcao.Observacao,
                     Status = (int)objAcompanhamentoAcao.Status,
                     Acao_Id = id,
-                    UserSgq_Id = _applicationConfig.Authenticated_Id
+                    UserSgq_Id = _applicationConfig.Authenticated_Id,
+                    ListaEvidencias = objAcompanhamentoAcao.ListaEvidencias
                 };
                 base.Add(acompanhamento);
             }

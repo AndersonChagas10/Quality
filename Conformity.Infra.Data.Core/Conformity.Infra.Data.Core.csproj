@@ -68,6 +68,7 @@
     <Compile Include="Repository\Parametrizacao\ParametrizacaoRepositoryBase.cs" />
     <Compile Include="Repository\Parametrizacao\ParametrizacaoRepositoryBaseNoLazyLoad.cs" />
     <Compile Include="Repository\PlanoDeAcao\AcaoRepository.cs" />
+    <Compile Include="Repository\PlanoDeAcao\AcompanhamentoAcaoXAttributesRepository.cs" />
     <Compile Include="Repository\PlanoDeAcao\EvidenciaConcluidaRepository.cs" />
     <Compile Include="Repository\PlanoDeAcao\EvidenciaNaoConformeRepository.cs" />
     <Compile Include="Repository\PlanoDeAcao\PlanoDeAcaoRepositoryBase.cs" />

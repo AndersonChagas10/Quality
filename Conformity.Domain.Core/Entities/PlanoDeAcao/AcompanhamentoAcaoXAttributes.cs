@@ -3,16 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 {
-    [Table("PA.AcompanhamentoAcaoXNotificar")]
-    public partial class AcompanhamentoAcaoXNotificar : BaseModel, IEntity
+    [Table("AcompanhamentoAcaoXAttributes", Schema = "PA")]
+    public partial class AcompanhamentoAcaoXAttributes : BaseModel, IEntity
     {
-        public int UserSgq_Id { get; set; }
         public int AcompanhamentoAcao_Id { get; set; }
-        public bool IsActive { get; set; } = true;
+        public string FieldName { get; set; }
+        public string Value { get; set; }
 
-        [ForeignKey("UserSgq_Id")]
-        public virtual UserSgq UserSgq { get; set; }
-        
         [ForeignKey("AcompanhamentoAcao_Id")]
         public virtual AcompanhamentoAcao AcompanhamentoAcao { get; set; }
     }

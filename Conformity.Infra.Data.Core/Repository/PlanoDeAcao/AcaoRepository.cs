@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using Conformity.Domain.Core.Entities.Global;
+using Conformity.Domain.Core.Enums.PlanoDeAcao;
 
 namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 {
@@ -253,24 +255,89 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
         }
         private List<AcompanhamentoAcaoViewModel> BuscarAcompanhamento(int acao_id)
         {
-            List<AcompanhamentoAcaoViewModel> listaAcompanhamentoAcaoViewModel;
-            listaAcompanhamentoAcaoViewModel = _dbContext.AcompanhamentoAcao
-                .Where(x => x.Acao_Id == acao_id)
-                .OrderByDescending(x => x.DataRegistro)
-                .Select(x => new AcompanhamentoAcaoViewModel()
-                {
-                    DataRegistro = x.DataRegistro,
-                    Observacao = x.Observacao,
-                    Status = x.Status,
-                    ListaNotificar = x.ListaNotificar
-                        .Select(n => new NotificarViewModel() { Id = n.UserSgq.Id, Nome = n.UserSgq.FullName })
-                        .ToList(),
-                    Responsavel = x.UserSgq.FullName
-                })
-                .ToList();
+            string obterAcompanhamento = $@"SELECT AA.*, US.FullName AS Responsavel from pa.AcompanhamentoAcao as AA
+                                            LEFT JOIN UserSgq AS US ON US.Id = AA.UserSgq_Id
+                                            WHERE Acao_Id = {acao_id} and AA.IsActive = 1";
 
-            return listaAcompanhamentoAcaoViewModel;
+            List<AcompanhamentoAcaoViewModel> acompanhamentos = _aDOContext.SearchQuery<AcompanhamentoAcaoViewModel>(obterAcompanhamento);
+
+            var notificaveis = BuscarNotificaveisDoAcompanhamento(acao_id);
+
+            var evidencias = BuscarEvidenciasDoAcompanhamento(acao_id);
+
+            foreach (var acompanhamento in acompanhamentos)
+            {
+                if(notificaveis.Count > 0)
+                {
+                    acompanhamento.ListaNotificar = notificaveis.Where(x => x.AcompanhamentoAcao_Id == acompanhamento.Id).ToList();
+                } 
+
+                var evidencia1 = evidencias
+                    .Where(x => x.AcompanhamentoAcao_Id == acompanhamento.Id && x.FieldName == EAcompanhamentoAcaoXAttributes.Evidencia1)
+                    .Select(x => x.Value)
+                    .FirstOrDefault();
+
+                var evidencia2 = evidencias
+                    .Where(x => x.AcompanhamentoAcao_Id == acompanhamento.Id && x.FieldName == EAcompanhamentoAcaoXAttributes.Evidencia2)
+                    .Select(x => x.Value)
+                    .FirstOrDefault();
+
+                if(!string.IsNullOrEmpty(evidencia1)) acompanhamento.Evidencia1 = ConverterEmBytes(evidencia1);
+
+                if(!string.IsNullOrEmpty(evidencia2)) acompanhamento.Evidencia2 = ConverterEmBytes(evidencia2);             
+            }
+            return acompanhamentos;
         }
+
+        private List<NotificarViewModel> BuscarNotificaveisDoAcompanhamento(int acao_id)
+        {
+            string obterNotificaveis = $@"SELECT AC.Id AS AcompanhamentoAcao_Id, 
+                                            US.FullName AS Nome,
+                                            US.Id AS Id 
+                                        FROM PA.AcompanhamentoAcao AC
+                                        INNER JOIN PA.AcompanhamentoAcaoXNotificar AXN
+                                            ON AXN.AcompanhamentoAcao_Id = AC.Id
+                                        INNER JOIN UserSgq US
+                                            ON US.Id = AXN.UserSgq_Id
+                                        WHERE Acao_Id = {acao_id}";
+
+            return _aDOContext.SearchQuery<NotificarViewModel>(obterNotificaveis);            
+        }
+
+        private List<AcompanhamentoAcaoXAttributes> BuscarEvidenciasDoAcompanhamento(int acao_id)
+        {
+            string obterEvidencias = $@"SELECT 
+                                            Acompanhamento.Id AS AcompanhamentoAcao_Id, 
+                                            Atributos.FieldName,
+                                            Atributos.Value
+                                        FROM PA.AcompanhamentoAcao Acompanhamento
+                                        INNER JOIN PA.AcompanhamentoAcaoXAttributes Atributos
+                                            ON Atributos.AcompanhamentoAcao_Id = Acompanhamento.Id
+                                        WHERE Acao_Id = {acao_id}";
+
+            return _aDOContext.SearchQuery<AcompanhamentoAcaoXAttributes>(obterEvidencias).ToList();
+        }
+
+        private EvidenciaXAttributeViewModel ConverterEmBytes(string path)
+        {
+            var foto = new EvidenciaXAttributeViewModel();
+
+            string url = path;
+
+            byte[] bytes;
+
+            bytes = FileHelper.DownloadPhoto(url
+            , DicionarioEstatico.DicionarioEstaticoHelpers.credentialUserServerPhoto
+            , DicionarioEstatico.DicionarioEstaticoHelpers.credentialPassServerPhoto
+            , out Exception exception);
+
+            if (exception != null)
+                throw new Exception("Error: " + exception.ToClient());
+
+            foto.Byte = bytes;
+            foto.Path = path;
+            return foto;
+        } 
         private List<NotificarViewModel> BuscarListaResponsavel(int ParCompany_Id)
         {
             var listaAuditor = RetornarUsuariosVinculadosAUnidade(ParCompany_Id);
