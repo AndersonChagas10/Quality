@@ -1592,11 +1592,11 @@
                     var htmlTabelaNotificar = acompanhamento.montarHtmlTabelaListaNotificar(objAcompanhamento['ListaNotificar']);
 
                     if (objAcompanhamento['Evidencia1'] != null) {
-                        evidencia1 = acompanhamento.montarHtmlDaImagem(objAcompanhamento['Evidencia1'])
+                        evidencia1 = acompanhamento.montarHtmlDaEvidencia(objAcompanhamento['Evidencia1'])
                     }
 
                     if (objAcompanhamento['Evidencia2'] != null) {
-                        evidencia2 = acompanhamento.montarHtmlDaImagem(objAcompanhamento['Evidencia2'])
+                        evidencia2 = acompanhamento.montarHtmlDaEvidencia(objAcompanhamento['Evidencia2'])
                     }
 
                     html += `
@@ -1639,8 +1639,9 @@
         var acompanhamento = {
 
             objeto: {},
+            listaDeEvidencias: [],
 
-            montarHtmlDaImagem: (evidencia) => {
+            montarHtmlDaEvidencia: (evidencia) => {
 
                 let html = '';
 
@@ -1658,26 +1659,15 @@
 
             adicionarEvidencia: (base64) => {
 
-                if (acompanhamento["ListaEvidencia"].length < 2) {
+                var evidencia = {
+                    base64: base64
+                };
 
-                    var evidencia = {
-                        base64: base64
-                    };
+                acompanhamento.listaDeEvidencias.push(evidencia);
 
-                    acompanhamento["ListaEvidencia"].push(evidencia);
+                if (acompanhamento.listaDeEvidencias.length <= 2) {
 
-                    let html;
-
-                    if (evidencia["base64"]) {
-                        html += `<div class="col-sm-4">
-                                    <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
-                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acompanhamento["ListaEvidencia"].length})">Excluir</button>
-                                    </div>`;
-                    }
-                    else {
-                        html = `<div class="col-sm-4"><img src="#${evidencia["Nome"]}" class="img-responsive"/></div>`;
-                    }
-                    $('.evidenciasAcompanhamento').append(html);
+                    acompanhamento.imprimirEvidenciaNoAcompanhamento(evidencia)
                 }
                 else {
                     openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
@@ -1685,25 +1675,29 @@
             },
             removerEvidencia: (index) => {
 
-                acompanhamento["ListaEvidencia"].splice((index - 1), 1);
+                acompanhamento.listaDeEvidencias.splice((index - 1), 1);
 
                 $('.evidenciasAcompanhamento').empty();
 
-                acompanhamento["ListaEvidencia"].forEach(function (elemento, indice) {
+                acompanhamento.listaDeEvidencias.forEach(function (elemento, indice) {
 
-                    let html;
-
-                    if (elemento["base64"]) {
-                        html += `<div class="col-sm-4">
-                                    <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
-                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acompanhamento["ListaEvidencia"].length})">Excluir</button>
-                                    </div>`;
-                    }
-                    else {
-                        html = `<div class="col-sm-4"><img src="#${elemento["Nome"]}" class="img-responsive"/></div>`;
-                    }
-                    $('.evidenciasAcompanhamento').append(html);
+                    acompanhamento.imprimirEvidenciaNoAcompanhamento(elemento)
                 })
+            },
+
+            imprimirEvidenciaNoAcompanhamento: (elemento) => {
+                let html;
+
+                if (elemento["base64"]) {
+                    html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acompanhamento.removerEvidencia(${acompanhamento.listaDeEvidencias.length})">Excluir</button>
+                                    </div>`;
+                }
+                else {
+                    html = `<div class="col-sm-4"><img src="#${elemento["Nome"]}" class="img-responsive"/></div>`;
+                }
+                $('.evidenciasAcompanhamento').append(html);
             },
 
             montarHtmlTabelaListaNotificar: (lista) => {
