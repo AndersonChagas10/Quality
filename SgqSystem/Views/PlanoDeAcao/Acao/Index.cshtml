@@ -1229,11 +1229,13 @@
 
         }
 
-        function limparAcao() {
+        function limparEvidenciasDaAcaoEAcompanhamento() {
             acao.evidenciaConcluida["ListaEvidencia"] = []
             acao.evidenciasNaoConforme["ListaEvidencia"] = []
+            acompanhamento.listaDeEvidencias = []
             $('#divEvidencias .fotos').empty();
             $('#actionsEvidencies .fotosConcluidas').empty();
+            $('.evidenciasAcompanhamento').empty()
         }
 
          function limparCampoModalNovaAcao() {
@@ -1293,7 +1295,7 @@
             permitirVisualizarAcompanhamento(dados);
 
             acaoEditar = dados;
-            limparAcao()
+            limparEvidenciasDaAcaoEAcompanhamento()
 
             if (dados.ListaResponsavel) {
                 var html = `<option value="">Selecione...</option>`;
@@ -1768,6 +1770,8 @@
                 var form = $("#formAcompanhamento").serializeObject();
 
                 form["ListaNotificar"] = acompanhamento.objeto["ListaNotificar"];
+                form['Evidencia1_Base64'] = acompanhamento.listaDeEvidencias[0] ? acompanhamento.listaDeEvidencias[0].base64 : null
+                form['Evidencia2_Base64'] = acompanhamento.listaDeEvidencias[1] ? acompanhamento.listaDeEvidencias[1].base64 : null
 
                 const url = '@Url.Action("Post/Acompanhamento", "api/AcompanhamentoApi")';
                 $.ajax({
