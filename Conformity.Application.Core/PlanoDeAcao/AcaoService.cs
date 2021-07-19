@@ -154,10 +154,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
             Acao dbEntityAlterado = GetById(objAcao.Id);
             _entityTrackService.RegisterUpdate(dbEntityAnterior, dbEntityAlterado);
 
-            if (objAcao.Status != 2)
-            {
-                EnviarEmail(objAcao.Id);
-            }
+            EnviarEmail(objAcao.Id);
         }
 
         public void AlterarStatusComBaseNoAcompanhamento(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)

@@ -448,6 +448,7 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
         
         public void AtualizarValoresDaAcao(AcaoViewModel objAcao)
         {
+            int statusAtrasado = 4;
 
             var queryUpdate = $@"
 
@@ -459,7 +460,7 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                     ,Referencia				= @Referencia
                     ,Responsavel			= @Responsavel		
                     ,Prioridade             = @Prioridade
-                    ,Status                 = @Status
+                    ,Status                 = {statusAtrasado}
 
                 where Id = {objAcao.Id}
 
