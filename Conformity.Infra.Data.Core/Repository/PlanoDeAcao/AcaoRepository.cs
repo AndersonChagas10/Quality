@@ -445,6 +445,43 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 
             }
         }
+        
+        public void AtualizarValoresDaAcao(AcaoViewModel objAcao)
+        {
+
+            var queryUpdate = $@"
+
+                update Pa.Acao set 
+                     Acao_Naoconformidade	= @Acao_Naoconformidade
+                    ,AcaoText				= @AcaoText
+                    ,DataConclusao			= @DataConclusao
+                    ,HoraConclusao			= @HoraConclusao
+                    ,Referencia				= @Referencia
+                    ,Responsavel			= @Responsavel		
+                    ,Prioridade             = @Prioridade
+                    ,Status                 = @Status
+
+                where Id = {objAcao.Id}
+
+            ";
+
+            using (SqlCommand cmd = new SqlCommand(queryUpdate, _aDOContext.connection))
+            {
+                cmd.CommandType = CommandType.Text;
+
+                cmd.AddParameterNullable("@Acao_Naoconformidade", objAcao.Acao_Naoconformidade);
+                cmd.AddParameterNullable("@AcaoText", objAcao.AcaoText);
+                cmd.AddParameterNullable("@DataConclusao", objAcao.DataConclusao);
+                cmd.AddParameterNullable("@HoraConclusao", objAcao.HoraConclusao);
+                cmd.AddParameterNullable("@Referencia", objAcao.Referencia);
+                cmd.AddParameterNullable("@Responsavel", objAcao.Responsavel);
+                cmd.AddParameterNullable("@Prioridade", objAcao.Prioridade);
+                cmd.AddParameterNullable("@Status", objAcao.Status);
+
+                var id = cmd.ExecuteScalar();
+
+            }
+        }
 
 
         public Acao GetById(int id)
