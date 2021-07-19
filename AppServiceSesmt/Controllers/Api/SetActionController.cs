@@ -15,7 +15,7 @@ namespace AppServiceSesmt.Controllers.Api.Sesmt
     [RoutePrefix("api/AppColeta")]
     public class SetActionController : BaseApiController
     {
-        [HttpGet]
+        [HttpPost]
         [Route("SetAction")]
         public async Task<JObject> SetAction(Acao acao)
         {
