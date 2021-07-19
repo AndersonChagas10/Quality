@@ -138,6 +138,26 @@ namespace Conformity.Application.Core.PlanoDeAcao
             _acaoRepository.AtualizarValoresDaAcao(objAcao);
             Acao dbEntityAlterado = GetById(objAcao.Id);
             _entityTrackService.RegisterUpdate(dbEntityAnterior, dbEntityAlterado);
+
+            AtualizarUsuarios(objAcao);
+
+            if (objAcao.Status != EAcaoStatus.Pendente)
+            {
+                EnviarEmail(objAcao.Id);
+            }
+        }
+
+        public void AtualizarValoresDaAcao(AcaoViewModel objAcao)
+        {
+            Acao dbEntityAnterior = GetById(objAcao.Id);
+            _acaoRepository.AtualizarValoresDaAcao(objAcao);
+            Acao dbEntityAlterado = GetById(objAcao.Id);
+            _entityTrackService.RegisterUpdate(dbEntityAnterior, dbEntityAlterado);
+
+            if (objAcao.Status != 2)
+            {
+                EnviarEmail(objAcao.Id);
+            }
         }
 
         public void AlterarStatusComBaseNoAcompanhamento(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
