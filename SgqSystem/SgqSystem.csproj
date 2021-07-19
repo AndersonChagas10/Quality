@@ -17,7 +17,7 @@
     <AssemblyName>SgqSystem</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>63128</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -550,6 +550,7 @@
     <Compile Include="Jobs\IntegrationJobFactory.cs" />
     <Compile Include="Jobs\MandalaJob.cs" />
     <Compile Include="Jobs\PhotoJob.cs" />
+    <Compile Include="Jobs\PlanoDeAcaoAlteraStatusJob.cs" />
     <Compile Include="Jobs\ReProcessJsonJob.cs" />
     <Compile Include="Jobs\MailJob.cs" />
     <Compile Include="Mail\SimpleAsynchronousUSA.cs" />
