@@ -1,8 +1,8 @@
-﻿using Conformity.Domain.Core.Interfaces;
+﻿using Conformity.Domain.Core.DTOs;
+using Conformity.Domain.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 {
@@ -16,6 +16,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
         public ICollection<AcompanhamentoAcaoXNotificar> ListaNotificar { get; set; }
         public int Status { get; set; }
         public bool IsActive { get; set; } = true;
+        public ICollection<AcompanhamentoAcaoXAttributes> AcompanhamentoAcaoXAttributes { get; set; }
 
         [ForeignKey("UserSgq_Id")]
         public virtual UserSgq UserSgq { get; set; }

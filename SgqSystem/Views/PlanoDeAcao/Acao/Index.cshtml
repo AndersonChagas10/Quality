@@ -304,8 +304,8 @@
 
                                     @*<button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>*@
 
-                                <button class="btn btn-success" onclick="enviarFormularioEditarAcao('1')">Salvar e iniciar ação</button>
-                                <button class="btn btn-success preencherDepois" onclick="enviarFormularioEditarAcao('2')">Salvar e preencher a ação depois</button>
+                                <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e iniciar ação</button>
+                                <button class="btn btn-success preencherDepois" onclick="enviarFormularioEditarAcao('1')">Salvar e preencher a ação depois</button>
                             </div>
                         </form>
                     </div>
@@ -340,17 +340,26 @@
                                                     <tbody></tbody>
                                                 </table>
                                             </div>
+                                            <div class="col-xs-12">
+                                                <b>Evidencias do Acompanhamento</b>
+                                                <input type="file" id="anexarEvidenciaAcompanhamento" onchange="uploadFile(event,'evidenciaAcompanhamento')" />
+                                            </div>
+                                            <div class="col-xs-12">
+                                                <div class="row">
+                                                    <div class="evidenciasAcompanhamento"></div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <label for="txtAcompanhamento_Status"><strong>Status</strong></label>
-                                            <select id="txtAcompanhamento_Status" name="Status" class="form-control acompanhamento">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="txtAcompanhamento_Status"><strong>Status</strong></label>
+                                                <select id="txtAcompanhamento_Status" name="Status" class="form-control acompanhamento">
                                                 
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="button" class="btn btn-success acompanhamento" onclick="acompanhamento.salvarAcompanhamento()">Salvar</button>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-success acompanhamento" onclick="acompanhamento.salvarAcompanhamento()">Salvar</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1220,11 +1229,13 @@
 
         }
 
-        function limparAcao() {
+        function limparEvidenciasDaAcaoEAcompanhamento() {
             acao.evidenciaConcluida["ListaEvidencia"] = []
             acao.evidenciasNaoConforme["ListaEvidencia"] = []
+            acompanhamento.listaDeEvidencias = []
             $('#divEvidencias .fotos').empty();
             $('#actionsEvidencies .fotosConcluidas').empty();
+            $('.evidenciasAcompanhamento').empty()
         }
 
          function limparCampoModalNovaAcao() {
@@ -1284,7 +1295,7 @@
             permitirVisualizarAcompanhamento(dados);
 
             acaoEditar = dados;
-            limparAcao()
+            limparEvidenciasDaAcaoEAcompanhamento()
 
             if (dados.ListaResponsavel) {
                 var html = `<option value="">Selecione...</option>`;
@@ -1386,8 +1397,8 @@
             var form = $("#formAcao").serializeObject();
 
             form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
-            form["ListaEvidencia"] = acao.evidenciaConcluida["ListaEvidencia"];
-            form["ListaEvidenciaConcluida"] = acao.evidenciasNaoConforme["ListaEvidencia"];
+            form["ListaEvidenciaConcluida"] = acao.evidenciaConcluida["ListaEvidencia"];
+            form["ListaEvidencia"] = acao.evidenciasNaoConforme["ListaEvidencia"];
 
             form.status = status;
 
@@ -1537,8 +1548,13 @@
 
                 if (tipoEvidencia == 'evidencia')
                     acao.evidenciasNaoConforme.adicionarEvidencia(base64String);
-                else
+
+                else if (tipoEvidencia == 'evidenciaConcluida')
                     acao.evidenciaConcluida.adicionarEvidencia(base64String);
+
+                else if (tipoEvidencia == 'evidenciaAcompanhamento')
+                    acompanhamento.adicionarEvidencia(base64String)
+
                 $('input[type=file]').val('');
             };
 
@@ -1569,12 +1585,24 @@
             if (dados.ListaAcompanhamento) {
                 var html = `<div>`;
                 for (var i = 0; i < dados.ListaAcompanhamento.length; i++) {
+
+                    let evidencia1 = ''
+                    let evidencia2 = ''
+
                     var objAcompanhamento = dados.ListaAcompanhamento[i];
 
                     var htmlTabelaNotificar = acompanhamento.montarHtmlTabelaListaNotificar(objAcompanhamento['ListaNotificar']);
 
+                    if (objAcompanhamento['Evidencia1'] != null) {
+                        evidencia1 = acompanhamento.montarHtmlDaEvidencia(objAcompanhamento['Evidencia1'])
+                    }
+
+                    if (objAcompanhamento['Evidencia2'] != null) {
+                        evidencia2 = acompanhamento.montarHtmlDaEvidencia(objAcompanhamento['Evidencia2'])
+                    }
+
                     html += `
-                        <div class="row">
+                        <div class="row layoutAcompanhamento">
                             <div class="col-sm-8">
                                 <div class="form-group">
                                     <label><strong>Observação</strong></label>
@@ -1599,8 +1627,10 @@
                                     <input disabled readonly class="form-control" value="${objAcompanhamento["StatusName"]}">
                                 </div>
                             </div>
+                            ${evidencia1}
+                            ${evidencia2}
                         </div>
-                        <hr/>`;
+                        <hr/>`;                    
                 }
                 html += `</div>`;
                 $('#Acompanhamento_Listagem').html(html);
@@ -1611,6 +1641,66 @@
         var acompanhamento = {
 
             objeto: {},
+            listaDeEvidencias: [],
+
+            montarHtmlDaEvidencia: (evidencia) => {
+
+                let html = '';
+
+                var imagem = {
+                    base64: evidencia.Byte,
+                    path: evidencia.Path
+                };
+
+                html += `<div class="col-sm-6" style="display:inline-block; width:49%; height:20%;">
+                              <img src="data:image/png;base64,${imagem.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
+                         </div>`;
+            
+                return html
+            },
+
+            adicionarEvidencia: (base64) => {
+
+                var evidencia = {
+                    base64: base64
+                };
+
+                acompanhamento.listaDeEvidencias.push(evidencia);
+
+                if (acompanhamento.listaDeEvidencias.length <= 2) {
+
+                    acompanhamento.imprimirEvidenciaNoAcompanhamento(evidencia)
+                }
+                else {
+                    openMessageModal("Alerta", "Quantidade máxima de fotos atingida.");
+                }
+            },
+            removerEvidencia: (index) => {
+
+                acompanhamento.listaDeEvidencias.splice((index - 1), 1);
+
+                $('.evidenciasAcompanhamento').empty();
+
+                acompanhamento.listaDeEvidencias.forEach(function (elemento, indice) {
+
+                    acompanhamento.imprimirEvidenciaNoAcompanhamento(elemento)
+                })
+            },
+
+            imprimirEvidenciaNoAcompanhamento: (elemento) => {
+                let html;
+
+                if (elemento["base64"]) {
+                    html += `<div class="col-sm-4">
+                                    <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acompanhamento.removerEvidencia(${acompanhamento.listaDeEvidencias.length})">Excluir</button>
+                                    </div>`;
+                }
+                else {
+                    html = `<div class="col-sm-4"><img src="#${elemento["Nome"]}" class="img-responsive"/></div>`;
+                }
+                $('.evidenciasAcompanhamento').append(html);
+            },
 
             montarHtmlTabelaListaNotificar: (lista) => {
                 var html = ''
@@ -1680,6 +1770,8 @@
                 var form = $("#formAcompanhamento").serializeObject();
 
                 form["ListaNotificar"] = acompanhamento.objeto["ListaNotificar"];
+                form['Evidencia1_Base64'] = acompanhamento.listaDeEvidencias[0] ? acompanhamento.listaDeEvidencias[0].base64 : null
+                form['Evidencia2_Base64'] = acompanhamento.listaDeEvidencias[1] ? acompanhamento.listaDeEvidencias[1].base64 : null
 
                 const url = '@Url.Action("Post/Acompanhamento", "api/AcompanhamentoApi")';
                 $.ajax({
