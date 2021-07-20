@@ -44,6 +44,7 @@ namespace SgqSystem.Controllers.V2.Api
             public string HasError { get; set; }
         }
 
+        [HttpPost]
         [Route("SetAction")]
         public IHttpActionResult SetAction(Acao acao)
         {
