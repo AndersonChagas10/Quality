@@ -4148,4 +4148,23 @@
     </Script>
   </Card>
 
+	<Card>
+		+    <CardNumber>RHSESMT-34</CardNumber>
+		+    <Version>1.10.7</Version>
+		+    <Description>[RH SESMT] Criação da tabela AcaoXAttributes para adicionar novos atributos da entidade Acao</Description>
+		+    <Script>
+			+		IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Pa.AcaoXAttributes' AND xtype='U')
+			+		create table Pa.AcaoXAttributes(
+			+		Id int not null identity unique,
+			+		Acao_Id int not null,
+			+		FieldName nvarchar(255) not null,
+			+		Value nvarchar(900) null,
+			+		constraint PK_AcaoXAttributes primary key (Acao_Id, FieldName),
+			+		constraint FK_AcaoXAttributes_Acao foreign key (Acao_Id) references Pa.Acao(Id)
+			+		)
+			+
+		</Script>
+		+
+	</Card>
+
 </Cards>

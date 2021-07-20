@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using Conformity.Domain.Core.DTOs.PlanoDeAcao;
 
 namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 {
@@ -578,6 +579,52 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
             catch (Exception e)
             {
                 return 0;
+            }
+        }
+        public AcaoXAttributesViewModel GerarCodigoDaAcao(Acao objAcao)
+        {
+            var query =  $@"
+                            DECLARE @ANO INT = 2021;
+                            DECLARE @PARCOMPANY_ID INT = {objAcao.ParCompany_Id}; 
+
+                            SELECT 
+                                CONCAT(A.SIGLA_DA_UNIDADE
+                                ,'-'
+                                ,RIGHT(CONCAT('000000',A.QUANTIDADE_DE_ACOES+1),5)
+                                ,'/'
+                                ,A.ANO) AS ProximoCodigo
+                            FROM (SELECT
+                                    YEAR(PAA.AddDate) AS ANO
+                                    , COUNT(1) AS QUANTIDADE_DE_ACOES
+                                    , REPLACE(PC.Initials,' ','') AS SIGLA_DA_UNIDADE
+                                FROM PA.Acao PAA
+                                INNER JOIN PARCOMPANY PC
+                                    ON PC.Id = PAA.ParCompany_Id
+                                WHERE 1=1
+                                    AND YEAR(PAA.AddDate) = @ANO
+                                    AND PAA.ParCompany_Id = @PARCOMPANY_ID
+                                GROUP BY 
+                                    YEAR(PAA.AddDate),
+                                    PC.Initials
+                                ) A";
+
+            AcaoXAttributesViewModel codigoDaAcao =  _aDOContext.SearchQuery<AcaoXAttributesViewModel>(query).FirstOrDefault();
+            return codigoDaAcao;
+        }
+
+        public void SalvarCodigoDaAcao(AcaoXAttributes acaoXAttributes)
+        {
+            string query = $@"INSERT INTO Pa.AcaoXAttributes(
+                            Acao_Id, FieldName, Value) 
+                            VALUES(@Acao_Id, @FieldName, @Value)";
+
+            using (SqlCommand cmd = new SqlCommand(query, _aDOContext.connection))
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.AddParameterNullable("@Acao_Id", acaoXAttributes.Acao_Id);
+                cmd.AddParameterNullable("@FieldName", acaoXAttributes.FieldName);
+                cmd.AddParameterNullable("@Value", acaoXAttributes.Value);
+                cmd.ExecuteScalar();
             }
         }
 
