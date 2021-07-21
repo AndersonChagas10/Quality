@@ -550,7 +550,7 @@
     <Compile Include="Jobs\IntegrationJobFactory.cs" />
     <Compile Include="Jobs\MandalaJob.cs" />
     <Compile Include="Jobs\PhotoJob.cs" />
-    <Compile Include="Jobs\PlanoDeAcaoAlteraStatusJob.cs" />
+    <Compile Include="Jobs\PlanoDeAcaoAlterarStatusJob.cs" />
     <Compile Include="Jobs\ReProcessJsonJob.cs" />
     <Compile Include="Jobs\MailJob.cs" />
     <Compile Include="Mail\SimpleAsynchronousUSA.cs" />

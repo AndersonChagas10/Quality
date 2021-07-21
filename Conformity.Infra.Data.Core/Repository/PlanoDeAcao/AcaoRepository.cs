@@ -446,44 +446,32 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
             }
         }
         
-        public void AtualizarValoresDaAcao(AcaoViewModel objAcao)
+        public void AtualizarStatusDaAcaoParaAtrasado(AcaoViewModel objAcao)
         {
             int statusAtrasado = 4;
 
-            var queryUpdate = $@"
+            var queryUpdate = $@"update Pa.Acao set Status = {statusAtrasado}
 
-                update Pa.Acao set 
-                     Acao_Naoconformidade	= @Acao_Naoconformidade
-                    ,AcaoText				= @AcaoText
-                    ,DataConclusao			= @DataConclusao
-                    ,HoraConclusao			= @HoraConclusao
-                    ,Referencia				= @Referencia
-                    ,Responsavel			= @Responsavel		
-                    ,Prioridade             = @Prioridade
-                    ,Status                 = {statusAtrasado}
-
-                where Id = {objAcao.Id}
-
-            ";
+                                where Id = {objAcao.Id}";
 
             using (SqlCommand cmd = new SqlCommand(queryUpdate, _aDOContext.connection))
             {
                 cmd.CommandType = CommandType.Text;
-
-                cmd.AddParameterNullable("@Acao_Naoconformidade", objAcao.Acao_Naoconformidade);
-                cmd.AddParameterNullable("@AcaoText", objAcao.AcaoText);
-                cmd.AddParameterNullable("@DataConclusao", objAcao.DataConclusao);
-                cmd.AddParameterNullable("@HoraConclusao", objAcao.HoraConclusao);
-                cmd.AddParameterNullable("@Referencia", objAcao.Referencia);
-                cmd.AddParameterNullable("@Responsavel", objAcao.Responsavel);
-                cmd.AddParameterNullable("@Prioridade", objAcao.Prioridade);
                 cmd.AddParameterNullable("@Status", objAcao.Status);
 
                 var id = cmd.ExecuteScalar();
-
             }
         }
+        public List<AcaoViewModel> ObterAcoesAtrasadas()
+        {
+            var query = $@"SELECT * FROM Pa.Acao 
+                            WHERE Status = 2
+                            AND DataConclusao < '{DateTime.Now.AddSeconds(-20):yyyy-MM-dd HH:mm}'";
 
+
+            var acoesAtrasadas = _aDOContext.SearchQuery<AcaoViewModel>(query).ToList();
+            return acoesAtrasadas;
+        }
 
         public Acao GetById(int id)
         {

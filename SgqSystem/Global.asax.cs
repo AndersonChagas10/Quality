@@ -82,7 +82,7 @@ namespace SgqSystem
 
             ThreadPool.QueueUserWorkItem(CollectionJob.ExecuteCollectionJob);
 
-            ThreadPool.QueueUserWorkItem(PlanoDeAcaoAlteraStatusJob.ExecutarAlteracoesDeAcoes);
+            ThreadPool.QueueUserWorkItem(PlanoDeAcaoAlterarStatusJob.ExecutarAlteracoesDeAcoes);
 
             //if (GlobalConfig.Brasil)
             //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR" + GlobalConfig.Ambient];

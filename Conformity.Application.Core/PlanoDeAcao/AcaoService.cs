@@ -147,14 +147,29 @@ namespace Conformity.Application.Core.PlanoDeAcao
             }
         }
 
-        public void AtualizarValoresDaAcao(AcaoViewModel objAcao)
+        public void AtualizarStatusDaAcaoParaAtrasado(List<AcaoViewModel> acoes)
         {
-            Acao dbEntityAnterior = GetById(objAcao.Id);
-            _acaoRepository.AtualizarValoresDaAcao(objAcao);
-            Acao dbEntityAlterado = GetById(objAcao.Id);
-            _entityTrackService.RegisterUpdate(dbEntityAnterior, dbEntityAlterado);
+            if (acoes.Count == 0)
+            {
+                return;
+            }
 
-            EnviarEmail(objAcao.Id);
+            acoes.ForEach(acao =>
+            {
+                Acao dbEntityAnterior = GetById(acao.Id);
+
+                _acaoRepository.AtualizarStatusDaAcaoParaAtrasado(acao);
+
+                Acao dbEntityAlterado = GetById(acao.Id);
+                _entityTrackService.RegisterUpdate(dbEntityAnterior, dbEntityAlterado);
+
+                EnviarEmail(acao.Id);
+            });
+        }
+
+        public List<AcaoViewModel> ObterAcoesAtrasadas()
+        {
+            return _acaoRepository.ObterAcoesAtrasadas();
         }
 
         public void AlterarStatusComBaseNoAcompanhamento(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
