@@ -1092,6 +1092,11 @@
 
             percorrerLogs: (dados) => {
 
+                if(dados.length == 0){
+                    openMessageModal("Sem Log's para essa ação");
+                    return
+                }
+
                 function verificarNomeDoCampo(nomeDoCampo, nomeQueDeveAparecer){
                     dados.filter(dado => {
                         if(dado.FieldName === nomeDoCampo){
@@ -1114,8 +1119,8 @@
 
             montarHtmlDosCampos:(campo, nomeQueDeveAparecer) => {
 
-                let template = ` <h4 class="text-center" ><button type="button" class="btn btn-info" data-toggle="collapse" data-target="#tabela${campo.FieldName}" style="width: 100%;">${nomeQueDeveAparecer}</button></h4> 
-                                            <table id="tabela${campo.FieldName}" class="table collapse">
+                let thead = ` <h4 class="text-center" ><button type="button" class="btn btn-info" data-toggle="collapse" data-target="#tabela${campo.FieldName}" style="width: 100%;">${nomeQueDeveAparecer}</button></h4> 
+                                            <table id="tabela${campo.FieldName}" class="table table-bordered collapse">
                                                 <thead class="thead-dark">
                                                     <tr>
                                                         <th scope="col">Data de Modificação</th>
@@ -1131,20 +1136,20 @@
                                         <hr>`
 
                 
-                let t = `<tr>
-                                    <td>${campo.UpdateDate}</td>   
-                                    <td>${campo.UserName}</td>
-                                    <td>${campo.FieldName}</td>
-                                    <td>${campo.OldValue}</td>
-                                    <td>${campo.NewValue}</td>
+                let tbody = `<tr>
+                                    <td style="width:167.2px;">${campo.UpdateDate}</td>   
+                                    <td style="width:167.2px;">${campo.UserName}</td>
+                                    <td style="width:167.2px;">${campo.FieldName}</td>
+                                    <td style="width:167.2px;">${campo.OldValue}</td>
+                                    <td style="width:167.2px;">${campo.NewValue}</td>
                                 </tr>`
 
                 if($(`#tabela${campo.FieldName}`).length){
-                    $(`.layoutDeLogs #tabela${campo.FieldName} tbody`).append(t)
+                    $(`.layoutDeLogs #tabela${campo.FieldName} tbody`).append(tbody)
                 }
                 else{
-                    $(`.layoutDeLogs`).append(template)
-                    $(`.layoutDeLogs #tabela${campo.FieldName} tbody`).append(t)
+                    $(`.layoutDeLogs`).append(thead)
+                    $(`.layoutDeLogs #tabela${campo.FieldName} tbody`).append(tbody)
                 }
             }
         }
