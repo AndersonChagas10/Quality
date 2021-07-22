@@ -1119,13 +1119,14 @@
 
             montarHtmlDosCampos:(campo, nomeQueDeveAparecer) => {
 
+                log.preencherNulo(campo)
+
                 let thead = ` <h4 class="text-center" ><button type="button" class="btn btn-info" data-toggle="collapse" data-target="#tabela${campo.FieldName}" style="width: 100%;">${nomeQueDeveAparecer}</button></h4> 
                                             <table id="tabela${campo.FieldName}" class="table table-bordered collapse">
                                                 <thead class="thead-dark">
                                                     <tr>
                                                         <th scope="col">Data de Modificação</th>
                                                         <th scope="col">Usuário Modificação</th>
-                                                        <th scope="col">Campo</th>
                                                         <th scope="col">Valor Anterior</th>
                                                         <th scope="col">Valor Alterado</th>
                                                     </tr>
@@ -1137,11 +1138,10 @@
 
                 
                 let tbody = `<tr>
-                                    <td style="width:167.2px;">${campo.UpdateDate}</td>   
-                                    <td style="width:167.2px;">${campo.UserName}</td>
-                                    <td style="width:167.2px;">${campo.FieldName}</td>
-                                    <td style="width:167.2px;">${campo.OldValue}</td>
-                                    <td style="width:167.2px;">${campo.NewValue}</td>
+                                    <td style="width:209px;">${campo.UpdateDate}</td>   
+                                    <td style="width:209px;">${campo.UserName}</td>
+                                    <td style="width:209px;">${campo.OldValue}</td>
+                                    <td style="width:209px;">${campo.NewValue}</td>
                                 </tr>`
 
                 if($(`#tabela${campo.FieldName}`).length){
@@ -1150,6 +1150,25 @@
                 else{
                     $(`.layoutDeLogs`).append(thead)
                     $(`.layoutDeLogs #tabela${campo.FieldName} tbody`).append(tbody)
+                }
+            },
+
+            preencherNulo:(nomeDoCampo) => {
+
+                if (nomeDoCampo.UpdateDate == null) {
+                    nomeDoCampo.UpdateDate = " - ";
+                }
+                if (nomeDoCampo.FieldName == null) {
+                    nomeDoCampo.FieldName = " - ";
+                }
+                if (nomeDoCampo.UserName == null) {
+                    nomeDoCampo.UserName = " - ";
+                }
+                if (nomeDoCampo.OldValue == null) {
+                    nomeDoCampo.OldValue = " - ";
+                }
+                if (nomeDoCampo.NewValue == null) {
+                    nomeDoCampo.NewValue = " - ";
                 }
             }
         }
