@@ -35,133 +35,185 @@
     <div class="modal fade" id="modalPrint" role="dialog">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form id="formAcaoPrint" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
-                    <div id="cabecalhoDiv" class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
-                        <h3 style="font-weight: bold; margin: 10px auto;">Criar Ação</h3>
-                        <img height="150" width="300" class="img-responsive" style="margin: 10px auto;" src="~/Imagens/logoSesmt.PNG" />
-                    </div>
-                    <div id="formBodyPrint" class="modal-body">
-                        <input type="hidden" name="Id" />
-                        <input type="hidden" id="statusPrint" name="Status" />
-                        <div class="row">
-                            <div class="col-xs-4" style="margin: 10px 0;">
-                                <strong>Data Emissão:</strong>
-                                <label id="dataEmissaoPrint"></label>
-                            </div>
-                            <div class="col-xs-4" style="margin: 10px 0;">
-                                <strong>Hora Emissão:</strong>
-                                <label id="horaEmissaoPrint"></label>
-                            </div>
-                            <div class="col-xs-4" style="margin: 10px 0;">
-                                <strong>Emissor:</strong>
-                                <label id="usuarioEmissorPrint"></label>
-                            </div>
-                            <div class="col-sm-12">
-                                <div style="margin: 10px 0;">
-                                    <strong>Unidade: </strong><label id="actionParCompany_IdPrint"></label>
-                                    <br>
-                                </div>
-                                <div style="margin: 10px 0;">
-                                    <strong>Centro de Custo: </strong><label id="actionParDepartment_IdPrint"></label>
-                                    <br>
-                                </div>
-                                <div style="margin: 10px 0;">
-                                    <strong>Seção/Atividade: </strong><label id="actionParDepartmentParent_IdPrint"></label>
-                                    <br>
-                                </div>
-                                <div style="margin: 10px 0;">
-                                    <strong>Item/Cargo: </strong><label id="actionParCargo_IdPrint"></label>
-                                    <br>
-                                </div>
-                                <div style="margin: 10px 0;">
-                                    <strong>Indicador/Origem: </strong><label id="actionParLevel1_IdPrint"></label>
-                                    <br>
-                                </div>
-                                <div style="margin: 10px 0;">
-                                    <strong>Monitoramento: </strong><label id="actionParLevel2_IdPrint"></label>
-                                    <br>
-                                </div>
-                                <div style="margin: 10px 0;">
-                                    <strong>Desvio/Tarefa: </strong><label id="actionParLevel3_IdPrint"></label>
-                                </div>
-                            </div>
+                <div id="cabecalhoDiv" class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
+                    <h3 style="font-weight: bold;">Ação</h3>
+                </div>
+                <div class="col-xs-12">
+                    <ul class="nav nav-tabs">
+                        <li class="visualizacao">
+                            <a href="#acao_visualizacao" data-toggle="tab" id="tabAcaoVisualizacao">
+                                Visualizar
+                            </a>
+                        </li>
+                        <li class="log">
+                            <a href="#acao_log" data-toggle="tab" id="tabAcaoLog">
+                                Logs
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
-                            <div class="col-sm-12" style="margin: 10px 0;">
-                                <div class="form-group">
-                                    <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia: </strong></label>
-                                    <text id="txtAcao_NaoconformidadePrint" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></text>
-                                </div>
-                            </div>
-                            <div class="col-sm-12" style="margin: 10px 0;">
-                                <div class="form-group">
-                                    <label for="txtAcaoText"><strong>Ação: </strong></label>
-                                    <text id="txtAcaoTextPrint" name="AcaoText" class="form-control" style="resize: none; height: 100px;"></text>
-                                </div>
-                            </div>
+                <div class="col-xs-12">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="acao_visualizacao">
+                            <form id="formAcaoPrint" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
+                                <div id="formBodyPrint" class="modal-body">
+                                    <input type="hidden" name="Id" />
+                                    <input type="hidden" id="statusPrint" name="Status" />
+                                    <div class="row">
+                                        <div class="col-xs-4" style="margin: 10px 0;">
+                                            <strong>Data Emissão:</strong>
+                                            <label id="dataEmissaoPrint"></label>
+                                        </div>
+                                        <div class="col-xs-4" style="margin: 10px 0;">
+                                            <strong>Hora Emissão:</strong>
+                                            <label id="horaEmissaoPrint"></label>
+                                        </div>
+                                        <div class="col-xs-4" style="margin: 10px 0;">
+                                            <strong>Emissor:</strong>
+                                            <label id="usuarioEmissorPrint"></label>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div style="margin: 10px 0;">
+                                                <strong>Unidade: </strong><label id="actionParCompany_IdPrint"></label>
+                                                <br>
+                                            </div>
+                                            <div style="margin: 10px 0;">
+                                                <strong>Centro de Custo: </strong><label id="actionParDepartment_IdPrint"></label>
+                                                <br>
+                                            </div>
+                                            <div style="margin: 10px 0;">
+                                                <strong>Seção/Atividade: </strong><label id="actionParDepartmentParent_IdPrint"></label>
+                                                <br>
+                                            </div>
+                                            <div style="margin: 10px 0;">
+                                                <strong>Item/Cargo: </strong><label id="actionParCargo_IdPrint"></label>
+                                                <br>
+                                            </div>
+                                            <div style="margin: 10px 0;">
+                                                <strong>Indicador/Origem: </strong><label id="actionParLevel1_IdPrint"></label>
+                                                <br>
+                                            </div>
+                                            <div style="margin: 10px 0;">
+                                                <strong>Monitoramento: </strong><label id="actionParLevel2_IdPrint"></label>
+                                                <br>
+                                            </div>
+                                            <div style="margin: 10px 0;">
+                                                <strong>Desvio/Tarefa: </strong><label id="actionParLevel3_IdPrint"></label>
+                                            </div>
+                                        </div>
 
-                        <hr />
-                        <div class="col-xs-12" style="margin: 10px 0;">
-                            <strong>Evidências da Não conformidade: </strong>
+                                        <div class="col-sm-12" style="margin: 10px 0;">
+                                            <div class="form-group">
+                                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia: </strong></label>
+                                                <text id="txtAcao_NaoconformidadePrint" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></text>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12" style="margin: 10px 0;">
+                                            <div class="form-group">
+                                                <label for="txtAcaoText"><strong>Ação: </strong></label>
+                                                <text id="txtAcaoTextPrint" name="AcaoText" class="form-control" style="resize: none; height: 100px;"></text>
+                                            </div>
+                                        </div>
+
+                                        <hr />
+                                        <div class="col-xs-12" style="margin: 10px 0;">
+                                            <strong>Evidências da Não conformidade: </strong>
+                                        </div>
+
+                                        <div class="col-xs-12">
+                                            <div id="divEvidencias" class="row">
+                                                <div class="fotos"></div>
+                                            </div>
+                                        </div>
+                                        <hr />
+
+                                        <div class="col-xs-12" style="margin: 10px 0;">
+                                            <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
+                                        </div>
+
+                                        <div id="evidenciasConcluidasImpressao" class="col-xs-12" hidden="hidden" style="margin: 10px 0;">
+                                            <b>Evidencias da Ação Concluida: </b>
+                                            <div id="actionsEvidencies">
+                                                <div class="fotosConcluidas"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xs-4 vereagir" style="margin: 10px 0;">
+                                            <label><strong>Data da conclusão:</strong></label>
+                                            <text id="actionConclusionDatePrint" name="DataConclusao" type="date" class="form-control"></text>
+                                        </div>
+
+                                        <div class="col-xs-4 vereagir" style="margin: 10px 0;">
+                                            <label><strong>Hora da conclusão:</strong></label>
+                                            <text id="actionConclusionHourPrint" name="HoraConclusao" type="time" class="form-control"></text>
+                                        </div>
+
+                                        <div class="col-xs-4" style="margin: 10px 0;">
+                                            <label><strong>Referencia:</strong></label>
+                                            <text id="actionReferencePrint" name="Referencia" type="text" class="form-control"></text>
+                                        </div>
+
+                                        <div class="col-xs-4" style="margin: 10px 0;">
+                                            <label><strong>Responsavel:</strong></label>
+                                            <text id="selectResponsavelPrint" name="Responsavel" class="form-control"></text>
+                                        </div>
+
+                                        <div class="col-xs-4 divActionPriority" style="margin: 10px 0;">
+                                            <label><strong>Prioridade:</strong></label>
+                                            <text id="selectPrioridadePrint" name="Prioridade" class="form-control"></text>
+                                        </div>
+
+                                        <div class="col-xs-12" style="margin: 10px 0;">
+                                            <label><strong>Notificar:</strong></label>
+                                            <div class="form-inline">
+                                                <select id="selectNotificarAcaoPrint" class="form-control"></select>
+                                                <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div id="rodapeDiv" class="modal-footer">
+                                    <button id="btnClosePrint" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
+                                    <button id="btnPrint" type="button" class="btn btn-primary" onclick="print()">Imprimir</button>
+                                </div>
+                            </form>
                         </div>
+                        <div class="tab-pane active" id="acao_log">
+                           <div id="page-form">
+                                <div class="panel panel-default">
+                                    <div style="margin-top: 5px;">
+                                        <h5 style="text-align: center;"><b>Id da Ação: </b><span class="acaoId"></span></h5>
+                                    </div>
+                                    <div class="panel-heading cabecalho">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <b>Unidade: </b><span class="unidade"></span>
+                                            </div>
 
-                            <div class="col-xs-12">
-                                <div id="divEvidencias" class="row">
-                                    <div class="fotos"></div>
+                                            <div class="col-md-12">
+                                                <b>Seção/Atividade: </b><span class="secaoAtividade"></span>
+                                            </div>  
+
+                                            <div class="col-md-12">
+                                                <b>Item/Tarefa: </b><span class="itemTarefa"></span>
+                                            </div>  
+
+                                            <div class="col-md-8">
+                                                <b>Centro Custo: </b><span class="centroCusto"></span>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                    <div class="panel-body layoutDeLogs">
+                                       
+                                    </div>
                                 </div>
                             </div>
-                            <hr />
-
-                            <div class="col-xs-12" style="margin: 10px 0;">
-                                <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
-                            </div>
-
-                            <div id="evidenciasConcluidasImpressao" class="col-xs-12" hidden="hidden" style="margin: 10px 0;">
-                                <b>Evidencias da Ação Concluida: </b>
-                                <div id="actionsEvidencies">
-                                    <div class="fotosConcluidas"></div>
-                                </div>
-                            </div>
-
-                            <div class="col-xs-4 vereagir" style="margin: 10px 0;">
-                                <label><strong>Data da conclusão:</strong></label>
-                                <text id="actionConclusionDatePrint" name="DataConclusao" type="date" class="form-control"></text>
-                            </div>
-
-                            <div class="col-xs-4 vereagir" style="margin: 10px 0;">
-                                <label><strong>Hora da conclusão:</strong></label>
-                                <text id="actionConclusionHourPrint" name="HoraConclusao" type="time" class="form-control"></text>
-                            </div>
-
-                            <div class="col-xs-4" style="margin: 10px 0;">
-                                <label><strong>Referencia:</strong></label>
-                                <text id="actionReferencePrint" name="Referencia" type="text" class="form-control"></text>
-                            </div>
-
-                            <div class="col-xs-4" style="margin: 10px 0;">
-                                <label><strong>Responsavel:</strong></label>
-                                <text id="selectResponsavelPrint" name="Responsavel" class="form-control"></text>
-                            </div>
-
-                            <div class="col-xs-4 divActionPriority" style="margin: 10px 0;">
-                                <label><strong>Prioridade:</strong></label>
-                                <text id="selectPrioridadePrint" name="Prioridade" class="form-control"></text>
-                            </div>
-
-                            <div class="col-xs-12" style="margin: 10px 0;">
-                                <label><strong>Notificar:</strong></label>
-                                <div class="form-inline">
-                                    <select id="selectNotificarAcaoPrint" class="form-control"></select>
-                                    <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
-                    <div id="rodapeDiv" class="modal-footer">
-                        <button id="btnClosePrint" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
-                        <button id="btnPrint" type="button" class="btn btn-primary" onclick="print()">Imprimir</button>
-                    </div>
-                </form>
+                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
@@ -172,7 +224,6 @@
                 <div class="modal-header modal-header-gray" style="font-size:14px;font-weight:bold">
                     <h3 style="font-weight:bold;">Ação</h3>
                 </div>
-
                 <div class="col-xs-12">
                     <ul class="nav nav-tabs">
                         <li class="edicao">
@@ -308,7 +359,7 @@
                                 <button class="btn btn-success preencherDepois" onclick="enviarFormularioEditarAcao('1')">Salvar e preencher a ação depois</button>
                             </div>
                         </form>
-                    </div>
+                        </div>
 
                         <div class="tab-pane active" id="acao_acompanhamento">
                             <form id="formAcompanhamento">
@@ -996,6 +1047,108 @@
             }
         }
 
+        const log = {
+
+            preencherModal: (dados) => {
+
+                log.limparModal()
+
+                $('.acaoId').append(dados.Id)
+                $('.unidade').append(dados.ParCompany_Name)
+                $('.secaoAtividade').append(dados.ParDepartmentParent_Name)
+                $('.itemTarefa').append(dados.ParCargo_Name)
+                $('.centroCusto').append(dados.ParDepartmentParent_Name)
+
+                log.obterLogs(dados.Id)
+            },
+
+            limparModal: () => {
+
+                $('.acaoId').text(' ')
+                $('.unidade').text(' ')
+                $('.secaoAtividade').text(' ')
+                $('.itemTarefa').text(' ')
+                $('.centroCusto').text(' ')
+                $('.layoutDeLogs').empty(' ')
+            },
+
+            obterLogs: (id) => {
+
+                const url = '@Url.Action("ObterLogs", "api/EntityTrackApi")';
+
+                $.ajax({
+                    type: 'GET',
+                    url: `${url}/${id}`,
+                    contentType: "application/json",
+                    success: function (dados) {
+                        log.percorrerLogs(dados)
+                    },
+                    error: function (e) {
+                        console.error(e);
+                        closeLoader();
+                    }
+                });
+            },
+
+            percorrerLogs: (dados) => {
+
+                function verificarNomeDoCampo(nomeDoCampo, nomeQueDeveAparecer){
+                    dados.filter(dado => {
+                        if(dado.FieldName === nomeDoCampo){
+                            log.montarHtmlDosCampos(dado, nomeQueDeveAparecer)
+                        }                        
+                    }) 
+                }
+                verificarNomeDoCampo('Acao_Naoconformidade', 'Ação não conformidade')
+                verificarNomeDoCampo('AcaoText', 'Ação texto')
+                verificarNomeDoCampo('EvidenciaNaoConformidade', 'Evidências não conforme')
+                verificarNomeDoCampo('EvidenciaAcaoConcluida', 'Evidências Concluídas')
+                verificarNomeDoCampo('DataConclusao', 'Data de conclusão')
+                verificarNomeDoCampo('HoraConclusao', 'Hora de conclusão')
+                verificarNomeDoCampo('Referencia', 'Referência')
+                verificarNomeDoCampo('Responsavel', 'Responsável')
+                verificarNomeDoCampo('Prioridade', 'Prioridade')
+                verificarNomeDoCampo('Status', 'Status')
+                verificarNomeDoCampo('ListaNotificarAcao', 'Notificáveis')
+            },
+
+            montarHtmlDosCampos:(campo, nomeQueDeveAparecer) => {
+
+                let template = ` <h4 class="text-center" ><button type="button" class="btn btn-info" data-toggle="collapse" data-target="#tabela${campo.FieldName}" style="width: 100%;">${nomeQueDeveAparecer}</button></h4> 
+                                            <table id="tabela${campo.FieldName}" class="table collapse">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th scope="col">Data de Modificação</th>
+                                                        <th scope="col">Usuário Modificação</th>
+                                                        <th scope="col">Campo</th>
+                                                        <th scope="col">Valor Anterior</th>
+                                                        <th scope="col">Valor Alterado</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>                                        
+                                                </tbody>
+                                            </table>
+                                        <hr>`
+
+                
+                let t = `<tr>
+                                    <td>${campo.UpdateDate}</td>   
+                                    <td>${campo.UserName}</td>
+                                    <td>${campo.FieldName}</td>
+                                    <td>${campo.OldValue}</td>
+                                    <td>${campo.NewValue}</td>
+                                </tr>`
+
+                if($(`#tabela${campo.FieldName}`).length){
+                    $(`.layoutDeLogs #tabela${campo.FieldName} tbody`).append(t)
+                }
+                else{
+                    $(`.layoutDeLogs`).append(template)
+                    $(`.layoutDeLogs #tabela${campo.FieldName} tbody`).append(t)
+                }
+            }
+        }
+
         function abrirImpressao(id) {
             openLoader("...");
             isVisualizar = true;
@@ -1006,6 +1159,7 @@
                 contentType: "application/json",
                 success: function (dados) {
                     preencherModalImpressão(dados);
+                    log.preencherModal(dados)
 
                     buscarFotos(id, isVisualizar);
 

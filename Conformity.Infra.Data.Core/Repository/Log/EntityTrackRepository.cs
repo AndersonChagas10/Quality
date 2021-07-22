@@ -22,7 +22,11 @@ namespace Conformity.Infra.Data.Core.Repository.Log
         {
                 var sql = $@"select 
 	                    usuario.FullName AS UserName, 
-	                    historico.UpdateDate, 
+	                    CAST(DAY(historico.RegisterDate) as VARCHAR(2)) + '-' +
+						CAST(MONTH(historico.RegisterDate) as VARCHAR(2)) + '-' +
+	                    CAST(YEAR(historico.RegisterDate) as VARCHAR(4)) + ' ' + 	
+						CAST(DATEPART(HOUR, historico.RegisterDate) as VARCHAR(2)) + ':' +
+						CAST(DATEPART(MINUTE, historico.RegisterDate) as VARCHAR(2)) AS UpdateDate,
 	                    historico.OldValue, 
 	                    historico.NewValue,
                         historico.FieldName
