@@ -345,6 +345,7 @@
     <Compile Include="Controllers\Api\ItemMenu\ItemMenuApiController.cs" />
     <Compile Include="Controllers\Api\ImportacaoExcelApiController.cs" />
     <Compile Include="Controllers\Api\Laboratorio\LaboratorioApiController.cs" />
+    <Compile Include="Controllers\Api\Log\EntityTrackApiController.cs" />
     <Compile Include="Controllers\Api\Log\LogErrorController.cs" />
     <Compile Include="Controllers\Api\ParDepartmentsApiController.cs" />
     <Compile Include="Controllers\Api\ParInputTypeValuesApiController.cs" />
@@ -2472,6 +2473,7 @@
     <Folder Include="obj\" />
     <Folder Include="Scripts\BootStrapRecravacao\" />
     <Folder Include="Scripts\i18n\" />
+    <Folder Include="Views\EntityTrackApi\" />
     <Folder Include="Views\RelatorioResultadoCovid\" />
     <Folder Include="Views\WebService\" />
   </ItemGroup>
