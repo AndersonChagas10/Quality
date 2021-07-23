@@ -1408,13 +1408,16 @@
 
         }
 
-        function limparEvidenciasDaAcaoEAcompanhamento() {
+        function limparCamposDoModal() {
             acao.evidenciaConcluida["ListaEvidencia"] = []
             acao.evidenciasNaoConforme["ListaEvidencia"] = []
             acompanhamento.listaDeEvidencias = []
             $('#divEvidencias .fotos').empty();
             $('#actionsEvidencies .fotosConcluidas').empty();
             $('.evidenciasAcompanhamento').empty()
+            $('.responsavel').removeClass('required')
+            $('.dataConclusao').removeClass('required')
+            $('.horaConclusao').removeClass('required')
         }
 
          function limparCampoModalNovaAcao() {
@@ -1474,7 +1477,7 @@
             permitirVisualizarAcompanhamento(dados);
 
             acaoEditar = dados;
-            limparEvidenciasDaAcaoEAcompanhamento()
+            limparCamposDoModal()
 
             if (dados.ListaResponsavel) {
                 var html = `<option value="">Selecione...</option>`;
