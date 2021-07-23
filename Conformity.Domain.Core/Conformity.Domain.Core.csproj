@@ -50,6 +50,7 @@
     <Compile Include="DTOs\PlanoDeAcao\AcaoFormViewModel.cs" />
     <Compile Include="DTOs\PlanoDeAcao\AcaoInputModel.cs" />
     <Compile Include="DTOs\PlanoDeAcao\AcaoViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\AcaoXProximoCodigoViewModel.cs" />
     <Compile Include="DTOs\PlanoDeAcao\AcompanhamentoAcaoInputModel.cs" />
     <Compile Include="DTOs\PlanoDeAcao\AcompanhamentoAcaoViewModel.cs" />
     <Compile Include="DTOs\PlanoDeAcao\EvidenciaXAttributeViewModel.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Entities\Log\EntityTrack.cs" />
     <Compile Include="Entities\Parametrizacao\ParCompany.cs" />
     <Compile Include="Entities\PlanoDeAcao\Acao.cs" />
+    <Compile Include="Entities\PlanoDeAcao\AcaoXAttributes.cs" />
     <Compile Include="Entities\PlanoDeAcao\AcaoXNotificarAcao.cs" />
     <Compile Include="Entities\PlanoDeAcao\AcompanhamentoAcao.cs" />
     <Compile Include="Entities\PlanoDeAcao\AcompanhamentoAcaoXAttributes.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="Entities\Global\Resources.cs" />
     <Compile Include="Enums\Log\ELogTrackEvent.cs" />
     <Compile Include="Enums\PlanoDeAcao\EAcompanhamentoAcaoXAttributes.cs" />
+    <Compile Include="Enums\PlanoDeAcao\EAcaoXAttributes.cs" />
     <Compile Include="Enums\PlanoDeAcao\Enums.cs" />
     <Compile Include="Interfaces\IEmail.cs" />
     <Compile Include="Interfaces\IRepository.cs" />

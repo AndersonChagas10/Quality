@@ -4150,19 +4150,43 @@
 	
 	<Card>
     <CardNumber>RHSESMT-101</CardNumber>
-    <Version>1.10.7</Version>
+    <Version>1.10.8</Version>
     <Description>[RH SESMT] Criação da tabela AcompanhamentoAcaoXAttributes para adicionar novos atributos da entidade AcompanhamentoAcao</Description>
     <Script>
-		IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Pa.AcompanhamentoAcaoXAttributes' AND xtype='U')
-		create table Pa.AcompanhamentoAcaoXAttributes(
-		Id int not null identity unique,
-		AcompanhamentoAcao_Id int not null,
-		FieldName nvarchar(255) not null,
-		Value nvarchar(900) null,
-		constraint PK_AcompanhamentoAcaoXAttributes primary key (AcompanhamentoAcao_Id, FieldName),
-		constraint FK_AcompanhamentoAcaoXAttributes_AcompanhamentoAcao foreign key (AcompanhamentoAcao_Id) references Pa.AcompanhamentoAcao(Id)
-		)
-	</Script>
+      IF NOT EXISTS (
+      SELECT 1
+      FROM sys.objects INNER JOIN sys.schemas ON sys.objects.schema_id = sys.schemas.schema_id
+      WHERE sys.objects.name='AcompanhamentoAcaoXAttributes' AND sys.objects.type='U' AND sys.schemas.name = 'PA')
+      create table Pa.AcompanhamentoAcaoXAttributes(
+      Id int not null identity unique,
+      AcompanhamentoAcao_Id int not null,
+      FieldName nvarchar(255) not null,
+      Value nvarchar(900) null,
+      constraint PK_AcompanhamentoAcaoXAttributes primary key (AcompanhamentoAcao_Id, FieldName),
+      constraint FK_AcompanhamentoAcaoXAttributes_AcompanhamentoAcao foreign key (AcompanhamentoAcao_Id) references Pa.AcompanhamentoAcao(Id)
+      )
+    </Script>
   </Card>
+
+	<Card>
+    <CardNumber>RHSESMT-34</CardNumber>
+    <Version>1.10.8</Version>
+    <Description>[RH SESMT] Criação da tabela AcaoXAttributes para adicionar novos atributos da entidade Acao</Description>
+    <Script>
+      IF NOT EXISTS (
+      SELECT 1
+      FROM sys.objects INNER JOIN sys.schemas ON sys.objects.schema_id = sys.schemas.schema_id
+      WHERE sys.objects.name='AcaoXAttributes' AND sys.objects.type='U' AND sys.schemas.name = 'PA')
+      create table Pa.AcaoXAttributes(
+      Id int not null identity unique,
+      Acao_Id int not null,
+      FieldName nvarchar(255) not null,
+      Value nvarchar(900) null,
+      constraint PK_AcaoXAttributes primary key (Acao_Id, FieldName),
+      constraint FK_AcaoXAttributes_Acao foreign key (Acao_Id) references Pa.Acao(Id)
+      )
+
+    </Script>
+	</Card>
 
 </Cards>

@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
+using Conformity.Domain.Core.Enums.PlanoDeAcao;
+using Conformity.Domain.Core.DTOs.PlanoDeAcao;
 
 namespace Conformity.Application.Core.PlanoDeAcao
 {
@@ -79,7 +81,25 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
         public int SalvarAcao(Acao objAcao)
         {
-            return _acaoRepository.SalvarAcao(objAcao);
+            int acaoId = _acaoRepository.SalvarAcao(objAcao);
+
+            SalvarCodigoDaAcao(objAcao);
+
+            return acaoId;
+        }    
+        
+        private void SalvarCodigoDaAcao(Acao objAcao)
+        {
+            AcaoXProximoCodigoViewModel value = _acaoRepository.GerarCodigoDaAcao(objAcao);
+
+            AcaoXAttributes acaoXAttributes = new AcaoXAttributes
+            {
+                Acao_Id = acaoId,
+                FieldName = EAcaoXAttributes.CodigoDaAcao,
+                Value = value.ProximoCodigo
+            };
+
+            _acaoRepository.SalvarCodigoDaAcao(acaoXAttributes);
         }
 
         public List<ParCompany> GetUnityByCurrentUser(string search)
