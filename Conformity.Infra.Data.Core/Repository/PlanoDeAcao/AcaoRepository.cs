@@ -11,6 +11,7 @@ using System.Linq;
 using Conformity.Domain.Core.DTOs.PlanoDeAcao;
 using Conformity.Domain.Core.Entities.Global;
 using Conformity.Domain.Core.Enums.PlanoDeAcao;
+using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 {
@@ -513,7 +514,32 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 
             }
         }
+        
+        public void AtualizarStatusDaAcaoParaAtrasado(AcaoViewModel objAcao)
+        {
+            int statusAtrasado = (int)EAcaoStatus.Atrasada;
 
+            var queryUpdate = $@"update Pa.Acao set Status = {statusAtrasado}
+                                where Id = {objAcao.Id}";
+
+            using (SqlCommand cmd = new SqlCommand(queryUpdate, _aDOContext.connection))
+            {
+                cmd.CommandType = CommandType.Text;
+                cmd.AddParameterNullable("@Status", objAcao.Status);
+
+                var id = cmd.ExecuteScalar();
+            }
+        }
+        public List<AcaoViewModel> ObterAcoesAtrasadas()
+        {
+            var query = $@"SELECT * FROM Pa.Acao 
+                            WHERE Status = {(int)EAcaoStatus.Em_Andamento}
+                            AND DataConclusao < '{DateTime.Now.AddSeconds(-20):yyyy-MM-dd HH:mm}'";
+
+
+            var acoesAtrasadas = _aDOContext.SearchQuery<AcaoViewModel>(query).ToList();
+            return acoesAtrasadas;
+        }
 
         public Acao GetById(int id)
         {

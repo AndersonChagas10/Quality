@@ -2,13 +2,9 @@
 using Conformity.Domain.Core.DTOs;
 using Conformity.Domain.Core.DTOs.Filtros;
 using Conformity.Infra.CrossCutting;
-using Dominio;
-using DTO;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
-using Conformity.Domain.Core.Entities.PlanoDeAcao;
-using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 using ParCompany = Conformity.Domain.Core.Entities.PlanoDeAcao.ParCompany;
 
 namespace SgqSystem.Controllers.Api.PlanoDeAcao
@@ -52,19 +48,10 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                 //salva os campos comuns da ação
                 _acaoService.AtualizarValoresDaAcao(objAcao);
 
-                //salva/deleta a listagem de usuario no campo notificar
-                AtualizarUsuariosASeremNotificadosDaAcao(objAcao);
-
                 //salva/deleta a listagem de imagens de evidencias
                 _evidenciaNaoConformeService.RetornarListaDeEvidencias(objAcao);
 
                 _evidenciaConcluidaService.RetornarListaDeEvidenciasConcluidas(objAcao);
-
-                if (objAcao.Status != EAcaoStatus.Pendente)
-                {
-                    PrepararEEnviarEmail(objAcao.Id);
-                }
-
             }
             catch (Exception e)
             {
@@ -81,23 +68,12 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
             int Id = _acaoService.SalvarAcao(objAcao);
             return Id;
         }
- 
+
         [Route("GetById/{id}")]
         [HttpGet]
         public AcaoFormViewModel GetById(int id)
         {
             return _acaoService.ObterAcaoComVinculosPorId(id);
-        }
-
-        private void PrepararEEnviarEmail(int acaoId)
-        {
-            _acaoService.EnviarEmail(acaoId);
-        }
-
-        private void AtualizarUsuariosASeremNotificadosDaAcao(AcaoInputModel objAcao)
-        {
-            _acaoService.AtualizarUsuarios(objAcao);
-
         }
     }
 }

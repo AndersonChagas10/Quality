@@ -158,7 +158,47 @@ namespace Conformity.Application.Core.PlanoDeAcao
             _acaoRepository.AtualizarValoresDaAcao(objAcao);
             Acao dbEntityAlterado = GetById(objAcao.Id);
             _entityTrackService.RegisterUpdate(dbEntityAnterior, dbEntityAlterado);
+
+            AtualizarUsuarios(objAcao);
+
+            if (objAcao.Status != EAcaoStatus.Pendente)
+            {
+                EnviarEmail(objAcao.Id);
+            }
         }
+
+        #region Alterar Status de Ação para atrasado
+        private void AtualizarStatusDaAcaoParaAtrasado(List<AcaoViewModel> acoes)
+        {
+            if (acoes.Count == 0)
+            {
+                return;
+            }
+
+            acoes.ForEach(acao =>
+            {
+                Acao dbEntityAnterior = GetById(acao.Id);
+
+                _acaoRepository.AtualizarStatusDaAcaoParaAtrasado(acao);
+
+                Acao dbEntityAlterado = GetById(acao.Id);
+                _entityTrackService.RegisterUpdate(dbEntityAnterior, dbEntityAlterado);
+
+                EnviarEmail(acao.Id);
+            });
+        }
+
+        private List<AcaoViewModel> ObterAcoesAtrasadas()
+        {
+            return _acaoRepository.ObterAcoesAtrasadas();
+        }
+
+        public void AplicarRegraDeAcaoAtrasadaFacade()
+        {
+            var acoes = this.ObterAcoesAtrasadas();
+            this.AtualizarStatusDaAcaoParaAtrasado(acoes);
+        }
+        #endregion
 
         public void AlterarStatusComBaseNoAcompanhamento(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
         {

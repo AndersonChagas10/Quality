@@ -66,7 +66,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 
         public void MontarSybject(Acao acao)
         {
-            this.Subject = $@"Notificação de ação vencia no SG-SESMT – Desvio no indicador {acao.ParLevel1.Name}";
+            this.Subject = $@"Notificação de ação vencida no SG-SESMT – Desvio no indicador {acao.ParLevel1.Name}";
         }
 
         public void MontarTo(Acao acao)

@@ -20,6 +20,8 @@ namespace SgqSystem.App_Start
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
+        public static IKernel Kernel { get; set; }
+
         /// <summary>
         /// Starts the application
         /// </summary>
@@ -46,21 +48,21 @@ namespace SgqSystem.App_Start
         {
             var ioc = new IoC();
             //var kernel = new StandardKernel();
-            var kernel = ioc.Kernel;
+            Kernel = ioc.Kernel;
             try
             {
-                kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
-                kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
-                kernel.Rebind<ModelValidatorProvider>().To<NinjectDefaultModelValidatorProvider>();
+                Kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
+                Kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
+                Kernel.Rebind<ModelValidatorProvider>().To<NinjectDefaultModelValidatorProvider>();
 
                 // Install our Ninject-based IDependencyResolver into the Web API config
-                GlobalConfiguration.Configuration.DependencyResolver = new Ninject.WebApi.DependencyResolver.NinjectDependencyResolver(kernel);
-                RegisterServices(kernel);
-                return kernel;
+                GlobalConfiguration.Configuration.DependencyResolver = new Ninject.WebApi.DependencyResolver.NinjectDependencyResolver(Kernel);
+                RegisterServices(Kernel);
+                return Kernel;
             }
             catch
             {
-                kernel.Dispose();
+                Kernel.Dispose();
                 throw;
             }
         }
