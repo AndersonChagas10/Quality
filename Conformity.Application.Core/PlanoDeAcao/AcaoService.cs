@@ -94,7 +94,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
             AcaoXAttributes acaoXAttributes = new AcaoXAttributes
             {
-                Acao_Id = acaoId,
+                Acao_Id = objAcao.Id,
                 FieldName = EAcaoXAttributes.CodigoDaAcao,
                 Value = value.ProximoCodigo
             };

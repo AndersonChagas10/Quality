@@ -612,8 +612,6 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 
                 SELECT CAST(scope_identity() AS int)";
 
-                var id = 0;
-
                 using (SqlCommand cmd = new SqlCommand(sql, _aDOContext.connection))
                 {
                     cmd.CommandType = CommandType.Text;
@@ -638,10 +636,10 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                     cmd.AddParameterNullable("@ParClusterGroup_Id", item.ParClusterGroup_Id);
                     cmd.AddParameterNullable("@Status", item.Status);
 
-                    id = (int)cmd.ExecuteScalar();
+                    item.Id = (int)cmd.ExecuteScalar();
 
                 }
-                return id;
+                return item.Id;
             }
             catch (Exception e)
             {
