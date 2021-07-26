@@ -105,7 +105,7 @@
 
                                         <div class="col-sm-12" style="margin: 10px 0;">
                                             <div class="form-group">
-                                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia: </strong></label>
+                                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrência: </strong></label>
                                                 <text id="txtAcao_NaoconformidadePrint" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></text>
                                             </div>
                                         </div>
@@ -150,12 +150,12 @@
                                         </div>
 
                                         <div class="col-xs-4" style="margin: 10px 0;">
-                                            <label><strong>Referencia:</strong></label>
+                                            <label><strong>Referência:</strong></label>
                                             <text id="actionReferencePrint" name="Referencia" type="text" class="form-control"></text>
                                         </div>
 
                                         <div class="col-xs-4" style="margin: 10px 0;">
-                                            <label><strong>Responsavel:</strong></label>
+                                            <label><strong>Responsável:</strong></label>
                                             <text id="selectResponsavelPrint" name="Responsavel" class="form-control"></text>
                                         </div>
 
@@ -972,6 +972,8 @@
 
             evidenciasNaoConforme: {
 
+                listaDeEvidencias: [],
+
                 imprimirEvidencia: (dados) => {
 
                     var html = "";
@@ -984,7 +986,7 @@
                             path: elemento.Path
                         };
 
-                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
+                        acao.evidenciasNaoConforme.listaDeEvidencias.push(evidencia);
 
                         html += `
                                 <div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
@@ -996,18 +998,18 @@
                  },
 
                 removerEvidencia: (index) => {
-                    acao.evidenciasNaoConforme["ListaEvidencia"].splice((index - 1), 1);
+                    acao.evidenciasNaoConforme.listaDeEvidencias.splice((index - 1), 1);
 
                     $('#divEvidencias .fotos').empty();
 
-                    acao.evidenciasNaoConforme["ListaEvidencia"].forEach(function (elemento, indice) {
+                    acao.evidenciasNaoConforme.listaDeEvidencias.forEach(function (elemento, indice) {
 
                         let html;
 
                         if (elemento["base64"]) {
                             html += `<div class="col-sm-4">
                                     <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
-                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme["ListaEvidencia"].length})">Excluir</button>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme.listaDeEvidencias.length})">Excluir</button>
                                     </div>`;
                         }
                         else {
@@ -1019,20 +1021,20 @@
 
                 adicionarEvidencia: (base64) => {
 
-                    if (acao.evidenciasNaoConforme["ListaEvidencia"].length < 2) {
+                    if (acao.evidenciasNaoConforme.listaDeEvidencias.length < 2) {
 
                         var evidencia = {
                             base64: base64
                         };
 
-                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
+                        acao.evidenciasNaoConforme.listaDeEvidencias.push(evidencia);
 
                         let html;
 
                         if (evidencia["base64"]) {
                             html += `<div class="col-sm-4">
                                     <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
-                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme["ListaEvidencia"].length})">Excluir</button>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme.listaDeEvidencias.length})">Excluir</button>
                                     </div>`;
                         }
                         else {
