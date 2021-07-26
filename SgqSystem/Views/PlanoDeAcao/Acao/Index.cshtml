@@ -1455,11 +1455,11 @@
             $('.preencherDepois').prop('disabled', true)
         }
 
-        let bloquearEscolhaDeDataMenorQueHoje = () => $('#actionConclusionDate').attr('min', new Date().toISOString().split("T")[0])
+        let desabilitarSelecaoDeDataMenorQueHoje = () => $('#actionConclusionDate').attr('min', new Date().toISOString().split("T")[0])
 
         function preencherModalDeEdicao(dados) {
 
-            bloquearEscolhaDeDataMenorQueHoje()
+            desabilitarSelecaoDeDataMenorQueHoje()
             preencherInformacoesAcompanhamento(dados);
             permitirInserirAcompanhamento(dados);
             permitirVisualizarAcompanhamento(dados);
