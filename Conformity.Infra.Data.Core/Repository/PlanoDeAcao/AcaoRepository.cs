@@ -654,7 +654,7 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                     cmd.AddParameterNullable("@HoraConclusao", item.HoraConclusao);
                     cmd.AddParameterNullable("@Referencia", item.Referencia);
                     cmd.AddParameterNullable("@Responsavel", item.Responsavel);
-                    cmd.AddParameterNullable("@DataEmissao", DateTime.Now.ToString("yyyy'-'MM'-'dd"));
+                    cmd.AddParameterNullable("@DataEmissao", DateTime.Now.ToString("yyyy-MM-dd"));
                     cmd.AddParameterNullable("@HoraEmissao", DateTime.Now.ToString("HH:mm"));
                     cmd.AddParameterNullable("@Emissor", _applicationConfig.Authenticated_Id);
                     cmd.AddParameterNullable("@Prioridade", item.Prioridade);
