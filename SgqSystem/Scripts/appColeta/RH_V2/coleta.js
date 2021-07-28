@@ -853,12 +853,14 @@ $('body').off('click', '[data-na]').on('click', '[data-na]', function (e) {
 function desabilitarCabecalhoEGrupoQualificacao(parLevel3_Id) {
     var divCabecalhoEGrupoQualificacao = $(`div[parlevel3id="${parLevel3_Id}"]`);
     divCabecalhoEGrupoQualificacao.find('[parheaderfield_id], [data-qualificationselect]').prop('disabled', true).val('');
+    divCabecalhoEGrupoQualificacao.find('[parheaderfield_id], [data-qualificationselect] [data-required="true"]').attr('data-required', false);
     divCabecalhoEGrupoQualificacao.addClass('alert-warning');
 }
 
 function habilitarCabecalhoEGrupoQualificacao(parLevel3_Id) {
     var divCabecalhoEGrupoQualificacao = $(`div[parlevel3id="${parLevel3_Id}"]`);
     divCabecalhoEGrupoQualificacao.find('[parheaderfield_id], [data-qualificationselect]').prop('disabled', false).val('');
+    divCabecalhoEGrupoQualificacao.find('[parheaderfield_id], [data-qualificationselect] [data-required="false"]').attr('data-required', true);
     divCabecalhoEGrupoQualificacao.removeClass('alert-warning');
 }
 
