@@ -22,6 +22,8 @@ var currentsParDepartments_Ids = [];
 var currentPlanejamento = [];
 var globalLogo = null;
 var parLevel1List = [];
+var currentsParDepartments_IdsGeral = [];
+var deparment = "";
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
@@ -241,12 +243,11 @@ function setBreadcrumbs() {
     //Aqui vou ter que pegar uma lista de Departamentos e fazer um foreach 
     if (currentParDepartment_Id) {
 
-        var deparment = "";
         isCurrent = false;
 
-        currentsParDepartments_Ids.forEach(function (department_Id, index) {
+        currentsParDepartments_IdsGeral.forEach(function (department_Id, index) {
 
-            if (!currentParCargo_Id && (index + 1) == currentsParDepartments_Ids.length) {
+            if (!currentParCargo_Id && (index + 1) == currentsParDepartments_IdsGeral.length) {
                 isCurrent = true;
             }
 

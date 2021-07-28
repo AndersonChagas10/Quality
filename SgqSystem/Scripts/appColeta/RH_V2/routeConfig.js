@@ -5,9 +5,10 @@ function validaRota(callback, parameter) {
 
     callbackRota = null;
     parameterRota = null;
-
+    
     //verifica se esta na tela de coleta se sim informa que os dados serão perdidos, se nao executa o callback direto
     if ($('#divColeta').is(":visible") && interacaoComFormulario > 0) {
+        deparment = "";
         if (callback != null) {
             callbackRota = callback;
 
@@ -17,6 +18,7 @@ function validaRota(callback, parameter) {
             openMessageConfirm(titulo1, mensagem1, executeCallbackRota, closeMensagemImediatamente, "orange", "white");
         }
     } else {
+        deparment = "";
         if (parameter != null) {
             parameterRota = parameter;
             if (validateSyncCount()) {

@@ -205,6 +205,8 @@ function retornaDepartamentos(parDepartmentId, retornaDepartamentoAtual, listaPa
         }
     });
 
+    currentsParDepartments_IdsGeral = currentsParDepartments_Ids;
+
     return listaDepartamentos;
 }
 
@@ -217,6 +219,8 @@ $('body').off('click', '[data-par-department-id]').on('click', '[data-par-depart
 });
 
 function voltarDepartment(parent_Id) {
+
+    deparment = "";
 
     currentParDepartment_Id = parent_Id;
 
