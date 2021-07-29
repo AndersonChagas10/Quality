@@ -16,7 +16,7 @@ function listarParCargo(isVoltar) {
 
         currentEvaluationSample = getResultEvaluationSample(currentParDepartment_Id, o.Id);
 
-        //FIX para trabalhar de forma correta os valores 
+        //FIX para trabalhar de forma correta os valores
         //que são recebidos do backend com os resultados
         if (currentEvaluationSample.Sample > o.Evaluation.Sample) {
             currentEvaluationSample.Evaluation += 1;
@@ -56,7 +56,7 @@ function listarParCargo(isVoltar) {
                 '	<div class="col-xs-3">' + o.Name + ' ' + flagAcao +'</div>' +
                 '	<div class="col-xs-1">&nbsp;</div>' +
                 '	<div class="col-xs-4">Av: ' + ((currentEvaluationSample.Evaluation >= 1 && currentEvaluationSample.Sample > 1) ? currentEvaluationSample.Evaluation : (currentEvaluationSample.Evaluation - 1)) + '/' + o.Evaluation.Evaluation + ' </div>      ' +
-                '	<div class="col-xs-4">Am: ' + (currentEvaluationSample.Sample - 1) + '/' + o.Evaluation.Sample + ' </div>' +
+                '	<div class="col-xs-4">Am: ' + ((currentEvaluationSample.Evaluation > 1 && currentEvaluationSample.Sample == 1) ? o.Evaluation.Sample : (currentEvaluationSample.Sample  - 1)) + '/' + o.Evaluation.Sample + ' </div>' +
                 '</button>';
 
             atualizaCorAgendamento(o, currentEvaluationSample);
