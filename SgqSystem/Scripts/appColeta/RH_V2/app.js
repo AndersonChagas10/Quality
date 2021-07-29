@@ -134,7 +134,7 @@ function openModalChangeDate() {
 
     var html = '<div class="form-group row">' +
         '<label for="exemplo">Data: </label>' +
-        '<input id="appDate" type="date" class="form-control"/>' +
+        '<input id="appDate" type="date" class="form-control" onblur="validarDataApp()"/>' +
         '</br>' +
         '<button id="btnChangeDate" type="button" class="btn btn-primary" onclick="changeDate(this)">Alterar Data de coleta</button> | ' +
         '<button id="btnChangeDate" type="button" class="btn btn-primary" onclick="closeModal()">Cancelar</button>' +
@@ -322,3 +322,38 @@ function validaParqualification(level1Id, level2Id, level3Id) {
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
  }
+
+ $('body')
+    .on('click', '[id="appDate"]', function () {
+        bloquearSelecaoDeDataFutura();
+    })
+
+function bloquearSelecaoDeDataFutura() {
+    var data = new Date();
+
+    var dia = ("0" + data.getDate()).slice(-2);
+    var mes = ("0" + (data.getMonth() + 1)).slice(-2);
+
+    var hoje = data.getFullYear() + "-" + (mes) + "-" + (dia);
+
+    $('#appDate').attr('max', hoje);
+}
+
+function validarDataApp(){
+
+    var data = new Date();
+
+    var dia = ("0" + data.getDate()).slice(-2);
+    var mes = ("0" + (data.getMonth() + 1)).slice(-2);
+
+    var hoje = data.getFullYear() + "-" + (mes) + "-" + (dia);
+
+    var dataInserida = $('#appDate').val();
+
+    if(dataInserida > hoje){
+        openMensagem('A data inserida não pode ser maior que a data atual', 'blue', 'white');
+        closeMensagem(2000);
+        $('#appDate').val(hoje)
+    }
+
+}
