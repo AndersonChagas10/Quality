@@ -33,6 +33,10 @@
             border: #2f353b 2px solid !important;
         }
 
+        span.select2-container--open {
+            z-index: 11000;
+        }
+
         .required:before {
             content: " *";
             color: red;
@@ -450,14 +454,15 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="col-sm-6">
-                                            <div class="form-group" style="margin-bottom:0">
+                                            <div class="form-group" style="margin-bottom:0" data-filtroselect3>
                                                 <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                     <label><strong>@Resources.Resource.unit:</strong></label>
                                                     <button type="button"
                                                             data-filtroselect3-btn
-                                                            data-filtroselect3-select="select[name=parCompany_Ids]"
+                                                            data-filtroselect3-select="#modalNovaAcao select[name=parCompany_Ids]"
                                                             data-filtroselect3-url="@Url.Action("GetUnityByCurrentUser", "api/AcaoApi")"
-                                                            data-filtroselect3-default-select="@ViewBag.ShowParCompanyDefault">
+                                                            data-filtroselect3-default-select="@ViewBag.ShowParCompanyDefault"
+                                                            data-filtroselect3-custom-filter="planoDeAcao">
                                                         Abrir
                                                     </button>
                                                 </div>
@@ -472,9 +477,10 @@
                                                 <label><strong>Centro de Custo:</strong></label>
                                                 <button type="button"
                                                         data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parDepartment_Ids]"
+                                                        data-filtroselect3-select="#modalNovaAcao select[name=parDepartment_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParDepartment", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParDepartmentDefault">
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParDepartmentDefault"
+                                                        data-filtroselect3-custom-filter="planoDeAcao">
                                                     Abrir
                                                 </button>
                                             </div>
@@ -492,9 +498,10 @@
                                                 <label><strong>Seção/Atividade:</strong></label>
                                                 <button type="button"
                                                         data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parSecao_Ids]"
+                                                        data-filtroselect3-select="#modalNovaAcao select[name=parSecao_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParDepartmentFilho", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParSecaoDefault">
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParSecaoDefault"
+                                                        data-filtroselect3-custom-filter="planoDeAcao">
                                                     Abrir
                                                 </button>
                                             </div>
@@ -507,9 +514,10 @@
                                                 <label><strong>Item/Cargo</strong></label>
                                                 <button type="button"
                                                         data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parCargo_Ids]"
+                                                        data-filtroselect3-select="#modalNovaAcao select[name=parCargo_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParCargo", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParCargoDefault">
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParCargoDefault"
+                                                        data-filtroselect3-custom-filter="planoDeAcao">
                                                     Abrir
                                                 </button>
                                             </div>
@@ -521,9 +529,10 @@
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                 <label><strong>Indicador/Origem:</strong></label>
                                                 <button type="button" data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parLevel1_Ids]"
+                                                        data-filtroselect3-select="#modalNovaAcao select[name=parLevel1_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParLevel1", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default">
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default"
+                                                        data-filtroselect3-custom-filter="planoDeAcao">
                                                     Abrir
                                                 </button>
                                             </div>
@@ -535,9 +544,10 @@
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                 <label><strong>@Resources.Resource.level2:</strong></label>
                                                 <button type="button" data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parLevel2_Ids]"
+                                                        data-filtroselect3-select="#modalNovaAcao select[name=parLevel2_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParLevel2", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default">
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default"
+                                                        data-filtroselect3-custom-filter="planoDeAcao">
                                                     Abrir
                                                 </button>
                                             </div>
@@ -549,9 +559,10 @@
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                 <label><strong>Desvio/Tarefa:</strong></label>
                                                 <button type="button" data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parLevel3_Ids]"
+                                                        data-filtroselect3-select="#modalNovaAcao select[name=parLevel3_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParLevel3", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel3Default">
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel3Default"
+                                                        data-filtroselect3-custom-filter="planoDeAcao">
                                                     Abrir
                                                 </button>
                                             </div>
