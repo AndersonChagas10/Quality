@@ -4,14 +4,16 @@
 
     Layout = "~\\Views\\RelatoriosSgq\\_FilterReportsHorizontal.cshtml";
 
-    ViewBag.ShowCurrentDate = false;
+
     ViewBag.ShowRangeDate = true;
-    ViewBag.ShowParCluster = true;
-    ViewBag.ShowParStructure3 = true;
-    ViewBag.ShowParClusterGroup = true;
-    ViewBag.ShowParLevel1 = true;
     ViewBag.ShowParStructure2 = true;
+    ViewBag.ShowParStructure3PlanoDeAcao = true;
     ViewBag.ShowParCompany = true;
+    ViewBag.ShowParClusterGroupPlanoDeAcao = true;
+    ViewBag.ShowParClusterPlanoDeAcao = true;
+    ViewBag.ShowParLevel1 = true;
+
+    ViewBag.ShowCurrentDate = false;
     ViewBag.ShowParLevel2GQ = false;
     ViewBag.ShowUserSgqAuditor = false;
     ViewBag.ShowParLevel2 = false;
@@ -110,7 +112,7 @@
 
                                         <div class="col-sm-12" style="margin: 10px 0;">
                                             <div class="form-group">
-                                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia: </strong></label>
+                                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrência: </strong></label>
                                                 <text id="txtAcao_NaoconformidadePrint" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></text>
                                             </div>
                                         </div>
@@ -155,12 +157,12 @@
                                         </div>
 
                                         <div class="col-xs-4" style="margin: 10px 0;">
-                                            <label><strong>Referencia:</strong></label>
+                                            <label><strong>Referência:</strong></label>
                                             <text id="actionReferencePrint" name="Referencia" type="text" class="form-control"></text>
                                         </div>
 
                                         <div class="col-xs-4" style="margin: 10px 0;">
-                                            <label><strong>Responsavel:</strong></label>
+                                            <label><strong>Responsável:</strong></label>
                                             <text id="selectResponsavelPrint" name="Responsavel" class="form-control"></text>
                                         </div>
 
@@ -316,7 +318,7 @@
                                         </div>
                                         <div class="col-xs-4 vereagir">
                                             <label class="dataConclusao"><strong>Data da conclusão:</strong></label>
-                                            <input id="actionConclusionDate" name="DataConclusao" type="date" min="2021-05-19" class="form-control">
+                                            <input id="actionConclusionDate" name="DataConclusao" type="date" class="form-control">
                                         </div>
                                         <div class="col-xs-4 vereagir">
                                             <label class="horaConclusao"><strong>Hora da conclusão:</strong></label>
@@ -973,6 +975,8 @@
 
             evidenciasNaoConforme: {
 
+                listaDeEvidencias: [],
+
                 imprimirEvidencia: (dados) => {
 
                     var html = "";
@@ -985,7 +989,7 @@
                             path: elemento.Path
                         };
 
-                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
+                        acao.evidenciasNaoConforme.listaDeEvidencias.push(evidencia);
 
                         html += `
                                 <div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
@@ -997,18 +1001,18 @@
                  },
 
                 removerEvidencia: (index) => {
-                    acao.evidenciasNaoConforme["ListaEvidencia"].splice((index - 1), 1);
+                    acao.evidenciasNaoConforme.listaDeEvidencias.splice((index - 1), 1);
 
                     $('#divEvidencias .fotos').empty();
 
-                    acao.evidenciasNaoConforme["ListaEvidencia"].forEach(function (elemento, indice) {
+                    acao.evidenciasNaoConforme.listaDeEvidencias.forEach(function (elemento, indice) {
 
                         let html;
 
                         if (elemento["base64"]) {
                             html += `<div class="col-sm-4">
                                     <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
-                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme["ListaEvidencia"].length})">Excluir</button>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme.listaDeEvidencias.length})">Excluir</button>
                                     </div>`;
                         }
                         else {
@@ -1020,20 +1024,20 @@
 
                 adicionarEvidencia: (base64) => {
 
-                    if (acao.evidenciasNaoConforme["ListaEvidencia"].length < 2) {
+                    if (acao.evidenciasNaoConforme.listaDeEvidencias.length < 2) {
 
                         var evidencia = {
                             base64: base64
                         };
 
-                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
+                        acao.evidenciasNaoConforme.listaDeEvidencias.push(evidencia);
 
                         let html;
 
                         if (evidencia["base64"]) {
                             html += `<div class="col-sm-4">
                                     <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
-                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme["ListaEvidencia"].length})">Excluir</button>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme.listaDeEvidencias.length})">Excluir</button>
                                     </div>`;
                         }
                         else {
@@ -1266,30 +1270,11 @@
 
         function print() {
 
-            //$('img').attr('width', "150px");
-
             var winPrint = window.open('', '', '');
             winPrint.document.write(document.getElementById('formAcaoPrint').innerHTML);
             winPrint.document.close();
             winPrint.focus();
             winPrint.print();
-            //winPrint.close();
-
-            //printGRT.Inicializar({
-
-            //    headerHtml: document.getElementById('cabecalhoDiv').innerHTML,
-            //    bodyHtml: document.getElementById('formAcaoPrint').innerHTML,
-            //    footerHtml: document.getElementById('rodapeDiv').innerHTML,
-            //    numberMarginRight: 25,
-            //    numberMarginBottom: 25,
-            //    renderTableMargin: 0,
-            //    pageMarginHeader: "25px 25px 10px 25px",
-            //    pageMarginFooter: "10px 25px 25px 25px",
-            //    pageMarginBody: "0 25px 0 25px"
-
-            //});
-
-            //printGRT.Imprimir();
         }
 
         function carregarDados(id) {
@@ -1297,7 +1282,6 @@
             isVisualizar = false;
             const url = '@Url.Action("GetById", "api/AcaoApi")';
             $.ajax({
-                //data: JSON.stringify(id),
                 type: 'GET',
                 url: `${url}/${id}`,
                 contentType: "application/json",
@@ -1471,7 +1455,11 @@
             $('.preencherDepois').prop('disabled', true)
         }
 
+        let desabilitarSelecaoDeDataMenorQueHoje = () => $('#actionConclusionDate').attr('min', new Date().toISOString().split("T")[0])
+
         function preencherModalDeEdicao(dados) {
+
+            desabilitarSelecaoDeDataMenorQueHoje()
             preencherInformacoesAcompanhamento(dados);
             permitirInserirAcompanhamento(dados);
             permitirVisualizarAcompanhamento(dados);
@@ -1573,6 +1561,8 @@
         function enviarFormularioEditarAcao(status) {
 
             event.preventDefault();
+
+            limparCamposObrigatoriosEdicao()
             let form = $("#formAcao").serializeObject();
 
             form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
@@ -1605,6 +1595,12 @@
                     console.log('erro ao salvar ação');
                 }
             });
+        }
+
+        function limparCamposObrigatoriosEdicao() {
+            $('.responsavel').removeClass('required')
+            $('.dataConclusao').removeClass('required')
+            $('.horaConclusao').removeClass('required')
         }
 
         function verificarSeExistemCamposNulos(form){
