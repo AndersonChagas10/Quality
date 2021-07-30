@@ -1127,7 +1127,8 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     if (currentIsPartialSave && hasOnlyTextField()) {
         if (inputsTextIsValid())
             openMessageConfirm("Deseja finalizar a amostra?", "todos os campos não preenchidos serão salvos.", preparaColetaParcialFim, closeMensagemImediatamente, "orange", "white");
-
+            PrepararColetas();
+            
     } else if (currentIsPartialSave) {
 
         if (inputsTextIsValid())
