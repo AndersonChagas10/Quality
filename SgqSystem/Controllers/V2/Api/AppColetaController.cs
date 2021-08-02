@@ -16,6 +16,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace SgqSystem.Controllers.V2.Api
 {
@@ -290,6 +291,7 @@ namespace SgqSystem.Controllers.V2.Api
             List<PargroupQualificationXParLevel3ValueViewModel> listaPargroupQualificationXParLevel3Value;
             List<PargroupQualificationViewModel> listaPargroupQualification;
             List<UserSgqViewModel> listaAuditor = new List<UserSgqViewModel>();
+            List<Acao> acoes;
 
             GetAppParametrizationBusiness business = new GetAppParametrizationBusiness(appParametrization);
 
@@ -716,6 +718,20 @@ namespace SgqSystem.Controllers.V2.Api
                         }).FirstOrDefault());
                     }
                 }
+
+                List<string> listaDeStatus = new List<string>() 
+                { EAcaoStatus.Em_Andamento.ToString(),
+                  EAcaoStatus.Atrasada.ToString(),
+                  EAcaoStatus.Pendente.ToString() 
+                };
+
+                acoes = db.Acao
+                        .AsNoTracking()
+                        .Where(a => a.ParCompany_Id == appParametrization.ParCompany_Id)
+                        .Where(a => a.ParClusterGroup_Id == appParametrization.ParClusterGroup_Id)
+                        .Where(a => a.ParCluster_Id == appParametrization.ParCluster_Id)
+                        .Where(a => listaDeStatus.Contains(a.Status.ToString())).ToList();
+                        
             }
 
             return Ok(new
@@ -750,7 +766,8 @@ namespace SgqSystem.Controllers.V2.Api
                 listaPargroupQualification,
                 listaPargroupQualificationXParQualification,
                 listaPargroupQualificationXParLevel3Value,
-                listaAuditor
+                listaAuditor,
+                acoes
             });
         }
 
