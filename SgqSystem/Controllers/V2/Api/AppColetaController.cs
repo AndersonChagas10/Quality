@@ -756,7 +756,8 @@ namespace SgqSystem.Controllers.V2.Api
                                  ON PCG.Id = PAC.ParCargo_Id
 	                             LEFT JOIN Pa.AcaoXAttributes AXA
 	                             ON AXA.Acao_Id = PAC.Id
-                                 WHERE PAC.ParCompany_Id = { appParametrization.ParCompany_Id}
+                                 WHERE PAC.Status IN(1, 2, 4)
+                                 AND PAC.ParCompany_Id = { appParametrization.ParCompany_Id}
                                  AND PAC.ParClusterGroup_Id = { appParametrization.ParClusterGroup_Id }
                                  AND PAC.ParCluster_Id = {appParametrization.ParCluster_Id}";
 

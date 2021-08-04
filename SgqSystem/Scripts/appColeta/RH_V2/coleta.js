@@ -1260,17 +1260,17 @@ function encontraAcao(){
     
     if(acaoEncontrada){
 
-        //alertaDeAcaoExistente.abrirModal(acaoEncontrada)
+        alertaDeAcaoExistente.abrirModal(acaoEncontrada)
 
-        openMessageConfirm('título', 'mensagem', alertaDeAcaoExistente.processAction, alertaDeAcaoExistente.closeModal, 'blue', 'texto');
+        //openMessageConfirm('título', 'mensagem', alertaDeAcaoExistente.processAction, alertaDeAcaoExistente.closeModal, 'blue', 'texto');
 
-        // $('.modalAcaoExistente .fechar').click(function(){
-        //     closeModal(); 
-        // });
+         $('.modalAcaoExistente .fechar').click(function(){
+             closeModal(); 
+         });
 
-        // $('.modalAcaoExistente .abrir').click(function(){
-        //     processAction(coletaJson);
-        // })
+         $('.modalAcaoExistente .abrir').click(function(){
+            processAction(coletaJson);
+         })
     }
     else{
         processAction(coletaJson);       
