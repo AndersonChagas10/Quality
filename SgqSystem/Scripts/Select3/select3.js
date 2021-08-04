@@ -1,5 +1,5 @@
-﻿//Select3.initialize(objFiltro);
-/*
+﻿/*Select3.initialize(objFiltro);
+
 
 <button type="button" data-filtroselect3-btn
         data-filtroselect3-select="select[name=parLevel1_Ids]"
@@ -21,18 +21,23 @@ function atualizaObjFiltro() {
 }
 */
 
-$('body').on('click', '[data-filtroselect3-btn]', function () {
-    var btn = $(this);
-    var select = $($(btn).attr('data-filtroselect3-select'));
-    var name = $(select).attr('name');
-    var url = $(btn).attr('data-filtroselect3-url');
-    var defaultSelect = $(btn).attr('data-filtroselect3-default-select');
-    Select3.defaultSelect = defaultSelect;
-    Select3.render(select, name, url);
-});
+$('body')
+    .off('click', '[data-filtroselect3-btn]')
+    .on('click', '[data-filtroselect3-btn]', function () {
+        var btn = $(this);
+        var select = $($(btn).attr('data-filtroselect3-select'));
+        var name = $(select).attr('name');
+        var url = $(btn).attr('data-filtroselect3-url');
+        var defaultSelect = $(btn).attr('data-filtroselect3-default-select');
+        Select3.customFilterName = $(btn).attr("data-filtroselect3-custom-filter");
+        Select3.defaultSelect = defaultSelect;
+        Select3.render(select, name, url);
+    });
 
 var Select3 = {
     param: function () { return {}; },
+    customFilterName: "",
+    customFilter: [],
     objFiltroSelect3: {},
     callback: function () { },
     defaultSelect: "",
@@ -41,6 +46,27 @@ var Select3 = {
             this.param = param;
         if (callback)
             this.callback = callback;
+    },
+
+    retornarFiltro: function () {
+        if (Select3.customFilterName) {
+            $('[data-filtroselect3-custom-filter="' + Select3.customFilterName + '"]')
+                .each((i, element) => {
+                    var select = $($(element).attr('data-filtroselect3-select'));
+                    var name = $(select).attr("name");
+                    var valor = $(select).val();
+                    if (typeof (valor) != "object") {
+                        valor = [valor];
+                    }
+                    if (!Select3.customFilter[Select3.customFilterName]) {
+                        Select3.customFilter[Select3.customFilterName] = {};
+                    }
+                    Select3.customFilter[Select3.customFilterName][name] = valor;
+                });
+            return Select3.customFilter[Select3.customFilterName];
+        } else {
+            return Select3.param();
+        }
     },
 
     render: function (element, name, url) {
@@ -101,7 +127,7 @@ var Select3 = {
             $.ajax({
                 url: url + "?search=" + $(this).serializeObject()['txtFiltro'],
                 type: 'post',
-                data: JSON.stringify(Select3.param()),
+                data: JSON.stringify(Select3.retornarFiltro()),
                 dataType: "JSON",
                 contentType: "APPLICATION/JSON; CHARSET=UTF-8",
                 beforeSend: function () {

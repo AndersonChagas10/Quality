@@ -361,7 +361,7 @@
                                         </div>
                                     </div>
                                 }
-                                 
+
 
                                 @if (ViewBag.ShowParStructureGroup == true) //Grupo de estrutura
                                 {
@@ -446,6 +446,28 @@
                                     </div>
                                 }
 
+                                @if (ViewBag.ShowParStructure3PlanoDeAcao == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong>@Resources.Resource.parStructure3</strong></label>
+                                                <button type="button"
+                                                        data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parStructure3_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParStructure3", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParStructureDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12" style="padding-left:0px;">
+                                                <select class="form-control" name="parStructure3_Ids" multiple style="width:100%;"></select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+
                                 @if (ViewBag.ShowParStructure3ListButtons == true)
                                 {
                                     <div class="col-sm-12">
@@ -487,8 +509,8 @@
                                                 </button>
                                             </div>
                                             <div class="col-sm-12" style="padding-left:0px;">
-                                                <select class="form-control" name="parStructure3_Ids" multiple style="width:100%;"></select> 
-                                            </div> 
+                                                <select class="form-control" name="parStructure3_Ids" multiple style="width:100%;"></select>
+                                            </div>
                                         </div>
 
                                     </div>
@@ -512,6 +534,46 @@
                                                 <select class="form-control " name="parCompany_Ids" multiple style="width:100%;"></select>
                                             </div>
                                             <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParClusterGroupPlanoDeAcao == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group ">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong>@Resources.Resource.cluster_group</strong></label>
+                                                <button type="button" data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parClusterGroup_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParClustersGroup", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParClusterGroupDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12" style="padding-left:0px;">
+                                                <select class="form-control" name="parClusterGroup_Ids" multiple style="width:100%;"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (ViewBag.ShowParClusterPlanoDeAcao == true)
+                                {
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <div class="col-sm-12 " style="padding-left:0px;">
+                                                <label><strong>@Resources.Resource.cluster</strong></label>
+                                                <button type="button" data-filtroselect3-btn
+                                                        data-filtroselect3-select="select[name=parCluster_Ids]"
+                                                        data-filtroselect3-url="@Url.Action("GetFilteredParClusters", "api/Formulario")"
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParClusterDefault">
+                                                    Abrir
+                                                </button>
+                                            </div>
+                                            <div class="col-sm-12" style="padding-left:0px;">
+                                                <select class="form-control" name="parCluster_Ids" multiple style="width:100%;"></select>
+                                            </div>
                                         </div>
                                     </div>
                                 }

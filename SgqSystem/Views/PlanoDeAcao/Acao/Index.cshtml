@@ -4,14 +4,16 @@
 
     Layout = "~\\Views\\RelatoriosSgq\\_FilterReportsHorizontal.cshtml";
 
-    ViewBag.ShowCurrentDate = false;
+
     ViewBag.ShowRangeDate = true;
-    ViewBag.ShowParCluster = true;
-    ViewBag.ShowParStructure3 = true;
-    ViewBag.ShowParClusterGroup = true;
-    ViewBag.ShowParLevel1 = true;
     ViewBag.ShowParStructure2 = true;
+    ViewBag.ShowParStructure3PlanoDeAcao = true;
     ViewBag.ShowParCompany = true;
+    ViewBag.ShowParClusterGroupPlanoDeAcao = true;
+    ViewBag.ShowParClusterPlanoDeAcao = true;
+    ViewBag.ShowParLevel1 = true;
+
+    ViewBag.ShowCurrentDate = false;
     ViewBag.ShowParLevel2GQ = false;
     ViewBag.ShowUserSgqAuditor = false;
     ViewBag.ShowParLevel2 = false;
@@ -29,6 +31,15 @@
 
         .selected {
             border: #2f353b 2px solid !important;
+        }
+
+        span.select2-container--open {
+            z-index: 11000;
+        }
+
+        .required:before {
+            content: " *";
+            color: red;
         }
     </style>
 
@@ -79,7 +90,7 @@
                                                 <br>
                                             </div>
                                             <div style="margin: 10px 0;">
-                                                <strong>Centro de Custo: </strong><label id="actionParDepartment_IdPrint"></label>
+                                                <strong>Centro de Custo/Setor: </strong><label id="actionParDepartment_IdPrint"></label>
                                                 <br>
                                             </div>
                                             <div style="margin: 10px 0;">
@@ -87,7 +98,7 @@
                                                 <br>
                                             </div>
                                             <div style="margin: 10px 0;">
-                                                <strong>Item/Cargo: </strong><label id="actionParCargo_IdPrint"></label>
+                                                <strong>Item/Tarefa: </strong><label id="actionParCargo_IdPrint"></label>
                                                 <br>
                                             </div>
                                             <div style="margin: 10px 0;">
@@ -99,13 +110,13 @@
                                                 <br>
                                             </div>
                                             <div style="margin: 10px 0;">
-                                                <strong>Desvio/Tarefa: </strong><label id="actionParLevel3_IdPrint"></label>
+                                                <strong>Desvio/Medida de Controle: </strong><label id="actionParLevel3_IdPrint"></label>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-12" style="margin: 10px 0;">
                                             <div class="form-group">
-                                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia: </strong></label>
+                                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrência: </strong></label>
                                                 <text id="txtAcao_NaoconformidadePrint" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></text>
                                             </div>
                                         </div>
@@ -150,12 +161,12 @@
                                         </div>
 
                                         <div class="col-xs-4" style="margin: 10px 0;">
-                                            <label><strong>Referencia:</strong></label>
+                                            <label><strong>Referência:</strong></label>
                                             <text id="actionReferencePrint" name="Referencia" type="text" class="form-control"></text>
                                         </div>
 
                                         <div class="col-xs-4" style="margin: 10px 0;">
-                                            <label><strong>Responsavel:</strong></label>
+                                            <label><strong>Responsável:</strong></label>
                                             <text id="selectResponsavelPrint" name="Responsavel" class="form-control"></text>
                                         </div>
 
@@ -167,7 +178,7 @@
                                         <div class="col-xs-12" style="margin: 10px 0;">
                                             <label><strong>Notificar:</strong></label>
                                             <div class="form-inline">
-                                                <select id="selectNotificarAcaoPrint" class="form-control"></select>
+                                                <select id="selectNotificarAcaoPrint" class="form-control" style="width: 260px;"></select>
                                                 <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
                                             </div>
                                         </div>
@@ -262,17 +273,17 @@
                                         <div class="col-sm-12">
                                             <strong>Unidade:</strong><label id="actionParCompany_Id"></label>
                                             <br />
-                                            <strong>Centro de Custo:</strong><label id="actionParDepartment_Id"></label>
+                                            <strong>Centro de Custo/Setor:</strong><label id="actionParDepartment_Id"></label>
                                             <br />
                                             <strong>Seção/Atividade:</strong><label id="actionParDepartmentParent_Id"></label>
                                             <br />
-                                            <strong>Item/Cargo:</strong><label id="actionParCargo_Id"></label>
+                                            <strong>Item/Tarefa:</strong><label id="actionParCargo_Id"></label>
                                             <br />
                                             <strong>Indicador/Origem:</strong><label id="actionParLevel1_Id"></label>
                                             <br />
                                             <strong>Monitoramento:</strong><label id="actionParLevel2_Id"></label>
                                             <br />
-                                            <strong>Desvio/Tarefa:</strong><label id="actionParLevel3_Id"></label>
+                                            <strong>Desvio/Medida de Controle:</strong><label id="actionParLevel3_Id"></label>
                                         </div>
 
                                         <div class="col-sm-12">
@@ -310,11 +321,11 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-4 vereagir">
-                                            <label><strong>Data da conclusão:</strong></label>
-                                            <input id="actionConclusionDate" name="DataConclusao" type="date" min="2021-05-19" class="form-control">
+                                            <label class="dataConclusao"><strong>Data da conclusão:</strong></label>
+                                            <input id="actionConclusionDate" name="DataConclusao" type="date" class="form-control">
                                         </div>
                                         <div class="col-xs-4 vereagir">
-                                            <label><strong>Hora da conclusão:</strong></label>
+                                            <label class="horaConclusao"><strong>Hora da conclusão:</strong></label>
                                             <input id="actionConclusionHour" name="HoraConclusao" type="time" class="form-control">
                                         </div>
                                         <div class="col-xs-4">
@@ -322,7 +333,7 @@
                                             <input id="actionReference" name="Referencia" type="text" class="form-control">
                                         </div>
                                         <div class="col-xs-4">
-                                            <label><strong>Responsavel:</strong></label>
+                                            <label class="responsavel"><strong>Responsavel:</strong></label>
                                             <select id="selectResponsavel" name="Responsavel" class="form-control"></select>
                                         </div>
                                         <div class="col-xs-4 divActionPriority">
@@ -332,7 +343,7 @@
                                         <div class="col-xs-12">
                                             <label><strong>Notificar:</strong></label>
                                             <div class="form-inline">
-                                                <select id="selectNotificarAcao" class="form-control"></select>
+                                                <select id="selectNotificarAcao" class="form-control" style="width: 260px;"></select>
                                                 <button onclick="inserirNaListaNotificarAcao();" type="button" class="btn btn-primary">+</button>
                                             </div>
                                         </div>
@@ -352,20 +363,17 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
-
-                                    @*<button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>*@
-
-                                <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e iniciar ação</button>
-                                <button class="btn btn-success preencherDepois" onclick="enviarFormularioEditarAcao('1')">Salvar e preencher a ação depois</button>
-                            </div>
+                                    <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e iniciar ação</button>
+                                    <button class="btn btn-success preencherDepois" onclick="enviarFormularioEditarAcao('1')">Salvar e preencher a ação depois</button>
+                                </div>
                         </form>
                         </div>
 
                         <div class="tab-pane active" id="acao_acompanhamento">
                             <form id="formAcompanhamento">
                                 <div class="row">
-                                    <div class="col-sm-8">
-                                        <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-8">
                                             <div class="col-xs-12">
                                                 <div class="form-group">
                                                     <label for="txtAcompanhamento_Observacao"><strong>Observação</strong></label>
@@ -446,14 +454,15 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="col-sm-6">
-                                            <div class="form-group" style="margin-bottom:0">
+                                            <div class="form-group" style="margin-bottom:0" data-filtroselect3>
                                                 <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                     <label><strong>@Resources.Resource.unit:</strong></label>
                                                     <button type="button"
                                                             data-filtroselect3-btn
-                                                            data-filtroselect3-select="select[name=parCompany_Ids]"
+                                                            data-filtroselect3-select="#modalNovaAcao select[name=parCompany_Ids]"
                                                             data-filtroselect3-url="@Url.Action("GetUnityByCurrentUser", "api/AcaoApi")"
-                                                            data-filtroselect3-default-select="@ViewBag.ShowParCompanyDefault">
+                                                            data-filtroselect3-default-select="@ViewBag.ShowParCompanyDefault"
+                                                            data-filtroselect3-custom-filter="planoDeAcao">
                                                         Abrir
                                                     </button>
                                                 </div>
@@ -468,9 +477,10 @@
                                                 <label><strong>Centro de Custo:</strong></label>
                                                 <button type="button"
                                                         data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parDepartment_Ids]"
+                                                        data-filtroselect3-select="#modalNovaAcao select[name=parDepartment_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParDepartment", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParDepartmentDefault">
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParDepartmentDefault"
+                                                        data-filtroselect3-custom-filter="planoDeAcao">
                                                     Abrir
                                                 </button>
                                             </div>
@@ -488,9 +498,10 @@
                                                 <label><strong>Seção/Atividade:</strong></label>
                                                 <button type="button"
                                                         data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parSecao_Ids]"
+                                                        data-filtroselect3-select="#modalNovaAcao select[name=parSecao_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParDepartmentFilho", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParSecaoDefault">
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParSecaoDefault"
+                                                        data-filtroselect3-custom-filter="planoDeAcao">
                                                     Abrir
                                                 </button>
                                             </div>
@@ -503,9 +514,10 @@
                                                 <label><strong>Item/Cargo</strong></label>
                                                 <button type="button"
                                                         data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parCargo_Ids]"
+                                                        data-filtroselect3-select="#modalNovaAcao select[name=parCargo_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParCargo", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParCargoDefault">
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParCargoDefault"
+                                                        data-filtroselect3-custom-filter="planoDeAcao">
                                                     Abrir
                                                 </button>
                                             </div>
@@ -517,9 +529,10 @@
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                 <label><strong>Indicador/Origem:</strong></label>
                                                 <button type="button" data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parLevel1_Ids]"
+                                                        data-filtroselect3-select="#modalNovaAcao select[name=parLevel1_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParLevel1", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default">
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default"
+                                                        data-filtroselect3-custom-filter="planoDeAcao">
                                                     Abrir
                                                 </button>
                                             </div>
@@ -531,9 +544,10 @@
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                 <label><strong>@Resources.Resource.level2:</strong></label>
                                                 <button type="button" data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parLevel2_Ids]"
+                                                        data-filtroselect3-select="#modalNovaAcao select[name=parLevel2_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParLevel2", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default">
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel2Default"
+                                                        data-filtroselect3-custom-filter="planoDeAcao">
                                                     Abrir
                                                 </button>
                                             </div>
@@ -545,9 +559,10 @@
                                             <div class="col-sm-12 p-0" style="padding-left:0px;">
                                                 <label><strong>Desvio/Tarefa:</strong></label>
                                                 <button type="button" data-filtroselect3-btn
-                                                        data-filtroselect3-select="select[name=parLevel3_Ids]"
+                                                        data-filtroselect3-select="#modalNovaAcao select[name=parLevel3_Ids]"
                                                         data-filtroselect3-url="@Url.Action("GetFilteredParLevel3", "api/Formulario")"
-                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel3Default">
+                                                        data-filtroselect3-default-select="@ViewBag.ShowParLevel3Default"
+                                                        data-filtroselect3-custom-filter="planoDeAcao">
                                                     Abrir
                                                 </button>
                                             </div>
@@ -577,8 +592,7 @@
 
                                 @*<button id="btnSave" type="submit" class="btn btn-primary non-printable">@Resources.Resource.save</button>*@
 
-                                <button class="btn btn-success" onclick="salvarNovaAcao('1')">Salvar e iniciar acao</button>
-                                <button class="btn btn-success" onclick="salvarNovaAcao('2')">Salvar e preencher depois</button>
+                                <button class="btn btn-success" onclick="salvarNovaAcao('1')">Próximo</button>
                             </div>
                         </form>
                     </div> 
@@ -600,7 +614,7 @@
             <div class="col-md-12 col-xs-12 col-sm-6" style="text-align: left;">
                 <button id="btnNovaAcao" onclick="abrirNovaAcao()" class="btn btn-primary">Nova Ação <text></text></button> 
             </div>
-            <div class="col-md-12 col-xs-12 col-sm-6 filtros" style="text-align: center;">
+            <div class="col-md-12 col-xs-12 col-sm-6 filtros" style="text-align: center; margin: 30px 0;">
                 <button type="button" id="btnPendente" onclick="status.obterAcoesPorStatus('1')" class="btn btn-danger">Pendente <text></text></button>
                 <button type="button" id="btnAndamento" onclick="status.obterAcoesPorStatus('2')" class="btn btn-info">Em Andamento <text></text></button>
                 <button type="button" id="btnConcluida" onclick="status.obterAcoesPorStatus('3')" class="btn btn-success">Concluida <text></text></button>
@@ -972,6 +986,8 @@
 
             evidenciasNaoConforme: {
 
+                listaDeEvidencias: [],
+
                 imprimirEvidencia: (dados) => {
 
                     var html = "";
@@ -984,7 +1000,7 @@
                             path: elemento.Path
                         };
 
-                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
+                        acao.evidenciasNaoConforme.listaDeEvidencias.push(evidencia);
 
                         html += `
                                 <div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
@@ -996,18 +1012,18 @@
                  },
 
                 removerEvidencia: (index) => {
-                    acao.evidenciasNaoConforme["ListaEvidencia"].splice((index - 1), 1);
+                    acao.evidenciasNaoConforme.listaDeEvidencias.splice((index - 1), 1);
 
                     $('#divEvidencias .fotos').empty();
 
-                    acao.evidenciasNaoConforme["ListaEvidencia"].forEach(function (elemento, indice) {
+                    acao.evidenciasNaoConforme.listaDeEvidencias.forEach(function (elemento, indice) {
 
                         let html;
 
                         if (elemento["base64"]) {
                             html += `<div class="col-sm-4">
                                     <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
-                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme["ListaEvidencia"].length})">Excluir</button>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme.listaDeEvidencias.length})">Excluir</button>
                                     </div>`;
                         }
                         else {
@@ -1019,20 +1035,20 @@
 
                 adicionarEvidencia: (base64) => {
 
-                    if (acao.evidenciasNaoConforme["ListaEvidencia"].length < 2) {
+                    if (acao.evidenciasNaoConforme.listaDeEvidencias.length < 2) {
 
                         var evidencia = {
                             base64: base64
                         };
 
-                        acao.evidenciasNaoConforme["ListaEvidencia"].push(evidencia);
+                        acao.evidenciasNaoConforme.listaDeEvidencias.push(evidencia);
 
                         let html;
 
                         if (evidencia["base64"]) {
                             html += `<div class="col-sm-4">
                                     <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
-                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme["ListaEvidencia"].length})">Excluir</button>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciasNaoConforme.removerEvidencia(${acao.evidenciasNaoConforme.listaDeEvidencias.length})">Excluir</button>
                                     </div>`;
                         }
                         else {
@@ -1265,30 +1281,11 @@
 
         function print() {
 
-            //$('img').attr('width', "150px");
-
             var winPrint = window.open('', '', '');
             winPrint.document.write(document.getElementById('formAcaoPrint').innerHTML);
             winPrint.document.close();
             winPrint.focus();
             winPrint.print();
-            //winPrint.close();
-
-            //printGRT.Inicializar({
-
-            //    headerHtml: document.getElementById('cabecalhoDiv').innerHTML,
-            //    bodyHtml: document.getElementById('formAcaoPrint').innerHTML,
-            //    footerHtml: document.getElementById('rodapeDiv').innerHTML,
-            //    numberMarginRight: 25,
-            //    numberMarginBottom: 25,
-            //    renderTableMargin: 0,
-            //    pageMarginHeader: "25px 25px 10px 25px",
-            //    pageMarginFooter: "10px 25px 25px 25px",
-            //    pageMarginBody: "0 25px 0 25px"
-
-            //});
-
-            //printGRT.Imprimir();
         }
 
         function carregarDados(id) {
@@ -1296,12 +1293,11 @@
             isVisualizar = false;
             const url = '@Url.Action("GetById", "api/AcaoApi")';
             $.ajax({
-                //data: JSON.stringify(id),
                 type: 'GET',
                 url: `${url}/${id}`,
                 contentType: "application/json",
                 success: function (dados) {
-                    preencherModal(dados, isVisualizar);
+                    preencherModalDeEdicao(dados, isVisualizar);
                     buscarFotos(id, isVisualizar);
                     closeLoader();
                 },
@@ -1407,13 +1403,16 @@
 
         }
 
-        function limparEvidenciasDaAcaoEAcompanhamento() {
+        function limparCamposDoModal() {
             acao.evidenciaConcluida["ListaEvidencia"] = []
             acao.evidenciasNaoConforme["ListaEvidencia"] = []
             acompanhamento.listaDeEvidencias = []
             $('#divEvidencias .fotos').empty();
             $('#actionsEvidencies .fotosConcluidas').empty();
             $('.evidenciasAcompanhamento').empty()
+            $('.responsavel').removeClass('required')
+            $('.dataConclusao').removeClass('required')
+            $('.horaConclusao').removeClass('required')
         }
 
          function limparCampoModalNovaAcao() {
@@ -1467,13 +1466,17 @@
             $('.preencherDepois').prop('disabled', true)
         }
 
-        function preencherModal(dados) {
+        let desabilitarSelecaoDeDataMenorQueHoje = () => $('#actionConclusionDate').attr('min', new Date().toISOString().split("T")[0])
+
+        function preencherModalDeEdicao(dados) {
+
+            desabilitarSelecaoDeDataMenorQueHoje()
             preencherInformacoesAcompanhamento(dados);
             permitirInserirAcompanhamento(dados);
             permitirVisualizarAcompanhamento(dados);
 
             acaoEditar = dados;
-            limparEvidenciasDaAcaoEAcompanhamento()
+            limparCamposDoModal()
 
             if (dados.ListaResponsavel) {
                 var html = `<option value="">Selecione...</option>`;
@@ -1508,8 +1511,6 @@
             $("#actionParLevel1_Id").text(dados.ParLevel1_Name);
             $("#actionParLevel2_Id").text(dados.ParLevel2_Name);
             $("#actionParLevel3_Id").text(dados.ParLevel3_Name);
-            $("#selectPrioridade").val(dados.Prioridade);
-            $("#selectResponsavel").val(dados.Responsavel);
             $("#actionConclusionDate").val(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]);
             $("#actionConclusionHour").val(dados.HoraConclusao);
             $("#actionReference").val(dados.Referencia);
@@ -1571,16 +1572,22 @@
         function enviarFormularioEditarAcao(status) {
 
             event.preventDefault();
-            //var form = $(event.currentTarget).serializeObject();
-            var form = $("#formAcao").serializeObject();
+
+            limparCamposObrigatoriosEdicao()
+            let form = $("#formAcao").serializeObject();
 
             form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
             form["ListaEvidenciaConcluida"] = acao.evidenciaConcluida["ListaEvidencia"];
             form["ListaEvidencia"] = acao.evidenciasNaoConforme["ListaEvidencia"];
 
-            form.status = status;
+            form.Status = status;
 
             const url = '@Url.Action("Post", "api/AcaoApi")';
+
+            if (!verificarSeExistemCamposNulos(form)) {
+                openMessageModal("Existem campos vazios que são obrigatórios!")
+                return
+            }                
 
             $.ajax({
                 url: url,
@@ -1599,6 +1606,34 @@
                     console.log('erro ao salvar ação');
                 }
             });
+        }
+
+        function limparCamposObrigatoriosEdicao() {
+            $('.responsavel').removeClass('required')
+            $('.dataConclusao').removeClass('required')
+            $('.horaConclusao').removeClass('required')
+        }
+
+        function verificarSeExistemCamposNulos(form){
+            if (form.Status == 2) {
+
+                let existeCampoNulo = true
+
+                if (form.Responsavel === '') {
+                    $('.responsavel').addClass('required')
+                    existeCampoNulo = false
+                }
+                if (form.DataConclusao === '') {
+                    $('.dataConclusao').addClass('required')
+                    existeCampoNulo = false
+                }
+                if (form.HoraConclusao === '') {
+                    $('.horaConclusao').addClass('required')
+                    existeCampoNulo = false
+                }
+
+                return existeCampoNulo
+            }
         }
 
         function verificaObrigatoriedade() {
