@@ -1127,26 +1127,31 @@ $('body').off('click', '[data-salvar]').on('click', '[data-salvar]', function (e
     if (currentIsPartialSave && hasOnlyTextField()) {
         if (inputsTextIsValid())
             openMessageConfirm("Deseja finalizar a amostra?", "todos os campos não preenchidos serão salvos.", preparaColetaParcialFim, closeMensagemImediatamente, "orange", "white");
-
+            encontraAcao();
+            atualizarTelaDeColetaEContadores(coletaAgrupada);
     } else if (currentIsPartialSave) {
 
         if (inputsTextIsValid())
             preparaColetaParcial();
+            encontraAcao();
+            atualizarTelaDeColetaEContadores(coletaAgrupada);
 
     } else {
 
         if (ColetasIsValid()) {
             PrepararColetas();
+            encontraAcao();
+            atualizarTelaDeColetaEContadores(coletaAgrupada);
         }
 
     }
 
 });
-
+var coletaAgrupada = null;
 function PrepararColetas() {
 
     //Verifica se existe coleta já realizada para este cargo.
-    var coletaAgrupada = null;
+    
     $(coletasAgrupadas).each(function (i, o) {
         if (o.ParCargo_Id == currentParCargo_Id
             && o.ParDepartment_Id == currentParDepartment_Id) {
@@ -1223,8 +1228,6 @@ function PrepararColetas() {
         );
     });
 
-    processAction(coletaJson);
-
     var cabecalhos = getCollectionHeaderFields(collectionDate);
 
     if (cabecalhos) {
@@ -1250,7 +1253,31 @@ function PrepararColetas() {
     //Mostra mensagem de que a coleta foi realizada com sucesso e fecha após 3 segundos
     openMensagem("Amostra salva com sucesso!", "blue", "white");
     closeMensagem(3000);
+}
 
+function encontraAcao(){
+    var acaoEncontrada = alertaDeAcaoExistente.verificarSeJaExisteAcao();
+    
+    if(acaoEncontrada){
+
+        //alertaDeAcaoExistente.abrirModal(acaoEncontrada)
+
+        openMessageConfirm('título', 'mensagem', alertaDeAcaoExistente.processAction, alertaDeAcaoExistente.closeModal, 'blue', 'texto');
+
+        // $('.modalAcaoExistente .fechar').click(function(){
+        //     closeModal(); 
+        // });
+
+        // $('.modalAcaoExistente .abrir').click(function(){
+        //     processAction(coletaJson);
+        // })
+    }
+    else{
+        processAction(coletaJson);       
+    }
+}
+
+function atualizarTelaDeColetaEContadores(coletaAgrupada){
     if (coletaAgrupada.Sample == 1) {
         //atualiza tela de coleta e contadores
         listarParCargo(true);
@@ -1258,7 +1285,6 @@ function PrepararColetas() {
         listarParLevels();
         $("html, body").animate({ scrollTop: 0 }, "fast");
     }
-
 }
 
 function AtualizaContadorDaAvaliacaoEAmostra(coletaAgrupada) {

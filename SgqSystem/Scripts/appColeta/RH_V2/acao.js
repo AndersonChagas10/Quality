@@ -4,54 +4,56 @@ var listaAcoesToSend = [];
 
 var alertaDeAcaoExistente = {
 
-    //Na hora que salvar uma coleta, chamará essa função
-    verificarSeJaExisteAcao: function(){
-
-        var existeAcao = parametrization.acoes.some(function(acao, indice){
-
-            return acao.ParDepartment_Id == currentParDepartment_Id &&
-                acao.ParDepartmentParent_Id == currentParDepartmentParent_Id && 
-                acao.ParCargo_Id == currentParCargo_Id &&
-                acao.ParCluster_Id == currentParCluster_Id &&         
-                alertaDeAcaoExistente.percorrerIndicadorTarefaMonitoramento(acao); 
-        })
-
-        if(existeAcao){
-            alertaDeAcaoExistente.abrirModal()
-        }
+    closeModal: function(){
+        closeModal();
     },
 
-    percorrerIndicadorTarefaMonitoramento: function(acao){
+    processAction: function(coletaJson){
+        processAction(coletaJson);
+    },
+
+    verificarSeJaExisteAcao: function(){
+
+        var acaoEncontrada = parametrization.acoes.find(function(item, indice){
+
+            return item.ParDepartment_Id == currentParDepartment_Id &&
+                item.ParDepartmentParent_Id == currentParDepartmentParent_Id && 
+                item.ParCargo_Id == currentParCargo_Id &&
+                item.ParCluster_Id == currentParCluster_Id &&         
+                alertaDeAcaoExistente.percorrerIndicadorTarefaMonitoramento(item)
+        })
+        return acaoEncontrada;
+    },
+
+    percorrerIndicadorTarefaMonitoramento: function(item){
         var listaDeCamposDoFormulario = $($('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar'))
 
         var IndicadorTarefaMonitoramentoEhIgual = listaDeCamposDoFormulario.each(function (indice, elemento) {
 
-            if(acao.ParLevel1_Id == $(elemento).attr('data-level1') &&
-            acao.ParLevel2_Id == $(elemento).attr('data-level2') &&
-            acao.ParLevel3_Id == $(elemento).attr('data-level3')){
-                return true
-            }
+            return item.ParLevel1_Id == $(elemento).attr('data-level1') &&
+                item.ParLevel2_Id == $(elemento).attr('data-level2') &&
+                item.ParLevel3_Id == $(elemento).attr('data-level3')
         })
 
         return IndicadorTarefaMonitoramentoEhIgual;
     },
     
-    abrirModal: function(){
+    abrirModal: function(acaoEncontrada){
         var html = '<div class="modal-overlay">'+
                         '<div class="modalAcaoExistente">'+
                             '<div id="form">'+
                                 '<h2>Alerta!</h2>'+
-                                '<p>Já existe ação criada de Nº 1234 para o Desvio 142.</p>'+
+                                '<p>Já existe ação criada de Nº '+ acaoEncontrada.Id + ' para o Desvio '+ acaoEncontrada.ParLevel3_Id +'.</p>'+
                                 '<p>Deseja abrir nova ação?</p>'+
                                 '<div class="input-group actions">'+
-                                    '<button class="abrirAcaoSim" onclick="abrirFormularioDeAcao()">SIM</button>'+
-                                    '<button class="abrirAcaoNao" onclick="closeModal()">NÃO</button>'+                                
+                                    '<button class="abrir">SIM</button>'+
+                                    '<button class="fechar">NÃO</button>'+                                
                                 '</div>'+
                             '</div>'+
                         '</div>'+
                     '</div>';
         openModal(html, 'white', 'black');
-    }
+    },
 }
 
 function processAction(coletaJson) {

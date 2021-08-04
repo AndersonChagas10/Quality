@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\EntityTrackViewModel.cs" />
+    <Compile Include="DTOs\PlanoDeAcao\AcaoDaColetaViewModel.cs" />
     <Compile Include="DTOs\PlanoDeAcao\AcaoFormViewModel.cs" />
     <Compile Include="DTOs\PlanoDeAcao\AcaoInputModel.cs" />
     <Compile Include="DTOs\PlanoDeAcao\AcaoViewModel.cs" />
