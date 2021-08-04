@@ -187,11 +187,17 @@ $('body').off('click', '[data-par-cargo-id]').on('click', '[data-par-cargo-id]',
     if (!podeRealizarColeta(currentEvaluationValue, currentTotalEvaluationValue)) {
         //alert('Não há mais avaliações disponiveis para realização de coleta para este cargo');
 
-        $('#acaoPendente').click(function () {
-            
+        $('#acaoPendente').mouseover(function(){
+            $( this ).css( "cursor", "pointer" );
+        })
+    
+        $('#acaoPendente').on('click', function(){ 
+            montaCorpoFormularioAcao(0); 
         });
+            
         openMensagem('Não há mais avaliações disponiveis para realização de coleta para este cargo', 'red', 'white');
         closeMensagem(2000);
+        
         return;
     }
 
