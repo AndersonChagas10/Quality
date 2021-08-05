@@ -4,7 +4,7 @@ function listarParLevels() {
 
     openColeta(levels);
 
-    openAction();
+    //openAction();
 
 }
 

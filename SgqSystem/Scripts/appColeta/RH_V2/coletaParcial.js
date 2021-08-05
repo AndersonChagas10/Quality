@@ -60,7 +60,7 @@ function isTarefaNA(linhaTarefa) {
     return isNA;
 }
 
-function hasOnlyTextField() {
+function possuiApenasCampoTextoVazio() {
 
     //Se apenas existir campos textos vazios para serem preenchidos
     if (!currentIsPartialSave) {

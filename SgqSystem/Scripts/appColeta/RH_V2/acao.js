@@ -4,14 +4,6 @@ var listaAcoesToSend = [];
 
 var alertaDeAcaoExistente = {
 
-    closeModal: function(){
-        closeModal();
-    },
-
-    processAction: function(coletaJson){
-        processAction(coletaJson);
-    },
-
     verificarSeJaExisteAcao: function(){
 
         var acaoEncontrada = parametrization.acoes.find(function(item, indice){
@@ -37,23 +29,36 @@ var alertaDeAcaoExistente = {
 
         return IndicadorTarefaMonitoramentoEhIgual;
     },
-    
-    abrirModal: function(acaoEncontrada){
-        var html = '<div class="modal-overlay">'+
-                        '<div class="modalAcaoExistente">'+
-                            '<div id="form">'+
-                                '<h2>Alerta!</h2>'+
-                                '<p>Já existe ação criada de Nº '+ acaoEncontrada.Id + ' para o Desvio '+ acaoEncontrada.ParLevel3_Id +'.</p>'+
-                                '<p>Deseja abrir nova ação?</p>'+
-                                '<div class="input-group actions">'+
-                                    '<button class="abrir">SIM</button>'+
-                                    '<button class="fechar">NÃO</button>'+                                
-                                '</div>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>';
-        openModal(html, 'white', 'black');
-    },
+
+    coletasVinculadasAcao: [],
+
+    encontrarAcao: function(){
+
+        alertaDeAcaoExistente.coletasVinculadasAcao = coletaJson;
+
+        var acaoEncontrada = alertaDeAcaoExistente.verificarSeJaExisteAcao();
+
+        var exibeCodigoDaAcao = acaoEncontrada.CodigoDaAcao != null ? 'de Nº '+ acaoEncontrada.CodigoDaAcao : "";
+        
+        if(acaoEncontrada){
+            openMessageConfirm('Alerta!',
+            'Já existe ação criada ' + exibeCodigoDaAcao + ' com Status: '+ acaoEncontrada.Status + ' para o Desvio: '+ acaoEncontrada.ParLevel3_Name +'. Deseja abrir nova ação?',
+            callbackAbrirAcao_SIM, callbackAbrirAcao_NAO, '#ffcd41', 'white');
+        }
+        else{
+            callbackAbrirAcao_SIM();     
+        }
+    }    
+}
+
+function callbackAbrirAcao_SIM(){
+    setTimeout(function(){
+        processAction(alertaDeAcaoExistente.coletasVinculadasAcao);
+    }, 200);
+}
+
+function callbackAbrirAcao_NAO(){
+    closeModal(); 
 }
 
 function processAction(coletaJson) {
