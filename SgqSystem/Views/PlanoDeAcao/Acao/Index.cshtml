@@ -1793,6 +1793,8 @@
                 AcaoId: dados.Id,
                 ListaNotificar: dados.ListaNotificarAcao
             };
+
+            acompanhamento.limparCampoObservacao();
             acompanhamento.imprimirListaNotificar();
 
             if (dados.ListaAcompanhamento) {
@@ -1976,6 +1978,10 @@
                     acompanhamento.objeto["ListaNotificar"].push(obj);
                     acompanhamento.imprimirListaNotificar(acompanhamento.objeto["ListaNotificar"])
                 }
+            },
+
+            limparCampoObservacao:() => {
+                $('#txtAcompanhamento_Observacao').val('')
             },
 
             salvarAcompanhamento: () => {
