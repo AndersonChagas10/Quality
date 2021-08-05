@@ -82,7 +82,7 @@ function openMessageConfirm(title, messagem, callbackYes, callbackNo, color, tex
 		'<div class="row">' +
 		'<h3>' + title + '</h3>' +
 		'<h4>' + messagem + '</h4>' +
-		'<button class="btn btn-primary pull-right" onclick="closeModal();' + callbackYes.name + '();">Sim</button>' +
+		'<button class="btn btn-primary pull-right" onclick="closeModal(); setTimeout(function(){ ' + callbackYes.name + '(); }, 200)">Sim</button>' +
 		'<button class="btn btn-default pull-right" onclick="closeModal();' + callbackNo.name + '();">Não</button>' +
 		'</div>' +
 		'</div>';
