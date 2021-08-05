@@ -2,7 +2,7 @@
 var listaAcoesCurrent = [];
 var listaAcoesToSend = []; 
 
-var alertaDeAcaoExistente = {
+var alertaDaAcao = {
 
     verificarSeJaExisteAcao: function(){
 
@@ -12,7 +12,7 @@ var alertaDeAcaoExistente = {
                 item.ParDepartmentParent_Id == currentParDepartmentParent_Id && 
                 item.ParCargo_Id == currentParCargo_Id &&
                 item.ParCluster_Id == currentParCluster_Id &&         
-                alertaDeAcaoExistente.percorrerIndicadorTarefaMonitoramento(item)
+                alertaDaAcao.percorrerIndicadorTarefaMonitoramento(item)
         })
         return acaoEncontrada;
     },
@@ -34,9 +34,9 @@ var alertaDeAcaoExistente = {
 
     encontrarAcao: function(){
 
-        alertaDeAcaoExistente.coletasVinculadasAcao = coletaJson;
+        alertaDaAcao.coletasVinculadasAcao = coletaJson;
 
-        var acaoEncontrada = alertaDeAcaoExistente.verificarSeJaExisteAcao();
+        var acaoEncontrada = alertaDaAcao.verificarSeJaExisteAcao();
 
         var exibeCodigoDaAcao = acaoEncontrada.CodigoDaAcao != null ? 'de Nº '+ acaoEncontrada.CodigoDaAcao : "";
         
@@ -53,7 +53,7 @@ var alertaDeAcaoExistente = {
 
 function callbackAbrirAcao_SIM(){
     setTimeout(function(){
-        processAction(alertaDeAcaoExistente.coletasVinculadasAcao);
+        processAction(alertaDaAcao.coletasVinculadasAcao);
     }, 200);
 }
 

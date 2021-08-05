@@ -1246,7 +1246,7 @@ function PrepararColetas() {
     openMensagem("Amostra salva com sucesso!", "blue", "white");
     closeMensagem(3000);
 
-    alertaDeAcaoExistente.encontrarAcao();
+    alertaDaAcao.encontrarAcao();
     
     if (coletaAgrupada.Sample == 1) {
         //atualiza tela de coleta e contadores
