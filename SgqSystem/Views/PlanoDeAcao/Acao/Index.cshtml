@@ -907,6 +907,8 @@
 
             evidenciaConcluida: {
 
+                listaDeEvidencias: [],
+
                 imprimirEvidencia: (dados) => {
                     var html = "";
 
@@ -919,7 +921,7 @@
                             path: elemento.Path
                         };
 
-                        acao.evidenciaConcluida["ListaEvidencia"].push(evidencia)
+                        acao.evidenciaConcluida.listaDeEvidencias.push(evidencia)
 
                         html += `<div class="col-sm-4" style="display:inline-block; width:49%; height:20%;">
                                 <img src="data:image/png;base64,${evidencia.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
@@ -931,20 +933,20 @@
 
                 adicionarEvidencia: (base64) => {
 
-                    if (acao.evidenciaConcluida["ListaEvidencia"].length < 2) {
+                    if (acao.evidenciaConcluida.listaDeEvidencias.length < 2) {
 
                         var evidencia = {
                             base64: base64
                         };
 
-                        acao.evidenciaConcluida["ListaEvidencia"].push(evidencia);
+                        acao.evidenciaConcluida.listaDeEvidencias.push(evidencia);
 
                         let html;
 
                         if (evidencia["base64"]) {
                             html += `<div class="col-sm-4">
                                     <img src="data:image/png;base64,${evidencia["base64"]}" data-img class="img-responsive"/>
-                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${acao.evidenciaConcluida["ListaEvidencia"].length})">Excluir</button>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${acao.evidenciaConcluida.listaDeEvidencias.length})">Excluir</button>
                                     </div>`;
                         }
                         else {
@@ -958,19 +960,19 @@
 
                 removerEvidencia: (index) => {
 
-                    acao.evidenciaConcluida["ListaEvidencia"].splice((index - 1), 1);
+                    acao.evidenciaConcluida.listaDeEvidencias.splice((index - 1), 1);
 
                     $('#actionsEvidencies .fotosConcluidas').empty();
 
-                    if (acao.evidenciaConcluida["ListaEvidencia"].length > 0) {
-                        acao.evidenciaConcluida["ListaEvidencia"].forEach(function (elemento, indice) {
+                    if (acao.evidenciaConcluida.listaDeEvidencias.length > 0) {
+                        acao.evidenciaConcluida.listaDeEvidencias.forEach(function (elemento, indice) {
 
                             let html;
 
                             if (elemento["base64"]) {
                                 html += `<div class="col-sm-4">
                                     <img src="data:image/png;base64,${elemento["base64"]}" data-img class="img-responsive"/>
-                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${acao.evidenciaConcluida["ListaEvidencia"].length})">Excluir</button>
+                                    <button class="btn btn-danger btn-sm form-control" onclick="acao.evidenciaConcluida.removerEvidencia(${acao.evidenciaConcluida.listaDeEvidencias.length})">Excluir</button>
                                     </div>`;
                             }
                             else {
@@ -1404,8 +1406,8 @@
         }
 
         function limparCamposDoModal() {
-            acao.evidenciaConcluida["ListaEvidencia"] = []
-            acao.evidenciasNaoConforme["ListaEvidencia"] = []
+            acao.evidenciaConcluida.listaDeEvidencias = []
+            acao.evidenciasNaoConforme.listaDeEvidencias = []
             acompanhamento.listaDeEvidencias = []
             $('#divEvidencias .fotos').empty();
             $('#actionsEvidencies .fotosConcluidas').empty();
@@ -1577,8 +1579,8 @@
             let form = $("#formAcao").serializeObject();
 
             form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
-            form["ListaEvidenciaConcluida"] = acao.evidenciaConcluida["ListaEvidencia"];
-            form["ListaEvidencia"] = acao.evidenciasNaoConforme["ListaEvidencia"];
+            form["ListaEvidenciaConcluida"] = acao.evidenciaConcluida.listaDeEvidencias;
+            form["ListaEvidencia"] = acao.evidenciasNaoConforme.listaDeEvidencias;
 
             form.Status = status;
 
