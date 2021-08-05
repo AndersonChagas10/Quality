@@ -1414,7 +1414,6 @@
             $('.evidenciasAcompanhamento').empty()
             $('.responsavel').removeClass('required')
             $('.dataConclusao').removeClass('required')
-            $('.horaConclusao').removeClass('required')
         }
 
          function limparCampoModalNovaAcao() {
@@ -1521,8 +1520,8 @@
             permitirEditar(dados)
             desabilitarBotaoSalvarEPreencherDepois(dados)
 
-            $("#txtAcao_Naoconformidade").text(dados.Acao_Naoconformidade);
-            $("#txtAcaoText").text(dados.AcaoText);
+            $("#txtAcao_Naoconformidade").val(dados.Acao_Naoconformidade);
+            $("#txtAcaoText").val(dados.AcaoText);
 
             imprimirListaNotificarAcao(dados.ListaNotificarAcao);
 
@@ -1616,10 +1615,10 @@
             $('.horaConclusao').removeClass('required')
         }
 
-        function verificarSeExistemCamposNulos(form){
-            if (form.Status == 2) {
+        function verificarSeExistemCamposNulos(form) {
+            let existeCampoNulo = true
 
-                let existeCampoNulo = true
+            if (form.Status == 2) {                
 
                 if (form.Responsavel === '') {
                     $('.responsavel').addClass('required')
@@ -1632,10 +1631,9 @@
                 if (form.HoraConclusao === '') {
                     $('.horaConclusao').addClass('required')
                     existeCampoNulo = false
-                }
-
-                return existeCampoNulo
+                }                
             }
+            return existeCampoNulo
         }
 
         function verificaObrigatoriedade() {
