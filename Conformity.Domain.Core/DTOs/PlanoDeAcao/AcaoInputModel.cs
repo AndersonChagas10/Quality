@@ -29,26 +29,27 @@ namespace Conformity.Domain.Core.DTOs
         {
             get
             {
-                return _status;
-            }
-            set
-            {
-                if(value == EAcaoStatus.Pendente)
+                if (_status == EAcaoStatus.Pendente)
                 {
-                    _status = EAcaoStatus.Pendente;
+                    return EAcaoStatus.Pendente;
                 }
-                else if (value == EAcaoStatus.Em_Andamento && !DentroDoPrazo())
+                else if (_status == EAcaoStatus.Em_Andamento && !DentroDoPrazo())
                 {
-                    _status = EAcaoStatus.Atrasada;
+                    return EAcaoStatus.Atrasada;
                 }
-                else if (value == EAcaoStatus.Em_Andamento && DentroDoPrazo())
+                else if (_status == EAcaoStatus.Em_Andamento && DentroDoPrazo())
                 {
-                    _status = EAcaoStatus.Em_Andamento;
+                    return EAcaoStatus.Em_Andamento;
                 }
                 else
                 {
-                    _status = value;
+                    return _status;
                 }
+                
+            }
+            set
+            {
+                 _status = value;
             }
         }
 
