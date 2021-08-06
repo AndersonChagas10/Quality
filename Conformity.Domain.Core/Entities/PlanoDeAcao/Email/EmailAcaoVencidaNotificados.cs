@@ -28,7 +28,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
             this.Body = $@"   
             Olá!
             <br><br>
-	        Seguindo o parâmetro da regra de Plano de Ação cadastrada no sistema SG-SEMST, informamos que a Ação descrita a seguir, em que você foi notificado, venceu em {(acao.DataConclusao != null ? acao.DataConclusao?.ToString("dd/MM/yyyy") : "")}.
+	        Seguindo o parâmetro da regra de Plano de Ação cadastrada no sistema SG-SEMST, informamos que a Ação descrita a seguir, em que você foi notificado, venceu em { acao.DataConclusao?.ToString("dd/MM/yyyy") ?? "" }.
             Favor entrar em contato com o responsável { acao.ResponsavelUser.Name } para atualizar o status da Ação no sistema.           
             <br><br>
             Formulário de Ação - ID {acao.Id}
@@ -37,13 +37,13 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
             Data de emissão: {acao.DataEmissao?.ToString("dd/MM/yyyy")}<br>
             Hora de emissão: {acao.HoraEmissao}<br>
             Unidade: {acao.ParCompany.Description}<br>
-            Centro de Custo: {acao.ParDepartmentParent.Name}<br>
-            Seção / Atividade: {acao.ParDepartment.Name}<br>
-            Item / Tarefa: {acao.ParCargo.Name}<br><br>
+            Centro de Custo: {(acao.ParDepartmentParent != null ? acao.ParDepartmentParent.Name : "")}<br>
+            Seção / Atividade: {(acao.ParDepartment != null ? acao.ParDepartment.Name : "")}<br>
+            Item / Tarefa: {(acao.ParCargo != null ? acao.ParCargo.Name : "")}<br><br>
             
-            Indicador / Origem: {acao.ParLevel1.Name}<br>
-            Monitoramento:  {acao.ParLevel2.Name}<br>
-            Desvio: {acao.ParLevel3.Name}<br>
+            Indicador / Origem: {acao.ParLevel1.Name }<br>
+            Monitoramento:  {(acao.ParLevel2 != null ? acao.ParLevel2.Name : "") }<br>
+            Desvio: {(acao.ParLevel3 != null ? acao.ParLevel3.Name : "")}<br>
              
             Não Conformidade / Ocorrência:  {acao.Acao_Naoconformidade}<br><br>
              
@@ -52,10 +52,10 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
             Evidência da Não Conformidade: <br><br>
             
             Referência: {acao.Referencia}<br>
-            Data da conclusão: { (acao.DataConclusao != null ? acao.DataConclusao?.ToString("dd/MM/yyyy") : "")}<br>
+            Data da conclusão: { (acao.DataConclusao?.ToString("dd/MM/yyyy") ?? "")}<br>
             Hora da conclusão: {acao.HoraConclusao}
             Status da Ação: {Enum.GetName(typeof(EAcaoStatus), acao.Status).Replace('_', ' ')}<br>
-            Responsável: {(acao.ResponsavelUser != null ? acao.ResponsavelUser.FullName : "")}<br>
+            Responsável: { acao.ResponsavelUser.FullName ?? ""}<br>
             Notificar: {string.Join(",", acao.NotificarUsers.Select(x => x.FullName)) }<br><br>
             
             Atenciosamente, <br>

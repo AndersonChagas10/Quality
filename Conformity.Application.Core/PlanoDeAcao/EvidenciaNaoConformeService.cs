@@ -6,6 +6,7 @@ using Conformity.Domain.Core.Interfaces;
 using Conformity.Infra.CrossCutting;
 using Conformity.Infra.Data.Core.Repository.PlanoDeAcao;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -89,16 +90,14 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
         public void VincularEvidenciasAAcao(AcaoInputModel objAcao, List<EvidenciaViewModel> listaInserir)
         {
-            var objAcaoDB = _acaoRepository.GetById(objAcao.Id);
-
             foreach (var evidenciaNaoConformidade in listaInserir)
             {
-                var filePath = SaveFileEvidenciaNaoConformidade(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaNaoConformidade.Base64);
+                var filePath = SaveFileEvidenciaNaoConformidade(objAcao.Id, objAcao.ParCompany_Id, evidenciaNaoConformidade.Base64);
                 _evidenciaNaoConformeRepository.SaveEvidenciaNaoConformidade(new EvidenciaNaoConforme() { Acao_Id = objAcao.Id, Path = filePath });
             }
         }
 
-        private string SaveFileEvidenciaNaoConformidade(int parLevel1_Id, int parLevel2_Id, int parLevel3_Id, string fileBase64)
+        private string SaveFileEvidenciaNaoConformidade(int acaoId, int parCompany_Id, string fileBase64)
         {
             var basePath = DicionarioEstatico.DicionarioEstaticoHelpers.StorageRoot ?? "~";
 
@@ -108,7 +107,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
             }
 
             basePath = basePath + "\\Acao";
-            string fileName = parLevel1_Id + parLevel2_Id + parLevel3_Id + DateTime.Now.GetHashCode() + new Random().Next(1000, 9999) + ".png";
+            string fileName = acaoId + parCompany_Id + new Random().Next(1000, 9999) + ".png";
 
             Exception exception;
 

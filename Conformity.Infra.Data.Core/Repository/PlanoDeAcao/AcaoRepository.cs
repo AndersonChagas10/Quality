@@ -544,16 +544,74 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
         public Acao GetById(int id)
         {
             Acao acao = _repositoryAcao.GetById(id);
+
             acao.ParLevel1 = _repositoryParLevel1.GetById(acao.ParLevel1_Id);
-            acao.ParLevel2 = _repositoryParLevel2.GetById(acao.ParLevel2_Id);
-            acao.ParLevel3 = _repositoryParLevel3.GetById(acao.ParLevel3_Id);
-            acao.ParCargo = _repositoryParCargo.GetById(acao.ParCargo_Id);
+
+            if(acao.ParLevel2_Id > 0)
+            {
+                acao.ParLevel2 = _repositoryParLevel2.GetById(acao.ParLevel2_Id);
+            }
+            else
+            {
+                acao.ParLevel2 = null;
+            }
+            
+            if(acao.ParLevel3_Id > 0)
+            {
+                acao.ParLevel3 = _repositoryParLevel3.GetById(acao.ParLevel3_Id);
+            }
+            else
+            {
+                acao.ParLevel3 = null;
+            }
+            
+            if(acao.ParCargo_Id > 0)
+            {
+                acao.ParCargo = _repositoryParCargo.GetById(acao.ParCargo_Id);
+            }
+            else
+            {
+                acao.ParCargo = null;
+            }
+            
+            if(acao.ParDepartment_Id > 0)
+            {
+                acao.ParDepartment = _repositoryParDepartment.GetById(acao.ParDepartment_Id);
+            }
+            else
+            {
+                acao.ParDepartment = null;
+            }
+            
+            if(acao.ParDepartmentParent_Id > 0)
+            {
+                acao.ParDepartmentParent = _repositoryParDepartment.GetById(acao.ParDepartmentParent_Id);
+            }
+            else
+            {
+                acao.ParDepartmentParent = null;
+            }
+            
+            if(acao.ParCluster_Id > 0)
+            {
+                acao.ParCluster = _repositoryParCluster.GetById(acao.ParCluster_Id);
+            }
+            else
+            {
+                acao.ParCluster = null;
+            }
+            
+            if(acao.ParClusterGroup_Id > 0)
+            {
+                acao.ParClusterGroup = _repositoryParClusterGroup.GetById(acao.ParClusterGroup_Id);
+            }
+            else
+            {
+                acao.ParClusterGroup = null;
+            }
+
             acao.ParCompany = _repositoryParCompany.GetById(acao.ParCompany_Id);
-            acao.ParDepartment = _repositoryParDepartment.GetById(acao.ParDepartment_Id); //Sessão
-            acao.ParDepartmentParent = _repositoryParDepartment.GetById(acao.ParDepartmentParent_Id); //Centro de custo
             acao.ResponsavelUser = _repositoryUserSgq.GetById(acao.Responsavel.Value);
-            acao.ParCluster = _repositoryParCluster.GetById(acao.ParCluster_Id);
-            acao.ParClusterGroup = _repositoryParClusterGroup.GetById(acao.ParClusterGroup_Id);
             acao.NotificarUsers = GetNotificarUsersBy(acao.Id);
             acao.EvidenciaAcaoConcluida = new string[] { };
             acao.EvidenciaNaoConformidade = new string[] { };

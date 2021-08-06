@@ -88,17 +88,15 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
         public void VincularEvidenciasAAcaoConcluida(AcaoInputModel objAcao, List<EvidenciaViewModel> listaInserir)
         {
-            var objAcaoDB = _acaoRepository.GetById(objAcao.Id);
-
             foreach (var evidenciaAcaoConcluida in listaInserir)
             {
-                var filePath = SaveFileEvidenciaAcaoConcluida(objAcaoDB.ParLevel1_Id, objAcaoDB.ParLevel2_Id, objAcaoDB.ParLevel3_Id, evidenciaAcaoConcluida.Base64);
+                var filePath = SaveFileEvidenciaAcaoConcluida(objAcao.Id, objAcao.ParCompany_Id, evidenciaAcaoConcluida.Base64);
                 _evidenciaConcluidaRepository.SalvarEvidenciaAcaoConcluida(new EvidenciaConcluida() { Acao_Id = objAcao.Id, Path = filePath });
             }
         }
 
         
-        private string SaveFileEvidenciaAcaoConcluida(int parLevel1_Id, int parLevel2_Id, int parLevel3_Id, string fileBase64)
+        private string SaveFileEvidenciaAcaoConcluida(int acaoId, int parCompany_Id, string fileBase64)
         {
             var basePath = DicionarioEstatico.DicionarioEstaticoHelpers.StorageRoot ?? "~";
             if (basePath.Equals("~"))
@@ -107,7 +105,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
             }
 
             basePath = basePath + "\\Acao";
-            string fileName = parLevel1_Id + parLevel2_Id + parLevel3_Id + DateTime.Now.GetHashCode() + new Random().Next(1000, 9999) + ".png";
+            string fileName = acaoId + parCompany_Id + DateTime.Now.GetHashCode() + new Random().Next(1000, 9999) + ".png";
 
             Exception exception;
 
