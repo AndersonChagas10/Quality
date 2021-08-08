@@ -38,13 +38,13 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
             Data de emissão: {acao.DataEmissao?.ToString("dd/MM/yyyy")}<br>
             Hora de emissão: {acao.HoraEmissao}<br>
             Unidade: {acao.ParCompany.Description}<br>
-            Centro de Custo: {(acao.ParDepartmentParent != null ? acao.ParDepartmentParent.Name : "")}<br>
-            Seção / Atividade: {(acao.ParDepartment != null ? acao.ParDepartment.Name : "")}<br>
-            Item / Tarefa: {(acao.ParCargo != null ? acao.ParCargo.Name : "")}<br><br>
+            Centro de Custo: {(acao.ParDepartmentParent?.Name ?? "")}<br>
+            Seção / Atividade: {(acao.ParDepartment?.Name ?? "")}<br>
+            Item / Tarefa: {(acao.ParCargo?.Name ?? "")}<br><br>
             
             Indicador / Origem: {acao.ParLevel1 }<br>
-            Monitoramento:  {(acao.ParLevel2 != null ? acao.ParLevel2.Name : "")}<br>
-            Desvio: {(acao.ParLevel3 != null ? acao.ParLevel3.Name : "")}<br>
+            Monitoramento:  {(acao.ParLevel2?.Name ?? "")}<br>
+            Desvio: {(acao.ParLevel3?.Name ?? "")}<br>
              
             Não Conformidade / Ocorrência:  {acao.Acao_Naoconformidade}<br><br>
              
