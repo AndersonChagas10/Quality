@@ -25,7 +25,7 @@ function listarParCargo(isVoltar) {
 
         var flagAcao = "&nbsp;";
         if (getAcoesByParCargo(o.Id).length > 0)
-            flagAcao = '<span class="badge">Ação Pendente</span>';
+            flagAcao = '<span id="acaoPendente" style="cursor: pointer;" onclick="montaCorpoFormularioAcao(0)" class="badge">Ação Pendente</span>';
 
         var style = '';
         if (!podeRealizarColeta(currentEvaluationSample.Evaluation, o.Evaluation.Evaluation)) {
@@ -189,6 +189,7 @@ $('body').off('click', '[data-par-cargo-id]').on('click', '[data-par-cargo-id]',
 
         openMensagem('Não há mais avaliações disponiveis para realização de coleta para este cargo', 'red', 'white');
         closeMensagem(2000);
+        
         return;
     }
 
