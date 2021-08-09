@@ -563,7 +563,6 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 
             acao.ParCompany = _repositoryParCompany.GetById(acao.ParCompany_Id);
             acao.ResponsavelUser = _repositoryUserSgq.GetById(acao.Responsavel.Value);
-            acao.NotificarUsers = GetNotificarUsersBy(acao.Id);
             acao.EvidenciaAcaoConcluida = new string[] { };
             acao.EvidenciaNaoConformidade = new string[] { };
             acao.EmissorUser = _repositoryUserSgq.GetById(acao.Emissor);
@@ -571,7 +570,7 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
             return acao;
         }
 
-        public IEnumerable<UserSgq> GetNotificarUsersBy(int acao_Id)
+        public IEnumerable<UserSgq> ObterNotificaveisDaAcao(int acao_Id)
         {
             string query = $@"SELECT
                             	U.*
@@ -585,6 +584,22 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
             IEnumerable<UserSgq> usuarios = _aDOContext.SearchQuery<UserSgq>(query).ToList();
             return usuarios;
         }
+        
+        public IEnumerable<UserSgq> ObterNotificaveisDoAcompanhamento(int acompanhamentoAcaoId) 
+        { 
+            string query = $@"SELECT
+                            	U.*
+                            FROM UserSgq U
+                            INNER JOIN Pa.AcompanhamentoAcaoXNotificar AAXN
+                            	ON AAXN.UserSgq_Id = u.Id
+                            WHERE AAXN.AcompanhamentoAcao_Id = {acompanhamentoAcaoId}
+                            AND AAXN.IsActive = 1";
+
+            IEnumerable<UserSgq> usuarios = _aDOContext.SearchQuery<UserSgq>(query).ToList();
+            return usuarios;
+        }
+
+       
 
         public void AlterarStatusComBaseNoAcompanhamento(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
         {

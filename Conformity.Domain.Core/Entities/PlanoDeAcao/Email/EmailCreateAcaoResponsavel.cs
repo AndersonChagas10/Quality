@@ -69,7 +69,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 
         public void MontarSybject(Acao acao)
         {
-            this.Subject = $@"Responsável por ação gerada pelo SG-SESMT – Desvio no indicador {acao.ParLevel1 }";
+            this.Subject = $@"Responsável por ação gerada pelo SG-SESMT – Desvio no indicador {acao.ParLevel1.Name }";
         }
 
         public void MontarTo(Acao acao)

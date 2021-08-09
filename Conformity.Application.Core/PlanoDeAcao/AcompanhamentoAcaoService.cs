@@ -29,7 +29,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
             _logErrorService = logErrorService;
         }
 
-        public AcaoViewModel SalvarAcompanhamentoComNotificaveis(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
+        public int SalvarAcompanhamentoComNotificaveis(int id, AcompanhamentoAcaoInputModel objAcompanhamentoAcao)
         {
             try
             {
@@ -77,12 +77,13 @@ namespace Conformity.Application.Core.PlanoDeAcao
                     AcompanhamentoAcaoXAttributes = listaAcompanhamentoAcaoXAttributes
                 };
                 base.Add(acompanhamento);
+
+                return acompanhamento.Id;
             }
             catch (Exception e)
             {
-                return null;
+                return 0;
             }
-            return null;
         }
 
         private string ConverterEvidencia(int acao_Id, string fileBase64)
