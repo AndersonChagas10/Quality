@@ -156,8 +156,8 @@ function montaCorpoFormularioAcao(index) {
         '   <div class="form-group row" style="border: 2px;border-color: azure;border-style: groove;">' +
         '       <div class="col-xs-12">' +
         '           <p id="actionParCompany_Id">Unidade: ' + currentAction.ParCompany_Name + '</p>' +
-        '           <p id="actionParDepartment_Id">Centro de Custo: ' + currentAction.ParDepartment_Name + '</p>' +
-        '           <p id="actionParDepartmentParent_Id">Item/Tarefa: ' + currentAction.ParDepartmentParent_Name + '</p>' +
+        '           <p id="actionParDepartment_Id">Centro de Custo/Setor: ' + currentAction.ParDepartment_Name + '</p>' +
+        '           <p id="actionParDepartmentParent_Id">Item/Tarefa: ' + currentAction.ParLevel3_Name + '</p>' +
         '           <p id="actionParCargo_Id">Item/Cargo: ' + currentAction.ParCargo_Name + ' </p>' +
         '           <p id="actionParLevel1_Id" data-action-level1="' + currentAction.ParLevel1_Id + '"> Indicador/Origem: ' + currentAction.ParLevel1_Name + '</p>' +
         '           <p id="actionParLevel2_Id" data-action-level2="' + currentAction.ParLevel2_Id + '"> Monitoramento: ' + currentAction.ParLevel2_Name + '</p>' +
