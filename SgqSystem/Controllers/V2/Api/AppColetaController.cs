@@ -1,4 +1,5 @@
 ﻿using ADOFactory;
+using Conformity.Domain.Core.DTOs.PlanoDeAcao;
 using Dominio;
 using Dominio.AcaoRH;
 using Dominio.AcaoRH.Email;
@@ -16,6 +17,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace SgqSystem.Controllers.V2.Api
 {
@@ -290,6 +292,7 @@ namespace SgqSystem.Controllers.V2.Api
             List<PargroupQualificationXParLevel3ValueViewModel> listaPargroupQualificationXParLevel3Value;
             List<PargroupQualificationViewModel> listaPargroupQualification;
             List<UserSgqViewModel> listaAuditor = new List<UserSgqViewModel>();
+            List<AcaoDaColetaViewModel> listaDeAcoes;
 
             GetAppParametrizationBusiness business = new GetAppParametrizationBusiness(appParametrization);
 
@@ -716,6 +719,52 @@ namespace SgqSystem.Controllers.V2.Api
                         }).FirstOrDefault());
                     }
                 }
+
+                List<string> listaDeStatus = new List<string>()
+                { EAcaoStatus.Em_Andamento.ToString(),
+                  EAcaoStatus.Atrasada.ToString(),
+                  EAcaoStatus.Pendente.ToString()
+                };
+
+                var query = $@"SELECT
+                                 PAC.Id,
+                                 PL1.Id AS ParLevel1_Id,
+                                 PL2.Id AS ParLevel2_Id,
+                                 PL3.Id AS ParLevel3_Id,
+                                 PL3.Name AS ParLevel3_Name,
+                                 PC.Id AS ParCompany_Id,
+                                 PD.Id AS ParDepartment_Id,
+                                 PD.Parent_Id AS ParDepartmentParent_Id,
+                                 PCG.Id AS ParCargo_Id, 
+                                 PAC.Status,
+								 PAC.ParCluster_Id,
+	                             AXA.Value AS CodigoDaAcao
+                                 FROM Pa.Acao PAC  WITH (NOLOCK)
+                                 LEFT JOIN ParLevel1 PL1  WITH (NOLOCK)
+                                 ON PL1.Id = PAC.ParLevel1_Id
+                                 LEFT JOIN ParLevel2 PL2  WITH (NOLOCK)
+                                 ON PL2.Id = PAC.ParLevel2_Id
+                                 LEFT JOIN ParLevel3 PL3  WITH (NOLOCK)
+                                 ON PL3.Id = PAC.ParLevel3_Id
+                                 LEFT JOIN ParCompany PC  WITH (NOLOCK)
+                                 ON PC.Id = PAC.ParCompany_Id
+                                 LEFT JOIN ParDepartment PD  WITH (NOLOCK)
+                                 ON PD.Id = PAC.ParDepartment_Id
+                                 LEFT JOIN ParDepartment PDS  WITH (NOLOCK)
+                                 ON PDs.Id = PAC.ParDepartmentParent_Id
+                                 LEFT JOIN ParCargo PCG  WITH (NOLOCK)
+                                 ON PCG.Id = PAC.ParCargo_Id
+	                             LEFT JOIN Pa.AcaoXAttributes AXA
+	                             ON AXA.Acao_Id = PAC.Id
+                                 WHERE PAC.Status IN({ string.Join(",",listaDeStatus) })
+                                 AND PAC.ParCompany_Id = { appParametrization.ParCompany_Id}
+                                 AND PAC.ParClusterGroup_Id = { appParametrization.ParClusterGroup_Id }
+                                 AND PAC.ParCluster_Id = {appParametrization.ParCluster_Id}";
+
+                using (var factory = new Factory("DefaultConnection"))
+                {
+                    listaDeAcoes = factory.SearchQuery<AcaoDaColetaViewModel>(query).ToList();
+                }
             }
 
             return Ok(new
@@ -750,7 +799,8 @@ namespace SgqSystem.Controllers.V2.Api
                 listaPargroupQualification,
                 listaPargroupQualificationXParQualification,
                 listaPargroupQualificationXParLevel3Value,
-                listaAuditor
+                listaAuditor,
+                listaDeAcoes
             });
         }
 

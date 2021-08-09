@@ -1,6 +1,63 @@
 ﻿var listaAcoes = [];
 var listaAcoesCurrent = [];
-var listaAcoesToSend = [];
+var listaAcoesToSend = []; 
+
+var alertaDaAcao = {
+
+    verificarSeJaExisteAcao: function(){
+
+        var acaoEncontrada = parametrization.listaDeAcoes.find(function(item, indice){
+            return item.ParDepartment_Id == currentParDepartment_Id &&
+                item.ParDepartmentParent_Id == currentParDepartmentParent_Id && 
+                item.ParCargo_Id == currentParCargo_Id &&
+                item.ParCluster_Id == currentParCluster_Id &&         
+                alertaDaAcao.verificarSeExisteAcaoComParLevelsIguais(item)
+        })
+        return acaoEncontrada;
+    },
+
+    verificarSeExisteAcaoComParLevelsIguais: function(item){
+        var listaDeCamposDoFormulario = $($('form[data-form-coleta] div[data-linha-coleta]').not('.naoSalvar'))
+
+        var existe = $.grep(listaDeCamposDoFormulario, function (elemento, indice) {
+            return item.ParLevel1_Id == $(elemento).attr('data-level1') &&
+                item.ParLevel2_Id == $(elemento).attr('data-level2') &&
+                item.ParLevel3_Id == $(elemento).attr('data-level3')
+        });
+
+        return existe.length > 0;
+    },
+
+    coletasVinculadasAcao: [],
+
+    encontrarAcao: function(){
+
+        alertaDaAcao.coletasVinculadasAcao = coletaJson;
+
+        var acaoEncontrada = alertaDaAcao.verificarSeJaExisteAcao();
+
+        var exibeCodigoDaAcao = acaoEncontrada.CodigoDaAcao != null ? 'de Nº '+ acaoEncontrada.CodigoDaAcao : "";
+        
+        if(acaoEncontrada){
+            openMessageConfirm('Alerta!',
+            'Já existe ação criada ' + exibeCodigoDaAcao + ' com Status: '+ acaoEncontrada.Status + ' para o Desvio: '+ acaoEncontrada.ParLevel3_Name +'. Deseja abrir nova ação?',
+            callbackAbrirAcao_SIM, callbackAbrirAcao_NAO, '#ffcd41', 'white');
+        }
+        else{
+            callbackAbrirAcao_SIM();     
+        }
+    }    
+}
+
+function callbackAbrirAcao_SIM(){
+    setTimeout(function(){
+        processAction(alertaDaAcao.coletasVinculadasAcao);
+    }, 200);
+}
+
+function callbackAbrirAcao_NAO(){
+    closeModal(); 
+}
 
 function processAction(coletaJson) {
 
