@@ -720,10 +720,10 @@ namespace SgqSystem.Controllers.V2.Api
                     }
                 }
 
-                List<string> listaDeStatus = new List<string>()
-                { EAcaoStatus.Em_Andamento.ToString(),
-                  EAcaoStatus.Atrasada.ToString(),
-                  EAcaoStatus.Pendente.ToString()
+                List<int> listaDeStatus = new List<int>()
+                { (int) EAcaoStatus.Em_Andamento,
+                  (int) EAcaoStatus.Atrasada,
+                  (int) EAcaoStatus.Pendente
                 };
 
                 var query = $@"SELECT
