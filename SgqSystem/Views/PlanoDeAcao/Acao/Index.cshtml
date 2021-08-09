@@ -256,6 +256,7 @@
                             <form id="formAcao" style="background-color: #c3c3c3 !important;-webkit-print-color-adjust: exact !important;">
                                 <div class="modal-body">
                                     <input type="hidden" name="Id" />
+                                    <input type="hidden" name="ParCompany_Id" />
                                     <input type="hidden" id="status" name="Status" />
                                     <div class="row">
                                         <div class="col-xs-4">
@@ -1277,6 +1278,7 @@
             preencheUnidadeCurrentUser();
 
             configurarCamposCascata();
+            Select3.customFilter["planoDeAcao"] = {};
 
             $("#modalNovaAcao").modal('show');
         }
@@ -1502,6 +1504,7 @@
             }
 
             $("input[name='Id']").val(dados.Id);
+            $("input[name='ParCompany_Id']").val(dados.ParCompany_Id);
             $("#dataEmissao").text(dados._DataEmissao);
             $("#horaEmissao").text(dados.HoraEmissao);
             $("#usuarioEmissor").text(dados.EmissorNome);

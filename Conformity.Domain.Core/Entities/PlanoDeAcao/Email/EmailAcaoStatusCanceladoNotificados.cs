@@ -28,7 +28,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
             this.Body = $@"   
             Olá!
             <br><br>
-            Seguindo o parâmetro da regra de Plano de Ação cadastrada no sistema SG-SESMT, informamos que a Ação descrita a seguir com prazo para conclusão em {(acao.DataConclusao != null ? acao.DataConclusao?.ToString("dd/MM/yyyy") : "")}, em que você foi notificado, teve seu status alterado.            
+            Seguindo o parâmetro da regra de Plano de Ação cadastrada no sistema SG-SESMT, informamos que a Ação descrita a seguir com prazo para conclusão em {acao.DataConclusao?.ToString("dd/MM/yyyy") ?? ""}, em que você foi notificado, teve seu status alterado.            
             <br><br>
             Formulário de Ação - ID {acao.Id}
             <br><br>
@@ -36,13 +36,13 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
             Data de emissão: {acao.DataEmissao?.ToString("dd/MM/yyyy")}<br>
             Hora de emissão: {acao.HoraEmissao}<br>
             Unidade: {acao.ParCompany.Description}<br>
-            Centro de Custo: {acao.ParDepartmentParent.Name}<br>
-            Seção / Atividade: {acao.ParDepartment.Name}<br>
-            Item / Tarefa: {acao.ParCargo.Name}<br><br>
+            Centro de Custo: {(acao.ParDepartmentParent?.Name ?? "" )}<br>
+            Seção / Atividade: {(acao.ParDepartment?.Name ?? "") }<br>
+            Item / Tarefa: {(acao.ParCargo?.Name ?? "")}<br><br>
             
             Indicador / Origem: {acao.ParLevel1.Name}<br>
-            Monitoramento:  {acao.ParLevel2.Name}<br>
-            Desvio: {acao.ParLevel3.Name}<br>
+            Monitoramento:  {(acao.ParLevel2?.Name ?? "")}<br>
+            Desvio: {(acao.ParLevel3?.Name ?? "") }<br>
              
             Não Conformidade / Ocorrência:  {acao.Acao_Naoconformidade}<br><br>
              
@@ -52,9 +52,9 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 
             Prioridade: {(acao.Prioridade != null ? Enum.GetName(typeof(AcaoPrioridade), acao.Prioridade) : "")}<br>
             Referência: {acao.Referencia}<br>
-            Data da conclusão: { (acao.DataConclusao != null ? acao.DataConclusao?.ToString("dd/MM/yyyy") : "")}<br>
+            Data da conclusão: { acao.DataConclusao?.ToString("dd/MM/yyyy") ?? ""}<br>
             Status da Ação: {Enum.GetName(typeof(EAcaoStatus), acao.Status).Replace('_', ' ')}<br>
-            Responsável: {(acao.ResponsavelUser != null ? acao.ResponsavelUser.FullName : "")}<br>
+            Responsável: {acao.ResponsavelUser?.FullName ?? ""}<br>
             Notificar: {string.Join(",", acao.NotificarUsers.Select(x => x.FullName)) }<br><br>
             
             Atenciosamente, <br>
@@ -65,7 +65,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 
         public void MontarSybject(Acao acao)
         {
-            this.Subject = $@"Notificação de ação com status alterado no SG-SESMT – Desvio no indicador {acao.ParLevel1.Name}";
+            this.Subject = $@"Notificação de ação com status alterado no SG-SESMT – Desvio no indicador {acao.ParLevel1.Name }";
         }
 
         public void MontarTo(Acao acao)

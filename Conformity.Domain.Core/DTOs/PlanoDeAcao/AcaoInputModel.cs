@@ -14,6 +14,7 @@ namespace Conformity.Domain.Core.DTOs
         public TimeSpan HoraConclusao { get; set; }
         public string Referencia { get; set; }
         public string Responsavel { get; set; }
+        public int ParCompany_Id { get; set; }
 
         public List<EvidenciaViewModel> ListaEvidencia { get; set; }
 

@@ -544,16 +544,25 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
         public Acao GetById(int id)
         {
             Acao acao = _repositoryAcao.GetById(id);
+
             acao.ParLevel1 = _repositoryParLevel1.GetById(acao.ParLevel1_Id);
-            acao.ParLevel2 = _repositoryParLevel2.GetById(acao.ParLevel2_Id);
-            acao.ParLevel3 = _repositoryParLevel3.GetById(acao.ParLevel3_Id);
-            acao.ParCargo = _repositoryParCargo.GetById(acao.ParCargo_Id);
+
+            acao.ParLevel2 = acao.ParLevel2_Id > 0 ? _repositoryParLevel2.GetById(acao.ParLevel2_Id) : null;
+
+            acao.ParLevel3 = acao.ParLevel3_Id > 0 ? _repositoryParLevel3.GetById(acao.ParLevel3_Id) : null;
+
+            acao.ParCargo = acao.ParCargo_Id > 0 ? _repositoryParCargo.GetById(acao.ParCargo_Id) : null;
+
+            acao.ParDepartment = acao.ParDepartment_Id > 0 ? _repositoryParDepartment.GetById(acao.ParDepartment_Id) : null;
+            
+            acao.ParDepartmentParent = acao.ParDepartmentParent_Id > 0 ? _repositoryParDepartment.GetById(acao.ParDepartmentParent_Id) : null;
+
+            acao.ParCluster = acao.ParCluster_Id > 0 ? _repositoryParCluster.GetById(acao.ParCluster_Id) : null;
+
+            acao.ParClusterGroup = acao.ParClusterGroup_Id > 0 ? _repositoryParClusterGroup.GetById(acao.ParClusterGroup_Id) : null;
+
             acao.ParCompany = _repositoryParCompany.GetById(acao.ParCompany_Id);
-            acao.ParDepartment = _repositoryParDepartment.GetById(acao.ParDepartment_Id); //Sessão
-            acao.ParDepartmentParent = _repositoryParDepartment.GetById(acao.ParDepartmentParent_Id); //Centro de custo
             acao.ResponsavelUser = _repositoryUserSgq.GetById(acao.Responsavel.Value);
-            acao.ParCluster = _repositoryParCluster.GetById(acao.ParCluster_Id);
-            acao.ParClusterGroup = _repositoryParClusterGroup.GetById(acao.ParClusterGroup_Id);
             acao.NotificarUsers = GetNotificarUsersBy(acao.Id);
             acao.EvidenciaAcaoConcluida = new string[] { };
             acao.EvidenciaNaoConformidade = new string[] { };

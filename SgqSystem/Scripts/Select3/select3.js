@@ -77,7 +77,12 @@ var Select3 = {
         }
 
         //Reseta busca pelos valores selecionados
-        Select3.objFiltroSelect3['_' + name] = $.grep(Select3.objFiltroSelect3['_' + name], function (obj) { return $.grep(element.val(), function (o) { return o == obj.Value; }).length > 0; })
+        if (element.name == undefined) {
+            this.objFiltroSelect3['_' + name] = [];
+        } else{
+            //Reseta busca pelos valores selecionados
+            Select3.objFiltroSelect3['_' + name] = $.grep(Select3.objFiltroSelect3['_' + name], function (obj) { return $.grep(element.val(), function (o) { return o == obj.Value; }).length > 0; })
+        }        
 
         var html = `<div id="filtroSelect3" style="width:100%;height:100%;position: fixed;left:0;z-index:999998;background-color:rgba(0,0,0,.7);top: 0;">
 			<div style="background:#ccc;
