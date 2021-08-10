@@ -34,11 +34,11 @@ var alertaDaAcao = {
 
         alertaDaAcao.coletasVinculadasAcao = coletaJson;
 
-        var acaoEncontrada = alertaDaAcao.verificarSeJaExisteAcao();
-
-        var exibeCodigoDaAcao = acaoEncontrada.CodigoDaAcao != null ? 'de Nº '+ acaoEncontrada.CodigoDaAcao : "";
+        var acaoEncontrada = alertaDaAcao.verificarSeJaExisteAcao();        
         
         if(acaoEncontrada){
+            var exibeCodigoDaAcao = acaoEncontrada.CodigoDaAcao != null ? 'de Nº '+ acaoEncontrada.CodigoDaAcao : "";
+
             openMessageConfirm('Alerta!',
             'Já existe ação criada ' + exibeCodigoDaAcao + ' com Status: '+ acaoEncontrada.Status + ' para o Desvio: '+ acaoEncontrada.ParLevel3_Name +'. Deseja abrir nova ação?',
             callbackAbrirAcao_SIM, callbackAbrirAcao_NAO, '#ffcd41', 'white');
