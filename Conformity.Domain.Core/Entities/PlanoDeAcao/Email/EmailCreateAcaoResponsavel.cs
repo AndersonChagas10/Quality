@@ -51,8 +51,9 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
              
             Ação: {acao.AcaoText}<br><br>
             
-            Evidência da Não Conformidade: <br><br>
-            
+            Evidência da Não Conformidade: <img src= + "data:image/png;base64,"+{acao.EvidenciaNaoConformidade.Select(x => x.Byte)}" data-img class="img-responsive" style="width:100%; height:100%"/><br>
+
+
             Prioridade: {(acao.Prioridade != null ? Enum.GetName(typeof(AcaoPrioridade), acao.Prioridade) : "")}<br>
             Referência: {acao.Referencia}<br>
             Data da conclusão: { acao.DataConclusao?.ToString("dd/MM/yyyy") ?? "" }<br>

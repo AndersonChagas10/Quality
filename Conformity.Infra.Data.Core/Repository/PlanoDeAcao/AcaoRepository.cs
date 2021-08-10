@@ -563,8 +563,6 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
 
             acao.ParCompany = _repositoryParCompany.GetById(acao.ParCompany_Id);
             acao.ResponsavelUser = _repositoryUserSgq.GetById(acao.Responsavel.Value);
-            acao.EvidenciaAcaoConcluida = new string[] { };
-            acao.EvidenciaNaoConformidade = new string[] { };
             acao.EmissorUser = _repositoryUserSgq.GetById(acao.Emissor);
 
             return acao;

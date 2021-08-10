@@ -1,4 +1,5 @@
-﻿using Conformity.Domain.Core.Interfaces;
+﻿using Conformity.Domain.Core.DTOs;
+using Conformity.Domain.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -32,8 +33,8 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
         public EAcaoStatus Status { get; set; }
         public bool IsActive { get; set; }
 
-        public IEnumerable<string> EvidenciaNaoConformidade { get; set; }
-        public IEnumerable<string> EvidenciaAcaoConcluida { get; set; }
+        public IEnumerable<ImagemDaEvidenciaViewModel> EvidenciaNaoConformidade { get; set; }
+        public IEnumerable<ImagemDaEvidenciaViewModel> EvidenciaAcaoConcluida { get; set; }
 
         [NotMapped]
         public ParLevel1 ParLevel1 { get; set; }

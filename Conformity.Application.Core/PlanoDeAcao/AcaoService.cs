@@ -17,14 +17,20 @@ namespace Conformity.Application.Core.PlanoDeAcao
     public class AcaoService : BaseServiceWithLog<Acao>
     {
         private readonly AcaoRepository _acaoRepository;
+        private readonly EvidenciaConcluidaService _evidenciaConcluidaService;
+        private readonly EvidenciaNaoConformeService _evidenciaNaoConfomeService;
 
         public AcaoService(IPlanoDeAcaoRepositoryNoLazyLoad<Acao> repository
             , EntityTrackService historicoAlteracaoService,
+            EvidenciaConcluidaService evidenciaConcluidaService,
+            EvidenciaNaoConformeService evidenciaNaoConfomeService,
             AcaoRepository acaoRepository)
             : base(repository
                   , historicoAlteracaoService)
         {
             _acaoRepository = acaoRepository;
+            _evidenciaConcluidaService = evidenciaConcluidaService;
+            _evidenciaNaoConfomeService = evidenciaNaoConfomeService;
         }
         public IEnumerable<AcaoViewModel> ObterAcaoPorFiltro(FiltroListagemDeAcaoDoWorkflow form)
         {
@@ -45,7 +51,10 @@ namespace Conformity.Application.Core.PlanoDeAcao
             if (acompanhamentoId.HasValue)
             {
                 acaoCompleta.NotificarUsers = _acaoRepository.ObterNotificaveisDoAcompanhamento(acompanhamentoId.Value);
-            }            
+            }
+
+            acaoCompleta.EvidenciaAcaoConcluida = _evidenciaConcluidaService.ObterFotosEvidenciaConcluida(acaoId);
+            acaoCompleta.EvidenciaNaoConformidade = _evidenciaNaoConfomeService.ObterFotosEvidencia(acaoId);
 
             if (acaoCompleta.Status == EAcaoStatus.Em_Andamento)
             {
