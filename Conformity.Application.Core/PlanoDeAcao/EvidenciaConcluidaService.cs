@@ -122,5 +122,17 @@ namespace Conformity.Application.Core.PlanoDeAcao
             return path;
         }
 
+        public List<string> ObterEvidenciaConcluidaEmFormatoBase64(int acaoId)
+        {
+            var listaDeEvidencias = ObterFotosEvidenciaConcluida(acaoId);
+            List<string> ListaDeEvidenciasEmFormatoString = new List<string>();
+
+            foreach (var item in listaDeEvidencias)
+            {
+                ListaDeEvidenciasEmFormatoString.Add(Convert.ToBase64String(item.Byte));
+            }
+
+            return ListaDeEvidenciasEmFormatoString;
+        }
     }
 }

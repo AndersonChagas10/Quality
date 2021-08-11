@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace Conformity.Domain.Core.Entities.PlanoDeAcao
@@ -51,8 +52,8 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
              
             Ação: {acao.AcaoText}<br><br>
             
-            Evidência da Não Conformidade: <img src= + "data:image/png;base64,"+{acao.EvidenciaNaoConformidade.Select(x => x.Byte)}" data-img class="img-responsive" style="width:100%; height:100%"/><br>
-
+            Evidência da Não Conformidade: {RetornarString(acao.EvidenciaNaoConformidade)}<br>
+            Evidência da Ação Concluída: {RetornarString(acao.EvidenciaAcaoConcluida)}<br>
 
             Prioridade: {(acao.Prioridade != null ? Enum.GetName(typeof(AcaoPrioridade), acao.Prioridade) : "")}<br>
             Referência: {acao.Referencia}<br>
@@ -79,5 +80,19 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 
         }
 
+        public string RetornarString(IEnumerable<string> lista)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach(var item in lista)
+            {
+                stringBuilder.Append("<div class='col-sm-4' style='display: inline-block; width: 49%; height: 20%;'>");
+                stringBuilder.Append("<img src='data:image/png;base64,");
+                stringBuilder.Append(item);
+                stringBuilder.Append("'data-img class='img-responsive' style='width:100%; height:100%'/>");
+                stringBuilder.Append("</div>");
+            }
+            return stringBuilder.ToString();
+        }
     }
 }

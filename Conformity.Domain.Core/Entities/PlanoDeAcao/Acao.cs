@@ -33,8 +33,8 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
         public EAcaoStatus Status { get; set; }
         public bool IsActive { get; set; }
 
-        public IEnumerable<ImagemDaEvidenciaViewModel> EvidenciaNaoConformidade { get; set; }
-        public IEnumerable<ImagemDaEvidenciaViewModel> EvidenciaAcaoConcluida { get; set; }
+        public IEnumerable<string> EvidenciaNaoConformidade { get; set; }
+        public IEnumerable<string> EvidenciaAcaoConcluida { get; set; }
 
         [NotMapped]
         public ParLevel1 ParLevel1 { get; set; }
