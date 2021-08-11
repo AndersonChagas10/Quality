@@ -23,7 +23,6 @@ var currentPlanejamento = [];
 var globalLogo = null;
 var parLevel1List = [];
 var currentsParDepartments_IdsGeral = [];
-var deparment = "";
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
@@ -242,8 +241,23 @@ function setBreadcrumbs() {
 
     //Aqui vou ter que pegar uma lista de Departamentos e fazer um foreach 
     if (currentParDepartment_Id) {
-
+        
+        var deparment = "";
         isCurrent = false;
+
+        // $.each(currentsParDepartments_IdsGeral, function(key, itemIdGeral){
+        //     $.each(parametrization.listaParDepartment, function(keyDep, itemDep){
+
+        //         if (!currentParCargo_Id && (key + 1) == currentsParDepartments_IdsGeral.length) {
+        //             isCurrent = true;
+        //         }
+
+        //         if(itemIdGeral == itemDep.Id){
+        //             deparment += getBreadcrumb(itemDep.Name, 'validaRota(listarParDepartment,' + itemIdGeral + ')', isCurrent);
+        //         }
+        //     });
+        // });
+
 
         currentsParDepartments_IdsGeral.forEach(function (department_Id, index) {
 
@@ -252,7 +266,7 @@ function setBreadcrumbs() {
             }
 
             if (department_Id == currentParDepartment_Id) {
-
+                
                 deparment += getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
                     return item.Id == department_Id;
                 })[0].Name, 'validaRota(listarParDepartment,' + department_Id + ')', isCurrent);

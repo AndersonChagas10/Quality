@@ -47,7 +47,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
                     if (o.Parent_Id && getAcoesByParDepartment(o.Id).length > 0)
                         flagAcao = '<span class="badge">Ação Pendente</span>';
 
-                htmlParDepartment += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
+                htmlParDepartment += '<button type="button" data-par-department-parent ' + style + ' class="list-group-item col-xs-12" ' +
                     'data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name +
                     contadorHtml +
                     '<span class="badge">></span>' +
@@ -220,7 +220,7 @@ $('body').off('click', '[data-par-department-id]').on('click', '[data-par-depart
 
 function voltarDepartment(parent_Id) {
 
-    deparment = "";
+    // deparment = "";
 
     currentParDepartment_Id = parent_Id;
 
