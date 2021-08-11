@@ -31,7 +31,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
             return _acaoRepository.ObterAcao(form);
         }
 
-        public void EnviarEmail(int acaoId)
+        public void EnviarEmail(int? acompanhamentoId, int acaoId)
         {
             //1 Pendente - nao envia email
             //2 Em andamento - cenario 1 e 2
@@ -40,6 +40,12 @@ namespace Conformity.Application.Core.PlanoDeAcao
             //5 Cancelada - cenario 7 e 8
 
             var acaoCompleta = _acaoRepository.GetById(acaoId);
+            acaoCompleta.NotificarUsers = _acaoRepository.ObterNotificaveisDaAcao(acaoId);
+
+            if (acompanhamentoId.HasValue)
+            {
+                acaoCompleta.NotificarUsers = _acaoRepository.ObterNotificaveisDoAcompanhamento(acompanhamentoId.Value);
+            }            
 
             if (acaoCompleta.Status == EAcaoStatus.Em_Andamento)
             {
@@ -51,7 +57,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
             }
 
             if (acaoCompleta.Status == EAcaoStatus.Concluída)
-            {
+            {     
                 var emailResponsavel = new MontaEmail(new EmailCreateAcaoVerEAgirResponsavel(acaoCompleta));
                 EnviarEmailAcao(emailResponsavel);
 
@@ -163,7 +169,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
             if (objAcao.Status != EAcaoStatus.Pendente)
             {
-                EnviarEmail(objAcao.Id);
+                EnviarEmail(null, objAcao.Id);
             }
         }
 
@@ -184,7 +190,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
                 Acao dbEntityAlterado = GetById(acao.Id);
                 _entityTrackService.RegisterUpdate(dbEntityAnterior, dbEntityAlterado);
 
-                EnviarEmail(acao.Id);
+                EnviarEmail(null, acao.Id);
             });
         }
 
