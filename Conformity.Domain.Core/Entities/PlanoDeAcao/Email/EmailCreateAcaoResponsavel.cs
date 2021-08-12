@@ -52,8 +52,11 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
              
             Ação: {acao.AcaoText}<br><br>
             
-            Evidência da Não Conformidade: {RetornarString(acao.EvidenciaNaoConformidade)}<br>
-            Evidência da Ação Concluída: {RetornarString(acao.EvidenciaAcaoConcluida)}<br>
+            Evidência da Não Conformidade: <br>
+            {MontarHtmlDaEvidencia(acao.EvidenciaNaoConformidade)}<br><br>
+
+            Evidência da Ação Concluída: <br>
+            {MontarHtmlDaEvidencia(acao.EvidenciaAcaoConcluida)}<br><br>
 
             Prioridade: {(acao.Prioridade != null ? Enum.GetName(typeof(AcaoPrioridade), acao.Prioridade) : "")}<br>
             Referência: {acao.Referencia}<br>
@@ -80,17 +83,15 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 
         }
 
-        public string RetornarString(IEnumerable<string> lista)
+        private string MontarHtmlDaEvidencia(IEnumerable<string> lista)
         {
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder("");
 
             foreach(var item in lista)
             {
-                stringBuilder.Append("<div class='col-sm-4' style='display: inline-block; width: 49%; height: 20%;'>");
                 stringBuilder.Append("<img src='data:image/png;base64,");
                 stringBuilder.Append(item);
-                stringBuilder.Append("'data-img class='img-responsive' style='width:100%; height:100%'/>");
-                stringBuilder.Append("</div>");
+                stringBuilder.Append("' data-img style='width:30%; height:30%;'/>");
             }
             return stringBuilder.ToString();
         }
