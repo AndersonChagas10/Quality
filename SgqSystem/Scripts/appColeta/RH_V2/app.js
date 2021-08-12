@@ -245,20 +245,6 @@ function setBreadcrumbs() {
         var deparment = "";
         isCurrent = false;
 
-        // $.each(currentsParDepartments_IdsGeral, function(key, itemIdGeral){
-        //     $.each(parametrization.listaParDepartment, function(keyDep, itemDep){
-
-        //         if (!currentParCargo_Id && (key + 1) == currentsParDepartments_IdsGeral.length) {
-        //             isCurrent = true;
-        //         }
-
-        //         if(itemIdGeral == itemDep.Id){
-        //             deparment += getBreadcrumb(itemDep.Name, 'validaRota(listarParDepartment,' + itemIdGeral + ')', isCurrent);
-        //         }
-        //     });
-        // });
-
-
         currentsParDepartments_IdsGeral.forEach(function (department_Id, index) {
 
             if (!currentParCargo_Id && (index + 1) == currentsParDepartments_IdsGeral.length) {
