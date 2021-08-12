@@ -1623,7 +1623,7 @@ namespace SgqSystem.Controllers.Api.Formulario
 
                 if (form.ParCompany_Ids.Length > 0)
                 {
-                    sqlParCompany = $@" AND PVP.ParCompany_Id in ({string.Join(",", form.ParCompany_Ids)}) ";
+                    sqlParCompany = $@" AND (PVP.ParCompany_Id in ({string.Join(",", form.ParCompany_Ids)}) OR PVP.ParCompany_Id is NULL)";
                 }
 
                 if (form.ParDepartment_Ids.Length > 0)
