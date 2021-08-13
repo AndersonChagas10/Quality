@@ -204,9 +204,7 @@ function retornaDepartamentos(parDepartmentId, retornaDepartamentoAtual, listaPa
             listaDepartamentos.push(o);
         }
     });
-
-    currentsParDepartments_IdsGeral = currentsParDepartments_Ids;
-
+    
     return listaDepartamentos;
 }
 

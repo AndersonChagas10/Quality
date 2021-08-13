@@ -22,7 +22,6 @@ var currentsParDepartments_Ids = [];
 var currentPlanejamento = [];
 var globalLogo = null;
 var parLevel1List = [];
-var currentsParDepartments_IdsGeral = [];
 
 var currentTotalEvaluationValue = 0;
 var currentTotalSampleValue = 0;
@@ -243,24 +242,49 @@ function setBreadcrumbs() {
     if (currentParDepartment_Id) {
         
         var deparment = "";
+        var sonDepartment = "";
         isCurrent = false;
 
-        currentsParDepartments_IdsGeral.forEach(function (department_Id, index) {
+        parametrization.listaParDepartment.forEach(function (itemListaDep, index) {
 
-            if (!currentParCargo_Id && (index + 1) == currentsParDepartments_IdsGeral.length) {
+            if (!currentParCargo_Id && (index + 1) == parametrization.listaParDepartment.length) {
                 isCurrent = true;
             }
 
-            if (department_Id == currentParDepartment_Id) {
-                
-                deparment += getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
-                    return item.Id == department_Id;
-                })[0].Name, 'validaRota(listarParDepartment,' + department_Id + ')', isCurrent);
+            var listaDepartmentParent = [];
+            var listaDepartmentSon = [];
+
+            if(itemListaDep.Parent_Id){
+                listaDepartmentSon.push(itemListaDep.Id);
+            }
+            else{
+                listaDepartmentParent.push(itemListaDep.Id);
             }
 
+            listaDepartmentParent.forEach(function(ParentId, index){
+                if (ParentId == currentParDepartment_Id) {
+                
+                    deparment = getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
+                        return item.Id == ParentId;
+                    })[0].Name, 'validaRota(listarParDepartment,' + ParentId + ')', isCurrent);
+                }
+            });
+
+            listaDepartmentSon.forEach(function(SonId, index){
+                if(SonId == currentParDepartment_Id){
+                
+                    sonDepartment = getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
+                        return item.Id == SonId;
+                    })[0].Name, 'validaRota(listarParDepartment,' + SonId + ')', isCurrent);
+
+                    deparment = getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
+                        return item.Id == currentParDepartmentParent_Id;
+                    })[0].Name, 'validaRota(listarParDepartment,' + currentParDepartmentParent_Id + ')', isCurrent);
+                }
+            });
         });
 
-        breadcrumbLi = breadcrumbLi + deparment;
+        breadcrumbLi = breadcrumbLi + deparment + sonDepartment;
         isCurrent = false;
     }
 
