@@ -103,6 +103,7 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
          PDS.Name AS ParDepartmentParent_Name,
          PCG.Id AS ParCargo_Id,
          PCG.Name AS ParCargo_Name,
+         PACT.Value AS Codigo_Acao,
          PCXUS.UserSgq_Id as UsuarioLogado,
          PAC.Acao_Naoconformidade,
          PAC.AcaoText,
@@ -149,6 +150,8 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
          ON PDs.Id = PAC.ParDepartmentParent_Id
          LEFT JOIN ParCargo PCG  WITH (NOLOCK)
          ON PCG.Id = PAC.ParCargo_Id
+         LEFT JOIN PA.AcaoXAttributes PACT WITH (NOLOCK)
+		 ON PACT.Acao_Id = PAC.Id
          LEFT JOIN UserSgq US WITH (NOLOCK)
          ON US.Id = PAC.Responsavel
          LEFT JOIN UserSgq US_Emissor WITH (NOLOCK)
@@ -170,9 +173,8 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                 
         public AcaoFormViewModel ObterAcaoComVinculosPorId(int id)
         {
-            var query = $@"
-                SELECT
-                 PAC.Id,
+            var query = $@"SELECT
+				 PAC.Id,
                  PL1.Id AS ParLevel1_Id,
                  PL1.Name AS ParLevel1_Name,
                  PL2.Id AS ParLevel2_Id,
@@ -187,6 +189,8 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                  PDS.Name AS ParDepartmentParent_Name,
                  PCG.Id AS ParCargo_Id,
                  PCG.Name AS ParCargo_Name,
+				 PACT.Value AS Codigo_Acao,
+
                  PCXUS.UserSgq_Id as UsuarioLogado,
                  PAC.Acao_Naoconformidade,
                  PAC.AcaoText,
@@ -221,6 +225,8 @@ namespace Conformity.Infra.Data.Core.Repository.PlanoDeAcao
                  ON US.Id = PAC.Responsavel
                  LEFT JOIN UserSgq US_Emissor WITH (NOLOCK)
                  ON US_Emissor.Id = PAC.Emissor
+				 LEFT JOIN PA.AcaoXAttributes PACT WITH (NOLOCK)
+				 ON PACT.Acao_Id = PAC.Id
                  INNER JOIN ParCompanyXUserSgq PCXUS 
                  ON PCXUS.ParCompany_Id = PAC.ParCompany_Id
 	             and PCXUS.UserSgq_Id = {_applicationConfig.Authenticated_Id}
