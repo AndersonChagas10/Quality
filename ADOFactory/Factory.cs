@@ -23,6 +23,7 @@ namespace ADOFactory
         /// <param name="catalog">Nome do catalogo do DB.</param>
         /// <param name="password">Senha.</param>
         /// <param name="user">User.</param>
+        /// 
         public Factory(string dataSource, string catalog, string password, string user)
         {
             connectionString = new SqlConnectionStringBuilder();
@@ -67,7 +68,7 @@ namespace ADOFactory
         {
             try
             {
-                var connectionString = ConfigurationManager.ConnectionStrings[connectionStringDoWebConfig].ConnectionString;
+                var connectionString = "Max Pool Size=32767;" + ConfigurationManager.ConnectionStrings[connectionStringDoWebConfig].ConnectionString;
                 connection = new SqlConnection();
                 connection.ConnectionString = connectionString;
                 connection.Open();

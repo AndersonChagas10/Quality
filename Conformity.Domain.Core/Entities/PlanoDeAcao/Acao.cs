@@ -1,4 +1,5 @@
-﻿using Conformity.Domain.Core.Interfaces;
+﻿using Conformity.Domain.Core.DTOs;
+using Conformity.Domain.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
