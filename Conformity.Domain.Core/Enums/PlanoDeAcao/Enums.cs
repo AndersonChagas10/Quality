@@ -11,7 +11,7 @@
             Cancelada
         }
 
-        public enum AcaoPrioridade
+        public enum EAcaoPrioridade
         {
             Baixa = 1,
             Media,

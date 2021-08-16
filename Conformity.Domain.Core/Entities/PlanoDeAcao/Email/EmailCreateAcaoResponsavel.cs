@@ -58,7 +58,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
             Evidência da Ação Concluída: <br>
             {MontarHtmlDaEvidencia(acao.EvidenciaAcaoConcluida)}<br><br>
 
-            Prioridade: {(acao.Prioridade != null ? Enum.GetName(typeof(AcaoPrioridade), acao.Prioridade) : "")}<br>
+            Prioridade: {(acao.Prioridade != null ? Enum.GetName(typeof(EAcaoPrioridade), acao.Prioridade) : "")}<br>
             Referência: {acao.Referencia}<br>
             Data da conclusão: { acao.DataConclusao?.ToString("dd/MM/yyyy") ?? "" }<br>
             Status da Ação: {Enum.GetName(typeof(EAcaoStatus), acao.Status).Replace('_', ' ')}<br>
