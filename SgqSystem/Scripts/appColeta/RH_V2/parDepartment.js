@@ -204,7 +204,7 @@ function retornaDepartamentos(parDepartmentId, retornaDepartamentoAtual, listaPa
             listaDepartamentos.push(o);
         }
     });
-
+    
     return listaDepartamentos;
 }
 

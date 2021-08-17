@@ -22,6 +22,7 @@ namespace Conformity.Domain.Core.DTOs
         public string ParDepartmentParent_Name { get; set; }
         public int ParCargo_Id { get; set; }
         public string ParCargo_Name { get; set; }
+        public string Codigo_Acao { get; set; }
         public string Acao_Naoconformidade { get; set; }
         public string AcaoText { get; set; }
         public DateTime? DataEmissao { get; set; }

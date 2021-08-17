@@ -134,7 +134,7 @@ function openModalChangeDate() {
 
     var html = '<div class="form-group row">' +
         '<label for="exemplo">Data: </label>' +
-        '<input id="appDate" type="date" class="form-control"/>' +
+        '<input id="appDate" type="date" class="form-control" onblur="validarDataApp()" max="'+obterDataDeHojeNoFormatoYYYYMMDD()+'"/>' +
         '</br>' +
         '<button id="btnChangeDate" type="button" class="btn btn-primary" onclick="changeDate(this)">Alterar Data de coleta</button> | ' +
         '<button id="btnChangeDate" type="button" class="btn btn-primary" onclick="closeModal()">Cancelar</button>' +
@@ -240,26 +240,51 @@ function setBreadcrumbs() {
 
     //Aqui vou ter que pegar uma lista de Departamentos e fazer um foreach 
     if (currentParDepartment_Id) {
-
+        
         var deparment = "";
+        var sonDepartment = "";
         isCurrent = false;
 
-        currentsParDepartments_Ids.forEach(function (department_Id, index) {
+        parametrization.listaParDepartment.forEach(function (itemListaDep, index) {
 
-            if (!currentParCargo_Id && (index + 1) == currentsParDepartments_Ids.length) {
+            if (!currentParCargo_Id && (index + 1) == parametrization.listaParDepartment.length) {
                 isCurrent = true;
             }
 
-            if (department_Id == currentParDepartment_Id) {
+            var listaDepartmentParent = [];
+            var listaDepartmentSon = [];
 
-                deparment += getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
-                    return item.Id == department_Id;
-                })[0].Name, 'validaRota(listarParDepartment,' + department_Id + ')', isCurrent);
+            if(itemListaDep.Parent_Id){
+                listaDepartmentSon.push(itemListaDep.Id);
+            }
+            else{
+                listaDepartmentParent.push(itemListaDep.Id);
             }
 
+            listaDepartmentParent.forEach(function(ParentId, index){
+                if (ParentId == currentParDepartment_Id) {
+                
+                    deparment = getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
+                        return item.Id == ParentId;
+                    })[0].Name, 'validaRota(listarParDepartment,' + ParentId + ')', isCurrent);
+                }
+            });
+
+            listaDepartmentSon.forEach(function(SonId, index){
+                if(SonId == currentParDepartment_Id){
+                
+                    sonDepartment = getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
+                        return item.Id == SonId;
+                    })[0].Name, 'validaRota(listarParDepartment,' + SonId + ')', isCurrent);
+
+                    deparment = getBreadcrumb($.grep(parametrization.listaParDepartment, function (item) {
+                        return item.Id == currentParDepartmentParent_Id;
+                    })[0].Name, 'validaRota(listarParDepartment,' + currentParDepartmentParent_Id + ')', isCurrent);
+                }
+            });
         });
 
-        breadcrumbLi = breadcrumbLi + deparment;
+        breadcrumbLi = breadcrumbLi + deparment + sonDepartment;
         isCurrent = false;
     }
 
@@ -322,3 +347,26 @@ function validaParqualification(level1Id, level2Id, level3Id) {
         return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
  }
+
+function obterDataDeHojeNoFormatoYYYYMMDD() {
+    var data = new Date();
+
+    var dia = ("0" + data.getDate()).slice(-2);
+    var mes = ("0" + (data.getMonth() + 1)).slice(-2);
+
+    var hoje = data.getFullYear() + "-" + (mes) + "-" + (dia);
+
+    return hoje;
+}
+
+function validarDataApp(){
+    var hoje = obterDataDeHojeNoFormatoYYYYMMDD();
+
+    var dataInserida = $('#appDate').val();
+
+    if(dataInserida > hoje){
+        openMensagem('A data inserida não pode ser maior que a data atual', 'blue', 'white');
+        closeMensagem(2000);
+        $('#appDate').val(hoje)
+    }
+}

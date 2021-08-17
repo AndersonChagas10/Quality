@@ -72,15 +72,19 @@
                                     <input type="hidden" name="Id" />
                                     <input type="hidden" id="statusPrint" name="Status" />
                                     <div class="row">
-                                        <div class="col-xs-4" style="margin: 10px 0;">
+                                        <div class="col-xs-12" style="margin: 10px 0;">
+                                            <strong>Código da Ação:</strong>
+                                            <label id="CodigoAcaoPrint"></label>
+                                        </div>
+                                        <div class="col-xs-3" style="margin: 10px 0;">
                                             <strong>Data Emissão:</strong>
                                             <label id="dataEmissaoPrint"></label>
                                         </div>
-                                        <div class="col-xs-4" style="margin: 10px 0;">
+                                        <div class="col-xs-3" style="margin: 10px 0;">
                                             <strong>Hora Emissão:</strong>
                                             <label id="horaEmissaoPrint"></label>
                                         </div>
-                                        <div class="col-xs-4" style="margin: 10px 0;">
+                                        <div class="col-xs-3" style="margin: 10px 0;">
                                             <strong>Emissor:</strong>
                                             <label id="usuarioEmissorPrint"></label>
                                         </div>
@@ -200,7 +204,7 @@
                            <div id="page-form">
                                 <div class="panel panel-default">
                                     <div style="margin-top: 5px;">
-                                        <h5 style="text-align: center;"><b>Id da Ação: </b><span class="acaoId"></span></h5>
+                                        <h5 style="text-align: center;"><b>Código da Ação: </b><span class="acaoId"></span></h5>
                                     </div>
                                     <div class="panel-heading cabecalho">
                                         <div class="row">
@@ -776,7 +780,7 @@
                         return `<button class="btn btn-sm btn-warning" onclick="abrirImpressao(${id})">Visualizar</button>`;
                     }
                 },
-                { "title": "Número da Ação", "mData": "Id", "visible": true },
+                { "title": "Código da Ação", "mData": "Codigo_Acao", "visible": true },
                 { "title": "Data Emissão", "mData": "_DataEmissao", "visible": true },
                 { "title": "Hora Emissão", "mData": "HoraEmissao", "visible": true },
                 { "title": "ParCompany_Id", "mData": "ParCompany_Id", "visible": false },
@@ -1104,7 +1108,7 @@
 
                 log.limparModal()
 
-                $('.acaoId').append(dados.Id)
+                $('.acaoId').append(dados.Codigo_Acao)
                 $('.unidade').append(dados.ParCompany_Name)
                 $('.secaoAtividade').append(dados.ParDepartmentParent_Name)
                 $('.itemTarefa').append(dados.ParCargo_Name)
@@ -1411,6 +1415,7 @@
             }
 
             $("input[name='Id']").val(dados.Id);
+            $("#CodigoAcaoPrint").text(dados.Codigo_Acao);
             $("#dataEmissaoPrint").text(dados._DataEmissao);
             $("#horaEmissaoPrint").text(dados.HoraEmissao);
             $("#usuarioEmissorPrint").text(dados.EmissorNome);
