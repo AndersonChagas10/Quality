@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace Conformity.Domain.Core.Entities.PlanoDeAcao
@@ -51,9 +52,13 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
              
             Ação: {acao.AcaoText}<br><br>
             
-            Evidência da Não Conformidade: <br><br>
-            
-            Prioridade: {(acao.Prioridade != null ? Enum.GetName(typeof(AcaoPrioridade), acao.Prioridade) : "")}<br>
+            Evidência da Não Conformidade: <br>
+            {MontarHtmlDaEvidencia(acao.EvidenciaNaoConformidade)}<br><br>
+
+            Evidência da Ação Concluída: <br>
+            {MontarHtmlDaEvidencia(acao.EvidenciaAcaoConcluida)}<br><br>
+
+            Prioridade: {(acao.Prioridade != null ? Enum.GetName(typeof(EAcaoPrioridade), acao.Prioridade) : "")}<br>
             Referência: {acao.Referencia}<br>
             Data da conclusão: { acao.DataConclusao?.ToString("dd/MM/yyyy") ?? "" }<br>
             Status da Ação: {Enum.GetName(typeof(EAcaoStatus), acao.Status).Replace('_', ' ')}<br>
@@ -78,5 +83,17 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 
         }
 
+        private string MontarHtmlDaEvidencia(IEnumerable<string> lista)
+        {
+            StringBuilder stringBuilder = new StringBuilder("");
+
+            foreach(var item in lista)
+            {
+                stringBuilder.Append("<img src='data:image/png;base64,");
+                stringBuilder.Append(item);
+                stringBuilder.Append("' data-img style='width:30%; height:30%;'/>");
+            }
+            return stringBuilder.ToString();
+        }
     }
 }

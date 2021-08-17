@@ -48,7 +48,8 @@ namespace Conformity.Domain.Core.DTOs
         public List<string> EvidenciaNaoConformidade { get; set; }
 
         public List<string> EvidenciaAcaoConcluida { get; set; }
-        public string Prioridade { get; set; }
+        public int Prioridade { get; set; }
+        public string PrioridadeNome { get { return Enum.GetName(typeof(EAcaoPrioridade), Prioridade); } }
         public int Status { get; set; }
         public bool IsActive { get; set; }
         public string Responsavel_Name { get; set; }

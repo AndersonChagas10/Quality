@@ -73,6 +73,7 @@ namespace SgqSystem
 
             Dominio.Seed.Seed.SetSeedValues(isEN:GlobalConfig.LanguageEUA, runSetSeed: runSetSeed);
 
+#if !DEBUG
             ThreadPool.QueueUserWorkItem(IntegrationJobFactory.ExecuteIntegrationJobFunction);
             ThreadPool.QueueUserWorkItem(CollectionDataJobFactory.ExecuteCollectionDataJobFunction);
 
@@ -83,18 +84,11 @@ namespace SgqSystem
             ThreadPool.QueueUserWorkItem(CollectionJob.ExecuteCollectionJob);
 
             ThreadPool.QueueUserWorkItem(PlanoDeAcaoAlterarStatusJob.ExecutarAlteracoesDeAcoes);
+#endif
 
-            //if (GlobalConfig.Brasil)
-            //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaBR" + GlobalConfig.Ambient];
-            //else if (GlobalConfig.Eua)
-            //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaEUA" + GlobalConfig.Ambient];
-            //else if (GlobalConfig.Ytoara)
-            //    GlobalConfig.UrlEmailAlertas = System.Configuration.ConfigurationManager.AppSettings["EnderecoEmailAlertaYTOARA" + GlobalConfig.Ambient];
-
-            #if DEBUG
-                //TelemetryConfiguration.Active.DisableTelemetry = true;
+#if DEBUG
             
-            #endif
+#endif
 
             if (GlobalConfig.LanguageBrasil)
             {

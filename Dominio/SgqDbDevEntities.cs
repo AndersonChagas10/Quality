@@ -10,11 +10,14 @@ namespace Dominio
     using System.Data.Entity.ModelConfiguration.Conventions;
     using Helper;
     using Dominio.AcaoRH;
+    using System.Configuration;
 
     public partial class SgqDbDevEntities : DbContext
     {
-        public SgqDbDevEntities()
-            : base("name=DefaultConnection")
+
+        private static string _connectionString = "Max Pool Size=32767;" + ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        public SgqDbDevEntities() : base(_connectionString)
+        //: base("name=DefaultConnection")
         {
             this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }

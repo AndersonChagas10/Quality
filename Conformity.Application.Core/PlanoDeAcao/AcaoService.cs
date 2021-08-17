@@ -17,14 +17,20 @@ namespace Conformity.Application.Core.PlanoDeAcao
     public class AcaoService : BaseServiceWithLog<Acao>
     {
         private readonly AcaoRepository _acaoRepository;
+        private readonly EvidenciaConcluidaService _evidenciaConcluidaService;
+        private readonly EvidenciaNaoConformeService _evidenciaNaoConfomeService;
 
         public AcaoService(IPlanoDeAcaoRepositoryNoLazyLoad<Acao> repository
             , EntityTrackService historicoAlteracaoService,
+            EvidenciaConcluidaService evidenciaConcluidaService,
+            EvidenciaNaoConformeService evidenciaNaoConfomeService,
             AcaoRepository acaoRepository)
             : base(repository
                   , historicoAlteracaoService)
         {
             _acaoRepository = acaoRepository;
+            _evidenciaConcluidaService = evidenciaConcluidaService;
+            _evidenciaNaoConfomeService = evidenciaNaoConfomeService;
         }
         public IEnumerable<AcaoViewModel> ObterAcaoPorFiltro(FiltroListagemDeAcaoDoWorkflow form)
         {
@@ -41,6 +47,8 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
             var acaoCompleta = _acaoRepository.GetById(acaoId);
             acaoCompleta.NotificarUsers = _acaoRepository.ObterNotificaveisDaAcao(acaoId);
+            acaoCompleta.EvidenciaAcaoConcluida = _evidenciaConcluidaService.ObterEvidenciaConcluidaEmFormatoBase64(acaoId);
+            acaoCompleta.EvidenciaNaoConformidade = _evidenciaNaoConfomeService.ObterEvidenciaNaoConformeEmFormatoBase64(acaoId);
 
             if (acompanhamentoId.HasValue)
             {
@@ -56,7 +64,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
                 EnviarEmailAcao(emailNotificados);
             }
 
-            if (acaoCompleta.Status == EAcaoStatus.Concluída)
+            else if (acaoCompleta.Status == EAcaoStatus.Concluída)
             {     
                 var emailResponsavel = new MontaEmail(new EmailCreateAcaoVerEAgirResponsavel(acaoCompleta));
                 EnviarEmailAcao(emailResponsavel);
@@ -66,7 +74,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
             }
 
-            if (acaoCompleta.Status == EAcaoStatus.Atrasada)
+            else if (acaoCompleta.Status == EAcaoStatus.Atrasada)
             {
                 var emailResponsavel = new MontaEmail(new EmailAcaoVencidaResponsavel(acaoCompleta));
                 EnviarEmailAcao(emailResponsavel);
@@ -75,7 +83,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
                 EnviarEmailAcao(emailNotificados);
             }
 
-            if (acaoCompleta.Status == EAcaoStatus.Cancelada)
+            else if (acaoCompleta.Status == EAcaoStatus.Cancelada)
             {
                 var emailResponsavel = new MontaEmail(new EmailAcaoStatusCanceladoResponsavel(acaoCompleta));
                 EnviarEmailAcao(emailResponsavel);

@@ -48,6 +48,9 @@
                                                 @Resources.Resource.description
                                             </th>
                                             <th>
+                                                Sigla
+                                            </th>
+                                            <th>
                                                 @Resources.Resource.is_active
                                             </th>
                                             <th></th>
@@ -56,13 +59,15 @@
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
-
                                             <tr>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Name)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.Description)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Initials)
                                                 </td>
                                                 <td>
                                                     @Html.DisplayFor(modelItem => item.IsActive)
@@ -72,12 +77,10 @@
                                                     @Html.ActionLink(Resources.Resource.details as string, "Details", new { id = item.Id }, new { @class = "btn btn-info" })
                                                 </td>
                                             </tr>
-
                                         }
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -86,7 +89,6 @@
     </div>
     <!-- END CONTENT BODY -->
 </div>
-
 
 <script>
     $(document).ready(function () {
