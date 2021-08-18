@@ -213,8 +213,8 @@ function montaCorpoFormularioAcao(index) {
         '   <div class="form-group row" style="border: 2px;border-color: azure;border-style: groove;">' +
         '       <div class="col-xs-12">' +
         '           <p id="actionParCompany_Id">Unidade: ' + currentAction.ParCompany_Name + '</p>' +
-        '           <p id="actionParDepartment_Id">Centro de Custo/Setor: ' + currentAction.ParDepartment_Name + '</p>' +
-        '           <p id="actionParDepartmentParent_Id">Item/Tarefa: ' + currentAction.ParLevel3_Name + '</p>' +
+        '           <p id="actionParDepartment_Id">Centro de Custo/Setor: ' + currentAction.ParDepartmentParent_Name + '</p>' +
+        '           <p id="actionParDepartmentParent_Id">Seção/Atividade: ' + currentAction.ParDepartment_Name + '</p>' +
         '           <p id="actionParCargo_Id">Item/Tarefa: ' + currentAction.ParCargo_Name + ' </p>' +
         '           <p id="actionParLevel1_Id" data-action-level1="' + currentAction.ParLevel1_Id + '"> Indicador/Origem: ' + currentAction.ParLevel1_Name + '</p>' +
         '           <p id="actionParLevel2_Id" data-action-level2="' + currentAction.ParLevel2_Id + '"> Monitoramento: ' + currentAction.ParLevel2_Name + '</p>' +
@@ -364,12 +364,12 @@ function createObjAcao(index, coleta){
         return o.ParCompany.Id == coleta.ParCompany_Id
     })[0].ParCompany.Name;
 
-    var centroCusto = $.grep(parametrization.listaParDepartment, function (o, i) {
-        return o.Id == coleta.ParDepartment_Id;
+    var secaoAtividade = $.grep(parametrization.listaParDepartment, function (o, i) {
+        return o.Id == coleta.ParDepartmentParent_Id;
     })[0].Name;
 
-    var secaoAtividade = $.grep(parametrization.listaParDepartment, function (o, i) {
-        return o.Parent_Id == currentParDepartmentParent_Id;
+    var centroCusto= $.grep(parametrization.listaParDepartment, function (o, i) {
+        return o.Id == coleta.ParDepartment_Id;
     })[0].Name;
 
     var itemCargo = $.grep(parametrization.listaParCargo, function (o, i) {
