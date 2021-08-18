@@ -77,6 +77,7 @@
     <Compile Include="Entities\PlanoDeAcao\Email\EmailCreateAcaoResponsavel.cs" />
     <Compile Include="Entities\PlanoDeAcao\Email\EmailCreateAcaoVerEAgirNotificados.cs" />
     <Compile Include="Entities\PlanoDeAcao\Email\EmailCreateAcaoVerEAgirResponsavel.cs" />
+    <Compile Include="Entities\PlanoDeAcao\Email\HtmlDaEvidencia.cs" />
     <Compile Include="Entities\PlanoDeAcao\Email\MontaEmail.cs" />
     <Compile Include="Entities\PlanoDeAcao\EvidenciaConcluida.cs" />
     <Compile Include="Entities\PlanoDeAcao\EvidenciaNaoConforme.cs" />

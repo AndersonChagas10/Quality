@@ -1,4 +1,5 @@
-﻿using Conformity.Domain.Core.Interfaces;
+﻿using Conformity.Domain.Core.Entities.PlanoDeAcao.Email;
+using Conformity.Domain.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
         public string Body { get => _Body; set => _Body = value; }
         public string Subject { get => _Subject; set => _Subject = value; }
         public IEnumerable<string> To { get => _To; set => _To = value; }
+        public HtmlDaEvidencia HtmlDaEvidencia { get; set; }
 
         public void MontarBody(Acao acao)
         {
@@ -50,10 +52,10 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
             Ação: {acao.AcaoText}<br><br>
             
             Evidência da Não Conformidade: <br>
-            {MontarHtmlDaEvidencia(acao.EvidenciaNaoConformidade)}<br><br>
+            {HtmlDaEvidencia.MontarHtmlDaEvidencia(acao.EvidenciaNaoConformidade)}<br><br>
 
             Evidência da Ação Concluída: <br>
-            {MontarHtmlDaEvidencia(acao.EvidenciaAcaoConcluida)}<br><br>
+            {HtmlDaEvidencia.MontarHtmlDaEvidencia(acao.EvidenciaAcaoConcluida)}<br><br>
             
             Prioridade: {(acao.Prioridade != null ? Enum.GetName(typeof(EAcaoPrioridade), acao.Prioridade) : "")}<br>
             Referência: {acao.Referencia}<br>
