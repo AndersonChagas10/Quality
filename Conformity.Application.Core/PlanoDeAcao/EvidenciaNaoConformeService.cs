@@ -106,7 +106,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
                 basePath = @AppDomain.CurrentDomain.BaseDirectory;
             }
 
-            basePath = basePath + "\\Acao";
+            basePath = basePath + "\\acao_evidencia";
             string fileName = acaoId + parCompany_Id + new Random().Next(1000, 9999) + ".png";
 
             Exception exception;
