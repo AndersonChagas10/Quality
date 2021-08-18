@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Conformity.Domain.Core.Entities.PlanoDeAcao.Email
 {
-    public abstract class HtmlDaEvidencia
+    public class HtmlDaEvidencia
     {
         public string MontarHtmlDaEvidencia(IEnumerable<string> lista)
         {

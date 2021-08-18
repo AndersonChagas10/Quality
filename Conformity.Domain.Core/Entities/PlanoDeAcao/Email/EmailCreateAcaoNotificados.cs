@@ -1,8 +1,8 @@
-﻿using Conformity.Domain.Core.Interfaces;
+﻿using Conformity.Domain.Core.Entities.PlanoDeAcao.Email;
+using Conformity.Domain.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using static Conformity.Domain.Core.Enums.PlanoDeAcao.Enums;
 
 namespace Conformity.Domain.Core.Entities.PlanoDeAcao
@@ -26,6 +26,8 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 
         public IEnumerable<string> To { get => _To; set => _To = value; }
 
+        public HtmlDaEvidencia htmlDaEvidencia = new HtmlDaEvidencia();
+
         public void MontarBody(Acao acao)
         {
             this.Body = $@"   
@@ -40,7 +42,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
             Hora de emissão: {acao.HoraEmissao}<br>
             Unidade: {acao.ParCompany.Description}<br>
             Centro de Custo: {(acao.ParDepartmentParent?.Name ?? "")}<br>
-            Seção / Atividade: {(acao.ParDepartment?.Name ?? "" )}<br>
+            Seção / Atividade: {(acao.ParDepartment?.Name ?? "")}<br>
             Item / Tarefa: {(acao.ParCargo?.Name ?? "")}<br><br>
             
             Indicador / Origem: {acao.ParLevel1.Name}<br>
@@ -52,10 +54,10 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
             Ação: {acao.AcaoText}<br><br>
             
             Evidência da Não Conformidade: <br>
-            {MontarHtmlDaEvidencia(acao.EvidenciaNaoConformidade)}<br><br>
+            {htmlDaEvidencia.MontarHtmlDaEvidencia(acao.EvidenciaNaoConformidade)}<br><br>
 
             Evidência da Ação Concluída: <br>
-            {MontarHtmlDaEvidencia(acao.EvidenciaAcaoConcluida)}<br><br>
+            {htmlDaEvidencia.MontarHtmlDaEvidencia(acao.EvidenciaAcaoConcluida)}<br><br>
             
             Prioridade: {(acao.Prioridade != null ? Enum.GetName(typeof(EAcaoPrioridade), acao.Prioridade) : "")}<br>
             Referência: {acao.Referencia}<br>
@@ -78,19 +80,6 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
         public void MontarTo(Acao acao)
         {
             this.To = acao.NotificarUsers != null ? acao.NotificarUsers.Select(x => x.Email) : new string[] { };
-        }
-
-        private string MontarHtmlDaEvidencia(IEnumerable<string> lista)
-        {
-            StringBuilder stringBuilder = new StringBuilder("");
-
-            foreach (var item in lista)
-            {
-                stringBuilder.Append("<img src='data:image/png;base64,");
-                stringBuilder.Append(item);
-                stringBuilder.Append("' data-img style='width:30%; height:30%;'/>");
-            }
-            return stringBuilder.ToString();
         }
     }
 }

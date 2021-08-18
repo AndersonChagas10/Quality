@@ -94,7 +94,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
                 basePath = @AppDomain.CurrentDomain.BaseDirectory;
             }
 
-            basePath = basePath + "\\Evidencia";
+            basePath = basePath + "\\acao_evidencia";
             string fileName = acao_Id + DateTime.Now.GetHashCode() + new Random().Next(1000, 9999) + ".png";
 
 
