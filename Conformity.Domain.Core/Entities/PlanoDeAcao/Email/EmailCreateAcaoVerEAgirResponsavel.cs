@@ -11,6 +11,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
     {
         public EmailCreateAcaoVerEAgirResponsavel(Acao acao)
         {
+            htmlDaEvidencia = new HtmlDaEvidencia();
             MontarSybject(acao);
             MontarBody(acao);
             MontarTo(acao);
@@ -26,7 +27,7 @@ namespace Conformity.Domain.Core.Entities.PlanoDeAcao
 
         public IEnumerable<string> To { get => _To; set => _To = value; }
 
-        public HtmlDaEvidencia htmlDaEvidencia = new HtmlDaEvidencia();
+        public HtmlDaEvidencia htmlDaEvidencia { get; set; }
 
         public void MontarBody(Acao acao)
         {
