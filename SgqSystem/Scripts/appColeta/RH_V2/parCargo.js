@@ -25,39 +25,37 @@ function listarParCargo(isVoltar) {
 
         var flagAcao = "&nbsp;";
         if (getAcoesByParCargo(o.Id).length > 0)
-            flagAcao = '<span id="acaoPendente" style="cursor: pointer;" onclick="montaCorpoFormularioAcao(0)" class="badge">Ação Pendente</span>';
+            flagAcao = '<button type="button" class="btn btn-sm btn-warning pull-right" onclick="openAction()">Ação pendente</button>';
 
         var style = '';
         if (!podeRealizarColeta(currentEvaluationSample.Evaluation, o.Evaluation.Evaluation)) {
             style = 'style="background-color:#ddd;cursor:not-allowed"';
 
-            htmlParCargo += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
-                'data-par-cargo-id="' + o.Id + '"' +
+                htmlParCargo += '<div class="list-group-item" '+ style +'>'+
+                '<div class="col-lg-9 col-md-9 col-xs-8"><span class="btn btn-link btn-block" '+ style +' data-par-cargo-id="' + o.Id + '"' +
                 'data-total-evaluation="' + o.Evaluation.Evaluation + '"' +
                 'data-total-sample="' + o.Evaluation.Sample + '"' +
                 'data-current-evaluation="' + currentEvaluationSample.Evaluation + '"' +
                 'data-redistribute-weight="' + o.Evaluation.RedistributeWeight + '"' +
                 'data-partial-save="' + o.Evaluation.IsPartialCollection + '"' +
-                'data-current-sample="' + currentEvaluationSample.Sample + '">' +
-                '	<div class="col-xs-3">' + o.Name +  ' ' + flagAcao +'</div>' +
-                '	<div class="col-xs-1">&nbsp;</div>' +
-                '	<div class="col-xs-4">Av: ' + o.Evaluation.Evaluation + '/' + o.Evaluation.Evaluation + ' </div>' +
-                '	<div class="col-xs-4">Am: ' + o.Evaluation.Sample + '/' + o.Evaluation.Sample + ' </div>' +
-                '</button>';
+                'data-current-sample="' + currentEvaluationSample.Sample + '">' + o.Name + '</div>'+
+                '<div class="col-lg-3 col-md-3 col-xs-4">Av: ' + o.Evaluation.Evaluation + '/' + o.Evaluation.Evaluation + ' Am: ' + o.Evaluation.Sample + '/' + o.Evaluation.Sample + ' <span class="badge hide">></span>'+ flagAcao +'</div>'+
+                '<div class="clearfix"></div>'+
+            '</div>';
+
         } else {
-            htmlParCargo += '<button type="button" class="list-group-item col-xs-12"' +
-                'data-par-cargo-id="' + o.Id + '"' +
+
+                htmlParCargo += '<div class="list-group-item" style="padding:0px 10px;">'+
+                '<div class="col-lg-9 col-md-9 col-xs-8"><span class="btn btn-link btn-block" data-par-cargo-id="' + o.Id + '"' +
                 'data-total-evaluation="' + o.Evaluation.Evaluation + '"' +
                 'data-total-sample="' + o.Evaluation.Sample + '"' +
                 'data-current-evaluation="' + currentEvaluationSample.Evaluation + '"' +
                 'data-redistribute-weight="' + o.Evaluation.RedistributeWeight + '"' +
                 'data-partial-save="' + o.Evaluation.IsPartialCollection + '"' +
-                'data-current-sample="' + currentEvaluationSample.Sample + '">' +
-                '	<div class="col-xs-3">' + o.Name + ' ' + flagAcao +'</div>' +
-                '	<div class="col-xs-1">&nbsp;</div>' +
-                '	<div class="col-xs-4">Av: ' + ((currentEvaluationSample.Evaluation >= 1 && currentEvaluationSample.Sample > 1) ? currentEvaluationSample.Evaluation : (currentEvaluationSample.Evaluation - 1)) + '/' + o.Evaluation.Evaluation + ' </div>      ' +
-                '	<div class="col-xs-4">Am: ' + ((currentEvaluationSample.Evaluation > 1 && currentEvaluationSample.Sample == 1) ? o.Evaluation.Sample : (currentEvaluationSample.Sample  - 1)) + '/' + o.Evaluation.Sample + ' </div>' +
-                '</button>';
+                'data-current-sample="' + currentEvaluationSample.Sample + '">' + o.Name + '</div>'+
+                '<div class="col-lg-3 col-md-3 col-xs-4">Av: ' + ((currentEvaluationSample.Evaluation >= 1 && currentEvaluationSample.Sample > 1) ? currentEvaluationSample.Evaluation : (currentEvaluationSample.Evaluation - 1)) + '/' + o.Evaluation.Evaluation + ' Am: ' + ((currentEvaluationSample.Evaluation > 1 && currentEvaluationSample.Sample == 1) ? o.Evaluation.Sample : (currentEvaluationSample.Sample  - 1)) + '/' + o.Evaluation.Sample + '<span class="badge hide">></span>'+ flagAcao +'</div>'+
+                '<div class="clearfix"></div>'+
+            '</div>';
 
             atualizaCorAgendamento(o, currentEvaluationSample);
         }
