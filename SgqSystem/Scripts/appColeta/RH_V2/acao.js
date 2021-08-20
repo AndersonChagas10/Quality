@@ -223,9 +223,9 @@ function montaCorpoFormularioAcao(index) {
         '   </div>' +
         '   <div class="form-group row" style="">' +
         '       <div class="col-xs-12">' +
-        '           <p>Não Conformidade/Ocorrência</p>' +
+        '           <p class="naoConformidadeOcorrencia">Não Conformidade/Ocorrência</p>' +
         '           <textarea id="txtActionNotConformity" maxlength="900" class="form-control" style="resize: none; height: 100px;"></textarea>' +
-        '           <p>Ação</p>' +
+        '           <p class="acaoText">Ação</p>' +
         '           <textarea id="txtAction" class="form-control" maxlength="900" style="resize: none; height: 100px;"></textarea>' +
         '       </div>' +
         '   </div>' +
@@ -254,7 +254,7 @@ function montaCorpoFormularioAcao(index) {
         '</div>' +
         '<div class="form-group row">' +
         '   <div class="col-xs-4 hide vereagir">' +
-        '       <h4>Data da conclusão:</h4>' +
+        '       <h4 class="dataConclusao">Data da conclusão:</h4>' +
         '       <input id="actionConclusionDate" type="date" min="' + date.split('T')[0] + '" class="form-control">' +
         '   </div>' +
         '   <div class="col-xs-4 hide vereagir">' +
@@ -266,7 +266,7 @@ function montaCorpoFormularioAcao(index) {
         '       <input id="actionReference" maxlength="200" type="text" class="form-control">' +
         '   </div>' +
         '   <div class="col-xs-4">' +
-        '       <h4>Responsável:</h4>' +
+        '       <h4 class="responsavel">Responsável:</h4>' +
         '       <select id="actionResponsable" class="form-control">' +
         '           ' + options +
         '       </select>' +
@@ -310,8 +310,8 @@ function montaCorpoFormularioAcao(index) {
         '   ' + btnNext +
         // '   </div>' +
         // '   <div class="col-xs-4">' +
-        '       <button id="btnSalvarIniciar" class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e iniciar ação</button>' +
-        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 2);">Salvar e preencher a ação depois</button>' +
+        '       <button id="btnSalvarIniciar" class="btn btn-success" onclick="saveAction(' + index + ', 2);">Salvar e iniciar ação</button>' +
+        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e preencher a ação depois</button>' +
         '   </div>' +
         '</div>' +
         '</div></div>';
@@ -514,10 +514,52 @@ function updateAcao(objAlterado) {
     listaAcoes[index] = objAlterado;
 }
 
+function limparCamposObrigatorios() {
+    $('.responsavel').removeClass('required')
+    $('.dataConclusao').removeClass('required')
+    $('.naoConformidadeOcorrencia').removeClass('required')
+    $('.acaoText').removeClass('required')
+}
+
+function verificarSeExistemCamposVaziosAoSalvarEmAndamento(objCriado) {
+    var existeCampoNulo = true;
+    var emAndamento = 2;
+    var concluido = 3;
+
+    if (objCriado.Status == emAndamento || objCriado.Status == concluido) {                
+
+        if (objCriado.Responsavel === '') {
+            $('.responsavel').addClass('required')
+            existeCampoNulo = false
+        }
+        if (objCriado.DataConclusao === '') {
+            $('.dataConclusao').addClass('required')
+            existeCampoNulo = false
+        }
+        if (objCriado.Acao_Naoconformidade === '') {
+            $('.naoConformidadeOcorrencia').addClass('required')
+            existeCampoNulo = false
+        }
+        if (objCriado.AcaoText === '') {
+            $('.acaoText').addClass('required')
+            existeCampoNulo = false
+        }                
+    }
+    return existeCampoNulo
+}
+
 function saveAction(index, status) {
 
     var objCriado = updateAcaoCurrent(index, false);
     objCriado.Status = retornaStatusAcao(objCriado, status);
+
+    limparCamposObrigatorios();
+
+    if (!verificarSeExistemCamposVaziosAoSalvarEmAndamento(objCriado)) {
+        openMensagem("Existem campos vazios que são obrigatórios!", 'blue', 'white');
+        closeMensagem(2000);
+        return;
+    } 
 
     listaAcoesToSend.push(objCriado);
     removeActionCurrentList(index);

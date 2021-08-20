@@ -297,16 +297,12 @@
                                         </div>
 
                                         <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label for="txtAcao_Naoconformidade"><strong>Não Conformidade/Ocorrencia</strong></label>
-                                                <textarea id="txtAcao_Naoconformidade" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></textarea>
-                                            </div>
+                                            <label for="txtAcao_Naoconformidade" class="naoConformidadeOcorrencia"><strong>Não Conformidade/Ocorrencia</strong></label>
+                                            <textarea id="txtAcao_Naoconformidade" name="Acao_Naoconformidade" class="form-control" style="resize: none; height: 100px;"></textarea>
                                         </div>
                                         <div class="col-sm-12">
-                                            <div class="form-group">
-                                                <label for="txtAcaoText"><strong>Ação</strong></label>
-                                                <textarea id="txtAcaoText" name="AcaoText" class="form-control" style="resize: none; height: 100px;"></textarea>
-                                            </div>
+                                            <label for="txtAcaoText" class="acaoText" ><strong strong style="color: black;">Ação</strong></label>
+                                            <textarea id="txtAcaoText" name="AcaoText" class="form-control" style="resize: none; height: 100px;"></textarea>
                                         </div>
                                         <hr />
                                         <div class="col-xs-12">
@@ -1454,6 +1450,8 @@
             $('.evidenciasAcompanhamento').empty()
             $('.responsavel').removeClass('required')
             $('.dataConclusao').removeClass('required')
+            $('.naoConformidadeOcorrencia').removeClass('required')
+            $('.acaoText').removeClass('required')
         }
 
          function limparCampoModalNovaAcao() {
@@ -1670,7 +1668,8 @@
         function limparCamposObrigatoriosEdicao() {
             $('.responsavel').removeClass('required')
             $('.dataConclusao').removeClass('required')
-            $('.horaConclusao').removeClass('required')
+            $('.naoConformidadeOcorrencia').removeClass('required')
+            $('.acaoText').removeClass('required')
         }
 
         function verificarSeExistemCamposNulos(form) {
@@ -1686,8 +1685,12 @@
                     $('.dataConclusao').addClass('required')
                     existeCampoNulo = false
                 }
-                if (form.HoraConclusao === '') {
-                    $('.horaConclusao').addClass('required')
+                if (form.Acao_Naoconformidade === '') {
+                    $('.naoConformidadeOcorrencia').addClass('required')
+                    existeCampoNulo = false
+                }
+                if (form.AcaoText === '') {
+                    $('.acaoText').addClass('required')
                     existeCampoNulo = false
                 }                
             }
