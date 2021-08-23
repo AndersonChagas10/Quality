@@ -99,54 +99,26 @@ function openAction() {
 
 }
 
+function abreAcaoDepartamento(departmentId){
+    currentParDepartment_Id = departmentId;
+
+    openAction();
+
+}
+
 function montaAcoesCurrent() {
 
-    var idCurrentDepartment = 0;
-    parametrization.listaParDepartment.forEach(function(itemListaDepartment, index){
-        if(itemListaDepartment.Parent_Id == currentParDepartment_Id){
-            idCurrentDepartment = itemListaDepartment.Id;
-        }
-    });
-
-    if(currentParDepartment_Id == null){
         listaAcoesCurrent = $.grep(listaAcoes, function (acao) {
-            return acao.ParCompany_Id == currentParCompany_Id &&
-            acao.ParCluster_Id == currentParCluster_Id &&
-            acao.ParClusterGroup_Id == currentParClusterGroup_Id &&
-            acao.ParFrequency_Id == currentParFrequency_Id;
-        });
-    }
-    else if(currentParDepartmentParent_Id == null || currentParDepartmentParent_Id != idCurrentDepartment){
-        listaAcoesCurrent = $.grep(listaAcoes, function (acao) {
-            return acao.ParDepartment_Id == idCurrentDepartment &&
-            acao.ParCompany_Id == currentParCompany_Id &&
-            acao.ParCluster_Id == currentParCluster_Id &&
-            acao.ParClusterGroup_Id == currentParClusterGroup_Id &&
-            acao.ParFrequency_Id == currentParFrequency_Id;
-        });
-    }
-    else if(currentParCargo_Id == null){
-        listaAcoesCurrent = $.grep(listaAcoes, function (acao) {
-            return acao.ParDepartment_Id == currentParDepartment_Id &&
-            acao.ParCompany_Id == currentParCompany_Id &&
-            acao.ParDepartmentParent_Id == currentParDepartmentParent_Id &&
-            acao.ParCluster_Id == currentParCluster_Id &&
-            acao.ParClusterGroup_Id == currentParClusterGroup_Id &&
-            acao.ParFrequency_Id == currentParFrequency_Id;
-        });
-    }
-    else{
-        listaAcoesCurrent = $.grep(listaAcoes, function (acao) {
-            return acao.ParDepartment_Id == currentParDepartment_Id &&
-            acao.ParCompany_Id == currentParCompany_Id &&
-            acao.ParDepartmentParent_Id == currentParDepartmentParent_Id &&
-            acao.ParCluster_Id == currentParCluster_Id &&
-            acao.ParClusterGroup_Id == currentParClusterGroup_Id &&
-            acao.ParCargo_Id == currentParCargo_Id &&
-            acao.ParFrequency_Id == currentParFrequency_Id;
+            return (acao.ParDepartment_Id == currentParDepartment_Id || !currentParDepartment_Id)
+            && acao.ParCompany_Id == currentParCompany_Id 
+            && (acao.ParDepartmentParent_Id == currentParDepartmentParent_Id || !currentParDepartmentParent_Id)
+            && acao.ParCluster_Id == currentParCluster_Id 
+            && acao.ParClusterGroup_Id == currentParClusterGroup_Id 
+            && (acao.ParCargo_Id == currentParCargo_Id || !currentParCargo_Id)  
+            && acao.ParFrequency_Id == currentParFrequency_Id;
         });
     
-    }
+
     
     
 }

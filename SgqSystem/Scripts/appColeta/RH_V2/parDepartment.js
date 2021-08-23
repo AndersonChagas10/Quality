@@ -45,7 +45,7 @@ function listarParDepartment(parDepartmentId, isVoltar) {
                     flagAcao = '<button type="button" class="btn btn-sm btn-warning pull-right" onclick="openAction()">Ação pendente</button>';
                 else
                     if (o.Parent_Id && getAcoesByParDepartment(o.Id).length > 0)
-                        flagAcao = '<button type="button" class="btn btn-sm btn-warning pull-right" onclick="openAction()">Ação pendente</button>';
+                        flagAcao = '<button type="button" class="btn btn-sm btn-warning pull-right" onclick="abreAcaoDepartamento('+o.Id+')">Ação pendente</button>';
 
                 htmlParDepartment += '<div class="list-group-item" '+ style +'>'+
                                 '<div class="col-lg-9 col-md-9  col-xs-8"><span class="btn btn-link btn-block" '+ style +' data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name + '</div>'+
