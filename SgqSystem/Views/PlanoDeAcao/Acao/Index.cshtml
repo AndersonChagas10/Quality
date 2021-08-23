@@ -307,7 +307,7 @@
                                         <hr />
                                         <div class="col-xs-12">
                                             <strong>Evidencias de Não conformidade</strong>
-                                            <input type="file" id="uploadPhoto" onchange="uploadFile(event,'evidencia')" />
+                                            <input type="file" id="uploadPhoto" onchange="modalEdicao.inserirArquivo(event,'evidencia')" />
                                         </div>
                                         <div class="col-xs-12">
                                             <div id="divEvidencias" class="row">
@@ -317,11 +317,11 @@
                                         <hr />
 
                                         <div class="col-xs-12">
-                                            <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" />
+                                            <label><strong>Ver e Agir:</strong></label><input type="checkbox" id="checkVerAgir" onchange="modalEdicao.desabilitarBotaoSalvarEPreencherDepoisSeVerEAgirCheckado()" />
                                         </div>
                                         <div id="evidenciasConcluidasEdicao" class="col-xs-12" hidden="hidden">
                                             <p>Evidencias da Ação Concluida</p>
-                                            <input type="file" id="uploadPhotox" onchange="uploadFile(event, 'evidenciaConcluida')" />
+                                            <input type="file" id="uploadPhotox" onchange="modalEdicao.inserirArquivo(event, 'evidenciaConcluida')" />
                                             <div id="actionsEvidencies">
                                                 <div class="fotosConcluidas"></div>
                                             </div>
@@ -369,8 +369,8 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button id="btnClose" type="button" data-dismiss="modal" class="btn btn-default non-printable">@Resources.Resource.close</button>
-                                    <button class="btn btn-success" onclick="enviarFormularioEditarAcao('2')">Salvar e iniciar ação</button>
-                                    <button class="btn btn-success preencherDepois" onclick="enviarFormularioEditarAcao('1')">Salvar e preencher a ação depois</button>
+                                    <button class="btn btn-success" onclick="modalEdicao.salvarFormularioDeEditarAcao('2')">Salvar e iniciar ação</button>
+                                    <button class="btn btn-success preencherDepois" onclick="modalEdicao.salvarFormularioDeEditarAcao('1')">Salvar e preencher a ação depois</button>
                                 </div>
                         </form>
                         </div>
@@ -407,7 +407,7 @@
                                             </div>
                                             <div class="col-xs-12">
                                                 <b>Evidencias do Acompanhamento</b>
-                                                <input type="file" id="anexarEvidenciaAcompanhamento" onchange="uploadFile(event,'evidenciaAcompanhamento')" />
+                                                <input type="file" id="anexarEvidenciaAcompanhamento" onchange="modalEdicao.inserirArquivo(event,'evidenciaAcompanhamento')" />
                                             </div>
                                             <div class="col-xs-12">
                                                 <div class="row">
@@ -642,6 +642,9 @@
         let listaDeAcoes = []
         var isVisualizar = false;
         var showVerAgir = false;
+        const pendente = 1;
+        const emAndamento = 2;
+        const concluida = 3;
 
         $(document).ready(function () {
             configurarCamposCascata();
@@ -846,7 +849,7 @@
             return `<label style="word-break: break-word;max-width: 200px;min-width: 200px;white-space: break-spaces;">${data}</label>`;
         }
 
-        function montarBotoesDosStatus(dados) {       
+        function montarBotoesDosStatus(dados) {
 
             for (var i = 0; i < enumStatus.length; i++) {
                 let acoesFiltradasPorStatus = dados.filter(acao => acao.Status == enumStatus[i])
@@ -1043,7 +1046,7 @@
                     }
                     else {
                         $('#divEvidencias .fotos').append(htmlEdicao);
-                    }                    
+                    }
                  },
 
                 removerEvidencia: (index) => {
@@ -1152,8 +1155,8 @@
                     dados.filter(dado => {
                         if(dado.FieldName === nomeDoCampo){
                             log.montarHtmlDosCampos(dado, nomeQueDeveAparecer)
-                        }                        
-                    }) 
+                        }
+                    })
                 }
                 verificarNomeDoCampo('Acao_Naoconformidade', 'Ação não conformidade')
                 verificarNomeDoCampo('AcaoText', 'Ação texto')
@@ -1172,7 +1175,7 @@
 
                 log.preencherNulo(campo)
 
-                let thead = ` <h4 class="text-center" ><button type="button" class="btn btn-info" data-toggle="collapse" data-target="#tabela${campo.FieldName}" style="width: 100%;">${nomeQueDeveAparecer}</button></h4> 
+                let thead = ` <h4 class="text-center" ><button type="button" class="btn btn-info" data-toggle="collapse" data-target="#tabela${campo.FieldName}" style="width: 100%;">${nomeQueDeveAparecer}</button></h4>
                                             <table id="tabela${campo.FieldName}" class="table table-bordered collapse">
                                                 <thead class="thead-dark">
                                                     <tr>
@@ -1182,14 +1185,14 @@
                                                         <th scope="col">Valor Alterado</th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>                                        
+                                                <tbody>
                                                 </tbody>
                                             </table>
                                         <hr>`
 
-                
+
                 let tbody = `<tr>
-                                    <td style="width:209px;">${campo.UpdateDate}</td>   
+                                    <td style="width:209px;">${campo.UpdateDate}</td>
                                     <td style="width:209px;">${campo.UserName}</td>
                                     <td style="width:209px;">${campo.OldValue}</td>
                                     <td style="width:209px;">${campo.NewValue}</td>
@@ -1333,7 +1336,7 @@
                 url: `${url}/${id}`,
                 contentType: "application/json",
                 success: function (dados) {
-                    preencherModalDeEdicao(dados, isVisualizar);
+                    modalEdicao.abrir(dados, isVisualizar);
                     buscarFotos(id, isVisualizar);
                     closeLoader();
                 },
@@ -1441,19 +1444,6 @@
 
         }
 
-        function limparCamposDoModal() {
-            acao.evidenciaConcluida.listaDeEvidencias = []
-            acao.evidenciasNaoConforme.listaDeEvidencias = []
-            acompanhamento.listaDeEvidencias = []
-            $('#divEvidencias .fotos').empty();
-            $('#actionsEvidencies .fotosConcluidas').empty();
-            $('.evidenciasAcompanhamento').empty()
-            $('.responsavel').removeClass('required')
-            $('.dataConclusao').removeClass('required')
-            $('.naoConformidadeOcorrencia').removeClass('required')
-            $('.acaoText').removeClass('required')
-        }
-
          function limparCampoModalNovaAcao() {
             $("select[name=parCompany_Ids]").empty();
             $("select[name=parDepartment_Ids]").empty();
@@ -1494,83 +1484,6 @@
             if (!dados.PermitirEditar) {
                 $('#tabAcaoEdicao').prop('disabled', true)
                 $('.edicao').addClass('disabled')
-            }
-        }
-
-        var desabilitarBotaoSalvarEPreencherDepois = (dados) => {
-
-            $('.preencherDepois').prop('disabled', false)
-
-            if(dados.Status == 2)
-            $('.preencherDepois').prop('disabled', true)
-        }
-
-        let desabilitarSelecaoDeDataMenorQueHoje = () => $('#actionConclusionDate').attr('min', new Date().toISOString().split("T")[0])
-
-        function preencherModalDeEdicao(dados) {
-
-            desabilitarSelecaoDeDataMenorQueHoje()
-            preencherInformacoesAcompanhamento(dados);
-            permitirInserirAcompanhamento(dados);
-            permitirVisualizarAcompanhamento(dados);
-
-            acaoEditar = dados;
-            limparCamposDoModal()
-
-            if (dados.ListaResponsavel) {
-                var html = `<option value="">Selecione...</option>`;
-                for (var i = 0; i < dados.ListaResponsavel.length; i++) {
-                    var responsavel = dados.ListaResponsavel[i];
-                    html += `<option value="${responsavel["Id"]}">${responsavel["Nome"]}</option>`;
-                }
-
-                $('#selectResponsavel').html(html);
-                $('#selectAcompanhamento_Notificar').html(html);
-
-                $("#selectResponsavel option[value=" + dados.Responsavel + "]").attr('selected', 'selected')
-            }
-
-            if (dados.ListaPrioridade) {
-                var html = `<option value="">Selecione...</option>`;
-                for (var i = 0; i < dados.ListaPrioridade.length; i++) {
-                    var prioridade = dados.ListaPrioridade[i];
-                    html += `<option value="${prioridade["Id"]}">${prioridade["Nome"]}</option>`;
-                }
-                $('#selectPrioridade').html(html);
-            }
-
-            $("input[name='Id']").val(dados.Id);
-            $("input[name='ParCompany_Id']").val(dados.ParCompany_Id);
-            $("#dataEmissao").text(dados._DataEmissao);
-            $("#horaEmissao").text(dados.HoraEmissao);
-            $("#usuarioEmissor").text(dados.EmissorNome);
-            $("#actionParCompany_Id").text(dados.ParCompany_Name);
-            $("#actionParDepartment_Id").text(dados.ParDepartment_Name);
-            $("#actionParDepartmentParent_Id").text(dados.ParDepartmentParent_Name);
-            $("#actionParCargo_Id").text(dados.ParCargo_Name);
-            $("#actionParLevel1_Id").text(dados.ParLevel1_Name);
-            $("#actionParLevel2_Id").text(dados.ParLevel2_Name);
-            $("#actionParLevel3_Id").text(dados.ParLevel3_Name);
-            $("#actionConclusionDate").val(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]);
-            $("#actionConclusionHour").val(dados.HoraConclusao);
-            $("#actionReference").val(dados.Referencia);
-            $("#status").val(dados.Status);
-            permitirAlterarStatus(dados)
-            permitirEditar(dados)
-            desabilitarBotaoSalvarEPreencherDepois(dados)
-
-            $("#txtAcao_Naoconformidade").val(dados.Acao_Naoconformidade);
-            $("#txtAcaoText").val(dados.AcaoText);
-
-            notificacao.imprimirNotificaveisNoModalDeEdicao(dados.ListaNotificarAcao);
-
-            if (dados.ListaNotificar) {
-                var html = `<option value="">Selecione...</option>`;
-                for (var i = 0; i < dados.ListaNotificar.length; i++) {
-                    var notificar = dados.ListaNotificar[i];
-                    html += `<option value="${notificar["Id"]}">${notificar["Nome"]}</option>`;
-                }
-                $('#selectNotificarAcao').html(html);
             }
         }
 
@@ -1625,76 +1538,258 @@
             }
         }
 
-        //Formulário
-        function enviarFormularioEditarAcao(status) {
+        const modalEdicao = {
 
-            event.preventDefault();
+            abrir(dados) {
 
-            limparCamposObrigatoriosEdicao()
-            let form = $("#formAcao").serializeObject();
+                modalEdicao.validarRegrasAoAbrirModal(dados)
 
-            form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
-            form["ListaEvidenciaConcluida"] = acao.evidenciaConcluida.listaDeEvidencias;
-            form["ListaEvidencia"] = acao.evidenciasNaoConforme.listaDeEvidencias;
+                acaoEditar = dados
+                modalEdicao.limparCamposDoModal()
 
-            form.Status = status;
+                modalEdicao.preencherListaDeResponsaveis(dados)
+                modalEdicao.preencherListaDePrioridades(dados)
+                modalEdicao.preencherCamposDoModal(dados)
+                modalEdicao.preencherListaDenotificaveis(dados)
 
-            const url = '@Url.Action("Post", "api/AcaoApi")';
+                notificacao.imprimirNotificaveisNoModalDeEdicao(dados.ListaNotificarAcao)
+            },
 
-            if (!verificarSeExistemCamposNulos(form)) {
-                openMessageModal("Existem campos vazios que são obrigatórios!")
-                return
-            }                
+            validarRegrasAoAbrirModal(dados) {
 
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: JSON.stringify(form),
-                contentType: "application/json",
-                success: function (data) {
-                    openMessageModal("Concluido", "Ação salva com sucesso");
-                    $("#btnClose").trigger('click');
-                    setTimeout(function () {
-                        enviarFiltro(null);
-                    }, 1000);
+                modalEdicao.desabilitarSelecaoDeDataMenorQueHoje()
+                preencherInformacoesAcompanhamento(dados)
+                permitirInserirAcompanhamento(dados)
+                permitirVisualizarAcompanhamento(dados)
+                permitirAlterarStatus(dados)
+                permitirEditar(dados)
+                modalEdicao.desabilitarBotaoSalvarEPreencherDepoisSeStatusEhAndamento(dados)
+            },
 
-                },
-                error: function () {
-                    console.log('erro ao salvar ação');
+            desabilitarSelecaoDeDataMenorQueHoje() {
+                $('#actionConclusionDate').attr('min', new Date().toISOString().split("T")[0])
+            },
+
+            desabilitarBotaoSalvarEPreencherDepoisSeStatusEhAndamento(dados){
+
+                $('.preencherDepois').prop('disabled', false)
+
+                if (dados.Status == emAndamento)
+                    $('.preencherDepois').prop('disabled', true)
+            },
+
+            limparCamposDoModal() {
+                acao.evidenciaConcluida.listaDeEvidencias = []
+                acao.evidenciasNaoConforme.listaDeEvidencias = []
+                acompanhamento.listaDeEvidencias = []
+                $('#divEvidencias .fotos').empty();
+                $('#actionsEvidencies .fotosConcluidas').empty();
+                $('.evidenciasAcompanhamento').empty()
+                $('.responsavel').removeClass('required')
+                $('.dataConclusao').removeClass('required')
+                $('.naoConformidadeOcorrencia').removeClass('required')
+                $('.acaoText').removeClass('required')
+                $('#formAcao #checkVerAgir').prop('checked', false);
+            },
+
+            preencherListaDeResponsaveis(dados) {
+
+                if (dados.ListaResponsavel) {
+                    var html = `<option value="">Selecione...</option>`;
+                    for (var i = 0; i < dados.ListaResponsavel.length; i++) {
+                        var responsavel = dados.ListaResponsavel[i];
+                        html += `<option value="${responsavel["Id"]}">${responsavel["Nome"]}</option>`;
+                    }
+
+                    $('#selectResponsavel').html(html);
+                    $('#selectAcompanhamento_Notificar').html(html);
+
+                    $("#selectResponsavel option[value=" + dados.Responsavel + "]").attr('selected', 'selected')
                 }
-            });
-        }
+            },
 
-        function limparCamposObrigatoriosEdicao() {
-            $('.responsavel').removeClass('required')
-            $('.dataConclusao').removeClass('required')
-            $('.naoConformidadeOcorrencia').removeClass('required')
-            $('.acaoText').removeClass('required')
-        }
+            preencherListaDePrioridades(dados) {
 
-        function verificarSeExistemCamposNulos(form) {
-            let existeCampoNulo = true
-
-            if (form.Status == 2) {                
-
-                if (form.Responsavel === '') {
-                    $('.responsavel').addClass('required')
-                    existeCampoNulo = false
+                if (dados.ListaPrioridade) {
+                    var html = `<option value="">Selecione...</option>`;
+                    for (var i = 0; i < dados.ListaPrioridade.length; i++) {
+                        var prioridade = dados.ListaPrioridade[i];
+                        html += `<option value="${prioridade["Id"]}">${prioridade["Nome"]}</option>`;
+                    }
+                    $('#selectPrioridade').html(html);
                 }
-                if (form.DataConclusao === '') {
-                    $('.dataConclusao').addClass('required')
-                    existeCampoNulo = false
+            },
+
+            preencherCamposDoModal(dados) {
+                $("input[name='Id']").val(dados.Id);
+                $("input[name='ParCompany_Id']").val(dados.ParCompany_Id);
+                $("#dataEmissao").text(dados._DataEmissao);
+                $("#horaEmissao").text(dados.HoraEmissao);
+                $("#usuarioEmissor").text(dados.EmissorNome);
+                $("#actionParCompany_Id").text(dados.ParCompany_Name);
+                $("#actionParDepartment_Id").text(dados.ParDepartment_Name);
+                $("#actionParDepartmentParent_Id").text(dados.ParDepartmentParent_Name);
+                $("#actionParCargo_Id").text(dados.ParCargo_Name);
+                $("#actionParLevel1_Id").text(dados.ParLevel1_Name);
+                $("#actionParLevel2_Id").text(dados.ParLevel2_Name);
+                $("#actionParLevel3_Id").text(dados.ParLevel3_Name);
+                $("#actionConclusionDate").val(dados.DataConclusao == null ? null : dados.DataConclusao.split('T')[0]);
+                $("#actionConclusionHour").val(dados.HoraConclusao);
+                $("#actionReference").val(dados.Referencia);
+                $("#status").val(dados.Status);
+                $("#txtAcao_Naoconformidade").val(dados.Acao_Naoconformidade);
+                $("#txtAcaoText").val(dados.AcaoText);
+            },
+
+            preencherListaDenotificaveis(dados) {
+
+                if (dados.ListaNotificar) {
+                    var html = `<option value="">Selecione...</option>`;
+                    for (var i = 0; i < dados.ListaNotificar.length; i++) {
+                        var notificar = dados.ListaNotificar[i];
+                        html += `<option value="${notificar["Id"]}">${notificar["Nome"]}</option>`;
+                    }
+                    $('#selectNotificarAcao').html(html);
                 }
-                if (form.Acao_Naoconformidade === '') {
-                    $('.naoConformidadeOcorrencia').addClass('required')
-                    existeCampoNulo = false
+            },
+
+            salvarFormularioDeEditarAcao(status) {
+
+                event.preventDefault();
+
+                modalEdicao.limparCamposObrigatoriosEdicao()
+                let form = $("#formAcao").serializeObject();
+
+                form["ListaNotificarAcao"] = acaoEditar["ListaNotificarAcao"];
+                form["ListaEvidenciaConcluida"] = acao.evidenciaConcluida.listaDeEvidencias;
+                form["ListaEvidencia"] = acao.evidenciasNaoConforme.listaDeEvidencias;
+
+                form.Status = modalEdicao.alterarStatusParaConcluidoSeVerEAgirCheckado(status)
+
+                const url = '@Url.Action("Post", "api/AcaoApi")';
+
+                if (!modalEdicao.verificarSeExistemCamposNulos(form)) {
+                    openMessageModal("Existem campos vazios que são obrigatórios!")
+                    return
                 }
-                if (form.AcaoText === '') {
-                    $('.acaoText').addClass('required')
-                    existeCampoNulo = false
-                }                
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: JSON.stringify(form),
+                    contentType: "application/json",
+                    success: function (data) {
+                        openMessageModal("Concluido", "Ação salva com sucesso");
+                        $("#btnClose").trigger('click');
+                        setTimeout(function () {
+                            enviarFiltro(null);
+                        }, 1000);
+
+                    },
+                    error: function () {
+                        console.log('erro ao salvar ação');
+                    }
+                });
+            },
+
+            limparCamposObrigatoriosEdicao(){
+                $('.responsavel').removeClass('required')
+                $('.dataConclusao').removeClass('required')
+                $('.naoConformidadeOcorrencia').removeClass('required')
+                $('.acaoText').removeClass('required')
+            },
+
+            verificarSeExistemCamposNulos(form) {
+                let existeCampoNulo = true
+
+                if (form.Status == emAndamento || form.Status == concluida) {
+
+                    if (form.Responsavel === '') {
+                        $('.responsavel').addClass('required')
+                        existeCampoNulo = false
+                    }
+                    if (form.DataConclusao === '') {
+                        $('.dataConclusao').addClass('required')
+                        existeCampoNulo = false
+                    }
+                    if (form.Acao_Naoconformidade === '') {
+                        $('.naoConformidadeOcorrencia').addClass('required')
+                        existeCampoNulo = false
+                    }
+                    if (form.AcaoText === '') {
+                        $('.acaoText').addClass('required')
+                        existeCampoNulo = false
+                    }
+                }
+                return existeCampoNulo
+            },
+
+            alterarStatusParaConcluidoSeVerEAgirCheckado(status) {
+
+                if ($('#formAcao #checkVerAgir').prop('checked')) {
+                    return concluida;
+                }
+                else {
+                    return status;
+                }
+            },
+
+            desabilitarBotaoSalvarEPreencherDepoisSeVerEAgirCheckado() {
+
+                var checkbox = document.querySelector("#formAcao #checkVerAgir");
+                var status = document.querySelector("#formAcao #status").value;
+
+                if (status == pendente) {
+                    $('.preencherDepois').prop('disabled', false)
+
+                    if (checkbox.checked && status == pendente) {
+                        $('.preencherDepois').prop('disabled', true)
+                    }
+                }
+            },
+
+            inserirArquivo(evt, tipoEvidencia) {
+
+                if (!modalEdicao.validarArquivoAoinserir(evt))
+                    return;
+
+                var e = evt.target.files[0];
+                var reader = new FileReader();
+
+                reader.onload = (e) => {
+                    var binaryData = e.target.result;
+                    var base64String = window.btoa(binaryData);
+
+                    if (tipoEvidencia == 'evidencia')
+                        acao.evidenciasNaoConforme.adicionarEvidencia(base64String);
+
+                    else if (tipoEvidencia == 'evidenciaConcluida')
+                        acao.evidenciaConcluida.adicionarEvidencia(base64String);
+
+                    else if (tipoEvidencia == 'evidenciaAcompanhamento')
+                        acompanhamento.adicionarEvidencia(base64String)
+
+                    $('input[type=file]').val('');
+                };
+
+                reader.readAsBinaryString(e);
+            },
+
+            validarArquivoAoinserir(evt) {
+
+                if (evt.target.files.length == 0) return false;
+
+                else if (!evt.target.files[0].type.match(/.(jpg|jpeg|png)$/i)) {
+                    $('#uploadPhoto').val('')
+                    $('#uploadPhotox').val('')
+                    openMessageModal('Alerta! Não é uma imagem!')
+                    return false;
+                }
+
+                else if (evt.target.files[0].size <= 0) return false;
+
+                return true;
             }
-            return existeCampoNulo
         }
 
         function verificaObrigatoriedade() {
@@ -1792,49 +1887,6 @@
             return colunas;
         }
 
-        function validateUploadFile(evt) {
-
-            if (evt.target.files.length == 0) return false;
-
-            else if (!evt.target.files[0].type.match(/.(jpg|jpeg|png)$/i)) {
-                $('#uploadPhoto').val('')
-                $('#uploadPhotox').val('')
-                openMessageModal('Alerta! Não é uma imagem!')
-                return false;
-            }
-
-            else if (evt.target.files[0].size <= 0) return false;
-
-            return true;
-        }
-
-        function uploadFile(evt, tipoEvidencia) {
-
-            if (!validateUploadFile(evt))
-                return;
-
-            var e = evt.target.files[0];
-            var reader = new FileReader();
-
-            reader.onload = (e) => {
-                var binaryData = e.target.result;
-                var base64String = window.btoa(binaryData);
-
-                if (tipoEvidencia == 'evidencia')
-                    acao.evidenciasNaoConforme.adicionarEvidencia(base64String);
-
-                else if (tipoEvidencia == 'evidenciaConcluida')
-                    acao.evidenciaConcluida.adicionarEvidencia(base64String);
-
-                else if (tipoEvidencia == 'evidenciaAcompanhamento')
-                    acompanhamento.adicionarEvidencia(base64String)
-
-                $('input[type=file]').val('');
-            };
-
-            reader.readAsBinaryString(e);
-        }
-
         $('body')
             .on('click, change', '#checkVerAgir', function () {
 
@@ -1906,7 +1958,7 @@
                             ${evidencia1}
                             ${evidencia2}
                         </div>
-                        <hr/>`;                    
+                        <hr/>`;
                 }
                 html += `</div>`;
                 $('#Acompanhamento_Listagem').html(html);
@@ -1931,7 +1983,7 @@
                 html += `<div class="col-sm-6" style="display:inline-block; width:49%; height:20%;">
                               <img src="data:image/png;base64,${imagem.base64}" data-img class="img-responsive" style="width:100%; height:100%"/>
                          </div>`;
-            
+
                 return html
             },
 
