@@ -1,6 +1,8 @@
 ﻿var listaAcoes = [];
 var listaAcoesCurrent = [];
 var listaAcoesToSend = []; 
+var emAndamento = 2;
+var concluido = 3;
 
 var alertaDaAcao = {
 
@@ -229,9 +231,9 @@ function montaCorpoFormularioAcao(index) {
         '   </div>' +
         '   <div class="form-group row" style="">' +
         '       <div class="col-xs-12">' +
-        '           <p>Não Conformidade/Ocorrência</p>' +
+        '           <p class="naoConformidadeOcorrencia">Não Conformidade/Ocorrência</p>' +
         '           <textarea id="txtActionNotConformity" maxlength="900" class="form-control" style="resize: none; height: 100px;"></textarea>' +
-        '           <p>Ação</p>' +
+        '           <p class="acaoText">Ação</p>' +
         '           <textarea id="txtAction" class="form-control" maxlength="900" style="resize: none; height: 100px;"></textarea>' +
         '       </div>' +
         '   </div>' +
@@ -260,7 +262,7 @@ function montaCorpoFormularioAcao(index) {
         '</div>' +
         '<div class="form-group row">' +
         '   <div class="col-xs-4 ">' +
-        '       <h4>Data da conclusão:</h4>' +
+        '       <h4 class="dataConclusao">Data da conclusão:</h4>' +
         '       <input id="actionConclusionDate" type="date" min="' + date.split('T')[0] + '" class="form-control">' +
         '   </div>' +
         '   <div class="col-xs-4 hide vereagir">' +
@@ -272,7 +274,7 @@ function montaCorpoFormularioAcao(index) {
         '       <input id="actionReference" maxlength="200" type="text" class="form-control">' +
         '   </div>' +
         '   <div class="col-xs-4">' +
-        '       <h4>Responsável:</h4>' +
+        '       <h4 class="responsavel">Responsável:</h4>' +
         '       <select id="actionResponsable" class="form-control">' +
         '           ' + options +
         '       </select>' +
@@ -317,7 +319,7 @@ function montaCorpoFormularioAcao(index) {
         // '   </div>' +
         // '   <div class="col-xs-4">' +
         '       <button id="btnSalvarIniciar" class="btn btn-success" onclick="saveAction(' + index + ', 2);">Salvar e iniciar ação</button>' +
-        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e preencher a ação depois</button>' +
+        '       <button class="btn btn-success preencherDepois" onclick="saveAction(' + index + ', 1);">Salvar e preencher a ação depois</button>' +
         '   </div>' +
         '</div>' +
         '</div></div>';
@@ -492,16 +494,27 @@ function retornaStatusAcao(objCriado, status) {
     //4 Atrasada 
     //5 Cancelada
 
-    if (objCriado.VerEAgir)
-        return 3;
-    else
+    if (objCriado.VerEAgir){
+        return concluido;
+    }   
+    else{
         return status;
+    }
+}
 
+function desabilitarBotaoSalvarEPreencherDepoisSeVerEAgirCheckado(){
+    $('.preencherDepois').prop('disabled', false)
+
+    if($("#checkVerAgir").is(":checked")){
+        $('.preencherDepois').prop('disabled', true)
+    }
 }
 
 function updateAcaoCurrent(index, writefile) {
 
     var objAlterado = setListaAcoesObj(index, listaAcoesCurrent[index]);
+
+    desabilitarBotaoSalvarEPreencherDepoisSeVerEAgirCheckado();
 
     updateAcao(objAlterado);
 
@@ -520,10 +533,50 @@ function updateAcao(objAlterado) {
     listaAcoes[index] = objAlterado;
 }
 
+function limparCamposObrigatorios() {
+    $('.responsavel').removeClass('required')
+    $('.dataConclusao').removeClass('required')
+    $('.naoConformidadeOcorrencia').removeClass('required')
+    $('.acaoText').removeClass('required')
+}
+
+function verificarSeExistemCamposVaziosAoSalvarEmAndamento(objCriado) {
+    var existeCampoNulo = true;
+
+    if (objCriado.Status == emAndamento || objCriado.Status == concluido) {                
+
+        if (objCriado.Responsavel === '') {
+            $('.responsavel').addClass('required')
+            existeCampoNulo = false
+        }
+        if (objCriado.DataConclusao === '') {
+            $('.dataConclusao').addClass('required')
+            existeCampoNulo = false
+        }
+        if (objCriado.Acao_Naoconformidade === '') {
+            $('.naoConformidadeOcorrencia').addClass('required')
+            existeCampoNulo = false
+        }
+        if (objCriado.AcaoText === '') {
+            $('.acaoText').addClass('required')
+            existeCampoNulo = false
+        }                
+    }
+    return existeCampoNulo
+}
+
 function saveAction(index, status) {
 
     var objCriado = updateAcaoCurrent(index, false);
     objCriado.Status = retornaStatusAcao(objCriado, status);
+
+    limparCamposObrigatorios();
+
+    if (!verificarSeExistemCamposVaziosAoSalvarEmAndamento(objCriado)) {
+        openMensagem("Existem campos vazios que são obrigatórios!", 'blue', 'white');
+        closeMensagem(2000);
+        return;
+    } 
 
     listaAcoesToSend.push(objCriado);
     removeActionCurrentList(index);
@@ -636,13 +689,11 @@ $('body')
     if ($(this).is(":checked")) {
         $("#actionsEvidencies").removeAttr('hidden');
         $('.vereagir').removeClass('hide');
-        //$('.divActionPriority').addClass('hide');
         $('#actionPriority').val("");
         $('#actionConclusionHour').val(dataHoje[1].substring(0, 5));
     } else {
         $("#actionsEvidencies").attr('hidden', 'hidden');
         $('.vereagir').addClass('hide');
-        //$('.divActionPriority').removeClass('hide');
         $('#actionConclusionHour').val("");
     }
 });
