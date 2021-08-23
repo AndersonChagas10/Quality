@@ -672,13 +672,11 @@ $('body')
     if ($(this).is(":checked")) {
         $("#actionsEvidencies").removeAttr('hidden');
         $('.vereagir').removeClass('hide');
-        //$('.divActionPriority').addClass('hide');
         $('#actionPriority').val("");
         $('#actionConclusionHour').val(dataHoje[1].substring(0, 5));
     } else {
         $("#actionsEvidencies").attr('hidden', 'hidden');
         $('.vereagir').addClass('hide');
-        //$('.divActionPriority').removeClass('hide');
         $('#actionConclusionHour').val("");
     }
 });
