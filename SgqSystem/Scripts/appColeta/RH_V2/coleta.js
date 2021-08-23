@@ -1185,6 +1185,7 @@ function PrepararColetas() {
                 Evaluation: coletaAgrupada.Evaluation,
                 Sample: coletaAgrupada.Sample,
                 ParDepartment_Id: currentParDepartment_Id,
+                ParDepartmentParent_Id: currentParDepartmentParent_Id,
                 ParCargo_Id: currentParCargo_Id,
                 ParLevel1_Id: $(data).attr('data-level1'),
                 ParLevel2_Id: $(data).attr('data-level2'),
