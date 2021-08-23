@@ -99,16 +99,22 @@ function openAction() {
 
 }
 
+function abreAcaoDepartamento(departmentId){
+    currentParDepartment_Id = departmentId;
+
+    openAction();
+}
+
 function montaAcoesCurrent() {
-    listaAcoesCurrent = $.grep(listaAcoes, function (acao) {
-        return acao.ParDepartment_Id == currentParDepartment_Id &&
-        acao.ParCompany_Id == currentParCompany_Id &&
-        acao.ParDepartmentParent_Id == currentParDepartmentParent_Id &&
-        acao.ParCluster_Id == currentParCluster_Id &&
-        acao.ParClusterGroup_Id == currentParClusterGroup_Id &&
-        acao.ParCargo_Id == currentParCargo_Id &&
-        acao.ParFrequency_Id == currentParFrequency_Id;
-    });
+        listaAcoesCurrent = $.grep(listaAcoes, function (acao) {
+            return (acao.ParDepartment_Id == currentParDepartment_Id || !currentParDepartment_Id)
+            && acao.ParCompany_Id == currentParCompany_Id 
+            && (acao.ParDepartmentParent_Id == currentParDepartmentParent_Id || !currentParDepartmentParent_Id)
+            && acao.ParCluster_Id == currentParCluster_Id 
+            && acao.ParClusterGroup_Id == currentParClusterGroup_Id 
+            && (acao.ParCargo_Id == currentParCargo_Id || !currentParCargo_Id)  
+            && acao.ParFrequency_Id == currentParFrequency_Id;
+        });
 }
 
 function montaCorpoFormularioAcao(index) {

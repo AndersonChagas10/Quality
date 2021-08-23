@@ -37,24 +37,25 @@ function listarParDepartment(parDepartmentId, isVoltar) {
 
         if (parseInt(parDepartmentId) > 0 && parDepartmentId == o.Id) {
             department = o;
-        } else
+        } else {
             if ((parDepartmentId > 0 && parDepartmentId == o.Parent_Id) || ((parDepartmentId == 0 || parDepartmentId == null) && (o.Parent_Id == 0 || o.Parent_Id == null))) {
 
                 var flagAcao = "";
                 if (!o.Parent_Id && getAcoesByParDepartmentParent(o.Id).length > 0)
-                    flagAcao = '<span class="badge">Ação Pendente</span>';
+                    flagAcao = '<button type="button" class="btn btn-sm btn-warning pull-right" onclick="openAction()">Ação pendente</button>';
                 else
                     if (o.Parent_Id && getAcoesByParDepartment(o.Id).length > 0)
-                        flagAcao = '<span class="badge">Ação Pendente</span>';
+                        flagAcao = '<button type="button" class="btn btn-sm btn-warning pull-right" onclick="abreAcaoDepartamento(' + o.Id + ')">Ação pendente</button>';
 
-                htmlParDepartment += '<button type="button" ' + style + ' class="list-group-item col-xs-12" ' +
-                    'data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name +
-                    contadorHtml +
-                    '<span class="badge">></span>' +
-                    flagAcao +
-                    '</button>';
+                htmlParDepartment += '<div class="list-group-item" ' + style + '>' +
+                    '<div class="col-lg-9 col-md-9  col-xs-8"><span class="btn btn-link btn-block" ' + style + ' data-par-department-id="' + o.Id + '" data-par-department-parend-id="' + o.Parent_Id + '">' + o.Name + '</div>' +
+                    '<div class="col-lg-3 col-md-3 col-xs-4">' + contadorHtml + '' + flagAcao + '</div>' +
+                    '<div class="clearfix"></div>' +
+                    '</div>';
+
+
             }
-
+        }
     });
 
     currentParDepartment_Id = department.Id;
