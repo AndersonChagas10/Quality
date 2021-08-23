@@ -92,12 +92,12 @@ namespace Conformity.Application.Core.PlanoDeAcao
         {
             foreach (var evidenciaNaoConformidade in listaInserir)
             {
-                var filePath = SaveFileEvidenciaNaoConformidade(objAcao.Id, objAcao.ParCompany_Id, evidenciaNaoConformidade.Base64);
+                var filePath = SalvarArquivoDeEvidenciaFisicamente(objAcao.Id, objAcao.ParCompany_Id, evidenciaNaoConformidade.Base64);
                 _evidenciaNaoConformeRepository.SaveEvidenciaNaoConformidade(new EvidenciaNaoConforme() { Acao_Id = objAcao.Id, Path = filePath });
             }
         }
 
-        private string SaveFileEvidenciaNaoConformidade(int acaoId, int parCompany_Id, string fileBase64)
+        private string SalvarArquivoDeEvidenciaFisicamente(int acaoId, int parCompany_Id, string fileBase64)
         {
             var basePath = DicionarioEstatico.DicionarioEstaticoHelpers.StorageRoot ?? "~";
 
@@ -106,7 +106,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
                 basePath = @AppDomain.CurrentDomain.BaseDirectory;
             }
 
-            basePath = basePath + "\\Acao";
+            basePath = basePath + "\\acao_evidencia";
             string fileName = acaoId + parCompany_Id + new Random().Next(1000, 9999) + ".png";
 
             Exception exception;

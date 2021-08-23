@@ -52,6 +52,8 @@ namespace SgqSystem.Controllers.Api.PlanoDeAcao
                 _evidenciaNaoConformeService.RetornarListaDeEvidencias(objAcao);
 
                 _evidenciaConcluidaService.RetornarListaDeEvidenciasConcluidas(objAcao);
+
+                _acaoService.EnviarEmail(null, objAcao.Id);
             }
             catch (Exception e)
             {

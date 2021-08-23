@@ -45,7 +45,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
 
                 if (!string.IsNullOrEmpty(objAcompanhamentoAcao.Evidencia1_Base64))
                 {
-                    var evidencia1_Path = ConverterEvidencia(id, objAcompanhamentoAcao.Evidencia1_Base64);
+                    var evidencia1_Path = SalvarArquivoDeEvidenciaFisicamente(id, objAcompanhamentoAcao.Evidencia1_Base64);
                     AcompanhamentoAcaoXAttributes attributes = new AcompanhamentoAcaoXAttributes()
                     {
                         FieldName = EAcompanhamentoAcaoXAttributes.Evidencia1,
@@ -57,7 +57,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
                 
                 if (!string.IsNullOrEmpty(objAcompanhamentoAcao.Evidencia2_Base64))
                 {
-                    var evidencia2_Path = ConverterEvidencia(id, objAcompanhamentoAcao.Evidencia2_Base64);
+                    var evidencia2_Path = SalvarArquivoDeEvidenciaFisicamente(id, objAcompanhamentoAcao.Evidencia2_Base64);
                     AcompanhamentoAcaoXAttributes attributes = new AcompanhamentoAcaoXAttributes()
                     {
                         FieldName = EAcompanhamentoAcaoXAttributes.Evidencia2,
@@ -86,7 +86,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
             }
         }
 
-        private string ConverterEvidencia(int acao_Id, string fileBase64)
+        private string SalvarArquivoDeEvidenciaFisicamente(int acao_Id, string fileBase64)
         {
             var basePath = DicionarioEstatico.DicionarioEstaticoHelpers.StorageRoot ?? "~";
             if (basePath.Equals("~"))
@@ -94,7 +94,7 @@ namespace Conformity.Application.Core.PlanoDeAcao
                 basePath = @AppDomain.CurrentDomain.BaseDirectory;
             }
 
-            basePath = basePath + "\\Acao";
+            basePath = basePath + "\\acao_evidencia";
             string fileName = acao_Id + DateTime.Now.GetHashCode() + new Random().Next(1000, 9999) + ".png";
 
 

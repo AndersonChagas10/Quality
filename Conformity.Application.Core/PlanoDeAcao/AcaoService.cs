@@ -174,11 +174,6 @@ namespace Conformity.Application.Core.PlanoDeAcao
             _entityTrackService.RegisterUpdate(dbEntityAnterior, dbEntityAlterado);
 
             AtualizarUsuarios(objAcao);
-
-            if (objAcao.Status != EAcaoStatus.Pendente)
-            {
-                EnviarEmail(null, objAcao.Id);
-            }
         }
 
         #region Alterar Status de Ação para atrasado
