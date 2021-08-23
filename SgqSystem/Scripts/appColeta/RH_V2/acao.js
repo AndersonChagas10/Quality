@@ -1,6 +1,8 @@
 ﻿var listaAcoes = [];
 var listaAcoesCurrent = [];
 var listaAcoesToSend = []; 
+var emAndamento = 2;
+var concluido = 3;
 
 var alertaDaAcao = {
 
@@ -311,7 +313,7 @@ function montaCorpoFormularioAcao(index) {
         // '   </div>' +
         // '   <div class="col-xs-4">' +
         '       <button id="btnSalvarIniciar" class="btn btn-success" onclick="saveAction(' + index + ', 2);">Salvar e iniciar ação</button>' +
-        '       <button class="btn btn-success" onclick="saveAction(' + index + ', 1);">Salvar e preencher a ação depois</button>' +
+        '       <button class="btn btn-success preencherDepois" onclick="saveAction(' + index + ', 1);">Salvar e preencher a ação depois</button>' +
         '   </div>' +
         '</div>' +
         '</div></div>';
@@ -486,16 +488,27 @@ function retornaStatusAcao(objCriado, status) {
     //4 Atrasada 
     //5 Cancelada
 
-    if (objCriado.VerEAgir)
-        return 3;
-    else
+    if (objCriado.VerEAgir){
+        return concluido;
+    }   
+    else{
         return status;
+    }
+}
 
+function desabilitarBotaoSalvarEPreencherDepoisSeVerEAgirCheckado(){
+    $('.preencherDepois').prop('disabled', false)
+
+    if($("#checkVerAgir").is(":checked")){
+        $('.preencherDepois').prop('disabled', true)
+    }
 }
 
 function updateAcaoCurrent(index, writefile) {
 
     var objAlterado = setListaAcoesObj(index, listaAcoesCurrent[index]);
+
+    desabilitarBotaoSalvarEPreencherDepoisSeVerEAgirCheckado();
 
     updateAcao(objAlterado);
 
@@ -523,8 +536,6 @@ function limparCamposObrigatorios() {
 
 function verificarSeExistemCamposVaziosAoSalvarEmAndamento(objCriado) {
     var existeCampoNulo = true;
-    var emAndamento = 2;
-    var concluido = 3;
 
     if (objCriado.Status == emAndamento || objCriado.Status == concluido) {                
 
