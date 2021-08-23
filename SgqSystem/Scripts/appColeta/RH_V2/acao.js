@@ -253,7 +253,7 @@ function montaCorpoFormularioAcao(index) {
         '   </div>' +
         '</div>' +
         '<div class="form-group row">' +
-        '   <div class="col-xs-4 hide vereagir">' +
+        '   <div class="col-xs-4 ">' +
         '       <h4>Data da conclusão:</h4>' +
         '       <input id="actionConclusionDate" type="date" min="' + date.split('T')[0] + '" class="form-control">' +
         '   </div>' +
@@ -630,15 +630,13 @@ $('body')
     if ($(this).is(":checked")) {
         $("#actionsEvidencies").removeAttr('hidden');
         $('.vereagir').removeClass('hide');
-        $('.divActionPriority').addClass('hide');
+        //$('.divActionPriority').addClass('hide');
         $('#actionPriority').val("");
-        $('#actionConclusionDate').val(dataHoje[0]);
         $('#actionConclusionHour').val(dataHoje[1].substring(0, 5));
     } else {
         $("#actionsEvidencies").attr('hidden', 'hidden');
         $('.vereagir').addClass('hide');
-        $('.divActionPriority').removeClass('hide');
-        $('#actionConclusionDate').val("");
+        //$('.divActionPriority').removeClass('hide');
         $('#actionConclusionHour').val("");
     }
 });
