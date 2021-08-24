@@ -86,16 +86,16 @@ namespace Conformity.Domain.Core.DTOs
             get
             {
                 if (Status == (int)EAcaoStatus.Pendente
-                    || (!EhEmissor
+                    
                         && (Status == (int)EAcaoStatus.Em_Andamento
                             || Status == (int)EAcaoStatus.Atrasada)
-                    ))
+                    )
                 {
                     return false;
                 }
                 else
                 {
-                    return EhVinculadoEmNotificacao() || EhResponsavel;
+                    return EhVinculadoEmNotificacao() || EhResponsavel || EhEmissor;
                 }
             }
         }
