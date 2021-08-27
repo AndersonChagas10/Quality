@@ -86,9 +86,10 @@ namespace Conformity.Domain.Core.DTOs
             get
             {
                 if (Status == (int)EAcaoStatus.Pendente
-                    
-                        && (Status == (int)EAcaoStatus.Em_Andamento
-                            || Status == (int)EAcaoStatus.Atrasada)
+                    //|| (!EhEmissor
+                      //  && (Status == (int)EAcaoStatus.Em_Andamento
+                            || Status == (int)EAcaoStatus.Cancelada
+                            || Status == (int)EAcaoStatus.Concluída
                     )
                 {
                     return false;
