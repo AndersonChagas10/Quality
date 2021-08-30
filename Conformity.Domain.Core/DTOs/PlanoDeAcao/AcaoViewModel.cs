@@ -54,7 +54,7 @@ namespace Conformity.Domain.Core.DTOs
         public int Status { get; set; }
         public bool IsActive { get; set; }
         public string Responsavel_Name { get; set; }
-        public bool PermitirEditar { get => Emissor == UsuarioLogado && Status == (int)EAcaoStatus.Pendente || Status == (int)EAcaoStatus.Em_Andamento; }
+        public bool PermitirEditar { get => Emissor == UsuarioLogado && Status == (int)EAcaoStatus.Pendente ; }
         public bool PermitirInserirAcompanhamento
         {
             get

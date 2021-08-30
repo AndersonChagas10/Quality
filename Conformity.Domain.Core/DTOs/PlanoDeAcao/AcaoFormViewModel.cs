@@ -71,7 +71,7 @@ namespace Conformity.Domain.Core.DTOs
 
         public bool PermitirEditar
         {
-            get => EhEmissor && (Status == (int)EAcaoStatus.Pendente || Status == (int)EAcaoStatus.Em_Andamento);
+            get => EhEmissor && (Status == (int)EAcaoStatus.Pendente );
         }
         public bool PermitirAlterarStatus
         {
@@ -83,22 +83,10 @@ namespace Conformity.Domain.Core.DTOs
 
         public bool PermitirInserirAcompanhamento
         {
-            get
-            {
-                if (Status == (int)EAcaoStatus.Pendente
-                    //|| (!EhEmissor
-                      //  && (Status == (int)EAcaoStatus.Em_Andamento
-                            || Status == (int)EAcaoStatus.Cancelada
-                            || Status == (int)EAcaoStatus.Concluída
-                    )
-                {
-                    return false;
-                }
-                else
-                {
-                    return EhVinculadoEmNotificacao() || EhResponsavel || EhEmissor;
-                }
-            }
+            get =>(Status == (int)EAcaoStatus.Em_Andamento
+                         || Status == (int)EAcaoStatus.Atrasada)
+                     && (EhResponsavel || EhEmissor);
+            
         }
 
         public bool PermitirVisualizarAcompanhamento
