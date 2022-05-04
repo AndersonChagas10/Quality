@@ -3,7 +3,8 @@ function graficoEstoque() {
 
     dadosEstoque = [];
 
-    jQuery.each(dados, function (i, val) {
+    jQuery.each(dados, function (i, val) 
+
         dadosEstoque.push(dados[i]);
     });
 
